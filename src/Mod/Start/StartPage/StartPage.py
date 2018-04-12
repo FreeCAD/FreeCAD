@@ -207,7 +207,7 @@ def setColors(html):
                 "#windowcolor":"#FFFFFF",
                 "#windowtextcolor":"#000000"}
     try:
-        palette = QtGui.qApp.palette()
+        palette = QtGui.QApplication.palette()
     except:
         pass
     else:

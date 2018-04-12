@@ -142,13 +142,13 @@ def export(objs,filename):
         
     if os.path.exists(outfpath_stp):
         sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath_stp +"'")
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
         reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ outfpath_stp + "'")
     else:    
         ImportGui.export(objs,outfpath_stp)
         if 0: #os.path.exists(namefpath):
             sayzw("File cannot be compressed because a file with the same name exists '" + namefpath + "'")
-            QtGui.qApp.restoreOverrideCursor()
+            QtGui.QApplication.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
             with builtin.open(outfpath_stp, 'rb') as f_in:
