@@ -314,7 +314,7 @@ class _ArchScheduleTaskPanel:
         self.form.list.setRowCount(0)
 
     def importCSV(self):
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
         if filename:
             self.form.list.clearContents()
             import csv
@@ -333,7 +333,7 @@ class _ArchScheduleTaskPanel:
     def exportCSV(self):
         if self.obj:
             if self.obj.Result:
-                filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+                filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
                 if filename:
                     # the following line crashes, couldn't fnid out why
                     # self.obj.Result.exportFile(str(filename[0].encode("utf8")))

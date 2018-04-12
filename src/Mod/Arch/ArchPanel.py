@@ -1344,7 +1344,7 @@ class NestTaskPanel:
         self.form.ButtonStop.setEnabled(True)
         self.form.ButtonStart.setEnabled(False)
         self.form.ButtonPreview.setEnabled(False)
-        QtGui.qApp.processEvents()
+        QtGui.QApplication.processEvents()
         result = self.nester.run()
         self.form.progressBar.hide()
         self.form.ButtonStart.setEnabled(True)
