@@ -828,9 +828,9 @@ def survey(callback=False):
                                         FreeCAD.SurveyDialog.update(1,t)
                                 if FreeCAD.GuiUp and t:
                                     if showUnit:
-                                        QtGui.qApp.clipboard().setText(t)
+                                        QtGui.QApplication.clipboard().setText(t)
                                     else:
-                                        QtGui.qApp.clipboard().setText(str(u.Value))
+                                        QtGui.QApplication.clipboard().setText(str(u.Value))
                             else:
                                 # single element(s)
                                 for el in o.SubElementNames:
@@ -870,9 +870,9 @@ def survey(callback=False):
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + utf8_decode(t) + "\n")
                                     if FreeCAD.GuiUp and t:
                                         if showUnit:
-                                            QtGui.qApp.clipboard().setText(t)
+                                            QtGui.QApplication.clipboard().setText(t)
                                         else:
-                                            QtGui.qApp.clipboard().setText(str(u.Value))
+                                            QtGui.QApplication.clipboard().setText(str(u.Value))
 
                     FreeCAD.SurveyObserver.selection.extend(newsels)
             if hasattr(FreeCAD,"SurveyObserver"):
@@ -990,9 +990,9 @@ class SurveyTaskPanel:
             t = u.getUserPreferred()[0]
             t = t.encode("utf8")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
-                QtGui.qApp.clipboard().setText(t)
+                QtGui.QApplication.clipboard().setText(t)
             else:
-                QtGui.qApp.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
+                QtGui.QApplication.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
 
     def clipArea(self):
         if hasattr(FreeCAD,"SurveyObserver"):
@@ -1000,9 +1000,9 @@ class SurveyTaskPanel:
             t = u.getUserPreferred()[0]
             t = t.encode("utf8").replace("^2","²")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
-                QtGui.qApp.clipboard().setText(t)
+                QtGui.QApplication.clipboard().setText(t)
             else:
-                QtGui.qApp.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
+                QtGui.QApplication.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
 
     def newline(self,length=0,area=0):
         FreeCADGui.Selection.clearSelection()
@@ -1050,7 +1050,7 @@ class SurveyTaskPanel:
         import csv
         rows = self.tree.topLevelItemCount()
         if rows:
-            filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+            filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
             if filename:
                 with open(filename[0].encode("utf8"), 'wb') as csvfile:
                     csvfile = csv.writer(csvfile,delimiter="\t")
