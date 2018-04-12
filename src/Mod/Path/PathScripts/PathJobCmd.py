@@ -247,7 +247,7 @@ class CommandJobTemplateExport:
         job = self.GetJob()
         dialog = DlgJobTemplateExport(job)
         if dialog.exec_() == 1:
-            foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
+            foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
                     "Path - Job Template",
                     PathPreferences.filePath(),
                     "job_*.json")[0]
