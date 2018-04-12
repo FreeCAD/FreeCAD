@@ -350,7 +350,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
 }
 
 std::string ComplexGeoData::hashElementName(
-        const char *name, std::vector<App::StringIDRef> &sid) 
+        const char *name, std::vector<App::StringIDRef> &sid) const
 {
     if(!name)
         throw Base::ValueError("invalid element name");

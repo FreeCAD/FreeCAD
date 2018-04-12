@@ -174,9 +174,8 @@ PyObject* TopoShapePy::copy(PyObject *args)
 {
 #ifndef FC_NO_ELEMENT_MAP
     const char *op = 0;
-    PyObject *appendTag = Py_False;
     PyObject *pyHasher = 0;
-    if (!PyArg_ParseTuple(args, "|sOO!", &op,&appendTag,&App::StringHasherPy::Type,&pyHasher))
+    if (!PyArg_ParseTuple(args, "|sO!", &op,&App::StringHasherPy::Type,&pyHasher))
         return NULL;
     if(op && !op[0]) op = 0;
     App::StringHasherRef hasher;
@@ -184,7 +183,7 @@ PyObject* TopoShapePy::copy(PyObject *args)
         hasher = static_cast<App::StringHasherPy*>(pyHasher)->getStringHasherPtr();
     auto &self = *getTopoShapePtr();
     return Py::new_reference_to(shape2pyshape(
-                TopoShape(self.Tag,hasher).makECopy(self,op,PyObject_IsTrue(appendTag))));
+                TopoShape(self.Tag,hasher).makECopy(self,op)));
 #else
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -791,7 +790,7 @@ static PyObject *makeShape(const char *op,const TopoShape &shape, PyObject *args
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj,shapes);
-        return Py::new_reference_to(shape2pyshape(TopoShape().makEShape(op,shapes,0,true,tol)));
+        return Py::new_reference_to(shape2pyshape(TopoShape().makEShape(op,shapes,0,tol)));
     } PY_CATCH_OCC
 }
 
@@ -3091,8 +3090,7 @@ PyObject *TopoShapePy::mapSubElement(PyObject *args) {
     const char *op = 0;
     PyObject *sh;
     PyObject *mapAll = Py_True;
-    PyObject *appendTag = Py_False;
-    if (!PyArg_ParseTuple(args, "sO|sOO", &type,&sh,&op,&mapAll,&appendTag))
+    if (!PyArg_ParseTuple(args, "sO|sO", &type,&sh,&op,&mapAll))
         return 0;
     TopAbs_ShapeEnum shapeType;
     if(strcmp(type,"Edge")==0)
@@ -3117,7 +3115,7 @@ PyObject *TopoShapePy::mapSubElement(PyObject *args) {
         throw Py::TypeError("expect item type to be of Shape or sequence of Shapes");
     auto self = getTopoShapePtr();
     PY_TRY {
-        self->mapSubElement(shapeType,shapes,op,PyObject_IsTrue(mapAll),PyObject_IsTrue(appendTag));
+        self->mapSubElement(shapeType,shapes,op,PyObject_IsTrue(mapAll));
         Py_Return;
     }PY_CATCH_OCC
 }

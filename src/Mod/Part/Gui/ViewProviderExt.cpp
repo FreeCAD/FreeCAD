@@ -966,6 +966,10 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
             auto idx = Part::TopoShape::shapeTypeAndIndex(element);
             if(idx.first==type && idx.second > 0 && idx.second<=prop->getSize())
                 color = prop->getValues()[idx.second-1];
+            // TODO: We don't handle shapes that comes from a different type of
+            // source shape, e.g. face generated from an edge. In theory, we can
+            // search using ancestor shapes maps, e.g. TopExp::MapShapesAndAncestors.
+            // But I expect that to be computational intensive. Maybe in the future...
         }
     }
     return color;
@@ -1004,7 +1008,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
 
         auto type = shape.shapeType(v.second.c_str());
         auto typeName = shape.shapeName(type);
-        for(auto &names : shape.getElementNamesWithPrefix((sub+shape.modPostfix()).c_str())) {
+        for(auto &names : shape.getRelatedElements(sub.c_str())) {
             if(!boost::starts_with(names.second,typeName) || subMap.find(names.first)!=subMap.end())
                 continue;
             auto idx = atoi(names.second.c_str()+typeName.size());

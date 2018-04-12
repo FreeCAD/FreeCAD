@@ -581,7 +581,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 return new App::DocumentObjectExecReturn("Invalid spine");
             spineShapes.push_back(shape);
         }
-        spine = TopoShape(Spine.getValue()->getID()).makECompound(spineShapes,false,0,false);
+        spine = TopoShape(Spine.getValue()->getID()).makECompound(spineShapes,0,false);
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);

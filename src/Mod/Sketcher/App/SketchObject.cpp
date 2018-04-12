@@ -6912,12 +6912,12 @@ bool SketchExport::update() {
         res.makEWires(shapes,TOPOP_SKETCH_EXPORT);
         if(points.size()) {
             points.push_back(res);
-            res.makECompound(points,false);
+            res.makECompound(points);
         }
     }else if(points.empty())
         return false;
     else
-        res.makECompound(points,false,0,false);
+        res.makECompound(points,0,false);
     Shape.setValue(res);
     return true;
 }

@@ -230,7 +230,7 @@ void TopoCrossSection::slice(int idx, double d, std::vector<TopoShape> &wires) c
 TopoShape TopoCrossSection::slice(int idx, double d) const {
     std::vector<TopoShape> wires;
     slice(idx,d,wires);
-    return TopoShape().makECompound(wires,false,0,false);
+    return TopoShape().makECompound(wires,0,false);
 }
 
 void TopoCrossSection::sliceNonSolid(int idx, double d, 

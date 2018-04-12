@@ -217,7 +217,7 @@ void SubShapeBinder::update() {
     if(shapes.empty())
         return;
 
-    result.makECompound(shapes,true,TOPOP_SHAPEBINDER);
+    result.makECompound(shapes,TOPOP_SHAPEBINDER);
 
     bool fused = false;
     if(Fuse.getValue()) {

@@ -2777,7 +2777,7 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool che
         shape = makECopy();
     else
         shape = *this;
-    *this = shape.makETransform(rclTrf,0,false,checkScale);
+    *this = shape.makETransform(rclTrf,0,checkScale);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const

@@ -1236,7 +1236,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             name += std::to_string(i);
             const char *mapped = profileshape.getElementName(name.c_str(),true);
             if(mapped != name.c_str())
-                name = std::string(mapped) + '.' + name;
+                name = std::string(mapped);
 
             TopoShape hole = TopoShape(protoHole).makECopy(mapped);
             hole = hole.makETransform(localSketchTransformation);
@@ -1258,7 +1258,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
 
         // set the subtractive shape property for later usage in e.g. pattern
-        this->AddSubShape.setValue(TopoShape().makECompound(holes,false).makETransform(invTrsf));
+        this->AddSubShape.setValue(TopoShape().makECompound(holes).makETransform(invTrsf));
 
         remapSupportShape(base.getShape());
         this->Shape.setValue(base);

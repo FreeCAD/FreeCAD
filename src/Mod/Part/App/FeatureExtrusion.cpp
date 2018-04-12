@@ -257,7 +257,7 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source,
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }else
-            result.makECompound(drafts,true,0,false);
+            result.makECompound(drafts,0,false);
     }
     else {
         //Regular (non-tapered) extrusion!

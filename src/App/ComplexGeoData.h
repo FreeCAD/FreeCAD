@@ -238,7 +238,7 @@ public:
      * @param sid: store any output string ID references
      * @return the hashed element name;
      */
-    std::string hashElementName(const char *name, std::vector<App::StringIDRef> &sid);
+    std::string hashElementName(const char *name, std::vector<App::StringIDRef> &sid) const;
 
     /// Reverse hashElementName()
     std::string dehashElementName(const char *name) const;
@@ -278,7 +278,7 @@ public:
 
 public:
     /// String hasher for element name shortening
-    App::StringHasherRef Hasher;
+    mutable App::StringHasherRef Hasher;
 
 protected:
     /// from local to outside

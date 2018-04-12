@@ -211,41 +211,41 @@ static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) 
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
-        const TopoShape &other, const char *op, bool mapAll, bool appendTag) 
+        const TopoShape &other, const char *op, bool mapAll) 
 {
     if(!canMapElement(other)) 
         return;
     TopTools_IndexedMapOfShape shapeMap;
     TopExp::MapShapes(_Shape, type, shapeMap);
-    mapSubElement(type,shapeMap,other,op,mapAll,appendTag);
+    mapSubElement(type,shapeMap,other,op,mapAll);
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const TopoShape &other,
-        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll, bool appendTag)
+        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll)
 {
     if(!canMapElement(other)) 
         return;
     TopTools_IndexedMapOfShape shapeMap;
     if(otherMap.Extent())
         TopExp::MapShapes(_Shape, type, shapeMap);
-    mapSubElement(type,shapeMap,other,otherMap,op,mapAll,appendTag);
+    mapSubElement(type,shapeMap,other,otherMap,op,mapAll);
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, 
         const TopTools_IndexedMapOfShape &shapeMap, 
-        const TopoShape &other, const char *op, bool mapAll,bool appendTag)
+        const TopoShape &other, const char *op, bool mapAll)
 {
     if(!canMapElement(other)) 
         return;
     TopTools_IndexedMapOfShape otherMap;
     if(shapeMap.Extent())
         TopExp::MapShapes(other._Shape, type, otherMap);
-    mapSubElement(type,shapeMap,other,otherMap,op,mapAll,appendTag);
+    mapSubElement(type,shapeMap,other,otherMap,op,mapAll);
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, 
         const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other, 
-        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll, bool appendTag)
+        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll)
 {
     if(!canMapElement(other))
         return;
@@ -283,21 +283,21 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
                 if(sids.size() && !other.Hasher) 
                     throw Base::RuntimeError("missing hasher");
                 ss.str("");
-                processName(name,ss,sids,op,appendTag,other.Tag,true);
+                processName(name,ss,sids,op,other.Tag);
                 setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
             }
         }
     }
     if(mapAll) {
         if(type == TopAbs_FACE)
-            mapSubElement(TopAbs_EDGE,other,op,true,appendTag);
+            mapSubElement(TopAbs_EDGE,other,op,true);
         else if(type == TopAbs_EDGE)
-            mapSubElement(TopAbs_VERTEX,other,op,true,appendTag);
+            mapSubElement(TopAbs_VERTEX,other,op,true);
     }
 }
 
 void TopoShape::mapSubElementsTo(TopAbs_ShapeEnum type, 
-        std::vector<TopoShape> &shapes, const char *op, bool mapAll, bool appendTag) const
+        std::vector<TopoShape> &shapes, const char *op, bool mapAll) const
 {
     if(!canMapElement())
         return;
@@ -305,13 +305,13 @@ void TopoShape::mapSubElementsTo(TopAbs_ShapeEnum type,
     TopExp::MapShapes(_Shape, type, myMap);
     if(myMap.Extent()) {
         for(auto &shape : shapes)
-            shape.mapSubElement(type,*this,myMap,op,false,appendTag);
+            shape.mapSubElement(type,*this,myMap,op,false);
     }
     if(mapAll) {
         if(type == TopAbs_FACE)
-            mapSubElementsTo(TopAbs_EDGE,shapes,op,true,appendTag);
+            mapSubElementsTo(TopAbs_EDGE,shapes,op,true);
         else if(type == TopAbs_EDGE)
-            mapSubElementsTo(TopAbs_VERTEX,shapes,op,true,appendTag);
+            mapSubElementsTo(TopAbs_VERTEX,shapes,op,true);
     }
 }
 
@@ -385,30 +385,26 @@ std::string TopoShape::getElementMapVersion() const{
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
-        const char *op, bool mapAll, bool appendTag) 
+        const char *op, bool mapAll) 
 {
     TopTools_IndexedMapOfShape shapeMap;
     TopExp::MapShapes(_Shape, type, shapeMap);
     if(shapeMap.Extent()) {
         for(auto s : shapes) {
             if(!s.isNull()) 
-                mapSubElement(type,shapeMap,s,op,false,appendTag);
+                mapSubElement(type,shapeMap,s,op,false);
         }
     }
     if(mapAll) {
         if(type == TopAbs_FACE)
-            mapSubElement(TopAbs_EDGE,shapes,op,true,appendTag);
+            mapSubElement(TopAbs_EDGE,shapes,op,true);
         else if(type == TopAbs_EDGE)
-            mapSubElement(TopAbs_VERTEX,shapes,op,true,appendTag);
+            mapSubElement(TopAbs_VERTEX,shapes,op,true);
     }
 }
 
-TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, 
-        bool appendTag, const char *op, bool force)
+TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const char *op, bool force)
 {
-    if(appendTag && op==0)
-        op = TOPOP_COMPOUND;
-
     _Shape.Nullify();
     resetElementMap();
 
@@ -435,12 +431,12 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes,
     if(!count) 
         HANDLE_NULL_SHAPE;
     _Shape = comp;
-    mapSubElement(TopAbs_FACE,shapes,op,true,appendTag);
+    mapSubElement(TopAbs_FACE,shapes,op,true);
     return *this;
 }
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, 
-        const Base::Matrix4D &rclTrf, const char *op, bool appendTag, bool checkScale) 
+        const Base::Matrix4D &rclTrf, const char *op, bool checkScale) 
 {
     if(checkScale) {
         bool gtrsf = false;
@@ -459,7 +455,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape,
                 gtrsf = true;
         }
         if(gtrsf)
-            return makEGTransform(shape,rclTrf,op,appendTag);
+            return makEGTransform(shape,rclTrf,op);
     }
 
     resetElementMap();
@@ -468,16 +464,16 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape,
     BRepBuilderAPI_Transform mkTrf(shape.getShape(), convert(rclTrf), Standard_False);
     TopoShape tmp(shape);
     tmp._Shape = mkTrf.Shape();
-    if(op || (appendTag && shape.Tag && shape.Tag!=Tag)) {
+    if(op || (shape.Tag && shape.Tag!=Tag)) {
         _Shape = tmp._Shape;
-        mapSubElement(TopAbs_FACE,tmp,op,true,appendTag);
+        mapSubElement(TopAbs_FACE,tmp,op,true);
     } else
         *this = tmp;
     return *this;
 }
 
 TopoShape &TopoShape::makEGTransform(const TopoShape &shape, 
-        const Base::Matrix4D &rclTrf, const char *op, bool appendTag)
+        const Base::Matrix4D &rclTrf, const char *op)
 {
     if(!op) op = TOPOP_GTRANSFORM;
     gp_GTrsf mat;
@@ -496,11 +492,11 @@ TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
 
     // geometric transformation
     BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat);
-    return makEShape(mkTrf,shape,op,appendTag);
+    return makEShape(mkTrf,shape,op);
 }
 
 
-TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool appendTag)
+TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op)
 {
     _Shape.Nullify();
     resetElementMap();
@@ -510,9 +506,9 @@ TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool appe
 
     TopoShape tmp(shape);
     tmp._Shape = BRepBuilderAPI_Copy(shape.getShape()).Shape();
-    if(op || (appendTag && shape.Tag && shape.Tag!=Tag)) {
+    if(op || (shape.Tag && shape.Tag!=Tag)) {
         _Shape = tmp._Shape;
-        mapSubElement(TopAbs_FACE,tmp,op,true,appendTag);
+        mapSubElement(TopAbs_FACE,tmp,op,true);
     }else
         *this = tmp;
     return *this;
@@ -553,8 +549,7 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shap
 }
 
 TopoShape &TopoShape::makEPipeShell( const std::vector<TopoShape> &shapes,
-        const Standard_Boolean make_solid, const Standard_Boolean isFrenet, int transition,
-        const char *op, bool appendTag)
+        const Standard_Boolean make_solid, const Standard_Boolean isFrenet, int transition, const char *op)
 {
     if(!op) op = TOPOP_PIPE_SHELL;
     _Shape.Nullify();
@@ -592,11 +587,11 @@ TopoShape &TopoShape::makEPipeShell( const std::vector<TopoShape> &shapes,
 
     if (make_solid)	mkPipeShell.MakeSolid();
 
-    return makEShape(mkPipeShell,shapes,op,appendTag);
+    return makEShape(mkPipeShell,shapes,op);
 }
 
 TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
-        int orientation, const char *op, bool appendTag)
+        int orientation, const char *op)
 {
     if(!op) op = TOPOP_RULED_SURFACE;
     _Shape.Nullify();
@@ -728,7 +723,7 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
         ruledShape.Move(Loc);
 
     // Use empty mapper and let makEShape name the created surface with lower elements.
-    return makESHAPE(ruledShape,Mapper(),shapes,op,appendTag);
+    return makESHAPE(ruledShape,Mapper(),shapes,op);
 }
 
 struct MapperMaker: Part::TopoShape::Mapper {
@@ -787,17 +782,17 @@ struct MapperThruSections: MapperMaker {
 };
 
 TopoShape &TopoShape::makEShape(BRepOffsetAPI_ThruSections &mk, const TopoShape &source,
-        const char *op, bool appendTag)
+        const char *op)
 {
     if(!op) op = TOPOP_THRU_SECTIONS;
-    return makEShape(mk,std::vector<TopoShape>(1,source),op,appendTag);
+    return makEShape(mk,std::vector<TopoShape>(1,source),op);
 }
 
 TopoShape &TopoShape::makEShape(BRepOffsetAPI_ThruSections &mk, const std::vector<TopoShape> &sources,
-        const char *op, bool appendTag)
+        const char *op)
 {
     if(!op) op = TOPOP_THRU_SECTIONS;
-    return makESHAPE(mk.Shape(),MapperThruSections(mk,sources),sources,op,appendTag);
+    return makESHAPE(mk.Shape(),MapperThruSections(mk,sources),sources,op);
 }
 
 TopoShape &TopoShape::makELoft(const std::vector<TopoShape> &shapes,
@@ -805,7 +800,7 @@ TopoShape &TopoShape::makELoft(const std::vector<TopoShape> &shapes,
                                Standard_Boolean isRuled,
                                Standard_Boolean isClosed,
                                Standard_Integer maxDegree,
-                               const char *op, bool appendTag)
+                               const char *op)
 {
     if(!op) op = TOPOP_LOFT;
     _Shape.Nullify();
@@ -855,21 +850,21 @@ TopoShape &TopoShape::makELoft(const std::vector<TopoShape> &shapes,
     aGenerator.CheckCompatibility (anIsCheck);   // use BRepFill_CompatibleWires on profiles. force #edges, orientation, "origin" to match.
 
     aGenerator.Build();
-    return makESHAPE(aGenerator.Shape(),MapperThruSections(aGenerator,profiles),shapes,op,appendTag);
+    return makESHAPE(aGenerator.Shape(),MapperThruSections(aGenerator,profiles),shapes,op);
 }
 
-TopoShape &TopoShape::makEPrism(const TopoShape &base, const gp_Vec& vec, const char *op, bool appendTag) {
+TopoShape &TopoShape::makEPrism(const TopoShape &base, const gp_Vec& vec, const char *op) {
     if(!op) op = TOPOP_EXTRUDE;
     _Shape.Nullify();
     resetElementMap();
     if(base.isNull()) 
         HANDLE_NULL_SHAPE;
     BRepPrimAPI_MakePrism mkPrism(base.getShape(), vec);
-    return makEShape(mkPrism,base,op,appendTag);
+    return makEShape(mkPrism,base,op);
 }
 
 TopoShape &TopoShape::makERevolve(const TopoShape &_base, const gp_Ax1& axis, 
-        double d, const char *face_maker, const char *op, bool appendTag)
+        double d, const char *face_maker, const char *op)
 {
     if(!op) op = TOPOP_REVOLVE;
     _Shape.Nullify();
@@ -885,10 +880,10 @@ TopoShape &TopoShape::makERevolve(const TopoShape &_base, const gp_Ax1& axis,
         base = base.makEFace(0,face_maker);
     }
     BRepPrimAPI_MakeRevol mkRevol(base.getShape(), axis,d);
-    return makEShape(mkRevol,base,op,appendTag);
+    return makEShape(mkRevol,base,op);
 }
 
-TopoShape &TopoShape::makEMirror(const TopoShape &shape, const gp_Ax2 &ax2, const char *op, bool appendTag) {
+TopoShape &TopoShape::makEMirror(const TopoShape &shape, const gp_Ax2 &ax2, const char *op) {
     if(!op) op = TOPOP_MIRROR;
     _Shape.Nullify();
     resetElementMap();
@@ -902,7 +897,7 @@ TopoShape &TopoShape::makEMirror(const TopoShape &shape, const gp_Ax2 &ax2, cons
     gp_Trsf placement = loc.Transformation();
     mat = placement * mat;
     BRepBuilderAPI_Transform mkTrf(shape.getShape(), mat);
-    return makEShape(mkTrf,shape,op,appendTag);
+    return makEShape(mkTrf,shape,op);
 }
 
 struct MapperSewing: Part::TopoShape::Mapper {
@@ -923,22 +918,22 @@ struct MapperSewing: Part::TopoShape::Mapper {
 };
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_Sewing &mk, const std::vector<TopoShape> &shapes,
-        const char *op, bool appendTag)
+        const char *op)
 {
     if(!op) op = TOPOP_SEWING;
-    return makESHAPE(mk.SewedShape(),MapperSewing(mk),shapes,op,appendTag);
+    return makESHAPE(mk.SewedShape(),MapperSewing(mk),shapes,op);
 }
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_Sewing &mkShape,
-            const TopoShape &source, const char *op, bool appendTag)
+            const TopoShape &source, const char *op)
 {
     if(!op) op = TOPOP_SEWING;
-    return makEShape(mkShape,std::vector<TopoShape>(1,source),op,appendTag);
+    return makEShape(mkShape,std::vector<TopoShape>(1,source),op);
 }
 
 TopoShape &TopoShape::makEOffset(const TopoShape &shape, 
         double offset, double tol, bool intersection, bool selfInter, 
-        short offsetMode, short join, bool fill, const char *op, bool appendTag)
+        short offsetMode, short join, bool fill, const char *op)
 {
     if(!op) op = TOPOP_OFFSET;
     _Shape.Nullify();
@@ -961,7 +956,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
         Standard_Failure::Raise("BRepOffsetAPI_MakeOffsetShape not done");
 
     TopoShape res(Tag,Hasher);
-    res.makEShape(mkOffset,shape,op,appendTag);
+    res.makEShape(mkOffset,shape,op);
     if(shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
         try {
             res = res.makESolid();
@@ -1042,7 +1037,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
     }
 
     TopoShape perimeterCompound(Tag,Hasher);
-    perimeterCompound.makECompound(shapes,false,op);
+    perimeterCompound.makECompound(shapes,op);
 
     //still had to sew. not using the passed in parameter for sew.
     //Sew has it's own default tolerance. Opinions?
@@ -1071,12 +1066,12 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
     shapes.push_back(shape);
     shapes.push_back(res);
     shapes.push_back(perimeterCompound);
-    *this = TopoShape(Tag,Hasher).makESHAPE(outputShape,MapperSewing(sewTool),shapes,op,false);
+    *this = TopoShape(Tag,Hasher).makESHAPE(outputShape,MapperSewing(sewTool),shapes,op);
     return *this;
 }
 
 TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short joinType, 
-        bool fill, bool allowOpenResult, bool intersection, const char *op, bool appendTag)
+        bool fill, bool allowOpenResult, bool intersection, const char *op)
 {
     if(!op) op = TOPOP_OFFSET2D;
     _Shape.Nullify();
@@ -1117,7 +1112,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                 if(s.getShape().ShapeType() == TopAbs_COMPOUND){
                     //recursively process subcompounds
                     shapesToReturn.push_back(TopoShape(Tag,Hasher).makEOffset2D(
-                                s, offset, joinType, fill, allowOpenResult, intersection, op, appendTag));
+                                s, offset, joinType, fill, allowOpenResult, intersection, op));
                     forceOutputCompound = true;
                 } else {
                     shapesToProcess.push_back(s);
@@ -1209,12 +1204,12 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
             }
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
-            offsetShape = shape.makEShape(mkOffset,op,appendTag).makECopy();
+            offsetShape = shape.makEShape(mkOffset,op).makECopy();
 
             if(offsetShape.isNull())
                 throw Base::Exception("makeOffset2D: result of offsetting is null!");
         } else {
-            offsetShape = TopoShape(Tag,Hasher).makECompound(sourceWires,false,0,false);
+            offsetShape = TopoShape(Tag,Hasher).makECompound(sourceWires,0,false);
         }
 
         std::vector<TopoShape> offsetWires;
@@ -1339,14 +1334,12 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
             expandCompound(TopoShape(Tag,Hasher).makEFace(wiresForMakingFaces,op),shapesToReturn);
     }
 
-    return makECompound(shapesToReturn,false,op,forceOutputCompound);
+    return makECompound(shapesToReturn,op,forceOutputCompound);
 }
 
 TopoShape &TopoShape::makEThickSolid(const TopoShape &shape, 
-        const std::vector<TopoShape> &faces,
-        double offset, double tol, bool intersection,
-        bool selfInter, short offsetMode, short join,
-        const char *op, bool appendTag)
+        const std::vector<TopoShape> &faces, double offset, double tol, bool intersection,
+        bool selfInter, short offsetMode, short join, const char *op)
 {
     if(!op) op = TOPOP_THICKEN;
 
@@ -1386,7 +1379,7 @@ TopoShape &TopoShape::makEThickSolid(const TopoShape &shape,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
 #endif
-    return makEShape(mkThick,shape,op,appendTag);
+    return makEShape(mkThick,shape,op);
 }
 
 TopoShape &TopoShape::makEWires(const std::vector<TopoShape> &shapes, const char *op, bool fix, double tol) {
@@ -1394,17 +1387,7 @@ TopoShape &TopoShape::makEWires(const std::vector<TopoShape> &shapes, const char
         HANDLE_NULL_SHAPE;
     if(shapes.size() == 1)
         return makEWires(shapes[0],op);
-    bool appendTag = false;
-    long tag = 0;
-    for(auto &s : shapes) {
-        if(!s.Tag || s.Tag==tag) continue;
-        if(tag) {
-            appendTag = true;
-            break;
-        }
-        tag = s.Tag;
-    }
-    return makEWires(TopoShape(Tag).makECompound(shapes,appendTag),op,fix,tol);
+    return makEWires(TopoShape(Tag).makECompound(shapes),op,fix,tol);
 }
 
 TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol) 
@@ -1445,7 +1428,7 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
         wires.push_back(TopoShape(Tag,Hasher,wire));
     }
     shape.mapSubElementsTo(TopAbs_EDGE,wires);
-    return makECompound(wires,false,op,false);
+    return makECompound(wires,op,false);
 #else
     (void)fix;
     std::vector<TopoShape> edges;
@@ -1499,7 +1482,7 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
         aFix.FixClosed();
         wires.back().setShape(aFix.Wire(),false);
     }
-    return makECompound(wires,false,0,false);
+    return makECompound(wires,0,false);
 #endif
 }
 
@@ -1557,13 +1540,13 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
 }
 
 TopoShape &TopoShape::makEShape(const char *maker, 
-        const TopoShape &shape, const char *op, bool appendTag, double tol)
+        const TopoShape &shape, const char *op, double tol)
 {
-    return makEShape(maker,std::vector<TopoShape>(1,shape),op,appendTag,tol);
+    return makEShape(maker,std::vector<TopoShape>(1,shape),op,tol);
 }
 
 TopoShape &TopoShape::makEShape(const char *maker, 
-        const std::vector<TopoShape> &_shapes, const char *op, bool appendTag, double tol)
+        const std::vector<TopoShape> &_shapes, const char *op, double tol)
 {
     if(!maker)
         Standard_Failure::Raise("no maker");
@@ -1580,11 +1563,11 @@ TopoShape &TopoShape::makEShape(const char *maker,
         HANDLE_NULL_SHAPE;
 
     if(strcmp(maker,TOPOP_COMPOUND)==0) {
-        return makECompound(shapes,appendTag,op,false);
+        return makECompound(shapes,op,false);
     } else if(strcmp(maker,TOPOP_REFINE)==0) {
         for(auto &s : shapes)
             s = s.makERefine(op);
-        return makECompound(shapes,appendTag,op,false);
+        return makECompound(shapes,op,false);
     } else if(boost::starts_with(maker,TOPOP_FACE)) {
         std::string prefix(TOPOP_FACE);
         prefix += '.';
@@ -1603,7 +1586,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 builder.Add(Comp, s.getShape());
         }
         _Shape = Comp;
-        mapSubElement(TopAbs_FACE,shapes,op,true,appendTag);
+        mapSubElement(TopAbs_FACE,shapes,op);
         return *this;
     }
 
@@ -1620,7 +1603,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
         if (shapes[0].getShape().ShapeType() != TopAbs_WIRE)
             Standard_Failure::Raise("Spine shape is not a wire");
         BRepOffsetAPI_MakePipe mkPipe(TopoDS::Wire(shapes[0].getShape()), shapes[1].getShape());
-        return makEShape(mkPipe,shapes,op,appendTag);
+        return makEShape(mkPipe,shapes,op);
     }
 
     if(strcmp(maker,TOPOP_SHELL)==0) {
@@ -1630,7 +1613,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
         for(auto &s : shapes)
             builder.Add(shell,s.getShape());
         _Shape = shell;
-        mapSubElement(TopAbs_FACE,shapes,op,true,appendTag);
+        mapSubElement(TopAbs_FACE,shapes,op,true);
         BRepCheck_Analyzer check(shell);
         if (!check.IsValid()) {
             ShapeUpgrade_ShellSewing sewShell;
@@ -1673,15 +1656,15 @@ TopoShape &TopoShape::makEShape(const char *maker,
     if (tol > 0.0)
         mk->SetFuzzyValue(tol);
     mk->Build();
-    return makEShape(*mk,shapes,op,appendTag);
+    return makEShape(*mk,shapes,op);
 }
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_MakeShape &mkShape, 
-        const TopoShape &source, const char *op, bool appendTag) 
+        const TopoShape &source, const char *op) 
 {
     std::vector<TopoShape> sources;
     sources.emplace_back(source);
-    return makEShape(mkShape,sources,op,appendTag);
+    return makEShape(mkShape,sources,op);
 }
 
 struct ShapeInfo {
@@ -1691,7 +1674,7 @@ struct ShapeInfo {
     TopAbs_ShapeEnum type;
 
     ShapeInfo(TopAbs_ShapeEnum type, TopoShape &shape, 
-            const std::vector<TopoShape> &others, const char *op, bool appendTag) 
+            const std::vector<TopoShape> &others) 
     {
         this->type = type;
         shapeMap.Clear();
@@ -1702,19 +1685,20 @@ struct ShapeInfo {
         for(auto &other : others) {
             auto &otherMap = otherMaps[i++];
             TopExp::MapShapes(other.getShape(), type, otherMap);
-            shape.mapSubElement(type,shapeMap,other,otherMap,op,false,appendTag);
+            shape.mapSubElement(type,shapeMap,other,otherMap,0,false);
         }
         shapetype = TopoShape::shapeName(type).c_str();
     }
 };
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_MakeShape &mkShape, 
-        const std::vector<TopoShape> &shapes, const char *op, bool appendTag)
+        const std::vector<TopoShape> &shapes, const char *op)
 {
-    return makESHAPE(mkShape.Shape(),MapperMaker(mkShape),shapes,op,appendTag);
+    return makESHAPE(mkShape.Shape(),MapperMaker(mkShape),shapes,op);
 }
 
-static size_t findTag(const std::string &name, long *tag=0, size_t *len=0) {
+static size_t findTag(const std::string &name, 
+        long *tag=0, size_t *len=0, std::string *postfix=0) {
     size_t pos = name.rfind(TopoShape::tagPostfix());
     if(pos==std::string::npos)
         return pos;
@@ -1730,13 +1714,14 @@ static size_t findTag(const std::string &name, long *tag=0, size_t *len=0) {
         *tag = _tag;
     if(len)
         *len = (size_t)_len;
+    if(postfix)
+        *postfix=name.c_str()+pos;
     return pos;
 }
 
 // try to hash element name while preserving the source tag
 void TopoShape::processName(std::string &name, std::ostringstream &ss, 
-        std::vector<App::StringIDRef> &sids, const char* op, bool appendTag, 
-        long tag, bool preserveTag)
+        std::vector<App::StringIDRef> &sids, const char* op, long tag) const
 {
     if(op) {
         if(ss.tellp())
@@ -1744,20 +1729,27 @@ void TopoShape::processName(std::string &name, std::ostringstream &ss,
         ss << op;
     }
     long inputTag = 0;
-    if(appendTag && tag && tag!=Tag)
-        inputTag = tag;
-    else if(preserveTag) {
-        if(!ss.tellp()) {
+    if(!ss.tellp()) {
+        if(!tag || tag==Tag) {
             ss << name;
             name.clear();
             return;
         }
-        findTag(name.c_str(),&inputTag);
+        findTag(name,&inputTag);
+        if(inputTag == tag) {
+            ss << name;
+            name.clear();
+            return;
+        }
+    }else if(!tag || tag==Tag) {
+        findTag(name,&inputTag);
+        if(inputTag)
+            tag = inputTag;
     }
     if(Hasher)
         name = hashElementName(name.c_str(),sids);
-    if(inputTag)
-        ss << tagPostfix() << inputTag << ':' << name.size();
+    if(tag)
+        ss << tagPostfix() << tag << ':' << name.size();
 }
 
 // Extract tag from a hashed element name and de-hash the name
@@ -1774,13 +1766,16 @@ long TopoShape::getElementHistory(const std::string &name,
     std::string &ret = original?*original:tmp;
     bool first = true;
     while(1) {
-        if(!len || len>=pos) {
+        if(!len || len>pos) {
             FC_WARN("invalid name length " << name);
             return 0;
         }
         if(first) {
             first = false;
-            ret = name.substr(0,len);
+            size_t offset = 0;
+            if(boost::starts_with(name,elementMapPrefix()))
+                offset = elementMapPrefix().size();
+            ret = name.substr(offset,len);
         }else
             ret = ret.substr(0,len);
         if(!Hasher) 
@@ -1816,7 +1811,7 @@ struct NameInfo {
 };
 
 TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper, 
-        const std::vector<TopoShape> &shapes, const char *op, bool appendTag)
+        const std::vector<TopoShape> &shapes, const char *op)
 {
     resetElementMap();
     _Shape = shape;
@@ -1830,10 +1825,9 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     std::string _op = op;
     _op += '_';
 
-    const char *mapOp = appendTag?op:0;
-    ShapeInfo vinfo(TopAbs_VERTEX,*this,shapes,mapOp,appendTag);
-    ShapeInfo einfo(TopAbs_EDGE,*this,shapes,mapOp,appendTag);
-    ShapeInfo finfo(TopAbs_FACE,*this,shapes,mapOp,appendTag);
+    ShapeInfo vinfo(TopAbs_VERTEX,*this,shapes);
+    ShapeInfo einfo(TopAbs_EDGE,*this,shapes);
+    ShapeInfo finfo(TopAbs_FACE,*this,shapes);
 
     std::array<ShapeInfo*,3> infos = {&vinfo,&einfo,&finfo};
 
@@ -1985,7 +1979,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss << ',';
                 auto &other_key = it->first;
                 auto &other_info = it->second;
-                if(appendTag && other_key.tag && other_key.tag!=Tag)
+                if(other_key.tag && other_key.tag!=Tag)
                     ss << other_key.tag << '_';
                 if(other_key.name[0] == ' ')
                     ss << other_key.name.c_str()+1;
@@ -2019,7 +2013,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         if(abs(first_info.index)>1)
            ss << abs(first_info.index);
         ss << postfix;
-        processName(first_name,ss,sids,op,appendTag,first_key.tag,true);
+        processName(first_name,ss,sids,op,first_key.tag);
         setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
     }
 
@@ -2078,7 +2072,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss << upperPostfix();
                 if(info.index>1)
                     ss << info.index;
-                processName(newName,ss,sids,op,appendTag,0,true);
+                processName(newName,ss,sids,op);
                 setElementName(v.first.c_str(),newName.c_str(),ss.str().c_str(),&sids);
             }
         }
@@ -2146,7 +2140,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             }
             if(!first)
                 ss << ')';
-            processName(newName,ss,sids,op,appendTag,0,true);
+            processName(newName,ss,sids,op);
             setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
         }
     }
@@ -2206,11 +2200,11 @@ TopoShape &TopoShape::makESlice(const TopoShape &shape,
     int i=0;
     for(auto &dd : d) 
         cs.slice(++i,dd,wires);
-    return makECompound(wires,false,op,false);
+    return makECompound(wires,op,false);
 }
 
 TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
-        const TopoShape &surface, const char *op, bool appendTag)
+        const TopoShape &surface, const char *op)
 {
     if(!op) op = TOPOP_FILLED_FACE;
     BRepOffsetAPI_MakeFilling maker;
@@ -2240,16 +2234,16 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
     }
     if (!count) 
         Standard_Failure::Raise("Failed to created face with no constraints");
-    return makEShape(maker,_shapes,op,appendTag);
+    return makEShape(maker,_shapes,op);
 }
 
-TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op, bool appendTag) {
-    return makESolid(TopoShape().makECompound(shapes,appendTag),op,appendTag);
+TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op) {
+    return makESolid(TopoShape().makECompound(shapes),op);
 }
 
-TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op, bool appendTag) {
-    if(!op && appendTag) op = TOPOP_SOLID;
+TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
     _Shape.Nullify();
+    if(!op) op = TOPOP_SOLID;
     resetElementMap();
 
     if(shape.isNull())
@@ -2278,11 +2272,11 @@ TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op, bool app
         if (count == 0)//no shells?
             Standard_Failure::Raise("No shells or compsolids found in shape");
 
-        makEShape(mkSolid,shape,op,appendTag);
+        makEShape(mkSolid,shape,op);
         BRepLib::OrientClosedSolid(TopoDS::Solid(_Shape));
     } else if (count == 1) {
         BRepBuilderAPI_MakeSolid mkSolid(compsolid);
-        makEShape(mkSolid,shape,op,appendTag);
+        makEShape(mkSolid,shape,op);
     } else { // if (count > 1)
         Standard_Failure::Raise("Only one compsolid can be accepted. "
                 "Provided shape has more than one compsolid.");
@@ -2330,7 +2324,7 @@ TopoShape &TopoShape::removEShape(const TopoShape &shape, const std::vector<Topo
 }
 
 TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoShape> &edges,
-        double radius1, double radius2, const char *op, bool appendTag)
+        double radius1, double radius2, const char *op)
 {
     if(!op) op = TOPOP_FILLET;
     resetElementMap();
@@ -2352,11 +2346,11 @@ TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoS
             Standard_Failure::Raise("edge does not belong to the shape");
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
-    return makEShape(mkFillet,shape,op,appendTag);
+    return makEShape(mkFillet,shape,op);
 }
 
 TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges,
-        double radius1, double radius2, const char *op, bool appendTag)
+        double radius1, double radius2, const char *op)
 {
     if(!op) op = TOPOP_FILLET;
     resetElementMap();
@@ -2382,11 +2376,11 @@ TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<Topo
         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
         mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
     }
-    return makEShape(mkChamfer,shape,op,appendTag);
+    return makEShape(mkChamfer,shape,op);
 }
 
 TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
-        std::vector<std::vector<TopoShape> > &modifies, double tol, const char *op, bool appendTag)
+        std::vector<std::vector<TopoShape> > &modifies, double tol, const char *op)
 {
     if(!op) op = TOPOP_GENERAL_FUSE;
     resetElementMap();
@@ -2418,7 +2412,7 @@ TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
     mkGFA.Build();
     if (!mkGFA.IsDone())
         Standard_Failure::Raise("GeneralFuse failed");
-    makEShape(mkGFA,shapes,op,appendTag);
+    makEShape(mkGFA,shapes,op);
     modifies.resize(shapes.size());
     int i=0;
     for(auto &s : shapes) {
@@ -2434,35 +2428,35 @@ TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
 }
 
 TopoShape &TopoShape::makEFuse(const std::vector<TopoShape> &shapes, 
-        const char *op, bool appendTag, double tol)
+        const char *op, double tol)
 {
-    return makEShape(TOPOP_FUSE,shapes,op,appendTag,tol);
+    return makEShape(TOPOP_FUSE,shapes,op,tol);
 }
 
 TopoShape &TopoShape::makECut(const std::vector<TopoShape> &shapes, 
-        const char *op, bool appendTag, double tol)
+        const char *op, double tol)
 {
-    return makEShape(TOPOP_CUT,shapes,op,appendTag,tol);
+    return makEShape(TOPOP_CUT,shapes,op,tol);
 }
 
 
 TopoShape &TopoShape::makEShape(BRepOffsetAPI_MakePipeShell &mkShape, 
-        const std::vector<TopoShape> &source, const char *op, bool appendTag)
+        const std::vector<TopoShape> &source, const char *op)
 {
     if(!op) op = TOPOP_PIPE_SHELL;
-    return makEShape(mkShape,source,op,appendTag);
+    return makEShape(mkShape,source,op);
 }
 
 TopoShape &TopoShape::makEShape(BRepFeat_MakePrism &mkShape, 
-        const TopoShape &source, const char *op, bool appendTag) 
+        const TopoShape &source, const char *op) 
 {
     if(!op) op = TOPOP_PRISM;
-    return makEShape(mkShape,source,op,appendTag);
+    return makEShape(mkShape,source,op);
 }
 
 TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoShape> &_faces,
         const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
-        bool retry, const char *op, bool appendTag)
+        bool retry, const char *op)
 {
     if(!op) op = TOPOP_DRAFT;
 
@@ -2497,15 +2491,72 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
     }while(retry && !done);
 
     mkDraft.Build();
-    return makEShape(mkDraft,shape,op,appendTag);
+    return makEShape(mkDraft,shape,op);
 }
 
-std::vector<std::pair<std::string,std::string> > TopoShape::getRelatedElements(const std::string &name, bool both) const {
-    auto res = getElementNamesWithPrefix((name+Part::TopoShape::modPostfix()).c_str());
-    if(res.empty() && both) {
-        auto pos = name.rfind(Part::TopoShape::modPostfix());
-        if(pos!=std::string::npos)
-            res = getElementNamesWithPrefix(name.substr(0,pos).c_str());
+std::vector<std::pair<std::string,std::string> > 
+TopoShape::getRelatedElements(const char *_name, bool both) const {
+    std::vector<std::pair<std::string,std::string> > ret;
+    std::string name;
+    if(!boost::starts_with(_name,elementMapPrefix()))
+        name = _name;
+    else {
+        _name += elementMapPrefix().size();
+        auto dot = strchr(_name,'.');
+        if(dot)
+            name = std::string(_name,dot-_name);
+        else
+            name = _name;
     }
-    return res;
+    long tag;
+    size_t len;
+    std::string postfix;
+    // extract tag and source element name length
+    if(findTag(name,&tag,&len,&postfix)==std::string::npos)
+        return ret;
+
+    // recover the original element name
+    std::string original = name.substr(0,len);
+
+    std::ostringstream ss;
+
+    // First, search the name in the previous modeling step.
+    auto dehashed = dehashElementName(original.c_str());
+    if(findTag(name)==std::string::npos) {
+        ss << dehashed << tagPostfix() << tag << ':' << dehashed.size();
+        dehashed = ss.str();
+    }
+    auto element = getElementName(dehashed.c_str(),2);
+    if(element!=dehashed.c_str()) {
+        ret.emplace_back(dehashed,element);
+        return ret;
+    }
+
+    // Then, search any element that is modified from the given name
+    ss.str("");
+    ss << modPostfix();
+    std::string modName(name);
+    std::vector<App::StringIDRef> sids;
+    processName(modName,ss,sids);
+    modName += ss.str();
+    bool found = false;
+    if(findTag(modName,&tag,&len)!=std::string::npos) {
+        modName = modName.substr(0,len+modPostfix().size());
+        for(auto &v : getElementNamesWithPrefix(modName.c_str())) {
+            if(boost::ends_with(v.first,postfix)) {
+                found = true;
+                ret.push_back(v);
+            }
+        }
+    }
+
+    // Finally, search any element that are modified from the same source of
+    // the given name
+    if(!found && both) {
+        for(auto &v : getElementNamesWithPrefix((original+Part::TopoShape::modPostfix()).c_str())) {
+            if(boost::ends_with(v.first,postfix))
+                ret.push_back(v);
+        }
+    }
+    return ret;
 }

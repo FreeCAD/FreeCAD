@@ -606,7 +606,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 elements.insert(e[i]);
                 continue;
             }
-            auto ref = baseShape.newElementName(sub.first.c_str());
+            auto &ref = sub.first;
             Part::TopoShape edge;
             try {
                 edge = baseShape.getSubShape(ref.c_str());
@@ -617,14 +617,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             }
             FC_LOG("missing edge link: " << base->getNameInDocument() << "." << ref);
             
-            auto names = baseShape.getElementNamesWithPrefix((ref+edge.modPostfix()).c_str());
-            
-            if(names.empty()) {
-                auto pos = ref.rfind(edge.modPostfix());
-                if(pos!=std::string::npos && pos!=0)
-                    names = baseShape.getElementNamesWithPrefix(ref.substr(0,pos).c_str());
-            }
-            for(auto &name : names) {
+            for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
                 int idx=0;
                 sscanf(name.second.c_str(),"Edge%d",&idx);
                 if(idx>0) {
@@ -1008,6 +1001,7 @@ bool DlgFilletEdges::accept()
 
     QByteArray to = name.toLatin1();
     QByteArray from = shape.toLatin1();
+    Gui::Command::copyVisual(to, "ShapeColor", from);
     Gui::Command::copyVisual(to, "LineColor", from);
     Gui::Command::copyVisual(to, "PointColor", from);
     return true;

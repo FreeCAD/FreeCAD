@@ -174,7 +174,7 @@ public:
                 elements.erase(res.first);
                 res.first = elements.end();
 
-                for(auto &v : shape.getRelatedElements(sub))
+                for(auto &v : shape.getRelatedElements(sub.c_str()))
                     subs.push_back(v.first.size()?v.first:v.second);
             }
             if(n) {
