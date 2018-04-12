@@ -187,6 +187,9 @@ def decodeName(name):
         except UnicodeDecodeError:
                 print("dxf: error: couldn't determine character encoding")
                 decodedName = name
+    except AttributeError:
+        # this is python3 (nothing to do)
+        decodedName = name
     return decodedName
 
 def deformat(text):
