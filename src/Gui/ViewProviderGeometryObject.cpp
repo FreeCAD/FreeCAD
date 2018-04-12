@@ -124,7 +124,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         const App::Color& c = ShapeColor.getValue();
         pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != ShapeMaterial.getValue().diffuseColor)
-        ShapeMaterial.setDiffuseColor(c);
+            ShapeMaterial.setDiffuseColor(c);
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeMaterial.getValue();
@@ -139,16 +139,16 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         const App::Material& Mat = ShapeMaterial.getValue();
         long value = (long)(100*Mat.transparency);
         if (value != Transparency.getValue())
-        Transparency.setValue(value);
+            Transparency.setValue(value);
         const App::Color& color = Mat.diffuseColor;
-        if (color != ShapeColor.getValue())
-        ShapeColor.setValue(Mat.diffuseColor);
         pcShapeMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
         pcShapeMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
         pcShapeMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
         pcShapeMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
         pcShapeMaterial->shininess.setValue(Mat.shininess);
         pcShapeMaterial->transparency.setValue(Mat.transparency);
+        if (color != ShapeColor.getValue())
+            ShapeColor.setValue(Mat.diffuseColor);
     }
     else if (prop == &BoundingBox || prop == &SelectionStyle) {
         applyBoundColor();

@@ -358,7 +358,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     if (prop == &MappedColors) {
         if(!prop->testStatus(App::Property::User3))
             updateColors(feature);
-        ViewProviderGeometryObject::onChanged(prop);
         return;
     }
     if (prop == &Deviation) {
@@ -384,14 +383,20 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
-        LineColorArray.setValue(LineColor.getValue());
+        if(MapLineColor.getValue())
+            updateColors(feature);
+        else
+            LineColorArray.setValue(LineColor.getValue());
     }
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
-        PointColorArray.setValue(PointColor.getValue());
+        if(MapPointColor.getValue())
+            updateColors(feature);
+        else 
+            PointColorArray.setValue(PointColor.getValue());
     }
     else if (prop == &LineMaterial) {
         const App::Material& Mat = LineMaterial.getValue();
@@ -423,11 +428,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
-    }
-    else if (prop == &ShapeMaterial || prop == &ShapeColor) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
+    }else if(prop == &ShapeColor) {
         ViewProviderGeometryObject::onChanged(prop);
-        DiffuseColor.setValue(ShapeColor.getValue());
+        if(MapFaceColor.getValue())
+            updateColors(feature);
+        else
+            DiffuseColor.setValue(ShapeColor.getValue());
+        return;
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeMaterial.getValue();
