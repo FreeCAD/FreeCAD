@@ -1614,7 +1614,7 @@ class Polygon(Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.radiusValue.setFocus()
-        msg(translate("draft", "Pick radius:")"\n")
+        msg(translate("draft", "Pick radius:")+"\n")
 
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
