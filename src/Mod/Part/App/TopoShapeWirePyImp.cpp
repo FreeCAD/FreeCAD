@@ -202,7 +202,7 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
         shapes.push_back(self);
         shapes.push_back(shape);
         TopoShape tmp(self.Tag,self.Hasher,mkWire.Wire());
-        tmp.mapSubElement(TopAbs_EDGE,shapes);
+        tmp.mapSubElement(shapes);
         self = tmp;
 #else
         getTopoShapePtr()->setShape(mkWire.Wire());
@@ -652,7 +652,7 @@ Py::List TopoShapeWirePy::getOrderedEdges(void) const
         xp.Next();
     }
 #ifndef FC_NO_ELEMENT_MAP
-    getTopoShapePtr()->mapSubElementsTo(TopAbs_EDGE,shapes);
+    getTopoShapePtr()->mapSubElementsTo(shapes);
 #endif
     for(auto &s : shapes) 
         ret.append(shape2pyshape(s));
@@ -682,7 +682,7 @@ Py::List TopoShapeWirePy::getOrderedVertexes(void) const
     }
 
 #ifndef FC_NO_ELEMENT_MAP
-    getTopoShapePtr()->mapSubElementsTo(TopAbs_VERTEX,shapes);
+    getTopoShapePtr()->mapSubElementsTo(shapes);
 #endif
     for(auto &s : shapes) 
         ret.append(shape2pyshape(s));

@@ -1451,7 +1451,7 @@ PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
             }
         }
 #ifndef FC_NO_ELEMENT_MAP
-        getTopoShapePtr()->mapSubElementsTo(TopAbs_FACE,shapes);
+        getTopoShapePtr()->mapSubElementsTo(shapes);
 #endif
         for(auto &s : shapes)
             list.append(shape2pyshape(s));
@@ -3086,36 +3086,12 @@ PyObject *TopoShapePy::getElementHistory(PyObject *args) {
 }
 
 PyObject *TopoShapePy::mapSubElement(PyObject *args) {
-    const char *type;
     const char *op = 0;
     PyObject *sh;
-    PyObject *mapAll = Py_True;
-    if (!PyArg_ParseTuple(args, "sO|sO", &type,&sh,&op,&mapAll))
+    if (!PyArg_ParseTuple(args, "O|s", &sh,&op))
         return 0;
-    TopAbs_ShapeEnum shapeType;
-    if(strcmp(type,"Edge")==0)
-        shapeType = TopAbs_EDGE;
-    else if(strcmp(type,"Face")==0)
-        shapeType = TopAbs_FACE;
-    else if(strcmp(type,"Vertex")==0)
-        shapeType = TopAbs_VERTEX;
-    else
-        throw Py::ValueError("invalid element type type");
-    std::vector<TopoShape> shapes;
-    if(PyObject_TypeCheck(sh,&TopoShapePy::Type))
-        shapes.push_back(*static_cast<TopoShapePy*>(sh)->getTopoShapePtr());
-    else if(PySequence_Check(sh)) {
-        Py::Sequence seq(sh);
-        for(auto it=seq.begin();it!=seq.end();++it) {
-            if(!PyObject_TypeCheck((*it).ptr(),&TopoShapePy::Type))
-                throw Py::TypeError("expect item type in the sequence to be of Shape");
-            shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
-        }
-    }else
-        throw Py::TypeError("expect item type to be of Shape or sequence of Shapes");
-    auto self = getTopoShapePtr();
     PY_TRY {
-        self->mapSubElement(shapeType,shapes,op,PyObject_IsTrue(mapAll));
+        getTopoShapePtr()->mapSubElement(getPyShapes(sh),op);
         Py_Return;
     }PY_CATCH_OCC
 }

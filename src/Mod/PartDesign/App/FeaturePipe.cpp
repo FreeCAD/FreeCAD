@@ -235,7 +235,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 mkPS.Simulate(2, sim);
 
                 std::vector<TopoShape> wires = {TopoShape(sim.First()),TopoShape(sim.Last())};
-                shell.mapSubElementsTo(TopAbs_EDGE,wires);
+                shell.mapSubElementsTo(wires);
 
                 frontwires.push_back(wires.front());
                 backwires.push_back(wires.back());

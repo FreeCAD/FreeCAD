@@ -136,7 +136,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     return -1;
                 }
                 getTopoShapePtr()->setShape(mkFace.Face());
-                getTopoShapePtr()->mapSubElement(TopAbs_EDGE,shape);
+                getTopoShapePtr()->mapSubElement(shape);
                 return 0;
             }
             else if (sh.ShapeType() == TopAbs_FACE) {
@@ -178,7 +178,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
             getTopoShapePtr()->setShape(mkFace.Face());
-            getTopoShapePtr()->mapSubElement(TopAbs_EDGE,shape);
+            getTopoShapePtr()->mapSubElement(shape);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -213,7 +213,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
             getTopoShapePtr()->setShape(mkFace.Face());
-            getTopoShapePtr()->mapSubElement(TopAbs_EDGE,shape);
+            getTopoShapePtr()->mapSubElement(shape);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -263,7 +263,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             getTopoShapePtr()->setShape(mkFace.Face());
-            getTopoShapePtr()->mapSubElement(TopAbs_EDGE,shapes);
+            getTopoShapePtr()->mapSubElement(shapes);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -319,7 +319,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 for (auto it = wires.begin()+1; it != wires.end(); ++it)
                     mkFace.Add(TopoDS::Wire(it->getShape()));
                 getTopoShapePtr()->setShape(mkFace.Face());
-                getTopoShapePtr()->mapSubElement(TopAbs_EDGE,wires);
+                getTopoShapePtr()->mapSubElement(wires);
                 return 0;
             }
             else {

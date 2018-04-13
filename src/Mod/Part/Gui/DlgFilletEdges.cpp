@@ -615,13 +615,13 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 elements.insert(e[i]);
                 continue;
             }
-            FC_LOG("missing edge link: " << base->getNameInDocument() << "." << ref);
+            FC_WARN("missing edge link: " << base->getNameInDocument() << "." << ref);
             
             for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
                 int idx=0;
                 sscanf(name.second.c_str(),"Edge%d",&idx);
                 if(idx>0) {
-                    FC_LOG("guess edge link: " << ref << " -> " << (name.first.size()?name.first:name.second));
+                    FC_WARN("guess edge link: " << ref << " -> " << (name.first.size()?name.first:name.second));
                     elements.emplace(idx,e[i].radius1,e[i].radius2);
                 }
             }

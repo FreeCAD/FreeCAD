@@ -119,7 +119,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
         auto &self = *getTopoShapePtr();
         shapes.push_back(self);
         TopoShape tmp(self.Tag,self.Hasher,comp);
-        tmp.mapSubElement(TopAbs_FACE,shapes);
+        tmp.mapSubElement(shapes);
         self = tmp;
     }PY_CATCH_OCC
 #else

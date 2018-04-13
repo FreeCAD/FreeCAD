@@ -108,11 +108,13 @@ const TopoDS_Shape& PropertyPartShape::getValue(void)const
 
 const TopoShape& PropertyPartShape::getShape() const
 {
+    _Shape.initCache(-1);
     return this->_Shape;
 }
 
 const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
 {
+    _Shape.initCache(-1);
     return &(this->_Shape);
 }
 

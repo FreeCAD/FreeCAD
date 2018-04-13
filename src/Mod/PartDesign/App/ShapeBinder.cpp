@@ -252,6 +252,8 @@ void SubShapeBinder::update() {
     else if(count==0 && (count=result.countSubShapes(TopAbs_VERTEX))==1)
         result.setElementName("Vertex1",0);
     result.setTransform(Placement.getValue().toMatrix());
+    if(count==1)
+        result.initCache(true);
     Shape.setValue(result);
 }
 

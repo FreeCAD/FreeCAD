@@ -341,7 +341,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
         TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
         sourceWire.setShape(outerWire);
         sourceWire.Tag = _shape.Tag;
-        sourceWire.mapSubElement(TopAbs_EDGE,_shape);
+        sourceWire.mapSubElement(_shape);
     }
     else if (shape.ShapeType() == TopAbs_COMPOUND) {
         for(auto &s : _shape.getSubTopoShapes()) {

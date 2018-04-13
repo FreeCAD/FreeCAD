@@ -134,11 +134,12 @@ public:
         std::vector<Facet> &faces) const;
     //@}
     /// get the Topo"sub"Shape with the given name
-    TopoDS_Shape getSubShape(const char* Type) const;
-    TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx) const;
-    TopoShape getSubTopoShape(const char *Type) const;
-    TopoShape getSubTopoShape(TopAbs_ShapeEnum type, int idx) const;
+    TopoDS_Shape getSubShape(const char* Type, bool silent=false) const;
+    TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
+    TopoShape getSubTopoShape(const char *Type, bool silent=false) const;
+    TopoShape getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
     std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
     unsigned long countSubShapes(const char* Type) const;
     unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
     bool hasSubShape(const char *Type) const;
@@ -507,40 +508,46 @@ public:
      * These functions are implemented in TopoShapeEx.cpp
      */
     //@{
-    void mapSubElement(TopAbs_ShapeEnum type,
-            const TopoShape &other,const char *op=0,bool mapAll=true);
-    void mapSubElement(TopAbs_ShapeEnum type, const TopTools_IndexedMapOfShape &shapeMap, 
-            const TopoShape &other,const char *op=0,bool mapAll=true);
-    void mapSubElement(TopAbs_ShapeEnum type, const TopoShape &other,
-            const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
-    void mapSubElement(TopAbs_ShapeEnum type, const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other,
-            const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
-    void mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
-            const char *op=0, bool mapAll=true);
-    void mapSubElementsTo(TopAbs_ShapeEnum type, std::vector<TopoShape> &shapes, 
-            const char *op=0, bool mapAll=true) const;
-
-    bool canMapElement() const{
-        return !isNull() && (Tag!=0 || getElementMapSize()!=0);
+    void mapSubElement(const TopoShape &other,const char *op=0);
+    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=0) {
+        for(auto &shape : shapes)
+            mapSubElement(shape,op);
+    }
+    void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=0) const {
+        for(auto &shape : shapes)
+            shape.mapSubElement(*this,op);
     }
 
-    bool canMapElement(const TopoShape &other) const{
-        return !isNull() && other.canMapElement();
-    }
+    bool canMapElement(const TopoShape &other) const;
 
     std::vector<std::pair<std::string,std::string> > getRelatedElements(
             const char *name, bool both=true) const;
 
     long getElementHistory(const std::string &name, 
             std::string *original=0, std::vector<std::string> *history=0) const;
-
     virtual std::string getElementMapVersion() const override;
     //@}
 
-    static TopAbs_ShapeEnum shapeType(const char *type);
-    TopAbs_ShapeEnum shapeType() const;
-    static const std::string &shapeName(TopAbs_ShapeEnum type);
-    const std::string &shapeName() const;
+
+    /** @name sub shape cached functions
+     *
+     * These functions uses internal caches for sub shape maps to imporve performance
+     */
+    //@{
+    void initCache(int reset=0) const;
+    int findShape(const TopoDS_Shape &subshape) const;
+    TopoDS_Shape findShape(const char *name) const;
+    TopoDS_Shape findShape(TopAbs_ShapeEnum type, int idx) const;
+    int findAncestor(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    TopoDS_Shape findAncestorShape(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    std::vector<int> findAncestors(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    //@}
+
+    static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);
+    TopAbs_ShapeEnum shapeType(bool silent=false) const;
+    static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
+    const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 
 private:
@@ -580,6 +587,9 @@ public:
 
 private:
     TopoDS_Shape _Shape;
+
+    class Cache;
+    mutable std::shared_ptr<Cache> _Cache;
 };
 
 } //namespace Part

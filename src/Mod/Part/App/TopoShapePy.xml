@@ -629,12 +629,10 @@ infos contains additional info on the solutions. It is a list of tuples:
     <Methode Name="mapSubElement">
       <Documentation>
         <UserDocu>
-mapSubElement(type, shape|[shape], op=None,mapAll=True) - maps the sub element of other shape
+mapSubElement(shape|[shape...], op=None) - maps the sub element of other shape
 
-type:   sub element type (defined in attribute ElementTypes)
 shape:  other shape or sequence of shapes to map the sub-elements
 op:     optional string prefix to append before the mapped sub element names
-mapAll: whether to map all lower level sub-element types
         </UserDocu>
       </Documentation>
     </Methode>

@@ -255,6 +255,7 @@ TopoShape::TopoShape(const TopoShape& shape)
 {
     Hasher = shape.Hasher;
     _ElementMap = shape._ElementMap;
+    _Cache = shape._Cache;
 }
 
 std::vector<const char*> TopoShape::getElementTypes(void) const
@@ -280,16 +281,16 @@ Data::Segment* TopoShape::getSubElement(const char* Type, unsigned long n) const
     return new ShapeSegment(getSubShape(temp.c_str()));
 }
 
-TopoDS_Shape TopoShape::getSubShape(const char* Type) const {
+TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const {
     TopoShape s(*this);
     s.Tag = 0;
-    return s.getSubTopoShape(Type).getShape();
+    return s.getSubTopoShape(Type,silent).getShape();
 }
 
-TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int idx) const {
+TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int idx, bool silent) const {
     TopoShape s(*this);
     s.Tag = 0;
-    return s.getSubTopoShape(type,idx).getShape();
+    return s.getSubTopoShape(type,idx,silent).getShape();
 }
 
 typedef std::map<TopAbs_ShapeEnum,std::string> ShapeNameMap;
@@ -308,7 +309,7 @@ static void initShapeNameMap() {
     }
 }
 
-TopAbs_ShapeEnum TopoShape::shapeType(const char *type) {
+TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(type) {
         initShapeNameMap();
         for(auto &v : _ShapeNameMap) {
@@ -316,67 +317,33 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type) {
                 return v.first;
         }
     }
-    Standard_Failure::Raise("invalid shape type");
+    if(!silent)
+        Standard_Failure::Raise("invalid shape type");
     return TopAbs_SHAPE;
 }
 
-TopAbs_ShapeEnum TopoShape::shapeType() const {
+TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {
+    if(isNull()) {
+        if(!silent)
+            Standard_Failure::Raise("null shape");
+        return TopAbs_SHAPE;
+    }
     return getShape().ShapeType();
 }
 
-const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type) {
+const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
     initShapeNameMap();
     auto it = _ShapeNameMap.find(type);
     if(it != _ShapeNameMap.end())
         return it->second;
-    Standard_Failure::Raise("invalid shape type");
+    if(!silent)
+        Standard_Failure::Raise("invalid shape type");
     static std::string ret("");
     return ret;
 }
 
-const std::string &TopoShape::shapeName() const {
-    return shapeName(shapeType());
-}
-
-unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
-    if(isNull()) return 0;
-    try {
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, type, anIndices);
-        return anIndices.Extent();
-    }catch(...){}
-    return 0;
-}
-
-unsigned long TopoShape::countSubShapes(const char* Type) const {
-    return countSubShapes(shapeType(getElementName(Type)));
-}
-
-bool TopoShape::hasSubShape(TopAbs_ShapeEnum type) const {
-    if(isNull()) return false;
-    TopExp_Explorer xp(_Shape,type);
-    return xp.More();
-}
-
-bool TopoShape::hasSubShape(const char *Type) const
-{
-    if(isNull()) return false;
-    try {
-        Type = getElementName(Type);
-        auto type = shapeType(Type);
-        const auto &typeName = shapeName(type);
-        if(Type[typeName.size()] == 0) {
-            TopExp_Explorer xp(_Shape,type);
-            return xp.More();
-        }
-        int index=std::atoi(Type+typeName.size());
-        if(index<=0) 
-            return false;
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, shapeType(Type), anIndices);
-        return index<=anIndices.Extent();
-    }catch(...){}
-    return false;
+const std::string &TopoShape::shapeName(bool silent) const {
+    return shapeName(shapeType(silent),silent);
 }
 
 PyObject * TopoShape::getPySubShape(const char* Type) const
@@ -390,6 +357,7 @@ void TopoShape::operator = (const TopoShape& sh)
         if(sh.Tag) this->Tag = sh.Tag;
         this->_Shape = sh._Shape;
         this->_ElementMap = sh._ElementMap;
+        this->_Cache = sh._Cache;
         this->Hasher = sh.Hasher;
     }
 }
@@ -2872,7 +2840,7 @@ bool TopoShape::removeInternalWires(double minArea)
     bool ok = fix.Perform() ? true : false;
     this->_Shape = fix.GetResult();
     resetElementMap();
-    mapSubElement(TopAbs_FACE,copy);
+    mapSubElement(copy);
     return ok;
 }
 

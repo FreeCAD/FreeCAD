@@ -225,7 +225,7 @@ Py::Object TopoShapeSolidPy::getOuterShell(void) const
 #ifndef FC_NO_ELEMENT_MAP
     TopoShape res;
     res.setShape(shell);
-    res.mapSubElement(TopAbs_FACE,*getTopoShapePtr());
+    res.mapSubElement(*getTopoShapePtr());
     return shape2pyshape(res);
 #else
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);

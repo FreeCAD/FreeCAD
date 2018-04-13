@@ -145,7 +145,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
             builder.Add(shell, sh);
             BRepCheck_Analyzer check(shell);
 #ifndef FC_NO_ELEMENT_MAP
-            getTopoShapePtr()->mapSubElement(TopAbs_FACE,shape);
+            getTopoShapePtr()->mapSubElement(shape);
 #endif
             if (!check.IsValid()) {
                 ShapeUpgrade_ShellSewing sewShell;
@@ -182,7 +182,7 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
 #ifndef FC_NO_ELEMENT_MAP
     TopoShape res;
     res.setShape(comp);
-    res.mapSubElement(TopAbs_EDGE,*getTopoShapePtr());
+    res.mapSubElement(*getTopoShapePtr());
     return Py::new_reference_to(shape2pyshape(res));
 #else
     return new TopoShapeCompoundPy(new TopoShape(comp));
@@ -204,7 +204,7 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
 #ifndef FC_NO_ELEMENT_MAP
     TopoShape res;
     res.setShape(comp);
-    res.mapSubElement(TopAbs_EDGE,*getTopoShapePtr());
+    res.mapSubElement(*getTopoShapePtr());
     return Py::new_reference_to(shape2pyshape(res));
 #else
     return new TopoShapeCompoundPy(new TopoShape(comp));

@@ -169,7 +169,7 @@ void Part::FaceMaker::postBuild() {
         op = TOPOP_FACE;
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = App::StringHasherRef();
-    this->myTopoShape.mapSubElement(TopAbs_EDGE,this->mySourceShapes,op,true);
+    this->myTopoShape.mapSubElement(this->mySourceShapes,op);
     int i = 0;
     std::ostringstream ss;
     if(!this->myTopoShape.Hasher)
@@ -183,7 +183,7 @@ void Part::FaceMaker::postBuild() {
         for(auto &face : faces) {
             ++i;
             TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
-            wire.mapSubElement(TopAbs_EDGE,face,0,false);
+            wire.mapSubElement(face,0);
             std::set<std::string> edgeNames;
             int count = wire.countSubShapes(TopAbs_EDGE);
             for(int i=1;i<=count;++i) {
@@ -214,6 +214,7 @@ void Part::FaceMaker::postBuild() {
             ss << "Face" << i;
             this->myTopoShape.setElementName(ss.str().c_str(),faceName.c_str(),prefix.c_str());
         }
+        this->myTopoShape.initCache(true);
     }
     this->Done();
 }
