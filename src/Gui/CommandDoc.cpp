@@ -976,7 +976,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
             if (ret == QMessageBox::Yes) 
                 sel.swap(internal);
             else
-                keepExternal = internal.size()!=all.size();
+                keepExternal = true;
         }
         if(!keepExternal && all.size() > sel.size()) {
             int ret = QMessageBox::question(getMainWindow(),
@@ -989,6 +989,9 @@ void StdCmdDuplicateSelection::activated(int iMsg)
             else
                 keepExternal = true;
         }
+
+        if(keepExternal && all.size()==internal.size())
+            keepExternal = false;
 
         // save stuff to file
         Base::ofstream str(fi, std::ios::out | std::ios::binary);

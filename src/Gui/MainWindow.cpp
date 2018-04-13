@@ -1411,6 +1411,9 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
             keepExternal = true;
     }
 
+    if(keepExternal && all.size()==internal.size())
+        keepExternal = false;
+
     unsigned int memsize=1000; // ~ for the meta-information
     for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it)
         memsize += (*it)->getMemSize();
