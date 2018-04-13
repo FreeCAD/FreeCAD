@@ -1263,7 +1263,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
         const App::DocumentObject* doc = jt->first;
         ViewProvider* obj = jt->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\" type=\""
+                        << doc->getExportName() << "\" type=\""
                         << obj->getTypeId().getName()
                         << "\">" << std::endl;
         obj->Save(writer);
