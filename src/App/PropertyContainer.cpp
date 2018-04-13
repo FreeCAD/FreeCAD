@@ -273,9 +273,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
     Cnt += transientCount;
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement(i<transientCount?"_Property":"Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        Property* prop = getPropertyByName(PropName);
+        std::string PropName = reader.getAttribute("name");
+        std::string TypeName = reader.getAttribute("type");
+        Property* prop = getPropertyByName(PropName.c_str());
         if(prop && reader.hasAttribute("status"))
             prop->setStatus(reader.getAttributeAsUnsigned("status"));
         // NOTE: We must also check the type of the current property because a
@@ -284,19 +284,19 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // type and the behaviour would be undefined.
         try {
             // name and type match
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName.c_str()) == 0) {
                 if (!prop->testStatus(Property::Transient) &&
                     !(getPropertyType(prop) & Prop_Transient))
                     prop->Restore(reader);
             }
             // name matches but not the type
             else if (prop) {
-                handleChangedPropertyType(reader, TypeName, prop);
+                handleChangedPropertyType(reader, TypeName.c_str(), prop);
             }
             // name doesn't match, the sub-class then has to know
             // if the property has been renamed or removed
             else {
-                handleChangedPropertyName(reader, TypeName, PropName);
+                handleChangedPropertyName(reader, TypeName.c_str(), PropName.c_str());
             }
         }
         catch (const Base::XMLParseException&) {
