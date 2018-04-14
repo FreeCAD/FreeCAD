@@ -99,12 +99,12 @@ void Point::onChanged(const App::Property* prop)
     Superclass::onChanged(prop);
 }
 
-void Point::Restore(Base::XMLReader& r)
+void Point::onDocumentRestored()
 {
-    Superclass::Restore(r);
     //fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
     //recreate shape, as the restored one has old Placement burned into it.
     this->makeShape();
+    Superclass::onDocumentRestored();
 }
 
 void Point::makeShape()
@@ -114,7 +114,9 @@ void Point::makeShape()
     BRepBuilderAPI_MakeVertex builder(gp_Pnt(0,0,0));
     if (!builder.IsDone())
         return;
-    Shape.setValue(builder.Shape());
+    Part::TopoShape tshape(builder.Shape());
+    tshape.setPlacement(this->Placement.getValue());
+    Shape.setValue(tshape);
 }
 
 Base::Vector3d Point::getPoint()
