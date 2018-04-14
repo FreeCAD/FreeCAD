@@ -994,7 +994,7 @@ Py::Dict FemMeshPy::getNodes(void) const
     //Py::Tuple tup(count);
     Py::Dict dict;
 
-    // get the actuall transform of the FemMesh
+    // get the actual transform of the FemMesh
     Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
     SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
