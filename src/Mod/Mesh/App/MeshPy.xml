@@ -403,7 +403,7 @@ The argument int is the mode: 0=inner, 1=outer
 				<UserDocu>Fillup holes</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="smooth" Const="true">
+        <Methode Name="smooth" Const="true" Keyword="true">
 			<Documentation>
 				<UserDocu>Smooth the mesh
 smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
@@ -520,7 +520,7 @@ for p in mesh.Facets:
 		</Attribute>
 		<ClassDeclarations>private:
     friend class PropertyMeshKernel;
-    class PropertyMeshKernel* parentProperty;
+    class PropertyMeshKernel* parentProperty = nullptr;
 		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>
