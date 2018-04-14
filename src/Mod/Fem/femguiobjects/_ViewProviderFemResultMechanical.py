@@ -478,7 +478,7 @@ class _TaskPanelFemResultShow:
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
+        FreeCADGui.Control.closeDialog()  # if the tasks panel is called from Command obj is not in edit mode thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.ActiveDocument.resetEdit()
 
 

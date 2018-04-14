@@ -78,7 +78,7 @@ class _ViewProviderFemMeshGmsh:
         gui_doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not gui_doc.getInEdit():
             # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
-            # not a fast one, we need to iterate over all member of all analysis to know to which analyis the object belongs too!!!
+            # not a fast one, we need to iterate over all member of all analysis to know to which analysis the object belongs too!!!
             # first check if there is an analysis in the active document
             found_an_analysis = False
             for o in gui_doc.Document.Objects:
@@ -284,5 +284,5 @@ class _TaskPanelFemMeshGmsh:
                 # print('Mesh is not member of active analysis, means no group meshing')
                 self.analysis = None  # no group meshing
         else:
-            # print('No active analyis, means no group meshing')
+            # print('No active analysis, means no group meshing')
             self.analysis = None  # no group meshing
