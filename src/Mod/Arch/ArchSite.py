@@ -281,11 +281,11 @@ class _CommandSite:
             message = translate( "Arch" ,  "Please select only Building objects or nothing!\n\
 Site are not allowed to accept other object than Building.\n\
 Other objects will be removed from the selection.\n\
-You can change that in the preferences." )
+You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(siteobj) == 0:
             message = translate( "Arch" ,  "There is no valid object in the selection.\n\
-Site creation aborted." )
+Site creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
