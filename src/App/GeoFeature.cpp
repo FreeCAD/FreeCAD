@@ -158,11 +158,10 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         elementName = geo->getElementName(element,type);
     else{
         const auto &names = geo->getElementName(element,type);
-        if(names.first.size() && names.second.size()) {
-            std::string prefix(subname,element-subname);
+        std::string prefix(subname,element-subname);
+        if(names.first.size())
             elementName.first = prefix + names.first;
-            elementName.second = prefix + names.second;
-        }
+        elementName.second = prefix + names.second;
     }
     return ret;
 }

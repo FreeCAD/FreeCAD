@@ -113,7 +113,11 @@ bool PropertyLinkBase::_updateElementReference(
                 GeoFeature::ElementNameType::Export,feature);
     if(!ret)
         return false;
-    if(elementName.first.empty() || shadow==elementName)
+    if(elementName.first.empty()) {
+        shadow.second.swap(elementName.second);
+        return false;
+    }
+    if(shadow==elementName)
         return false;
     FC_LOG((owner?owner->getNameInDocument():"") 
             << " element reference shadow update " << ret->getNameInDocument() 
