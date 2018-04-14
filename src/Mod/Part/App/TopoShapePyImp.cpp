@@ -3085,6 +3085,19 @@ PyObject *TopoShapePy::getElementHistory(PyObject *args) {
     }PY_CATCH_OCC
 }
 
+PyObject *TopoShapePy::getRelatedElements(PyObject *args) {
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return 0;
+
+    PY_TRY {
+        Py::Dict dict;
+        for(auto &v : getTopoShapePtr()->getRelatedElements(name))
+            dict.setItem(Py::String(v.first),Py::String(v.second));
+        return Py::new_reference_to(dict);
+    }PY_CATCH_OCC
+}
+
 PyObject *TopoShapePy::mapSubElement(PyObject *args) {
     const char *op = 0;
     PyObject *sh;
