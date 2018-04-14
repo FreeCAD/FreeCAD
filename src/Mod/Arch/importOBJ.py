@@ -185,7 +185,7 @@ def export(exportList,filename):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8') + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written ").decode('utf8') + filename + "\n")
     if materials:
         outfile = pythonopen(filenamemtl,"wb")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
@@ -208,7 +208,7 @@ def export(exportList,filename):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","successfully written") + ' ' + filenamemtl + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
 
 
 def decode(name):
