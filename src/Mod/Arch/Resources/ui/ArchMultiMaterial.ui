@@ -79,7 +79,7 @@
         <item>
          <widget class="QPushButton" name="delButton">
           <property name="text">
-           <string>Del</string>
+           <string>Delete</string>
           </property>
          </widget>
         </item>
