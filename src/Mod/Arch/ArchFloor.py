@@ -90,11 +90,11 @@ class _CommandFloor:
             message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
 Floor object are not allowed to accept Site or Building object.\n\
 Site, Building and Floor objects will be removed from the selection.\n\
-You can change that in the preferences.\n" )
+You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(floorobj) == 0:
             message = translate( "Arch" , "There is no valid object in the selection.\n\
-Floor creation aborted.\n" )
+Floor creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
