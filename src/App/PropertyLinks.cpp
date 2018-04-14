@@ -851,7 +851,6 @@ static std::string tryImportSubName(const std::map<std::string,std::string> &nam
 
 #define ATTR_SHADOW "shadowed"
 #define ATTR_MAPPED "mapped"
-#define ATTR_VERSION "version"
 
 void PropertyLinkSub::Save (Base::Writer &writer) const
 {
@@ -864,9 +863,6 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         internal_name = _pcLinkSub->getExportName();
     writer.Stream() << writer.ind() << "<LinkSub value=\"" 
         <<  internal_name <<"\" count=\"" <<  _cSubList.size();
-    auto geofeature = dynamic_cast<GeoFeature*>(_pcLinkSub);
-    if(geofeature)
-        writer.Stream() << "\" " ATTR_VERSION "=\"" << geofeature->getElementMapVersion();
     writer.Stream() << "\">" << std::endl;
     writer.incInd();
     bool exporting = _pcLinkSub&&_pcLinkSub->getNameInDocument()&&_pcLinkSub->getDocument()->isExporting();
@@ -883,7 +879,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(shadow.second.size()) {
+            if(&sub!=&_cSubList[i]) {
                 // Stores the actual value that is shadowed. For new version FC,
                 // we will restore this shadowed value instead.
                 writer.Stream() << "\" " ATTR_SHADOW "=\"" << _cSubList[i];
@@ -918,23 +914,16 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
         }
     }
 
-    bool map_attr = false;
-    if(reader.hasAttribute(ATTR_VERSION)) {
-        auto geofeature = dynamic_cast<GeoFeature*>(pcObject);
-        if(geofeature && geofeature->getElementMapVersion()!=reader.getAttribute(ATTR_VERSION))
-            map_attr = true;
-    }
-
     std::vector<int> mapped;
     std::vector<std::string> values(count);
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
         const char *attr = "value";
-        if(!map_attr && reader.hasAttribute(ATTR_SHADOW))
+        if(reader.hasAttribute(ATTR_SHADOW))
             attr = ATTR_SHADOW;
         values[i] = importSubName(reader,reader.getAttribute(attr));
-        if(map_attr || reader.hasAttribute(ATTR_MAPPED))
+        if(reader.hasAttribute(ATTR_MAPPED))
             mapped.push_back(i);
     }
 
@@ -1472,14 +1461,11 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(shadow.second.size()) {
+            if(&sub != &_lSubList[i]) {
                 // Stores the actual value that is shadowed. For new version FC,
                 // we will restore this shadowed value instead.
                 writer.Stream() << "\" " ATTR_SHADOW "=\"" << _lSubList[i];
             }
-            auto geofeature = dynamic_cast<GeoFeature*>(obj);
-            if(geofeature)
-                writer.Stream() << "\" " ATTR_VERSION << "=\"" << geofeature->getElementMapVersion();
         }
         writer.Stream() << "\"/>" << endl;
     }
@@ -1513,17 +1499,10 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         if (child) {
             values.push_back(child);
             const char *attr = "sub";
-            bool map_attr = reader.hasAttribute(ATTR_MAPPED);
-            if(reader.hasAttribute(ATTR_SHADOW)) {
-                auto geofeature = dynamic_cast<GeoFeature*>(child);
-                if(geofeature && reader.hasAttribute(ATTR_VERSION) &&
-                   reader.getAttribute(ATTR_VERSION) != geofeature->getElementMapVersion())
-                    map_attr = true;
-                else
-                    attr = ATTR_SHADOW;
-            }
+            if(reader.hasAttribute(ATTR_SHADOW))
+                attr = ATTR_SHADOW;
             SubNames.push_back(importSubName(reader,reader.getAttribute(attr)));
-            if(map_attr)
+            if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
         } else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
@@ -2229,13 +2208,10 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         "\" name=\"" << objectName <<
         "\" sub=\"" << sub <<
         "\" relative=\"" << (relativePath?"true":"false");
-    if(shadowSub.second.size()) {
+    if(&sub != &shadowSub.second) {
         // Stores the actual value that is shadowed. For new version FC,
         // we will restore this shadowed value instead.
         writer.Stream() << "\" " ATTR_SHADOW "=\"" << subName;
-        auto geofeature = dynamic_cast<GeoFeature*>(_pcLink);
-        if(geofeature)
-            writer.Stream() << "\" " ATTR_VERSION "=\"" << geofeature->getElementMapVersion();
     }
     writer.Stream() << "\"/>" << std::endl;
 }
@@ -2274,14 +2250,8 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     bool mapped = reader.hasAttribute(ATTR_MAPPED);
     if(reader.hasAttribute("sub")) {
         const char *attr = "sub";
-        if(reader.hasAttribute(ATTR_SHADOW)) {
-            auto geofeature = dynamic_cast<GeoFeature*>(object);
-            if(geofeature && reader.hasAttribute(ATTR_VERSION) &&
-               geofeature->getElementMapVersion() != reader.getAttribute(ATTR_VERSION))
-                mapped = true;
-            else
-                attr = ATTR_SHADOW;
-        }
+        if(reader.hasAttribute(ATTR_SHADOW))
+            attr = ATTR_SHADOW;
         subname = importSubName(reader,reader.getAttribute(attr));
     }
 
