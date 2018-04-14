@@ -50,7 +50,8 @@ Py::Dict ViewProviderPartExtPy::getElementColors() const {
     auto *vp = getViewProviderPartExtPtr();
     Py::Dict dict;
     for(auto &v : vp->getElementColors()) {
-        Py::TupleN color(Py::Float(v.second.r),Py::Float(v.second.g),Py::Float(v.second.b));
+        Py::TupleN color(Py::Float(v.second.r),Py::Float(v.second.g),
+                Py::Float(v.second.b),Py::Float(v.second.a));
         dict[Py::String(v.first)] = color;
     }
     return dict;

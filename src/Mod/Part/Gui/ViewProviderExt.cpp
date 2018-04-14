@@ -281,6 +281,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(MapFaceColor,(hPart->GetBool("MapFaceColor",true)));
     ADD_PROPERTY(MapLineColor,(hPart->GetBool("MapLineColor",false)));
     ADD_PROPERTY(MapPointColor,(hPart->GetBool("MapPointColor",false)));
+    ADD_PROPERTY(MapTransparency,(hPart->GetBool("MapTransparency",false)));
 
     coords = new SoCoordinate3();
     coords->ref();
@@ -355,7 +356,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
-    if (prop == &MappedColors) {
+    if (prop == &MappedColors ||
+        prop == &MapFaceColor ||
+        prop == &MapLineColor ||
+        prop == &MapPointColor ||
+        prop == &MapTransparency) 
+    {
         if(!prop->testStatus(App::Property::User3))
             updateColors(feature);
         return;
@@ -457,6 +463,9 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             ShapeMaterial.setContainer(0);
             ShapeMaterial.setTransparency(trans);
             ShapeMaterial.setContainer(parent);
+
+            if(MapTransparency.getValue())
+                updateColors(feature);
         }
     }
     else if (prop == &Lighting) {
@@ -913,6 +922,7 @@ struct ColorInfo {
             break;
         case TopAbs_FACE:
             defaultColor = vp->ShapeColor.getValue();
+            defaultColor.a = vp->Transparency.getValue()/100.0f;
             prop = &vp->DiffuseColor;
             mapColor = vp->MapFaceColor.getValue();
             break;
@@ -1041,6 +1051,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
         std::vector<App::Color> colors(count,info.defaultColor);
         auto it = info.colors.begin();
         auto typeName = shape.shapeName(info.type);
+        float trans = Transparency.getValue()/100.0f;
         for(int i=0;i<count;++i) {
             if(it!=info.colors.end() && i==it->first) {
                 if(colors[i]!=it->second) {
@@ -1060,6 +1071,8 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
             if(!tag)
                 continue;
             auto color = getElementColor(info.defaultColor,info.type,tag,original.c_str());
+            if(!MapTransparency.getValue())
+                color.a = trans;
             if(color != colors[i]) {
                 touched = true;
                 colors[i] = color;
