@@ -367,11 +367,12 @@ std::string ComplexGeoData::hashElementName(
 }
 
 std::string ComplexGeoData::dehashElementName(const char *name) const {
-    std::string ret;
-    if(!name || !Hasher)
-        return ret;
+    if(!name)
+        return std::string();
     if(boost::starts_with(name,elementMapPrefix()))
         name += elementMapPrefix().size();
+    if(!Hasher)
+        return name;
     std::istringstream iss(name);
     char sep = 0;
     long id = -1;
@@ -384,13 +385,13 @@ std::string ComplexGeoData::dehashElementName(const char *name) const {
             FC_WARN("failed to find hash id " << id);
         else
             FC_LOG("failed to find hash id " << id);
-        return ret;
+        return name;
     }
     if(sid->isHashed()) {
         FC_LOG("cannot dehash id " << id);
-        return ret;
+        return name;
     }
-    ret = sid->dataToText();
+    auto ret = sid->dataToText();
     FC_TRACE("dehash " << name << " -> " << ret);
     return ret;
 }
