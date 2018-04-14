@@ -205,7 +205,7 @@ def read_fenics_mesh_xml(xmlfilename):
                 val_dict[vkey] = it + length_counter  # maintain distinct element numbers
             len_val_dict = len(val_dict)
             if len_val_dict > 0:
-                length_counter += len_val_dict + 1  # only if preceeding list is not empty
+                length_counter += len_val_dict + 1  # only if preceding list is not empty
             # print('len: ', len_val_dict)
             # print('lencounter: ', length_counter)
             # inverse of the dict (dict[key] = val -> dict[val] = key)
