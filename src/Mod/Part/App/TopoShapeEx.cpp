@@ -1925,7 +1925,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     infoMap[TopAbs_COMPSOLID] = &finfo;
 
     std::ostringstream ss;
-    std::string prefix,postfix,newName;
+    std::string postfix,newName;
 
     std::map<std::string,std::map<NameKey,NameInfo> > newNames;
 
@@ -2060,14 +2060,16 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss << ',';
                 auto &other_key = it->first;
                 auto &other_info = it->second;
-                if(other_key.tag && other_key.tag!=Tag)
-                    ss << other_key.tag << '_';
-                if(other_key.name[0] == ' ')
-                    ss << other_key.name.c_str()+1;
-                else
-                    ss << other_key.name;
+                std::ostringstream ss2;
                 if(other_info.index!=1)
-                    ss << elementMapPrefix() <<  other_info.index;
+                    ss2 << elementMapPrefix() << 'I' << other_info.index;
+                std::string other_name;
+                if(other_key.name[0]==' ')
+                    other_name = other_key.name.c_str()+1;
+                else
+                    other_name = other_key.name;
+                processName(other_name,ss2,sids,0,other_key.tag);
+                ss << other_name << ss2.str();
                 if((name_type==1 && other_info.index<0) || 
                    (name_type==2 && other_info.index>0)) {
                     FC_WARN("element is both generated and modified");
@@ -2206,21 +2208,30 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             }
             if(names.empty())
                 continue;
-            ss.str("");
             auto it = names.begin();
             newName = it->first;
-            ss << lowerPostfix();
-            bool first = true;
-            for(++it;it!=names.end();++it) {
-                if(first) {
-                    ss << '(';
-                    first = false;
-                } else
-                    ss << ',';
-                ss << it->first;
-            }
-            if(!first)
+            if(names.size() == 1) 
+                ss << lowerPostfix();
+            else {
+                bool first = true;
+                ss.str("");
+                if(!Hasher)
+                    ss << lowerPostfix();
+                ss << '(';
+                for(++it;it!=names.end();++it) {
+                    if(first)
+                        first = false;
+                    else
+                        ss << ',';
+                    ss << it->first;
+                }
                 ss << ')';
+                if(Hasher) {
+                    sids.push_back(Hasher->getID(ss.str().c_str()));
+                    ss.str("");
+                    ss << lowerPostfix() << '#' << std::hex << sids.back()->value() << std::dec;
+                }
+            }
             processName(newName,ss,sids,op);
             setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
         }
