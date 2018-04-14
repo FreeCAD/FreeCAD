@@ -43,6 +43,7 @@
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
 #include "Core/Segmentation.h"
+#include "Core/Smoothing.h"
 #include "Core/Curvature.h"
 
 #include <boost/algorithm/string.hpp>
@@ -1627,16 +1628,41 @@ PyObject*  MeshPy::trim(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::smooth(PyObject *args)
+PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 {
+    char* method = "Laplace";
     int iter=1;
-    float d_max=FLOAT_MAX;
-    if (!PyArg_ParseTuple(args, "|if", &iter,&d_max))
-        return NULL;
+    double lambda = 0;
+    double micro = 0;
+    static char* keywords_smooth[] = {"Method","Iteration","Lambda","Micro",NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidd",keywords_smooth,
+                                     &method, &iter, &lambda, &micro))
+        return 0;
 
     PY_TRY {
         MeshPropertyLock lock(this->parentProperty);
-        getMeshObjectPtr()->smooth(iter, d_max);
+        MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+        if (strcmp(method, "Laplace") == 0) {
+            MeshCore::LaplaceSmoothing smooth(kernel);
+            if (lambda > 0)
+                smooth.SetLambda(lambda);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "Taubin") == 0) {
+            MeshCore::TaubinSmoothing smooth(kernel);
+            if (lambda > 0)
+                smooth.SetLambda(lambda);
+            if (micro > 0)
+                smooth.SetMicro(micro);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "PlaneFit") == 0) {
+            MeshCore::PlaneFitSmoothing smooth(kernel);
+            smooth.Smooth(iter);
+        }
+        else {
+            throw Py::ValueError("No such smoothing algorithm");
+        }
     } PY_CATCH;
 
     Py_Return;
