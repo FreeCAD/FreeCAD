@@ -907,7 +907,7 @@ class ArchGrid:
         rowsizes = []
         if obj.AutoHeight.Value:
             if obj.AutoHeight.Value > obj.Height.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Auto height is bigger than height"))
+                FreeCAD.Console.PrintError(translate("Arch","Auto height is larger than height"))
                 return [],[],[]
             rows = int(math.floor(obj.Height.Value/obj.AutoHeight.Value))
             for i in range(rows):
@@ -916,7 +916,7 @@ class ArchGrid:
         else:
             reserved_rowsize = sum(v for v in obj.RowSize)
             if reserved_rowsize > obj.Height.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Total row size is bigger than height"))
+                FreeCAD.Console.PrintError(translate("Arch","Total row size is larger than height"))
                 return [],[],[]
             for i in range(obj.Rows):
                 v = 0
@@ -938,7 +938,7 @@ class ArchGrid:
         columnsizes = []
         if obj.AutoWidth.Value:
             if obj.AutoWidth.Value > obj.Width.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Auto width is bigger than width"))
+                FreeCAD.Console.PrintError(translate("Arch","Auto width is larger than width"))
                 return [],[],[]
             cols = int(math.floor(obj.Width.Value/obj.AutoWidth.Value))
             for i in range(cols):
@@ -947,7 +947,7 @@ class ArchGrid:
         else:
             reserved_columnsize = sum(v for v in obj.ColumnSize)
             if reserved_columnsize > obj.Width.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Total column size is bigger than width"))
+                FreeCAD.Console.PrintError(translate("Arch","Total column size is larger than width"))
                 return [],[],[]
             for i in range(obj.Columns):
                 v = 0
@@ -1162,9 +1162,9 @@ class ArchGridTaskPanel:
         self.wLabel.setText(QtGui.QApplication.translate("Arch", "Total width", None))
         self.hLabel.setText(QtGui.QApplication.translate("Arch", "Total height", None))
         self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add row", None))
-        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Del row", None))
-        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add col", None))
-        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Del col", None))
+        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Delete row", None))
+        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add column", None))
+        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Delete column", None))
         self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create span", None))
         self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove span", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Rows", None)+": "+str(self.table.rowCount())+" / "+QtGui.QApplication.translate("Arch", "Columns", None)+": "+str(self.table.columnCount()))
