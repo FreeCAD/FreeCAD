@@ -577,6 +577,10 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         FC_ERR("edge link size mismatch");
         return;
     }
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
     if (it != objs.end()) {
         // toggle visibility
@@ -615,13 +619,15 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 elements.insert(e[i]);
                 continue;
             }
-            FC_WARN("missing edge link: " << base->getNameInDocument() << "." << ref);
+            FC_WARN("missing element reference: " << base->getNameInDocument() << "." << ref);
             
             for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
+                if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                    continue;
                 int idx=0;
                 sscanf(name.second.c_str(),"Edge%d",&idx);
                 if(idx>0) {
-                    FC_WARN("guess edge link: " << ref << " -> " << (name.first.size()?name.first:name.second));
+                    FC_WARN("guess element reference: " << ref << " -> " << name.first);
                     elements.emplace(idx,e[i].radius1,e[i].radius2);
                 }
             }

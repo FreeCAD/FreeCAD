@@ -262,7 +262,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
             if(shapes.back().isNull())
                 return new App::DocumentObjectExecReturn("Invalid link.");
         }
-        this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makERuledSurface(
+        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makERuledSurface(
                     shapes,Orientation.getValue()));
 
 #endif
@@ -379,7 +379,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
         Standard_Boolean isClosed = Closed.getValue() ? Standard_True : Standard_False;
         int degMax = MaxDegree.getValue();
-        this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makELoft(
+        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makELoft(
                     shapes, isSolid, isRuled, isClosed, degMax));
 #endif
         return App::DocumentObject::StdReturn;
@@ -581,7 +581,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 return new App::DocumentObjectExecReturn("Invalid spine");
             spineShapes.push_back(shape);
         }
-        spine = TopoShape(Spine.getValue()->getID()).makECompound(spineShapes,0,false);
+        spine = TopoShape().makECompound(spineShapes,0,false);
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
@@ -602,7 +602,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                  break;
     }
     try {
-        this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makEPipeShell(
+        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEPipeShell(
                     shapes,isSolid,isFrenet,transMode,TOPOP_SWEEP));
         return App::DocumentObject::StdReturn;
     }
@@ -718,7 +718,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     else
         this->Shape.setValue(shape);
 #else
-    this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makEThickSolid(
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEThickSolid(
                 base,shapes,thickness,tol,inter,self,mode,join));
 #endif
     return App::DocumentObject::StdReturn;

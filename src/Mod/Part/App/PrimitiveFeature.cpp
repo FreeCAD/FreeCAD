@@ -104,7 +104,6 @@ short Primitive::mustExecute(void) const
 }
 
 App::DocumentObjectExecReturn* Primitive::execute(void) {
-    Shape.getShape().Tag = getID();
     return Part::Feature::execute();
 }
 

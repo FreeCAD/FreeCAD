@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         this->Shape.setValue(resShape);
         this->History.setValues(history);
 #else
-        TopoShape res(getID(),getDocument()->getStringHasher());
+        TopoShape res(0,getDocument()->getStringHasher());
         res.makEShape(*mkBool,shapes,opCode());
         if (this->Refine.getValue()) 
             res = res.makERefine();

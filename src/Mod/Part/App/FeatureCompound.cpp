@@ -79,10 +79,7 @@ App::DocumentObjectExecReturn *Compound::execute(void)
             }
         }
 
-        TopoShape comp;
-        comp.Tag = getID();
-        comp.makECompound(shapes);
-        this->Shape.setValue(comp);
+        this->Shape.setValue(TopoShape().makECompound(shapes));
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
         PropertyShapeHistory prop;

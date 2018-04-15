@@ -115,7 +115,7 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
         auto shape = Feature::getTopoShape(link);
         if (shape.isNull())
             Standard_Failure::Raise("Cannot mirror empty shape");
-        this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makEMirror(shape,ax2));
+        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEMirror(shape,ax2));
 #endif
         return App::DocumentObject::StdReturn;
     }

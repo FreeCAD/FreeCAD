@@ -243,7 +243,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         shapes.push_back(sh);
     }
 
-    TopoShape res(getID(),getDocument()->getStringHasher());
+    TopoShape res(0,getDocument()->getStringHasher());
     res.makEShape(TOPOP_FUSE,shapes);
     if (res.isNull())
         throw Base::RuntimeError("Resulting shape is null");

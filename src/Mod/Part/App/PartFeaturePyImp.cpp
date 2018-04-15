@@ -48,6 +48,9 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
         auto feature = getFeaturePtr();
         std::string mapped = feature->Shape.getShape().getElementName(name,true);
         Py::List list;
+        list.append(Py::TupleN(Py::String(feature->getNameInDocument()),
+                    Py::String(mapped),Py::List()));
+
         std::string original;
         bool recursve = PyObject_IsTrue(recursive);
         do {

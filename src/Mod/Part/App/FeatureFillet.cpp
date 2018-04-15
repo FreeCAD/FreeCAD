@@ -113,7 +113,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        TopoShape res(getID(),getDocument()->getStringHasher());
+        TopoShape res(0,getDocument()->getStringHasher());
         this->Shape.setValue(res.makEShape(mkFillet,baseTopoShape,TOPOP_FILLET));
 #endif
 

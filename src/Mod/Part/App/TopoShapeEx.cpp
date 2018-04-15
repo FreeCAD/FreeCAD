@@ -76,6 +76,7 @@
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
@@ -189,7 +190,6 @@ using namespace Part;
 
 #define _HANDLE_NULL_SHAPE(_msg,_throw) do {\
     if(_throw) {\
-        FC_ERR(_msg);\
         Standard_Failure::Raise(_msg);\
     }\
     FC_WARN(_msg);\
@@ -440,8 +440,14 @@ std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const 
 std::pair<TopAbs_ShapeEnum,int> TopoShape::shapeTypeAndIndex(const char *name) {
     int idx = 0;
     auto type = shapeType(name,true);
-    if(type != TopAbs_SHAPE)
-        idx = std::atoi(name+shapeName(type).size());
+    if(type != TopAbs_SHAPE) {
+        std::istringstream iss(name+shapeName(type).size());
+        iss >> idx;
+        if(!iss.eof())
+            idx = 0;
+    }
+    if(!idx)
+        type = TopAbs_SHAPE;
     return std::make_pair(type,idx);
 }
 
@@ -1006,12 +1012,14 @@ struct MapperSewing: Part::TopoShape::Mapper {
     {}
     virtual std::vector<TopoDS_Shape> modified(const TopoDS_Shape &s) const override {
         std::vector<TopoDS_Shape> ret;
-        auto shape = maker.Modified(s);
+        const auto &shape = maker.Modified(s);
         if(!shape.IsNull() && !shape.IsSame(s))
             ret.push_back(shape);
-        auto sshape = maker.ModifiedSubShape(s);
-        if(!sshape.IsNull() && !shape.IsSame(s) && !sshape.IsSame(shape))
-            ret.push_back(sshape);
+        else {
+            const auto &sshape = maker.ModifiedSubShape(s);
+            if(!sshape.IsNull() && !sshape.IsSame(s))
+                ret.push_back(sshape);
+        }
         return ret;
     }
 };
@@ -1833,6 +1841,48 @@ void TopoShape::processName(std::string &name, std::ostringstream &ss,
         ss << tagPostfix() << tag << ':' << name.size();
 }
 
+const char *TopoShape::setElementComboName(const char *element,
+        const std::vector<std::string> &names, const char *marker, const char *op)
+{
+    if(names.empty())
+        return 0;
+    std::string _marker;
+    if(!marker)
+        marker = elementMapPrefix().c_str();
+    else if(!boost::starts_with(marker,elementMapPrefix())){
+        _marker = elementMapPrefix() + marker;
+        marker = _marker.c_str();
+    }
+    auto it = names.begin();
+    std::string newName = *it;
+    std::ostringstream ss;
+    std::vector<App::StringIDRef> sids;
+    if(names.size() == 1) 
+        ss << marker;
+    else {
+        bool first = true;
+        ss.str("");
+        if(!Hasher)
+            ss << marker;
+        ss << '(';
+        for(++it;it!=names.end();++it) {
+            if(first)
+                first = false;
+            else
+                ss << ',';
+            ss << *it;
+        }
+        ss << ')';
+        if(Hasher) {
+            sids.push_back(Hasher->getID(ss.str().c_str()));
+            ss.str("");
+            ss << marker << sids.back()->toString();
+        }
+    }
+    processName(newName,ss,sids,op);
+    return setElementName(element,newName.c_str(),ss.str().c_str(),&sids);
+}
+
 // Extract tag from a hashed element name and de-hash the name
 long TopoShape::getElementHistory(const std::string &name, 
         std::string *original, std::vector<std::string> *history) const 
@@ -2318,9 +2368,7 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
             ++count;
         }
         else if (sh.ShapeType() == TopAbs_VERTEX) {
-            const TopoDS_Vertex& v = TopoDS::Vertex(sh);
-            gp_Pnt pnt = BRep_Tool::Pnt(v);
-            maker.Add(pnt);
+            maker.Add(BRep_Tool::Pnt(TopoDS::Vertex(sh)));
             ++count;
         }
     }
@@ -2457,7 +2505,7 @@ TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<Topo
         if(!shape.findShape(edge))
             Standard_Failure::Raise("edge does not belong to the shape");
         //Add edge to fillet algorithm
-        const TopoDS_Face& face = TopoDS::Face(shape.findAncestorShape(edge,TopAbs_FACE));
+        auto face = TopoDS::Face(shape.findAncestorShape(edge,TopAbs_FACE));
         mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
     }
     return makEShape(mkChamfer,shape,op);
@@ -2528,14 +2576,14 @@ TopoShape &TopoShape::makEShape(BRepOffsetAPI_MakePipeShell &mkShape,
         const std::vector<TopoShape> &source, const char *op)
 {
     if(!op) op = TOPOP_PIPE_SHELL;
-    return makEShape(mkShape,source,op);
+    return makESHAPE(mkShape.Shape(),MapperMaker(mkShape),source,op);
 }
 
 TopoShape &TopoShape::makEShape(BRepFeat_MakePrism &mkShape, 
         const TopoShape &source, const char *op) 
 {
     if(!op) op = TOPOP_PRISM;
-    return makEShape(mkShape,source,op);
+    return makESHAPE(mkShape.Shape(),MapperMaker(mkShape),{source},op);
 }
 
 TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoShape> &_faces,

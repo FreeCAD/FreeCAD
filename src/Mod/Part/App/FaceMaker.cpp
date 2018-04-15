@@ -154,68 +154,42 @@ void Part::FaceMaker::Build()
 }
 
 void Part::FaceMaker::postBuild() {
-    int tagCount = 0;
-    long tag = 0;
-    for(auto &sh : mySourceShapes) {
-        if(sh.Tag > tag) {
-            tag = sh.Tag;
-            ++tagCount;
-        }
-    }
-    const char *op = this->MyOp;
-    if(tagCount==1)
-        this->myTopoShape.Tag = tag;
-    else if(!op) 
-        op = TOPOP_FACE;
     this->myTopoShape.setShape(this->myShape);
-    this->myTopoShape.Hasher = App::StringHasherRef();
-    this->myTopoShape.mapSubElement(this->mySourceShapes,op);
+    this->myTopoShape.Hasher = this->MyHasher;
+    this->myTopoShape.mapSubElement(this->mySourceShapes);
     int i = 0;
     std::ostringstream ss;
-    if(!this->myTopoShape.Hasher)
-        this->myTopoShape.Hasher = this->MyHasher;
+    const char *op = this->MyOp;
     if(!op) op = TOPOP_FACE;
-    std::string prefix(op);
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
-    if(faces.size()>1) {
-        // name the face using the edges of its outer wire, but only name them
-        // if there are more than one face
-        for(auto &face : faces) {
-            ++i;
-            TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
-            wire.mapSubElement(face,0);
-            std::set<std::string> edgeNames;
-            int count = wire.countSubShapes(TopAbs_EDGE);
-            for(int i=1;i<=count;++i) {
-                std::string element("Edge");
-                element += std::to_string(i);
-                const char *name = face.getElementName(element.c_str(),true);
-                if(name == element) {
-                    // only name the face if all edges are named
-                    edgeNames.clear();
-                    break;
-                }
-                edgeNames.insert(name);
+    // name the face using the edges of its outer wire, but only name them
+    // if there are more than one face
+    for(auto &face : faces) {
+        ++i;
+        TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
+        wire.mapSubElement(face);
+        std::set<std::string> edgeNames;
+        int count = wire.countSubShapes(TopAbs_EDGE);
+        for(int i=1;i<=count;++i) {
+            std::string element("Edge");
+            element += std::to_string(i);
+            const char *name = face.getElementName(element.c_str(),true);
+            if(name == element) {
+                // only name the face if all edges are named
+                edgeNames.clear();
+                break;
             }
-            if(edgeNames.empty()) continue;
-            ss.str("");
-            ss << '(';
-            bool first=true;
-            for(auto &name : edgeNames) {
-                if(first)
-                    first=false;
-                else
-                    ss << ',';
-                ss << name;
-            }
-            ss << ')';
-            std::string faceName = ss.str();        
-            ss.str("");
-            ss << "Face" << i;
-            this->myTopoShape.setElementName(ss.str().c_str(),faceName.c_str(),prefix.c_str());
+            edgeNames.insert(name);
         }
-        this->myTopoShape.initCache(true);
+        if(edgeNames.empty())
+            continue;
+        ss.str("");
+        ss << "Face" << i;
+        std::vector<std::string> names;
+        names.insert(names.end(),edgeNames.begin(),edgeNames.end());
+        this->myTopoShape.setElementComboName(ss.str().c_str(),names,op);
     }
+    this->myTopoShape.initCache(true);
     this->Done();
 }
 

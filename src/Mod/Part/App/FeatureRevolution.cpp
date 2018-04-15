@@ -193,7 +193,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);
 #else
-        TopoShape revolve(getID(),getDocument()->getStringHasher());
+        TopoShape revolve(0,getDocument()->getStringHasher());
         revolve.makERevolve(sourceShape,revAx,angle,Solid.getValue()?FaceMakerClass.getValue():0);
         if (revolve.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");

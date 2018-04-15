@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     auto shape = Feature::getTopoShape(source);
     if(shape.isNull())
         return new App::DocumentObjectExecReturn("Invalid source link");
-    this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makEOffset(
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEOffset(
                 shape,offset,tol,inter,self,mode,join,fill));
 #endif
     return App::DocumentObject::StdReturn;
@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
     auto shape = Feature::getTopoShape(source);
     if(shape.isNull())
         return new App::DocumentObjectExecReturn("Invalid source link");
-    this->Shape.setValue(TopoShape(getID(),getDocument()->getStringHasher()).makEOffset2D(
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEOffset2D(
                 shape,offset,join,fill,mode==0,inter));
 #endif
     return App::DocumentObject::StdReturn;
