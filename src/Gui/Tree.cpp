@@ -1265,8 +1265,17 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, const Gui::HighlightMode& high, bool set)
 {
+
     FOREACH_ITEM(item,obj)
         QFont f = item->font(0);
+
+        auto lightblue = [&item, &set](){
+            if (set)
+                item->setBackgroundColor(0,QColor(230,230,255));
+            else
+                item->setData(0, Qt::BackgroundColorRole,QVariant());
+        };
+
         switch (high) {
         case Gui::Bold: f.setBold(set);             break;
         case Gui::Italic: f.setItalic(set);         break;
@@ -1279,10 +1288,12 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;
         case Gui::LightBlue:
-            if (set)
-                item->setBackgroundColor(0,QColor(230,230,255));
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
+            lightblue();
+            break;
+        case Gui::UnderlinedBoldLightBlue:
+            f.setBold(set);
+            f.setUnderline(set);
+            lightblue();
             break;
         default:
             break;

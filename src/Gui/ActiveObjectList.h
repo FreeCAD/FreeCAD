@@ -55,7 +55,7 @@ namespace Gui
 			std::map<std::string, App::DocumentObject*>::const_iterator pos = _ObjectMap.find(name);
 			return  pos == _ObjectMap.end() ? 0 : dynamic_cast<_T>(pos->second);
 		}
-		void setObject(App::DocumentObject*, const char*, const Gui::HighlightMode& m = Gui::LightBlue);
+		void setObject(App::DocumentObject*, const char*, const Gui::HighlightMode& m = Gui::UnderlinedBoldLightBlue);
 		bool hasObject(const char*)const;
                 void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
 	protected:
