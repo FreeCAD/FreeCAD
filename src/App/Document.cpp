@@ -1617,17 +1617,24 @@ StringHasherRef Document::getStringHasher(int idx) const {
     return hasher;
 }
 
-static Document::ExportStatus _DocExporting;
+struct DocExportStatus {
+    Document::ExportStatus status;
+    std::set<const App::DocumentObject*> objs;
+};
+
+static DocExportStatus _ExportStatus;
 
 // Exception-safe exporting status setter
 class DocumentExporting {
 public:
-    DocumentExporting(bool keepExternal) {
-        _DocExporting = keepExternal?Document::ExportKeepExternal:Document::Exporting;
+    DocumentExporting(bool keepExternal, const std::vector<App::DocumentObject*> &objs) {
+        _ExportStatus.status = keepExternal?Document::ExportKeepExternal:Document::Exporting;
+        _ExportStatus.objs.insert(objs.begin(),objs.end());
     }
 
     ~DocumentExporting() {
-        _DocExporting = Document::NotExporting;
+        _ExportStatus.status = Document::NotExporting;
+        _ExportStatus.objs.clear();
     }
 };
 
@@ -1636,14 +1643,17 @@ public:
 // at the same time. I see no benefits in distinguish which documents are
 // exporting, so just use a static variable for global status. But the
 // implementation can easily be changed here if necessary.
-Document::ExportStatus Document::isExporting() const {
-    return _DocExporting;
+Document::ExportStatus Document::isExporting(const App::DocumentObject *obj) const {
+    if(_ExportStatus.status!=Document::NotExporting &&
+       _ExportStatus.objs.find(obj)!=_ExportStatus.objs.end())
+        return _ExportStatus.status;
+    return Document::NotExporting;
 }
 
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
                              std::ostream& out, bool keepExternal)
 {
-    DocumentExporting exporting(keepExternal);
+    DocumentExporting exporting(keepExternal,obj);
     d->hashers.clear();
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -1751,7 +1761,7 @@ Document::readObjects(Base::XMLReader& reader)
 
         // To prevent duplicate name when export/import of objects from
         // external documents, we append those external object name with
-        // @<doccument name>. Before importing (here means we are called by
+        // @<document name>. Before importing (here means we are called by
         // importObjects), we shall strip the postfix. What the caller
         // (MergeDocument) sees is still the unstripped name mapped to a new
         // internal name, and the rest of the link properties will be able to

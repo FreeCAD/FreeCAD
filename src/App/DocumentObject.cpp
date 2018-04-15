@@ -157,11 +157,17 @@ const char *DocumentObject::getNameInDocument(void) const
     return pcNameInDocument->c_str();
 }
 
+int DocumentObject::isExporting() const {
+    if(!getDocument() || !getNameInDocument())
+        return 0;
+    return getDocument()->isExporting(this);
+}
+
 std::string DocumentObject::getExportName(bool forced) const {
     if(!pcNameInDocument)
         return std::string();
 
-    if(!forced && !getDocument()->isExporting())
+    if(!forced && !isExporting())
         return *pcNameInDocument;
 
     // '@' is an invalid character for an internal name, which ensures the

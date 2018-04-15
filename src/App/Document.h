@@ -181,7 +181,7 @@ public:
         Exporting,
         ExportKeepExternal,
     };
-    ExportStatus isExporting() const;
+    ExportStatus isExporting(const App::DocumentObject *obj) const;
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&, bool keepExternal=false);
     void exportGraphviz(std::ostream&) const;
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);

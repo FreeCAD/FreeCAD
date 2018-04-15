@@ -1472,7 +1472,7 @@ void PropertyString::Save (Base::Writer &writer) const
     std::string val;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     if(obj && obj->getNameInDocument() && 
-       obj->getDocument()->isExporting() && 
+       obj->isExporting() && 
        &obj->Label==this && 
        !obj->allowDuplicateLabel() &&
        _cValue==obj->getNameInDocument())

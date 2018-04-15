@@ -237,7 +237,7 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         }
         std::string version;
         // If exporting, do not export mapped element name, but still make a mark
-        if(owner && !owner->getDocument()->isExporting()) {
+        if(owner && !owner->isExporting()) {
             auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
             if(geofeature)
                 version = geofeature->getElementMapVersion();

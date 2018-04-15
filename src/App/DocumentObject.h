@@ -144,6 +144,8 @@ public:
     void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
     //@}
 
+    int isExporting() const;
+
     /** Child element handling
      */
     //@{

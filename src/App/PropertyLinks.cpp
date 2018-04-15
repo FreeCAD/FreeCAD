@@ -520,8 +520,8 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         if (child)
             values.push_back(child);
         else if (reader.isVerbose())
-            Base::Console().Warning("Lost link to '%s' while loading, maybe "
-            "an object was not loaded correctly\n", name.c_str());
+            FC_WARN("Lost link to " << name 
+                    << " while loading, maybe an object was not loaded correctly");
     }
 
     reader.readEndElement("LinkList");
@@ -865,7 +865,8 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         <<  internal_name <<"\" count=\"" <<  _cSubList.size();
     writer.Stream() << "\">" << std::endl;
     writer.incInd();
-    bool exporting = _pcLinkSub&&_pcLinkSub->getNameInDocument()&&_pcLinkSub->getDocument()->isExporting();
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    bool exporting = owner && owner->isExporting();
     for(unsigned int i = 0;i<_cSubList.size(); i++) {
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
@@ -908,8 +909,8 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
             if (reader.isVerbose()) {
-                Base::Console().Warning("Lost link to '%s' while loading, maybe "
-                                        "an object was not loaded correctly\n",name.c_str());
+                FC_WARN("Lost link to " << name 
+                        << " while loading, maybe an object was not loaded correctly");
             }
         }
     }
@@ -1443,11 +1444,12 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
     }
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count <<"\">" << endl;
     writer.incInd();
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    bool exporting = owner && owner->isExporting();
     for (int i = 0; i < getSize(); i++) {
         auto obj = _lValueList[i];
         if(!obj || !obj->getNameInDocument())
             continue;
-        bool exporting = obj->getDocument()->isExporting();
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
@@ -2170,7 +2172,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
     // 'value' whenver possible.
     const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
 
-    auto exporting = owner->getDocument()->isExporting();
+    auto exporting = owner->isExporting();
     if(_pcLink && exporting==Document::Exporting) {
         // this means, we are exporting with all dependency included. So, store as
         // local object
