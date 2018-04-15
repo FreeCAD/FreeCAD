@@ -1032,6 +1032,7 @@ bool Application::activateWorkbench(const char* name)
     if (oldWb && oldWb->name() == name)
         return false; // already active
 
+    Base::PyGILStateLocker lock;
     // we check for the currently active workbench and call its 'Deactivated'
     // method, if available
     PyObject* pcOldWorkbench = 0;
@@ -1040,7 +1041,6 @@ bool Application::activateWorkbench(const char* name)
     }
 
     // get the python workbench object from the dictionary
-    Base::PyGILStateLocker lock;
     PyObject* pcWorkbench = 0;
     pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, name);
     // test if the workbench exists
