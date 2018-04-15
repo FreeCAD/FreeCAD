@@ -240,6 +240,11 @@ void SketchObject::buildShape() {
     Shape.setValue(Part::TopoShape().makEWires(shapes,TOPOP_SKETCH));
 }
 
+static bool hasSketchMarker(const char *name) {
+    static std::string marker(Part::TopoShape::elementMapPrefix()+TOPOP_SKETCH);
+    return strstr(name,marker.c_str())!=0;
+}
+
 int SketchObject::hasConflicts(void) const
 {    
     if (lastDoF < 0) // over-constrained sketch
@@ -6483,7 +6488,7 @@ App::DocumentObject *SketchObject::getSubObject(
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
-    if(!subname || !subname[0] || (mapped && boost::starts_with(mapped,TOPOP_SKETCH))) {
+    if(!subname || !subname[0] || (mapped && hasSketchMarker(mapped))) {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
     if(!mapped) {
@@ -6578,7 +6583,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
         return ret;
     }
 
-    if(boost::starts_with(mapped,TOPOP_SKETCH))
+    if(hasSketchMarker(mapped))
         return Part2DObject::getElementName(name,type);
 
     ret.second = checkSubName(name);
@@ -6596,7 +6601,6 @@ std::pair<std::string,std::string> SketchObject::getElementName(
 
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const {
     Part::TopoShape shape(geo->toShape());
-    shape.Tag = getID();
     shape.setElementName("Edge1",name);
     TopTools_IndexedMapOfShape vmap;
     TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
@@ -6901,18 +6905,28 @@ bool SketchExport::update() {
         // we may have our own support.
         auto shape = Part::Feature::getTopoShape(base,ref.c_str(),true,0,0,false,false);
         if(shape.isNull()) continue;
-        shape.Tag = getID();
-        if(!shape.countSubShapes("Edge"))
-            points.push_back(shape);
+        shape.Tag = 0;
+        if(!shape.hasSubShape(TopAbs_EDGE))
+            points.push_back(shape.makECopy(TOPOP_SKETCH_EXPORT));
         else
             shapes.push_back(shape);
     }
-    Part::TopoShape res(getID());
+    Part::TopoShape res;
     if(shapes.size()) {
         res.makEWires(shapes,TOPOP_SKETCH_EXPORT);
+        shapes.clear();
         if(points.size()) {
-            points.push_back(res);
-            res.makECompound(points);
+            // Check if the vertex is already included in the wires
+            for(auto &point : points) {
+                auto name = point.getElementName("Vertex1",true);
+                if(res.getElementName(name,2)!=name)
+                    continue;
+                shapes.push_back(point);
+            }
+            if(shapes.size()) {
+                shapes.push_back(res);
+                res.makECompound(shapes);
+            }
         }
     }else if(points.empty())
         return false;
