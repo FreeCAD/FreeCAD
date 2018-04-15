@@ -361,9 +361,7 @@ std::string ComplexGeoData::hashElementName(
     if(!pos)
         return name;
     sid.push_back(Hasher->getID(name));
-    std::ostringstream ss;
-    ss << '#' << std::hex << sid.back()->value();
-    return ss.str();
+    return sid.back()->toString();
 }
 
 std::string ComplexGeoData::dehashElementName(const char *name) const {
@@ -373,11 +371,8 @@ std::string ComplexGeoData::dehashElementName(const char *name) const {
         name += elementMapPrefix().size();
     if(!Hasher)
         return name;
-    std::istringstream iss(name);
-    char sep = 0;
-    long id = -1;
-    iss >> sep >> std::hex >> id;
-    if(!iss.eof() || sep!='#')
+    long id = App::StringID::fromString(name,true);
+    if(id<0)
         return name;
     auto sid = Hasher->getID(id);
     if(!sid) {

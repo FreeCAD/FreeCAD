@@ -51,8 +51,18 @@ PyObject *StringID::getPyObject() {
 
 std::string StringID::toString() const {
     std::ostringstream ss;
-    ss << '#' << value();
+    ss << '#' << std::hex << value();
     return ss.str();
+}
+
+long StringID::fromString(const char *name, bool eof) {
+    std::istringstream iss(name);
+    char sep = 0;
+    long id = -1;
+    iss >> sep >> std::hex >> id;
+    if((eof && !iss.eof()) || sep!='#')
+        return -1;
+    return id;
 }
 
 std::string StringID::dataToText() const {

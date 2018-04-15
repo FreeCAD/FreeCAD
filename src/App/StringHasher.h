@@ -44,6 +44,8 @@ public:
     bool isHashed() const {return _hashed;}
     virtual PyObject *getPyObject() override;
     std::string toString() const;
+    static long fromString(const char *name, bool eof=true);
+
     std::string dataToText() const;
 private:
     long _id;

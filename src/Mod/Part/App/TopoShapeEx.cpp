@@ -2081,7 +2081,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             if(Hasher) {
                 sids.push_back(Hasher->getID(ss.str().c_str()));
                 ss.str("");
-                ss << '#' << std::hex << sids.back()->value() << std::dec;
+                ss << sids.back()->toString();
             }
             postfix = ss.str();
         }
@@ -2229,7 +2229,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 if(Hasher) {
                     sids.push_back(Hasher->getID(ss.str().c_str()));
                     ss.str("");
-                    ss << lowerPostfix() << '#' << std::hex << sids.back()->value() << std::dec;
+                    ss << lowerPostfix() << sids.back()->toString();
                 }
             }
             processName(newName,ss,sids,op);
