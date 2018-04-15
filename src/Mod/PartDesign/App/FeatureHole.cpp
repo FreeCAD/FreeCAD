@@ -1199,7 +1199,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         std::vector<TopoShape> holes;
 
-        TopoShape result(getID(),getDocument()->getStringHasher());
+        TopoShape result(0,getDocument()->getStringHasher());
 
         TopTools_IndexedMapOfShape edgeMap;
         TopExp::MapShapes(profileshape.getShape(), TopAbs_EDGE, edgeMap);
@@ -1239,6 +1239,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
                 name = std::string(mapped);
 
             TopoShape hole = TopoShape(protoHole).makECopy(mapped);
+            hole.Tag = profileshape.Tag;
             hole = hole.makETransform(localSketchTransformation);
             holes.push_back(hole);
 

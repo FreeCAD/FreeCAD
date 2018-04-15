@@ -29,6 +29,7 @@
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
 #include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -41,6 +42,8 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 
 using namespace PartDesignGui;
@@ -67,10 +70,34 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     ui->filletRadius->selectNumber();
     ui->filletRadius->bind(pcFillet->Radius);
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
-    std::vector<std::string> strings = pcFillet->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
-    {
-        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+    const auto &subs = pcFillet->Base.getShadowSubs();
+    const auto &baseShape = pcFillet->getTopoShape(pcFillet->Base.getValue());
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+    bool touched = false;
+    for(auto &sub : subs) {
+        if(sub.first.empty() || baseShape.isNull()) {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        auto &ref = sub.first;
+        Part::TopoShape edge;
+        try {
+            edge = baseShape.getSubShape(ref.c_str());
+        }catch(...) {}
+        if(!edge.isNull())  {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        FC_WARN("missing element reference: " << pcFillet->getNameInDocument() << "." << ref);
+        for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
+            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                continue;
+            FC_WARN("guess element reference: " << ref << " -> " << name.first);
+            ui->listWidgetReferences->addItem(QString::fromStdString(name.second));
+            touched = true;
+        }
     }
 
     QMetaObject::connectSlotsByName(this);
@@ -87,6 +114,9 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    if(touched)
+        ui->buttonRefAdd->click();
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

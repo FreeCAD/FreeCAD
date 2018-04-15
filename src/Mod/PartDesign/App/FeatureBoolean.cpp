@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     if(!baseBody)
          return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
-    TopoShape result(getID(),getDocument()->getStringHasher());
+    TopoShape result(0,getDocument()->getStringHasher());
     for (auto tool : tools)
     {
         auto shape = getTopoShape(tool);

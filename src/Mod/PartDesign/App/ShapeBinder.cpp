@@ -196,8 +196,6 @@ void SubShapeBinder::updatePlacement(const Base::Matrix4D &mat) {
 
 void SubShapeBinder::update() {
     Part::TopoShape result;
-    result.Tag = getID();
-
     auto obj = Support.getValue();
     if(!obj || !obj->getNameInDocument())
         return;
@@ -217,7 +215,7 @@ void SubShapeBinder::update() {
     if(shapes.empty())
         return;
 
-    result.makECompound(shapes,TOPOP_SHAPEBINDER);
+    result = Part::TopoShape(0,getDocument()->getStringHasher()).makECompound(shapes);
 
     bool fused = false;
     if(Fuse.getValue()) {
@@ -225,8 +223,8 @@ void SubShapeBinder::update() {
         // shapes
         auto solids = result.getSubTopoShapes(TopAbs_SOLID);
         if(solids.size()) {
-            result = Part::TopoShape(getID(),getDocument()->getStringHasher()).makEShape(
-                    TOPOP_FUSE,solids,TOPOP_SHAPEBINDER "_U").makERefine();
+            result.makEFuse(solids);
+            result = result.makERefine();
             fused = true;
         }
     } 

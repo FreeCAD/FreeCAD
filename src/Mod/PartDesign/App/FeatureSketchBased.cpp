@@ -187,8 +187,10 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
         if(!shape.hasSubShape(TopAbs_FACE)) {
             if(!shape.hasSubShape(TopAbs_WIRE))
                 shape = shape.makEWires();
-            if(shape.hasSubShape(TopAbs_WIRE))
+            if(shape.hasSubShape(TopAbs_WIRE)) {
+                shape.Hasher = getDocument()->getStringHasher();
                 return shape.makEFace();
+            }
         }
         int count = shape.countSubShapes(TopAbs_FACE);
         if(!count) {

@@ -43,6 +43,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -67,10 +68,34 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     ui->chamferDistance->selectNumber();
     ui->chamferDistance->bind(pcChamfer->Size);
     QMetaObject::invokeMethod(ui->chamferDistance, "setFocus", Qt::QueuedConnection);
-    std::vector<std::string> strings = pcChamfer->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
-    {
-        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+    const auto &subs = pcChamfer->Base.getShadowSubs();
+    const auto &baseShape = pcChamfer->getTopoShape(pcChamfer->Base.getValue());
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+    bool touched = false;
+    for(auto &sub : subs) {
+        if(sub.first.empty() || baseShape.isNull()) {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        auto &ref = sub.first;
+        Part::TopoShape edge;
+        try {
+            edge = baseShape.getSubShape(ref.c_str());
+        }catch(...) {}
+        if(!edge.isNull())  {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        FC_WARN("missing element reference: " << pcChamfer->getNameInDocument() << "." << ref);
+        for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
+            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                continue;
+            FC_WARN("guess element reference: " << ref << " -> " << name.first);
+            ui->listWidgetReferences->addItem(QString::fromStdString(name.second));
+            touched = true;
+        }
     }
 
     QMetaObject::connectSlotsByName(this);
@@ -87,6 +112,9 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    if(touched)
+        ui->buttonRefAdd->click();
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

@@ -164,8 +164,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //build up multisections
         auto multisections = Sections.getValues();
         std::vector<std::vector<TopoShape>> wiresections;
+        wiresections.reserve(wires.size());
         for(TopoShape& wire : wires)
-            wiresections.push_back(std::vector<TopoShape>(1, wire));
+            wiresections.emplace_back(1, wire);
         //maybe we need a sacling law
         Handle(Law_Function) scalinglaw;
         
@@ -179,6 +180,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 auto shape = getTopoShape(obj);
                 if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
                     return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
+                int i=0;
+                for(auto &wire : shape.getSubTopoShapes(TopAbs_WIRE))
+                    wiresections[i++].push_back(wire);
             }
         }
         /*//build the law functions instead
@@ -225,7 +229,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("Pipe could not be built");
 
-            TopoShape shell(getID(),getDocument()->getStringHasher());
+            TopoShape shell(0,getDocument()->getStringHasher());
             shell.makEShape(mkPS,wires);
             shells.push_back(shell);
             
@@ -234,15 +238,25 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 TopTools_ListOfShape sim;
                 mkPS.Simulate(2, sim);
 
-                std::vector<TopoShape> wires = {TopoShape(sim.First()),TopoShape(sim.Last())};
-                shell.mapSubElementsTo(wires);
-
-                frontwires.push_back(wires.front());
-                backwires.push_back(wires.back());
+                TopoShape front(sim.First());
+                if(front.countSubShapes(TopAbs_EDGE)==wires.front().countSubShapes(TopAbs_EDGE)) {
+                    front = wires.front();
+                    front.setShape(sim.First(),false);
+                }else
+                    front.Tag = -wires.front().Tag;
+                TopoShape back(sim.Last());
+                if(back.countSubShapes(TopAbs_EDGE)==wires.back().countSubShapes(TopAbs_EDGE)) {
+                    back = wires.back();
+                    back.setShape(sim.Last(),false);
+                }else
+                    back.Tag = -wires.back().Tag;
+                    
+                frontwires.push_back(front);
+                backwires.push_back(back);
             }
         }
 
-        TopoShape result(getID(),getDocument()->getStringHasher());
+        TopoShape result(0,getDocument()->getStringHasher());
 
         if (!frontwires.empty()) {
             // build the end faces, sew the shell and build the final solid
@@ -281,7 +295,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             return App::DocumentObject::StdReturn;
         }
 
-        TopoShape boolOp(getID(),getDocument()->getStringHasher());
+        TopoShape boolOp(0,getDocument()->getStringHasher());
 
         if(getAddSubType() == FeatureAddSub::Additive) {
             try {

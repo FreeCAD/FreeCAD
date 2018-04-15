@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
     this->positionByBaseFeature();
     try {
-        TopoShape shape(getID(),getDocument()->getStringHasher());
+        TopoShape shape(0,getDocument()->getStringHasher());
         shape.makEChamfer(baseShape,edges,size,size);
         if (shape.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");

@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
         sketchshape = sketchshape.makETransform(invTrsf);
 
-        TopoShape prism(getID(),getDocument()->getStringHasher());
+        TopoShape prism(0,getDocument()->getStringHasher());
         std::string method(Type.getValueAsString());                
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
               // Note: This will return an unlimited planar face if support is a datum plane
@@ -216,7 +216,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
-            TopoShape result(getID(),getDocument()->getStringHasher());
+            TopoShape result(0,getDocument()->getStringHasher());
             try {
                 result.makEFuse({base,prism});
             }catch(Standard_Failure &){

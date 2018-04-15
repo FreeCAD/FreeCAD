@@ -104,8 +104,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             return new App::DocumentObjectExecReturn("Loft: At least one section is needed");
         
         std::vector<std::vector<TopoShape>> wiresections;
+        wiresections.reserve(wires.size());
         for(auto& wire : wires)
-            wiresections.push_back(std::vector<TopoShape>(1, wire));
+            wiresections.emplace_back(1,wire);
                 
         for(App::DocumentObject* obj : multisections) {
             auto shape = getTopoShape(obj);
@@ -113,7 +114,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 return  new App::DocumentObjectExecReturn("Loft: invalid linked feature");
             if(shape.countSubShapes(TopAbs_WIRE)!=wiresections.size())
                 return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
-            
+            int i=0;
+            for(auto &wire : shape.getSubTopoShapes(TopAbs_WIRE))
+                wiresections[i++].push_back(wire);
         }
         
         //build all shells
@@ -132,7 +135,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 return new App::DocumentObjectExecReturn("Loft could not be built");
             
             //build the shell use simulate to get the top and bottom wires in an easy way
-            shells.push_back(TopoShape(getID(),hasher).makEShape(mkTS,wires));
+            shells.push_back(TopoShape(0,hasher).makEShape(mkTS,wires));
         }
         
         //build the top and bottom face, sew the shell and build the final solid
@@ -144,7 +147,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         for(auto& wires : wiresections)
             backwires.push_back(wires.back());
         
-        auto back = TopoShape(getID(),hasher).makEFace(backwires);
+        auto back = TopoShape(0,hasher).makEFace(backwires);
         
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
@@ -155,7 +158,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         
         sewer.Perform();
 
-        TopoShape result(getID(),hasher);
+        TopoShape result(0,hasher);
         shells.push_back(front);
         shells.push_back(back);
         result = result.makEShape(sewer,shells);
@@ -184,7 +187,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         
         if(getAddSubType() == FeatureAddSub::Additive) {
             try {
-                result = TopoShape(getID(),hasher).makEFuse({base,result});
+                result = TopoShape(0,hasher).makEFuse({base,result});
             }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Loft: Adding the loft failed");
             }
@@ -200,7 +203,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             try {
-                result = TopoShape(getID(),hasher).makECut({base,result});
+                result = TopoShape(0,hasher).makECut({base,result});
             }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
             }

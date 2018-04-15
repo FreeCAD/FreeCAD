@@ -175,12 +175,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!PrismMaker.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
 
-            TopoShape prism(getID(),getDocument()->getStringHasher());
+            TopoShape prism(0,getDocument()->getStringHasher());
             prism.makEShape(PrismMaker,{base,profileshape});
 
             // And the really expensive way to get the SubShape...
             try {
-                TopoShape result(getID(),getDocument()->getStringHasher());
+                TopoShape result(0,getDocument()->getStringHasher());
                 result.makECut({base,prism});
                 // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
                 result = refineShapeIfActive(result);
@@ -190,7 +190,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
             this->Shape.setValue(getSolid(prism));
         } else {
-            TopoShape prism(getID(),getDocument()->getStringHasher());
+            TopoShape prism(0,getDocument()->getStringHasher());
             generatePrism(prism, profileshape, method, dir, L, L2,
                         Midplane.getValue(), Reversed.getValue());
 
@@ -202,7 +202,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             this->AddSubShape.setValue(prism);
 
             // Cut the SubShape out of the base feature
-            TopoShape result(getID(),getDocument()->getStringHasher());
+            TopoShape result(0,getDocument()->getStringHasher());
             try {
                 result.makECut({base,prism});
             }catch(Standard_Failure &){

@@ -28,6 +28,7 @@
 
 #include "FeatureThickness.h"
 #include <Base/Exception.h>
+#include <App/Document.h>
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 
@@ -61,9 +62,9 @@ short Thickness::mustExecute() const
 App::DocumentObjectExecReturn *Thickness::execute(void)
 {
     // Base shape
-    Part::TopoShape TopShape;
+    Part::TopoShape baseShape;
     try {
-        TopShape = getBaseShape();
+        baseShape = getBaseShape();
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -71,7 +72,13 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     std::vector<TopoShape> closingFaces;
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
     for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
-        closingFaces.push_back(TopShape.getSubShape(it->c_str()));
+        TopoDS_Shape face;
+        try {
+            face = baseShape.getSubShape(it->c_str());
+        }catch(...){}
+        if(face.IsNull())
+            return new App::DocumentObjectExecReturn("Invalid face reference");
+        closingFaces.push_back(face);
     }
 
     bool reversed = Reversed.getValue();
@@ -83,7 +90,12 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     if(join == 1)
         join = 2;
 
-    this->Shape.setValue(getSolid(TopShape.makEThickSolid(
-                    closingFaces, thickness, tol, false, false, mode, join)));
+    TopoShape result(0,getDocument()->getStringHasher());
+    try {
+        result.makEThickSolid(baseShape, closingFaces, thickness, tol, false, false, mode, join);
+    }catch(Standard_Failure &) {
+        return new App::DocumentObjectExecReturn("Failed to make thick solid");
+    }
+    this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }

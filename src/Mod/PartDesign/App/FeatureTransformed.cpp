@@ -241,6 +241,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     rej_it_map nointersect_trsfms;
     std::ostringstream ss;
 
+    TopoShape result;
+
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
@@ -255,6 +257,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
             shape = feature->AddSubShape.getShape();
+            shape.Tag = -getID();
             if (shape.isNull())
                 return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
             
@@ -274,12 +277,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for (int idx=1; t != transformations.end(); ++t,++idx) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
-            if(idx!=1) {
-                ss.str("");
-                ss << 'T' << idx;
-                shape = shape.makECopy(ss.str().c_str());
-            }else
-                shape = shape.makECopy();
+            ss.str("");
+            ss << 'I' << idx;
+            shape = shape.makECopy(ss.str().c_str());
             if (shape.isNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
@@ -322,9 +322,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     //TopoDS_Shape result;
                     
                     if (fuse) {
-                        support = support.makEFuse(shape);
+                        result.makEFuse({support,shape});
                         // we have to get the solids (fuse sometimes creates compounds)
-                        support = this->getSolid(support);
+                        support = this->getSolid(result);
                         // lets check if the result is a solid
                         if (support.isNull())
                             return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
@@ -341,7 +341,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
                         }*/
                     } else {
-                        support = support.makECut(shape);
+                        result.makECut({support,shape});
+                        support = result;
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
                         {
@@ -365,13 +366,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
         }
     }
-    support = refineShapeIfActive(support);
+    result = refineShapeIfActive(result);
 
     for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
         for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             rejected[it->first].push_back(**it2);
 
-    this->Shape.setValue(getSolid(support));
+    this->Shape.setValue(getSolid(result));
 
     if (rejected.size() > 0) {
         return new App::DocumentObjectExecReturn("Transformation failed");

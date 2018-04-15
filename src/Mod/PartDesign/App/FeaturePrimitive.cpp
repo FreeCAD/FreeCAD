@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
 
-        TopoShape primitiveShape(getID());
+        TopoShape primitiveShape(-getID());
         primitiveShape.setShape(primitive);
         
         //if we have no base we just add the standard primitive shape
@@ -108,7 +108,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
              return  App::DocumentObject::StdReturn;
         }
          
-        TopoShape boolOp(getID(),getDocument()->getStringHasher());
+        TopoShape boolOp(0,getDocument()->getStringHasher());
 
         if(getAddSubType() == FeatureAddSub::Additive) {
             try {

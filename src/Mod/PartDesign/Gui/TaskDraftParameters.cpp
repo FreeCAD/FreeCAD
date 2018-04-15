@@ -30,6 +30,7 @@
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
 #include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -43,6 +44,8 @@
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -71,10 +74,34 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     bool r = pcDraft->Reversed.getValue();
     ui->checkReverse->setChecked(r);
 
-    std::vector<std::string> strings = pcDraft->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); ++i)
-    {
-        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+    const auto &subs = pcDraft->Base.getShadowSubs();
+    const auto &baseShape = pcDraft->getTopoShape(pcDraft->Base.getValue());
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+    bool touched = false;
+    for(auto &sub : subs) {
+        if(sub.first.empty() || baseShape.isNull()) {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        auto &ref = sub.first;
+        Part::TopoShape edge;
+        try {
+            edge = baseShape.getSubShape(ref.c_str());
+        }catch(...) {}
+        if(!edge.isNull())  {
+            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        FC_WARN("missing element reference: " << pcDraft->getNameInDocument() << "." << ref);
+        for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
+            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                continue;
+            FC_WARN("guess element reference: " << ref << " -> " << name.first);
+            ui->listWidgetReferences->addItem(QString::fromStdString(name.second));
+            touched = true;
+        }
     }
 
     QMetaObject::connectSlotsByName(this);
@@ -99,12 +126,15 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
-    strings = pcDraft->NeutralPlane.getSubValues();
+    auto strings = pcDraft->NeutralPlane.getSubValues();
     ui->linePlane->setText(getRefStr(ref, strings));
 
     ref = pcDraft->PullDirection.getValue();
     strings = pcDraft->PullDirection.getSubValues();
     ui->lineLine->setText(getRefStr(ref, strings));
+
+    if(touched)
+        ui->buttonRefAdd->click();
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

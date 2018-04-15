@@ -143,9 +143,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         }        
 
         // revolve the face to a solid
-        TopoShape result(getID(),getDocument()->getStringHasher());
+        if(!sketchshape.Hasher)
+            sketchshape.Hasher = getDocument()->getStringHasher();
+        TopoShape result;
         try {
-            result.makERevolve(sketchshape, gp_Ax1(pnt, dir), angle);
+            result = sketchshape.makERevolve(gp_Ax1(pnt, dir), angle);
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
         }
@@ -156,9 +158,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (!base.isNull()) {
             try {
                 // Let's call algorithm computing a fuse operation:
-                result = result.makEFuse({base,result});
+                result = TopoShape(0,result.Hasher).makEFuse({base,result});
             }catch(Standard_Failure &) {
-                throw Base::Exception("Fusion with base feature failed");
+                return new App::DocumentObjectExecReturn("Fusion with base feature failed");
             }
             result = refineShapeIfActive(result);
             this->Shape.setValue(getSolid(result));

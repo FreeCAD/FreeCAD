@@ -115,7 +115,14 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
     Gui::Command::updateActive();
 
-    FCMD_OBJ_HIDE(prm->BaseFeature.getValue());
+    auto base = prm->BaseFeature.getValue();
+    FCMD_OBJ_HIDE(base);
+
+    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "LineColor", base);
+    copyVisual(prm, "PointColor", base);
+    copyVisual(prm, "Transparency", base);
+    copyVisual(prm, "DisplayMode", base);
     
     PartDesignGui::setEdit(prm,pcActiveBody);
 }
@@ -261,12 +268,18 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
     Gui::Command::updateActive();
 
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "LineColor", prevSolid);
+    copyVisual(Feat, "PointColor", prevSolid);
+    copyVisual(Feat, "Transparency", prevSolid);
+    copyVisual(Feat, "DisplayMode", prevSolid);
+
     if ( isActiveObjectValid() ) {
         // TODO  (2015-08-05, Fat-Zer)
         FCMD_OBJ_HIDE(prevSolid);
     }
 
-    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
     PartDesignGui::setEdit(Feat,pcActiveBody);
 }
 

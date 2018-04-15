@@ -139,11 +139,20 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         // revolve the face to a solid
         if(!sketchshape.Hasher)
             sketchshape.Hasher = getDocument()->getStringHasher();
-        auto result = sketchshape.makERevolve(gp_Ax1(pnt, dir), angle);
-        result = refineShapeIfActive(result);
+        TopoShape result;
+        try {
+            result = sketchshape.makERevolve(gp_Ax1(pnt, dir), angle);
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
+        }
         this->AddSubShape.setValue(result);
 
-        auto solRes = this->getSolid(base.makECut(result));
+        try {
+            result = TopoShape(0,getDocument()->getStringHasher()).makECut({base,result});
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Failed to cut base feature");
+        }
+        auto solRes = this->getSolid(result);
         if (solRes.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 

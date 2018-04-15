@@ -265,7 +265,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         //       wire, though.
         // BRepFeat_MakeDPrism requires a support for the operation but will probably support multiple
         //       wires in the sketch
-        TopoShape shape(getID(),getDocument()->getStringHasher());
+        TopoShape shape(0,getDocument()->getStringHasher());
         try {
             shape.makEDraft(baseShape,faces,pullDirection,angle,neutralPlane);
         }catch(Standard_Failure &) {
