@@ -367,7 +367,7 @@ class _TaskPanelFemResultShow:
                 self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
-            d = zip(*self.result_obj.DisplacementVectors)
+            d = list(zip(*self.result_obj.DisplacementVectors))  # list is needed, as zib-object is not subscriptable in py3
             displacements = list(d[match[disp_type]])
             if self.suitable_results:
                 self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, displacements)
@@ -473,7 +473,7 @@ class _TaskPanelFemResultShow:
     def reset_mesh_color(self):
         self.mesh_obj.ViewObject.NodeColor = {}
         self.mesh_obj.ViewObject.ElementColor = {}
-        node_numbers = self.mesh_obj.FemMesh.Nodes.keys()
+        node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
         zero_values = [0] * len(node_numbers)
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
