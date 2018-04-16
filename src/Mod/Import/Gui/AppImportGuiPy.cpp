@@ -543,6 +543,11 @@ private:
             get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
             ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
+#if OCC_VERSION_HEX >= 0x070200
+            // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+            XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+#endif
+
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
