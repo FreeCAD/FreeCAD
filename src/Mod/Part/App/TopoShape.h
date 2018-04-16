@@ -521,7 +521,7 @@ public:
     bool canMapElement(const TopoShape &other) const;
 
     std::vector<std::pair<std::string,std::string> > getRelatedElements(
-            const char *name, bool both=true) const;
+            const char *name, bool both=true, bool sameType=true) const;
 
     long getElementHistory(const std::string &name, 
             std::string *original=0, std::vector<std::string> *history=0) const;

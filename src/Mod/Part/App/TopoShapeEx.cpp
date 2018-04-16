@@ -1909,13 +1909,12 @@ long TopoShape::getElementHistory(const std::string &name,
             ret = name.substr(offset,len);
         }else
             ret = ret.substr(0,len);
-        if(!Hasher) 
-            return tag;
         ret = dehashElementName(ret.c_str());
         long tag2 = 0;
         pos = findTag(ret,&tag2,&len);
-        if(pos==std::string::npos || tag2!=tag)
+        if(pos==std::string::npos || (tag2!=tag && tag!=Tag))
             return tag;
+        tag = tag2;
         if(history)
             history->push_back(ret);
     }
@@ -2605,6 +2604,7 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
             HANDLE_NULL_INPUT;
 
         mkDraft.Init(shape.getShape());
+        done = true;
         for(auto it=faces.begin();it!=faces.end();++it) {
             // TODO: What is the flag for?
             mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
@@ -2627,17 +2627,22 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
 }
 
 std::vector<std::pair<std::string,std::string> > 
-TopoShape::getRelatedElements(const char *_name, bool both) const {
+TopoShape::getRelatedElements(const char *_name, bool both, bool sameType) const {
     std::vector<std::pair<std::string,std::string> > ret;
     std::string name;
+    const char *typeName = 0;
+    TopAbs_ShapeEnum type = TopAbs_SHAPE;
     if(!boost::starts_with(_name,elementMapPrefix()))
         name = _name;
     else {
         _name += elementMapPrefix().size();
-        auto dot = strchr(_name,'.');
-        if(dot)
-            name = std::string(_name,dot-_name);
-        else
+        typeName = strchr(_name,'.');
+        if(typeName) {
+            name = std::string(_name,typeName-_name);
+            ++typeName;
+            if(!sameType)
+                type = shapeType(typeName,true);
+        }else
             name = _name;
     }
     long tag;
@@ -2659,7 +2664,7 @@ TopoShape::getRelatedElements(const char *_name, bool both) const {
         dehashed = ss.str();
     }
     auto element = getElementName(dehashed.c_str(),2);
-    if(element!=dehashed.c_str()) {
+    if(element!=dehashed.c_str() && (type==TopAbs_SHAPE||type==shapeType(element,true))) {
         ret.emplace_back(dehashed,element);
         return ret;
     }
@@ -2675,7 +2680,9 @@ TopoShape::getRelatedElements(const char *_name, bool both) const {
     if(findTag(modName,&tag,&len)!=std::string::npos) {
         modName = modName.substr(0,len+modPostfix().size());
         for(auto &v : getElementNamesWithPrefix(modName.c_str())) {
-            if(boost::ends_with(v.first,postfix)) {
+            if((type==TopAbs_SHAPE||type==shapeType(v.second.c_str(),true)) && 
+               boost::ends_with(v.first,postfix)) 
+            {
                 found = true;
                 ret.push_back(v);
             }
@@ -2686,7 +2693,8 @@ TopoShape::getRelatedElements(const char *_name, bool both) const {
     // the given name
     if(!found && both) {
         for(auto &v : getElementNamesWithPrefix((original+Part::TopoShape::modPostfix()).c_str())) {
-            if(boost::ends_with(v.first,postfix))
+            if((type==TopAbs_SHAPE||type==shapeType(v.second.c_str(),true)) && 
+               boost::ends_with(v.first,postfix))
                 ret.push_back(v);
         }
     }
