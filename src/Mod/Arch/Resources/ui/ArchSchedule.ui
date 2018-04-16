@@ -96,7 +96,7 @@
         <string>Deletes the selected line</string>
        </property>
        <property name="text">
-        <string>Delete</string>
+        <string>Del</string>
        </property>
        <property name="icon">
         <iconset theme="remove">
