@@ -30,6 +30,7 @@
 # include <TopExp_Explorer.hxx>
 # include <boost/bind.hpp>
 # include <cfloat>
+# include <Python.h>
 # include <Inventor/system/inttypes.h>
 #endif
 
