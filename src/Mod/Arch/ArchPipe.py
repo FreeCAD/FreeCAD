@@ -385,7 +385,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             elif round(v2.getAngle(v3),tol) in [0,round(math.pi,tol)]:
                 pair = [v2,v3,v1]
             else:
-                FreeCAD.Console.PrintError(translate("Arch","At least 2 pipes must aligned")+"\n")
+                FreeCAD.Console.PrintError(translate("Arch","At least 2 pipes must align")+"\n")
                 return
             offset = obj.Radius.Value
             v1.multiply(offset)
