@@ -166,18 +166,6 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return ret;
 }
 
-std::string GeoFeature::getElementMapVersion() const {
-    auto prop = getPropertyOfGeometry();
-    if(!prop || !prop->getComplexData()) return std::string();
-    std::ostringstream ss;
-    if(getDocument() && getDocument()->Hasher==prop->getComplexData()->Hasher)
-        ss << "1.";
-    else
-        ss << "0.";
-    ss << prop->getComplexData()->getElementMapVersion();
-    return ss.str();
-}
-
 void GeoFeature::updateElementReference() {
     auto prop = getPropertyOfGeometry();
     if(!prop) return;
@@ -185,7 +173,7 @@ void GeoFeature::updateElementReference() {
     if(!geo || !geo->getElementMapSize()) return;
     auto elementMap = geo->getElementMap();
     bool reset = false;
-    auto version = getElementMapVersion();
+    auto version = getElementMapVersion(prop);
     if(_elementMapVersion.empty()) 
         _elementMapVersion.swap(version);
     else if(_elementMapVersion!=version) {
@@ -205,7 +193,7 @@ void GeoFeature::onChanged(const Property *prop) {
 }
 
 void GeoFeature::onDocumentRestored() {
-    _elementMapVersion = getElementMapVersion();
+    _elementMapVersion = getElementMapVersion(getPropertyOfGeometry());
     if(!getDocument()->testStatus(Document::Status::Importing))
         updateElementReference();
     DocumentObject::onDocumentRestored();

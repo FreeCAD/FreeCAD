@@ -237,13 +237,11 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         }
         std::string version;
         // If exporting, do not export mapped element name, but still make a mark
-        if(owner && !owner->isExporting()) {
-            auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
-            if(geofeature)
-                version = geofeature->getElementMapVersion();
-            else
-                version = _Shape.getElementMapVersion();
-        }
+        if(owner) {
+            if(!owner->isExporting())
+                version = owner->getElementMapVersion(this);
+        }else
+            version = _Shape.getElementMapVersion();
         writer.Stream() << "\" ElementMap=\"" << version;
         writer.Stream() << "\"/>" << std::endl;
 
@@ -277,12 +275,12 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
         }else{
-            auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
-            auto ver = geofeature?geofeature->getElementMapVersion():_Shape.getElementMapVersion();
+            auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
             if(ver!=map_ver) {
                 // version mismatch, signal for regenerating.
                 if(owner && owner->getNameInDocument()) {
-                    FC_WARN("geo element map version changed: " << owner->getNameInDocument());
+                    FC_WARN("geo element map version changed: " << owner->getNameInDocument()
+                            << ", " << ver << " -> " << map_ver);
                     owner->getDocument()->addRecomputeObject(owner);
                 }
             }else

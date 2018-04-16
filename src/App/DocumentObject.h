@@ -222,6 +222,10 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
+    /** Return the element map version of the geometry data stored in the given property
+     */
+    virtual std::string getElementMapVersion(const App::Property *prop) const;
+       
 public:
     /** mustExecute
      *  We call this method to check if the object was modified to

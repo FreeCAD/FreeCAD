@@ -99,15 +99,6 @@ public:
     virtual std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type=Normal) const;
 
-    /** Return the current element map version of this feature
-     *
-     * The naming version should be saved by both this feature, i.e. the owner
-     * of the geometry data, and links to any geometry element of this feature.
-     * In case the version mismatch during restore, we can signal regeneration
-     * of all element names and update their references.
-     */
-    virtual std::string getElementMapVersion() const;
-       
     /** Resolve both the new and old style element name
      *
      * @param obj: top parent object

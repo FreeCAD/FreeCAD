@@ -35,6 +35,7 @@
 #include "DocumentObject.h"
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
+#include "PropertyGeo.h"
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
@@ -940,3 +941,15 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
     }
 }
 
+std::string DocumentObject::getElementMapVersion(const App::Property *_prop) const {
+    auto prop = dynamic_cast<const PropertyComplexGeoData*>(_prop);
+    if(!prop || !prop->getComplexData()) 
+        return std::string();
+    std::ostringstream ss;
+    if(getDocument() && getDocument()->Hasher==prop->getComplexData()->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << prop->getComplexData()->getElementMapVersion();
+    return ss.str();
+}

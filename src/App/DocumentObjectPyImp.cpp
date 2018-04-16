@@ -619,6 +619,17 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
     }
 }
 
+PyObject *DocumentObjectPy::getElementMapVersion(PyObject *args) {
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
+
+    Property *prop = getDocumentObjectPtr()->getPropertyByName(name);
+    if(!prop)
+        throw Py::ValueError("property not found");
+    return Py::new_reference_to(Py::String(getDocumentObjectPtr()->getElementMapVersion(prop)));
+}
+
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property
