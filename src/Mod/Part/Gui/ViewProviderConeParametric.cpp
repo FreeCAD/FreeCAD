@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderConeParametric.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;
