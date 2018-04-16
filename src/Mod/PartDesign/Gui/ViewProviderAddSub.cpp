@@ -279,13 +279,17 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // displays an object and when restoring the previous state it's
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
-    if (onoff && displayMode!="Shape preview") {
+    if (onoff) {
+        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
+            return;
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
         setDisplayMaskMode("Shape preview");
     }
 
     if (!onoff) {
+        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
+            return;
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);
     }
