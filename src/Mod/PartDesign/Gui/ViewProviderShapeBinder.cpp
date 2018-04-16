@@ -196,17 +196,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderP
 ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     sPixmap = "PartDesign_SubShapeBinder.svg";
 
-    //make the viewprovider more datum like
-    AngularDeflection.setStatus(App::Property::Hidden, true);
-    Deviation.setStatus(App::Property::Hidden, true);
-    DrawStyle.setStatus(App::Property::Hidden, true);
-    Lighting.setStatus(App::Property::Hidden, true);
-    LineColor.setStatus(App::Property::Hidden, true);
-    LineWidth.setStatus(App::Property::Hidden, true);
-    PointColor.setStatus(App::Property::Hidden, true);
-    PointSize.setStatus(App::Property::Hidden, true);
-    DisplayMode.setStatus(App::Property::Hidden, true);
-
     //get the datum coloring sheme
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (

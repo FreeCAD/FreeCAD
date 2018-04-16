@@ -118,6 +118,8 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     auto base = prm->BaseFeature.getValue();
     FCMD_OBJ_HIDE(base);
 
+    if(!base)
+        base = pcActiveBody;
     copyVisual(prm, "ShapeColor", base);
     copyVisual(prm, "LineColor", base);
     copyVisual(prm, "PointColor", base);

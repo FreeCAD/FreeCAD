@@ -63,7 +63,7 @@ void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act;
     act = menu->addAction(QObject::tr("Edit hole"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+    ViewProvider::setupContextMenu(menu,receiver,member);
 }
 
 bool ViewProviderHole::setEdit(int ModNum)

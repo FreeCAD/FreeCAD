@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QApplication>
+# include <QMenu>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
@@ -87,6 +88,11 @@ bool ViewProvider::doubleClicked(void)
         Gui::Command::abortCommand();
     }
     return true;
+}
+
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) {
+    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Color));
 }
 
 bool ViewProvider::setEdit(int ModNum)
@@ -296,6 +302,11 @@ void ViewProvider::setBodyMode(bool bodymode) {
     if(!vp)
         return;
     
+#if 1
+    // Realthunder: I want to test element color mapping in PartDesign.
+    // If it works well, then there is no reason to hide all the properties.
+    (void)bodymode;
+#else
     for(App::Property* prop : props) {
         
         //we keep visibility and selectibility per object
@@ -309,6 +320,7 @@ void ViewProvider::setBodyMode(bool bodymode) {
             
         prop->setStatus(App::Property::Hidden, bodymode);
     }
+#endif
 }
 
 void ViewProvider::makeTemporaryVisible(bool onoff)

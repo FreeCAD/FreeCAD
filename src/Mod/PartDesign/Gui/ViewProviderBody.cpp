@@ -375,8 +375,10 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
         // #0002559: Body becomes visible upon changing DisplayModeBody
         Visibility.touch();
     }
-    else 
-        unifyVisualProperty(prop);
+    else {
+        // Experiementing element color mapping in PartDesign, disable visual copy for now
+        // unifyVisualProperty(prop);
+    }
     
     PartGui::ViewProviderPartExt::onChanged(prop);
 }

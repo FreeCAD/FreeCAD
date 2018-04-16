@@ -852,12 +852,18 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 
-    if (pcActiveBody) {
-        cmd->copyVisual(Feat, "ShapeColor", pcActiveBody);
-        cmd->copyVisual(Feat, "LineColor", pcActiveBody);
-        cmd->copyVisual(Feat, "PointColor", pcActiveBody);
-        cmd->copyVisual(Feat, "Transparency", pcActiveBody);
-        cmd->copyVisual(Feat, "DisplayMode", pcActiveBody);
+    auto base = dynamic_cast<PartDesign::Feature*>(Feat);
+    if(base)
+        base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
+    App::DocumentObject *obj = base;
+    if(!obj)
+        obj = pcActiveBody;
+    if (obj) {
+        cmd->copyVisual(Feat, "ShapeColor", obj);
+        cmd->copyVisual(Feat, "LineColor", obj);
+        cmd->copyVisual(Feat, "PointColor", obj);
+        cmd->copyVisual(Feat, "Transparency", obj);
+        cmd->copyVisual(Feat, "DisplayMode", obj);
     }
 }
 
