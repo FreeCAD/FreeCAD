@@ -936,21 +936,26 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
-        find_package(Shiboken2)# REQUIRED
+        find_package(Shiboken2 QUIET)# REQUIRED
         if(NOT SHIBOKEN_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "====================\n"
-                                "shiboken2 not found.\n"
-                                "====================\n")
+            MESSAGE("====================\n"
+                    "shiboken2 not found.\n"
+                    "====================\n")
         endif(NOT SHIBOKEN_INCLUDE_DIR)
 
-        find_package(PySide2)# REQUIRED
+        find_package(PySide2 QUIET)# REQUIRED
         if(NOT PYSIDE_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "==================\n"
-                                "PySide2 not found.\n"
-                                "==================\n")
+            MESSAGE("==================\n"
+                    "PySide2 not found.\n"
+                    "==================\n")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
-        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        find_package(PySide2Tools QUIET) #REQUIRED # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        if(NOT PYSIDE2_TOOLS_FOUND)
+            MESSAGE("=======================\n"
+                    "PySide2Tools not found.\n"
+                    "=======================\n")
+        endif(NOT PYSIDE2_TOOLS_FOUND)
 
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
