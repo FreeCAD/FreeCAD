@@ -184,7 +184,7 @@ protected:
     bool NormalsFromUV;
 
 private:
-    App::Color getElementColor(App::Color color, int type, long tag, const char *original) const;
+    App::Color getElementColor(const App::Color &color, int type, long tag, const char *original) const;
 
 private:
     // settings stuff

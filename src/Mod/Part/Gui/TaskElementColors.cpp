@@ -146,18 +146,24 @@ public:
                 indexed_name = sub;
             color = vp->ShapeColor.getValue();
             color.a = vp->Transparency.getValue()/100.0;
-            try {
-                switch(Part::TopoShape::shapeType(indexed_name)) {
+            App::PropertyColorList *prop = &vp->DiffuseColor;
+            auto idx = Part::TopoShape::shapeTypeAndIndex(indexed_name);
+            if(idx.second>0) {
+                switch(idx.first) {
                 case TopAbs_EDGE:
                     color = vp->LineColor.getValue();
+                    prop = &vp->LineColorArray;
                     break;
                 case TopAbs_VERTEX:
                     color = vp->PointColor.getValue();
+                    prop = &vp->PointColorArray;
                     break;
                 default:
                     break;
                 }
-            }catch(...) {}
+                if(prop->getSize()>1 && idx.second<=prop->getSize())
+                    color = prop->getValues()[idx.second-1];
+            }
         }
 
         std::vector<std::string> subs(1,sub);
