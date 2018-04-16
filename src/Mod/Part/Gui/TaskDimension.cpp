@@ -29,6 +29,7 @@
 
 
 #include <sstream>
+#include <Python.h>
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>

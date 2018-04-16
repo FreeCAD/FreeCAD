@@ -27,6 +27,7 @@
 # include <QTextEdit>
 # include <QTextStream>
 # include <QTreeWidget>
+# include <Python.h>
 #endif
 
 #include <Standard_Version.hxx>

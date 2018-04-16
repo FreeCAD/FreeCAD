@@ -39,6 +39,7 @@
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Shell.hxx>
 # include <TopExp_Explorer.hxx>
+# include <Python.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
