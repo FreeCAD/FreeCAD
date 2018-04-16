@@ -54,6 +54,7 @@ private Q_SLOTS:
     void on_elementList_itemDoubleClicked(QListWidgetItem *item);
     void on_elementList_itemSelectionChanged();
     void on_elementList_itemEntered(QListWidgetItem *item);
+    void on_recompute_clicked(bool checked);
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg);

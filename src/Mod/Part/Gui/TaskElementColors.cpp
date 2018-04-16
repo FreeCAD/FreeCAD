@@ -85,6 +85,7 @@ public:
     QPixmap px;
     bool busy;
     long onTopMode;
+    bool touched;
 
     std::string editDoc;
     std::string editObj;
@@ -109,6 +110,7 @@ public:
         vp->OnTopWhenSelected.setValue(3);
         obj = dynamic_cast<Part::Feature*>(vp->getObject());
         busy = false;
+        touched = false;
         int w = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
         px = QPixmap(w,w);
     }
@@ -125,6 +127,7 @@ public:
         int i=0;
         for(auto &sub : subs)
             addItem(i++,sub.c_str());
+        commit();
     }
 
     void addItem(int i,const char *sub) {
@@ -211,23 +214,40 @@ public:
                     App::Color(color.redF(),color.greenF(),color.blueF(),1.0-color.alphaF()));
         }
         vp->setElementColors(info);
+        touched = true;
     }
 
     void reset() {
         if(!obj) return;
         vp->setElementColors(oldColors);
+        touched = false;
+    }
+
+    void accept() {
+        if(touched && obj && obj->getDocument() && ui->recompute->isChecked()) {
+            obj->touch();
+            obj->getDocument()->recompute(obj->getInListRecursive());
+            touched = false;
+        }
     }
 
     void removeAll() {
-        ui->elementList->clear();
-        elements.clear();
+        if(elements.size()) {
+            ui->elementList->clear();
+            elements.clear();
+            commit();
+        }
     }
 
     void removeItems() {
+        bool doCommit=false;
         for(auto item : ui->elementList->selectedItems()) {
             std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
             elements.erase(sub);
+            doCommit = true;
         }
+        if(doCommit)
+            commit();
     }
 
     void editItem(QWidget *parent, QListWidgetItem *item) {
@@ -306,6 +326,11 @@ ElementColors::ElementColors(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->objectLabel->setText(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->elementList->setMouseTracking(true); // needed for itemEntered() to work
 
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Part");
+    d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
+
+
     ElementSelection* gate = new ElementSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
@@ -315,7 +340,6 @@ ElementColors::ElementColors(ViewProviderPartExt* vp, QWidget* parent)
         (&ElementColors::slotDeleteObject, this, _1));
 
     d->populate();
-    d->commit();
 }
 
 ElementColors::~ElementColors()
@@ -323,6 +347,12 @@ ElementColors::~ElementColors()
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
+}
+
+void ElementColors::on_recompute_clicked(bool checked) {
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Part");
+    hPart->SetBool("ColorRecompute",checked);
 }
 
 void ElementColors::slotDeleteDocument(const Gui::Document& Doc)
@@ -362,11 +392,11 @@ void ElementColors::on_addSelection_clicked()
 void ElementColors::on_removeAll_clicked()
 {
     d->removeAll();
-    d->commit();
 }
 
 bool ElementColors::accept()
 {
+    d->accept();
     Gui::Application::Instance->setEditDocument(0);
     return true;
 }
