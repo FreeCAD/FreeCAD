@@ -53,6 +53,9 @@
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
+#ifdef EXTERNAL_SMESH
+    #include <SMESHDS_Mesh.hxx>
+#endif
 
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Solid.hxx>

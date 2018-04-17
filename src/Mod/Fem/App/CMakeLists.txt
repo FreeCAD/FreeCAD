@@ -181,7 +181,7 @@ SET(Fem_SRCS
 
 
 add_library(Fem SHARED ${Fem_SRCS})
-target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES} ${EXTERNAL_SMESH_LIBS})
 
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)

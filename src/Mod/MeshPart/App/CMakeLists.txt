@@ -67,7 +67,7 @@ SET(MeshPart_SRCS
 )
 
 add_library(MeshPart SHARED ${MeshPart_SRCS})
-target_link_libraries(MeshPart ${MeshPart_LIBS})
+target_link_libraries(MeshPart ${MeshPart_LIBS} ${EXTERNAL_SMESH_LIBS})
 
 
 fc_target_copy_resource(MeshPart 
