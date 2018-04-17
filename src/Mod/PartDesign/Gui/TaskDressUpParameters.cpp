@@ -42,6 +42,8 @@
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
+
 using namespace PartDesignGui;
 using namespace Gui;
 
@@ -64,6 +66,50 @@ TaskDressUpParameters::~TaskDressUpParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+}
+
+void TaskDressUpParameters::setup(QListWidget *widget) {
+    auto* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    if(!pcDressUp || !pcDressUp->Base.getValue())
+        return;
+    auto base = pcDressUp->Base.getValue();
+    const auto &subs = pcDressUp->Base.getShadowSubs();
+    const auto &baseShape = pcDressUp->getTopoShape(base);
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+    bool touched = false;
+    std::vector<std::string> refs;
+    for(auto &sub : subs) {
+        refs.push_back(sub.second);
+        if(sub.first.empty() || baseShape.isNull()) {
+            widget->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        auto &ref = sub.first;
+        Part::TopoShape edge;
+        try {
+            edge = baseShape.getSubShape(ref.c_str());
+        }catch(...) {}
+        if(!edge.isNull())  {
+            widget->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        FC_WARN("missing element reference: " << pcDressUp->getNameInDocument() << "." << ref);
+        refs.pop_back();
+        for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
+            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                continue;
+            FC_WARN("guess element reference: " << ref << " -> " << name.first);
+            widget->addItem(QString::fromStdString(name.second));
+            refs.push_back(name.second);
+            touched = true;
+        }
+    }
+    if(touched){
+        pcDressUp->Base.setValue(base,refs);
+        pcDressUp->getDocument()->recomputeFeature(pcDressUp);
+    }
 }
 
 bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
@@ -221,6 +267,12 @@ bool TaskDlgDressUpParameters::accept()
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
 
     return TaskDlgFeatureParameters::accept();
+}
+
+bool TaskDlgDressUpParameters::reject()
+{
+    getDressUpView()->highlightReferences(false);
+    return TaskDlgFeatureParameters::reject();
 }
 
 #include "moc_TaskDressUpParameters.cpp"

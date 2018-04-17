@@ -622,7 +622,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             }
             FC_WARN("missing element reference: " << base->getNameInDocument() << "." << ref);
             
-            for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
+            for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
                 if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
                     continue;
                 int idx=0;

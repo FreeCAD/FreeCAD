@@ -52,6 +52,8 @@ public:
     void hideObject();
     void showObject();
 
+    void setup(QListWidget *widget);
+
     /// Apply the changes made to the object to it
     virtual void apply() {};
 
@@ -96,6 +98,7 @@ public:
 public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+    virtual bool reject();
 
 protected:
     TaskDressUpParameters  *parameter;

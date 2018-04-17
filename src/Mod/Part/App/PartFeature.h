@@ -106,6 +106,9 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
+    static std::vector<std::pair<std::string,std::string> > 
+    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true);
+
     TopLoc_Location getLocation() const;
     
 protected:

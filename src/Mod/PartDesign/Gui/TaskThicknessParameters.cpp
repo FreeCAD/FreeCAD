@@ -30,7 +30,6 @@
 #include "ui_TaskThicknessParameters.h"
 #include "TaskThicknessParameters.h"
 #include <Base/UnitsApi.h>
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -44,8 +43,6 @@
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureThickness.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
-
-FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -72,36 +69,6 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
     bool r = pcThickness->Reversed.getValue();
     ui->checkReverse->setChecked(r);
-
-    const auto &subs = pcThickness->Base.getShadowSubs();
-    const auto &baseShape = pcThickness->getTopoShape(pcThickness->Base.getValue());
-    std::set<std::string> subSet;
-    for(auto &sub : subs) 
-        subSet.insert(sub.first.empty()?sub.second:sub.first);
-    bool touched = false;
-    for(auto &sub : subs) {
-        if(sub.first.empty() || baseShape.isNull()) {
-            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
-            continue;
-        }
-        auto &ref = sub.first;
-        Part::TopoShape edge;
-        try {
-            edge = baseShape.getSubShape(ref.c_str());
-        }catch(...) {}
-        if(!edge.isNull())  {
-            ui->listWidgetReferences->addItem(QString::fromStdString(sub.second));
-            continue;
-        }
-        FC_WARN("missing element reference: " << pcThickness->getNameInDocument() << "." << ref);
-        for(auto &name : baseShape.getRelatedElements(ref.c_str())) {
-            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
-                continue;
-            FC_WARN("guess element reference: " << ref << " -> " << name.first);
-            ui->listWidgetReferences->addItem(QString::fromStdString(name.second));
-            touched = true;
-        }
-    }
 
     QMetaObject::connectSlotsByName(this);
 
@@ -130,8 +97,7 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     int join = pcThickness->Join.getValue();
     ui->modeComboBox->setCurrentIndex(join);
 
-    if(touched)
-        ui->buttonRefAdd->click();
+    setup(ui->listWidgetReferences);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

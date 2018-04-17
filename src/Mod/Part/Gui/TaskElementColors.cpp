@@ -183,8 +183,8 @@ public:
                 elements.erase(res.first);
                 res.first = elements.end();
 
-                for(auto &v : shape.getRelatedElements(sub.c_str()))
-                    subs.push_back(v.first.size()?v.first:v.second);
+                for(auto &v : Part::Feature::getRelatedElements(obj,sub.c_str()))
+                    subs.push_back(v.first);
             }
             if(n) {
                 res = elements.insert(sub);

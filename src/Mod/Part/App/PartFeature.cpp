@@ -182,6 +182,77 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     }
 }
 
+static std::pair<long,std::string> getElementSource(App::DocumentObject *owner, 
+        TopoShape shape, std::string name, bool sameType, TopAbs_ShapeEnum type)
+{
+    long tag = 0;
+    while(1) {
+        std::string original;
+        auto t = shape.getElementHistory(name,&original);
+        if(!t)
+            break;
+        if(tag && sameType && type!=TopAbs_SHAPE) {
+            auto mapped = shape.getElementName(original.c_str(),2);
+            if(mapped!=original.c_str() && TopoShape::shapeType(mapped)!=type)
+                break;
+        }
+        auto obj = owner->getDocument()->getObjectByID(t);
+        if(!obj)
+            break;
+        name = original;
+        tag = t;
+        owner = 0;
+        shape = Part::Feature::getTopoShape(obj,0,false,0,&owner); 
+        if(!owner || shape.isNull())
+            break;
+    }
+    return std::make_pair(tag,name);
+}
+
+std::vector<std::pair<std::string,std::string> > 
+Feature::getRelatedElements(App::DocumentObject *obj, const char *_name, bool sameType)
+{
+    std::string name;
+    const char *typeName = 0;
+    TopAbs_ShapeEnum type = TopAbs_SHAPE;
+    if(!boost::starts_with(_name,TopoShape::elementMapPrefix()))
+        name = _name;
+    else {
+        _name += TopoShape::elementMapPrefix().size();
+        typeName = strchr(_name,'.');
+        if(typeName) {
+            name = std::string(_name,typeName-_name);
+            ++typeName;
+            type = TopoShape::shapeType(typeName,true);
+        }else
+            name = _name;
+    }
+    auto owner = obj;
+    auto shape = getTopoShape(obj,0,false,0,&owner); 
+    auto ret = shape.getRelatedElements(_name,sameType); 
+    if(ret.size() || type==TopAbs_SHAPE)
+        return ret;
+    auto source = getElementSource(owner,shape,name,sameType,type);
+    if(!source.first || 
+       shape.getRelatedElementsCached(source.second.c_str(),source.first,sameType,ret))
+        return ret;
+
+    auto shapetype = TopoShape::shapeName(type);
+    std::ostringstream ss;
+    for(size_t i=1;i<=shape.countSubShapes(type);++i) {
+        ss.str("");
+        ss << shapetype << i;
+        std::string element(ss.str());
+        auto mapped = shape.getElementName(element.c_str(),true);
+        if(mapped == element.c_str())
+            continue;
+        if(getElementSource(owner,shape,mapped,sameType,type) == source)
+            ret.emplace_back(mapped,element);
+    }
+    shape.cacheRelatedElements(source.second.c_str(),source.first,sameType,ret);
+    return ret;
+}
+
 TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
         bool resolveLink, bool transform) 

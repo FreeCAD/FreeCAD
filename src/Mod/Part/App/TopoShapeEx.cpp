@@ -210,8 +210,27 @@ static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) 
         expandCompound(s,res);
 }
 
+struct ShapeRelationKey {
+    std::string name;
+    long tag;
+    bool sameType;
+    ShapeRelationKey(const char *name,long tag, bool sameType)
+        :name(name),tag(tag),sameType(sameType)
+    {}
+
+    bool operator<(const ShapeRelationKey &other) const {
+        if(sameType != other.sameType)
+            return sameType;
+        if(tag!=other.tag)
+            return tag<other.tag;
+        return name < other.name;
+    }
+};
+
 class TopoShape::Cache {
 public:
+    TopoDS_Shape shape;
+
     struct AncestorInfo {
         bool inited = false;
         TopTools_IndexedDataMapOfShapeListOfShape shapes;
@@ -228,7 +247,7 @@ public:
         }
     };
     std::map<TopAbs_ShapeEnum, Info> infos;
-    TopoDS_Shape shape;
+    std::map<ShapeRelationKey,std::vector<std::pair<std::string,std::string> > > relations;
 
     Cache(const TopoDS_Shape &s)
         :shape(s) 
@@ -364,6 +383,7 @@ bool TopoShape::canMapElement(const TopoShape &other) const {
     other.initCache();
     if(_Cache == other._Cache)
         return false;
+    _Cache->relations.clear();
     return true;
 }
 
@@ -2627,7 +2647,14 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
 }
 
 std::vector<std::pair<std::string,std::string> > 
-TopoShape::getRelatedElements(const char *_name, bool both, bool sameType) const {
+TopoShape::getRelatedElements(const char *_name, bool sameType) const {
+
+    initCache();
+    ShapeRelationKey key(_name,0,sameType);
+    auto it = _Cache->relations.find(key);
+    if(it!=_Cache->relations.end())
+        return it->second;
+
     std::vector<std::pair<std::string,std::string> > ret;
     std::string name;
     const char *typeName = 0;
@@ -2659,13 +2686,19 @@ TopoShape::getRelatedElements(const char *_name, bool both, bool sameType) const
 
     // First, search the name in the previous modeling step.
     auto dehashed = dehashElementName(original.c_str());
-    if(findTag(dehashed)==std::string::npos) {
+    long tag2;
+    if(findTag(dehashed,&tag2)==std::string::npos) {
         ss << dehashed << tagPostfix() << tag << ':' << dehashed.size();
         dehashed = ss.str();
+    }else if(tag2!=tag) {
+        // Here means the dehashed element belongs to some other shape.
+        // So just reset to original with middle markers stripped.
+        dehashed = original + postfix;
     }
     auto element = getElementName(dehashed.c_str(),2);
     if(element!=dehashed.c_str() && (type==TopAbs_SHAPE||type==shapeType(element,true))) {
         ret.emplace_back(dehashed,element);
+        _Cache->relations[key] = ret;
         return ret;
     }
 
@@ -2691,12 +2724,32 @@ TopoShape::getRelatedElements(const char *_name, bool both, bool sameType) const
 
     // Finally, search any element that are modified from the same source of
     // the given name
-    if(!found && both) {
+    if(!found) {
         for(auto &v : getElementNamesWithPrefix((original+Part::TopoShape::modPostfix()).c_str())) {
             if((type==TopAbs_SHAPE||type==shapeType(v.second.c_str(),true)) && 
                boost::ends_with(v.first,postfix))
                 ret.push_back(v);
         }
     }
+    _Cache->relations[key] = ret;
     return ret;
+}
+
+void TopoShape::cacheRelatedElements(const char *name, long tag, bool sameType,
+        const std::vector<std::pair<std::string,std::string> > &names) const
+{
+    initCache();
+    _Cache->relations[ShapeRelationKey(name,tag,sameType)] = names;
+}
+
+bool TopoShape::getRelatedElementsCached(const char *name, long tag, bool sameType,
+        std::vector<std::pair<std::string,std::string> > &names) const
+{
+    if(!_Cache)
+        return false;
+    auto it = _Cache->relations.find(ShapeRelationKey(name,tag,sameType));
+    if(it == _Cache->relations.end())
+        return false;
+    names.insert(names.end(),it->second.begin(),it->second.end());
+    return true;
 }

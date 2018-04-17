@@ -1024,14 +1024,12 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
         }else if(v.first.empty())
             continue;
 
-        auto type = shape.shapeType(v.second.c_str());
-        auto typeName = shape.shapeName(type);
-        for(auto &names : shape.getRelatedElements(sub.c_str())) {
-            if(!boost::starts_with(names.second,typeName) || subMap.find(names.first)!=subMap.end())
+        for(auto &names : Part::Feature::getRelatedElements(feature,sub.c_str())) {
+            if(subMap.find(names.first)!=subMap.end())
                 continue;
-            auto idx = atoi(names.second.c_str()+typeName.size());
-            if(idx>0)
-                infos[type].colors[idx-1] = MappedColors[i];
+            auto idx = Part::TopoShape::shapeTypeAndIndex(names.second.c_str());
+            if(idx.second>0)
+                infos[idx.first].colors[idx.second-1] = MappedColors[i];
         }
     }
     for(auto &v : infos) {

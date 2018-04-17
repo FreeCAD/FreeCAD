@@ -521,10 +521,17 @@ public:
     bool canMapElement(const TopoShape &other) const;
 
     std::vector<std::pair<std::string,std::string> > getRelatedElements(
-            const char *name, bool both=true, bool sameType=true) const;
+            const char *name, bool sameType=true) const;
+
+    void cacheRelatedElements(const char *name, long tag, bool sameType,
+            const std::vector<std::pair<std::string,std::string> > &names) const;
+
+    bool getRelatedElementsCached(const char *name, long tag, bool sameType,
+            std::vector<std::pair<std::string,std::string> > &names) const;
 
     long getElementHistory(const std::string &name, 
             std::string *original=0, std::vector<std::string> *history=0) const;
+
     virtual std::string getElementMapVersion() const override;
 
     const char *setElementComboName(const char *element, 

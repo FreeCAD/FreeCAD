@@ -468,6 +468,10 @@ public:
             "              and 'mat' is the accumulated transformation matrix of that sub-object\n" 
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link"
         );
+        add_varargs_method("getRelatedElements",&Module::getRelatedElements,
+            "getRelatedElements(obj,name,[sameType=True]):\n"
+            "Obtain the element references related to 'name'"
+        );
         initialize("This is a module working with shapes."); // register with Python
     }
 
@@ -2132,6 +2136,21 @@ private:
 
         return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
                 subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
+    }
+
+    Py::Object getRelatedElements(const Py::Tuple& args) {
+        const char *name;
+        PyObject *pyobj;
+        PyObject *sameType=Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "!Os|O", 
+                    &App::DocumentObjectPy::Type,&pyobj,&name,&sameType))
+            throw Py::Exception();
+        auto obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        auto ret = Part::Feature::getRelatedElements(obj,name,PyObject_IsTrue(sameType));
+        Py::Dict dict;
+        for(auto &v : ret)
+            dict.setItem(Py::String(v.first),Py::String(v.second));
+        return dict;
     }
 };
 
