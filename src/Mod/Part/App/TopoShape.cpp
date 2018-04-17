@@ -354,7 +354,7 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
 void TopoShape::operator = (const TopoShape& sh)
 {
     if (this != &sh) {
-        if(sh.Tag) this->Tag = sh.Tag;
+        this->Tag = sh.Tag;
         this->_Shape = sh._Shape;
         this->_ElementMap = sh._ElementMap;
         this->_Cache = sh._Cache;
