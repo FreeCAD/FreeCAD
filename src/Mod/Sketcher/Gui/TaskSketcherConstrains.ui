@@ -60,7 +60,7 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
      <property name="text">
-      <string>Hide Internal Aligment</string>
+      <string>Hide Internal Alignment</string>
      </property>
      <property name="checked">
       <bool>true</bool>
