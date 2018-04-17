@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Python.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
