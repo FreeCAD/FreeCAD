@@ -42,7 +42,8 @@ import os
 import time
 import sys
 if sys.version_info.major >= 3:
-    unicode = str
+    def unicode(text, *args):
+        return str(text)
 
 
 class _ViewProviderFemSolverCalculix:
