@@ -59,7 +59,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Other pulley dia</string>
+        <string>Other pulley diameter</string>
        </property>
       </widget>
      </item>
