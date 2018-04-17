@@ -611,9 +611,9 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"MakeBlocks"):
             fvol = obj.BlockLength.Value * obj.BlockHeight.Value * obj.Width.Value
             if fvol:
-                print "base volume:",fvol
+                print("base volume:",fvol)
                 for s in base.Solids:
-                    print abs(s.Volume - fvol)
+                    print(abs(s.Volume - fvol))
                 ents = [s for s in base.Solids if abs(s.Volume - fvol) < 1]
                 obj.CountEntire = len(ents)
                 obj.CountBroken = len(base.Solids) - len(ents)
