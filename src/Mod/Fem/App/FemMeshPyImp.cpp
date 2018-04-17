@@ -37,6 +37,9 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMDS_MeshElement.hxx>
 #include <SMDS_VolumeTool.hxx>
+#ifdef EXTERNAL_SMESH
+    #include <SMESHDS_Mesh.hxx>
+#endif
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Face.hxx>

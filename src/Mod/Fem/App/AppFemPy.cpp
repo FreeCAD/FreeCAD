@@ -50,7 +50,9 @@
 #include <StdMeshers_LocalLength.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_TrianglePreference.hxx>
+#ifndef EXTERNAL_SMESH
+    #include <StdMeshers_TrianglePreference.hxx>
+#endif
 #include <StdMeshers_MEFISTO_2D.hxx>
 #include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_MaxElementArea.hxx>

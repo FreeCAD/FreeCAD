@@ -60,11 +60,13 @@ public:
     Py::Object repr();
     Py::Object getLibName(const Py::Tuple& args);
     Py::Object setLibName(const Py::Tuple& args);
+#ifndef EXTERNAL_SMESH
     Py::Object setParameters(const Py::Tuple& args);
     Py::Object getParameters(const Py::Tuple& args);
     Py::Object setLastParameters(const Py::Tuple& args);
     Py::Object getLastParameters(const Py::Tuple& args);
     Py::Object clearParameters(const Py::Tuple& args);
+#endif
     Py::Object isAuxiliary(const Py::Tuple& args);
     Py::Object setParametersByMesh(const Py::Tuple& args);
 
@@ -219,7 +221,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy();
 };
-
+#ifndef EXTERNAL_SMESH ///////////////////////////////////////////////////////////////////////////////
 class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
@@ -227,6 +229,7 @@ public:
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
+#endif ///////////////////////////////////////////////////////////////////////////////////////////////
 
 class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {
