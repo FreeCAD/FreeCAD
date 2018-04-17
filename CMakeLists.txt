@@ -596,6 +596,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
+    if(UNIX AND NOT APPLE)
+        # Boost.Thread 1.67+ headers reference pthread_condattr_*
+        list(APPEND Boost_LIBRARIES pthread)
+    endif()
+
     IF(NOT Boost_FOUND)
         MESSAGE(FATAL_ERROR "========================================\n"
                             "boost not found, install the components:\n"
