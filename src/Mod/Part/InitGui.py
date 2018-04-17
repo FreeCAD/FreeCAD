@@ -42,7 +42,11 @@ class PartWorkbench ( Workbench ):
         # load the module
         import PartGui
 
-        import CompoundTools._CommandCompoundFilter
+        try:
+            import CompoundTools._CommandCompoundFilter
+        except ImportError as err:
+            FreeCAD.Console.PrintError("Features from CompoundTools package cannot be loaded. {err}\n".format(err= str(err)))
+
 
         try:
             bop = __import__("BOPTools")
