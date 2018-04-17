@@ -174,6 +174,7 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
     sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Tree_Part.svg";
 }
 
 void CmdPartSimpleCopy::activated(int iMsg)
