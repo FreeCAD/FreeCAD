@@ -2487,7 +2487,7 @@ TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoS
 TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges,
         double radius1, double radius2, const char *op)
 {
-    if(!op) op = TOPOP_FILLET;
+    if(!op) op = TOPOP_CHAMFER;
     resetElementMap();
     _Shape.Nullify();
     if(shape.isNull())
