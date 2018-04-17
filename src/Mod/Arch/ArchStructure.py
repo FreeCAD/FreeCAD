@@ -152,7 +152,7 @@ class _CommandStructure:
             st = Draft.getObjectsOfType(sel,"Structure")
             ax = Draft.getObjectsOfType(sel,"Axis")
             if ax:
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structural System")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structural System"))
                 FreeCADGui.addModule("Arch")
                 if st:
                     FreeCADGui.doCommand("obj = Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
@@ -164,7 +164,7 @@ class _CommandStructure:
                 FreeCAD.ActiveDocument.recompute()
                 return
             elif not(ax) and not(st):
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
                 FreeCADGui.addModule("Arch")
                 for obj in sel:
                     FreeCADGui.doCommand("obj = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
@@ -194,7 +194,7 @@ class _CommandStructure:
         self.tracker.finalize()
         if point == None:
             return
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         if self.Profile is not None:
             if "Precast" in self.Profile:
