@@ -28,9 +28,9 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "ViewProviderCompound.h"
 #include <Gui/Application.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include "ViewProviderCompound.h"
 
 
 using namespace PartGui;

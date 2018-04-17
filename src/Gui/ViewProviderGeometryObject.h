@@ -24,8 +24,8 @@
 #ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 #define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 
-#include <Inventor/lists/SoPickedPointList.h> 
 #include "ViewProviderDragger.h"
+#include <Inventor/lists/SoPickedPointList.h>
 
 class SoPickedPointList;
 class SoSwitch;

@@ -83,11 +83,11 @@
 #include <boost/filesystem/exception.hpp>
 
 
-#include "InventorAll.h"
-#include "Qt4All.h"
-
 // Python
 #include <Python.h>
+
+#include "InventorAll.h"
+#include "Qt4All.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
