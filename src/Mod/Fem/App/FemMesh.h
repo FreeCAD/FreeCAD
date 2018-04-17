@@ -160,6 +160,9 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
+#ifdef EXTERNAL_SMESH
+    static SMESH_Gen *_mesh_gen;
+#endif
 };
 
 } //namespace Part

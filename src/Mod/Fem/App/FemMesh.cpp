@@ -61,6 +61,7 @@
 #include <SMDS_MeshGroup.hxx>
 #include <SMESHDS_GroupBase.hxx>
 #include <SMESHDS_Group.hxx>
+#include <SMESHDS_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -89,6 +90,9 @@ using namespace Base;
 using namespace boost;
 
 static int StatCount = 0;
+#ifdef EXTERNAL_SMESH
+    SMESH_Gen* FemMesh::_mesh_gen = 0;
+#endif
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
@@ -489,7 +493,13 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
+#ifndef EXTERNAL_SMESH
     return SMESH_Gen::get();
+#else
+    if (! FemMesh::_mesh_gen)
+        FemMesh::_mesh_gen = new SMESH_Gen();
+    return FemMesh::_mesh_gen;
+#endif
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -1155,11 +1165,13 @@ void FemMesh::read(const char *FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
+#ifndef EXTERNAL_SMESH
     else if (File.hasExtension("dat") ) {
         // read brep-file
     // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
+#endif
     else if (File.hasExtension("bdf") ) {
         // read Nastran-file
         readNastran(File.filePath());

@@ -34,6 +34,9 @@
 #include <Base/Console.h>
 
 #include <SMESH_Gen.hxx>
+#ifdef EXTERNAL_SMESH
+    #include <SMESHDS_Mesh.hxx>
+#endif
 
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
