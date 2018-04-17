@@ -294,18 +294,22 @@ class Snapper:
 
                 if obj.isDerivedFrom("Part::Feature"):
                     
+                    # applying global placements
+                    shape = obj.Shape.copy()
+                    shape.Placement = obj.getGlobalPlacement()
+                    
                     snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
                     
                     if Draft.getType(obj) == "Polygon":
                         # special snapping for polygons: add the center
                         snaps.extend(self.snapToPolygon(obj))
                         
-                    if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
+                    if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                         if "Edge" in comp:
                             # we are snapping to an edge
                             en = int(comp[4:])-1
-                            if len(obj.Shape.Edges) > en:
-                                edge = obj.Shape.Edges[en]
+                            if len(shape.Edges) > en:
+                                edge = shape.Edges[en]
                                 snaps.extend(self.snapToEndpoints(edge))
                                 snaps.extend(self.snapToMidpoint(edge))
                                 snaps.extend(self.snapToPerpendicular(edge,lastpoint))
@@ -322,8 +326,8 @@ class Snapper:
                                     snaps.extend(self.snapToCenter(edge))
                         elif "Face" in comp:
                             en = int(comp[4:])-1
-                            if len(obj.Shape.Faces) > en:
-                                face = obj.Shape.Faces[en]
+                            if len(shape.Faces) > en:
+                                face = shape.Faces[en]
                                 snaps.extend(self.snapToFace(face))
                         elif "Vertex" in comp:
                             # directly snapped to a vertex
@@ -337,12 +341,7 @@ class Snapper:
                             
                 elif Draft.getType(obj) == "Dimension":
                     # for dimensions we snap to their 2 points:
-                    if obj.ViewObject:
-                        if hasattr(obj.ViewObject.Proxy,"p2") and hasattr(obj.ViewObject.Proxy,"p3"):
-                            snaps.append([obj.ViewObject.Proxy.p2,'endpoint',self.toWP(obj.ViewObject.Proxy.p2)])
-                            snaps.append([obj.ViewObject.Proxy.p3,'endpoint',self.toWP(obj.ViewObject.Proxy.p3)])
-                    #for pt in [obj.Start,obj.End,obj.Dimline]:
-                    #    snaps.append([pt,'endpoint',self.toWP(pt)])
+                    snaps.extend(self.snapToDim(obj))
 
                 elif Draft.getType(obj) == "Axis":
                     for edge in obj.Shape.Edges:
@@ -439,7 +438,15 @@ class Snapper:
                     dv = view.getViewDirection()
                 return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         return pt
-        
+
+    def snapToDim(self,obj):
+        snaps = []
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject.Proxy,"p2") and hasattr(obj.ViewObject.Proxy,"p3"):
+                snaps.append([obj.ViewObject.Proxy.p2,'endpoint',self.toWP(obj.ViewObject.Proxy.p2)])
+                snaps.append([obj.ViewObject.Proxy.p3,'endpoint',self.toWP(obj.ViewObject.Proxy.p3)])
+        return snaps
+
     def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
 
