@@ -198,7 +198,7 @@ such as &quot;Arial:Bold&quot;</string>
         <item>
          <widget class="QLabel" name="label_18">
           <property name="text">
-           <string>Extension lines  size</string>
+           <string>Extension lines size</string>
           </property>
          </widget>
         </item>

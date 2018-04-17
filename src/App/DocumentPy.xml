@@ -92,7 +92,7 @@
     </Methode>
     <Methode Name="redo">
       <Documentation>
-        <UserDocu>Redo a previosly undid transaction</UserDocu>
+        <UserDocu>Redo a previously undone transaction</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clearUndos">

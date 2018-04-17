@@ -661,7 +661,7 @@ class Line(Creator):
                 newseg = Part.LineSegment(last,point).toShape()
                 newshape=currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
 
     def wipe(self):
         "removes all previous segments and starts from last point"
@@ -671,7 +671,7 @@ class Line(Creator):
             self.node = [self.node[-1]]
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            msg(translate("draft", "Pick next point:\n"))
+            msg(translate("draft", "Pick next point:")+"\n")
 
     def orientWP(self):
         if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -2662,7 +2662,7 @@ class Offset(Modifier):
                 msg(translate("draft", "Select an object to offset")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             elif len(FreeCADGui.Selection.getSelection()) > 1:
-                msg(translate("draft", "Offset only works on one object at a time\n"),"warning")
+                msg(translate("draft", "Offset only works on one object at a time")+"\n","warning")
             else:
                 self.proceed()
 
@@ -2693,7 +2693,7 @@ class Offset(Modifier):
                 self.ghost = bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
             elif Draft.getType(self.sel) == "BezCurve":
-                msg(translate("draft", "Sorry, offset of Bezier curves is currently still not supported\n"),"warning")
+                msg(translate("draft", "Sorry, offset of Bezier curves is currently still not supported")+"\n","warning")
                 self.finish()
                 return
             else:
@@ -3490,10 +3490,10 @@ class Trimex(Modifier):
         wires = []
         for obj in objectslist:
             if not Draft.getType(obj) in ["Wire","Circle"]:
-                msg(translate("draft","Unable to trim these objects, only Draft wires and arcs are supported\n"),"error")
+                msg(translate("draft","Unable to trim these objects, only Draft wires and arcs are supported")+"\n","error")
                 return
             if len (obj.Shape.Wires) > 1:
-                msg(translate("draft","Unable to trim these objects, too many wires\n"),"error")
+                msg(translate("draft","Unable to trim these objects, too many wires")+"\n","error")
                 return
             if len(obj.Shape.Wires) == 1:
                 wires.append(obj.Shape.Wires[0])
@@ -3510,10 +3510,10 @@ class Trimex(Modifier):
                     edge1 = i1
                     edge2 = i2
         if not ints:
-            msg(translate("draft","These objects don't intersect\n"),"error")
+            msg(translate("draft","These objects don't intersect")+"\n","error")
             return
         if len(ints) != 1:
-            msg(translate("draft","Too many intersection points\n"),"error")
+            msg(translate("draft","Too many intersection points")+"\n","error")
             return
         v11 = wires[0].Vertexes[0].Point
         v12 = wires[0].Vertexes[-1].Point
@@ -3833,21 +3833,21 @@ class Edit(Modifier):
                             if not Draft.getType(self.selection[0]) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                                         "Polygon","Dimension","Space","Structure","PanelCut",
                                                                         "PanelSheet"]:
-                                msg(translate("draft", "This object type is not editable\n"),'warning')
+                                msg(translate("draft", "This object type is not editable")+"\n",'warning')
                                 self.finish()
                                 return
                             self.proceed()
                             return
                         else:
-                            msg(translate("draft", "This object type is not editable\n"),'warning')
+                            msg(translate("draft", "This object type is not editable")+"\n",'warning')
                             self.finish()
                             return
                     else:
-                        msg(translate("draft", "This object type is not editable\n"),'warning')
+                        msg(translate("draft", "This object type is not editable")+"\n",'warning')
                         self.finish()
                         return
                 else:
-                    msg(translate("draft", "Please select only one object\n"),'warning')
+                    msg(translate("draft", "Please select only one object")+"\n",'warning')
                     self.finish()
                     return
             self.ghost = None
@@ -3868,7 +3868,7 @@ class Edit(Modifier):
                 if not Draft.getType(self.obj) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                    "Polygon","Dimension","Space","Structure","PanelCut",
                                                    "PanelSheet"]:
-                    msg(translate("draft", "This object type is not editable\n"),'warning')
+                    msg(translate("draft", "This object type is not editable")+"\n",'warning')
                     self.finish()
                     return
                 if (Draft.getType(self.obj) == "BezCurve"):
@@ -3974,7 +3974,7 @@ class Edit(Modifier):
                         if self.planetrack:
                             self.planetrack.set(self.editpoints[0])
                     else:
-                        msg(translate("draft", "This object type is not editable\n"),'warning')
+                        msg(translate("draft", "This object type is not editable")+"\n",'warning')
                         self.finish()
             else:
                 self.finish()
@@ -4288,7 +4288,7 @@ class Edit(Modifier):
     def delPoint(self,point):
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         if len(self.obj.Points) <= 2:
-            msg(translate("draft", "Active object must have more than two points/nodes\n"),'warning')
+            msg(translate("draft", "Active object must have more than two points/nodes")+"\n",'warning')
         else:
             pts = self.obj.Points
             pts.pop(point)
@@ -4323,8 +4323,7 @@ class Edit(Modifier):
                     keepp = point
                     changep = 1
                 else:
-                    msg(translate("draft", "Can't change Knot belonging to pole %d\n"%point)\
-                        ,'warning')
+                    msg(translate("draft", "Can't change Knot belonging to pole %d"%point)+"\n",'warning')
                     return
                 if knot:
                     if style == 'Tangent':
@@ -4361,7 +4360,7 @@ class Edit(Modifier):
                     pts[1],pts[-1] = self.obj.Proxy.symmetricpoles(pts[0],pts[1],pts[-1])
                 knot = 0
             else:
-                msg(translate("draft", "Endpoint of BezCurve can't be smoothed\n"),'warning')
+                msg(translate("draft", "Endpoint of BezCurve can't be smoothed")+"\n",'warning')
                 return
         segment = knot // deg #segment index
         newcont=self.obj.Continuity[:] #don't edit a property inplace !!!

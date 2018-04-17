@@ -162,7 +162,7 @@ void UnitTestDialog::on_helpButton_clicked()
     QMessageBox::information(this, tr("Help"), tr(
         "Enter the name of a callable object which, when called, will return a TestCase."
         "Click 'start', and the test thus produced will be run.\n\n"
-        "Double click on an error in the tree view to see more information about it,"
+        "Double click on an error in the tree view to see more information about it, "
         "including the stack trace."));
 }
 
