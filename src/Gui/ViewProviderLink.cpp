@@ -1335,7 +1335,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
                 else{
                     if(!boost::algorithm::starts_with(subname,v.first)) 
                         continue;
-                    const char *nextsub = subname+v.first.size();
+                    nextsub = subname+v.first.size();
                     if(*nextsub != '.') 
                         continue;
                     ++nextsub;

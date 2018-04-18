@@ -663,8 +663,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 getPlacementListProperty()->setValue(placements);
             }
         }else if(getElementListProperty()) {
-            const auto &placementList = getPlacementListValue();
-            const auto &scaleList = getScaleListValue();
             auto objs = getElementListValue();
             if(elementCount>objs.size()) {
                 std::string name = parent->getNameInDocument();
