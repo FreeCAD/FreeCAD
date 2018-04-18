@@ -6144,7 +6144,10 @@ class _ShapeString(_DraftObject):
 
             # test a simple letter to know if we have a sticky font or not
             sticky = False
-            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            if sys.version_info.major < 3:
+                testWire = Part.makeWireString("L",ff8,obj.Size,obj.Tracking)[0][0]
+            else:
+                testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)
