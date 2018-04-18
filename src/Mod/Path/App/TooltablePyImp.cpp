@@ -223,7 +223,7 @@ PyObject* ToolPy::copy(PyObject * args)
     if (PyArg_ParseTuple(args, "")) {
         return new ToolPy(new Path::Tool(*getToolPtr()));
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::setFromTemplate(PyObject * args)
@@ -276,7 +276,7 @@ PyObject* ToolPy::templateAttrs(PyObject * args)
         PyDict_SetItemString(dict, "cuttingEdgeHeight", PyFloat_FromDouble(getToolPtr()->CuttingEdgeHeight));
         return dict;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::getToolTypes(PyObject * args)
@@ -290,7 +290,7 @@ PyObject* ToolPy::getToolTypes(PyObject * args)
         }
         return list;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::getToolMaterials(PyObject * args)
@@ -304,7 +304,7 @@ PyObject* ToolPy::getToolMaterials(PyObject * args)
         }
         return list;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 
@@ -405,7 +405,7 @@ void TooltablePy::setTools(Py::Dict arg)
               Py_DECREF(success);
             }
         } else {
-            throw Py::Exception("The dictionary can only contain int:tool pairs");
+            throw Py::TypeError("The dictionary can only contain int:tool pairs");
         }
     }
 }
@@ -417,7 +417,7 @@ PyObject* TooltablePy::copy(PyObject * args)
     if (PyArg_ParseTuple(args, "")) {
         return new TooltablePy(new Path::Tooltable(*getTooltablePtr()));
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* TooltablePy::addTools(PyObject * args)

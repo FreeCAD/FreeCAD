@@ -51,6 +51,11 @@
 
 #include <typeinfo>
 #include "Exception.h"
+#if PY_MAJOR_VERSION > 2
+#  ifndef PYCXX_PYTHON_2TO3
+#  define PYCXX_PYTHON_2TO3
+#  endif
+#endif
 #include <CXX/Objects.hxx>
 
 

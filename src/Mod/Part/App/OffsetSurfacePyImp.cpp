@@ -120,8 +120,7 @@ void  OffsetSurfacePy::setBasisSurface(Py::Object arg)
             surf2->SetBasisSurface(surf);
         }
         catch (Standard_Failure& e) {
-    
-            throw Py::Exception(e.GetMessageString());
+            throw Py::RuntimeError(e.GetMessageString());
         }
     }
 }

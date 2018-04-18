@@ -1277,7 +1277,7 @@ private:
         PyObject *pleft=Py_False;
         if (!PyArg_ParseTuple(args.ptr(), "ddd|dO!", &pitch, &height, &radius, &angle,
                                                &(PyBool_Type), &pleft)) {
-            throw Py::Exception("Part.makeLongHelix fails on parms");
+            throw Py::RuntimeError("Part.makeLongHelix fails on parms");
         }
 
         try {

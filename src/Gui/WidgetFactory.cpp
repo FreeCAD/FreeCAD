@@ -870,7 +870,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             }
         }
         else {
-            throw Py::Exception("string or QIODevice expected");
+            throw Py::TypeError("string or QIODevice expected");
         }
     }
     return Py::None();
