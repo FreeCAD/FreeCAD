@@ -86,7 +86,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj;
 #ifndef FC_NO_ELEMENT_MAP
-    PY_TRY {
+    try {
         if (!PyArg_ParseTuple(args, "O", &pcObj))
             return 0;
         TopoShape wire;
@@ -95,7 +95,10 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             throw Py::Exception("failed to form a single wire");
         *getTopoShapePtr() = wire;
         return 0;
-    }PY_CATCH_OCC
+    } catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return -1;
+    }
 #else
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;

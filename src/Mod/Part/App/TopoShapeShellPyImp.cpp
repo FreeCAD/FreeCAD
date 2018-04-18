@@ -84,9 +84,12 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    PY_TRY {
+    try {
         getTopoShapePtr()->makEShape(TOPOP_SHELL,getPyShapes(obj));
-    }PY_CATCH_OCC
+    } catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return -1;
+    }
 #else
     BRep_Builder builder;
     TopoDS_Shape shape;

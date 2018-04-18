@@ -83,9 +83,12 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    PY_TRY {
+    try {
         getTopoShapePtr()->makESolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-    }PY_CATCH_OCC
+    } catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return -1;
+    }
 #else
     try {
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
