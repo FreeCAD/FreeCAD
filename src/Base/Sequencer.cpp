@@ -367,7 +367,7 @@ Py::Object ProgressIndicatorPy::next(const Py::Tuple& args)
         }
         catch (const Base::AbortException&) {
             _seq.reset();
-            throw Py::Exception("abort progress indicator");
+            throw Py::RuntimeError("abort progress indicator");
         }
     }
     return Py::None();

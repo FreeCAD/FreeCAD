@@ -134,7 +134,7 @@ private:
         PyObject *pcObj;
         PyObject *inclBig = Py_True;
         if (!PyArg_ParseTuple(args.ptr(), "O!|O", &(PyList_Type), &pcObj, &inclBig)) {
-            throw Py::Exception("expected (listofedges,boolean");
+            throw Py::TypeError("expected (listofedges,boolean");
         }
 
         std::vector<TopoDS_Edge> edgeList;
@@ -191,7 +191,7 @@ private:
     {
         PyObject *pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O!", &(PyList_Type), &pcObj)) {
-            throw Py::Exception("expected (listofedges)");
+            throw Py::TypeError("expected (listofedges)");
         }
 
         std::vector<TopoDS_Edge> edgeList;
@@ -248,7 +248,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "OdO", &pcObjShape,
                                                  &scale,
                                                  &pcObjDir)) {
-            throw Py::Exception("expected (shape,scale,direction");
+            throw Py::TypeError("expected (shape,scale,direction");
         }
 
         if (!PyObject_TypeCheck(pcObjShape, &(TopoShapePy::Type))) {
@@ -308,7 +308,7 @@ private:
     {
         PyObject *viewObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
-            throw Py::Exception("expected (DrawViewPart)");
+            throw Py::TypeError("expected (DrawViewPart)");
         } 
         Py::String dxfReturn;
 
@@ -363,7 +363,7 @@ private:
     {
         PyObject *viewObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
-            throw Py::Exception("expected (DrawViewPart)");
+            throw Py::TypeError("expected (DrawViewPart)");
         } 
         Py::String svgReturn;
         std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";

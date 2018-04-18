@@ -151,7 +151,7 @@ void  ConicPy::setAxis(Py::Object arg)
         conic->SetAxis(axis);
     }
     catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
+        throw Py::RuntimeError("cannot set axis");
     }
 }
 
@@ -187,7 +187,7 @@ void  ConicPy::setXAxis(Py::Object arg)
         conic->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        throw Py::Exception("cannot set X axis");
+        throw Py::RuntimeError("cannot set X axis");
     }
 }
 
@@ -223,7 +223,7 @@ void  ConicPy::setYAxis(Py::Object arg)
         conic->SetPosition(pos);
     }
     catch (Standard_Failure) {
-        throw Py::Exception("cannot set Y axis");
+        throw Py::RuntimeError("cannot set Y axis");
     }
 }
 
