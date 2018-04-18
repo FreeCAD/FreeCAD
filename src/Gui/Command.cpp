@@ -590,6 +590,8 @@ void Command::_copyVisual(const char *file, int line, const char* to, const char
 
 void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr_to, const App::DocumentObject *from, const char *attr_from)
 {
+    if(!from || !from->getNameInDocument() || !to || !to->getNameInDocument())
+        return;
     auto objCmd = getObjectCmd(to);
     _doCommand(file,line,Gui,"%s.ViewObject.%s=getattr(%s.getLinkedObject().ViewObject,'%s',%s.ViewObject.%s)",
             objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
