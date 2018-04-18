@@ -27,13 +27,13 @@ if(PYCXX_INCLUDE_DIR)
     if(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
         if(PyCXX_FIND_REQUIRED)
             MESSAGE(FATAL_ERROR
-	        "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-		"${PYCXX_INCLUDE_DIR}")
+                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
+            "${PYCXX_INCLUDE_DIR}")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(WARNING
-	        "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-		"${PYCXX_INCLUDE_DIR}")
-	    unset(PYCXX_FOUND)
+                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
+            "${PYCXX_INCLUDE_DIR}")
+            unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
 else(PYCXX_INCLUDE_DIR)
@@ -44,11 +44,11 @@ else(PYCXX_INCLUDE_DIR)
     if(NOT PYCXX_INCLUDE_DIR)
         if(PyCXX_FIND_REQUIRED)
             MESSAGE(FATAL_ERROR
-	        "PyCXX not found; please set PYCXX_INCLUDE_DIR to "
-		"the location of CXX/Config.hxx")
+                "PyCXX not found; please set PYCXX_INCLUDE_DIR to "
+                "the location of CXX/Config.hxx")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(STATUS "PyCXX not found")
-	    unset(PYCXX_FOUND)
+            unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_INCLUDE_DIR)
 endif(PYCXX_INCLUDE_DIR)
@@ -58,14 +58,14 @@ if(PYCXX_SOURCE_DIR)
     # source directory specified, they'd better be there
     if(NOT EXISTS "${PYCXX_SOURCE_DIR}/cxxextensions.c")
         if(PyCXX_FIND_REQUIRED)
-	    MESSAGE(FATAL_ERROR
-	        "PyCXX: cxxextensions.c not found in PYCXX_INCLUDE_DIR "
-		"${PYCXX_INCLUDE_DIR}")
+            MESSAGE(FATAL_ERROR
+                "PyCXX: cxxextensions.c not found in PYCXX_SOURCE_DIR "
+                "${PYCXX_SOURCE_DIR}")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(WARNING
-	        "PyCXX: cxxextensions.c not found in PYCXX_INCLUDE_DIR "
-		"${PYCXX_INCLUDE_DIR}")
-	    unset(PYCXX_FOUND)
+                "PyCXX: cxxextensions.c not found in PYCXX_SOURCE_DIR "
+                "${PYCXX_SOURCE_DIR}")
+            unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_SOURCE_DIR}/cxxextensions.c")
 else(PYCXX_SOURCE_DIR)
@@ -79,12 +79,12 @@ else(PYCXX_SOURCE_DIR)
         "${CMAKE_CURRENT_LIST_DIR}/../CXX")
     if(NOT PYCXX_SOURCE_DIR)
         if(PyCXX_FIND_REQUIRED)
-	    MESSAGE(FATAL_ERROR
-	        "PyCXX not found; please set PYCXX_SOURCE_DIR to "
-		"the location of cxxextensions.c")
+            MESSAGE(FATAL_ERROR
+                "PyCXX not found; please set PYCXX_SOURCE_DIR to "
+                "the location of cxxextensions.c")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(STATUS "PyCXX not found")
-	    unset(PYCXX_FOUND)
+            unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_SOURCE_DIR)
 endif(PYCXX_SOURCE_DIR)
@@ -97,10 +97,10 @@ if(PYCXX_FOUND)
 
     # Build the list of sources for convenience
     set(PYCXX_SOURCES
-	${PYCXX_SOURCE_DIR}/cxxextensions.c
-	${PYCXX_SOURCE_DIR}/cxx_extensions.cxx
-	${PYCXX_SOURCE_DIR}/cxxsupport.cxx
-	${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
+        ${PYCXX_SOURCE_DIR}/cxxextensions.c
+        ${PYCXX_SOURCE_DIR}/cxx_extensions.cxx
+        ${PYCXX_SOURCE_DIR}/cxxsupport.cxx
+        ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
     )
 else(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
