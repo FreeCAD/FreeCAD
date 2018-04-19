@@ -123,14 +123,14 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         auto invTrsf = invObjLoc.Transformation();
 
-        base = base.makETransform(invTrsf);
+        base.move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invTrsf);
 
         if (sketchshape.isNull())
             return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
-        sketchshape = sketchshape.makETransform(invTrsf);
+        sketchshape.move(invObjLoc);
 
         TopoShape prism(0,getDocument()->getStringHasher());
         std::string method(Type.getValueAsString());                
@@ -148,8 +148,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, TopoDS::Face(base.getShape()), supportface, 
-                    TopoDS::Face(sketchshape.getShape()), method, dir, Offset.getValue());
+            getUpToFace(upToFace, base.getShape(), supportface, 
+                    sketchshape.getShape(), method, dir, Offset.getValue());
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.isNull()) {
@@ -198,15 +198,14 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
                 if (!PrismMaker.IsDone())
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
+                if (PrismMaker.Shape().IsNull())
+                    return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
                 prism.makEShape(PrismMaker,{base,sketchshape});
             }
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
                           Midplane.getValue(), Reversed.getValue());
         }
-
-        if (prism.isNull())
-            return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);

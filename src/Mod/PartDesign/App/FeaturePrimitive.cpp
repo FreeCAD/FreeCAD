@@ -93,7 +93,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         TopoShape base;
         try{
              //if we have a base shape we need to make sure that it does not get our transformation to
-            base = getBaseShape().makETransform(getLocation().Inverted().Transformation());
+            base = getBaseShape().moved(getLocation().Inverted());
         }
         catch(const Base::Exception&) {
 

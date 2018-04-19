@@ -67,13 +67,13 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-TopoShape Feature::_getSolid(const char *file, int line, const TopoShape& shape)
+TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull())
         Standard_Failure::Raise("Shape is null");
     int count = shape.countSubShapes(TopAbs_SOLID);
     if(count>1) 
-        _FC_WARN(file,line,"found more than one solid");
+        FC_WARN("found more than one solid");
     if(count)
         return shape.getSubTopoShape(TopAbs_SOLID,1);
     return TopoShape();
@@ -127,7 +127,8 @@ TopoShape Feature::getBaseShape() const {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
 
-    auto shape = getTopoShape(BaseObject);
+    // auto shape = getTopoShape(BaseObject);
+    auto shape = BaseObject->Shape.getShape();
     if(shape.isNull())
         throw Base::Exception("Base feature's shape is invalid");
     if(!shape.hasSubShape(TopAbs_SOLID))
@@ -135,6 +136,24 @@ TopoShape Feature::getBaseShape() const {
 
     return shape;
 }
+
+const TopoDS_Shape& Feature::getBaseShapeOld() const {
+    const Part::Feature* BaseObject = getBaseObject();
+
+    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
+        throw Base::ValueError("Base shape of shape binder cannot be used");
+    }
+
+    const TopoDS_Shape& result = BaseObject->Shape.getValue();
+    if (result.IsNull())
+        throw Base::Exception("Base feature's shape is invalid");
+    TopExp_Explorer xp (result, TopAbs_SOLID);
+    if (!xp.More())
+        throw Base::Exception("Base feature's shape is not a solid");
+
+    return result;
+}
+
 
 PyObject* Feature::getPyObject()
 {

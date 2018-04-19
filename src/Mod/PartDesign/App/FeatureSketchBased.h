@@ -94,9 +94,11 @@ public:
      *               Default is false.
      */
     TopoShape getVerifiedFace(bool silent = false) const;
+    TopoDS_Shape getVerifiedFaceOld(bool silent = false) const;
     
     /// Returns the wires the sketch is composed of
     std::vector<TopoShape> getProfileWires() const;
+    std::vector<TopoDS_Wire> getProfileWiresOld() const;
 
     TopoShape getProfileShape() const;
     

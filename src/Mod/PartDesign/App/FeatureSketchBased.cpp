@@ -182,8 +182,20 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
 }
 
 TopoShape ProfileBased::getVerifiedFace(bool silent) const {
+    auto obj = Profile.getValue();
+    if(!obj || !obj->getNameInDocument()) {
+        if(silent)
+            return TopoShape();
+        throw Base::Exception("No profile linked");
+    }
     try {
-        auto shape = getTopoShape(Profile.getValue());
+        std::string sub;
+        if(!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            const auto &subs = Profile.getSubValues(true);
+            if(!subs.empty())
+                sub = subs[0];
+        }
+        auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),!sub.empty());
         if(!shape.hasSubShape(TopAbs_FACE)) {
             if(!shape.hasSubShape(TopAbs_WIRE))
                 shape = shape.makEWires();
@@ -208,6 +220,55 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
     }
 }
 
+TopoDS_Shape ProfileBased::getVerifiedFaceOld(bool silent) const {
+
+    App::DocumentObject* result = Profile.getValue();
+    const char* err = nullptr;
+
+    if (!result) {
+        err = "No profile linked";
+    } else {
+        if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            
+            auto wires = getProfileWiresOld();
+            return Part::FaceMakerCheese::makeFace(wires);
+        }
+        else if(result->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if(Profile.getSubValues().empty())
+                err = "Linked object has no subshape specified";
+            else {
+                
+                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
+                TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
+                if(sub.ShapeType() == TopAbs_FACE) 
+                    return TopoDS::Face(sub);
+                else if(sub.ShapeType() == TopAbs_WIRE) {
+                
+                    auto wire = TopoDS::Wire(sub);
+                    if(!wire.Closed())
+                        err = "Linked wire is not closed";
+                    else {
+                        BRepBuilderAPI_MakeFace mk(wire);
+                        mk.Build();
+                        return TopoDS::Face(mk.Shape());
+                    }                        
+                }
+                else 
+                    err = "Linked Subshape cannot be used";
+            }
+        }
+        else 
+            err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
+    }
+
+    if (!silent && err) {
+        throw Base::Exception (err);
+    }
+
+    return TopoDS_Face();
+}
+
+
 TopoShape ProfileBased::getProfileShape() const {
     auto shape = getTopoShape(Profile.getValue());
     if(!shape.isNull() && Profile.getSubValues().size()) {
@@ -219,6 +280,44 @@ TopoShape ProfileBased::getProfileShape() const {
     if(shape.isNull())
         throw Base::Exception("Linked shape object is empty");
     return shape;
+}
+
+std::vector<TopoDS_Wire> ProfileBased::getProfileWiresOld() const {
+    std::vector<TopoDS_Wire> result;
+
+    if(!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::Exception("No valid profile linked");
+    
+    TopoDS_Shape shape;
+    if(Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
+    else {
+        if(Profile.getSubValues().empty()) 
+            throw Base::Exception("No valid subelement linked in Part::Feature");
+
+        shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
+    }
+    
+    if (shape.IsNull())
+        throw Base::Exception("Linked shape object is empty");
+
+    // this is a workaround for an obscure OCC bug which leads to empty tessellations
+    // for some faces. Making an explicit copy of the linked shape seems to fix it.
+    // The error almost happens when re-computing the shape but sometimes also for the
+    // first time
+    BRepBuilderAPI_Copy copy(shape);
+    shape = copy.Shape();
+    if (shape.IsNull())
+        throw Base::Exception("Linked shape object is empty");
+
+    TopExp_Explorer ex;
+    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
+        result.push_back(TopoDS::Wire(ex.Current()));
+    }
+    if (result.empty()) // there can be several wires
+        throw Base::Exception("Linked shape object is not a wire");
+
+    return result;
 }
 
 std::vector<TopoShape> ProfileBased::getProfileWires() const {
@@ -506,7 +605,8 @@ void ProfileBased::generatePrism(TopoShape& prism,
         if (method == "TwoLengths" || midplane) {
             gp_Trsf mov;
             mov.SetTranslation(Loffset * gp_Vec(dir));
-            sketchTopoShape = sketchTopoShape.makETransform(mov);
+            TopLoc_Location loc(mov);
+            sketchTopoShape.move(loc);
         } else if (reversed)
             Ltotal *= -1.0;
 

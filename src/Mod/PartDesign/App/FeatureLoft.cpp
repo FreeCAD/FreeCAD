@@ -94,9 +94,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
     try {
         //setup the location
         this->positionByPrevious();
-        auto invTrsf = this->getLocation().Inverted().Transformation();
+        auto invObjLoc = this->getLocation().Inverted(); 
         if(!base.isNull())
-            base = base.makETransform(invTrsf);
+            base.move(invObjLoc);
              
         //build up multisections
         auto multisections = Sections.getValues();
@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
 
             for(auto& wire : wires)   {
-                wire = wire.makETransform(invTrsf);
+                wire.move(invObjLoc);
                 mkTS.AddWire(TopoDS::Wire(wire.getShape()));
             }
 
@@ -142,7 +142,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         auto front = getVerifiedFace();
         if (front.isNull())
             return new App::DocumentObjectExecReturn("Loft: Creating a face from sketch failed");
-        front = front.makETransform(invTrsf);
+        front.move(invObjLoc);
         std::vector<TopoShape> backwires;
         for(auto& wires : wiresections)
             backwires.push_back(wires.back());

@@ -126,16 +126,15 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     try {
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        auto invTrsf = invObjLoc.Transformation();
 
-        base = base.makETransform(invTrsf);
+        base.move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
-        dir.Transform(invTrsf);
+        dir.Transform(invObjLoc.Transformation());
 
         if (profileshape.isNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        profileshape = profileshape.makETransform(invTrsf);
+        profileshape.move(invObjLoc);
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
@@ -155,8 +154,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, TopoDS::Face(base.getShape()), supportface, 
-                    TopoDS::Face(profileshape.getShape()), method, dir, Offset.getValue());
+            getUpToFace(upToFace, base.getShape(), supportface, 
+                    profileshape.getShape(), method, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid

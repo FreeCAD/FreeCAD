@@ -957,13 +957,13 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         double length = 0.0;
 
         this->positionByPrevious();
-        auto invTrsf = this->getLocation().Inverted().Transformation();
+        auto invObjLoc = this->getLocation().Inverted();
 
-        base = base.makETransform(invTrsf);
+        base.move(invObjLoc);
 
         if (profileshape.isNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        profileshape = profileshape.makETransform(invTrsf);
+        profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
 
@@ -972,7 +972,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         // Define this as zDir
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
-        zDir.Transform(invTrsf);
+        zDir.Transform(invObjLoc.Transformation());
 
         // Define xDir
         gp_Vec xDir;
@@ -1259,7 +1259,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
 
         // set the subtractive shape property for later usage in e.g. pattern
-        this->AddSubShape.setValue(TopoShape().makECompound(holes).makETransform(invTrsf));
+        this->AddSubShape.setValue(TopoShape().makECompound(holes).moved(invObjLoc));
 
         remapSupportShape(base.getShape());
         this->Shape.setValue(base);

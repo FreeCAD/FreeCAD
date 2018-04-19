@@ -70,6 +70,7 @@ public:
     virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// Returns the BaseFeature property's shape (if any)
     virtual TopoShape getBaseShape() const;
+    const TopoDS_Shape& getBaseShapeOld() const;
 
     virtual PyObject* getPyObject(void);
 
@@ -82,8 +83,7 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoShape _getSolid(const char *file, int line, const TopoShape&);    
-#define getSolid(_s) _getSolid(__FILE__,__LINE__,_s)
+    static TopoShape getSolid(const TopoShape&);    
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    

@@ -124,15 +124,16 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (Midplane.getValue()) {
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
-            sketchshape = sketchshape.makETransform(mov);
+            TopLoc_Location loc(mov);
+            sketchshape.move(loc);
         }
 
         this->positionByPrevious();
-        auto invObjLoc = this->getLocation().Inverted().Transformation();
-        pnt.Transform(invObjLoc);
-        dir.Transform(invObjLoc);
-        base = base.makETransform(invObjLoc);
-        sketchshape = sketchshape.makETransform(invObjLoc);
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        pnt.Transform(invObjLoc.Transformation());
+        dir.Transform(invObjLoc.Transformation());
+        base.move(invObjLoc);
+        sketchshape.move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
         TopExp_Explorer xp;
@@ -143,11 +144,10 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         }        
 
         // revolve the face to a solid
-        if(!sketchshape.Hasher)
-            sketchshape.Hasher = getDocument()->getStringHasher();
-        TopoShape result;
+        TopoShape result(0,getDocument()->getStringHasher());
         try {
-            result = sketchshape.makERevolve(gp_Ax1(pnt, dir), angle);
+            result.makERevolve(sketchshape,gp_Ax1(pnt, dir), angle);
+            result = refineShapeIfActive(result);
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
         }

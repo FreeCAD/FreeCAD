@@ -118,15 +118,16 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         if (Midplane.getValue()) {
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
-            sketchshape = sketchshape.makETransform(mov);
+            TopLoc_Location loc(mov);
+            sketchshape.move(loc);
         }
 
         this->positionByPrevious();
-        auto invTrsf = this->getLocation().Inverted().Transformation();
-        pnt.Transform(invTrsf);
-        dir.Transform(invTrsf);
-        base = base.makETransform(invTrsf);
-        sketchshape = sketchshape.makETransform(invTrsf);
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        pnt.Transform(invObjLoc.Transformation());
+        dir.Transform(invObjLoc.Transformation());
+        base.move(invObjLoc);
+        sketchshape.move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
         TopExp_Explorer xp;

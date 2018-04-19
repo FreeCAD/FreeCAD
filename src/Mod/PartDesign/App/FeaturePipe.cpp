@@ -65,6 +65,8 @@
 #include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
+
 //#include "Body.h"
 #include "FeaturePipe.h"
 
@@ -146,7 +148,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         auto invTrsf = invObjLoc.Transformation();
         if(!base.isNull())
-            base = base.makETransform(invTrsf);
+            base.move(invObjLoc);
         
         //build the paths
         auto path = buildPipePath(Spine,invTrsf);
@@ -215,13 +217,13 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             
             if(!scalinglaw) {
                 for(TopoShape& wire : wires) {
-                    wire = wire.makETransform(invTrsf);
+                    wire.move(invObjLoc);
                     mkPS.Add(TopoDS::Wire(wire.getShape()));
                 }
             }
             else {
                 for(TopoShape& wire : wires)  {
-                    wire = wire.makETransform(invTrsf);
+                    wire.move(invObjLoc);
                     mkPS.SetLaw(TopoDS::Wire(wire.getShape()), scalinglaw);
                 }
             }
@@ -430,21 +432,27 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
 }
 
 TopoShape Pipe::buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &trsf) {
-    TopoShape result;
+    TopoShape result(0,getDocument()->getStringHasher());
     auto obj = link.getValue();
     if(!obj) return result;
     std::vector<TopoShape> shapes;
-    for(auto &sub : link.getSubValues(true)) {
-        shapes.push_back(getTopoShape(obj,sub.c_str(),true));
-        if(shapes.back().isNull()) 
+    const auto &subs = link.getSubValues(true);
+    if(subs.empty()) {
+        shapes.push_back(getTopoShape(obj));
+        if(shapes.back().isNull())
             return result;
+    }else{
+        for(auto &sub : link.getSubValues(true)) {
+            shapes.push_back(getTopoShape(obj,sub.c_str(),true));
+            if(shapes.back().isNull()) 
+                return result;
+        }
     }
     result.makEWires(shapes);
-    if(result.getShape().ShapeType()!=TopAbs_WIRE)
-        return TopoShape();
-    return result.makETransform(trsf);
+    if(result.countSubShapes(TopAbs_WIRE)>1)
+        FC_WARN("Sweep path contain more than one wire");
+    return result.getSubTopoShape(TopAbs_WIRE,1).makETransform(trsf);
 }
-
 
 
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)

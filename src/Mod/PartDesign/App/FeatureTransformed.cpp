@@ -279,12 +279,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // seems to be pretty broken
             ss.str("");
             ss << 'I' << idx;
-            shape = shape.makECopy(ss.str().c_str());
-            if (shape.isNull())
+            auto shapeCopy = shape.makECopy(ss.str().c_str());
+            if (shapeCopy.isNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
             try {
-                shape = shape.makETransform(*t);
+                shapeCopy = shapeCopy.makETransform(*t);
             }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             }
@@ -292,7 +292,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check for intersection with support
             try {
 
-                if (!Part::checkIntersection(support.getShape(), shape.getShape(), false, true)) {
+                if (!Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
@@ -322,7 +322,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     //TopoDS_Shape result;
                     
                     if (fuse) {
-                        result.makEFuse({support,shape});
+                        result.makEFuse({support,shapeCopy});
                         // we have to get the solids (fuse sometimes creates compounds)
                         support = this->getSolid(result);
                         // lets check if the result is a solid
@@ -341,7 +341,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
                         }*/
                     } else {
-                        result.makECut({support,shape});
+                        result.makECut({support,shapeCopy});
                         support = result;
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
