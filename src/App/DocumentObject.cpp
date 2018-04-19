@@ -934,9 +934,9 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         target = link->getSubObject(linkssub.c_str());
         if(!target)
             return 0;
-        subname = ssub;
+        subname = subname.substr(ssub.size());
         link = target;
-        linkSub = linkssub;
+        linkSub = linkSub.substr(linkssub.size());
         return ret;
     }
 }
