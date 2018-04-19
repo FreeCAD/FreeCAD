@@ -226,7 +226,7 @@ public:
      * mapped to one element
      */
     const char *setElementName(const char *element, const char *name, 
-            const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
+            const std::vector<App::StringIDRef> *sid=0, bool overwrite=false, bool nohash=false);
 
     /** Add a sub element name mapping with unhashed postfix */
     const char *setElementName(const char *element, const char *name, 

@@ -336,17 +336,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
             ss << elementMapPrefix();
         ss << postfix;
     }
-    if(!Hasher || name[0])
-        return setElementName(element,ss.str().c_str(),sid,overwrite);
-    else {
-        // Have hasher and name empty, meaning only postfix.  So we temparorily
-        // swap out hasher to prevent hashing postfix.
-        App::StringHasherRef hasher;
-        hasher.swap(Hasher);
-        auto ret = setElementName(element,ss.str().c_str(),sid,overwrite);
-        Hasher.reset(hasher);
-        return ret;
-    }
+    return setElementName(element,ss.str().c_str(),sid,overwrite,!name[0]);
 }
 
 std::string ComplexGeoData::hashElementName(
@@ -392,7 +382,7 @@ std::string ComplexGeoData::dehashElementName(const char *name) const {
 }
 
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
-        const std::vector<App::StringIDRef> *sid, bool overwrite)
+        const std::vector<App::StringIDRef> *sid, bool overwrite,bool nohash)
 {
     if(!element || !element[0])
         throw Base::ValueError("Invalid input");
@@ -406,7 +396,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
         name = mapped;
     if(!_ElementMap) _ElementMap = std::make_shared<ElementMap>();
     std::string _name;
-    if((!sid||sid->empty()) && Hasher) {
+    if((!sid||sid->empty()) && Hasher && !nohash) {
         sid = &_sid;
         _name = hashElementName(name,_sid);
         name = _name.c_str();
