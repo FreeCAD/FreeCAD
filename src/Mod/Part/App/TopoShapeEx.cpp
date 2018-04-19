@@ -589,10 +589,12 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape,
             return makEGTransform(shape,rclTrf,op);
     }
 
-    resetElementMap();
+    return makETransform(shape,convert(rclTrf),op);
+}
 
-    // location transformation
-    BRepBuilderAPI_Transform mkTrf(shape.getShape(), convert(rclTrf), Standard_False);
+TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op) {
+    resetElementMap();
+    BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_False);
     TopoShape tmp(shape);
     tmp._Shape = mkTrf.Shape();
     if(op || (shape.Tag && shape.Tag!=Tag)) {

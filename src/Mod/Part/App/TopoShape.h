@@ -362,14 +362,22 @@ public:
 
     TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
             const char *op=0, bool checkScale=false);
-    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &mat, const char *op=0, bool checkScale=false) {
-        return makETransform(shape,convert(mat),op,checkScale);
-    }
     TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, bool checkScale=false) const {
         return TopoShape(Tag,Hasher).makETransform(*this,mat,op,checkScale);
     }
-    TopoShape makETransform(const gp_Trsf &mat, const char *op=0, bool checkScale=false) const {
-        return TopoShape(Tag,Hasher).makETransform(*this,mat,op,checkScale);
+
+    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op=0);
+    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0) const {
+        return TopoShape(Tag,Hasher).makETransform(*this,trsf,op);
+    }
+
+    void move(const TopLoc_Location &loc) {
+        _Shape.Move(loc);
+    }
+    TopoShape moved(const TopLoc_Location &loc) const {
+        TopoShape ret(*this);
+        ret._Shape.Move(loc);
+        return ret;
     }
 
     TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, const char *op=0);
