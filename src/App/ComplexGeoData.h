@@ -281,6 +281,9 @@ public:
     mutable App::StringHasherRef Hasher;
 
 protected:
+    virtual std::string renameDuplicateElement(int index, const char *element, 
+                const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
+
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
     {

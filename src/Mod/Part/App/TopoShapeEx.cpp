@@ -376,13 +376,31 @@ std::vector<TopoDS_Shape> TopoShape::findAncestorsShapes(
     return shapes;
 }
 
+std::string TopoShape::renameDuplicateElement(int index, const char *element, 
+            const char *element2, const char *name, std::vector<App::StringIDRef> &sids)
+{
+    std::ostringstream ss;
+    ss << elementMapPrefix() << 'D' << index;
+    std::string renamed(name);
+    processName(renamed,ss,sids);
+    renamed += ss.str();
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        FC_MSG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
+    }else{
+        FC_LOG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
+    }
+    return renamed;
+}
+
 bool TopoShape::canMapElement(const TopoShape &other) const {
     if(isNull() || other.isNull())
         return false;
+    if(!other.Tag && !other.getElementMapSize())
+        return false;
     initCache();
     other.initCache();
-    if(_Cache == other._Cache)
-        return false;
     _Cache->relations.clear();
     return true;
 }

@@ -427,13 +427,26 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
             _ElementMap->left.erase(ret.first);
             continue;
         }
-        ss.str("");
-        ss << name << elementMapPrefix() << 'D' << (retry++);
-        retry_name = ss.str();
+        if(sid!=&_sid)
+            _sid.insert(_sid.end(),sid->begin(),sid->end());
+        retry_name = renameDuplicateElement(retry++,element,ret.first->second.c_str(),name,_sid);
+        if(retry_name.empty())
+            return ret.first->first.c_str();
         mapped = retry_name.c_str();
-        FC_WARN("duplicate element mapping '" << name << " -> " << mapped << ' ' 
-                << element << '/' << ret.first->second);
+        sid = &_sid;
     }
+}
+
+std::string ComplexGeoData::renameDuplicateElement(int index, const char *element, 
+                const char *element2, const char *name, std::vector<App::StringIDRef> &sids)
+{
+    (void)sids;
+    std::ostringstream ss;
+    ss << name << elementMapPrefix() << 'D' << index;
+    auto renamed = ss.str();
+    FC_WARN("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+            << element << '/' << element2);
+    return renamed;
 }
 
 void ComplexGeoData::Save(Base::Writer &writer) const {

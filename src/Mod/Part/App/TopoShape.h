@@ -568,6 +568,10 @@ public:
     const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 
+protected:
+    virtual std::string renameDuplicateElement(int index, const char *element, 
+                const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
+
 private:
     void processName(std::string &name, std::ostringstream &ss, 
             std::vector<App::StringIDRef> &sids, const char* op=0, long tag=0) const;
