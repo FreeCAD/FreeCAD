@@ -1298,8 +1298,28 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if(!Obj.getNameInDocument()) return;
 
-    // remove also from the selection, if selected
-    Selection().rmvSelection( Obj.getDocument()->getName(), Obj.getNameInDocument() );
+    // For safty reason, don't bother checking
+    rmvPreselect();
+
+    // Remove also from the selection, if selected
+    // We don't walk down the hierarchy for each selection, so there may be stray selection
+    std::vector<SelectionChanges> changes;
+    for(auto it=_SelList.begin(),itNext=it;it!=_SelList.end();it=itNext) {
+        ++itNext;
+        if(it->pResolvedObject == &Obj || it->pObject==&Obj) {
+            changes.emplace_back(SelectionChanges::RmvSelection,
+                    it->DocName,it->FeatName,it->SubName,it->TypeName);
+            _SelList.erase(it);
+        }
+    }
+    if(changes.size()) {
+        for(auto &Chng : changes) {
+            FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+            Notify(Chng);
+            signalSelectionChanged(Chng);
+        }
+        getMainWindow()->updateActions();
+    }
 
     if(_PickedList.size()) {
         bool changed = false;
