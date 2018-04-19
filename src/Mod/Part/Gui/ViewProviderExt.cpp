@@ -1035,11 +1035,12 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     for(auto &v : infos) {
         auto &info = v.second;
         if(!info.mapColor) {
-            if(info.colors.empty())
-                info.prop->setValue(info.defaultColor);
-            else {
-                std::vector<App::Color> colors(
-                    shape.countSubShapes(info.type),info.defaultColor);
+            if(info.colors.size()) {
+                auto colors = info.prop->getValues();
+                if(colors.size()!=shape.countSubShapes(info.type)) {
+                    colors.clear();
+                    colors.resize(shape.countSubShapes(info.type),info.defaultColor);
+                }
                 for(auto &v : info.colors) {
                     if(v.first>=(int)colors.size())
                         break;
