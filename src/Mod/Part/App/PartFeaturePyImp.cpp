@@ -48,37 +48,32 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
         auto feature = getFeaturePtr();
         std::string mapped = feature->Shape.getShape().getElementName(name,true);
         Py::List list;
-        list.append(Py::TupleN(Py::String(feature->getNameInDocument()),
-                    Py::String(mapped),Py::List()));
-
         std::string original;
         bool recursve = PyObject_IsTrue(recursive);
         do {
             std::vector<std::string> history;
             long tag = feature->Shape.getShape().getElementHistory(mapped.c_str(),&original,&history);
-            if(!tag) 
-                break;
-            Py::Tuple ret(3);
-            auto obj = feature->getDocument()->getObjectByID(tag);
-            if(obj && obj->getNameInDocument()) 
-                ret.setItem(0,Py::String(obj->getNameInDocument()));
-            else {
-                obj = 0;
-                ret.setItem(0,Py::Int(tag));
+            App::DocumentObject *obj;
+            obj = tag?feature->getDocument()->getObjectByID(tag):0;
+            if(!recursve) {
+                Py::Tuple ret(3);
+                if(obj && obj->getNameInDocument()) 
+                    ret.setItem(0,Py::String(obj->getNameInDocument()));
+                else 
+                    ret.setItem(0,Py::Int(tag));
+                ret.setItem(1,Py::String(original));
+                ret.setItem(2,Py::List());
+                return Py::new_reference_to(ret);
             }
-            ret.setItem(1,Py::String(original));
             Py::List pyHistory;
             for(auto &h : history)
                 pyHistory.append(Py::String(h));
-            ret.setItem(2,pyHistory);
-            if(!recursve)
-                return Py::new_reference_to(ret);
-            list.append(ret);
-            mapped = original;
-
-            if(!obj) 
+            list.append(Py::TupleN(Py::String(feature->getNameInDocument()),
+                        Py::String(mapped),pyHistory));
+            if(!obj)
                 break;
             feature = dynamic_cast<Feature*>(obj->getLinkedObject(true));
+            mapped = original;
         }while(feature);
 
         if(!list.size())
