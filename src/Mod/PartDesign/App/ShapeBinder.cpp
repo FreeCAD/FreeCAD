@@ -284,6 +284,7 @@ void SubShapeBinder::setLinks(App::DocumentObject *obj,
 {
     if(!obj) {
         Support.setValue(0);
+        Shape.setValue(Part::TopoShape());
         return;
     }
     if(!obj->getNameInDocument())

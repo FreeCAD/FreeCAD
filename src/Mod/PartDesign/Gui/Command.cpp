@@ -327,7 +327,6 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     PartDesign::SubShapeBinder *binder = 0;
     App::DocumentObject *binderParent = 0;
     std::string binderSub;
-    Base::Matrix4D mat;
     App::DocumentObject *obj = 0;
     std::vector<std::string> subs;
     for(auto &sel : Gui::Selection().getSelection("",0)) {
@@ -335,15 +334,13 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         if(!binder) {
             const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
             if(!dot || dot[1]==0) {
-                Base::Matrix4D subMat;
-                auto sobj = sel.pObject->getSubObject(sel.SubName,0,&subMat);
+                auto sobj = sel.pObject->getSubObject(sel.SubName);
                 if(!sobj) continue;
                 binder = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
                 if(binder) {
                     binderParent = sel.pObject;
                     if(sel.SubName)
                         binderSub = sel.SubName;
-                    mat = subMat;
                     continue;
                 }
             }
@@ -357,23 +354,14 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
         subs.push_back(std::string(sel.SubName?sel.SubName:""));
     }
-    if(!obj) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
-                QObject::tr("No object can be linked"));
-        return;
-    }
 
     PartDesign::Body *pcActiveBody = 0;
     std::string FeatName;
     if(!binder) {
         pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
         FeatName = getUniqueObjectName("Binder",pcActiveBody);
-    }else if(subs.empty()) {
-        auto vp = Gui::Application::Instance->getViewProvider(binder);
-        vp->doubleClicked();
-        return;
     }
-    if(binderParent && binderParent!=binder) {
+    if(obj && binderParent && binderParent!=binder) {
         App::DocumentObject *sobj = 0;
         App::DocumentObject *parent = 0;
         std::string parentSub = binderSub;
@@ -399,7 +387,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         obj = sobj;
         binderParent = parent;
         binderSub = parentSub;
-        binderParent->getSubObject(binderSub.c_str(),0,&mat);
+        binderParent->getSubObject(binderSub.c_str());
     }
         
     try {
@@ -418,8 +406,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             }
             if(!binder) return;
         }
-        binder->setLinks(obj,subs,true);
-        binder->updatePlacement(mat);
+        binder->setLinks(obj,subs);
         updateActive();
         commitCommand();
     }catch(Base::Exception &e) {
@@ -429,22 +416,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 }
 
 bool CmdPartDesignSubShapeBinder::isActive(void) {
-    if(!hasActiveDocument())
-        return false;
-    const auto &sels = Gui::Selection().getSelectionEx("",App::DocumentObject::getClassTypeId(),0);
-    if(sels.empty() || sels.size()>2)
-        return false;
-    if(sels.size()==1)
-        return true;
-    else {
-        const auto &sels = Gui::Selection().getSelectionEx("",App::DocumentObject::getClassTypeId(),1);
-        for(auto &sel : sels) {
-            if(sel.getSubNames().empty() && 
-               dynamic_cast<const PartDesign::SubShapeBinder*>(sel.getObject()))
-                return true;
-        }
-        return false;
-    }
+    return hasActiveDocument();
 }
 
 //===========================================================================
