@@ -654,7 +654,13 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(Reason.Type == SelectionChanges::ClrSelection)
             return;
     }
-
+    if(Reason.Type == SelectionChanges::RmvPreselect) {
+        SoHighlightElementAction haction;
+        haction.apply(pcGroupOnTopPreSel);
+        pcGroupOnTopPreSel->removeAllChildren();
+        objectsOnTopPreSel.clear();
+        return;
+    }
     if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
         return;
     auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
@@ -665,21 +671,16 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     auto subname = Reason.pSubName;
     if(subname)
         key += subname;
-    if(Reason.Type == SelectionChanges::RmvSelection || Reason.Type == SelectionChanges::RmvPreselect) {
-        auto &objs = Reason.Type==SelectionChanges::RmvSelection?objectsOnTop:objectsOnTopPreSel;
-        auto pcGroup = Reason.Type==SelectionChanges::RmvSelection?pcGroupOnTopSel:pcGroupOnTopPreSel;
+    if(Reason.Type == SelectionChanges::RmvSelection) {
+        auto &objs = objectsOnTop;
+        auto pcGroup = pcGroupOnTopSel;
         auto it = objs.find(key.c_str());
         if(it == objs.end())
             return;
         int index = pcGroup->findChild(it->second);
         if(index >= 0) {
-            if(Reason.Type==SelectionChanges::RmvSelection) {
-                SoSelectionElementAction action(SoSelectionElementAction::None,true);
-                action.apply(it->second);
-            } else {
-                SoHighlightElementAction haction;
-                haction.apply(it->second);
-            }
+            SoSelectionElementAction action(SoSelectionElementAction::None,true);
+            action.apply(it->second);
             pcGroup->removeChild(index);
         }
         FC_LOG("remove annoation " << Reason.Type << " " << key);
