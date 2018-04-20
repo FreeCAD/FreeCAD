@@ -221,7 +221,7 @@ class TaskPanelPage(object):
 
     def pageUpdateData(self, obj, prop):
         '''pageUpdateData(obj, prop) ... internal callback.
-        Do not overwrite, implement updateData(obj) instaed.'''
+        Do not overwrite, implement updateData(obj) instead.'''
         self.updateData(obj, prop)
 
     def setTitle(self, title):
