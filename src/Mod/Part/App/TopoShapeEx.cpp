@@ -417,8 +417,15 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
             continue;
         if(other.Hasher) {
             if(Hasher) {
-                if(other.Hasher!=Hasher)
-                    throw Base::RuntimeError("hasher mismatch");
+                if(other.Hasher!=Hasher) {
+                    if(!getElementMapSize())
+                        FC_WARN("hasher mismatch");
+                    else {
+                        // throw Base::RuntimeError("hasher mismatch");
+                        FC_ERR("hasher mismatch");
+                    }
+                    Hasher = other.Hasher;
+                }
             }else
                 Hasher = other.Hasher;
         }

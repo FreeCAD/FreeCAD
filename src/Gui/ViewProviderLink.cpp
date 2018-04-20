@@ -49,6 +49,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/BoundBoxPy.h>
+#include <App/ComplexGeoData.h>
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
@@ -489,6 +490,9 @@ public:
                 // hold all of its own children, so stop going futher down.
                 break;
             }
+            // new style mapped sub-element
+            if(boost::starts_with(dot+1,Data::ComplexGeoData::elementMapPrefix()))
+                break;
             auto next = strchr(dot+1,'.');
             if(!next) {
                 // no dot any more, the following must be a sub-element
