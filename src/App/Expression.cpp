@@ -897,15 +897,12 @@ Expression * FunctionExpression::evalAggregate() const
                     throw Exception("Invalid property type for aggregate");
             } while (range.next());
         }
-        else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        else {
             std::unique_ptr<Expression> e(args[i]->eval());
             NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
 
             if (n)
                 c->collect(n->getQuantity());
-        }
-        else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
-            c->collect(static_cast<NumberExpression*>(args[i])->getQuantity());
         }
     }
 
