@@ -639,7 +639,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	Point	On(const CLine& s,  const Point& p);											// returns a point on s nearest to p
 	Point	On(const Circle& c, const Point& p);											// returns a point on c nearest to p
 
-	// cline definitons
+	// cline definitions
 
 	CLine	AtAngle(double angle, const Point& p, const CLine& s = HORIZ_CLINE);		// cline at angle to line thro' point
 	CLine	Tanto(int AT, const Circle& c,  double angle, const CLine& s0 = HORIZ_CLINE);//// cline tanto circle at angle to optional cline
