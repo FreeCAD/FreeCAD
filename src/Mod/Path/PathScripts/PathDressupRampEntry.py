@@ -302,7 +302,7 @@ class ObjectDressup:
            by going the path backwards until the original plunge end point is reached
         4. Continue with the original path
 
-        This method causes unecessarily many moves with tool down
+        This method causes many unnecessary moves with tool down.
         """
         outedges = []
         rampremaining = projectionlen
@@ -365,10 +365,10 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Ramp down along the path that comes after the plunge until
            traveled half of the Z distance
-        3. Change direction and ramp backwards to the origianal plunge end point
+        3. Change direction and ramp backwards to the original plunge end point
         4. Continue with the original path
 
-        This method causes unecessarily many moves with tool down
+        This method causes many unnecessary moves with tool down.
         """
         outedges = []
         rampremaining = projectionlen

@@ -331,7 +331,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // NOTE: OCCT QuasiUniformDeflection has a bug cause it to return only
     // partial points for some (BSpline) curve if we pass in the edge trimmed
     // first and last parameters. Passing the original curve first and last
-    // paramaters works fine. The following algorithm uses the original curve
+    // parameters works fine. The following algorithm uses the original curve
     // parameters, and skip those out of range. The algorithm shall work the
     // same for any other discetization algorithm, althgouth it seems only 
     // QuasiUniformDeflection has this bug.
@@ -341,7 +341,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
         Standard_Failure::Raise("Curve discretization failed");
     if(discretizer.NbPoints () > 1) {
         int nbPoints = discretizer.NbPoints ();
-        //strangly OCC discretizer points are one-based, not zero-based, why?
+        //strangely OCC discretizer points are one-based, not zero-based, why?
         if(reversed) {
             for (int i=nbPoints-1; i>=1; --i) {
                 auto param = discretizer.Parameter(i);
