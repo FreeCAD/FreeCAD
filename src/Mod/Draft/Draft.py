@@ -5117,6 +5117,7 @@ class _ViewProviderWire(_ViewProviderDraft):
         self.onChanged(obj,"EndArrow")
 
     def updateData(self, obj, prop):
+        from pivy import coin
         if prop == "Points":
             if obj.Points:
                 p = obj.Points[-1]
@@ -5126,16 +5127,13 @@ class _ViewProviderWire(_ViewProviderDraft):
                         v1 = obj.Points[-2].sub(obj.Points[-1])
                         if not DraftVecUtils.isNull(v1):
                             v1.normalize()
-                            import DraftGeomUtils
-                            v2 = DraftGeomUtils.getNormal(obj.Shape)
-                            if DraftVecUtils.isNull(v2):
-                                v2 = Vector(0,0,1)
-                            v3 = v1.cross(v2).negative()
-                            q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
-                            self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
+                            _rot = coin.SbRotation()
+                            _rot.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(v1[0], v1[1], v1[2]))
+                            self.coords.rotation.setValue(_rot)
         return
 
     def onChanged(self, vobj, prop):
+        from pivy import coin
         if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
             rn = vobj.RootNode
             if hasattr(self,"pt") and hasattr(vobj,"EndArrow"):
@@ -5157,6 +5155,9 @@ class _ViewProviderWire(_ViewProviderDraft):
                             self.pt.removeChild(self.symbol)
                         if rn.findChild(self.pt) != -1:
                             rn.removeChild(self.pt)
+        if prop in ["LineColor"]:
+            if hasattr(self, "pt"):
+                self.pt[0].rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
         _ViewProviderDraft.onChanged(self,vobj,prop)
         return
 
