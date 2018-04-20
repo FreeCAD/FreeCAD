@@ -826,7 +826,7 @@ class gridTracker(Tracker):
         for i in range(numlines+1):
             curr = -bound + i*self.space
             z = 0
-            if i/float(self.mainlines) == i/self.mainlines:
+            if i/float(self.mainlines) == i//self.mainlines:
                 if round(curr,4) == 0:
                     apts.extend([[-bound,curr,z],[bound,curr,z]])
                     apts.extend([[curr,-bound,z],[curr,bound,z]])
