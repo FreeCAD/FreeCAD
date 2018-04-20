@@ -85,14 +85,14 @@ void PropertyRowHeights::Save(Base::Writer &writer) const
 {
     // Save row information
     writer.Stream() << writer.ind() << "<RowInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd(); // indention for 'RowInfo'
+    writer.incInd(); // indentation for 'RowInfo'
 
     std::map<int, int>::const_iterator ri = begin();
     while (ri != end()) {
         writer.Stream() << writer.ind() << "<Row name=\"" << rowName(ri->first) << "\"  height=\"" << ri->second << "\" />" << std::endl;
         ++ri;
     }
-    writer.decInd(); // indention for 'RowInfo'
+    writer.decInd(); // indentation for 'RowInfo'
     writer.Stream() << writer.ind() << "</RowInfo>" << std::endl;
 }
 
