@@ -234,7 +234,7 @@ def Create(baseObject, name='DressupTag'):
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     '''
     if not baseObject.isDerivedFrom('Path::Feature'):
-        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path\n'))
+        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path')+'\n')
         return None
 
     if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
