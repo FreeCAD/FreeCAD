@@ -616,11 +616,11 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object\n"))
+            PathLog.error(translate("Please select one path object")+"\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path\n"))
+            PathLog.error(translate("The selected object is not a path")+"\n")
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))

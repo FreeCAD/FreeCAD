@@ -517,7 +517,7 @@ class CommandPathDressupTag:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate('Path_DressupTag', 'Please select one path object\n'))
+            PathLog.error(translate('Path_DressupTag', 'Please select one path object')+'\n')
             return
         baseObject = selection[0]
 

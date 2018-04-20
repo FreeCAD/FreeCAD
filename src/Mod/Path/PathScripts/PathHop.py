@@ -109,11 +109,11 @@ class CommandPathHop:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Hop", "Please select one path object\n"))
+                translate("Path_Hop", "Please select one path object")+"\n")
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_Hop", "The selected object is not a path\n"))
+                translate("Path_Hop", "The selected object is not a path")+"\n")
             return
 
         FreeCAD.ActiveDocument.openTransaction(
