@@ -935,7 +935,7 @@ class ObjectTagDressup:
         try:
             pathData = PathData(obj)
         except ValueError:
-            PathLog.error(translate("Path_DressupTag", "Cannot insert holding tags for this path - please select a Profile path\n"))
+            PathLog.error(translate("Path_DressupTag", "Cannot insert holding tags for this path - please select a Profile path")+"\n")
             return None
 
         self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2
@@ -979,7 +979,7 @@ def Create(baseObject, name='DressupTag'):
     Create(basePath, name='DressupTag') ... create tag dressup object for the given base path.
     '''
     if not baseObject.isDerivedFrom('Path::Feature'):
-        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path\n'))
+        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path')+'\n')
         return None
 
     if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
