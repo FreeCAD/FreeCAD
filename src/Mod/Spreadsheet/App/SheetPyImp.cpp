@@ -55,7 +55,7 @@ int SheetPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-// +++ methodes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
+// +++ methods implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
 PyObject* SheetPy::set(PyObject *args)
 {
