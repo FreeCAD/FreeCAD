@@ -1270,7 +1270,7 @@ void TreeWidget::changeEvent(QEvent *e)
 
 void TreeWidget::onItemSelectionChanged ()
 {
-    if (this->isConnectionAttached() && this->isConnectionBlocked())
+    if (!this->isConnectionAttached() || this->isConnectionBlocked())
         return;
 
     _LastSelectedTreeWidget = this;
@@ -1796,7 +1796,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             if(item->myData->removeChildrenFromRoot) {
                 if(childItem->myData->rootItem) {
                     assert(childItem != childItem->myData->rootItem);
+                    bool lock = getTree()->blockConnection(true);
                     delete childItem->myData->rootItem;
+                    getTree()->blockConnection(lock);
                 }
             }else if(childItem->requiredAtRoot())
                 createNewItem(*childItem->object(),this,-1,childItem->myData);
@@ -1850,7 +1852,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             }
         }
 
+        bool lock = getTree()->blockConnection(true);
         delete ci;
+        getTree()->blockConnection(lock);
     }
     getTree()->updateGeometries();
 }
