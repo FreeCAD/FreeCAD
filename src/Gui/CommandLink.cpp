@@ -473,7 +473,7 @@ static void linkConvert(bool unlink) {
         for(auto &cmd : changeCmds)
             Command::runCommand(Gui::Command::Doc, cmd.c_str());
 
-        App::GetApplication().closeActiveTransaction(true);
+        App::GetApplication().closeActiveTransaction();
 
     } catch (const Base::Exception& e) {
         auto title = unlink?QObject::tr("Unlink failed"):QObject::tr("Replace link failed");
