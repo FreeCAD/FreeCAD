@@ -1627,14 +1627,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             linkView->setSize(ext->getElementCountValue());
         checkIcon(ext);
     }else if(prop == ext->getShowElementProperty()) {
-        const auto &elements = ext->getElementListValue();
         if(!ext->getShowElementValue()) {
 
-            if(ext->getElementCountValue()) {
-                auto vp = getLinkedView(true,ext);
-                if(vp) vp->hide();
-            }
-
+            const auto &elements = ext->getElementListValue();
             // elements is about to be collapsed, preserve the materials
             if(elements.size()) {
                 std::vector<App::Material> materials;

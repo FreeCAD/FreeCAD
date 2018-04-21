@@ -419,7 +419,9 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret) co
     return true;
 }
 
-void LinkBaseExtension::checkElementMap(App::DocumentObject *linked, PyObject **pyObj) const {
+void LinkBaseExtension::checkElementMap(
+        App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const 
+{
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!pyObj || !*pyObj ||
        !owner || !owner->getNameInDocument() ||
@@ -429,7 +431,7 @@ void LinkBaseExtension::checkElementMap(App::DocumentObject *linked, PyObject **
         return;
     
     static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr()->reTagElementMap(
-            owner->getID(), owner->getDocument()->getStringHasher());
+            owner->getID(), owner->getDocument()->getStringHasher(), postfix);
 }
 
 bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname, 
@@ -496,7 +498,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     if(!subname || !subname[0])
         subname = mySubElement.c_str();
     ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
-    checkElementMap(linked,pyObj);
+    std::string postfix;
     if(ret) {
         // do not resolve the link if we are the last referenced object
         if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) {
@@ -504,11 +506,18 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 *mat = matNext;
         }else if(element)
             ret = element;
-        else if(!isElement)
+        else if(!isElement) {
             ret = const_cast<DocumentObject*>(obj);
-        else if(mat)
-            *mat = matNext;
+        } else {
+            if(idx) {
+                postfix = "I";
+                postfix += std::to_string(idx);
+            }
+            if(mat)
+                *mat = matNext;
+        }
     }
+    checkElementMap(linked,pyObj,postfix.size()?postfix.c_str():0);
     return true;
 }
 
@@ -584,7 +593,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             dst->setStatus(Property::User3,false);
         }
     }else if(prop == getShowElementProperty()) {
-        const auto &objs = getElementListValue();
+        auto objs = getElementListValue();
         if(getShowElementValue()) 
             update(parent,getElementCountProperty());
         else if(objs.size()){
@@ -603,6 +612,14 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     scales.emplace_back(1,1,1);
                 }
             }
+            // touch the property again to make sure view provider has been
+            // signaled before clearing the elements
+            getShowElementProperty()->setStatus(App::Property::User3,true);
+            getShowElementProperty()->touch();
+            getShowElementProperty()->setStatus(App::Property::User3,false);
+
+            getElementListProperty()->setValues(std::vector<App::DocumentObject*>());
+
             if(getPlacementListProperty()) {
                 getPlacementListProperty()->setStatus(Property::User3,getScaleListProperty()!=0);
                 getPlacementListProperty()->setValue(placements);
@@ -610,16 +627,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
             if(getScaleListProperty())
                 getScaleListProperty()->setValue(scales);
-
-            // About to remove all elements
-            //
-            // NOTE: there is an assumption here that signalChangeObject will
-            // be trigged before the call here (i.e. through
-            // extensionOnChanged()), which is the default behavior on
-            // DocumentObject::onChanged(). This ensures the view provider has
-            // a chance to save the element view provider's properties.  This
-            // assumption may be broken if someone override onChanged().
-            getElementListProperty()->setValues(std::vector<App::DocumentObject*>());
 
             for(auto obj : objs) {
                 if(obj && obj->getNameInDocument())
@@ -662,6 +669,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 if(name[name.size()-1] != 'i')
                     name += "_i";
                 auto offset = name.size();
+                auto placementProp = getPlacementListProperty();
+                auto scaleProp = getScaleListProperty();
                 for(size_t i=objs.size();i<elementCount;++i) {
                     name.resize(offset);
                     name += std::to_string(i);
@@ -672,12 +681,21 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     auto obj = dynamic_cast<LinkElement*>(doc->getObject(name.c_str()));
                     if(obj && (!obj->myOwner || obj->myOwner==this))
                         obj->Visibility.setValue(false);
-                    else{
+                    else {
                         obj = new LinkElement;
-                        Base::Placement pla(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
-                        obj->Placement.setValue(pla);
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
+
+                    if(placementProp && placementProp->getSize()>(int)i)
+                        obj->Placement.setValue(placementProp->getValues()[i]);
+                    else{
+                        Base::Placement pla(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
+                        obj->Placement.setValue(pla);
+                    }
+                    if(scaleProp && scaleProp->getSize()>(int)i)
+                        obj->Scale.setValue(scaleProp->getValues()[i].x);
+                    else
+                        obj->Scale.setValue(1);
                     objs.push_back(obj);
                 }
                 if(getPlacementListProperty()) 
