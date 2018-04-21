@@ -252,9 +252,10 @@ public:
     void copyElementMap(const ComplexGeoData &data, const char *postfix=0);
 
     /// Append the Tag (if and only if it is non zero) into the element map
-    virtual void reTagElementMap(long tag, App::StringHasherRef hasher) {
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0) {
         (void)tag;
         (void)hasher;
+        (void)postfix;
     }
 
     long getElementHistory(const std::string &name, 

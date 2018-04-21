@@ -2647,14 +2647,14 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     return ret;
 }
 
-void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher) {
+void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix) {
     if(!Tag) return;
     TopoShape tmp(*this);
     Hasher = hasher;
     initCache(true);
     Tag = tag;
-    if(!getElementMapSize())
-        mapSubElement(tmp);
+    if(!getElementMapSize() || postfix)
+        mapSubElement(tmp,postfix);
     else {
         std::string postfix(tagPostfix());
         postfix += std::to_string(Tag);

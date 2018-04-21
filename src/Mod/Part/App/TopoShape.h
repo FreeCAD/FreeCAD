@@ -541,7 +541,7 @@ public:
     const char *setElementComboName(const char *element, 
             const std::vector<std::string> &names, const char *marker=0, const char *op=0);
 
-    virtual void reTagElementMap(long tag, App::StringHasherRef hasher);
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0) override;
     //@}
 
 
