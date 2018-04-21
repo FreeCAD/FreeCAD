@@ -55,7 +55,7 @@ def export(exportList, filename):
 
     # Success
     FreeCAD.Console.PrintMessage(
-        translate("Arch", "successfully written") + ' ' + filename + "\n")
+        translate("Arch", "Successfully written") + ' ' + filename + "\n")
 
 
 def getObjectData(obj):

@@ -67,6 +67,8 @@ void DlgSettingsViewColor::saveSettings()
     HighlightColor->onSave();
     SelectionColor->onSave();
     spinPickRadius->onSave();
+    TreeEditColor->onSave();
+    TreeActiveColor->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -83,6 +85,8 @@ void DlgSettingsViewColor::loadSettings()
     HighlightColor->onRestore();
     SelectionColor->onRestore();
     spinPickRadius->onRestore();
+    TreeEditColor->onRestore();
+    TreeActiveColor->onRestore();
 }
 
 /**

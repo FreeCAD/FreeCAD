@@ -100,7 +100,7 @@ void PathPy::setCommands(Py::List list)
             Path::Command &cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
             getToolpathPtr()->addCommand(cmd);
         } else {
-            throw Py::Exception("The list can only contain Path Commands");
+            throw Py::TypeError("The list can only contain Path Commands");
         }
     }
 }
@@ -124,7 +124,7 @@ PyObject* PathPy::copy(PyObject * args)
     if (PyArg_ParseTuple(args, "")) {
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* PathPy::addCommands(PyObject * args)
@@ -184,7 +184,7 @@ PyObject* PathPy::toGCode(PyObject * args)
         return PyString_FromString(result.c_str());
 #endif
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* PathPy::setFromGCode(PyObject * args)
@@ -196,7 +196,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    throw Py::Exception("Argument must be a string");
+    throw Py::TypeError("Argument must be a string");
 }
 
 // custom attributes get/set

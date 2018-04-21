@@ -2204,7 +2204,7 @@ class ShapeString(Creator):
         #print("debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString)))
 
         dquote = '"'
-        if type(self.SString) == unicode: # Python3: no more unicode
+        if sys.version_info.major < 3: # Python3: no more unicode
             String  = 'u' + dquote + self.SString.encode('unicode_escape') + dquote
         else:
             String  = dquote + self.SString + dquote

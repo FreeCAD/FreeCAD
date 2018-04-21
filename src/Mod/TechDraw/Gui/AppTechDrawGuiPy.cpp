@@ -110,7 +110,7 @@ private:
         PyObject *pageObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::Exception("expected (Page,path");
+            throw Py::TypeError("expected (Page,path");
         } 
         
         std::string filePath = std::string(name);
@@ -151,7 +151,7 @@ private:
         PyObject *pageObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::Exception("expected (Page,path");
+            throw Py::TypeError("expected (Page,path");
         } 
         
         std::string filePath = std::string(name);

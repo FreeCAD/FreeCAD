@@ -1000,7 +1000,7 @@ Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
 Py::Boolean TopoShapeEdgePy::getClosed(void) const
 {
     if (getTopoShapePtr()->getShape().IsNull())
-        throw Py::Exception("Cannot determine the 'Closed'' flag of an empty shape");
+        throw Py::RuntimeError("Cannot determine the 'Closed'' flag of an empty shape");
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->getShape());
     return Py::Boolean(ok ? true : false);
 }

@@ -1560,11 +1560,14 @@ const char *DocumentItem::getTreeName() const {
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor",4294902015);
+    QColor color((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
     if(getTree()->editingItem)
-        getTree()->editingItem->setBackgroundColor(0,Qt::yellow);
+        getTree()->editingItem->setBackgroundColor(0,color);
     else{
         FOREACH_ITEM(item,v)
-            item->setBackgroundColor(0,Qt::yellow);
+            item->setBackgroundColor(0,color);
         END_FOREACH_ITEM
     }
 }
@@ -1971,8 +1974,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;
         case Gui::LightBlue:
-            if (set)
-                item->setBackgroundColor(0,QColor(230,230,255));
+            if (set) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
+                item->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
+            }
             else
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;

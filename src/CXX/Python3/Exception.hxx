@@ -63,10 +63,10 @@ namespace Py
         explicit Exception ()
         {}
         
-        Exception (const std::string &reason)
-        {
-            PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
-        }
+        //Exception (const std::string &reason)
+        //{
+        //    PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
+        //}
         
         Exception( PyObject *exception, const std::string &reason )
         {

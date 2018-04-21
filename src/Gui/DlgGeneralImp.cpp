@@ -130,14 +130,16 @@ void DlgGeneralImp::saveSettings()
     PythonWordWrap->onSave();
   
     QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-    PythonConsole *pcPython = static_cast<PythonConsole*>(pc);
-    bool pythonWordWrap = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
+    PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
+    if (pcPython) {
+        bool pythonWordWrap = App::GetApplication().GetUserParameter().
+            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
 
-    if (pythonWordWrap) {
-      pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    } else {
-      pcPython->setWordWrapMode(QTextOption::NoWrap);
+        if (pythonWordWrap) {
+            pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        } else {
+            pcPython->setWordWrapMode(QTextOption::NoWrap);
+        }
     }
 
     // set new user defined style

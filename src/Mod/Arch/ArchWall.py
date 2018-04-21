@@ -611,9 +611,9 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"MakeBlocks"):
             fvol = obj.BlockLength.Value * obj.BlockHeight.Value * obj.Width.Value
             if fvol:
-                print "base volume:",fvol
+                print("base volume:",fvol)
                 for s in base.Solids:
-                    print abs(s.Volume - fvol)
+                    print(abs(s.Volume - fvol))
                 ents = [s for s in base.Solids if abs(s.Volume - fvol) < 1]
                 obj.CountEntire = len(ents)
                 obj.CountBroken = len(base.Solids) - len(ents)
@@ -734,7 +734,11 @@ class _Wall(ArchComponent.Component):
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
                     else:
                         # self.basewires = obj.Base.Shape.Wires
-                        self.basewires = [Part.Wire(cluster) for cluster in Part.getSortedClusters(obj.Base.Shape.Edges)]
+                        self.basewires = []
+                        for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
+                            for c in Part.sortEdges(cluster):
+                                self.basewires.append(Part.Wire(c))
+                        
                     if self.basewires and width:
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]

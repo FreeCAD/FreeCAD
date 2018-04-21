@@ -152,7 +152,8 @@
      <item>
       <widget class="QPushButton" name="buttonExport">
        <property name="toolTip">
-        <string>This exports the contents of the &quot;Result&quot; spreadsheet to a csv file. In Libreoffice, you can keep this csv file linked by right-clicking the sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link</string>
+        <string>This exports the contents of the &quot;Result&quot; spreadsheet to a CSV file. In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link
+        Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&gt; Insert Sheet... -&gt; From file -&gt; Browse...</string>
        </property>
        <property name="text">
         <string>Export</string>

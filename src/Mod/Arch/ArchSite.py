@@ -281,11 +281,11 @@ class _CommandSite:
             message = translate( "Arch" ,  "Please select only Building objects or nothing!\n\
 Site are not allowed to accept other object than Building.\n\
 Other objects will be removed from the selection.\n\
-You can change that in the preferences." )
+You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(siteobj) == 0:
             message = translate( "Arch" ,  "There is no valid object in the selection.\n\
-Site creation aborted." )
+Site creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
@@ -310,7 +310,7 @@ class _Site(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Terrain","Arch",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
-        obj.addProperty("App::PropertyString","Address","Arch",QT_TRANSLATE_NOOP("App::Property","The street and housenumber of this site"))
+        obj.addProperty("App::PropertyString","Address","Arch",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site"))
         obj.addProperty("App::PropertyString","PostalCode","Arch",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
         obj.addProperty("App::PropertyString","City","Arch",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
         obj.addProperty("App::PropertyString","Country","Arch",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
@@ -318,7 +318,7 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyFloat","Longitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
         obj.addProperty("App::PropertyAngle","NorthDeviation","Arch",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
         obj.addProperty("App::PropertyLength","Elevation","Arch",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
-        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","An url that shows this site in a mapping website"))
+        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","A url that shows this site in a mapping website"))
         obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
         obj.addProperty("App::PropertyArea","ProjectedArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
