@@ -940,14 +940,17 @@ App::Color ViewProviderPartExt::getElementColor(const App::Color &color,
     auto obj = getObject()->getDocument()->getObjectByID(tag);
     if(!obj)
         return color;
+    const Part::TopoShape &shape = Part::Feature::getTopoShape(obj);
+    if(shape.isNull())
+        return color;
     for(int depth=0;;++depth) {
+        auto vp = dynamic_cast<Gui::ViewProviderLink*>(
+                Gui::Application::Instance->getViewProvider(obj));
+        if(vp && vp->OverrideMaterial.getValue())
+            return vp->ShapeMaterial.getValue().diffuseColor;
         auto linked = obj->getLinkedObject(false,0,false,depth);
         if(!linked || linked==obj)
             break;
-        auto vp = dynamic_cast<Gui::ViewProviderLink*>(
-                Gui::Application::Instance->getViewProvider(linked));
-        if(vp && vp->OverrideMaterial.getValue())
-            return vp->ShapeMaterial.getValue().diffuseColor;
         obj = linked;
     }
     auto vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
@@ -964,11 +967,6 @@ App::Color ViewProviderPartExt::getElementColor(const App::Color &color,
     if(!original || !original[0])
         return color;
 
-    auto feature = dynamic_cast<Part::Feature*>(obj);
-    if(!feature)
-        return color;
-
-    const auto &shape = feature->Shape.getShape();
     auto element = shape.getElementName(original,2);
     auto idx = Part::TopoShape::shapeTypeAndIndex(element);
     if(idx.second > 0) {
