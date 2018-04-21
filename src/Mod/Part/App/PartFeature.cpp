@@ -299,19 +299,16 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(pmat) mat = *pmat;
     App::DocumentObject *owner;
 
-    if(needSubElement || !subname || !*subname) 
-        owner = obj->getSubObject(subname,&pyobj,&mat,transform);
-    else {
-        // first obtain sub-object without requesting for PyObject to skip
-        // possible sub-element
-        owner = obj->getSubObject(subname,0,&mat,transform);
-        if(owner) {
-            // now directly request pyobj from the sub object with the
-            // accumulated matrix returned above, without applying the sub
-            // object's own transformation, because it is already inside mat
-            owner->getSubObject(0,&pyobj,&mat,false);
+    std::string _subname;
+    if(!needSubElement && subname) {
+        // strip out element name if not needed
+        auto element = Data::ComplexGeoData::findElementName(subname);
+        if(element && *element) {
+            _subname = std::string(subname,element);
+            subname = _subname.c_str();
         }
     }
+    owner = obj->getSubObject(subname,&pyobj,&mat,transform);
     if(powner) {
         if(owner && resolveLink) {
             auto linked = owner->getLinkedObject(true,&mat,false);
