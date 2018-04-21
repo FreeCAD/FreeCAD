@@ -851,6 +851,16 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents('B1'), '=A1 == 1 ? 11 : (A1 == 2 ? 12 : 13)')
         self.assertEqual(sheet.getContents('C1'), '=A1 == 1 ? (A1 == 2 ? 12 : 13) : 11')
 
+    def testIssue3432(self):
+        """ Regression test for issue 3432; numbers with units are ignored from aggregates"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1mm')
+        sheet.set('B1', '2mm')
+        sheet.set('C1', '=max(A1:B1;3mm)')
+        self.doc.recompute()
+        self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
+
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
