@@ -1177,8 +1177,9 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
         }
-        for(auto doc : docs)
+        for(auto doc : docs) {
             FCMD_DOC_CMD(doc,"recompute()");
+        }
     }
 }
 
