@@ -16,13 +16,19 @@ OPTION(USE_BOOST_PYTHON "use BOOST_PYTHON, otherwise use PYBIND11" ON)
 
 if(USE_BOOST_PYTHON)
     if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
-        if(NOT PYTHON_VERSION_MAJOR LESS 3)
-            find_package( Boost COMPONENTS python3)
-            if (NOT Boost_PYTHON3_FOUND)
-                find_package( Boost COMPONENTS python REQUIRED)
-            endif()
+        # for boost >= 1.67 we must add the Python version suffix to
+        # the component name
+        if (Boost_VERSION VERSION_GREATER 106699)
+            find_package(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)  # find BOOST and boost-python
         else()
-            find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+            if(NOT PYTHON_VERSION_MAJOR LESS 3)
+                find_package( Boost COMPONENTS python3)
+                if (NOT Boost_PYTHON3_FOUND)
+                    find_package( Boost COMPONENTS python REQUIRED)
+                endif()
+            else()
+                find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+            endif()
         endif()
 
         if(Boost_FOUND)
