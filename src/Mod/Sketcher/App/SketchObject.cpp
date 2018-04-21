@@ -853,7 +853,7 @@ int SketchObject::toggleConstruction(int GeoId)
             return -1;
         }
 
-        DefiningVals[-GeoId-3]=!DefiningVals[-GeoId-3];
+        DefiningVals[-GeoId+GeoEnum::RefExt]=!DefiningVals[-GeoId+GeoEnum::RefExt];
 
         // set the Link list.
         ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
@@ -919,7 +919,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
             return -1;
         }
 
-        DefiningVals[-GeoId-3]=!on;
+        DefiningVals[-GeoId+GeoEnum::RefExt]=!on;
 
         // set the Link list.
         ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
@@ -4233,7 +4233,7 @@ bool SketchObject::convertToNURBS(int GeoId)
 {
     if (GeoId > getHighestCurveIndex() ||
         (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.size())) ||
-        GeoId == -1 || GeoId == -2)
+        GeoId == GeoEnum::HAxis || GeoId == GeoEnum::VAxis)
         return false;
 
     const Part::Geometry *geo = getGeometry(GeoId);
@@ -4615,12 +4615,12 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         if( (*it)->Third>=0 )
             newConstr->Third += nextgeoid;
 
-        if( (*it)->First<-2 && (*it)->First != Constraint::GeoUndef )
-            newConstr->First -= (nextextgeoid-2);
-        if( (*it)->Second<-2 && (*it)->Second != Constraint::GeoUndef)
-            newConstr->Second -= (nextextgeoid-2);
-        if( (*it)->Third<-2 && (*it)->Third != Constraint::GeoUndef)
-            newConstr->Third -= (nextextgeoid-2);
+        if( (*it)->First<GeoEnum::VAxis && (*it)->First != Constraint::GeoUndef )
+            newConstr->First -= (nextextgeoid+GeoEnum::VAxis);
+        if( (*it)->Second<GeoEnum::VAxis && (*it)->Second != Constraint::GeoUndef)
+            newConstr->Second -= (nextextgeoid+GeoEnum::VAxis);
+        if( (*it)->Third<GeoEnum::VAxis && (*it)->Third != Constraint::GeoUndef)
+            newConstr->Third -= (nextextgeoid+GeoEnum::VAxis);
 
         newcVals.push_back(newConstr);
     }
