@@ -33,6 +33,8 @@
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
+#include "ComplexGeoData.h"
+#include "ComplexGeoDataPy.h"
 
 FC_LOG_LEVEL_INIT("App::Link", true,true)
 
@@ -41,7 +43,7 @@ using namespace App;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :lastSubname(0),enableLabelCache(false),myOwner(0)
+    :enableLabelCache(false),myOwner(0)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkRecomputed, (false), " Link", 
@@ -267,7 +269,8 @@ DocumentObject *LinkBaseExtension::getLink(int depth) const{
 }
 
 int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname) {
-    if(!subname) return -1;
+    if(!subname || Data::ComplexGeoData::isMappedElement(subname)) 
+        return -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
     if(dot == subname) return -1;
@@ -286,7 +289,8 @@ int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname)
 }
 
 int LinkBaseExtension::getElementIndex(const char *subname, const char **psubname) const {
-    if(!subname) return -1;
+    if(!subname || Data::ComplexGeoData::isMappedElement(subname)) 
+        return -1;
     int idx = -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
@@ -415,6 +419,19 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret) co
     return true;
 }
 
+void LinkBaseExtension::checkElementMap(App::DocumentObject *linked, PyObject **pyObj) const {
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!pyObj || !*pyObj ||
+       !owner || !owner->getNameInDocument() ||
+       !linked || !linked->getNameInDocument() || !linked->getDocument() ||
+       linked->getDocument()==owner->getDocument() ||
+       !PyObject_TypeCheck(*pyObj,&Data::ComplexGeoDataPy::Type))
+        return;
+    
+    static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr()->reTagElementMap(
+            owner->getID(), owner->getDocument()->getStringHasher());
+}
+
 bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname, 
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
@@ -430,6 +447,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             if(linked) {
                 if(mat) *mat = matNext;
                 linked->getSubObject(mySubElement.c_str(),pyObj,mat,false,depth+1);
+                checkElementMap(linked,pyObj);
             }
         }
         return true;
@@ -447,7 +465,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 subname = mySubElement.c_str();
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
             // do not resolve the link if this element is the last referenced object
-            if(!subname || !strchr(subname,'.'))
+            if(!subname || Data::ComplexGeoData::isMappedElement(subname) || !strchr(subname,'.'))
                 ret = elements[idx];
             return true;
         }
@@ -478,9 +496,10 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     if(!subname || !subname[0])
         subname = mySubElement.c_str();
     ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
+    checkElementMap(linked,pyObj);
     if(ret) {
         // do not resolve the link if we are the last referenced object
-        if(subname && strchr(subname,'.')) {
+        if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) {
             if(mat)
                 *mat = matNext;
         }else if(element)
@@ -544,42 +563,13 @@ void LinkBaseExtension::extensionOnChanged(const Property *prop) {
 void LinkBaseExtension::parseSubName() const {
     auto xlink = dynamic_cast<const PropertyXLink*>(getLinkedObjectProperty());
     const char* subname = xlink?xlink->getSubName():0;
-    // For performance reason, we don't compare the content of the string. Just
-    // check the pointer value as a heck. This is not reliable as the string may
-    // not be re-allocated every time. However, we'll do force update in
-    // onChanged()
-    if(subname == lastSubname)
-        return;
-    lastSubname = subname;
     mySubName.clear();
     mySubElement.clear();
     if(!subname || !subname[0])
         return;
-    const char *dot = strrchr(subname,'.');
-    if(!dot)
-        dot = subname;
-    else
-        ++dot;
-    auto obj = xlink->getValue();
-    if(!dot[0] || !obj || !obj->getNameInDocument()) {
-        mySubName = subname;
-        return;
-    }
-
-    // not ending with dot, check for sub element
-    auto sobj = obj->getSubObject(subname);
-    if(!sobj) {
-        std::string sub(subname);
-        sub += '.';
-        if(obj->getSubObject(sub.c_str())) {
-            mySubName = sub;
-            return;
-        }else
-            FC_WARN("failed to find sub-element in '" << subname 
-                    <<"' of object '" << obj->getNameInDocument() << "'");
-    }
-    mySubName = std::string(subname,dot-subname);
-    mySubElement = dot;
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    mySubName = std::string(subname,element-subname);
+    mySubElement = element;
 }
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
@@ -760,7 +750,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             getElementCountProperty()->setValue(elements.size());
         }
     }else if(prop == getLinkedObjectProperty()) {
-        lastSubname = 0;
         parseSubName();
         syncElementList();
     }else if(prop == getSubElementsProperty()) {

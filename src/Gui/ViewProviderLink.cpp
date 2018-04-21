@@ -491,7 +491,7 @@ public:
                 break;
             }
             // new style mapped sub-element
-            if(boost::starts_with(dot+1,Data::ComplexGeoData::elementMapPrefix()))
+            if(Data::ComplexGeoData::isMappedElement(dot+1))
                 break;
             auto next = strchr(dot+1,'.');
             if(!next) {
@@ -880,14 +880,8 @@ void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> 
     subInfo.clear();
     for(const auto &sub : subs) {
         if(sub.empty()) continue;
-        const char *subelement = strrchr(sub.c_str(),'.');
-        std::string subname;
-        if(!subelement)
-            subelement = sub.c_str();
-        else {
-            ++subelement;
-            subname = sub.substr(0,subelement-sub.c_str());
-        }
+        const char *subelement = Data::ComplexGeoData::findElementName(sub.c_str());
+        std::string subname = sub.substr(0,subelement-sub.c_str());
         auto it = subInfo.find(subname);
         if(it == subInfo.end()) {
             it = subInfo.insert(std::make_pair(subname,std::unique_ptr<SubInfo>())).first;
@@ -1255,7 +1249,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             return false;
         auto node = path->getNode(idx+1);
         auto it = nodeMap.find(node);
-        if(it == nodeMap.end() || it->second>=(int)nodeArray.size())
+        if(it == nodeMap.end() || !isElementVisible(it->second))
             return false;
         str << it->second << '.';
 
@@ -1287,9 +1281,14 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,str2))
             return false;
         const std::string &element = str2.str();
-        if(sub.subElements.size() && 
-           sub.subElements.find(element)==sub.subElements.end())
-            return false;
+        if(sub.subElements.size()) {
+            if(sub.subElements.find(element)==sub.subElements.end()) {
+                auto pos = element.find('.');
+                if(pos==std::string::npos ||
+                   sub.subElements.find(element.c_str()+pos+1)==sub.subElements.end())
+                    return false;
+            }
+        }
         if(!autoSubLink || subInfo.size()>1)
             str << v.first;
         str << element;
@@ -1997,6 +1996,16 @@ bool ViewProviderLink::getDetailPath(
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = dynamic_cast<App::LinkElement*>(getObject());
     return !element || element->canDelete();
+}
+
+bool ViewProviderLink::canDelete(App::DocumentObject *obj) const {
+    auto ext = getLinkExtension();
+    if(isGroup(ext) || hasElements(ext) || hasSubElement)
+        return true;
+    auto linked = getLinkedView(false,ext);
+    if(linked)
+        return linked->canDelete(obj);
+    return false;
 }
 
 bool ViewProviderLink::linkEdit(const App::LinkBaseExtension *ext) const {

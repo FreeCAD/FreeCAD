@@ -236,6 +236,7 @@ public:
             const char *subname, const std::vector<std::string> &elements) override;
 
     bool onDelete(const std::vector<std::string> &) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     std::vector<std::string> getDisplayModes(void) const override;
 

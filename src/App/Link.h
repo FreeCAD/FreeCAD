@@ -256,6 +256,7 @@ public:
     void cacheChildLabel(bool enable=true);
 
 protected:
+    void checkElementMap(App::DocumentObject *linked, PyObject **pyObj) const;
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     bool hasElements() const;
@@ -267,7 +268,6 @@ protected:
     std::set<const App::DocumentObject*> myHiddenElements;
     mutable std::string mySubElement;
     mutable std::string mySubName;
-    mutable const char *lastSubname;
     std::map<std::string,int> myLabelCache; // for label based subname lookup
     bool enableLabelCache;
 
