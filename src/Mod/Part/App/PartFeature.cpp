@@ -139,10 +139,12 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 
     try {
         TopoShape ts(Shape.getShape());
-        ts.setTransform(Base::Matrix4D());
+        bool doTransform = pmat && *pmat!=ts.getTransform();
+        if(doTransform)
+            ts.setTransform(Base::Matrix4D());
         if(subname && *subname)
             ts = ts.getSubTopoShape(subname);
-        if(pmat && !ts.isNull()) {
+        if(doTransform && !ts.isNull()) {
             static int sCopy = -1; 
             if(sCopy<0) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
