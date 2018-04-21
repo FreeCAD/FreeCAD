@@ -77,7 +77,7 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0),pcBoundColor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool randomColor = hGrp->GetBool("RandomColor", true);
+    bool randomColor = hGrp->GetBool("RandomColor", false);
     float r,g,b;
 
     if(randomColor){
