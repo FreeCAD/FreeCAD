@@ -307,13 +307,18 @@ void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *post
         Hasher = data.Hasher;
 
     for(const auto &v : data._ElementMap->left) {
-        if(v.info.empty() || Hasher==data.Hasher)
-            setElementName(v.second.c_str(), v.first.c_str(), postfix, &v.info);
-        else if(postfix)
-            // different hasher, do not double hash by merging the name into postfix
-            setElementName(v.second.c_str(), "", (v.first+postfix).c_str());
-        else
-            setElementName(v.second.c_str(), "", v.first.c_str());
+        auto name = v.first.c_str();
+        if(Hasher==data.Hasher || !data.Hasher) {
+            setElementName(v.second.c_str(), name, postfix, &v.info);
+            continue;
+        }
+        if(postfix)
+            setElementName(v.second.c_str(),name,postfix);
+        else {
+            // In case we have different hasher, but no additional postfix. 
+            // Copy the element name as it is without hashing.
+            setElementName(v.second.c_str(),name,0,false,true);
+        }
     }
 }
 
@@ -400,8 +405,11 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
         sid = &_sid;
         _name = hashElementName(name,_sid);
         name = _name.c_str();
-    }else if(!sid)
+    }else if(!sid || sid->empty()) {
+        if(Hasher && nohash)
+            _sid.push_back(App::StringID::getNullID());
         sid = &_sid;
+    }
     int retry=1;
     mapped = name;
     std::ostringstream ss;

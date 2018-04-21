@@ -31,6 +31,9 @@
 
 namespace App {
 
+class StringID;
+typedef Base::Reference<StringID> StringIDRef;
+
 class AppExport StringID: public Base::BaseClass, public Base::Handled {
     TYPESYSTEM_HEADER();
 public:
@@ -45,6 +48,8 @@ public:
     virtual PyObject *getPyObject() override;
     std::string toString() const;
     static long fromString(const char *name, bool eof=true);
+    static StringIDRef getNullID();
+    bool isNull() const;
 
     std::string dataToText() const;
 private:
@@ -53,8 +58,6 @@ private:
     bool _binary;
     bool _hashed;
 };
-
-typedef Base::Reference<StringID> StringIDRef;
 
 class AppExport StringHasher: public Base::Persistence, public Base::Handled {
 

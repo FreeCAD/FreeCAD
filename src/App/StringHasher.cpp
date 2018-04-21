@@ -49,6 +49,16 @@ PyObject *StringID::getPyObject() {
     return new StringIDPy(this);
 }
 
+static StringIDRef _StringIDNull(new StringID(0,"(null)",false,false));
+
+StringIDRef StringID::getNullID() {
+    return _StringIDNull;
+}
+
+bool StringID::isNull() const {
+    return this == _StringIDNull;
+}
+
 std::string StringID::toString() const {
     std::ostringstream ss;
     ss << '#' << std::hex << value();
@@ -163,6 +173,8 @@ StringIDRef StringHasher::getID(QByteArray data, bool binary) {
 }
 
 StringIDRef StringHasher::getID(long id) const {
+    if(id<=0)
+        return _StringIDNull;
     auto it = _hashes->right.find(id);
     if(it == _hashes->right.end())
         return StringIDRef();
