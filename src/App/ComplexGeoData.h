@@ -165,6 +165,8 @@ public:
     //@{
     /// Sepecial prefix to mark the begining of a mapped sub-element name
     static const std::string &elementMapPrefix();
+    /// Sepecial postfix to mark the following tag
+    static const std::string &tagPostfix();
     /** Check if the name starts with elementMapPrefix()
      *
      * @param name: input name
@@ -175,6 +177,9 @@ public:
 
     /// Strip out the trailing element name if there is mapped element name preceeds it.
     static std::string newElementName(const char *name);
+
+    /// Find the start of an element name in a subname
+    static const char *findElementName(const char *subname);
 
     /** Get element name
      *
@@ -246,6 +251,18 @@ public:
     /** Copy the element map from another geometry data with optional unhashed prefix and/or postfix */
     void copyElementMap(const ComplexGeoData &data, const char *postfix=0);
 
+    /// Append the Tag (if and only if it is non zero) into the element map
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher) {
+        (void)tag;
+        (void)hasher;
+    }
+
+    long getElementHistory(const std::string &name, 
+            std::string *original=0, std::vector<std::string> *history=0) const;
+
+    const char *setElementComboName(const char *element, 
+            const std::vector<std::string> &names, const char *marker=0, const char *op=0);
+
     /** Reset/swap the element map
      *
      * @param elementMap: optional new element map
@@ -282,7 +299,13 @@ public:
 
 protected:
     virtual std::string renameDuplicateElement(int index, const char *element, 
-                const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
+           const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
+
+    void encodeElementName(std::string &name, std::ostringstream &ss, 
+            std::vector<App::StringIDRef> &sids, const char* postfix=0, long tag=0) const;
+
+    static size_t findTagInElementName(const std::string &name, 
+            long *tag=0, size_t *len=0, std::string *postfix=0);
 
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
@@ -297,6 +320,9 @@ protected:
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
     }
+
+public:
+    mutable long Tag;
 
 protected:
     ElementMapPtr _ElementMap;

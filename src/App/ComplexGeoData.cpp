@@ -56,6 +56,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence);
 
 
 ComplexGeoData::ComplexGeoData(void)
+    :Tag(0)
 {
 }
 
@@ -204,6 +205,26 @@ std::string ComplexGeoData::newElementName(const char *name) {
     if(isMappedElement(c))
         return std::string(name,dot);
     return name;
+}
+
+const char *ComplexGeoData::findElementName(const char *subname) {
+    if(!subname || !subname[0] || isMappedElement(subname))
+        return subname;
+    const char *dot = strrchr(subname,'.');
+    if(!dot)
+        return subname;
+    const char *element = dot+1;
+    if(dot==subname || isMappedElement(element))
+        return element;
+    for(--dot;dot!=subname;--dot) {
+        if(*dot == '.') {
+            ++dot;
+            break;
+        }
+    }
+    if(isMappedElement(dot))
+        return dot;
+    return element;
 }
 
 size_t ComplexGeoData::getElementMapSize() const {
@@ -436,15 +457,119 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
 }
 
 std::string ComplexGeoData::renameDuplicateElement(int index, const char *element, 
-                const char *element2, const char *name, std::vector<App::StringIDRef> &sids)
+            const char *element2, const char *name, std::vector<App::StringIDRef> &sids)
 {
-    (void)sids;
     std::ostringstream ss;
-    ss << name << elementMapPrefix() << 'D' << index;
-    auto renamed = ss.str();
-    FC_WARN("duplicate element mapping '" << name << " -> " << renamed << ' ' 
-            << element << '/' << element2);
+    ss << elementMapPrefix() << 'D' << index;
+    std::string renamed(name);
+    encodeElementName(renamed,ss,sids);
+    renamed += ss.str();
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        FC_MSG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
+    }else{
+        FC_LOG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
+    }
     return renamed;
+}
+
+const std::string &ComplexGeoData::tagPostfix() {
+    static std::string postfix(elementMapPrefix() + ":T");
+    return postfix;
+}
+
+size_t ComplexGeoData::findTagInElementName(const std::string &name, 
+        long *tag, size_t *len, std::string *postfix) 
+{
+    size_t pos = name.rfind(tagPostfix());
+    if(pos==std::string::npos)
+        return pos;
+    size_t offset = pos + tagPostfix().size();
+    std::istringstream iss(name.c_str()+offset);
+    long _tag = -1;
+    int _len = -1;
+    char sep = 0;
+    iss >> _tag >>  sep >> _len;
+    if(_tag<0 || _len<0 || sep!=':' || !iss.eof())
+        return std::string::npos;
+    if(tag)
+        *tag = _tag;
+    if(len)
+        *len = (size_t)_len;
+    if(postfix)
+        *postfix=name.c_str()+pos;
+    return pos;
+}
+
+// try to hash element name while preserving the source tag
+void ComplexGeoData::encodeElementName(std::string &name, std::ostringstream &ss, 
+        std::vector<App::StringIDRef> &sids, const char* postfix, long tag) const
+{
+    if(postfix) {
+        if(ss.tellp())
+            ss << elementMapPrefix();
+        ss << postfix;
+    }
+    long inputTag = 0;
+    if(!ss.tellp()) {
+        if(!tag || tag==Tag) {
+            ss << name;
+            name.clear();
+            return;
+        }
+        findTagInElementName(name,&inputTag);
+        if(inputTag == tag) {
+            ss << name;
+            name.clear();
+            return;
+        }
+    }else if(!tag || tag==Tag) {
+        findTagInElementName(name,&inputTag);
+        if(inputTag)
+            tag = inputTag;
+    }
+    if(Hasher)
+        name = hashElementName(name.c_str(),sids);
+    if(tag)
+        ss << tagPostfix() << tag << ':' << name.size();
+}
+
+// Extract tag from a hashed element name and de-hash the name
+long ComplexGeoData::getElementHistory(const std::string &name, 
+        std::string *original, std::vector<std::string> *history) const 
+{
+    long tag = 0;
+    size_t len = 0;
+    auto pos = findTagInElementName(name,&tag,&len);
+    if(pos==std::string::npos || (!original&&!history))
+        return tag;
+
+    std::string tmp;
+    std::string &ret = original?*original:tmp;
+    bool first = true;
+    while(1) {
+        if(!len || len>pos) {
+            FC_WARN("invalid name length " << name);
+            return 0;
+        }
+        if(first) {
+            first = false;
+            size_t offset = 0;
+            if(boost::starts_with(name,elementMapPrefix()))
+                offset = elementMapPrefix().size();
+            ret = name.substr(offset,len);
+        }else
+            ret = ret.substr(0,len);
+        ret = dehashElementName(ret.c_str());
+        long tag2 = 0;
+        pos = findTagInElementName(ret,&tag2,&len);
+        if(pos==std::string::npos || (tag2!=tag && tag!=Tag))
+            return tag;
+        tag = tag2;
+        if(history)
+            history->push_back(ret);
+    }
 }
 
 void ComplexGeoData::Save(Base::Writer &writer) const {

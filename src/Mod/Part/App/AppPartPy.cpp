@@ -472,6 +472,14 @@ public:
             "getRelatedElements(obj,name,[sameType=True]):\n"
             "Obtain the element references related to 'name'"
         );
+        add_varargs_method("getElementHistory",&Module::getElementHistory,
+            "getElementHistory(name,recursive=True)\n"
+            "Returns the element mapped name history\n\n"
+            "name: mapped element name belonging to this shape\n"
+            "recursive: if True, then track back the history through other objects till the origin\n\n"
+            "If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),\n"
+            "otherwise return a list of tuple."
+        );
         initialize("This is a module working with shapes."); // register with Python
     }
 
@@ -2151,6 +2159,31 @@ private:
         for(auto &v : ret)
             dict.setItem(Py::String(v.first),Py::String(v.second));
         return dict;
+    }
+
+    Py::Object getElementHistory(const Py::Tuple& args) {
+        const char *name;
+        PyObject *recursive = Py_True;
+        PyObject *pyobj;
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|O",&App::DocumentObjectPy::Type,&pyobj,&name,&recursive))
+            throw Py::Exception();
+
+        auto feature = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        Py::List list;
+        for(auto &history : Part::Feature::getElementHistory(feature,name,PyObject_IsTrue(recursive))) {
+            Py::Tuple ret(3);
+            if(history.obj) 
+                ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
+            else
+                ret.setItem(0,Py::Int(history.tag));
+            ret.setItem(1,Py::String(history.element));
+            Py::List intermedates;
+            for(auto &h : history.intermediates)
+                intermedates.append(Py::String(h));
+            ret.setItem(2,intermedates);
+            list.append(ret);
+        }
+        return list;
     }
 };
 

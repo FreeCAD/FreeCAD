@@ -236,8 +236,9 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData);
 
 TopoShape::TopoShape(long tag,App::StringHasherRef hasher, const TopoDS_Shape &shape)
-    :Tag(tag), _Shape(shape)
+    :_Shape(shape)
 {
+    Tag = tag;
     Hasher = hasher;
 }
 
@@ -246,13 +247,14 @@ TopoShape::~TopoShape()
 }
 
 TopoShape::TopoShape(const TopoDS_Shape& shape)
-  : Tag(0), _Shape(shape)
+  : _Shape(shape)
 {
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
-  : Tag(shape.Tag),_Shape(shape._Shape)
+  : _Shape(shape._Shape)
 {
+    Tag = shape.Tag;
     Hasher = shape.Hasher;
     _ElementMap = shape._ElementMap;
     _Cache = shape._Cache;

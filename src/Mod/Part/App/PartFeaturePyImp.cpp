@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include "OCCError.h"
 #include "PartFeature.h"
 
 // inclusion of the generated files (generated out of PartFeaturePy.xml)
@@ -41,45 +42,27 @@ std::string PartFeaturePy::representation(void) const
 PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
     const char *name;
     PyObject *recursive = Py_True;
-    if (!PyArg_ParseTuple(args, "s|O", &name,&recursive))
+    if (!PyArg_ParseTuple(args, "s|O",&name,&recursive))
         return 0;
 
+    auto feature = getFeaturePtr();
+    Py::List list;
     PY_TRY {
-        auto feature = getFeaturePtr();
-        std::string mapped = feature->Shape.getShape().getElementName(name,true);
-        Py::List list;
-        std::string original;
-        bool recursve = PyObject_IsTrue(recursive);
-        do {
-            std::vector<std::string> history;
-            long tag = feature->Shape.getShape().getElementHistory(mapped.c_str(),&original,&history);
-            App::DocumentObject *obj;
-            obj = tag?feature->getDocument()->getObjectByID(tag):0;
-            if(!recursve) {
-                Py::Tuple ret(3);
-                if(obj && obj->getNameInDocument()) 
-                    ret.setItem(0,Py::String(obj->getNameInDocument()));
-                else 
-                    ret.setItem(0,Py::Int(tag));
-                ret.setItem(1,Py::String(original));
-                ret.setItem(2,Py::List());
-                return Py::new_reference_to(ret);
-            }
-            Py::List pyHistory;
-            for(auto &h : history)
-                pyHistory.append(Py::String(h));
-            list.append(Py::TupleN(Py::String(feature->getNameInDocument()),
-                        Py::String(mapped),pyHistory));
-            if(!obj)
-                break;
-            feature = dynamic_cast<Feature*>(obj->getLinkedObject(true));
-            mapped = original;
-        }while(feature);
-
-        if(!list.size())
-            Py_Return;
+        for(auto &history : Feature::getElementHistory(feature,name,PyObject_IsTrue(recursive))) {
+            Py::Tuple ret(3);
+            if(history.obj) 
+                ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
+            else
+                ret.setItem(0,Py::Int(history.tag));
+            ret.setItem(1,Py::String(history.element));
+            Py::List intermedates;
+            for(auto &h : history.intermediates)
+                intermedates.append(Py::String(h));
+            ret.setItem(2,intermedates);
+            list.append(ret);
+        }
         return Py::new_reference_to(list);
-    }PY_CATCH
+    }PY_CATCH_OCC;
 }
 
 PyObject *PartFeaturePy::getCustomAttributes(const char* ) const

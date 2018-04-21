@@ -839,8 +839,11 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     // '.' for each object name in SubName, even if there is no subelement
     // following it. So finding the last dot will give us the end of the last
     // object name.
-    const char *dot = strrchr(subname,'.');
-    if(!dot || dot == subname) {
+    const char *dot=0;
+    if(Data::ComplexGeoData::isMappedElement(subname) ||
+       !(dot=strrchr(subname,'.')) ||
+       dot == subname) 
+    {
         if(subElement)
             *subElement = dot?dot+1:subname;
         return obj; // this means no parent object reference in SubName

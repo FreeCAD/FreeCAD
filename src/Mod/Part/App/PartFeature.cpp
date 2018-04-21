@@ -209,6 +209,32 @@ static std::pair<long,std::string> getElementSource(App::DocumentObject *owner,
     return std::make_pair(tag,name);
 }
 
+std::list<Part::Feature::HistoryItem> 
+Feature::getElementHistory(App::DocumentObject *feature, const char *name, bool recursive)
+{
+    std::list<HistoryItem> ret;
+    TopoShape shape = getTopoShape(feature);
+    std::string mapped = shape.getElementName(name,true);
+    do {
+        std::string original;
+        ret.emplace_back(feature,mapped.c_str());
+        long tag = shape.getElementHistory(mapped.c_str(),&original,&ret.back().intermediates);
+        App::DocumentObject *obj;
+        obj = tag?feature->getLinkedObject(true)->getDocument()->getObjectByID(tag):0;
+        if(!recursive) {
+            ret.emplace_back(obj,original.c_str());
+            ret.back().tag = tag;
+            return ret;
+        }
+        if(!obj)
+            break;
+        feature = obj;
+        shape = Feature::getTopoShape(feature);
+        mapped = original;
+    }while(feature);
+    return ret;
+}
+
 std::vector<std::pair<std::string,std::string> > 
 Feature::getRelatedElements(App::DocumentObject *obj, const char *_name, bool sameType)
 {
@@ -270,7 +296,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     Base::Matrix4D mat;
     if(pmat) mat = *pmat;
     App::DocumentObject *owner;
-    App::DocumentObject *originalOwner = 0;
 
     if(needSubElement || !subname || !*subname) 
         owner = obj->getSubObject(subname,&pyobj,&mat,transform);
@@ -288,10 +313,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(powner) {
         if(owner && resolveLink) {
             auto linked = owner->getLinkedObject(true,&mat,false);
-            if(linked) {
-                originalOwner = owner;
+            if(linked)
                 owner = linked;
-            }
         }
         *powner = owner;
     }
@@ -301,15 +324,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
         auto shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
         Py_DECREF(pyobj);
-        // TODO: owner tag is not a reliable identifier because the object
-        // hierarchy may cross document boundary. Need to find a way to
-        // accumulate sub-object ID along the hierarchy
-        if(originalOwner)
-            shape.Tag = originalOwner->getID();
-        else if(owner)
-            shape.Tag = owner->getID();
-        else
-            shape.Tag = obj->getID();
         return shape;
     }
 
@@ -346,8 +360,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(shapes.empty()) 
         return TopoShape();
     TopoShape ts;
-    if(!noElementMap)
-        ts.Tag = originalOwner?originalOwner->getID():owner->getID();
     ts.makECompound(shapes);
     ts.transformShape(mat,false,true);
     return ts;

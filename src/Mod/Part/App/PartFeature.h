@@ -99,6 +99,21 @@ public:
             App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
             bool noElementMap=false);
 
+    struct HistoryItem {
+        App::DocumentObject *obj;
+        long tag;
+        std::string element;
+        std::vector<std::string> intermediates;
+        HistoryItem(App::DocumentObject *obj, const char *name)
+            :obj(obj),tag(0),element(name)
+        {
+            if(obj)
+                tag = obj->getID();
+        }
+    };
+    static std::list<HistoryItem> getElementHistory(App::DocumentObject *obj,
+            const char *name, bool recursive=true);
+
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
 
     static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {

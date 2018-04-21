@@ -508,7 +508,6 @@ public:
     static const std::string &modgenPostfix();
     static const std::string &upperPostfix();
     static const std::string &lowerPostfix();
-    static const std::string &tagPostfix();
     //@}
 
     /** @name Element name mapping helper functions
@@ -537,13 +536,12 @@ public:
     bool getRelatedElementsCached(const char *name, long tag, bool sameType,
             std::vector<std::pair<std::string,std::string> > &names) const;
 
-    long getElementHistory(const std::string &name, 
-            std::string *original=0, std::vector<std::string> *history=0) const;
-
     virtual std::string getElementMapVersion() const override;
 
     const char *setElementComboName(const char *element, 
             const std::vector<std::string> &names, const char *marker=0, const char *op=0);
+
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher);
     //@}
 
 
@@ -567,46 +565,6 @@ public:
     static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
     const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
-
-protected:
-    virtual std::string renameDuplicateElement(int index, const char *element, 
-                const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
-
-private:
-    void processName(std::string &name, std::ostringstream &ss, 
-            std::vector<App::StringIDRef> &sids, const char* op=0, long tag=0) const;
-
-public:
-    /** Shape tag 
-     *
-     * A very loosely controlled tag, which is why it is made public.  Its main
-     * purpose is not for unique identification, but as a way for the user to
-     * disambiguate input shape and generate mappable topological names. It is
-     * the user's job to assign sensible tags before generating element maps.
-     * The default value is 0, and will disable auto element mapping.
-     *
-     * A very simple example, for a compound C created by shape A and B.
-     * TopoShape will map A's Edge1 and B's Edge1 to C as 
-     *
-     *      <A.Tag>_Edge1
-     *      <B.Tag>_Edge1
-     *
-     * If C is a fusion, then for elements that are unmodified, it will be same
-     * as compound. For modified of generated elements, it will be some thing
-     * like
-     *
-     *      <A.Tag>_Face1_<B.Tag>_Face2
-     *
-     * If A and/or B has its own element mapping, then the trailing _EdgeX or
-     * _FaceX will be replaced by those mappings.
-     *
-     * Now, you may be thinking that if this process continues, the mapped
-     * element name will grow without control. The caller can pass a
-     * App::StringHasher when calling Data::ComplexGeoData::setElementName(),
-     * which can hash on the mapped name and shorten it to a integer index.
-     * App::Document provides a persistent StringHasher.
-     */
-    mutable long Tag;
 
 private:
     TopoDS_Shape _Shape;
