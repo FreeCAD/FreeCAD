@@ -2229,15 +2229,18 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     else
         name = reader.getAttribute("name");
 
-    // Property not in a DocumentObject!
+
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
-    DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-    Document *document = parent->getDocument();
-    DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
-    if(!object) {
-        if(reader.isVerbose()) {
-            FC_WARN("Lost link to '" << name << "' while loading, maybe "
-                    "an object was not loaded correctly");
+    DocumentObject *object = 0;
+    if(file.empty()) {
+        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        Document *document = parent->getDocument();
+        object = document ? document->getObject(name.c_str()) : 0;
+        if(!object) {
+            if(reader.isVerbose()) {
+                FC_WARN("Lost link to '" << name << "' while loading, maybe "
+                        "an object was not loaded correctly");
+            }
         }
     }
 
