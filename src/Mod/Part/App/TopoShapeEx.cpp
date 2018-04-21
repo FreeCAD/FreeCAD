@@ -182,7 +182,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 6
+#define TOPOP_VERSION 7
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -2048,7 +2048,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 auto &other_info = it->second;
                 std::ostringstream ss2;
                 if(other_info.index!=1)
-                    ss2 << elementMapPrefix() << 'I' << other_info.index;
+                    ss2 << elementMapPrefix() << 'K' << other_info.index;
                 std::string other_name;
                 if(other_key.name[0]==' ')
                     other_name = other_key.name.c_str()+1;
