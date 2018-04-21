@@ -1619,7 +1619,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
-                else {
+                else if (file.exists()) {
                     Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
@@ -1642,11 +1642,20 @@ void Application::processCmdLineFiles(void)
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
-    processFiles(files);
+    std::list<std::string> processed = processFiles(files);
 
     if (files.empty()) {
         if (mConfig["RunMode"] == "Exit")
             mConfig["RunMode"] = "Cmd";
+    }
+    else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
+        // In case we are in console mode and the argument is not a file but Python code
+        // then execute it. This is to behave like the standard Python executable.
+        Base::FileInfo file(files.front());
+        if (!file.exists()) {
+            Interpreter().runString(files.front().c_str());
+            mConfig["RunMode"] = "Exit";
+        }
     }
 
     const std::map<std::string,std::string>& cfg = Application::Config();
