@@ -286,8 +286,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
         //
         // fixes (#3084)
 
-        Gui::Command::doCommand ( Gui::Command::Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                                body->getNameInDocument(), feature->getNameInDocument() );
+        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
