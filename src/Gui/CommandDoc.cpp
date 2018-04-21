@@ -1089,93 +1089,96 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
 
-    // go through all documents
-    const SelectionSingleton& rSel = Selection();
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
-        Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(*it);
-        std::vector<Gui::SelectionObject> sel = rSel.getSelectionEx((*it)->getName());
-        if (!sel.empty()) {
+    std::set<App::Document*> docs;
+    try {
+        App::GetApplication().setActiveTransaction("Delete");
+        Gui::getMainWindow()->setUpdatesEnabled(false);
+        auto editDoc = Application::Instance->editDocument();
+        ViewProviderDocumentObject *vpedit = 0;
+        if(editDoc)
+            vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+        if(vpedit) {
+            for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                if(sel.getObject() == vpedit->getObject()) {
+                    if (!sel.getSubNames().empty()) {
+                        vpedit->onDelete(sel.getSubNames());
+                        docs.insert(editDoc->getDocument());
+                    }
+                    break;
+                }
+            }
+        } else {
+            std::set<QString> affectedLabels;
+            auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
-
-            // if an object is in edit mode handle only this object even if unselected (#0001838)
-            Gui::ViewProvider* vpedit = pGuiDoc->getInEdit();
-            if (vpedit) {
-                // check if the edited view provider is selected
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                    if (vp == vpedit) {
-                        if (!ft->getSubNames().empty()) {
-                            // handle the view provider
-                            Gui::getMainWindow()->setUpdatesEnabled(false);
-
-                            (*it)->openTransaction("Delete");
-                            vpedit->onDelete(ft->getSubNames());
-                            (*it)->commitTransaction();
-
-                            Gui::getMainWindow()->setUpdatesEnabled(true);
-                            Gui::getMainWindow()->update();
+            for(auto &sel : sels) {
+                auto obj = sel.getObject();
+                for(auto parent : obj->getInList()) {
+                    if(!Selection().isSelected(parent)) {
+                        ViewProvider* vp = Application::Instance->getViewProvider(parent);
+                        if (vp && !vp->canDelete(obj)) {
+                            autoDeletion = false;
+                            affectedLabels.insert(QString::fromUtf8((parent)->Label.getValue()));
                         }
-                        break;
                     }
                 }
             }
-            else {
-                // check if we can delete the object
-                std::set<QString> affectedLabels;
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    App::DocumentObject* obj = ft->getObject();
-                    std::vector<App::DocumentObject*> links = obj->getInList();
-                    if (!links.empty()) {
-                        // check if the referenced objects are groups or are selected too
-                        for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                            if (!rSel.isSelected(*lt)) {
-                                ViewProvider* vp = pGuiDoc->getViewProvider(*lt);
-                                if (!vp->canDelete(obj)) {
-                                    autoDeletion = false;
-                                    affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
-                                }
-                            }
-                        }
+
+            if (!autoDeletion) {
+                QString bodyMessage;
+                QTextStream bodyMessageStream(&bodyMessage);
+                bodyMessageStream << qApp->translate("Std_Delete",
+                                                     "The following, referencing objects might break.\n\n"
+                                                     "Are you sure you want to continue?\n\n");
+                for (const auto &currentLabel : affectedLabels)
+                    bodyMessageStream << currentLabel << '\n';
+
+                int ret = QMessageBox::question(Gui::getMainWindow(),
+                    qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+                    QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::Yes)
+                    autoDeletion = true;
+            }
+            if (autoDeletion) {
+                for(auto &sel : sels) {
+                    auto obj = sel.getObject();
+                    Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
+                    if (vp) {
+                        docs.insert(obj->getDocument());
+                        // ask the ViewProvider if it wants to do some clean up
+                        if (vp->onDelete(sel.getSubNames()))
+                            FCMD_OBJ_DOC_CMD(obj,"removeObject('" << obj->getNameInDocument() << "')");
                     }
-                }
-
-                if (!autoDeletion) {
-                    QString bodyMessage;
-                    QTextStream bodyMessageStream(&bodyMessage);
-                    bodyMessageStream << qApp->translate("Std_Delete",
-                                                         "The following, referencing objects might break.\n\n"
-                                                         "Are you sure you want to continue?\n\n");
-                    for (const auto &currentLabel : affectedLabels)
-                      bodyMessageStream << currentLabel << '\n';
-
-                    int ret = QMessageBox::question(Gui::getMainWindow(),
-                        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-                        QMessageBox::Yes, QMessageBox::No);
-                    if (ret == QMessageBox::Yes)
-                        autoDeletion = true;
-                }
-                if (autoDeletion) {
-                    Gui::getMainWindow()->setUpdatesEnabled(false);
-                    (*it)->openTransaction("Delete");
-                    for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                        Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                        if (vp) {
-                            // ask the ViewProvider if it wants to do some clean up
-                            if (vp->onDelete(ft->getSubNames())) {
-                                doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
-                                         ,(*it)->getName(), ft->getFeatName());
-                            }
-                        }
-                    }
-                    (*it)->commitTransaction();
-
-                    Gui::getMainWindow()->setUpdatesEnabled(true);
-                    Gui::getMainWindow()->update();
                 }
             }
         }
-        doCommand(Doc,"App.getDocument(\"%s\").recompute()", (*it)->getName());
+        App::GetApplication().closeActiveTransaction();
+    } catch (const Base::Exception& e) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+                QString::fromLatin1(e.what()));
+        e.ReportException();
+        App::GetApplication().closeActiveTransaction(true);
+    } catch (...) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+                QString::fromLatin1("Unknown error"));
+        App::GetApplication().closeActiveTransaction(true);
+    }
+    Gui::getMainWindow()->setUpdatesEnabled(true);
+    Gui::getMainWindow()->update();
+
+    if(docs.size()) {
+        const auto &outList = App::PropertyXLink::getDocumentOutList();
+        for(auto it=docs.begin();it!=docs.end();++it) {
+            auto itd = outList.find(*it);
+            if(itd!=outList.end()) {
+                for(auto doc : itd->second) {
+                    if(doc != *it)
+                        docs.erase(doc);
+                }
+            }
+        }
+        for(auto doc : docs)
+            FCMD_DOC_CMD(doc,"recompute()");
     }
 }
 
