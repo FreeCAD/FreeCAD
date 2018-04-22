@@ -4867,7 +4867,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(1) );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline(1) );
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive(void)
