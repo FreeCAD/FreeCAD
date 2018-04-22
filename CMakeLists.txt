@@ -739,7 +739,7 @@ endif()
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
 
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
-            find_package(SMESH CONFIG REQUIRED)
+            find_package(SMESH CONFIG)
             include_directories(${SMESH_INCLUDE_DIR})
             link_directories(${SMESH_LIB_PATH})
             SET(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
