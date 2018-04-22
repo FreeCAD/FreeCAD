@@ -53,7 +53,7 @@
 #include <StdMeshers_QuadraticMesh.hxx>
 #include <StdMeshers_RadialPrism_3D.hxx>
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     #include <StdMeshers_TrianglePreference.hxx>
 #endif
 #include <StdMeshers_ProjectionSource1D.hxx>
@@ -89,7 +89,7 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
 
     SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
     SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     SMESH_HypothesisPy::add_varargs_method("setParameters", &SMESH_HypothesisPy<T>::setParameters, "setParameters(String)");
     SMESH_HypothesisPy::add_varargs_method("getParameters", &SMESH_HypothesisPy<T>::getParameters, "String getParameters()");
     SMESH_HypothesisPy::add_varargs_method("setLastParameters", &SMESH_HypothesisPy<T>::setLastParameters, "setLastParameters(String)");
@@ -145,7 +145,7 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 }
 
 
-#ifndef EXTERNAL_SMESH //////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 //////////////////////////////////////////////////////////
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
@@ -653,7 +653,7 @@ StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
 
 // ----------------------------------------------------------------------------
 
-#ifndef EXTERNAL_SMESH ///////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////
 void StdMeshers_TrianglePreferencePy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_TrianglePreference");

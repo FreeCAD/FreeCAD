@@ -154,7 +154,7 @@ private:
     std::vector<uint32_t> colors;
     struct Vertex;
 
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     static SMESH_Gen *_mesh_gen;
 #endif
 };

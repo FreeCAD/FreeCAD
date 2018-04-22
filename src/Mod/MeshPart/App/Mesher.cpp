@@ -43,7 +43,7 @@
 #include <SMESH_Gen.hxx>
 #include <StdMeshers_MaxLength.hxx>
 
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     #include <SMESH_Mesh.hxx>
     #include <SMESHDS_Mesh.hxx>
 #else
@@ -75,7 +75,7 @@
 
 using namespace MeshPart;
 
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     SMESH_Gen* Mesher::_mesh_gen = 0;
 #endif
 
@@ -323,7 +323,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     SMESH_Gen* meshgen = SMESH_Gen::get();
 #else
     if (! Mesher::_mesh_gen)
@@ -406,7 +406,7 @@ Mesh::MeshObject* Mesher::createMesh() const
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,0,meshgen);
             hypoth.push_back(hyp1d);
         }
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
         StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
         hypoth.push_back(hyp2d_1);
 #endif

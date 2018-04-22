@@ -648,6 +648,9 @@ endif()
 
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
+        # set the internal smesh version:
+        set(SMESH_VERSION_MAJOR 5)  # in src/3rdParty it says smesh is version 5.*, is this true?
+
         #if we use smesh we definitely also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
             vtkCommonCore
@@ -734,13 +737,14 @@ endif()
             endif()
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG REQUIRED)
             include_directories(${SMESH_INCLUDE_DIR})
             link_directories(${SMESH_LIB_PATH})
             SET(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
             add_definitions(-DHAVE_NETGEN)
-            add_definitions(-DEXTERNAL_SMESH)
+            add_definitions(-DSMESH_VERSION_MAJOR=${SMESH_VERSION_MAJOR})
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
                               "SMESH not found.\n"
