@@ -37,7 +37,7 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMDS_MeshElement.hxx>
 #include <SMDS_VolumeTool.hxx>
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     #include <SMESHDS_Mesh.hxx>
 #endif
 

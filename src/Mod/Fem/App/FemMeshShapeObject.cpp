@@ -61,7 +61,7 @@
 #include <StdMeshers_QuadraticMesh.hxx>
 #include <StdMeshers_RadialPrism_3D.hxx>
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     #include <StdMeshers_TrianglePreference.hxx>
 #endif
 #include <StdMeshers_ProjectionSource1D.hxx>

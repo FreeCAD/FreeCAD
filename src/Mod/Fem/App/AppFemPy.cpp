@@ -50,7 +50,7 @@
 #include <StdMeshers_LocalLength.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     #include <StdMeshers_TrianglePreference.hxx>
 #endif
 #include <StdMeshers_MEFISTO_2D.hxx>

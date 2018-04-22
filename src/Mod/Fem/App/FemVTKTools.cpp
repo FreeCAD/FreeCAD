@@ -53,7 +53,7 @@
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     #include <SMESHDS_Mesh.hxx>
 #endif
 

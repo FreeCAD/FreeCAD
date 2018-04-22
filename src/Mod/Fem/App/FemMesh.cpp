@@ -90,7 +90,7 @@ using namespace Base;
 using namespace boost;
 
 static int StatCount = 0;
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     SMESH_Gen* FemMesh::_mesh_gen = 0;
 #endif
 
@@ -493,7 +493,7 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     return SMESH_Gen::get();
 #else
     if (! FemMesh::_mesh_gen)
@@ -1165,7 +1165,7 @@ void FemMesh::read(const char *FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     else if (File.hasExtension("dat") ) {
         // read brep-file
     // vejmarie disable
