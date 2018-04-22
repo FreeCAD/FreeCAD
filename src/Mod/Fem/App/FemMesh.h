@@ -160,7 +160,7 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
-#ifdef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR >= 7
     static SMESH_Gen *_mesh_gen;
 #endif
 };

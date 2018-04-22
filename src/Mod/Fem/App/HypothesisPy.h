@@ -221,7 +221,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy();
 };
-#ifndef EXTERNAL_SMESH ///////////////////////////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////////////////////////
 class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
