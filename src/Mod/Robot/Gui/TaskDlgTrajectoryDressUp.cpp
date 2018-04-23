@@ -66,7 +66,7 @@ void TaskDlgTrajectoryDressUp::clicked(int button)
 {
     if(QDialogButtonBox::Apply == button)
     {
-        // transfert the values to the object
+        // transfer the values to the object
         param->writeValues();
         // May throw an exception which we must handle here
         pcObject->recomputeFeature();

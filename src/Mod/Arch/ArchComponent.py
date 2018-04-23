@@ -135,7 +135,7 @@ def removeFromComponent(compobject,subobject):
 
 
 class SelectionTaskPanel:
-    """A temp taks panel to wait for a selection"""
+    """A temporary TaskPanel to wait for a selection"""
     def __init__(self):
         self.baseform = QtGui.QLabel()
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))

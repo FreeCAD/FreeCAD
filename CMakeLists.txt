@@ -149,7 +149,7 @@ endif(WIN32)
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
-# Don't set it without manual adaption of LibDir variable in src/App/FreeCADInit.py
+# Don't set it without manual adoption of LibDir variable in src/App/FreeCADInit.py
 SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 
 if(NOT WIN32)

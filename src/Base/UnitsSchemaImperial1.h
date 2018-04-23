@@ -33,7 +33,7 @@ namespace Base {
     
 
 /** The schema class for the imperial unit system
- *  Here are the definitons for the imperial unit system.
+ *  Here are the definitions for the imperial unit system.
  *  It also defines how the value/units get printed.
  */
 class UnitsSchemaImperial1: public UnitsSchema
@@ -45,7 +45,7 @@ public:
 };
 
 /** The schema class for the imperial unit system
- *  Here are the definitons for the imperial unit system.
+ *  Here are the definitions for the imperial unit system.
  *  It also defines how the value/units get printed.
  */
 class UnitsSchemaImperialDecimal: public UnitsSchema
@@ -57,7 +57,7 @@ public:
 };
 
 /** The schema class for the imperial unit system
- *  Here are the definitons for the imperial unit system.
+ *  Here are the definitions for the imperial unit system.
  *  It also defines how the value/units get printed.
  */
 class UnitsSchemaImperialBuilding: public UnitsSchema

@@ -25,7 +25,7 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This Script includes various pyhton helper functions that are shared across
+This Script includes various python helper functions that are shared across
 the module
 '''
 
@@ -220,7 +220,7 @@ def multiplymat(l,r):
     return mat
 
 def isorthogonal(submatrix,precision=4):
-    """checking if 3x3 Matrix is ortogonal (M*Transp(M)==I)"""
+    """checking if 3x3 Matrix is orthogonal (M*Transp(M)==I)"""
     prod=multiplymat(submatrix,zip(*submatrix))
     return [[round(f,precision) for f in line] \
         for line in prod]==[[1,0,0],[0,1,0],[0,0,1]]
