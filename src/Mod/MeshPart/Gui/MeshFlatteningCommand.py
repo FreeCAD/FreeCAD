@@ -3,8 +3,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Part
 import numpy as np
-from pivy import graphics as g
-from pivy import coin
+#from pivy import graphics as g
+#from pivy import coin
 
 class BaseCommand(object):
     def __init__(self):
@@ -34,7 +34,7 @@ class CreateFlatMesh(BaseCommand):
         boundaries = flattener.getFlatBoundaryNodes()
         print('number of nodes: {}'.format(len(flattener.ze_nodes)))
         print('number of faces: {}'.format(len(flattener.tris)))
-	   
+
         wires = []
         for edge in boundaries:
             pi = Part.makePolygon([App.Vector(*node) for node in edge])
@@ -82,5 +82,5 @@ class CreateFlatFace(BaseCommand):
         assert(isinstance(Gui.Selection.getSelectionEx()[0].SubObjects[0], Part.Face))
         return True
 
-Gui.addCommand('CreateFlatMesh', CreateFlatMesh())
-Gui.addCommand('CreateFlatFace', CreateFlatFace())
+Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())
+Gui.addCommand('MeshPart_CreateFlatFace', CreateFlatFace())
