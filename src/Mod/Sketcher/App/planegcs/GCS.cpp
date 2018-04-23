@@ -3685,7 +3685,10 @@ int System::diagnose(Algorithm alg)
         if (result1 == std::end(pdrivenlist))
             pdiagnoselist.push_back(plist[j]);
     }
-
+    
+    // map tag to a tag multiplicity (the number of solver constraints associated with the same tag)
+    std::map< int , int> tagmultiplicity;
+    
     Eigen::MatrixXd J(clist.size(), pdiagnoselist.size());
     int count=0;
     for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
@@ -3695,6 +3698,12 @@ int System::diagnose(Algorithm alg)
             for (int j=0; j < int(pdiagnoselist.size()); j++) {
                     J(count-1,j) = (*constr)->grad(pdiagnoselist[j]);
             }
+            
+            // parallel processing: create tag multiplicity map
+            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
+                tagmultiplicity[(*constr)->getTag()] = 0;
+            else
+                tagmultiplicity[(*constr)->getTag()]++;
         }
     }
 
@@ -4021,7 +4030,13 @@ int System::diagnose(Algorithm alg)
                      it != conflictingMap.end(); ++it) {
                     if (static_cast<int>(it->second.size()) > maxPopularity ||
                         (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                         it->first->getTag() > mostPopular->getTag())) {
+                        tagmultiplicity[it->first->getTag()] < tagmultiplicity[mostPopular->getTag()]) ||
+
+                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
+                        tagmultiplicity[it->first->getTag()] == tagmultiplicity[mostPopular->getTag()] &&
+                         it->first->getTag() > mostPopular->getTag())
+                       
+                    ) {
                         mostPopular = it->first;
                         maxPopularity = it->second.size();
                     }
