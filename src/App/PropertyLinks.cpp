@@ -631,7 +631,8 @@ PropertyLinkSub::~PropertyLinkSub()
 //**************************************************************************
 // Base class implementer
 
-void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList)
+void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList, 
+        const std::vector<std::pair<std::string,std::string> > *ShadowSubList)
 {
     aboutToSetValue();
 #ifndef USE_OLD_DAG
@@ -649,7 +650,10 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
 #endif
     _pcLinkSub=lValue;
     _cSubList = SubList;
-    updateElementReference(0);
+    if(ShadowSubList && ShadowSubList->size()==_cSubList.size())
+        _ShadowSubList = *ShadowSubList;
+    else
+        updateElementReference(0);
     hasSetValue();
 }
 
@@ -969,12 +973,14 @@ Property *PropertyLinkSub::Copy(void) const
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = _cSubList;
+    p->_ShadowSubList = _ShadowSubList;
     return p;
 }
 
 void PropertyLinkSub::Paste(const Property &from)
 {
-    setValue(dynamic_cast<const PropertyLinkSub&>(from)._pcLinkSub, dynamic_cast<const PropertyLinkSub&>(from)._cSubList);
+    auto &link = dynamic_cast<const PropertyLinkSub&>(from);
+    setValue(link._pcLinkSub, link._cSubList, &link._ShadowSubList);
 }
 
 void PropertyLinkSub::getLinks(std::vector<App::DocumentObject *> &objs, 
@@ -1076,7 +1082,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
     hasSetValue();
 }
 
-void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames)
+void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, const std::vector<const char*>& lSubNames)
 {
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
@@ -1113,7 +1119,9 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     hasSetValue();
 }
 
-void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<std::string>& lSubNames)
+void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
+        const std::vector<std::string>& lSubNames, 
+        const std::vector<std::pair<std::string,std::string> > *ShadowSubList)
 {
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
@@ -1141,7 +1149,10 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList   = lSubNames;
-    updateElementReference(0);
+    if(ShadowSubList && ShadowSubList->size()==_lSubList.size())
+        _ShadowSubList = *ShadowSubList;
+    else
+        updateElementReference(0);
     hasSetValue();
 }
 
@@ -1539,12 +1550,14 @@ Property *PropertyLinkSubList::Copy(void) const
     PropertyLinkSubList *p = new PropertyLinkSubList();
     p->_lValueList = _lValueList;
     p->_lSubList   = _lSubList;
+    p->_ShadowSubList = _ShadowSubList;
     return p;
 }
 
 void PropertyLinkSubList::Paste(const Property &from)
 {
-    setValues(dynamic_cast<const PropertyLinkSubList&>(from)._lValueList, dynamic_cast<const PropertyLinkSubList&>(from)._lSubList);
+    auto &link = dynamic_cast<const PropertyLinkSubList&>(from);
+    setValues(link._lValueList, link._lSubList, &link._ShadowSubList);
 }
 
 unsigned int PropertyLinkSubList::getMemSize (void) const
@@ -2003,7 +2016,9 @@ void PropertyXLink::detach() {
     }
 }
 
-void PropertyXLink::setSubName(const char *subname, bool transaction) {
+void PropertyXLink::setSubName(const char *subname, bool transaction, 
+        const std::pair<std::string,std::string> *shadow) 
+{
     if(transaction)
         aboutToSetValue();
     if(subname)
@@ -2011,7 +2026,10 @@ void PropertyXLink::setSubName(const char *subname, bool transaction) {
     else
         subName.clear();
     registerXLinkLabel(this);
-    updateElementReference(0);
+    if(shadow)
+        shadowSub = *shadow;
+    else
+        updateElementReference(0);
     if(transaction)
         hasSetValue();
 }
@@ -2020,7 +2038,8 @@ void PropertyXLink::setValue(App::DocumentObject * lValue) {
     setValue(lValue,0,true);
 }
 
-void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, bool relative)
+void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, bool relative,
+        const std::pair<std::string,std::string> *shadow)
 {
     if(!subname) subname = "";
     if(_pcLink==lValue && subName==subname && relative==relativePath)
@@ -2075,12 +2094,12 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
     }
     _pcLink=lValue;
     objectName = name;
-    setSubName(subname,false);
+    setSubName(subname,false,shadow);
     hasSetValue();
 }
 
-void PropertyXLink::setValue(
-        const char *filename, const char *name, const char *subname, bool relative) 
+void PropertyXLink::setValue(const char *filename, const char *name, 
+        const char *subname, bool relative, const std::pair<std::string,std::string> *shadow)
 {
     if(!name || *name==0) {
         setValue(0);
@@ -2114,7 +2133,7 @@ void PropertyXLink::setValue(
         docInfo = info;
     }
     objectName = name;
-    setSubName(subname,false);
+    setSubName(subname,false,shadow);
     hasSetValue();
 }
 
@@ -2305,6 +2324,7 @@ Property *PropertyXLink::Copy(void) const
     p->subName = subName;
     p->filePath = filePath;
     p->relativePath = relativePath;
+    p->shadowSub = shadowSub;
     return p;
 }
 
@@ -2316,10 +2336,10 @@ void PropertyXLink::Paste(const Property &from)
     const auto &other = static_cast<const PropertyXLink&>(from);
     if(other._pcLink)
         setValue(const_cast<DocumentObject*>(other._pcLink),
-                other.subName.c_str(),other.relativePath);
+                other.subName.c_str(),other.relativePath,&other.shadowSub);
     else
         setValue(other.filePath.c_str(),other.objectName.c_str(),
-                other.subName.c_str(),other.relativePath);
+                other.subName.c_str(),other.relativePath,&other.shadowSub);
 }
 
 bool PropertyXLink::hasXLink(const App::Document *doc) {

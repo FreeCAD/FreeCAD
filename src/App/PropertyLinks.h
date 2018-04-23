@@ -365,7 +365,8 @@ public:
 
     /** Sets the property
      */
-    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList=std::vector<std::string>());
+    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList=std::vector<std::string>(),
+            const std::vector<std::pair<std::string,std::string> > *ShadowSubList=0);
 
     /** This method returns the linked DocumentObject
      */
@@ -481,7 +482,8 @@ public:
      */
     void setValue(DocumentObject*,const char*);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
-    void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
+    void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&,
+            const std::vector<std::pair<std::string,std::string> > *ShadowSubList=0);
 
     /**
      * @brief setValue: PropertyLinkSub-compatible overload
@@ -594,10 +596,13 @@ public:
             App::DocumentObject *obj, const char *newLabel);
 
     void setValue(App::DocumentObject *) override;
-    void setValue(App::DocumentObject *, const char *subname, bool relative);
-    void setValue(const char *filePath, const char *objectName, const char *subname, bool relative);
+    void setValue(App::DocumentObject *, const char *subname, bool relative, 
+            const std::pair<std::string,std::string> *shadow=0);
+    void setValue(const char *filePath, const char *objectName, const char *subname, bool relative, 
+            const std::pair<std::string,std::string> *shadow=0);
     const char *getSubName(bool newStyle=true) const;
-    void setSubName(const char *subname, bool transaction=true);
+    void setSubName(const char *subname, bool transaction=true, 
+            const std::pair<std::string,std::string> *shadow=0);
     bool hasSubName() const {return !subName.empty();}
 
     App::Document *getDocument() const;
