@@ -389,20 +389,16 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
-        if(MapLineColor.getValue())
-            updateColors(feature);
-        else
-            LineColorArray.setValue(LineColor.getValue());
+        LineColorArray.setValue(LineColor.getValue());
+        updateColors(feature);
     }
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
-        if(MapPointColor.getValue())
-            updateColors(feature);
-        else 
-            PointColorArray.setValue(PointColor.getValue());
+        PointColorArray.setValue(PointColor.getValue());
+        updateColors(feature);
     }
     else if (prop == &LineMaterial) {
         const App::Material& Mat = LineMaterial.getValue();
@@ -436,10 +432,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         setHighlightedFaces(DiffuseColor.getValues());
     }else if(prop == &ShapeColor) {
         ViewProviderGeometryObject::onChanged(prop);
-        if(MapFaceColor.getValue())
-            updateColors(feature);
-        else
-            DiffuseColor.setValue(ShapeColor.getValue());
+        DiffuseColor.setValue(ShapeColor.getValue());
+        updateColors(feature);
         return;
     }
     else if (prop == &Transparency) {
@@ -1004,6 +998,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     infos[TopAbs_VERTEX].init(TopAbs_VERTEX,this);
     infos[TopAbs_EDGE].init(TopAbs_EDGE,this);
     infos[TopAbs_FACE].init(TopAbs_FACE,this);
+    bool hasChildren = !claimChildren().empty();
 
     std::set<std::string> subMap;
     for(auto &v : subs) {
@@ -1032,7 +1027,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     }
     for(auto &v : infos) {
         auto &info = v.second;
-        if(!info.mapColor) {
+        if(!hasChildren || !info.mapColor) {
             if(info.colors.size()) {
                 auto colors = info.prop->getValues();
                 if(colors.size()!=shape.countSubShapes(info.type)) {
