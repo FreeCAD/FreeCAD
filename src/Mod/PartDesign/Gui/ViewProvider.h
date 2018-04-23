@@ -77,6 +77,8 @@ protected:
     virtual void unsetEdit(int ModNum);
 
     virtual bool onDelete(const std::vector<std::string> &);
+
+    virtual bool hasBaseFeature() const override;
     
     virtual QIcon mergeTip(QIcon orig) const;
 

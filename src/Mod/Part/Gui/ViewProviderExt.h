@@ -161,6 +161,7 @@ protected:
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
 
+    virtual bool hasBaseFeature() const;
     void updateColors(Part::Feature *feature);
 
     // nodes for the data representation

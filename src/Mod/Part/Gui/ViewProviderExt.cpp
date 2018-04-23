@@ -963,7 +963,7 @@ App::Color ViewProviderPartExt::getElementColor(const App::Color &color,
 
     auto element = shape.getElementName(original,2);
     auto idx = Part::TopoShape::shapeTypeAndIndex(element);
-    if(idx.second > 0) {
+    if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
         if(idx.first==type) {
             if(prop->getSize()==1)
                 return prop->getValues()[0];
@@ -984,6 +984,10 @@ App::Color ViewProviderPartExt::getElementColor(const App::Color &color,
     return color;
 }
 
+bool ViewProviderPartExt::hasBaseFeature() const {
+    return !claimChildren().empty();
+}
+
 void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     if(isRestoring() || !feature || 
        feature->ColoredElements.getSubValues().size()!=(size_t)MappedColors.getSize())
@@ -998,7 +1002,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     infos[TopAbs_VERTEX].init(TopAbs_VERTEX,this);
     infos[TopAbs_EDGE].init(TopAbs_EDGE,this);
     infos[TopAbs_FACE].init(TopAbs_FACE,this);
-    bool hasChildren = !claimChildren().empty();
+    bool noColorMap = !hasBaseFeature();
 
     std::set<std::string> subMap;
     for(auto &v : subs) {
@@ -1027,7 +1031,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature) {
     }
     for(auto &v : infos) {
         auto &info = v.second;
-        if(!hasChildren || !info.mapColor) {
+        if(noColorMap || !info.mapColor) {
             if(info.colors.size()) {
                 auto colors = info.prop->getValues();
                 if(colors.size()!=shape.countSubShapes(info.type)) {

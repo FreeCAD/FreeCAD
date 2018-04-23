@@ -356,7 +356,12 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     return nullptr;
 }
 
-
+bool ViewProvider::hasBaseFeature() const{
+    auto feature = dynamic_cast<PartDesign::Feature*>(getObject());
+    if(feature && feature->getBaseObject(true))
+        return true;
+    return PartGui::ViewProviderPart::hasBaseFeature();
+}
 
 namespace Gui {
 /// @cond DOXERR
