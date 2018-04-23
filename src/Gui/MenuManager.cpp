@@ -328,7 +328,7 @@ void MenuManager::retranslate(QMenu* menu) const
     // titles. To ease the translation for each menu the native name is set
     // as user data. However, there are special menus that are created by
     // actions for which the name of the according command name is set. For
-    // such menus we have to use the command's menu text instaed. Examples
+    // such menus we have to use the command's menu text instead. Examples
     // for such actions are Std_RecentFiles, Std_Workbench or Std_FreezeViews.
     CommandManager& mgr = Application::Instance->commandManager();
     QByteArray menuName = menu->menuAction()->data().toByteArray();

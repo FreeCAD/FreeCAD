@@ -43,7 +43,7 @@ else:
 #  \brief Profile tools for ArchStructure
 #
 #  This module provides tools to build base profiles
-#  for Arch Strucutre elements
+#  for Arch Structure elements
 
 __title__="FreeCAD Profile"
 __author__ = "Yorik van Havre"

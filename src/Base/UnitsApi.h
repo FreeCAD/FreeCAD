@@ -99,7 +99,7 @@ protected:
     // do the real work
     //static double parse(const char*,bool &UsedUnit);
 
-protected: // the python API wrapper methodes
+protected: // the python API wrapper methods
     //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
     //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);

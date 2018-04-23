@@ -514,7 +514,7 @@ void Approximate::ParameterBoundary()
 }
 /*! \brief Parameterizing the Inner Points
 
- This function will parameterize the inner points. Using the algorithim based on paper from
+ This function will parameterize the inner points. Using the algorithm based on paper from
  Michael S. Floater, published in Computer Aided Design 14(1997) page 231 - 250,
  entitled Parametrization and smooth approximation of surface triangulation
 */

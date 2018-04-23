@@ -43,7 +43,7 @@ else:
 #
 #  This module provides tools to build Rebar objects.
 #  Rebars (or Reinforcing Bars) are metallic bars placed
-#  inside concrete strutures to reinforce them.
+#  inside concrete structures to reinforce them.
 
 __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"

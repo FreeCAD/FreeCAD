@@ -332,7 +332,7 @@ std::string ObjectIdentifier::toEscapedString() const
 }
 
 /**
- * @brief Modifiy object identifier given that document object \a oldName gets the new name \a newName.
+ * @brief Modify object identifier given that document object \a oldName gets the new name \a newName.
  * @param oldName Name of current document object
  * @param newName New name of document object
  */

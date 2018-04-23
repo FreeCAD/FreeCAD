@@ -2044,7 +2044,7 @@ def curvetowire(obj,steps):
 def cleanProjection(shape,tessellate=True,seglength=.05):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
-    # they dispay fine, but on loading the file the shape is invalid
+    # they display fine, but on loading the file the shape is invalid
     # Now with tanderson's fix to ProjectionAlgos, that isn't the case, but this
     # can be used for tessellating ellipses and splines for DXF output-DF
     oldedges = shape.Edges

@@ -860,7 +860,7 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &P) const
     double wv = w * v;
     double det = fabs((uu * vv) - (uv * uv));
 
-    // Note: Due to roundoff errros it can happen that we get very small
+    // Note: Due to roundoff errors it can happen that we get very small
     // negative values for s or t. This e.g. can happen if the point lies
     // at the border of the facet. And as det could also become very small
     // we need an adaptive tolerance.

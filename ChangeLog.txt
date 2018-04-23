@@ -62,7 +62,7 @@ Version: 0.14
   * Draft Dimensions due not observe Dimension Precision on FreeCAD Windows
   * invalid DXF export
   * Port wiki, phpbb and mantis to self-hosted
-  * Crash propably in MeshPart
+  * Crash probably in MeshPart
   * Part.BSplineCurve: allow to set degree and mutliplicites when calling constructor.
   * FeaturePython objects should be able to define how POVray output is generated
   * Losing Snap when Object is getting more complex.

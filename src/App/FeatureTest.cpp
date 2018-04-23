@@ -136,8 +136,8 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
     case 1: throw "Test Exception";
     case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
     case 3: *i=0;printf("%i",*i);break; // seg-vault
-    case 4: j=0; printf("%i",1/j); break; // int devision by zero
-    case 5: f=0.0; printf("%f",1/f); break; // float devision by zero
+    case 4: j=0; printf("%i",1/j); break; // int division by zero
+    case 5: f=0.0; printf("%f",1/f); break; // float division by zero
     case 6: s = malloc(3600000000ul); free(s); break; // out-of-memory
   }
   
