@@ -587,7 +587,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-
+    
+# -------------------------------- PyBind11 -----------------------------
+# necessary for flat-mesh feature
+OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
+if (FREECAD_USE_PYBIND11)
+    find_package(pybind11 REQUIRED)
+endif()
 # -------------------------------- Boost --------------------------------
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
