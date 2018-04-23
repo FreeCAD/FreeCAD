@@ -32,6 +32,7 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
+#include <Mod/Sketcher/App/PropertyExternalGeometryList.h>
 
 #include "Sketch.h"
 
@@ -57,7 +58,7 @@ public:
     /// Property
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App     ::PropertyLinkSubList    ExternalGeometry;
+    Sketcher::PropertyExternalGeometryList    ExternalGeometry;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
@@ -183,6 +184,9 @@ public:
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
+    /// getConstruction for GeoId, working for external and normal geometry
+    /// in case of external geometry it indicates whether the external geometry is defining or not
+    int getConstruction(int GeoId, bool &isconstruction);
 
     /// create a fillet
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);
@@ -298,7 +302,8 @@ public:
     /// Checks if support is valid
     bool evaluateSupport(void);
     /// validate External Links (remove invalid external links)
-    void validateExternalLinks(void);
+    /// returns true if a rebuild was necessary, so if external geo and vertex were rebuilt and the sketch is solved
+    bool validateExternalLinks(void);
     
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}
@@ -368,6 +373,9 @@ protected:
      \retval list - the supported geometry list
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
+
+    /// handle change of type of properties
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to

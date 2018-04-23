@@ -228,22 +228,36 @@ PyObject* SketchObjectPy::deleteAllGeometry(PyObject *args)
     Py_Return;
 }
 
-
-
 PyObject* SketchObjectPy::toggleConstruction(PyObject *args)
 {
     int Index;
     if (!PyArg_ParseTuple(args, "i", &Index))
         return 0;
-
+    
     if (this->getSketchObjectPtr()->toggleConstruction(Index)) {
         std::stringstream str;
         str << "Not able to toggle a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-
+    
     Py_Return;
+}
+
+PyObject* SketchObjectPy::getConstruction(PyObject *args)
+{
+    int geoid;
+    bool construction;
+    
+    if (!PyArg_ParseTuple(args, "i", &geoid))
+        return 0;
+    
+    if (this->getSketchObjectPtr()->getConstruction(geoid, construction)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geoid");
+        return 0;
+    }
+    
+    return Py::new_reference_to(Py::Boolean(construction));
 }
 
 PyObject* SketchObjectPy::setConstruction(PyObject *args)
@@ -252,10 +266,60 @@ PyObject* SketchObjectPy::setConstruction(PyObject *args)
     PyObject *Mode;
     if (!PyArg_ParseTuple(args, "iO!", &Index, &PyBool_Type, &Mode))
         return 0;
-
+    
     if (this->getSketchObjectPtr()->setConstruction(Index, PyObject_IsTrue(Mode) ? true : false)) {
         std::stringstream str;
         str << "Not able to set construction mode of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+    
+    Py_Return;
+}
+
+
+PyObject* SketchObjectPy::toggleExternalDefining(PyObject *args)
+{
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    if (Index<0 || this->getSketchObjectPtr()->toggleConstruction(-3-Index)) {
+        std::stringstream str;
+        str << "Not able to toggle a geometry with the given external index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::getExternalDefining(PyObject *args)
+{
+    int geoid;
+    bool construction;
+
+    if (!PyArg_ParseTuple(args, "i", &geoid))
+        return 0;
+
+    if (geoid<0 || this->getSketchObjectPtr()->getConstruction(-3-geoid, construction)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geoid");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(!construction));
+}
+
+PyObject* SketchObjectPy::setExternalDefining(PyObject *args)
+{
+    int Index;
+    PyObject *Mode;
+    if (!PyArg_ParseTuple(args, "iO!", &Index, &PyBool_Type, &Mode))
+        return 0;
+
+    if (Index<0 || this->getSketchObjectPtr()->setConstruction(-3-Index, !(PyObject_IsTrue(Mode) ? true : false))) {
+        std::stringstream str;
+        str << "Not able to set construction mode of a geometry with the given external index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }

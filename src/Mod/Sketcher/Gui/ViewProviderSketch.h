@@ -371,6 +371,7 @@ protected:
     static SbColor CreateCurveColor;
     static SbColor CurveDraftColor;
     static SbColor CurveExternalColor;
+    static SbColor CurveDefiningExternalColor;
     static SbColor CrossColorV;
     static SbColor CrossColorH;
     static SbColor FullyConstrainedColor;

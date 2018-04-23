@@ -36,6 +36,7 @@
 #include "ConstraintPy.h"
 #include "SketchPy.h"
 #include "PropertyConstraintList.h"
+#include "PropertyExternalGeometryList.h"
 
 
 namespace Sketcher {
@@ -65,12 +66,13 @@ PyMOD_INIT_FUNC(Sketcher)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    Sketcher::SketchObjectSF        ::init();
-    Sketcher::SketchObject          ::init();
-    Sketcher::SketchObjectPython    ::init();
-    Sketcher::Sketch                ::init();
-    Sketcher::Constraint            ::init();
-    Sketcher::PropertyConstraintList::init();
+    Sketcher::SketchObjectSF                ::init();
+    Sketcher::SketchObject                  ::init();
+    Sketcher::SketchObjectPython            ::init();
+    Sketcher::Sketch                        ::init();
+    Sketcher::Constraint                    ::init();
+    Sketcher::PropertyConstraintList        ::init();
+    Sketcher::PropertyExternalGeometryList  ::init();
 
     Base::Console().Log("Loading Sketcher module... done\n");
 
