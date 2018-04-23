@@ -256,7 +256,6 @@ public:
     void cacheChildLabel(bool enable=true);
 
 protected:
-    void checkElementMap(App::DocumentObject *linked, PyObject **pyObj, const char *postfix=0) const;
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     bool hasElements() const;

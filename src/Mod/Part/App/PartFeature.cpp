@@ -297,31 +297,40 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     PyObject *pyobj = 0;
     Base::Matrix4D mat;
     if(pmat) mat = *pmat;
-    App::DocumentObject *owner;
+    if(powner) *powner = 0;
 
     std::string _subname;
+    auto subelement = Data::ComplexGeoData::findElementName(subname);
     if(!needSubElement && subname) {
         // strip out element name if not needed
-        auto element = Data::ComplexGeoData::findElementName(subname);
-        if(element && *element) {
-            _subname = std::string(subname,element);
+        if(subelement && *subelement) {
+            _subname = std::string(subname,subelement);
             subname = _subname.c_str();
         }
     }
-    owner = obj->getSubObject(subname,&pyobj,&mat,transform);
-    if(powner) {
-        if(owner && resolveLink) {
-            auto linked = owner->getLinkedObject(true,&mat,false);
-            if(linked)
-                owner = linked;
-        }
-        *powner = owner;
+    auto owner = obj->getSubObject(subname,&pyobj,&mat,transform);
+    auto linked = owner;
+    long tag = 0;
+    App::StringHasherRef hasher;
+    if(owner) {
+        tag = owner->getID();
+        hasher = owner->getDocument()->getStringHasher();
+        linked = owner->getLinkedObject(true,(pmat&&resolveLink)?&mat:0,false);
+        if(!linked)
+            linked = owner;
+        if(powner) 
+            *powner = resolveLink?linked:owner;
     }
     if(pmat)
         *pmat = mat;
 
     if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
         auto shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
+        if(!noElementMap && tag && shape.Tag && 
+           (shape.Tag!=tag || owner->getDocument()!=linked->getDocument()))
+        {
+            shape.reTagElementMap(tag,hasher);
+        }
         Py_DECREF(pyobj);
         return shape;
     }
@@ -331,9 +340,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(!owner)
         return TopoShape();
 
-    const char *subelement = subname?strrchr(subname,'.'):0;
     // nothing can be done if there is sub-element references
-    if(subelement && subelement[1])
+    if(needSubElement && subelement && *subelement)
         return TopoShape();
 
     // If no subelement reference, then try to create compound of sub objects
@@ -350,11 +358,15 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         if(name[name.size()-1]!='.')
             name += '.';
         DocumentObject *subObj = 0;
-        auto shape = getTopoShape(owner,name.c_str(),needSubElement,0,&subObj,false,false,noElementMap);
+        auto shape = getTopoShape(owner,name.c_str(),false,0,&subObj,false,false,noElementMap);
         if(visible<0 && subObj && !subObj->Visibility.getValue())
             continue;
-        if(!shape.isNull())
-            shapes.push_back(shape);
+        if(!shape.isNull()) {
+            if(noElementMap) 
+                shapes.push_back(TopoShape(shape.getShape()));
+            else
+                shapes.push_back(shape);
+        }
     }
     if(shapes.empty()) 
         return TopoShape();

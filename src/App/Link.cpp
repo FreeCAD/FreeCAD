@@ -419,21 +419,6 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret) co
     return true;
 }
 
-void LinkBaseExtension::checkElementMap(
-        App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const 
-{
-    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
-    if(!pyObj || !*pyObj ||
-       !owner || !owner->getNameInDocument() ||
-       !linked || !linked->getNameInDocument() || !linked->getDocument() ||
-       linked->getDocument()==owner->getDocument() ||
-       !PyObject_TypeCheck(*pyObj,&Data::ComplexGeoDataPy::Type))
-        return;
-    
-    static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr()->reTagElementMap(
-            owner->getID(), owner->getDocument()->getStringHasher(), postfix);
-}
-
 bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname, 
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
@@ -449,7 +434,6 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             if(linked) {
                 if(mat) *mat = matNext;
                 linked->getSubObject(mySubElement.c_str(),pyObj,mat,false,depth+1);
-                checkElementMap(linked,pyObj);
             }
         }
         return true;
@@ -517,7 +501,6 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 *mat = matNext;
         }
     }
-    checkElementMap(linked,pyObj,postfix.size()?postfix.c_str():0);
     return true;
 }
 
