@@ -75,35 +75,18 @@ void PropertyExternalGeometryList::setSize(int newSize)
 
 void PropertyExternalGeometryList::setValue(App::DocumentObject* lValue,const char* SubName, bool vbool)
 {
-    #ifndef USE_OLD_DAG
-    //maintain backlinks
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
-            if (lValue)
-                lValue->_addBackLink(parent);
-        }
-    }
-    #endif
+    maintainBackLinks(lValue);
     
     if (lValue) {
         aboutToSetValue();
-        _lValueList.resize(1);
-        _lValueList[0]=lValue;
-        _lSubList.resize(1);
-        _lSubList[0]=SubName;
+        assignValue(lValue,SubName);
         _lboolList.resize(1);
         _lboolList[0]=vbool;
         hasSetValue();
     }
     else {
         aboutToSetValue();
-        _lValueList.clear();
-        _lSubList.clear();
+        clearInternalLists();
         _lboolList.clear();
         hasSetValue();
     }
@@ -123,32 +106,10 @@ void PropertyExternalGeometryList::setValues(const std::vector<DocumentObject*>&
     if(lvbool.size() != lValue.size())
         throw Base::ValueError("PropertyExternalGeometryList::setValues: size of boolean list != size of objects list");
 
-    #ifndef USE_OLD_DAG
-    //maintain backlinks. 
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
-            //_lValueList can contain items multiple times, but we trust the document
-            //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
-
-            //maintain backlinks. lValue can contain items multiple times, but we trust the document
-            //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
-        }
-    }
-    #endif
+    maintainBackLinks(lValue);
 
     aboutToSetValue();
-    _lValueList = lValue;
-    _lSubList.resize(lSubNames.size());
-    int i = 0;
-    for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it,++i)
-        _lSubList[i]  = *it;
+    assignValues(lValue,lSubNames);
     _lboolList = lvbool;
     hasSetValue();
 }
@@ -167,29 +128,10 @@ void PropertyExternalGeometryList::setValues(const std::vector<DocumentObject*>&
     if(lvbool.size() != lValue.size())
         throw Base::ValueError("PropertyExternalGeometryList::setValues: size of boolean list != size of objects list");
 
-    #ifndef USE_OLD_DAG
-    //maintain backlinks. 
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
-            //_lValueList can contain items multiple times, but we trust the document
-            //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
-            
-            //maintain backlinks. lValue can contain items multiple times, but we trust the document
-            //object to ensure that the backlink is only added once
-            for(auto *obj : lValue)
-                obj->_addBackLink(parent);
-        }
-    }
-    #endif
-    
+    maintainBackLinks(lValue);
+
     aboutToSetValue();
-    _lValueList = lValue;
-    _lSubList   = lSubNames;
+    assignValues(lValue,lSubNames);
     _lboolList = lvbool;
     hasSetValue();
 }
@@ -197,48 +139,27 @@ void PropertyExternalGeometryList::setValues(const std::vector<DocumentObject*>&
 void PropertyExternalGeometryList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
      // PropertyLinkSubList interface
-  if(this->_lboolList.size() == SubList.size()) { // same number of elements
+    if(this->_lboolList.size() == getlSubListsize()) { // same number of elements
       PropertyLinkSubList::setValue(lValue, SubList);
   }
   else {
     if(this->_lboolList.size() != 0) 
       throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state"); 
     
-    #ifndef USE_OLD_DAG
-    //maintain backlinks.
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
-            //_lValueList can contain items multiple times, but we trust the document
-            //object to ensure that this works
-            for(auto *obj : _lValueList)
-                obj->_removeBackLink(parent);
-
-            //maintain backlinks. lValue can contain items multiple times, but we trust the document
-            //object to ensure that the backlink is only added once
-            if (lValue)
-                lValue->_addBackLink(parent);
-        }
-    }
-    #endif
+    maintainBackLinks(lValue);
 
     aboutToSetValue();
     std::size_t size = SubList.size();
-    this->_lValueList.clear();
-    this->_lSubList.clear();
+    clearInternalLists();
     this->_lboolList.clear();
     if (size == 0) {
         if (lValue) {
-            this->_lValueList.push_back(lValue);
-            this->_lSubList.push_back(std::string());
+            pushBackValueEmptySubList(lValue);
             this->_lboolList.push_back(false);
         }
     }
     else {
-        this->_lSubList = SubList;
-        this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
+        assignValue(lValue, SubList, size);
         this->_lboolList.insert(this->_lboolList.begin(), size, false);
     }
     hasSetValue();
@@ -292,27 +213,20 @@ void PropertyExternalGeometryList::setValues(const std::vector<App::DocumentObje
 
 const string PropertyExternalGeometryList::getPyReprString() const
 {
-    assert(this->_lValueList.size() == this->_lSubList.size());
-    assert(this->_lValueList.size() == this->_lboolList.size());
+    assert(getlValuesize() == getlSubListsize());
+    assert(getlValuesize() == this->_lboolList.size());
 
-    if (this->_lValueList.size() == 0)
+    if (getlValuesize() == 0)
         return std::string("None");
 
     std::stringstream strm;
     strm << "[";
-    for (std::size_t i = 0; i < this->_lSubList.size(); i++) {
+    for (std::size_t i = 0; i < this->getlSubListsize(); i++) {
         if (i>0)
             strm << ",(";
         else
             strm << "(";
-        App::DocumentObject* obj = this->_lValueList[i];
-        if (obj) {
-            strm << "App.getDocument('" << obj->getDocument()->getName() << "')." << obj->getNameInDocument();
-        } else {
-            strm << "None";
-        }
-        strm << ",";
-        strm << "'" << this->_lSubList[i] << "'";
+        strm << getLinkPyRepresentation(i);
         strm << ",";
         strm << "'" << (this->_lboolList[i]?"True":"False") << "'";
         strm << ")";
@@ -323,10 +237,10 @@ const string PropertyExternalGeometryList::getPyReprString() const
 
 int PropertyExternalGeometryList::removeValue(App::DocumentObject *lValue)
 {
-    assert(this->_lValueList.size() == this->_lSubList.size());
-    assert(this->_lValueList.size() == this->_lboolList.size());
+    assert(getlValuesize() == getlSubListsize());
+    assert(getlValuesize() == this->_lboolList.size());
 
-    std::size_t num = std::count(this->_lValueList.begin(), this->_lValueList.end(), lValue);
+    std::size_t num = getDocumentCount(lValue);
     if (num == 0)
         return 0;
 
@@ -334,14 +248,14 @@ int PropertyExternalGeometryList::removeValue(App::DocumentObject *lValue)
     std::vector<std::string> subs;
     std::vector<bool> bools;
 
-    links.reserve(this->_lValueList.size() - num);
-    subs.reserve(this->_lSubList.size() - num);
+    links.reserve(getlValuesize() - num);
+    subs.reserve(getlSubListsize() - num);
     bools.reserve(this->_lboolList.size() - num);
 
-    for (std::size_t i=0; i<this->_lValueList.size(); ++i) {
-        if (this->_lValueList[i] != lValue) {
-            links.push_back(this->_lValueList[i]);
-            subs.push_back(this->_lSubList[i]);
+    for (std::size_t i=0; i<getlValuesize(); ++i) {
+        if (!isIndexlValue(i,lValue)) {
+            links.push_back(getValue(i));
+            subs.push_back(getSubValue(i));
             bools.push_back(this->_lboolList[i]);
         }
     }
@@ -401,19 +315,19 @@ void PropertyExternalGeometryList::setSubListValues(const std::vector<PropertyLi
 std::vector<PropertyExternalGeometryList::SubSet> PropertyExternalGeometryList::getSubListValues() const
 {
     std::vector<PropertyExternalGeometryList::SubSet> values;
-    if (_lValueList.size() != _lSubList.size())
+    if (getlValuesize() != getlSubListsize())
         throw Base::ValueError("PropertyExternalGeometryList::getSubListValues: size of subelements list != size of objects list");
 
-    if(_lboolList.size() != _lValueList.size())
+    if(_lboolList.size() != getlValuesize())
         throw Base::ValueError("PropertyExternalGeometryList::getSubListValues: size of boolean list != size of objects list");
 
     std::map<App::DocumentObject*, std::vector<std::string> > tmp;
     std::map<App::DocumentObject*, std::vector<bool> > tmp2;
     std::vector<App::DocumentObject*> keylinks;
 
-    for (std::size_t i = 0; i < _lValueList.size(); i++) {
-        App::DocumentObject* link = _lValueList[i];
-        std::string sub = _lSubList[i];
+    for (std::size_t i = 0; i < getlValuesize(); i++) {
+        App::DocumentObject* link = getValue(i);
+        std::string sub = getSubValue(i);
         bool vbool = _lboolList[i];
         if (tmp.find(link) == tmp.end()) {
             // make sure to keep the same order as in '_lValueList'
@@ -537,8 +451,8 @@ void PropertyExternalGeometryList::Save (Base::Writer &writer) const
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() <<
         "<Link " <<
-        "obj=\"" << _lValueList[i]->getNameInDocument() << "\" " <<
-        "sub=\"" << _lSubList[i] << "\" " <<
+        "obj=\"" << getValue(i)->getNameInDocument() << "\" " <<
+        "sub=\"" << getSubValue(i) << "\" " <<
         "vbool=\"" << _lboolList[i] << "\"/>" << endl;
     }
 
@@ -589,22 +503,19 @@ void PropertyExternalGeometryList::Restore(Base::XMLReader &reader)
 Property *PropertyExternalGeometryList::Copy(void) const
 {
     PropertyExternalGeometryList *p = new PropertyExternalGeometryList();
-    p->_lValueList = _lValueList;
-    p->_lSubList   = _lSubList;
+    assignLists(p);
     p->_lboolList = _lboolList;
     return p;
 }
 
 void PropertyExternalGeometryList::Paste(const Property &from)
 {
-    setValues(dynamic_cast<const PropertyExternalGeometryList&>(from)._lValueList, dynamic_cast<const PropertyExternalGeometryList&>(from)._lSubList, dynamic_cast<const PropertyExternalGeometryList&>(from)._lboolList);
+    setValues(dynamic_cast<const PropertyExternalGeometryList&>(from).getValues(), dynamic_cast<const PropertyExternalGeometryList&>(from).getSubValues(), dynamic_cast<const PropertyExternalGeometryList&>(from)._lboolList);
 }
 
 unsigned int PropertyExternalGeometryList::getMemSize (void) const
 {
-    unsigned int size = static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
-    for(int i = 0;i<getSize(); i++)
-        size += _lSubList[i].size();
+    unsigned int size = PropertyLinkSubList::getMemSize();
 
     size += static_cast<unsigned int>(_lboolList.size() * sizeof(bool));
     return size;

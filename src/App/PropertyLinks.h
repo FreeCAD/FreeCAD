@@ -397,8 +397,31 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize (void) const;
-
+    
 protected:
+    void maintainBackLinks(DocumentObject* lValue);
+    void maintainBackLinks(const std::vector<DocumentObject*>& lValue);
+    void assignValue(DocumentObject* lValue,const char* SubName);
+    void assignValue(DocumentObject* lValue,const std::vector<std::string> &SubList, size_t size);    
+    void assignValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames);
+    void assignValues(const std::vector<DocumentObject*>& lValue,const std::vector<std::string>& lSubNames);
+    void pushBackValueEmptySubList(DocumentObject* lValue);
+    void clearInternalLists(void);
+
+    size_t getlValuesize() const {return this->_lValueList.size();}
+    size_t getlSubListsize() const {return this->_lSubList.size();}
+
+    const std::string getLinkPyRepresentation(std::size_t i) const;
+
+    int getDocumentCount(App::DocumentObject *lValue) const;
+    int isIndexlValue(size_t index, App::DocumentObject *lValue) const;
+    
+    DocumentObject* getValue(size_t index) const {return this->_lValueList[index];};
+    std::string getSubValue(size_t index) const {return this->_lSubList[index];};
+    
+    void assignLists(PropertyLinkSubList *p) const;
+
+private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
