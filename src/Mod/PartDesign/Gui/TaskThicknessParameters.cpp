@@ -130,6 +130,7 @@ void TaskThicknessParameters::onRefDeleted(void)
     App::DocumentObject* base = pcThickness->Base.getValue();
     std::vector<std::string> faces = pcThickness->Base.getSubValues();
     faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcThickness->Base.setValue(base, faces);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -141,6 +142,7 @@ void TaskThicknessParameters::onValueChanged(double angle)
 {
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Value.setValue(angle);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -149,6 +151,7 @@ void TaskThicknessParameters::onJoinTypeChanged(int join) {
 
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Join.setValue(join);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -157,6 +160,7 @@ void TaskThicknessParameters::onModeChanged(int mode) {
 
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Mode.setValue(mode);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -170,6 +174,7 @@ double TaskThicknessParameters::getValue(void) const
 void TaskThicknessParameters::onReversedChanged(const bool on) {
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Reversed.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }

@@ -58,14 +58,25 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , DressUpView(DressUpView)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
+    , transactionID(0)
 {
     selectionMode = none;
+    showObject();
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+}
+
+void TaskDressUpParameters::setupTransaction() {
+    int tid = 0;
+    if(!App::GetApplication().getActiveTransaction(&tid) || tid!=transactionID) {
+        std::ostringstream ss;
+        ss << "Edit " << DressUpView->getObject()->getNameInDocument();
+        transactionID = App::GetApplication().setActiveTransaction(ss.str().c_str());
+    }
 }
 
 void TaskDressUpParameters::setup(QListWidget *widget) {
@@ -107,6 +118,7 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
         }
     }
     if(touched){
+        setupTransaction();
         pcDressUp->Base.setValue(base,refs);
         pcDressUp->getDocument()->recomputeFeature(pcDressUp);
     }
@@ -144,6 +156,7 @@ bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
                 return false;
         }
         DressUpView->highlightReferences(false);
+        setupTransaction();
         pcDressUp->Base.setValue(base, refs);        
         pcDressUp->getDocument()->recomputeFeature(pcDressUp);
 
@@ -198,22 +211,19 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 
 void TaskDressUpParameters::hideObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setHide(DressUpView->getObject()->getNameInDocument());
-        doc->setShow(base->getNameInDocument());
+    if(base) {
+        DressUpView->getObject()->Visibility.setValue(false);
+        base->Visibility.setValue(true);
     }
 }
 
 void TaskDressUpParameters::showObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setShow(DressUpView->getObject()->getNameInDocument());
-        doc->setHide(base->getNameInDocument());
-    }
+    if (base) 
+        base->Visibility.setValue(false);
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const
@@ -265,6 +275,7 @@ bool TaskDlgDressUpParameters::accept()
         str << "\"" << *it << "\",";
     str << "])";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+    App::GetApplication().closeActiveTransaction();
 
     return TaskDlgFeatureParameters::accept();
 }
@@ -272,6 +283,7 @@ bool TaskDlgDressUpParameters::accept()
 bool TaskDlgDressUpParameters::reject()
 {
     getDressUpView()->highlightReferences(false);
+    App::GetApplication().closeActiveTransaction(true);
     return TaskDlgFeatureParameters::reject();
 }
 

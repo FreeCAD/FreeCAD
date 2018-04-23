@@ -124,6 +124,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getReferencedSelection(pcDraft, msg, selObj, planes);
             if(!selObj)
                 return;
+            setupTransaction();
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
 
@@ -137,6 +138,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getReferencedSelection(pcDraft, msg, selObj, edges);
             if(!selObj)
                 return;
+            setupTransaction();
             pcDraft->PullDirection.setValue(selObj, edges);
             ui->lineLine->setText(getRefStr(selObj, edges));
 
@@ -184,6 +186,7 @@ void TaskDraftParameters::onRefDeleted(void)
     App::DocumentObject* base = pcDraft->Base.getValue();
     std::vector<std::string> faces = pcDraft->Base.getSubValues();
     faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcDraft->Base.setValue(base, faces);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcDraft->getDocument()->recomputeFeature(pcDraft);
@@ -211,6 +214,7 @@ void TaskDraftParameters::onAngleChanged(double angle)
 {
     clearButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    setupTransaction();
     pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
@@ -223,6 +227,7 @@ double TaskDraftParameters::getAngle(void) const
 void TaskDraftParameters::onReversedChanged(const bool on) {
     clearButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    setupTransaction();
     pcDraft->Reversed.setValue(on);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }

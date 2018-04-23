@@ -51,6 +51,7 @@ public:
 
     void hideObject();
     void showObject();
+    void setupTransaction();
 
     void setup(QListWidget *widget);
 
@@ -81,6 +82,7 @@ protected:
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    
+    int transactionID;
 };
 
 /// simulation dialog for the TaskView
