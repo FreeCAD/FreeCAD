@@ -35,7 +35,7 @@ import FreeCAD
 
 def removeFromPath(module_name):
 	"""removes the module from the sys.path. The entry point for imports
-		will therfor always be FreeCAD.
+		will therefore always be FreeCAD.
 		eg.: from FreeCAD.Module.submodule import function"""
 	import sys, os
 	paths = sys.path

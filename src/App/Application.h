@@ -379,7 +379,7 @@ private:
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
 
-/// Singleton getter of the Applicaton
+/// Singleton getter of the Application
 inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }

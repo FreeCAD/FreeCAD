@@ -337,7 +337,7 @@ class _Space(ArchComponent.Component):
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print("created shape from boundbox")
 
-        # 3: identifing boundary faces
+        # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
                 if b[0].isDerivedFrom("Part::Feature"):

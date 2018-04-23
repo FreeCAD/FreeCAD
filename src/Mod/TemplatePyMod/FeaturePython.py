@@ -177,7 +177,7 @@ class Octahedron:
 		shell=Part.makeShell([f1,f2,f3,f4,f5,f6,f7,f8])
 		solid=Part.makeSolid(shell)
 		fp.Shape = solid
-	# helper mehod to create the faces
+	# helper method to create the faces
 	def make_face(self,v1,v2,v3):
 		wire = Part.makePolygon([v1,v2,v3,v1])
 		face = Part.Face(wire)

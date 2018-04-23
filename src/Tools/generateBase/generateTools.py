@@ -25,7 +25,7 @@ def ensureDir(path,mode=0o777):
 	try: 
 		os.makedirs(path,mode)
 	except OSError(err):
-		#  raise an error unless it's about a alredy existing directory
+		#  raise an error unless it's about an already existing directory
 		print("Dir Exist")
 		#if errno != 17 or not os.path.isdir(path):
 		#	raise

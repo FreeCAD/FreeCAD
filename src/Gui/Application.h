@@ -44,7 +44,7 @@ class MainWindow;
 class MenuItem;
 class ViewProvider;
 
-/** The Applcation main class
+/** The Application main class
  * This is the central class of the GUI 
  * @author Jürgen Riegel, Werner Mayer
  */

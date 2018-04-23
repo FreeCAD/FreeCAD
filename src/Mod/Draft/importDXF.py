@@ -1910,7 +1910,7 @@ def getStrGroup(ob):
                 # fallback
                 return l.encode("ascii",errors="replace")
             else:
-                # better encoding, replaces accented latin characters with corrsponding ascii letter
+                # better encoding, replaces accented latin characters with corresponding ascii letter
                 return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
     return l
 

@@ -324,7 +324,7 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         /**
-         * @brief setPropertyVertexAttributes Set vertex attributes for a Porperty node in a graph.
+         * @brief setPropertyVertexAttributes Set vertex attributes for a Property node in a graph.
          * @param g Graph
          * @param vertex Property node
          * @param name Name of node

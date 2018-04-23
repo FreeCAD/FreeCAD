@@ -171,7 +171,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
     // get the position of the mouse
     const SbVec2s pos(ev->getPosition());
 
-    // Keybooard events
+    // Keyboard events
     if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
         SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
         switch (ke->getKey()) {

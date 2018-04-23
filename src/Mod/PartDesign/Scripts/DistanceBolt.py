@@ -3,7 +3,7 @@
 # (c) 2010 Werner Mayer LGPL
 
 """
-An example for a high-level cutsom feature object to form a full-parametric distance bolt.
+An example for a high-level custom feature object to form a full-parametric distance bolt.
 """
 
 __author__ = "Werner Mayer <wmayer@users.sourceforge.net>"
