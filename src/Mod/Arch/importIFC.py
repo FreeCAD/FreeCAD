@@ -1099,7 +1099,7 @@ def export(exportList,filename):
 
         # getting generic data
         name = str(obj.Label.encode("utf8"))
-        description = str(obj.Description) if hasattr(obj,"Description") else ""
+        description = str(obj.Description.encode("utf8")) if hasattr(obj,"Description") else ""
 
         # getting uid
         uid = None
