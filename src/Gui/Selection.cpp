@@ -529,12 +529,15 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel,
     const char *subname = sel.SubName.c_str();
     if(resolve) {
         obj = sel.pResolvedObject;
-        if(resolve>1 && sel.elementName.first.size())
+        if(resolve==2 && sel.elementName.first.size())
             subname = sel.elementName.first.c_str();
         else
             subname = sel.elementName.second.c_str();
     }
-    if(!obj || !obj->isDerivedFrom(typeId))
+    if(!obj)
+        return 0;
+    if(!obj->isDerivedFrom(typeId) &&
+       (resolve!=3 || !obj->getLinkedObject(true)->isDerivedFrom(typeId)))
         return 0;
     if(subelement) *subelement = subname;
     return obj;
