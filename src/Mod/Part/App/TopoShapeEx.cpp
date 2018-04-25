@@ -182,7 +182,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 7
+#define TOPOP_VERSION 8
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -428,7 +428,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
                 if(sids.size() && !other.Hasher) 
                     throw Base::RuntimeError("missing hasher");
                 ss.str("");
-                encodeElementName(name,ss,sids,op,other.Tag);
+                encodeElementName(element[0],name,ss,sids,op,other.Tag);
                 setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
             }
         }
@@ -1853,7 +1853,7 @@ const char *TopoShape::setElementComboName(const char *element,
             ss << marker << sids.back()->toString();
         }
     }
-    encodeElementName(newName,ss,sids,op);
+    encodeElementName(element[0],newName,ss,sids,op);
     return setElementName(element,newName.c_str(),ss.str().c_str(),&sids);
 }
 
@@ -1875,6 +1875,7 @@ struct NameKey {
 struct NameInfo {
     int index;
     std::vector<App::StringIDRef> sids;
+    const char *shapetype;
 };
 
 TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper, 
@@ -1967,9 +1968,10 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     if(newShape.ShapeType() == info.type)
                         ss << ' '; // make sure the same type shape appears first
                     ss << name;
-                    auto &info = newNames[element][NameKey(ss.str(),other.Tag)];
-                    info.sids = sids;
-                    info.index = k;
+                    auto &name_info = newNames[element][NameKey(ss.str(),other.Tag)];
+                    name_info.sids = sids;
+                    name_info.index = k;
+                    name_info.shapetype = info.shapetype;
                 }
 
                 // Find all new objects that were generated from an old object
@@ -2003,9 +2005,10 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         }
                         ss.str("");
                         ss << newInfo.shapetype << j;
-                        auto &info = newNames[ss.str()][NameKey(name,other.Tag)];
-                        info.sids = sids;
-                        info.index = -k;
+                        auto &name_info = newNames[ss.str()][NameKey(name,other.Tag)];
+                        name_info.sids = sids;
+                        name_info.index = -k;
+                        name_info.shapetype = info.shapetype;
                     }
                 }
             }
@@ -2054,7 +2057,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     other_name = other_key.name.c_str()+1;
                 else
                     other_name = other_key.name;
-                encodeElementName(other_name,ss2,sids,0,other_key.tag);
+                encodeElementName(other_info.shapetype[0],other_name,ss2,sids,0,other_key.tag);
                 ss << other_name << ss2.str();
                 if((name_type==1 && other_info.index<0) || 
                    (name_type==2 && other_info.index>0)) {
@@ -2082,7 +2085,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         if(abs(first_info.index)>1)
            ss << abs(first_info.index);
         ss << postfix;
-        encodeElementName(first_name,ss,sids,op,first_key.tag);
+        encodeElementName(element[0],first_name,ss,sids,op,first_key.tag);
         setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
     }
 
@@ -2141,7 +2144,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss << upperPostfix();
                 if(info.index>1)
                     ss << info.index;
-                encodeElementName(newName,ss,sids,op);
+                encodeElementName(v.first[0],newName,ss,sids,op);
                 setElementName(v.first.c_str(),newName.c_str(),ss.str().c_str(),&sids);
             }
         }
@@ -2218,7 +2221,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss << lowerPostfix() << sids.back()->toString();
                 }
             }
-            encodeElementName(newName,ss,sids,op);
+            encodeElementName(element[0],newName,ss,sids,op);
             setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
         }
     }
@@ -2567,28 +2570,19 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     if(it!=_Cache->relations.end())
         return it->second;
 
+    std::vector<App::StringIDRef> sids;
     std::vector<std::pair<std::string,std::string> > ret;
     std::string name;
-    const char *typeName = 0;
-    TopAbs_ShapeEnum type = TopAbs_SHAPE;
     if(!boost::starts_with(_name,elementMapPrefix()))
         name = _name;
-    else {
-        _name += elementMapPrefix().size();
-        typeName = strchr(_name,'.');
-        if(typeName) {
-            name = std::string(_name,typeName-_name);
-            ++typeName;
-            if(!sameType)
-                type = shapeType(typeName,true);
-        }else
-            name = _name;
-    }
+    else 
+        name = _name + elementMapPrefix().size();
     long tag;
     size_t len;
     std::string postfix;
+    char type;
     // extract tag and source element name length
-    if(findTagInElementName(name,&tag,&len,&postfix)==std::string::npos)
+    if(findTagInElementName(name,&tag,&len,&postfix,&type)==std::string::npos)
         return ret;
 
     // recover the original element name
@@ -2599,16 +2593,18 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     // First, search the name in the previous modeling step.
     auto dehashed = dehashElementName(original.c_str());
     long tag2;
-    if(findTagInElementName(dehashed,&tag2)==std::string::npos) {
-        ss << dehashed << tagPostfix() << tag << ':' << dehashed.size();
-        dehashed = ss.str();
+    char type2;
+    if(findTagInElementName(dehashed,&tag2,0,0,&type2)==std::string::npos) {
+        ss.str("");
+        encodeElementName(type,dehashed,ss,sids,0,tag);
+        dehashed += ss.str();
     }else if(tag2!=tag) {
         // Here means the dehashed element belongs to some other shape.
         // So just reset to original with middle markers stripped.
         dehashed = original + postfix;
     }
     auto element = getElementName(dehashed.c_str(),2);
-    if(element!=dehashed.c_str() && (type==TopAbs_SHAPE||type==shapeType(element,true))) {
+    if(element!=dehashed.c_str() && (!sameType || type==element[0])) {
         ret.emplace_back(dehashed,element);
         _Cache->relations[key] = ret;
         return ret;
@@ -2618,14 +2614,13 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     ss.str("");
     ss << modPostfix();
     std::string modName(name);
-    std::vector<App::StringIDRef> sids;
-    encodeElementName(modName,ss,sids);
+    encodeElementName(type,modName,ss,sids);
     modName += ss.str();
     bool found = false;
     if(findTagInElementName(modName,&tag,&len)!=std::string::npos) {
         modName = modName.substr(0,len+modPostfix().size());
         for(auto &v : getElementNamesWithPrefix(modName.c_str())) {
-            if((type==TopAbs_SHAPE||type==shapeType(v.second.c_str(),true)) && 
+            if((!sameType||type==v.second[0]) && 
                boost::ends_with(v.first,postfix)) 
             {
                 found = true;
@@ -2638,7 +2633,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     // the given name
     if(!found) {
         for(auto &v : getElementNamesWithPrefix((original+Part::TopoShape::modPostfix()).c_str())) {
-            if((type==TopAbs_SHAPE||type==shapeType(v.second.c_str(),true)) && 
+            if((!sameType||type==v.second[0]) && 
                boost::ends_with(v.first,postfix))
                 ret.push_back(v);
         }
@@ -2653,13 +2648,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     Hasher = hasher;
     initCache(true);
     Tag = tag;
-    if(!getElementMapSize() || postfix)
-        mapSubElement(tmp,postfix);
-    else {
-        std::string postfix(tagPostfix());
-        postfix += std::to_string(Tag);
-        copyElementMap(tmp,postfix.c_str());
-    }
+    mapSubElement(tmp,postfix);
 }
 
 void TopoShape::cacheRelatedElements(const char *name, long tag, bool sameType,

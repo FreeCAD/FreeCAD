@@ -262,11 +262,7 @@ TopoShape::TopoShape(const TopoShape& shape)
 
 std::vector<const char*> TopoShape::getElementTypes(void) const
 {
-    std::vector<const char*> temp(3);
-    temp.push_back("Vertex");
-    temp.push_back("Edge");
-    temp.push_back("Face");
-
+    static const std::vector<const char*> temp = {"Vertex","Edge","Face"};
     return temp;
 }
 
@@ -322,6 +318,21 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(!silent)
         Standard_Failure::Raise("invalid shape type");
     return TopAbs_SHAPE;
+}
+
+TopAbs_ShapeEnum TopoShape::shapeType(char type, bool silent) {
+    switch(type) {
+    case 'E':
+        return TopAbs_EDGE;
+    case 'V':
+        return TopAbs_VERTEX;
+    case 'F':
+        return TopAbs_FACE;
+    default:
+        if(!silent)
+            Standard_Failure::Raise("invalid shape type");
+        return TopAbs_SHAPE;
+    }
 }
 
 TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {

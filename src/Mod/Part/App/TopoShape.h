@@ -561,6 +561,7 @@ public:
     //@}
 
     static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);
+    static TopAbs_ShapeEnum shapeType(char type,bool silent=false);
     TopAbs_ShapeEnum shapeType(bool silent=false) const;
     static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
     const std::string &shapeName(bool silent=false) const;
