@@ -608,7 +608,12 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         for(size_t i=0;i<e.size();++i) {
             auto &sub = subs[i];
             if(sub.first.empty()) {
-                elements.insert(e[i]);
+                int idx = 0;
+                sscanf(sub.second.c_str(),"Edge%d",&idx);
+                if(idx==0)
+                    FC_WARN("missing element reference: " << sub.second);
+                else
+                    elements.insert(e[i]);
                 continue;
             }
             auto &ref = sub.first;
