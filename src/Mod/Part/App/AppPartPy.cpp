@@ -473,10 +473,11 @@ public:
             "Obtain the element references related to 'name'"
         );
         add_varargs_method("getElementHistory",&Module::getElementHistory,
-            "getElementHistory(name,recursive=True)\n"
+            "getElementHistory(name,recursive=True,sameType=False)\n"
             "Returns the element mapped name history\n\n"
-            "name: mapped element name belonging to this shape\n"
-            "recursive: if True, then track back the history through other objects till the origin\n\n"
+            "name: mapped element name belonging to this shape.\n"
+            "recursive: if True, then track back the history through other objects till the origin.\n"
+            "sameType: if True, then stop trace back when element type changes.\n\n"
             "If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),\n"
             "otherwise return a list of tuple."
         );
@@ -2166,13 +2167,17 @@ private:
     Py::Object getElementHistory(const Py::Tuple& args) {
         const char *name;
         PyObject *recursive = Py_True;
+        PyObject *sameType = Py_False;
         PyObject *pyobj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!s|O",&App::DocumentObjectPy::Type,&pyobj,&name,&recursive))
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|OO",&App::DocumentObjectPy::Type,&pyobj,&name,
+                    &recursive,&sameType))
             throw Py::Exception();
 
         auto feature = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
         Py::List list;
-        for(auto &history : Part::Feature::getElementHistory(feature,name,PyObject_IsTrue(recursive))) {
+        for(auto &history : Part::Feature::getElementHistory(feature,name,
+                    PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) 
+        {
             Py::Tuple ret(3);
             if(history.obj) 
                 ret.setItem(0,Py::Object(history.obj->getPyObject(),true));

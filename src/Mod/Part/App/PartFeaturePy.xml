@@ -16,10 +16,11 @@
     <Methode Name="getElementHistory" Const="true">
       <Documentation>
         <UserDocu>
-getElementHistory(name,recursive=True) - returns the element mapped name history
+getElementHistory(name,recursive=True,sameType=False) - returns the element mapped name history
 
 name: mapped element name belonging to this shape
 recursive: if True, then track back the history through other objects till the origin
+sameType: if True, then stop trace back when element type changes
 
 If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),
 otherwise return a list of tuple.

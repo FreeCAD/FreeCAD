@@ -112,7 +112,7 @@ public:
         }
     };
     static std::list<HistoryItem> getElementHistory(App::DocumentObject *obj,
-            const char *name, bool recursive=true);
+            const char *name, bool recursive=true, bool sameType=false);
 
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
 

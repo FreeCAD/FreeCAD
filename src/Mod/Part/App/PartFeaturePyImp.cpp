@@ -42,13 +42,15 @@ std::string PartFeaturePy::representation(void) const
 PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
     const char *name;
     PyObject *recursive = Py_True;
-    if (!PyArg_ParseTuple(args, "s|O",&name,&recursive))
+    PyObject *sameType = Py_False;
+    if (!PyArg_ParseTuple(args, "s|OO",&name,&recursive,&sameType))
         return 0;
 
     auto feature = getFeaturePtr();
     Py::List list;
     PY_TRY {
-        for(auto &history : Feature::getElementHistory(feature,name,PyObject_IsTrue(recursive))) {
+        for(auto &history : Feature::getElementHistory(feature,name,
+                    PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) {
             Py::Tuple ret(3);
             if(history.obj) 
                 ret.setItem(0,Py::Object(history.obj->getPyObject(),true));

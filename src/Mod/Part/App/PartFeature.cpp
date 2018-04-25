@@ -185,38 +185,46 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 }
 
 static std::pair<long,std::string> getElementSource(App::DocumentObject *owner, 
-        TopoShape shape, std::string name, bool sameType, TopAbs_ShapeEnum type)
+        TopoShape shape, std::string name, char type)
 {
     long tag = 0;
     while(1) {
         std::string original;
-        auto t = shape.getElementHistory(name,&original);
+        std::vector<std::string> history;
+        long t = shape.getElementHistory(name.c_str(),&original,&history);
         if(!t)
             break;
-        if(tag && sameType && type!=TopAbs_SHAPE) {
-            auto mapped = shape.getElementName(original.c_str(),2);
-            if(mapped!=original.c_str() && TopoShape::shapeType(mapped)!=type)
-                break;
-        }
         auto obj = owner->getDocument()->getObjectByID(t);
         if(!obj)
             break;
-        name = original;
-        tag = t;
+        if(type) {
+            for(auto &hist : history) {
+                if(shape.elementType(hist.c_str())!=type)
+                    return std::make_pair(tag,name);
+            }
+        }
         owner = 0;
         shape = Part::Feature::getTopoShape(obj,0,false,0,&owner); 
         if(!owner || shape.isNull())
             break;
+        if(type && shape.elementType(original.c_str())!=type)
+            break;
+        name = original;
+        tag = t;
     }
     return std::make_pair(tag,name);
 }
 
 std::list<Part::Feature::HistoryItem> 
-Feature::getElementHistory(App::DocumentObject *feature, const char *name, bool recursive)
+Feature::getElementHistory(App::DocumentObject *feature, 
+        const char *name, bool recursive, bool sameType)
 {
     std::list<HistoryItem> ret;
     TopoShape shape = getTopoShape(feature);
     std::string mapped = shape.getElementName(name,true);
+    char element_type=0;
+    if(sameType)
+        element_type = shape.elementType(name);
     do {
         std::string original;
         ret.emplace_back(feature,mapped.c_str());
@@ -230,38 +238,38 @@ Feature::getElementHistory(App::DocumentObject *feature, const char *name, bool 
         }
         if(!obj)
             break;
+        if(element_type) {
+            for(auto &hist : ret.back().intermediates) {
+                if(shape.elementType(hist.c_str())!=element_type)
+                    return ret;
+            }
+        }
         feature = obj;
         shape = Feature::getTopoShape(feature);
         mapped = original;
+        if(element_type && shape.elementType(original.c_str())!=element_type)
+            break;
     }while(feature);
     return ret;
 }
 
 std::vector<std::pair<std::string,std::string> > 
-Feature::getRelatedElements(App::DocumentObject *obj, const char *_name, bool sameType)
+Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType)
 {
-    std::string name;
-    const char *typeName = 0;
-    TopAbs_ShapeEnum type = TopAbs_SHAPE;
-    if(!boost::starts_with(_name,TopoShape::elementMapPrefix()))
-        name = _name;
-    else {
-        _name += TopoShape::elementMapPrefix().size();
-        typeName = strchr(_name,'.');
-        if(typeName) {
-            name = std::string(_name,typeName-_name);
-            ++typeName;
-            type = TopoShape::shapeType(typeName,true);
-        }else
-            name = _name;
-    }
     auto owner = obj;
     auto shape = getTopoShape(obj,0,false,0,&owner); 
-    auto ret = shape.getRelatedElements(_name,sameType); 
-    if(ret.size() || type==TopAbs_SHAPE)
+    auto ret = shape.getRelatedElements(name,sameType); 
+    if(ret.size()) {
+        FC_LOG("topo shape returns " << ret.size() << " related elements");
         return ret;
-    auto source = getElementSource(owner,shape,name,sameType,type);
-    if(!source.first || 
+    }
+
+    char element_type = shape.elementType(name);
+    TopAbs_ShapeEnum type = TopoShape::shapeType(element_type,true);
+    if(type == TopAbs_SHAPE)
+        return ret;
+    auto source = getElementSource(owner,shape,name,element_type);
+    if(!source.first ||
        shape.getRelatedElementsCached(source.second.c_str(),source.first,sameType,ret))
         return ret;
 
@@ -274,10 +282,11 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *_name, bool sa
         auto mapped = shape.getElementName(element.c_str(),true);
         if(mapped == element.c_str())
             continue;
-        if(getElementSource(owner,shape,mapped,sameType,type) == source)
+        if(getElementSource(owner,shape,mapped,sameType?element_type:0) == source)
             ret.emplace_back(mapped,element);
     }
     shape.cacheRelatedElements(source.second.c_str(),source.first,sameType,ret);
+    FC_LOG("topo shape history returns " << ret.size() << " related elements");
     return ret;
 }
 
