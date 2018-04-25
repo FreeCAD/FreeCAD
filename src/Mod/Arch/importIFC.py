@@ -1227,7 +1227,7 @@ def export(exportList,filename):
                                 key = key.encode("utf8")
                             else:
                                 key = str(key)
-                            tp = tp.encode("utf8")
+                            #tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
                             elif tp == "IfcBoolean":
