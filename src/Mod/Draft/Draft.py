@@ -4189,12 +4189,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
             rot2 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v2,norm)).Rotation.Q
             self.trans1.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
             self.trans2.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
-            u3 = self.p1.sub(self.p2)
-            u3.normalize()
-            v3 = norm.cross(u3)
-            rot3 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
-            self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
-            self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
+            if self.p1 != self.p2:
+                u3 = self.p1.sub(self.p2)
+                u3.normalize()
+                v3 = norm.cross(u3)
+                rot3 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
+                self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
             if hasattr(obj.ViewObject,"TextSpacing"):
                 offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing.Value)
             else:
