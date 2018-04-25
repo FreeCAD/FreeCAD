@@ -50,7 +50,7 @@ namespace KDL {
 // simple linear search : TODO : make it binary search
 // uses cached_... variables
 // returns the relative path length within the segment
-// you propably want to use the cached_index variable
+// you probably want to use the cached_index variable
 double Path_Composite::Lookup(double s) const
 {
 	assert(s>=-1e-12);

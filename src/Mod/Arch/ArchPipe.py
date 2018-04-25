@@ -40,7 +40,7 @@ else:
 #  \ingroup ARCH
 #  \brief The Pipe object and tools
 #
-#  This module provides tools to build Pipe and Pipe conector objects.
+#  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
 __title__ = "Arch Pipe tools"

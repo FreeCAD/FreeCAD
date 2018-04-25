@@ -1160,7 +1160,7 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
    //{
    //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Devision by zero!");
+   //       throw Base::DivisionByZeroError("Division by zero!");
    //    break;
    //}
 
@@ -2394,7 +2394,7 @@ std::string Application::FindHomePath(const char* sCall)
 #endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::FileSystemError("Cannot determine the absolute path of the executable");
-        resolved[nchars] = '\0'; // enfore null termination
+        resolved[nchars] = '\0'; // enforce null termination
         absPath = resolved;
     }
 

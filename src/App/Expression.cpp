@@ -1020,7 +1020,7 @@ Expression * FunctionExpression::eval() const
         if (!v2->getUnit().isEmpty())
             throw ExpressionError("Exponent is not allowed to have a unit.");
 
-        // Compute new unit for exponentation
+        // Compute new unit for exponentiation
         double exponent = v2->getValue();
         if (!v1->getUnit().isEmpty()) {
             if (exponent - boost::math::round(exponent) < 1e-9)

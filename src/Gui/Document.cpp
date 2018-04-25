@@ -1422,7 +1422,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  This method opens a new UNDO transaction on the active document. This transaction
  *  will later appear in the UNDO/REDO dialog with the name of the command. If the user 
  *  recall the transaction everything changed on the document between OpenCommand() and 
- *  CommitCommand will be undone (or redone). You can use an alternetive name for the 
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the 
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */

@@ -95,7 +95,7 @@ protected:
     bool canAbort() const;
     /** Gets the events under control */
     void enterControlEvents();
-    /** Looses the control over incoming events*/
+    /** Loses the control over incoming events*/
     void leaveControlEvents();
 
 private:

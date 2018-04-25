@@ -458,7 +458,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
         // if the i'th neighbour is valid
         if ( auNeighboursIdx[i] != ULONG_MAX )
         {
-          // try to project next intervall
+          // try to project next interval
           MeshGeomFacet N = MeshK.GetFacet( auNeighboursIdx[i] );
           gpPt = hCurve->Value(fAct+fStep);
           if(MeshFacetFunc::IntersectWithLine (*It, Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z()), It->GetNormal(), cResultPoint) )

@@ -383,7 +383,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mouseMoveThresholdBroken = false;
                         pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will loose a subclass, though.
+                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
                         assert(cnt<=2);
                         if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
