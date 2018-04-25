@@ -119,10 +119,18 @@ bool PropertyLinkBase::_updateElementReference(
     }
     if(shadow==elementName)
         return false;
-    FC_LOG((owner?owner->getNameInDocument():"") 
-            << " element reference shadow update " << ret->getNameInDocument() 
-            << shadow.first << " -> " << elementName.first);
-    shadow.swap(elementName);
+    bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
+    if(missing) {
+        FC_ERR((owner?owner->getNameInDocument():"") 
+                << " missing element reference " << ret->getNameInDocument() << " "
+                << (elementName.first.size()?elementName.first:elementName.second));
+        shadow.second.swap(elementName.second);
+    }else{
+        FC_LOG((owner?owner->getNameInDocument():"") 
+                << " element reference shadow update " << ret->getNameInDocument() << " "
+                << shadow.first << " -> " << elementName.first);
+        shadow.swap(elementName);
+    }
     auto pos2 = shadow.first.rfind('.');
     if(pos2 == std::string::npos)
         return true;
@@ -135,6 +143,9 @@ bool PropertyLinkBase::_updateElementReference(
     if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
         FC_LOG("element reference update " << sub << " -> " << shadow.first);
         sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
+    } else if(sub!=shadow.second) {
+        FC_LOG("element reference update " << sub << " -> " << shadow.second);
+        sub = shadow.second;
     }
     return true;
 }

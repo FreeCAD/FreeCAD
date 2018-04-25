@@ -166,6 +166,15 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return ret;
 }
 
+bool GeoFeature::hasMissingElement(const char *subname) {
+    if(!subname)
+        return false;
+    auto dot = strrchr(subname,'.');
+    if(!dot)
+        return subname[0]=='?';
+    return dot[1]=='?';
+}
+
 void GeoFeature::updateElementReference() {
     auto prop = getPropertyOfGeometry();
     if(!prop) return;

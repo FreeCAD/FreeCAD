@@ -118,6 +118,8 @@ public:
             bool append=false, ElementNameType type=Normal,
             const DocumentObject *filter=0,const char **element=0);
 
+    static bool hasMissingElement(const char *subname);
+
     /**
      * @brief Calculates the placement in the global reference coordinate system
      * 
