@@ -3,8 +3,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Part
 import numpy as np
-#from pivy import graphics as g
-#from pivy import coin
 
 class BaseCommand(object):
     def __init__(self):
@@ -82,5 +80,10 @@ class CreateFlatFace(BaseCommand):
         assert(isinstance(Gui.Selection.getSelectionEx()[0].SubObjects[0], Part.Face))
         return True
 
-Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())
-Gui.addCommand('MeshPart_CreateFlatFace', CreateFlatFace())
+try:
+    import flatmesh
+    Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())
+    Gui.addCommand('MeshPart_CreateFlatFace', CreateFlatFace())
+except ImportError:
+    App.Console.PrintLog("flatmesh-commands are not available")
+    App.Console.PrintLog("flatmesh needs pybind11 as build dependency")
