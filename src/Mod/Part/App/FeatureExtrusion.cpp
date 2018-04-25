@@ -277,10 +277,9 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source,
         //make faces from wires
         if (params.solid) {
             //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(myShape.getShape(), TopAbs_FACE);
-            if (xp.More()){
-                //source shape has faces. Just extrude as-is.
-            } else {
+            if(!myShape.hasSubShape(TopAbs_FACE)) {
+                if(!myShape.Hasher)
+                    myShape.Hasher = result.Hasher;
                 myShape = myShape.makEFace(0,params.faceMakerClass.c_str());
             }
         }
