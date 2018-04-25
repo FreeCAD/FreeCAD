@@ -207,6 +207,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             << "Separator"
             << "Sketcher_ExportGeometry"
             << "Sketcher_ExportCompound"
+            << "Sketcher_SwapGeometryID"
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }

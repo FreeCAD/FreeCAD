@@ -31,6 +31,7 @@
 
 # include <QMessageBox>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/GeoFeatureGroupExtension.h>
@@ -1925,6 +1926,77 @@ bool CmdSketcherExportCompound::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
+// Swap geometry IDs
+DEF_STD_CMD_A(CmdSketcherSwapGeometryID);
+
+CmdSketcherSwapGeometryID::CmdSketcherSwapGeometryID()
+:Command("Sketcher_SwapGeometryID")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Swap Geometry ID");
+    sToolTipText    = QT_TR_NOOP("Swap the IDs of two selected geometies");
+    sWhatsThis      = "Sketcher_SwapGeometryID";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SwapID";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSwapGeometryID::activated(int iMsg) {
+    Q_UNUSED(iMsg);
+
+    auto sels = Gui::Selection().getSelectionEx();
+    if(sels.size() != 1)
+        return;
+    auto sketch = dynamic_cast<Sketcher::SketchObject*>(sels[0].getObject());
+    if(!sketch)
+        return;
+    const auto &subs = sels[0].getSubNames();
+    if(subs.size()!=2)
+        return;
+    std::vector<int> indices;
+    int count = sketch->Geometry.getSize();
+    for(auto &sub : subs) {
+        if(!boost::starts_with(sub,"Edge"))
+            return;
+        int index = std::atoi(sub.c_str()+4)-1;
+        if(index<0 || index>=count)
+            return;
+        indices.push_back(index);
+    }
+    Gui::Selection().clearSelection();
+    App::GetApplication().setActiveTransaction("Swap geometry ID"); 
+    doCommand(Doc,"__geo = %s.Geometry\n"
+            "__geo[%d].ID,__geo[%d].ID = __geo[%d].ID,__geo[%d].ID\n"
+            "%s.Geometry = __geo\n"
+            "del(__geo)",
+            getObjectCmd(sketch).c_str(),
+            indices[0],indices[1],indices[1],indices[0],
+            getObjectCmd(sketch).c_str());
+    App::GetApplication().closeActiveTransaction(); 
+}
+
+bool CmdSketcherSwapGeometryID::isActive(void)
+{
+    if(!isSketcherAcceleratorActive( getActiveGuiDocument(), false ))
+        return false;
+    auto sels = Gui::Selection().getSelectionEx();
+    if (sels.size() != 1)
+        return false;
+    auto sketch = dynamic_cast<Sketcher::SketchObject*>(sels[0].getObject());
+    if(!sketch)
+        return false;
+    const auto &subs = sels[0].getSubNames();
+    if(subs.size()!=2)
+        return false;
+    for(auto &sub : subs) {
+        if(!boost::starts_with(sub,"Edge"))
+            return false;
+    }
+    return true;
+}
+
 
 void CreateSketcherCommandsConstraintAccel(void)
 {
@@ -1948,4 +2020,5 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
     rcCmdMgr.addCommand(new CmdSketcherExportGeometry());
     rcCmdMgr.addCommand(new CmdSketcherExportCompound());
+    rcCmdMgr.addCommand(new CmdSketcherSwapGeometryID());
 }
