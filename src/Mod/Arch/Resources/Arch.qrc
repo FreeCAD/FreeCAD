@@ -83,6 +83,8 @@
         <file>icons/Arch_ToggleSubs.svg</file>
         <file>icons/Arch_Nest.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_BuildingPart.svg</file>
+        <file>icons/Arch_BuildingPart_Tree.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>

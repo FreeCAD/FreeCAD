@@ -299,7 +299,7 @@ class _CommandWall:
         else:
             FreeCADGui.doCommand('base=Draft.makeLine(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
-        FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
+        FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.getNormal()')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.doCommand("Draft.autogroup(wall)")
