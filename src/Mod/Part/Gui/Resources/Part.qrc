@@ -55,6 +55,7 @@
         <file>icons/Part_Measure_Toggle_Delta.svg</file>
         <file>icons/Part_Measure_Step_Active.svg</file>
         <file>icons/Part_Measure_Step_Done.svg</file>
+        <file>icons/Part_Measure_Refresh.svg</file>
         <file>icons/Part_Refine_Shape.svg</file>
         <file>icons/Tree_Part_Box_Parametric.svg</file>
         <file>icons/Tree_Part_Cylinder_Parametric.svg</file>

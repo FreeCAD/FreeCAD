@@ -2090,6 +2090,35 @@ bool CmdMeasureAngular::isActive(void)
 }
 
 //===========================================================================
+// Part_Measure_Refresh
+//===========================================================================
+
+DEF_STD_CMD_A(CmdMeasureRefresh);
+
+CmdMeasureRefresh::CmdMeasureRefresh()
+  : Command("Part_Measure_Refresh")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Refresh");
+    sToolTipText  = QT_TR_NOOP("Refresh");
+    sWhatsThis    = "Part_Measure_Refresh";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Measure_Refresh";
+}
+
+void CmdMeasureRefresh::activated(int iMsg)
+{
+  Q_UNUSED(iMsg);
+  PartGui::refreshDimensions();
+}
+
+bool CmdMeasureRefresh::isActive(void)
+{
+  return hasActiveDocument();
+}
+
+//===========================================================================
 // Part_Measure_Clear_All
 //===========================================================================
 
@@ -2253,6 +2282,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdColorPerFace());
     rcCmdMgr.addCommand(new CmdMeasureLinear());
     rcCmdMgr.addCommand(new CmdMeasureAngular());
+    rcCmdMgr.addCommand(new CmdMeasureRefresh());
     rcCmdMgr.addCommand(new CmdMeasureClearAll());
     rcCmdMgr.addCommand(new CmdMeasureToggleAll());
     rcCmdMgr.addCommand(new CmdMeasureToggle3d());
