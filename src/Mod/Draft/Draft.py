@@ -270,6 +270,11 @@ def autogroup(obj):
                             gr = g.Group
                             gr.append(obj)
                             g.Group = gr
+                else:
+                    # Arch active container
+                    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                    if a:
+                        a.addObject(obj)
 
 def dimSymbol(symbol=None,invert=False):
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"

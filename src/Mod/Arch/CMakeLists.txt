@@ -40,6 +40,7 @@ SET(Arch_SRCS
     importSH3D.py
     ArchPipe.py
     ArchNesting.py
+    ArchBuildingPart.py
 )
 
 SET(Dice3DS_SRCS

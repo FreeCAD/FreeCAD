@@ -247,6 +247,19 @@ class _ViewProviderFloor:
 
         return None
 
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        import Arch_rc
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
+        menu.addAction(action1)
+
+    def convertToBuildingPart(self):
+        if hasattr(self,"Object"):
+            import ArchBuildingPart
+            from DraftGui import todo
+            todo.delay(ArchBuildingPart.convertFloors,self.Object)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
