@@ -82,7 +82,9 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->relabelObjectAction = new QAction(this);
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
+#ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
+#endif
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
 
