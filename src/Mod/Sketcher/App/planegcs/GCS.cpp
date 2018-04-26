@@ -105,8 +105,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
-typedef Eigen::Matrix<long int, 1, -1, 1, 1, -1> MatrixIndexType;
-typedef Eigen::PermutationMatrix<Eigen::Dynamic,Eigen::Dynamic> PermutationType;
+typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
 
 #ifdef _GCS_DEBUG
 void LogMatrix(std::string str, Eigen::MatrixXd matrix )
