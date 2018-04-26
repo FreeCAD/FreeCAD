@@ -633,7 +633,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, bool signal)
+bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, int signal)
 {
     if(!pDocName || !pObjectName) {
         rmvPreselect();
@@ -696,7 +696,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
 
     // set up the change object
     SelectionChanges Chng(signal?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
-            DocName,FeatName,SubName,std::string(),x,y,z);
+            DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
     Notify(Chng);
     signalSelectionChanged(Chng);

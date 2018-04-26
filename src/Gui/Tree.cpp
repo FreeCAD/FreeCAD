@@ -1148,7 +1148,7 @@ void TreeWidget::onPreSelectTimer() {
     else
         parent = obj;
     Selection().setPreselect(parent->getDocument()->getName(),parent->getNameInDocument(),
-            ss.str().c_str(),0,0,0,true);
+            ss.str().c_str(),0,0,0,2);
 }
 
 void TreeWidget::onItemCollapsed(QTreeWidgetItem * item)

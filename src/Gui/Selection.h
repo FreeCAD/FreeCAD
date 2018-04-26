@@ -78,8 +78,8 @@ public:
     SelectionChanges(MsgType type = ClrSelection, 
             const char *docName=0, const char *objName=0,
             const char *subName=0, const char *typeName=0,
-            float x=0, float y=0, float z=0)
-        : Type(type)
+            float x=0, float y=0, float z=0, int subtype=0)
+        : Type(type),SubType(subtype)
         , x(x),y(y),z(z)
     {
         if(docName) DocName=docName;
@@ -97,8 +97,8 @@ public:
                      const std::string &objName, 
                      const std::string &subName,
                      const std::string &typeName = std::string(),
-                     float x=0,float y=0,float z=0)
-        : Type(type)
+                     float x=0,float y=0,float z=0, int subtype=0)
+        : Type(type), SubType(subtype)
         , x(x),y(y),z(z)
         , DocName(docName)
         , ObjName(objName)
@@ -117,6 +117,7 @@ public:
 
     SelectionChanges &operator=(const SelectionChanges &other) {
         Type = other.Type;
+        SubType = other.SubType;
         x = other.x;
         y = other.y;
         z = other.z;
@@ -132,6 +133,7 @@ public:
     }
 
     MsgType Type;
+    int SubType;
 
     const char* pDocName;
     const char* pObjectName;
@@ -314,7 +316,8 @@ public:
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
-    bool setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x=0, float y=0, float z=0, bool signal=false);
+    bool setPreselect(const char* pDocName, const char* pObjectName, 
+            const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
     void rmvPreselect();
     /// sets different coords for the preselection 
