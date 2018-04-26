@@ -466,7 +466,7 @@ char ComplexGeoData::elementType(const char *name) const {
         else
             return element[0];
     }
-    auto element = strchr(name,'.');
+    const char* element = strchr(name,'.');
     if(element)
         ++element;
     else
