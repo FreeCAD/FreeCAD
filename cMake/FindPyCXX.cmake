@@ -89,11 +89,25 @@ else(PYCXX_SOURCE_DIR)
     endif(NOT PYCXX_SOURCE_DIR)
 endif(PYCXX_SOURCE_DIR)
 
+# Find PyCXX Version
+if(PYCXX_INCLUDE_DIR AND PYCXX_SOURCE_DIR)
+    file(READ ${PYCXX_INCLUDE_DIR}/CXX/Version.hxx PYCXX_VERSION_H)
+    foreach(item IN ITEMS MAJOR MINOR PATCH)
+        string(REGEX REPLACE
+            ".*#define[ \t]+PYCXX_VERSION_${item}[ \t]+([0-9]+).*"
+            "\\1" PYCXX_VERSION_${item}
+            "${PYCXX_VERSION_H}"
+        )
+    endforeach()
+    set(PYCXX_VERSION ${PYCXX_VERSION_MAJOR}.${PYCXX_VERSION_MINOR}.${PYCXX_VERSION_PATCH})
+endif()
+
 # see what we've got
 if(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX found:")
     MESSAGE(STATUS "  Headers:  ${PYCXX_INCLUDE_DIR}")
     MESSAGE(STATUS "  Sources:  ${PYCXX_SOURCE_DIR}")
+    MESSAGE(STATUS "  Version:  ${PYCXX_VERSION}")
 
     # Build the list of sources for convenience
     set(PYCXX_SOURCES
@@ -102,6 +116,11 @@ if(PYCXX_FOUND)
         ${PYCXX_SOURCE_DIR}/cxxsupport.cxx
         ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
     )
+    if(${PYCXX_VERSION} VERSION_GREATER_EQUAL 7.0.0)
+        list(APPEND PYCXX_SOURCES
+            ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
+        add_definitions(-DPYCXX_6_2_COMPATIBILITY)
+    endif()
 else(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
 endif(PYCXX_FOUND)
