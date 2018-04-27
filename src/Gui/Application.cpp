@@ -1699,10 +1699,10 @@ void Application::runApplication(void)
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
-    std::string path = hTheme->GetASCII("SearchPath");
-    if (!path.empty()) {
+    std::string searchpath = hTheme->GetASCII("SearchPath");
+    if (!searchpath.empty()) {
         QStringList searchPaths = QIcon::themeSearchPaths();
-        searchPaths.prepend(QString::fromUtf8(path.c_str()));
+        searchPaths.prepend(QString::fromUtf8(searchpath.c_str()));
         QIcon::setThemeSearchPaths(searchPaths);
     }
 
