@@ -475,8 +475,19 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
 
 int SketchObject::setUpSketch()
 {
-    return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                             getExternalGeometryCount());
+    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                       getExternalGeometryCount());
+
+    lastHasConflict = solvedSketch.hasConflicts();
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+
+    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict)
+        Constraints.touch();
+
+    return lastDoF;
+
 }
 
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
