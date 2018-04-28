@@ -25,6 +25,7 @@
 
 #include <CXX/Extensions.hxx>
 #include <boost/shared_ptr.hpp>
+#include <SMESH_Version.h>
 
 class SMESH_Hypothesis;
 class SMESH_Gen;
@@ -60,7 +61,7 @@ public:
     Py::Object repr();
     Py::Object getLibName(const Py::Tuple& args);
     Py::Object setLibName(const Py::Tuple& args);
-#ifndef EXTERNAL_SMESH
+#if SMESH_VERSION_MAJOR < 7
     Py::Object setParameters(const Py::Tuple& args);
     Py::Object getParameters(const Py::Tuple& args);
     Py::Object setLastParameters(const Py::Tuple& args);

@@ -50,7 +50,7 @@
 
 #include "FemMesh.h"
 #ifdef FC_USE_VTK
-    #include "FemVTKTools.h"
+#include "FemVTKTools.h"
 #endif
 
 #include <boost/assign/list_of.hpp>
@@ -496,7 +496,7 @@ SMESH_Gen * FemMesh::getGenerator()
 #if SMESH_VERSION_MAJOR < 7
     return SMESH_Gen::get();
 #else
-    if (! FemMesh::_mesh_gen)
+    if (!FemMesh::_mesh_gen)
         FemMesh::_mesh_gen = new SMESH_Gen();
     return FemMesh::_mesh_gen;
 #endif

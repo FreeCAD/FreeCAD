@@ -13,6 +13,7 @@ if(BUILD_FEM_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
@@ -26,31 +27,22 @@ include_directories(
 
 
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
+set(MeshPart_LIBS
+    Part
+    Mesh
+)
 
-if(BUILD_FEM_NETGEN)
-    set(MeshPart_LIBS
-        Part
-        Mesh
-        StdMeshers
-        NETGENPlugin
-        SMESH
-        SMDS
-    )
-elseif(BUILD_SMESH)
-    set(MeshPart_LIBS
-        Part
-        Mesh
-        StdMeshers
-        SMESH
-        SMDS
-    )
-else(BUILD_FEM_NETGEN)
-    set(MeshPart_LIBS
-        Part
-        Mesh
-    )
-endif(BUILD_FEM_NETGEN)
+if (FREECAD_USE_EXTERNAL_SMESH)
+   list(APPEND MeshPart_LIBS ${EXTERNAL_SMESH_LIBS})
+else()
+   if (BUILD_FEM_NETGEN)
+       list(APPEND MeshPart_LIBS StdMeshers NETGENPlugin SMESH SMDS)
+   elseif (BUILD_SMESH)
+       list(APPEND MeshPart_LIBS StdMeshers SMESH SMDS)
+   endif()
+endif()
 
 
 SET(MeshPart_SRCS
@@ -67,7 +59,7 @@ SET(MeshPart_SRCS
 )
 
 add_library(MeshPart SHARED ${MeshPart_SRCS})
-target_link_libraries(MeshPart ${MeshPart_LIBS} ${EXTERNAL_SMESH_LIBS})
+target_link_libraries(MeshPart ${MeshPart_LIBS})
 
 
 fc_target_copy_resource(MeshPart 
@@ -84,13 +76,13 @@ INSTALL(TARGETS MeshPart DESTINATION ${CMAKE_INSTALL_LIBDIR})
 ################################ flat mesh ###############################
 if (FREECAD_USE_PYBIND11)
     SET(FLATMESH_SRCS
-	MeshFlattening.cpp
-	MeshFlattening.h
-	MeshFlatteningNurbs.h
-	MeshFlatteningNurbs.cpp
-	MeshFlatteningLscmRelax.h
-	MeshFlatteningLscmRelax.cpp
-	MeshFlatteningPy.cpp
+        MeshFlattening.cpp
+        MeshFlattening.h
+        MeshFlatteningNurbs.h
+        MeshFlatteningNurbs.cpp
+        MeshFlatteningLscmRelax.h
+        MeshFlatteningLscmRelax.cpp
+        MeshFlatteningPy.cpp
     )
 
 

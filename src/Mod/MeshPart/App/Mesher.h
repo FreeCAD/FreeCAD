@@ -25,6 +25,7 @@
 
 #include <sstream>
 #include <Base/Stream.h>
+#include <SMESH_Version.h>
 
 class TopoDS_Shape;
 class SMESH_Gen;

@@ -23,7 +23,9 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
+
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 set(MeshPartGui_LIBS
     MeshPart

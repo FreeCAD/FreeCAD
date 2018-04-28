@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 
+#include <SMESH_Version.h>
 #include "FemMeshPy.h"
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
