@@ -25,6 +25,7 @@ set(TechDrawLIBS
     Part
     Spreadsheet
     Drawing
+    Import
 )
 
 generate_from_xml(DrawPagePy)
