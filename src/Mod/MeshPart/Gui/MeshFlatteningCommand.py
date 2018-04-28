@@ -2,7 +2,6 @@ import Mesh
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
-import numpy as np
 
 class BaseCommand(object):
     def __init__(self):
@@ -85,5 +84,5 @@ try:
     Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())
     Gui.addCommand('MeshPart_CreateFlatFace', CreateFlatFace())
 except ImportError:
-    App.Console.PrintLog("flatmesh-commands are not available")
-    App.Console.PrintLog("flatmesh needs pybind11 as build dependency")
+    App.Console.PrintLog("flatmesh-commands are not available\n")
+    App.Console.PrintLog("flatmesh needs pybind11 as build dependency\n")
