@@ -53,7 +53,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
-
+#include <TColgp_Array1OfPnt.hxx>
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
