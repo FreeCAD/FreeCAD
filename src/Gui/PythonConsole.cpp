@@ -811,6 +811,12 @@ void PythonConsole::runSource(const QString& line)
         setFocus(); // if focus was lost
     }
     catch (const Base::SystemExitException&) {
+#if PY_MAJOR_VERSION >= 3
+        // In Python the exception must be cleared because when the message box below appears
+        // callable Python objects can be invoked and due to a failing assert the application
+        // will be aborted.
+        PyErr_Clear();
+#endif
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         bool check = hPrefGrp->GetBool("CheckSystemExit",true);
         int ret = QMessageBox::Yes;
