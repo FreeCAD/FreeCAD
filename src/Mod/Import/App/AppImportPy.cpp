@@ -66,6 +66,10 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/encodeFilename.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapePy.h>
+
+#include "ImpExpDxf.h"
 
 namespace Import {
 class Module : public Py::ExtensionModule<Module>
@@ -85,7 +89,13 @@ public:
         add_varargs_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
-        initialize("This module is the Import module."); // register with Python       
+         add_varargs_method("readDXF",&Module::readDXF,
+            "readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default."
+        );
+        add_varargs_method("writeDXFShape",&Module::writeDXFShape,
+            "writeDXFShape(shape,filename): Exports a Shape to a DXF file."
+        );
+       initialize("This module is the Import module."); // register with Python       
     }
 
     virtual ~Module() {}
@@ -313,6 +323,74 @@ private:
 
         return Py::None();
     }
+
+    Py::Object readDXF(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName=0;
+        bool IgnoreErrors=true;
+        if (!PyArg_ParseTuple(args.ptr(), "et|sb","utf-8",&Name,&DocName,&IgnoreErrors))
+            throw Py::Exception();
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        Base::FileInfo file(EncodedName.c_str());
+        if (!file.exists())
+            throw Py::RuntimeError("File doesn't exist");
+
+        App::Document *pcDoc;
+        if (DocName)
+            pcDoc = App::GetApplication().getDocument(DocName);
+        else
+            pcDoc = App::GetApplication().getActiveDocument();
+        if (!pcDoc) 
+            pcDoc = App::GetApplication().newDocument(DocName);
+
+        try {
+            // read the DXF file
+            ImpExpDxfRead dxf_file(EncodedName,pcDoc);
+            //dxf_file.setOptionSource("myoptionpath");
+            //dxf_file.setOptions();
+            dxf_file.DoRead(IgnoreErrors);
+            pcDoc->recompute();
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        return Py::None();
+    }
+
+    Py::Object writeDXFShape(const Py::Tuple& args)
+    {
+        PyObject *shapeObj;
+        char* name;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &shapeObj, "utf-8",&name)) {
+            throw Py::Exception("expected (Page,path");
+        } 
+        
+        std::string filePath = std::string(name);
+        std::string layerName = "none";
+        PyMem_Free(name);
+        try {
+            ImpExpDxfWrite writer(filePath);
+            //writer.setOptionSource("myoptionpath");
+            //writer.setOptions();
+            writer.setLayerName(layerName);
+            if (PyObject_TypeCheck(shapeObj, &(Part::TopoShapePy::Type))) {
+                Part::TopoShape* obj = static_cast<Part::TopoShapePy*>(shapeObj)->getTopoShapePtr();
+                TopoDS_Shape shape = obj->getShape();
+                writer.exportShape(shape);
+            }
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+
+        return Py::None();
+    }
+
+
 };
 /*
 static PyObject * importAssembly(PyObject *self, PyObject *args)
