@@ -31,6 +31,7 @@
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
+#include <SMESH_Version.h>
 
 class SMESH_Gen;
 class SMESH_Mesh;

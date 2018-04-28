@@ -40,14 +40,14 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
 #endif
+
 #include <SMESH_Gen.hxx>
 #include <StdMeshers_MaxLength.hxx>
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
 
-#if SMESH_VERSION_MAJOR >= 7
-    #include <SMESH_Mesh.hxx>
-    #include <SMESHDS_Mesh.hxx>
-#else
-    #include <StdMeshers_TrianglePreference.hxx>
+#if SMESH_VERSION_MAJOR < 7
+#include <StdMeshers_TrianglePreference.hxx>
 #endif
 
 #include <StdMeshers_LocalLength.hxx>
