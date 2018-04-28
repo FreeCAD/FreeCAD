@@ -92,5 +92,41 @@ if (FREECAD_USE_PYBIND11)
 
     SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
     install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
+else()
+    if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        # boost-python >= 1.67 on some platforms has suffix
+        set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+
+        find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
+        if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)
+            # try just the major version
+            find_package( Boost COMPONENTS python${PYTHON_VERSION_MAJOR} )
+            if (NOT Boost_PYTHON${PYTHON_VERSION_MAJOR}_FOUND)
+                # unversioned
+                find_package( Boost COMPONENTS python REQUIRED)
+            endif()
+        endif()
+
+        if(Boost_FOUND)
+            include_directories(${Boost_INCLUDE_DIRS})
+            SET(FLATMESH_SRCS
+                MeshFlattening.cpp
+                MeshFlattening.h
+                MeshFlatteningNurbs.h
+                MeshFlatteningNurbs.cpp
+                MeshFlatteningLscmRelax.h
+                MeshFlatteningLscmRelax.cpp
+                MeshFlatteningBoostPython.cpp
+            )
+
+
+            add_library(flatmesh SHARED ${FLATMESH_SRCS})
+            SET_PYTHON_PREFIX_SUFFIX(flatmesh)
+            target_link_libraries(flatmesh ${PYTHON_LIBRARIES} ${MeshPart_LIBS} ${Boost_LIBRARIES})
+
+            SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
+            install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        endif()
+    endif()
 endif()
 ############################################################################
