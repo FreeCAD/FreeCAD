@@ -62,10 +62,11 @@ namespace Py
         explicit Exception ()
         {}
         
-        Exception (const std::string& reason)
-        {
-            PyErr_SetString (Py::_Exc_RuntimeError(), reason.c_str());
-        }
+        // This overloaded constructor will be removed in future PyCXX versions
+        //Exception (const std::string& reason)
+        //{
+        //    PyErr_SetString (Py::_Exc_RuntimeError(), reason.c_str());
+        //}
         
         Exception (PyObject* exception, const std::string& reason)
         {
