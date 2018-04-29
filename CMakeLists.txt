@@ -789,6 +789,12 @@ endif()
                 "=================\n")
     ENDIF(NOT EIGEN3_FOUND)
 
+    if (${EIGEN3_VERSION} VERSION_LESS "3.3.1")
+        message(WARNING "Disable module flatmesh because it requires "
+                        "minimum Eigen3 version 3.3.1 but version ${EIGEN3_VERSION} was found")
+        set (BUILD_FLAT_MESH OFF)
+    endif()
+
 # -------------------------------- Qt --------------------------------
 
     if (NOT BUILD_QT5)
