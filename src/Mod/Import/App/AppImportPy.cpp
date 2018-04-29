@@ -366,7 +366,7 @@ private:
         PyObject *shapeObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &shapeObj, "utf-8",&name)) {
-            throw Py::Exception("expected (Page,path");
+            throw Py::TypeError("expected (Page,path");
         } 
         
         std::string filePath = std::string(name);

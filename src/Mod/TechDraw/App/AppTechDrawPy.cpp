@@ -527,7 +527,7 @@ private:
         char* name;
         PyObject *alignObj = Py_True;
         if (!PyArg_ParseTuple(args.ptr(), "Oet|O", &viewObj, "utf-8",&name,&alignObj)) {
-            throw Py::Exception("expected (view,path");
+            throw Py::TypeError("expected (view,path");
         } 
         
         std::string filePath = std::string(name);
@@ -559,15 +559,15 @@ private:
         }
 
         return Py::None();
-    }  
+    }
 
     Py::Object writeDXFPage(const Py::Tuple& args)
     {
         PyObject *pageObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::Exception("expected (page,path");
-        } 
+            throw Py::TypeError("expected (page,path");
+        }
         
         std::string filePath = std::string(name);
         std::string layerName = "none";
@@ -576,7 +576,7 @@ private:
         try {
             ImpExpDxfWrite writer(filePath);
             writer.setLayerName(layerName);
-            
+
             App::DocumentObject* obj = 0;
             TechDraw::DrawViewPart* dvp = 0;
             TechDraw::DrawPage* dp = 0;
