@@ -34,7 +34,7 @@ namespace PartDesign
 
 class PartDesignExport Point : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Point);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Point);
 
 public:
     Point();
