@@ -68,6 +68,7 @@ std::function<double(double)> get_basis(int degree, int i, Eigen::VectorXd knots
         return [degree, i, knots](double t)
         {
             // The basis function for degree = 0 as per eq. 7
+            (void)degree;
             double t_this = knots[i];
             double t_next = knots[i+1];
             if (t == knots[0])
@@ -100,7 +101,7 @@ std::function<double(double)> get_basis(int degree, int i, Eigen::VectorXd knots
             return out;
         };
     }
-};
+}
 
 
 std::function<double(double)> get_basis_derivative(int order, int degree, int i, Eigen::VectorXd knots)
@@ -114,6 +115,7 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
     {
         return [degree, i, knots, order](double t)
         {
+            (void)order;
             double out = 0;
             if (!(knots[i + degree] - knots[i] == 0))
             {
