@@ -77,7 +77,7 @@ unsigned int get_max_distance(Vector3 point, RowMat<double, 3> vertices, double 
 {
     max_dist = 0;
     double dist;
-    unsigned long max_dist_index;
+    unsigned long max_dist_index = 0;
     long j = 0;
     for (j=0; j < vertices.cols(); j++)
     {
@@ -325,7 +325,7 @@ void LscmRelax::area_relax(double weight)
 		  fabs(this->q_l_m(i, 0) * this->q_l_m(i, 2));
 	rhs_lsq[i] = delta_a * 0.1;
 	
-	std::array<int, 6> range_6 {0, 1, 2, 3, 4, 5};
+    std::array<int, 6> range_6 {{0, 1, 2, 3, 4, 5}};
 	std::array<long, 6> indices;
 	for (int index=0; index<3; index++)
 	{
@@ -356,17 +356,17 @@ void LscmRelax::edge_relax(double weight)
     std::array<long, 2> edge;
     for(long i=0; i<this->triangles.cols(); i++)
     {
-	for(int j=0; j<3; j++)
-	{
-	    long k = j+1;
-	    if (k==3)
-		k = 0;
-	    if (this->triangles(j, i) < this->triangles(k, i))
-		edge = std::array<long, 2>{this->triangles(j, i), this->triangles(k, i)};
-	    else
-		edge = std::array<long, 2>{this->triangles(k, i), this->triangles(j, i)};
-	    edges.insert(edge);
-	}
+        for(int j=0; j<3; j++)
+        {
+            long k = j+1;
+            if (k==3)
+                k = 0;
+            if (this->triangles(j, i) < this->triangles(k, i))
+                edge = std::array<long, 2>{{this->triangles(j, i), this->triangles(k, i)}};
+            else
+                edge = std::array<long, 2>{{this->triangles(k, i), this->triangles(j, i)}};
+            edges.insert(edge);
+        }
     }
 //  2. create system
 
@@ -455,7 +455,7 @@ void LscmRelax::lscm()
     std::vector<trip> mat_triplets;
     for (auto triplet: triple_list)
     {
-        if (triplet.col() > (this->vertices.cols() - this->fixed_pins.size()) * 2 - 1)
+        if (triplet.col() > static_cast<size_t>((this->vertices.cols() - this->fixed_pins.size()) * 2 - 1))
             rhs_triplets.push_back(triplet);
         else
             mat_triplets.push_back(triplet);

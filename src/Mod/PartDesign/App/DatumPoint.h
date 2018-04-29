@@ -40,7 +40,7 @@ public:
     Point();
     virtual ~Point();
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 
@@ -49,7 +49,7 @@ public:
     typedef Part::Datum Superclass;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
 
 private:
