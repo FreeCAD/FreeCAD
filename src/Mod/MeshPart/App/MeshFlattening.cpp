@@ -31,6 +31,7 @@
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TopLoc_Location.hxx>
+#include <Standard_Version.hxx>
 
 #include <set>
 #include <map>
@@ -146,8 +147,9 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
         const TColgp_Array1OfPnt2d &_uv_nodes = triangulation->UVNodes();
         this->uv_nodes.resize(triangulation->NbNodes(), 2);
         i = 0;
-        for (gp_Pnt2d _uv_node: _uv_nodes)
+        for (Standard_Integer index = _uv_nodes.Lower(); index <= _uv_nodes.Upper(); ++index)
         {
+            const gp_Pnt2d& _uv_node = _uv_nodes.Value(index);
             this->uv_nodes.row(i) << _uv_node.X(), _uv_node.Y();
             i++;
         }
@@ -156,8 +158,9 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     const TColgp_Array1OfPnt &_nodes = triangulation->Nodes();
     this->xyz_nodes.resize(triangulation->NbNodes(), 3);
     i = 0;
-    for (gp_Pnt _node: _nodes)
+    for (Standard_Integer index = _nodes.Lower(); index <= _nodes.Upper(); ++index)
     {
+        gp_Pnt _node = _nodes.Value(index);
         this->xyz_nodes.row(i) << _node.X(), _node.Y(), _node.Z();
         i++;
     }
@@ -165,9 +168,10 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     const Poly_Array1OfTriangle &_tris = triangulation->Triangles();
     this->tris.resize(triangulation->NbTriangles(), 3);
     i = 0;
-    for (Poly_Triangle _tri: _tris)
+    for (Standard_Integer index = _tris.Lower(); index <= _tris.Upper(); ++index)
     {
         int n1, n2, n3;
+        Poly_Triangle _tri = _tris.Value(index);
         _tri.Get(n1, n2, n3);
         this->tris.row(i) << n1-1, n2-1, n3-1;
         i++;
@@ -192,9 +196,16 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
+#if OCC_VERSION_HEX < 0x070000
+    TColStd_Array1OfReal _uknots(1, _bspline->NbUPoles() + _bspline->UDegree() + 1);
+    TColStd_Array1OfReal _vknots(1, _bspline->NbVPoles() + _bspline->VDegree() + 1);
+    _bspline->UKnotSequence(_uknots);
+    _bspline->VKnotSequence(_vknots);
+#else
     const TColStd_Array1OfReal &_uknots = _bspline->UKnotSequence();
-    const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();    
-    
+    const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();
+#endif
+
     Eigen::VectorXd weights;
     weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());
     long i = 0;
@@ -206,16 +217,16 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
             i++;
         }
     }
-    
+
     Eigen::VectorXd u_knots;
     Eigen::VectorXd v_knots;
-    u_knots.resize(_uknots.Size());
-    v_knots.resize(_vknots.Size());
-    for (long u=1; u <= _uknots.Size(); u++)
+    u_knots.resize(_uknots.Length());
+    v_knots.resize(_vknots.Length());
+    for (long u=1; u <= _uknots.Length(); u++)
     {
         u_knots[u - 1] = _uknots.Value(u);
     }
-    for (long v=1; v <= _vknots.Size(); v++)
+    for (long v=1; v <= _vknots.Length(); v++)
     {
         v_knots[v - 1] = _vknots.Value(v);
     }
