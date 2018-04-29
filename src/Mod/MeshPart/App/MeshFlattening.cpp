@@ -28,6 +28,9 @@
 #include <BRep_Tool.hxx>
 #include <Geom_Surface.hxx>
 #include <Geom_BSplineSurface.hxx>
+#include <TColgp_Array1OfPnt2d.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TopLoc_Location.hxx>
 
 #include <set>
 #include <map>
@@ -73,8 +76,8 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
             long v0 = hash.second[0];
             long v1 = hash.second[1];
 
-	    neighbour_map[v0].push_back(v1);
-	    neighbour_map[v1].push_back(v0);
+            neighbour_map[v0].push_back(v1);
+            neighbour_map[v1].push_back(v0);
         }
     }
 
@@ -88,7 +91,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
         edge_vector_0.clear();
         edge_vector_0.push_back(close_index);
         edge_vector_0.push_back(start_index);
-	neighbour_map.erase(start_index);
+        neighbour_map.erase(start_index);
         edge_vector_0.push_back(next_index);
         while (next_index != close_index)
         {
