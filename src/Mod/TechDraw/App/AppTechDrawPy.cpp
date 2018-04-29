@@ -24,11 +24,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
+#include <Python.h>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Wire.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Vec.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -51,13 +55,19 @@
 #include <Mod/Part/App/OCCError.h>
 
 #include <Mod/Drawing/App/DrawingExport.h>
+#include <Mod/Import/App/ImpExpDxf.h>
 
 #include "DrawProjectSplit.h"
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
+#include "DrawPage.h"
+#include "DrawPagePy.h"
+#include "Geometry.h"
 #include "GeometryObject.h"
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 
 
 namespace TechDraw {
@@ -68,6 +78,7 @@ using Part::TopoShape;
 using Part::TopoShapePy;
 using Part::TopoShapeEdgePy;
 using Part::TopoShapeWirePy;
+using Import::ImpExpDxfWrite;
 
 namespace TechDraw {
 
@@ -90,6 +101,12 @@ public:
         );
         add_varargs_method("viewPartAsSvg",&Module::viewPartAsSvg,
             "string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."
+        );
+        add_varargs_method("writeDXFView",&Module::writeDXFView,
+            "writeDXFView(view,filename): Exports a DrawViewPart to a DXF file."
+        );
+        add_varargs_method("writeDXFPage",&Module::writeDXFPage,
+            "writeDXFPage(page,filename): Exports a DrawPage to a DXF file."
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -436,6 +453,154 @@ private:
 
         return svgReturn;
     }
+
+    void write1ViewDxf( ImpExpDxfWrite& writer, TechDraw::DrawViewPart* dvp, bool alignPage)
+    {
+        TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+        TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
+        double offX = 0.0;
+        double offY = 0.0;
+        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
+            TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
+            if (dpg != nullptr) {
+                offX = dpg->X.getValue();
+                offY = dpg->Y.getValue();
+            }
+        }
+        double dvpX,dvpY;
+        if (alignPage) {
+            dvpX = dvp->X.getValue() + offX;
+            dvpY = dvp->Y.getValue() + offY;
+        } else {
+            dvpX = 0.0;
+            dvpY = 0.0;
+        }
+        gp_Trsf xLate;
+        xLate.SetTranslation(gp_Vec(dvpX,dvpY,0.0));
+        BRepBuilderAPI_Transform mkTrf(s, xLate);
+        s = mkTrf.Shape();                
+        writer.exportShape(s);
+        s = TechDrawGeometry::mirrorShape(go->getVisOutline());
+        mkTrf.Perform(s);
+        s = mkTrf.Shape();
+        writer.exportShape(s);
+        if (dvp->SmoothVisible.getValue()) {
+            s = TechDrawGeometry::mirrorShape(go->getVisSmooth());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
+        if (dvp->SeamVisible.getValue()) {
+            s = TechDrawGeometry::mirrorShape(go->getVisSeam());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
+        if (dvp->HardHidden.getValue()) {
+            s = TechDrawGeometry::mirrorShape(go->getHidHard());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+            s = TechDrawGeometry::mirrorShape(go->getHidOutline());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
+        if (dvp->SmoothHidden.getValue()) {
+            s = TechDrawGeometry::mirrorShape(go->getHidSmooth());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
+        if (dvp->SeamHidden.getValue()) {
+            s = TechDrawGeometry::mirrorShape(go->getHidSeam());
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
+    }
+    
+    Py::Object writeDXFView(const Py::Tuple& args)
+    {
+        PyObject *viewObj;
+        char* name;
+        PyObject *alignObj = Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet|O", &viewObj, "utf-8",&name,&alignObj)) {
+            throw Py::Exception("expected (view,path");
+        } 
+        
+        std::string filePath = std::string(name);
+        std::string layerName = "none";
+        PyMem_Free(name);
+        bool align;
+        if (alignObj == Py_True) {
+            align = true;
+        } else {
+            align = false;
+        }
+
+        try {
+            ImpExpDxfWrite writer(filePath);
+            writer.setLayerName(layerName);
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+                
+                layerName = dvp->getNameInDocument();
+                writer.setLayerName(layerName);
+                write1ViewDxf(writer,dvp,align);
+            }
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+
+        return Py::None();
+    }  
+
+    Py::Object writeDXFPage(const Py::Tuple& args)
+    {
+        PyObject *pageObj;
+        char* name;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
+            throw Py::Exception("expected (page,path");
+        } 
+        
+        std::string filePath = std::string(name);
+        std::string layerName = "none";
+        PyMem_Free(name);
+
+        try {
+            ImpExpDxfWrite writer(filePath);
+            writer.setLayerName(layerName);
+            
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            TechDraw::DrawPage* dp = 0;
+            if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
+                dp = static_cast<TechDraw::DrawPage*>(obj);
+                auto views = dp->getAllViews();
+                for (auto& v: views) {
+                    if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+                        dvp = static_cast<TechDraw::DrawViewPart*>(v);
+                        layerName = dvp->getNameInDocument();
+                        writer.setLayerName(layerName);
+                        write1ViewDxf(writer,dvp,true);
+                    }
+                }
+            }
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+
+        return Py::None();
+    }  
+
 
  };
 
