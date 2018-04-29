@@ -138,7 +138,7 @@ public:
 };
 
 // derive a class from this and implement it's virtual functions
-class CDxfRead{
+class ImportExport CDxfRead{
 private:
     std::ifstream* m_ifs;
 
