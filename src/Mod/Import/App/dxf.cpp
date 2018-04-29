@@ -3,6 +3,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
+#include "PreCompiled.h"
 #include "dxf.h"
 
 using namespace std;
