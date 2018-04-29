@@ -147,6 +147,29 @@ boost::python::list interpolateFlatFacePy(FaceUnwrapper& instance, const py::obj
     return plist;
 }
 
+boost::python::list getFlatBoundaryNodesPy(FaceUnwrapper& instance)
+{
+    std::vector<ColMat<double, 3>> mat_array = instance.getFlatBoundaryNodes();
+
+    boost::python::list ary;
+    for (auto mat : mat_array) {
+        boost::python::list plist;
+        auto cols = mat.cols();
+        auto rows = mat.rows();
+        for (int i=0; i<rows; i++) {
+            boost::python::list vec;
+            for (int j=0; j<cols; j++) {
+                double c = mat.coeff(i, j);
+                vec.append(c);
+            }
+            plist.append(vec);
+        }
+
+        ary.append(plist);
+    }
+    return ary;
+}
+
 
 
 BOOST_PYTHON_MODULE(flatmesh)
@@ -203,7 +226,7 @@ BOOST_PYTHON_MODULE(flatmesh)
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>>())
         .def("findFlatNodes", &FaceUnwrapper::findFlatNodes)
         .def("interpolateFlatFace", &interpolateFlatFacePy)
-        .def("getFlatBoundaryNodes", &FaceUnwrapper::getFlatBoundaryNodes)
+        .def("getFlatBoundaryNodes", &getFlatBoundaryNodesPy)
         .def_readonly("tris", &FaceUnwrapper::tris)
         .def_readonly("nodes", &FaceUnwrapper::xyz_nodes)
         .def_readonly("uv_nodes", &FaceUnwrapper::uv_nodes)
