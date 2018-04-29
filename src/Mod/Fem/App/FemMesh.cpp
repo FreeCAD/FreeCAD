@@ -1345,7 +1345,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     //get faces
     ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1  and elementsMapVol is not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty())) {
-        // for ememParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
+        // for elemParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
         // we're going to fill the elementsMapFac with all faces
         SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
         while (aFaceIter->more()) {
@@ -1383,7 +1383,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     // get edges
     ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1 and either elementMapVol or elementsMapFac are not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty() && elementsMapFac.empty())) {
-        // for ememParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
+        // for elemParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
         // we're going to fill the elementsMapEdg with all edges
         SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
         while (aEdgeIter->more()) {
