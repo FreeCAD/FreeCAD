@@ -174,7 +174,7 @@ def get_copy_of_empty_femelement_table(femelement_table):
 def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     '''Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
     {eleID : [lenEleNodes, binary_position]}
-    see forumpost for a ver good explanation whats really happening
+    see forum post for a very good explanation of what's really happening
     http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
     The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
     the information we are searching for:
@@ -1029,7 +1029,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
     mesh_face_area = 0
     for mf in face_table:
         femmesh_facetype = len(face_table[mf])
-        # nodes in face_table need to be in the right node order for the following calcualtions
+        # nodes in face_table need to be in the right node order for the following calculations
         if femmesh_facetype == 3:  # 3 node femmesh face triangle
             # corner_node_area = mesh_face_area / 3.0
             #      P3
@@ -1416,7 +1416,7 @@ def is_same_geometry(shape1, shape2):
     # the vertexes and the CenterOfMass are compared
     # it is a hack, but I do not know any better !
     # check of Volume and Area before starting with the vertices could be added
-    # BoundBox is possible too, but is BB calcualtions robust?!
+    # BoundBox is possible too, but is BB calculations robust?!
     # print(shape1)
     # print(shape2)
     same_Vertexes = 0
