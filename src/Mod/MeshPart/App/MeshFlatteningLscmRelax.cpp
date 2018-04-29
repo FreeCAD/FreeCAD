@@ -455,7 +455,7 @@ void LscmRelax::lscm()
     std::vector<trip> mat_triplets;
     for (auto triplet: triple_list)
     {
-        if (triplet.col() > static_cast<size_t>((this->vertices.cols() - this->fixed_pins.size()) * 2 - 1))
+        if (triplet.col() > static_cast<int>((this->vertices.cols() - this->fixed_pins.size()) * 2 - 1))
             rhs_triplets.push_back(triplet);
         else
             mat_triplets.push_back(triplet);
