@@ -116,7 +116,7 @@ if(PYCXX_FOUND)
         ${PYCXX_SOURCE_DIR}/cxxsupport.cxx
         ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
     )
-    if(${PYCXX_VERSION} VERSION_GREATER_EQUAL 7.0.0)
+    if(NOT ${PYCXX_VERSION} VERSION_LESS 7.0.0)
         list(APPEND PYCXX_SOURCES
             ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
         add_definitions(-DPYCXX_6_2_COMPATIBILITY)
