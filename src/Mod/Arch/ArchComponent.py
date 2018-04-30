@@ -685,6 +685,9 @@ class Component:
         if not obj.Shape.Faces:
             return
         import Drawing,Part
+        fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
+        if len(obj.Shape.Faces) > fmax:
+            return
         a = 0
         fset = []
         for i,f in enumerate(obj.Shape.Faces):
