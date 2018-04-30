@@ -495,6 +495,7 @@ class _CommandWindow:
         self.Height = p.GetFloat("WindowHeight",1000)
         self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
         self.Preset = 0
+        self.LibraryPreset = 0
         self.Sill = 0
         self.Include = True
         self.baseFace = None
@@ -556,26 +557,43 @@ class _CommandWindow:
         if self.sel:
             obj = self.sel[0]
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
-        # preset
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-        FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
-        if obj and (self.baseFace != None):
-            FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
+        if self.Preset >= len(WindowPresets):
+            # library object
+            col = list(FreeCAD.ActiveDocument.Objects)
+            path = self.librarypresets[self.Preset-len(WindowPresets)][1]
+            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('"+path+"')")
+            # find the latest added window
+            nol = list(FreeCAD.ActiveDocument.Objects)
+            nol.reverse()
+            for o in nol:
+                if (Draft.getType(o) == "Window") and (not o in col):
+                    lastobj = o
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Placement.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Width = "+str(self.Width))
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Height = "+str(self.Height))
+                    break
+            
         else:
-            FreeCADGui.doCommand("m = FreeCAD.Matrix()")
-            FreeCADGui.doCommand("m.rotateX(math.pi/2)")
-            FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
-        FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
-        wp = ""
-        for p in self.wparams:
-            wp += p.lower() + "=" + str(getattr(self,p)) + ","
-        FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
-        if obj and self.Include:
-            if Draft.getType(obj) in AllowedHosts:
-                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
-                siblings = obj.Proxy.getSiblings(obj)
-                for sibling in siblings:
-                    FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
+            # preset
+            FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
+            if obj and (self.baseFace != None):
+                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
+            else:
+                FreeCADGui.doCommand("m = FreeCAD.Matrix()")
+                FreeCADGui.doCommand("m.rotateX(math.pi/2)")
+                FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
+            FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+            wp = ""
+            for p in self.wparams:
+                wp += p.lower() + "=" + str(getattr(self,p)) + ","
+            FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
+            if obj and self.Include:
+                if Draft.getType(obj) in AllowedHosts:
+                    FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
+                    siblings = obj.Proxy.getSiblings(obj)
+                    for sibling in siblings:
+                        FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return
@@ -619,6 +637,22 @@ class _CommandWindow:
         grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
+        # check for Parts library
+        self.librarypresets = []
+        librarypath = FreeCAD.ParamGet('User parameter:Plugins/parts_library').GetString('destination','')
+        if librarypath:
+            import os
+            if os.path.exists(librarypath):
+                for wtype in ["Windows","Doors"]:
+                    wdir = os.path.join(librarypath,"Architectural Parts",wtype)
+                    for subtype in os.listdir(wdir):
+                        subdir = os.path.join(wdir,subtype)
+                        for subfile in os.listdir(subdir):
+                            if subfile.lower().endswith(".fcstd"):
+                                self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
+            else:
+                librarypath = None
+
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         valuep = QtGui.QComboBox()
@@ -627,16 +661,24 @@ class _CommandWindow:
         grid.addWidget(labelp,2,0,1,1)
         grid.addWidget(valuep,2,1,1,1)
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
+        for it in self.librarypresets:
+            valuep.addItem(it[0])
 
         # image display
+        self.pic = QtGui.QLabel()
+        grid.addWidget(self.pic,3,0,1,2)
+        self.pic.setFixedHeight(128)
+        self.pic.hide()
+
+        # SVG display
         self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
-        grid.addWidget(self.im,3,0,1,2)
+        grid.addWidget(self.im,4,0,1,2)
         #self.im.hide()
 
         # parameters
-        i = 4
+        i = 5
         for param in self.wparams:
             lab = QtGui.QLabel(translate("Arch",param, utf8_decode=True))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
@@ -654,6 +696,7 @@ class _CommandWindow:
             valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
+
         return w
 
     def getValueChanged(self,p):
@@ -679,6 +722,8 @@ class _CommandWindow:
             self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
             self.tracker.on()
+            self.pic.hide()
+            self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
             elif i == 1:
@@ -690,8 +735,32 @@ class _CommandWindow:
             elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
             else:
-                self.im.load(":/ui/ParametersWindowDouble.svg")
-            self.im.show()
+                if i >= len(WindowPresets):
+                    # From Library
+                    self.im.hide()
+                    path = self.librarypresets[i-len(WindowPresets)][1]
+                    if path.lower().endswith(".fcstd"):
+                        try:
+                            import zipfile,tempfile
+                        except:
+                            pass
+                        else:
+                            zfile=zipfile.ZipFile(path)
+                            files=zfile.namelist()
+                            # check for meta-file if it's really a FreeCAD document
+                            if files[0] == "Document.xml":
+                                image="thumbnails/Thumbnail.png"
+                                if image in files:
+                                    image=zfile.read(image)
+                                    thumbfile = tempfile.mkstemp(suffix='.png')[1]
+                                    thumb = open(thumbfile,"wb")
+                                    thumb.write(image)
+                                    thumb.close()
+                                    im = QtGui.QPixmap(thumbfile)
+                                    self.pic.setPixmap(im)
+                                    self.pic.show()
+                else:
+                    self.im.load(":/ui/ParametersWindowDouble.svg")
             #for param in self.wparams:
             #    getattr(self,"val"+param).setEnabled(True)
         else:
