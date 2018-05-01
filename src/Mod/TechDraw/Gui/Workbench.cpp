@@ -79,6 +79,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_LinkDimension";
     *draw << "Separator";
     *draw << "TechDraw_ExportPage";
+    *draw << "TechDraw_ExportPageDxf";
     *draw << "Separator";
     *draw << "TechDraw_NewHatch";
     *draw << "TechDraw_NewGeomHatch";
@@ -130,6 +131,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPage";
+    *file << "TechDraw_ExportPageDxf";
 
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
@@ -138,7 +140,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_RedrawPage";
+//    *decor << "TechDraw_RedrawPage";
     return root;
 }
 
@@ -181,6 +183,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPage";
+    *file << "TechDraw_ExportPageDxf";
  
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
@@ -189,7 +192,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_RedrawPage";
+//    *decor << "TechDraw_RedrawPage";
 
     return root;
 }
