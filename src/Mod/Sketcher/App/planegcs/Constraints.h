@@ -99,6 +99,7 @@ namespace GCS
         double scale;
         int tag;
         bool pvecChangedFlag;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
+        bool driving;
     public:
         Constraint();
         virtual ~Constraint(){}
@@ -109,6 +110,9 @@ namespace GCS
         void revertParams();
         void setTag(int tagId) { tag = tagId; }
         int getTag() { return tag; }
+        
+        void setDriving(bool isdriving) { driving = isdriving; }
+        bool isDriving() { return driving; }
 
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);

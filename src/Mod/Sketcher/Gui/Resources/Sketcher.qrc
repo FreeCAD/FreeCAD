@@ -164,6 +164,7 @@
         <file>icons/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/Sketcher_SelectConstraints.svg</file>
         <file>icons/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
+        <file>icons/Sketcher_SelectElementsWithDoFs.svg</file>
         <file>icons/Sketcher_SelectHorizontalAxis.svg</file>
         <file>icons/Sketcher_SelectOrigin.svg</file>
         <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
