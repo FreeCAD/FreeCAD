@@ -1033,7 +1033,7 @@ bool CmdTechDrawSpreadsheet::isActive(void)
 
 
 //===========================================================================
-// TechDraw_ExportPage
+// TechDraw_ExportPage (Svg)
 //===========================================================================
 
 DEF_STD_CMD_A(CmdTechDrawExportPage);
@@ -1076,6 +1076,57 @@ bool CmdTechDrawExportPage::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//===========================================================================
+// TechDraw_ExportPage (Dxf)
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExportPageDxf);
+
+CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
+  : Command("TechDraw_ExportPageDxf")
+{
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("Export page as DXF");
+    sToolTipText  = QT_TR_NOOP("Export a page to a DXF file");
+    sWhatsThis    = "TechDraw_SaveDXF";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "actions/techdraw-saveDXF";
+}
+
+void CmdTechDrawExportPageDxf::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+//WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
+    QString defaultDir;
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   defaultDir,
+                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    std::string PageName = page->getNameInDocument();
+    openCommand("Save page to dxf");
+    doCommand(Doc,"import TechDraw");
+    doCommand(Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",PageName.c_str(),(const char*)fileName.toUtf8());
+    updateActive();
+    commitCommand();
+}
+
+
+bool CmdTechDrawExportPageDxf::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
+
 
 void CreateTechDrawCommands(void)
 {
@@ -1094,6 +1145,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawClipMinus());
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPage());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPageDxf());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());
