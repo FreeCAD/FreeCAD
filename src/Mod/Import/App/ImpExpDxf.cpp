@@ -75,10 +75,6 @@ ImpExpDxfRead::ImpExpDxfRead(std::string filepath, App::Document *pcDoc) : CDxfR
     document = pcDoc;
     setOptionSource("User parameter:BaseApp/Preferences/Mod/Draft");
     setOptions();
-//    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Draft");
-//    optionGroupLayers = hGrp->GetBool("groupLayers",false);
-//    optionImportAnnotations = hGrp->GetBool("dxftext",false);
-//    optionScaling = hGrp->GetFloat("dxfScaling",1.0);
 }
 
 void ImpExpDxfRead::setOptions(void)
@@ -340,7 +336,7 @@ ImpExpDxfWrite::ImpExpDxfWrite(std::string filepath) :
 
 void ImpExpDxfWrite::setOptions(void)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Draft");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionMaxLength = hGrp->GetFloat("maxsegmentlength",5.0);
     optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",true);
 }

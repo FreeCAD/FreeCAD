@@ -49,6 +49,7 @@
         <file>icons/actions/techdraw-draft-view.svg</file>
         <file>icons/actions/techdraw-arch-view.svg</file>
         <file>icons/actions/techdraw-saveSVG.svg</file>
+        <file>icons/actions/techdraw-saveDXF.svg</file>
         <file>icons/actions/techdraw-viewsection.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
         <file>icons/actions/techdraw-geomhatch.svg</file>
