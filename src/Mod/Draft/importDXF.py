@@ -1570,8 +1570,8 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         FreeCAD.setActiveDocument(doc.Name)
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def insert(filename,docname):
     "called when freecad imports a file"
@@ -1597,8 +1597,8 @@ def insert(filename,docname):
         else:
             errorDXFLib(gui)
     else:
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def getShapes(filename):
     "reads a dxf file and returns a list of shapes from its contents"
