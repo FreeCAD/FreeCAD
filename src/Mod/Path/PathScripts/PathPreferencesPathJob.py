@@ -24,6 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
 import json
@@ -52,6 +53,9 @@ class JobPreferencesPage:
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
         PathPreferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
+
+        if curveAccuracy:
+            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
 
         processor = str(self.form.defaultPostProcessor.currentText())
         args = str(self.form.defaultPostProcessorArgs.text())

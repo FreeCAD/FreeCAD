@@ -137,7 +137,9 @@ class PathWorkbench (Workbench):
 
         self.dressupcmds = dressupcmdlist
 
-        Path.Area.setDefaultParams(Accuracy = PathPreferences.defaultLibAreaCurveAccuracy())
+        curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
+        if curveAccuracy:
+            Path.Area.setDefaultParams(curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 
