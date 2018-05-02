@@ -56,6 +56,7 @@ public:
 private:
     Py::Object readDXF(const Py::Tuple& args)
     {
+        Base::Console().Warning("DraftUtils.readDXF is deprecated. Use Import.readDxf instead.\n");
         char* Name;
         const char* DocName=0;
         bool IgnoreErrors=true;
