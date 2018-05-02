@@ -1889,6 +1889,16 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     if(shapes.empty())
         return *this;
 
+    size_t canMap=0;
+    for(auto &shape : shapes) {
+        if(canMapElement(shape))
+            ++canMap;
+    }
+    if(!canMap)
+        return *this;
+    if(canMap!=shapes.size() && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        FC_WARN("Not all input shapes are mappable");
+
     if(!op) op = TOPOP_MAKER;
     std::string _op = op;
     _op += '_';
