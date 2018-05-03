@@ -61,6 +61,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/ViewProviderLink.h>
 
 FC_LOG_LEVEL_INIT("Command", true, true);
 
@@ -592,7 +593,30 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
 {
     if(!from || !from->getNameInDocument() || !to || !to->getNameInDocument())
         return;
+    static std::map<std::string,std::string> attrMap = {
+        {"ShapeColor","ShapeMaterial.DiffuseColor"},
+        {"LineColor","ShapeMaterial.DiffuseColor"},
+        {"PointColor","ShapeMaterial.DiffuseColor"},
+        {"Transparency","Transparency"},
+    };
+    auto it = attrMap.find(attr_to);
     auto objCmd = getObjectCmd(to);
+    if(it!=attrMap.end()) {
+        auto obj = from;
+        for(int depth=0;;++depth) {
+            auto vp = dynamic_cast<Gui::ViewProviderLink*>(
+                    Gui::Application::Instance->getViewProvider(obj));
+            if(vp && vp->OverrideMaterial.getValue()) {
+                _doCommand(file,line,Gui,"%s.ViewObject.%s=%s.ViewObject.%s",
+                        objCmd.c_str(),attr_to,getObjectCmd(obj).c_str(),it->second.c_str());
+                return;
+            }
+            auto linked = obj->getLinkedObject(false,0,false,depth);
+            if(!linked || linked==obj)
+                break;
+            obj = linked;
+        }
+    }
     _doCommand(file,line,Gui,"%s.ViewObject.%s=getattr(%s.getLinkedObject().ViewObject,'%s',%s.ViewObject.%s)",
             objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
 }
