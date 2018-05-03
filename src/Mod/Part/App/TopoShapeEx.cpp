@@ -2654,7 +2654,10 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
 }
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix) {
-    if(!Tag) return;
+    if(Tag==tag || !tag) {
+        FC_WARN("invalid shape tag for re-tagging");
+        return;
+    }
     TopoShape tmp(*this);
     Hasher = hasher;
     initCache(true);
