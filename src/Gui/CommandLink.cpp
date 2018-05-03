@@ -319,7 +319,7 @@ static void linkConvert(bool unlink) {
                     continue;
                 if(linkProp->getValue()==obj) {
                     std::ostringstream str;
-                    str << "App.ActiveDocument."<< parentObj->getNameInDocument()<<'.'
+                    str << Gui::Command::getObjectCmd(parentObj) << '.'
                         << propName << '=' << "App.ActiveDocument.getObject('%s')";
                     cmds.push_back(str.str());
                 }
@@ -332,16 +332,22 @@ static void linkConvert(bool unlink) {
                 int i;
                 if(linksProp->find(obj->getNameInDocument(),&i)) {
                     std::ostringstream str;
-                    str << "App.ActiveDocument."<< parentObj->getNameInDocument()<<'.'
+                    str << Gui::Command::getObjectCmd(parentObj) <<'.'
                         << propName << "={"<<i<<":App.ActiveDocument.getObject('%s')}";
                     cmds.push_back(str.str());
                 }
                 continue;
             }
         }
-        if(cmds.size())
+        if(cmds.size()) {
+            int vis = parentObj->isElementVisible(obj->getNameInDocument());
+            if(vis>=0) {
+                if(vis == 0)
+                    cmds.push_back(Gui::Command::getObjectCmd(parentObj)+".setElementVisible('%s',False)");
+                cmds.push_back("App.ActiveDocument.getObject('%s').Visibility = False");
+            }
             replaceCmds[std::make_pair(parentObj,obj)].swap(cmds);
-        else 
+        }else 
             FC_WARN("skip '" << obj->getNameInDocument() << "': no link property found");
     }
 
