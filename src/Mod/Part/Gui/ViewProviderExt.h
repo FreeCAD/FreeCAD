@@ -144,6 +144,11 @@ public:
     }
     virtual void forceUpdate(bool enable = true) override;
 
+    void updateColors(Part::Feature *feature, App::Document *sourceDoc=0, bool forceColorMap=false);
+
+    static App::Color getElementColor(const App::Color &color, 
+            Part::TopoShape shape, App::Document *doc, int type, std::string mapped);
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
@@ -162,7 +167,6 @@ protected:
                     TColgp_Array1OfDir& theNormals);
 
     virtual bool hasBaseFeature() const;
-    void updateColors(Part::Feature *feature);
 
     // nodes for the data representation
     SoMaterialBinding * pcFaceBind;
@@ -184,8 +188,6 @@ protected:
     bool VisualTouched;
     bool NormalsFromUV;
 
-private:
-    App::Color getElementColor(const App::Color &color, int type, long tag, const char *original) const;
 
 private:
     // settings stuff

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/DocumentPy.h>
 #include "ViewProviderExt.h"
 
 // inclusion of the generated files (generated out of ViewProviderPartExtPy.xml)
@@ -44,6 +45,18 @@ PyObject *ViewProviderPartExtPy::getCustomAttributes(const char* ) const
 int ViewProviderPartExtPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0;
+}
+
+PyObject *ViewProviderPartExtPy::mapShapeColors(PyObject *args) {
+    PyObject *pyDoc = Py_None;
+    if(!PyArg_ParseTuple(args, "|O!", &App::DocumentPy::Type,&pyDoc))
+        return 0;
+    auto vp = getViewProviderPartExtPtr();
+    App::Document *doc = 0;
+    if(pyDoc!=Py_None)
+        doc = static_cast<App::DocumentPy*>(pyDoc)->getDocumentPtr();
+    vp->updateColors(dynamic_cast<Part::Feature*>(vp->getObject()),doc,true);
+    Py_Return;
 }
 
 Py::Dict ViewProviderPartExtPy::getElementColors() const {
