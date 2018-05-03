@@ -35,19 +35,12 @@ import importlib
 
 from PySide import QtCore, QtGui
 from PathScripts.PathGeom import PathGeom
+from PathScripts.PathPreferences import PathPreferences
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
-
-# TaskPanelLayout
-#  0 ... existing toolbox layout
-#  1 ... reverse order
-#  2 ... multi panel layout
-#  3 ... multi panel layout reverse
-TaskPanelLayout = 0
-
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -748,11 +741,13 @@ class TaskPanel(object):
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
 
-        if TaskPanelLayout < 2:
+        taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
+
+        if taskPanelLayout < 2:
             opTitle = opPage.getTitle(obj)
             opPage.setTitle(translate('PathOp', 'Operation'))
             toolbox = QtGui.QToolBox()
-            if TaskPanelLayout == 0:
+            if taskPanelLayout == 0:
                 for page in self.featurePages:
                     toolbox.addItem(page.form, page.getTitle(obj))
                 toolbox.setCurrentIndex(len(self.featurePages)-1)
@@ -765,13 +760,13 @@ class TaskPanel(object):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
 
             self.form = toolbox
-        elif TaskPanelLayout == 2:
+        elif taskPanelLayout == 2:
             forms = []
             for page in self.featurePages:
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
             self.form = forms
-        elif TaskPanelLayout == 3:
+        elif taskPanelLayout == 3:
             forms = []
             for page in reversed(self.featurePages):
                 page.form.setWindowTitle(page.getTitle(obj))
