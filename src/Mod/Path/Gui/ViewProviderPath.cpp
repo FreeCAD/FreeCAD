@@ -622,16 +622,43 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 double r = 0;
                 if (cmd.has("R"))
                     r = cmd.getValue("R");
+
                 Base::Vector3d p1(next);
                 p1.*pz = last.*pz;
+
+                if (nrot != lrot) {
+                    double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+                    double angle = amax / 180 * M_PI;
+                    int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
+
+                    double da = (a - A) / segments;
+                    double db = (b - B) / segments;
+                    double dc = (c - C) / segments;
+
+                    Base::Vector3d dnext = (p1 - last) / segments;
+
+                    for (int j = 1; j < segments; j++) {
+                        Base::Vector3d inter = last + dnext * j;
+
+                        Base::Rotation rot;
+                        rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
+
+                        Base::Vector3d rinter;
+                        rot.multVec(inter, rinter);
+
+                        points.push_back(rinter);
+                        colorindex.push_back(0);
+                    }
+                }
+
                 Base::Vector3d pr;
-                lrot.multVec(p1, pr);
+                nrot.multVec(p1, pr);
                 points.push_back(pr);
                 markers.push_back(pr);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next);
                 p2.*pz = r;
-                lrot.multVec(p2, pr);
+                nrot.multVec(p2, pr);
                 points.push_back(pr);
                 markers.push_back(pr);
                 colorindex.push_back(0);
@@ -644,21 +671,28 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     if (q>0) {
                         Base::Vector3d temp(next);
                         for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q) {
-                            lrot.multVec(temp, pr);
+                            nrot.multVec(temp, pr);
                             markers.push_back(pr);
                         }
                     }
                 }
                 Base::Vector3d p3(next);
                 p3.*pz = last.*pz;
-                lrot.multVec(p3, pr);
+                nrot.multVec(p3, pr);
                 points.push_back(pr);
-                lrot.multVec(p2, pr);
+                nrot.multVec(p2, pr);
                 markers.push_back(pr);
                 colorindex.push_back(0);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = p3;
+                A = a;
+                b = b;
+                c = c;
+                lrot = nrot;
+
 
             } else if ((name=="G38.2")||(name=="38.3")||(name=="G38.4")||(name=="G38.5")){
                 // Straight probe
