@@ -561,26 +561,45 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                         angle = M_PI * 2 - angle;
                 } else if (angle == 0)
                     angle = M_PI * 2;
-                int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle)); //we use a rather simple rule here, provisorily
+
+                double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+
+                int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/std::max(angle, amax))); //we use a rather simple rule here, provisorily
                 double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
+
+                double dangle = angle/segments;
+                double da = (a - A) / segments;
+                double db = (b - B) / segments;
+                double dc = (c - C) / segments;
 
                 for (int j = 1; j < segments; j++) {
                     Base::Vector3d inter, rinter;
-                    Base::Rotation rot(norm,(angle/segments)*j);
-                    rot.multVec((last0 - center0),inter);
+                    Base::Rotation rot(norm, dangle*j);
+                    rot.multVec((last0 - center0), inter);
                     inter.*pz = last.*pz + dZ * j; //Enable displaying helices
-                    lrot.multVec(center0 + inter, rinter);
+
+                    Base::Rotation arot;
+                    arot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
+
+                    arot.multVec(center0 + inter, rinter);
                     points.push_back(rinter);
                     colorindex.push_back(1);
                 }
+
                 points.push_back(rnext);
                 markers.push_back(rnext); // endpoint
                 markers.push_back(center); // add a marker at center too
-                last = next;
+
                 colorindex.push_back(1);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = next;
+                A = a;
+                b = b;
+                c = c;
+                lrot = nrot;
 
             } else if (name == "G90") {
                 // absolute mode
