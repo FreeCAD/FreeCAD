@@ -335,11 +335,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
     if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
         auto shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
-        if(!noElementMap && tag && shape.Tag && 
-           (shape.Tag!=tag || owner->getDocument()!=linked->getDocument()))
-        {
+        if(!noElementMap && tag && owner!=linked)
             shape.reTagElementMap(tag,hasher);
-        }
         Py_DECREF(pyobj);
         return shape;
     }
@@ -382,6 +379,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     TopoShape ts;
     ts.makECompound(shapes);
     ts.transformShape(mat,false,true);
+    if(!noElementMap && tag && owner!=linked) 
+        ts.reTagElementMap(tag,hasher);
     return ts;
 }
 
