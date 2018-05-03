@@ -287,10 +287,12 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
                 args.setItem(i++,Py::Int(depth));
 
                 Py::Object res(method.apply(args));
-                if(!res.isTrue()) {
+                if(res.isNone()) {
                     ret = 0;
                     return true;
                 }
+                if(!res.isTrue())
+                    return false;
                 if(!res.isSequence())
                     throw Base::TypeError("getSubObject expects return type of tuple");
                 Py::Sequence seq(res);
