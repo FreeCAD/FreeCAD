@@ -447,7 +447,12 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         float deviation = hGrp->GetFloat("MeshDeviation",0.2);
         std::deque<Base::Vector3d> points;
         std::deque<Base::Vector3d> markers;
+
         Base::Vector3d last(StartPosition.getValue());
+        Base::Rotation lrot;
+        double A, B, C;
+        lrot.getYawPitchRoll(C, B, A);
+
         colorindex.clear();
         bool absolute = true;
         bool absolutecenter = false;
@@ -464,28 +469,65 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             const Path::Command &cmd = tp.getCommand(i);
             const std::string &name = cmd.Name;
             Base::Vector3d next = cmd.getPlacement().getPosition();
+            double a = A;
+            double b = B;
+            double c = C;
 
             if (!absolute)
                 next = last + next;
-            if (!cmd.has("X"))
-                next.x = last.x;
-            if (!cmd.has("Y"))
-                next.y = last.y;
-            if (!cmd.has("Z"))
-                next.z = last.z;
+            if (!cmd.has("X")) next.x = last.x;
+            if (!cmd.has("Y")) next.y = last.y;
+            if (!cmd.has("Z")) next.z = last.z;
+            if ( cmd.has("A")) a = cmd.getValue("A");
+            if ( cmd.has("B")) a = cmd.getValue("B");
+            if ( cmd.has("C")) a = cmd.getValue("C");
+
+            Base::Rotation nrot;
+            nrot.setYawPitchRoll(c, b, a);
+
+            Base::Vector3d rnext;
+            nrot.multVec(next, rnext);
 
             if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
                 // straight line
-                points.push_back(next);
-                markers.push_back(next); // endpoint
-                last = next;
-                if ( (name == "G0") || (name == "G00") )
-                    colorindex.push_back(0); // rapid color
-                else
-                    colorindex.push_back(1); // std color
+                int color = ((name == "G0") || (name == "G00")) ? 0 : 1;
+                if (nrot != lrot) {
+                    double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+                    double angle = amax / 180 * M_PI;
+                    int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
+
+                    double da = (a - A) / segments;
+                    double db = (b - B) / segments;
+                    double dc = (c - C) / segments;
+
+                    Base::Vector3d dnext = (next - last) / segments;
+
+                    for (int j = 1; j < segments; j++) {
+                        Base::Vector3d inter = last + dnext * j;
+
+                        Base::Rotation rot;
+                        rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
+
+                        Base::Vector3d rinter;
+                        rot.multVec(inter, rinter);
+
+                        points.push_back(rinter);
+                        colorindex.push_back(color);
+                    }
+                }
+                points.push_back(rnext);
+                markers.push_back(rnext); // endpoint
+                colorindex.push_back(color); // std color
+
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = next;
+                A = a;
+                b = b;
+                c = c;
+                lrot = nrot;
 
             } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
                 // arc
@@ -511,27 +553,28 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 double angle = (next0 - center0).GetAngle(last0 - center0);
                 // GetAngle will always return the minor angle. Switch if needed
                 Base::Vector3d anorm = (last0 - center0) % (next0 - center0);
-                if(anorm.*pz < 0) {
+                if (anorm.*pz < 0) {
                     if(name == "G3" || name == "G03")
                         angle = M_PI * 2 - angle;
-                }else if(anorm.*pz > 0) {
+                } else if(anorm.*pz > 0) {
                     if(name == "G2" || name == "G02")
                         angle = M_PI * 2 - angle;
-                }else if (angle == 0)
+                } else if (angle == 0)
                     angle = M_PI * 2;
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle)); //we use a rather simple rule here, provisorily
                 double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
 
                 for (int j = 1; j < segments; j++) {
-                    Base::Vector3d inter;
+                    Base::Vector3d inter, rinter;
                     Base::Rotation rot(norm,(angle/segments)*j);
                     rot.multVec((last0 - center0),inter);
                     inter.*pz = last.*pz + dZ * j; //Enable displaying helices
-                    points.push_back( center0 + inter);
+                    lrot.multVec(center0 + inter, rinter);
+                    points.push_back(rinter);
                     colorindex.push_back(1);
                 }
-                points.push_back(next);
-                markers.push_back(next); // endpoint
+                points.push_back(rnext);
+                markers.push_back(rnext); // endpoint
                 markers.push_back(center); // add a marker at center too
                 last = next;
                 colorindex.push_back(1);
@@ -562,30 +605,37 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     r = cmd.getValue("R");
                 Base::Vector3d p1(next);
                 p1.*pz = last.*pz;
-                points.push_back(p1);
-                markers.push_back(p1);
+                Base::Vector3d pr;
+                lrot.multVec(p1, pr);
+                points.push_back(pr);
+                markers.push_back(pr);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next);
                 p2.*pz = r;
-                points.push_back(p2);
-                markers.push_back(p2);
+                lrot.multVec(p2, pr);
+                points.push_back(pr);
+                markers.push_back(pr);
                 colorindex.push_back(0);
-                points.push_back(next);
-                markers.push_back(next);
+                points.push_back(rnext);
+                markers.push_back(rnext);
                 colorindex.push_back(1);
                 double q;
                 if (cmd.has("Q")) {
                     q = cmd.getValue("Q");
                     if (q>0) {
                         Base::Vector3d temp(next);
-                        for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q)
-                            markers.push_back(temp);
+                        for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q) {
+                            lrot.multVec(temp, pr);
+                            markers.push_back(pr);
+                        }
                     }
                 }
                 Base::Vector3d p3(next);
                 p3.*pz = last.*pz;
-                points.push_back(p3);
-                markers.push_back(p2);
+                lrot.multVec(p3, pr);
+                points.push_back(pr);
+                lrot.multVec(p2, pr);
+                markers.push_back(pr);
                 colorindex.push_back(0);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
@@ -610,7 +660,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 pz = &Base::Vector3d::y;
             } else if(name=="G19") {
                 pz = &Base::Vector3d::x;
-            }}
+            }
+        }
 
         if (!edgeIndices.empty()) {
             pcLineCoords->point.setNum(points.size());
