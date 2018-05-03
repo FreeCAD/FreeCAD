@@ -66,6 +66,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cone"
           << "Part_Torus";
 
+    Gui::MenuItem* copy = new Gui::MenuItem;
+    copy->setCommand("Create a copy");
+    *copy << "Part_SimpleCopy"
+          << "Part_TransformedCopy"
+          << "Part_ElementCopy"
+          << "Part_RefineShape";
+
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
     *bop << "Part_Boolean"
@@ -103,8 +110,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_ShapeFromMesh"
           << "Part_MakeSolid"
           << "Part_ReverseShape"
-          << "Part_SimpleCopy"
-          << "Part_RefineShape"
+          << copy
           << "Part_CheckGeometry"
           << "Separator"
           << bop << join << split << compound
