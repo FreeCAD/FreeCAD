@@ -3698,7 +3698,7 @@ def downgrade(objects,delete=False,force=None):
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
-                if result: msg(translate("draft", "Found several faces: splitting them"+"\n")
+                if result: msg(translate("draft", "Found several faces: splitting them")+"\n")
 
             # several objects: remove all the faces from the first one
             else:
