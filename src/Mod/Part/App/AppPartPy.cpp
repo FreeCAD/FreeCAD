@@ -2125,12 +2125,13 @@ private:
         PyObject *needSubElement = Py_False;
         PyObject *transform = Py_True;
         PyObject *noElementMap = Py_False;
+        PyObject *refine = Py_False;
         short retType = 0;
         static char* kwd_list[] = {"obj", "subname", "mat", 
-            "needSubElement","transform","retType","noElementMap",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOhO", kwd_list,
+            "needSubElement","transform","retType","noElementMap","refine",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOhOO", kwd_list,
                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
-                &needSubElement,&transform,&retType,&noElementMap))
+                &needSubElement,&transform,&retType,&noElementMap,&refine))
             throw Py::Exception();
 
         App::DocumentObject *obj = 
@@ -2141,6 +2142,8 @@ private:
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
         auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement),
                 &mat,&subObj,retType==2,PyObject_IsTrue(transform),PyObject_IsTrue(noElementMap));
+        if(PyObject_IsTrue(refine))
+            shape = TopoShape(0,shape.Hasher).makERefine(shape);
         Py::Object sret(shape2pyshape(shape));
         if(retType==0)
             return sret;
