@@ -85,6 +85,8 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 	if (!PyArg_ParseTuple(args, ""))
 		return 0;
 	cStock *stock = getPathSimPtr()->m_stock;
+	if (stock == NULL)
+		return 0;
 
 	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
 	Mesh::MeshPy *meshOuterpy = new Mesh::MeshPy(meshOuter);

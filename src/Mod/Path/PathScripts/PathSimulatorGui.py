@@ -58,6 +58,7 @@ class PathSimulation:
             self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
 
     def Activate(self):
+        self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonStop, self.SimStop)
@@ -82,6 +83,7 @@ class PathSimulation:
         self.firstDrill = True
         self.voxSim = PathSimulator.PathSim()
         self.SimulateMill()
+        self.initdone = True
 
     def SetupSimulation(self):
         form = self.taskForm.form
@@ -93,8 +95,7 @@ class PathSimulation:
                 self.firstDrill = True
                 self.activeOps.append(self.operations[i])
                 self.numCommands += len(self.operations[i].Path.Commands)
-        if len(self.activeOps) == 0:
-            return 0
+        
         self.stock = self.job.Stock.Shape
         if (self.isVoxel):
             maxlen = self.stock.BoundBox.XLength
@@ -437,7 +438,6 @@ class PathSimulation:
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
-        self.SetupSimulation()
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
@@ -446,6 +446,8 @@ class PathSimulation:
             listItem.setCheckState(QtCore.Qt.CheckState.Checked)
             self.operations.append(op)
             form.listOperations.addItem(listItem)
+        if  self.initdone:
+          self.SetupSimulation()
 
     def onSpeedBarChange(self):
         form = self.taskForm.form
@@ -480,15 +482,21 @@ class PathSimulation:
         self.EndSimulation()
 
     def SimFF(self):
+        if len(self.activeOps) == 0:
+            return
         self.GuiBusy(True)
         self.timer.start(1)
         self.disableAnim = True
 
     def SimStep(self):
+        if len(self.activeOps) == 0:
+            return
         self.disableAnim = False
         self.PerformCut()
 
     def SimPlay(self):
+        if len(self.activeOps) == 0:
+            return
         self.disableAnim = False
         self.GuiBusy(True)
         self.timer.start(self.simperiod)
