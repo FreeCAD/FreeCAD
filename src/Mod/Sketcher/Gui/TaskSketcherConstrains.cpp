@@ -830,7 +830,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         bool showDatums = (Filter < 3);
         bool showNamed = (Filter == 3 && !(constraint->Name.empty()));
         bool showNonDriving = (Filter == 4 && !constraint->isDriving);
-        bool hideInternalAligment = this->ui->filterInternalAlignment->isChecked();
+        bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
 
         switch(constraint->Type) {
         case Sketcher::Horizontal:
@@ -854,7 +854,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             visible = (showDatums || showNamed || showNonDriving);
             break;
         case Sketcher::InternalAlignment:
-            visible = ((showNormal || showNamed) && !hideInternalAligment);
+            visible = ((showNormal || showNamed) && !hideInternalAlignment);
         default:
             break;
         }
