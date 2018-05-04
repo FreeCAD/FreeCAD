@@ -51,9 +51,10 @@ Toolpath::Toolpath()
 }
 
 Toolpath::Toolpath(const Toolpath& otherPath)
-:vpcCommands(otherPath.vpcCommands.size())
+    : vpcCommands(otherPath.vpcCommands.size())
+    , center(otherPath.center)
 {
-    operator=(otherPath);
+    *this = otherPath;
     recalculate();
 }
 
@@ -67,8 +68,10 @@ Toolpath &Toolpath::operator=(const Toolpath& otherPath)
     clear();
     vpcCommands.resize(otherPath.vpcCommands.size());
     int i = 0;
-    for (std::vector<Command*>::const_iterator it=otherPath.vpcCommands.begin();it!=otherPath.vpcCommands.end();++it,i++)
+    for (std::vector<Command*>::const_iterator it=otherPath.vpcCommands.begin();it!=otherPath.vpcCommands.end();++it,i++) {
         vpcCommands[i] = new Command(**it);
+    }
+    center = otherPath.center;
     recalculate();
     return *this;
 }
@@ -229,7 +232,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
         
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
-    /*
+#if 0
     // delete the old and create a new one
     if(pcPath) 
         delete (pcPath);
@@ -281,7 +284,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
     } catch (KDL::Error &e) {
         throw Base::Exception(e.Description());
     }
-    */
+#endif
 }
 
 // reimplemented from base class
@@ -291,19 +294,35 @@ unsigned int Toolpath::getMemSize (void) const
     return toGCode().size();
 }
 
+void Toolpath::setCenter(const Base::Vector3d &c)
+{
+    center = c;
+    recalculate();
+}
+
+static void saveCenter(Writer &writer, const Base::Vector3d &center)
+{
+    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y << "\" z=\"" << center.z << "\"/>" << std::endl;
+}
+
 void Toolpath::Save (Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() <<"\">" << std::endl;
+        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() << "\" version=\"" << SchemaVersion << "\">" << std::endl;
         writer.incInd();
-        for(unsigned int i = 0;i<getSize(); i++)
+        saveCenter(writer, center);
+        for(unsigned int i = 0; i < getSize(); i++) {
             vpcCommands[i]->Save(writer);
+        }
         writer.decInd();
-        writer.Stream() << writer.ind() << "</Path>" << std::endl;
     } else {
         writer.Stream() << writer.ind()
-            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\"/>" << std::endl;
+            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+        writer.incInd();
+        saveCenter(writer, center);
+        writer.decInd();
     }
+    writer.Stream() << writer.ind() << "</Path>" << std::endl;
 }
 
 void Toolpath::SaveDocFile (Base::Writer &writer) const
