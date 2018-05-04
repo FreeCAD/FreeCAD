@@ -111,11 +111,23 @@ void PropertyPath::Save (Base::Writer &writer) const
 void PropertyPath::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Path");
-    std::string file (reader.getAttribute("file") );
 
+    std::string file (reader.getAttribute("file") );
     if (!file.empty()) {
         // initate a file read
         reader.addFile(file.c_str(),this);
+    }
+
+    if (reader.hasAttribute("version")) {
+        int version = reader.getAttributeAsInteger("version");
+        if (version >= Toolpath::SchemaVersion) {
+            reader.readElement("Center");
+            double x = reader.getAttributeAsFloat("x");
+            double y = reader.getAttributeAsFloat("y");
+            double z = reader.getAttributeAsFloat("z");
+            Base::Vector3d center(x, y, z);
+            _Path.setCenter(center);
+        }
     }
 }
 
