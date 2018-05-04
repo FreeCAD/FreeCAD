@@ -50,21 +50,6 @@ QGIEdge::QGIEdge(int index) :
     setCosmetic(isCosmetic);
 }
 
-QRectF QGIEdge::boundingRect() const
-{
-    return shape().controlPointRect();
-}
-
-QPainterPath QGIEdge::shape() const
-{
-    QPainterPath outline;
-    QPainterPathStroker stroker;
-    stroker.setWidth(2.0);
-    outline = stroker.createStroke(path());
-    return outline;
-}
-
-
 void QGIEdge::setCosmetic(bool state)
 {
     isCosmetic = state;
@@ -72,7 +57,6 @@ void QGIEdge::setCosmetic(bool state)
         setWidth(0.0);
     }
 }
-
 
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
