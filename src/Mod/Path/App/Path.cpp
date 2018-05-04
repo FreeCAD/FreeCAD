@@ -140,6 +140,24 @@ double Toolpath::getLength()
     return l;
 }
 
+static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &commands, bool &inches)
+{
+    Command *cmd = new Command();
+    cmd->setFromGCode(gcodestr);
+    if ("G20" == cmd->Name) {
+        inches = true;
+        delete cmd;
+    } else if ("G21" == cmd->Name) {
+        inches = false;
+        delete cmd;
+    } else {
+        if (inches) {
+            cmd->scaleBy(254);
+        }
+        commands.push_back(cmd);
+    }
+}
+
 void Toolpath::setFromGCode(const std::string instr)
 {
     clear();
@@ -153,48 +171,41 @@ void Toolpath::setFromGCode(const std::string instr)
     std::string mode = "command";
     std::size_t found = str.find_first_of("(gGmM");
     int last = -1;
-    while (found!=std::string::npos)
+    bool inches = false;
+    while (found != std::string::npos)
     {
         if (str[found] == '(') {
             // start of comment
             if ( (last > -1) && (mode == "command") ) {
                 // before opening a comment, add the last found command
-                std::string gcodestr = str.substr(last,found-last);
-                Command *tmp = new Command();
-                tmp->setFromGCode(gcodestr);
-                vpcCommands.push_back(tmp);
+                std::string gcodestr = str.substr(last, found-last);
+                bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             mode = "comment";
             last = found;
-            found=str.find_first_of(")",found+1);
+            found = str.find_first_of(")", found+1);
         } else if (str[found] == ')') {
             // end of comment
-            std::string gcodestr = str.substr(last,found-last+1);
-            Command *tmp = new Command();
-            tmp->setFromGCode(gcodestr);
-            vpcCommands.push_back(tmp);
+            std::string gcodestr = str.substr(last, found-last+1);
+            bulkAddCommand(gcodestr, vpcCommands, inches);
             last = -1;
-            found=str.find_first_of("(gGmM",found+1);
+            found = str.find_first_of("(gGmM", found+1);
             mode = "command";
         } else if (mode == "command") {
             // command
             if (last > -1) {
-                std::string gcodestr = str.substr(last,found-last);
-                Command *tmp = new Command();
-                tmp->setFromGCode(gcodestr);
-                vpcCommands.push_back(tmp);
+                std::string gcodestr = str.substr(last, found-last);
+                bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             last = found;
-            found=str.find_first_of("(gGmM",found+1);
+            found = str.find_first_of("(gGmM", found+1);
         }
     }
     // add the last command found, if any
     if (last > -1) {
         if (mode == "command") {
             std::string gcodestr = str.substr(last,std::string::npos);
-            Command *tmp = new Command();
-            tmp->setFromGCode(gcodestr);
-            vpcCommands.push_back(tmp);
+            bulkAddCommand(gcodestr, vpcCommands, inches);
         }
     }
     recalculate();

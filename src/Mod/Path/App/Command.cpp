@@ -281,6 +281,24 @@ Command Command::transform(const Base::Placement other)
     return c;
 }
 
+void Command::scaleBy(double factor)
+{
+    for(std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
+        switch (i->first[0]) {
+            case 'X':
+            case 'Y':
+            case 'Z':
+            case 'I':
+            case 'J':
+            case 'R':
+            case 'Q':
+            case 'F':
+                Parameters[i->first] = i->second * factor;
+                break;
+        }
+    }
+}
+
 // Reimplemented from base class
 
 unsigned int Command::getMemSize (void) const
