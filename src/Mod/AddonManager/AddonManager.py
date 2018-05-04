@@ -96,6 +96,27 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
+def get_macro_dir():
+    """Return the directory where macros are located"""
+    default_macro_dir = os.path.join(FreeCAD.ConfigGet('UserAppData'), 'Macro')
+    return FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString('MacroPath', default_macro_dir)
+
+
+def update_macro_details(old_macro, new_macro):
+    """Update a macro with information from another one
+
+    Update a macro with information from another one, supposedly the same but
+    from a different source. The first source is supposed to be git, the second
+    one the wiki.
+    """
+    if old_macro.on_git and new_macro.on_git:
+        FreeCAD.Console.PrintWarning('The macro "{}" is present twice in github, please report'.format(old_macro.name))
+    old_macro.on_wiki = new_macro.on_wiki
+    for attr in ['desc', 'url', 'code']:
+        if not hasattr(old_macro, attr):
+            setattr(old_macro, attr, getattr(new_macro, attr))
+
+
 class AddonsInstaller(QtGui.QDialog):
 
     def __init__(self):
@@ -241,9 +262,8 @@ class AddonsInstaller(QtGui.QDialog):
 
     def show_macro(self,idx):
         if self.macros and idx >= 0:
-            self.showmacro_worker = ShowMacroWorker(self.macros, idx)
+            self.showmacro_worker = GetMacroDetailsWorker(self.macros[idx])
             self.showmacro_worker.info_label.connect(self.set_information_label)
-            self.showmacro_worker.update_macro.connect(self.update_macro)
             self.showmacro_worker.progressbar_show.connect(self.show_progress_bar)
             self.showmacro_worker.start()
 
@@ -252,8 +272,8 @@ class AddonsInstaller(QtGui.QDialog):
             if not self.macros:
                 self.listMacros.clear()
                 self.macros = []
-                self.macro_worker = MacroWorker()
-                self.macro_worker.add_macro.connect(self.add_macro)
+                self.macro_worker = FillMacroListWorker()
+                self.macro_worker.add_macro_signal.connect(self.add_macro)
                 self.macro_worker.info_label.connect(self.set_information_label)
                 self.macro_worker.progressbar_show.connect(self.show_progress_bar)
                 self.macro_worker.start()
@@ -265,17 +285,19 @@ class AddonsInstaller(QtGui.QDialog):
         self.repos = repos
 
     def add_macro(self, macro):
-        self.macros.append(macro)
-        if macro[1] == 1:
-            self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(macro[0]) + str(" (Installed)")))
+        if macro in self.macros:
+            # The macro is already in the list of macros.
+            old_macro = self.macros[self.macros.index(macro)]
+            update_macro_details(old_macro, macro)
         else:
-            self.listMacros.addItem("        "+str(macro[0]))
-
-    def update_macro(self, idx, macro):
-        self.macros[idx] = macro
+            self.macros.append(macro)
+            if macro.installed:
+                self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme('dialog-ok'), macro.name + str(' (Installed)')))
+            else:
+                self.listMacros.addItem('        ' + macro.name)
 
     def showlink(self,link):
-        "opens a link with the system browser"
+        """opens a link with the system browser"""
         #print("clicked: ",link)
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(link, QtCore.QUrl.TolerantMode))
 
@@ -299,22 +321,23 @@ class AddonsInstaller(QtGui.QDialog):
                 self.install_worker.progressbar_show.connect(self.show_progress_bar)
                 self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
-            macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
-            if not os.path.isdir(macropath):
-                os.makedirs(macropath)
+            macro_dir = get_macro_dir()
+            if not os.path.isdir(macro_dir):
+                os.makedirs(macro_dir)
             macro = self.macros[self.listMacros.currentRow()]
-            if len(macro) < 5:
+            if not macro.code:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
                 return
-            macroname = "Macro_"+macro[0]+".FCMacro"
-            macroname = macroname.replace(" ","_")
-            macrofilename = os.path.join(macropath, macroname)
-            mode = "w"
+            macroname = macro.filename
+            macrofilename = os.path.join(macro_dir, macroname)
             if sys.version_info.major < 3:
                 # in python2 the code is a bytes object
-                mode = "wb"
+                mode = 'wb'
+            else:
+                mode = 'w'
             with open(macrofilename, mode) as macrofile:
-                macrofile.write(macro[3])
+                macrofile.write(macro.code)
+                macro.installed = True
             self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
         self.update_status()
 
@@ -346,25 +369,31 @@ class AddonsInstaller(QtGui.QDialog):
 
     def remove(self):
         if self.tabWidget.currentIndex() == 0:
+            # Tab "Workbenches".
             idx = self.listWorkbenches.currentRow()
             basedir = FreeCAD.ConfigGet("UserAppData")
             moddir = basedir + os.sep + "Mod"
-            clonedir = basedir + os.sep + "Mod" + os.sep + self.repos[idx][0]
+            clonedir = moddir + os.sep + self.repos[idx][0]
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.labelDescription.setText(translate("AddonsInstaller", "Addon successfully removed. Please restart FreeCAD"))
             else:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to remove this addon"))
         elif self.tabWidget.currentIndex() == 1:
-            macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+            # Tab "Macros".
             macro = self.macros[self.listMacros.currentRow()]
-            if macro[1] != 1:
+            if not macro.installed:
+                # Macro not installed, nothing to do.
                 return
-            macroname = "Macro_"+macro[0]+".FCMacro"
-            macroname = macroname.replace(" ","_")
-            macrofilename = os.path.join(macropath,macroname)
-            if os.path.exists(macrofilename):
-                os.remove(macrofilename)
+            macro_path = os.path.join(get_macro_dir(), macro.filename)
+            macro_path_with_macro_prefix = os.path.join(get_macro_dir(), 'Macro_' + macro.filename)
+            if os.path.exists(macro_path):
+                os.remove(macro_path)
+                macro.installed = False
+                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
+            elif os.path.exists(macro_path_with_macro_prefix):
+                os.remove(macro_path_with_macro_prefix)
+                macro.installed = False
                 self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
         self.update_status()
 
@@ -372,7 +401,6 @@ class AddonsInstaller(QtGui.QDialog):
         self.listWorkbenches.clear()
         self.listMacros.clear()
         moddir = FreeCAD.ConfigGet("UserAppData") + os.sep + "Mod"
-        macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
         for wb in self.repos:
             if os.path.exists(os.path.join(moddir,wb[0])):
                 self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(wb[0]) + str(" (Installed)")))
@@ -381,12 +409,10 @@ class AddonsInstaller(QtGui.QDialog):
                 self.listWorkbenches.addItem("        "+str(wb[0]))
                 wb[2] = 0
         for macro in self.macros:
-            if os.path.exists(os.path.join(macropath,"Macro_"+macro[0].replace(" ","_")+".FCMacro")):
-                self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(macro[0]) + str(" (Installed)")))
-                macro[1] = 1
+            if macro.installed:
+                self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme('dialog-ok'), macro.name + str(' (Installed)')))
             else:
-                self.listMacros.addItem("        "+str(macro[0]))
-                macro[1] = 0
+                self.listMacros.addItem('        ' + macro.name)
 
     def mark(self,repo):
         for i in range(self.listWorkbenches.count()):
@@ -532,9 +558,28 @@ class CheckWBWorker(QtCore.QThread):
         self.stop = True
 
 
-class MacroWorker(QtCore.QThread):
+class Macro(object):
+    def __init__(self, name, installed):
+        self.name = name
+        self.installed = installed
+        self.on_wiki = False
+        self.on_git = False
+        self.desc = ''
+        self.code = ''
+        self.url = ''
 
-    add_macro = QtCore.Signal(object)
+    def __eq__(self, other):
+        return self.filename == other.filename
+
+    @property
+    def filename(self):
+        return (self.name + '.FCMacro').replace(' ', '_')
+
+
+class FillMacroListWorker(QtCore.QThread):
+    """Populates the list of macros
+    """
+    add_macro_signal = QtCore.Signal(Macro)
     info_label = QtCore.Signal(str)
     progressbar_show = QtCore.Signal(bool)
 
@@ -542,10 +587,26 @@ class MacroWorker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        "populates the list of addons"
+        """Populates the list of macros"""
+        self.retrieve_macros_from_git()
+        self.retrieve_macros_from_wiki()
+
+    def retrieve_macros_from_git(self):
+        """Retrieve macros from FreeCAD-macros.git
+
+        Emits a signal for each macro in
+        https://github.com/FreeCAD/FreeCAD-macros.git.
+        """
+        pass
+
+    def retrieve_macros_from_wiki(self):
+        """Retrieve macros from the wiki
+
+        Read the wiki and emit a signal for each found macro.
+        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes.
+        """
         self.info_label.emit("Downloading list of macros...")
         self.progressbar_show.emit(True)
-        macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
         if ctx:
             u = urllib2.urlopen("https://www.freecadweb.org/wiki/Macros_recipes",context=ctx)
         else:
@@ -555,18 +616,18 @@ class MacroWorker(QtCore.QThread):
             p = p.decode("utf-8")
         u.close()
         macros = re.findall("title=\"(Macro.*?)\"",p)
-        macros = [mac for mac in macros if (not("translated" in mac))]
+        macros = [mac for mac in macros if ('translated' not in mac)]
         macros.sort(key=str.lower)
         for mac in macros:
-            macname = mac[6:]
+            macname = mac[6:]  # Remove "Macro ".
             macname = macname.replace("&amp;","&")
-            if (not (macname in MACROS_BLACKLIST)) and (not("recipes" in macname.lower())):
-                macfile = mac.replace(" ","_")+".FCMacro"
-                if os.path.exists(os.path.join(macropath,macfile)):
-                    installed = 1
-                else:
-                    installed = 0
-                self.add_macro.emit([macname,installed])
+            if (macname not in MACROS_BLACKLIST) and ('recipes' not in macname.lower()):
+                macro = Macro(macname, False)
+                macro.on_wiki = True
+                if (os.path.exists(os.path.join(get_macro_dir(), macro.filename))
+                        or os.path.exists(os.path.join(get_macro_dir(), 'Macro_' + macro.filename))):
+                    macro.installed = True
+                self.add_macro_signal.emit(macro)
         self.info_label.emit(translate("AddonsInstaller", "List of macros successfully retrieved."))
         self.progressbar_show.emit(False)
         self.stop = True
@@ -646,25 +707,21 @@ class ShowWorker(QtCore.QThread):
         self.stop = True
 
 
-class ShowMacroWorker(QtCore.QThread):
+class GetMacroDetailsWorker(QtCore.QThread):
+    """Retrieve the macro details for a macro"""
 
     info_label = QtCore.Signal(str)
-    update_macro = QtCore.Signal(int,object)
     progressbar_show = QtCore.Signal(bool)
 
-    def __init__(self, macros, idx):
+    def __init__(self, macro):
         QtCore.QThread.__init__(self)
-        self.macros = macros
-        self.idx = idx
+        self.macro = macro
 
     def run(self):
         self.progressbar_show.emit(True)
         self.info_label.emit(translate("AddonsInstaller", "Retrieving description..."))
-        if len(self.macros[self.idx]) > 2:
-            desc = self.macros[self.idx][2]
-            url = self.macros[self.idx][4]
-        else:
-            mac = self.macros[self.idx][0].replace(" ","_")
+        if not self.macro.desc:
+            mac = self.macro.name.replace(' ', '_')
             mac = mac.replace("&","%26")
             mac = mac.replace("+","%2B")
             url = "https://www.freecadweb.org/wiki/Macro_"+mac
@@ -706,12 +763,23 @@ class ShowMacroWorker(QtCore.QThread):
                 code = code.replace("\xc2\xa0", " ")
             except:
                 FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ")+mac+"\n")
-            self.update_macro.emit(self.idx,self.macros[self.idx]+[desc,code,url])
-        if self.macros[self.idx][1] == 1 :
-            message = "<strong>" + translate("AddonsInstaller", "<strong>This addon is already installed.") + "</strong><br>" + desc + ' - <a href="' + url + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + url + '</span></a>'
+            self.macro.desc = desc
+            self.macro.url = url
+            self.macro.code = code
+        if self.macro.installed:
+            already_installed_msg = ('<strong>'
+                    + translate("AddonsInstaller", "This addon is already installed.")
+                    + '</strong><br>')
         else:
-            message = desc + ' - <a href="' + url + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + url + '</span></a>'
-        self.info_label.emit( message )
+            already_installed_msg = ''
+        message = (already_installed_msg
+                + self.macro.desc
+                + ' - <a href="'
+                + self.macro.url
+                + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">'
+                + self.macro.url
+                + '</span></a>')
+        self.info_label.emit(message)
         self.progressbar_show.emit(False)
         self.stop = True
 
@@ -801,12 +869,12 @@ class InstallWorker(QtCore.QThread):
                         self.download(self.repos[idx][1],clonedir)
                     answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
                     # symlink any macro contained in the module to the macros folder
-                    macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
-                    if not os.path.exists(macrodir):
-                        os.makedirs(macrodir)
+                    macro_dir = get_macro_dir()
+                    if not os.path.exists(macro_dir):
+                        os.makedirs(macro_dir)
                     for f in os.listdir(clonedir):
                         if f.lower().endswith(".fcmacro"):
-                            symlink(clonedir+os.sep+f,macrodir+os.sep+f)
+                            symlink(os.path.join(clonedir, f), os.path.joint(macro_dir, f))
                             FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                             answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
                             answer += f + "</b>"
