@@ -131,21 +131,9 @@ void ViewProviderPage::updateData(const App::Property* prop)
     if (prop == &(getDrawPage()->KeepUpdated)) {
        if (getDrawPage()->KeepUpdated.getValue()) {
            sPixmap = "TechDraw_Tree_Page";
-           if (!m_mdiView.isNull() &&
-               !getDrawPage()->isUnsetting()) {
-               m_mdiView->updateDrawing();
-           }
        } else {
            sPixmap = "TechDraw_Tree_Page_Unsync";
        }
-    }
-
-    //if a view is added/deleted, rebuild the visual
-    if (prop == &(getDrawPage()->Views)) {
-        if(!m_mdiView.isNull() &&
-           !getDrawPage()->isUnsetting()) {
-            m_mdiView->updateDrawing();
-        }
     //if the template is changed, rebuild the visual
     } else if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView && 
@@ -205,7 +193,7 @@ bool ViewProviderPage::doubleClicked(void)
 
 bool ViewProviderPage::showMDIViewPage()
 {
-    if (isRestoring()) {
+   if (isRestoring()) {
         return true;
     }
 
@@ -216,11 +204,12 @@ bool ViewProviderPage::showMDIViewPage()
         QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
         m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
-        m_mdiView->updateDrawing(true);
+        m_mdiView->updateDrawing();
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();
     } else {
-        m_mdiView->updateDrawing(true);
+        m_mdiView->updateDrawing();
+        m_mdiView->redrawAllViews();
         m_mdiView->updateTemplate(true);
     }
     return true;

@@ -103,6 +103,7 @@ void DrawView::checkScale(void)
         if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
+                Scale.purgeTouched();
             }
         }
     }
@@ -121,6 +122,7 @@ void DrawView::onChanged(const App::Property* prop)
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
+                       Scale.purgeTouched();
                     }
                 }
             } else if ( ScaleType.isValue("Custom") ) {
@@ -137,6 +139,7 @@ void DrawView::onChanged(const App::Property* prop)
                         double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                         if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
                             Scale.setValue(newScale);
+                            Scale.purgeTouched();
                         }
                     }
                 }
@@ -354,6 +357,7 @@ bool DrawView::keepUpdated(void)
 
 void DrawView::requestPaint(void)
 {
+    Base::Console().Message("TRACE - DV::requestPaint()\n");
     signalGuiPaint(this);
 }
 
