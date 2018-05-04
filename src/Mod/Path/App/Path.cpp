@@ -155,7 +155,7 @@ static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &c
         delete cmd;
     } else {
         if (inches) {
-            cmd->scaleBy(254);
+            cmd->scaleBy(25.4);
         }
         commands.push_back(cmd);
     }
