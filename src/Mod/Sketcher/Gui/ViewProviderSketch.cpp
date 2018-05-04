@@ -3172,7 +3172,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 }
 
 
-/// Note: labels, labelColors, and boundignBoxes are all
+/// Note: labels, labelColors, and boundingBoxes are all
 /// assumed to be the same length.
 QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                                             const QColor &iconColor,
