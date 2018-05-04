@@ -421,6 +421,13 @@ void ViewProviderPath::hideSelection() {
     pcArrowSwitch->whichChild = -1;
 }
 
+Base::Vector3d compensateRotation(const Base::Vector3d &pt, const Base::Rotation &rot, const Base::Vector3d &center)
+{
+    Base::Vector3d ptRotated;
+    rot.multVec(pt - center, ptRotated);
+    return ptRotated + center;
+}
+
 void ViewProviderPath::updateVisual(bool rebuild) {
 
     hideSelection();
@@ -448,6 +455,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         std::deque<Base::Vector3d> points;
         std::deque<Base::Vector3d> markers;
 
+        Base::Vector3d rotCenter = tp.getCenter();
         Base::Vector3d last(StartPosition.getValue());
         Base::Rotation lrot;
         double A, B, C;
@@ -485,8 +493,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             Base::Rotation nrot;
             nrot.setYawPitchRoll(c, b, a);
 
-            Base::Vector3d rnext;
-            nrot.multVec(next, rnext);
+            Base::Vector3d rnext = compensateRotation(next, nrot, rotCenter);
 
             if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
                 // straight line
@@ -508,8 +515,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                         Base::Rotation rot;
                         rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
 
-                        Base::Vector3d rinter;
-                        rot.multVec(inter, rinter);
+                        Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
 
                         points.push_back(rinter);
                         colorindex.push_back(color);
@@ -573,7 +579,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 double dc = (c - C) / segments;
 
                 for (int j = 1; j < segments; j++) {
-                    Base::Vector3d inter, rinter;
+                    Base::Vector3d inter;
                     Base::Rotation rot(norm, dangle*j);
                     rot.multVec((last0 - center0), inter);
                     inter.*pz = last.*pz + dZ * j; //Enable displaying helices
@@ -581,7 +587,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     Base::Rotation arot;
                     arot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
 
-                    arot.multVec(center0 + inter, rinter);
+                    Base::Vector3d rinter = compensateRotation(center0 + inter, arot, rotCenter);
                     points.push_back(rinter);
                     colorindex.push_back(1);
                 }
@@ -643,24 +649,22 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                         Base::Rotation rot;
                         rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
 
-                        Base::Vector3d rinter;
-                        rot.multVec(inter, rinter);
+                        Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
 
                         points.push_back(rinter);
                         colorindex.push_back(0);
                     }
                 }
 
-                Base::Vector3d pr;
-                nrot.multVec(p1, pr);
-                points.push_back(pr);
-                markers.push_back(pr);
+                Base::Vector3d p1r = compensateRotation(p1, nrot, rotCenter);
+                points.push_back(p1r);
+                markers.push_back(p1r);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next);
                 p2.*pz = r;
-                nrot.multVec(p2, pr);
-                points.push_back(pr);
-                markers.push_back(pr);
+                Base::Vector3d p2r = compensateRotation(p2, nrot, rotCenter);
+                points.push_back(p2r);
+                markers.push_back(p2r);
                 colorindex.push_back(0);
                 points.push_back(rnext);
                 markers.push_back(rnext);
@@ -671,17 +675,16 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     if (q>0) {
                         Base::Vector3d temp(next);
                         for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q) {
-                            nrot.multVec(temp, pr);
+                            Base::Vector3d pr = compensateRotation(temp, nrot, rotCenter);
                             markers.push_back(pr);
                         }
                     }
                 }
                 Base::Vector3d p3(next);
                 p3.*pz = last.*pz;
-                nrot.multVec(p3, pr);
-                points.push_back(pr);
-                nrot.multVec(p2, pr);
-                markers.push_back(pr);
+                Base::Vector3d p3r = compensateRotation(p3, nrot, rotCenter);
+                points.push_back(p3r);
+                markers.push_back(p2r);
                 colorindex.push_back(0);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
