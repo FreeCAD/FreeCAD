@@ -421,7 +421,7 @@ public:
     Py::Object connect(const Py::Tuple&);
 
 private:
-    std::vector<class SignalConnect*> mySingals;
+    std::vector<class SignalConnect*> mySignals;
     QDialog* myDlg;
 };
 
