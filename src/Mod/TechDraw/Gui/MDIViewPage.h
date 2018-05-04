@@ -66,7 +66,8 @@ public:
 
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);
-    void updateDrawing(bool force = false);
+//    void updateDrawing(bool force = false);
+    void updateDrawing(void);
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);

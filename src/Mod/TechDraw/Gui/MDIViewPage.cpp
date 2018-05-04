@@ -370,7 +370,10 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
     }
 }
 
-void MDIViewPage::updateDrawing(bool forceUpdate)
+//this is time consuming. should only be used when there is a problem.
+//should have been called MDIViewPage::fixWidowAndOrphans()
+//void MDIViewPage::updateDrawing(bool forceUpdate)
+void MDIViewPage::updateDrawing(void)
 {
     // get all the DrawViews for this page, including the second level ones
     // if we ever have collections of collections, we'll need to revisit this
@@ -384,10 +387,11 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
         }
         QGIView* qv = m_view->findQViewForDocObj(dv);
         if (qv == nullptr) {
+            Base::Console().Message("TRACE - MDIVP::updateDrawing - making a missing graphic\n");
             attachView(dv);
         }
     }
-    
+
     // if qView doesn't have a Feature on this Page, delete it
     std::vector<QGIView*> qvs = m_view->getViews();
     App::Document* doc = getAppDocument();
@@ -404,13 +408,15 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
     }
     
     // Update all the QGIVxxxx
-    const std::vector<QGIView *> &upviews = m_view->getViews();
-    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-        if((*it)->getViewObject()->isTouched() ||
-           forceUpdate) {
-            (*it)->updateView(forceUpdate);
-        }
-    }
+    // WF: why do we do this?  views should be keeping themselves up to date. 
+//    const std::vector<QGIView *> &upviews = m_view->getViews();
+//    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
+//        Base::Console().Message("TRACE - MDIVP::updateDrawing - updating a QGIVxxxx\n");
+//        if((*it)->getViewObject()->isTouched() ||
+//           forceUpdate) {
+//            (*it)->updateView(forceUpdate);
+//        }
+//    }
 }
 
 //NOTE: this doesn't add missing views.  see updateDrawing()

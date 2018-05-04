@@ -266,19 +266,20 @@ void QGIView::updateView(bool update)
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
     }
-    if (update ||
-        getViewObject()->X.isTouched() ||
+
+    if (getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
         double featX = Rez::guiX(getViewObject()->X.getValue());
         double featY = Rez::guiX(getViewObject()->Y.getValue());
         setPosition(featX,featY);
     }
 
-    if (update ||
-        getViewObject()->Rotation.isTouched() ) {
+    if (getViewObject()->Rotation.isTouched() ) {
         rotateView();
     }
 
+    draw();
+    
     if (update)
         QGraphicsItem::update();
 }
@@ -484,8 +485,11 @@ QGIView* QGIView::getQGIVByName(std::string name)
 /* static */
 Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 {
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
-    Gui::ViewProvider* result = guiDoc->getViewProvider(obj);
+    Gui::ViewProvider* result = nullptr;
+    if (obj != nullptr) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+        result = guiDoc->getViewProvider(obj);
+    }
     return result;
 }
 
