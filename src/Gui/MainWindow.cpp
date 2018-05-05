@@ -819,11 +819,13 @@ void MainWindow::removeWindow(Gui::MDIView* view)
     // cause other problems.
     d->mdiArea->removeSubWindow(parent);
     parent->deleteLater();
+    updateActions();
 }
 
 void MainWindow::tabChanged(MDIView* view)
 {
     Q_UNUSED(view);
+    updateActions();
 }
 
 void MainWindow::tabCloseRequested(int index)
@@ -838,6 +840,7 @@ void MainWindow::tabCloseRequested(int index)
     QMdiSubWindow *subWindow = d->mdiArea->subWindowList().at(index);
     Q_ASSERT(subWindow);
     subWindow->close();
+    updateActions();
 }
 
 void MainWindow::onSetActiveSubWindow(QWidget *window)
@@ -845,6 +848,7 @@ void MainWindow::onSetActiveSubWindow(QWidget *window)
     if (!window)
         return;
     d->mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow *>(window));
+    updateActions();
 }
 
 void MainWindow::setActiveWindow(MDIView* view)
@@ -854,6 +858,7 @@ void MainWindow::setActiveWindow(MDIView* view)
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);
+    updateActions();
 }
 
 void MainWindow::onWindowActivated(QMdiSubWindow* w)
@@ -877,6 +882,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     d->activeView = view;
     Application::Instance->viewActivated(view);
+    updateActions();
 }
 
 void MainWindow::onWindowsMenuAboutToShow()
