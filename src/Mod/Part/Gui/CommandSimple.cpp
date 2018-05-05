@@ -318,7 +318,7 @@ CmdPartRefineShape::CmdPartRefineShape()
 void CmdPartRefineShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    _copyShape("Refined copy",false,false,true);
+    _copyShape("Refined copy",true,false,true);
 }
 
 bool CmdPartRefineShape::isActive(void)
