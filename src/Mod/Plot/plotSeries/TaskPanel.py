@@ -127,7 +127,7 @@ class TaskPanel:
         return False
 
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i
@@ -217,7 +217,7 @@ class TaskPanel:
                 None))
 
     def fillStyles(self):
-        """Fill the style combo boxes with the availabel ones."""
+        """Fill the style combo boxes with the available ones."""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.style = self.widget(QtGui.QComboBox, "lineStyle")

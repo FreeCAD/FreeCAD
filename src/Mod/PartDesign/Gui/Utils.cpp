@@ -59,18 +59,26 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
-PartDesign::Body *getBody(bool messageIfNot)
+/*!
+ * \brief Return active body or show a warning message.
+ * If \a autoActivate is true (the default) then if there is
+ * only single body in the document it will be activated.
+ * \param messageIfNot
+ * \param autoActivate
+ * \return Body
+ */
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
-    bool singleBodyDocument = activeView->getAppDocument()->
-        countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
 
     if (activeView) {
-        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        bool singleBodyDocument = activeView->getAppDocument()->
+            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-            if (!activeBody && singleBodyDocument) {
+            if (!activeBody && singleBodyDocument && autoActivate) {
                 Gui::Command::doCommand( Gui::Command::Gui,
                     "Gui.activeView().setActiveObject('pdbody',App.ActiveDocument.findObjects('PartDesign::Body')[0])");
                 activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
@@ -114,13 +122,14 @@ PartDesign::Body * makeBody(App::Document *doc)
     return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
+                             bool autoActivate, bool assertModern)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
-    if(rv && rv->hasObject(obj))
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
+    if (rv && rv->hasObject(obj))
         return rv;
 
     rv = PartDesign::Body::findBodyOf(obj);
@@ -191,7 +200,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the sketch");
+        throw Base::Exception ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -250,7 +259,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
                 Datum.c_str(), refStr.toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 Datum.c_str(), AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.AttachmentOffset.Base.z = %f",
                 Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s)",
@@ -314,7 +323,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the feature");
+        throw Base::Exception ("Couldn't find body for the feature");
     }
 
     std::string bodyName = body->getNameInDocument ();

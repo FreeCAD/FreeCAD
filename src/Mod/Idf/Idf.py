@@ -44,7 +44,7 @@ step_path=FreeCAD.getHomePath()+ "Mod/Idf/Idflibs/"
 ignore_hole_size=0.5 # size in MM to prevent huge number of drilled holes
 EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recommended 2 or 0
 
-IDF_sort=0 # 0-sort per refdes [1 - part number (not preffered)/refdes] 2-sort per footprint/refdes
+IDF_sort=0 # 0-sort per refdes [1 - part number (not preferred)/refdes] 2-sort per footprint/refdes
 
 IDF_diag=0 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst) 
 IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
@@ -203,7 +203,7 @@ def mid_point(prev_vertex,vertex,angle):
 def split_records(line_record):
     """split_records(line_record)-> list of strings(records)
        
-       standard separator list separator is space, records containting encapsulated by " """
+       standard separator list separator is space, records containing encapsulated by " """
     split_result=[]
     quote_pos=line_record.find('"')
     while quote_pos!=-1:
@@ -227,7 +227,7 @@ def process_emp(doc,filename,placement,board_thickness):
    """process_emp(doc,filename,placement,board_thickness) -> place components from emn file to board"""
    filename=filename.partition(".emn")[0]+".emp"
    empfile=pythonopen(filename, "r")
-   emp_unit=1.0 #presume milimeter like emn unit
+   emp_unit=1.0 #presume millimeter like emn unit
    emp_version=2 #presume emn_version 2
    comp_height=0 #presume 0 part height
    comp_outline=[] #no part outline

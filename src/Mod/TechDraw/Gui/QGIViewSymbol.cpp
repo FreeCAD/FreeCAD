@@ -42,9 +42,13 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewDraft.h>
+#include <Mod/TechDraw/App/DrawViewArch.h>
 
 #include "QGCustomSvg.h"
+#include "QGDisplayArea.h"
 #include "QGIViewSymbol.h"
+#include "DrawGuiUtil.h"
 #include "Rez.h"
 
 using namespace TechDrawGui;
@@ -58,8 +62,12 @@ QGIViewSymbol::QGIViewSymbol()
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
+    m_displayArea = new QGDisplayArea();
+    addToGroup(m_displayArea);
+    m_displayArea->centerAt(0.,0.);
+
     m_svgItem = new QGCustomSvg();
-    addToGroup(m_svgItem);
+    m_displayArea->addToGroup(m_svgItem);
     m_svgItem->centerAt(0.,0.);
 }
 
@@ -107,9 +115,7 @@ void QGIViewSymbol::draw()
     }
 
     drawSvg();
-    if (borderVisible) {
-        drawBorder();
-    }
+    QGIView::draw();
 }
 
 void QGIViewSymbol::drawSvg()
@@ -119,15 +125,23 @@ void QGIViewSymbol::drawSvg()
         return;
     }
 
-//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
-//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
-
     double rezfactor = Rez::getRezFactor();
-    double scaling = viewSymbol->Scale.getValue() * rezfactor;
+    double scaling = viewSymbol->getScale();
+    double pxMm = 3.78;                 //96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
+//    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
+                                        //some software uses different px/in, so symbol will need Scale adjusted.
+    //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
+    if (viewSymbol->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId()) ||
+        viewSymbol->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId()) ) {
+        scaling = scaling * rezfactor;
+    } else { 
+        scaling = scaling * rezfactor / pxMm;
+    }
     m_svgItem->setScale(scaling);
 
     QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
     symbolToSvg(qba);
+    rotateView();
 }
 
 void QGIViewSymbol::symbolToSvg(QByteArray qba)
@@ -142,3 +156,12 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
     }
     m_svgItem->centerAt(0.,0.);
 }
+
+void QGIViewSymbol::rotateView(void)
+{
+    QRectF r = m_displayArea->boundingRect();
+    m_displayArea->setTransformOriginPoint(r.center());
+    double rot = getViewObject()->Rotation.getValue();
+    m_displayArea->setRotation(-rot);
+}
+

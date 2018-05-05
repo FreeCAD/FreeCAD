@@ -66,6 +66,13 @@ MultiCommon::MultiCommon(void)
     ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
         (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
     History.setSize(0);
+
+    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+
+    //init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 short MultiCommon::mustExecute() const
@@ -108,7 +115,13 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         try {
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
+            if (resShape.IsNull())
+                throw Base::RuntimeError("Input shape is null");
+
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::RuntimeError("Input shape is null");
+
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
@@ -139,7 +152,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                      return new App::DocumentObjectExecReturn("Resulting shape is invalid");
                  }
             }
-            if (hGrp->GetBool("RefineModel", false)) {
+            if (this->Refine.getValue()) {
                 try {
                     TopoDS_Shape oldShape = resShape;
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);

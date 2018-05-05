@@ -69,8 +69,6 @@ ViewProviderOriginFeature::ViewProviderOriginFeature () {
     pLabel = new SoAsciiText();
     pLabel->ref();
     pLabel->width.setValue(-1);
-
-    sPixmap = "view-measurement";
 }
 
 
@@ -118,7 +116,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     highlight->documentName  = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
-    // Style for normal (visiable) lines
+    // Style for normal (visible) lines
     SoDrawStyle* style = new SoDrawStyle ();
     style->lineWidth = 2.0f;
     highlight->addChild ( style );
@@ -180,7 +178,7 @@ void ViewProviderOriginFeature::setDisplayMode (const char* ModeName)
 
 bool ViewProviderOriginFeature::onDelete(const std::vector<std::string> &) {
     App::OriginFeature *feat = static_cast <App::OriginFeature *> ( getObject() );
-    // Forbid deletion if there is an origin thes feature belongs to
+    // Forbid deletion if there is an origin this feature belongs to
 
     if ( feat->getOrigin () ) {
         return false;

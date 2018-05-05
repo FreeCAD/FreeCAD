@@ -24,10 +24,10 @@
 import FreeCAD as App
 from FreeCAD import Base, Vector
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 import Part
 from PySide import QtGui, QtCore
-import Preview
+from . import Preview
 import Instance
 from shipUtils import Paths
 import shipUtils.Locale as Locale
@@ -131,13 +131,14 @@ class TaskPanel:
         if self.initValues():
             return True
         self.retranslateUi()
-        self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
-                                       self.ship.Breadth.getValueAs('m').Value,
-                                       self.ship.Draft.getValueAs('m').Value,
-                                       self.LSections,
-                                       self.BSections,
-                                       self.TSections,
-                                       self.ship.Shape)
+        #don't do that here.
+        #self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
+       #                                self.ship.Breadth.getValueAs('m').Value,
+        #                               self.ship.Draft.getValueAs('m').Value,
+        #                               self.LSections,
+        #                               self.BSections,
+        #                               self.TSections,
+        #                               self.ship.Shape)
         # Connect Signals and Slots
         QtCore.QObject.connect(
             form.sectionType,
@@ -155,9 +156,17 @@ class TaskPanel:
             form.createButton,
             QtCore.SIGNAL("pressed()"),
             self.onCreateButton)
-
+            
+    def createPreview(self):
+        self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
+                                      self.ship.Breadth.getValueAs('m').Value,
+                                       self.ship.Draft.getValueAs('m').Value,
+                                       self.LSections,
+                                       self.BSections,
+                                       self.TSections,
+                                       self.ship.Shape)
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i
@@ -434,6 +443,7 @@ class TaskPanel:
         elif ID == 2:
             self.TSections = SectionList[:]
         self.setSectionType(ID)
+        self.createPreview()
 
     def loadSections(self):
         """ Loads from the ship object all the previously selected sections.

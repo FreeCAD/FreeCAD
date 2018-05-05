@@ -25,9 +25,12 @@
 import FreeCAD
 import Part
 import PathScripts.PathLog as PathLog
+import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
+import sys
 
+from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 __doc__ = "Class and implementation of the Pocket operation."
@@ -45,6 +48,9 @@ def translate(context, text, disambig=None):
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
+
+    def pocketOpFeatures(self, obj):
+        return PathOp.FeatureNoFinalDepth
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
@@ -71,12 +77,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                     env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=shape, depthparams=self.depthparams)
                     obj.removalshape = env.cut(self.baseobject.Shape)
+                    obj.removalshape.tessellate(0.1)
                     removalshapes.append((obj.removalshape, False))
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
 
             env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=None, depthparams=self.depthparams)
             obj.removalshape = env.cut(self.baseobject.Shape)
+            obj.removalshape.tessellate(0.1)
             removalshapes = [(obj.removalshape, False)]
         return removalshapes
 
@@ -84,7 +92,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         '''areaOpSetDefaultValues(obj) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-
 
 def Create(name):
     '''Create(name) ... Creates and returns a Pocket operation.'''

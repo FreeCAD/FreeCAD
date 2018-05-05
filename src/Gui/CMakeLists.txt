@@ -42,7 +42,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
 )
@@ -397,6 +396,7 @@ SET(Command_CPP_SRCS
     CommandWindow.cpp
     CommandTest.cpp
     CommandView.cpp
+    CommandStructure.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -784,6 +784,7 @@ set(qsint_MOC_HDRS
     QSint/actionpanel/actionpanel.h
     QSint/actionpanel/taskheader_p.h
 )
+
 if(BUILD_QT5)
     qt5_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
 else()
@@ -810,6 +811,7 @@ SET(View3D_CPP_SRCS
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
+    RevitNavigationStyle.cpp
     BlenderNavigationStyle.cpp
     MayaGestureNavigationStyle.cpp
     OpenCascadeNavigationStyle.cpp
@@ -881,6 +883,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
+    ViewProviderDragger.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
@@ -911,6 +914,7 @@ SET(Viewprovider_SRCS
     ViewProviderAnnotation.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h
+    ViewProviderDragger.h
     ViewProviderExtern.h
     ViewProviderFeature.h
     ViewProviderGeometryObject.h
@@ -1193,6 +1197,10 @@ if(MSVC)
 endif(MSVC)
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
+
+if (FREECAD_USE_QT_FILEDIALOG)
+    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
+endif()
 
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
 

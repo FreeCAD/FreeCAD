@@ -47,12 +47,12 @@ using MeshCore::MeshKernel;
 namespace MeshPart
 {
 
-/** The mesh algorithems container class
+/** The mesh algorithms container class
  */
 class MeshPartExport MeshAlgos
 {
 public:
-  /** Calculate per Vertex normales and adds the Normal property bag
+  /** Calculate per Vertex normals and adds the Normal property bag
   */
   static void offset(MeshCore::MeshKernel* Mesh, float fSize);
   static void offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize);

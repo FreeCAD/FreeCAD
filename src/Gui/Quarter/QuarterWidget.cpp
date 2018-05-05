@@ -110,7 +110,7 @@ using namespace SIM::Coin3D::Quarter;
   the scene. Some of the settings will provide faster rendering, while
   others gives you better quality rendering.
 
-  See \ref SoGLRenderAction::TransparencyType for a full descrition of the modes
+  See \ref SoGLRenderAction::TransparencyType for a full description of the modes
 */
 
 /*!
@@ -118,7 +118,7 @@ using namespace SIM::Coin3D::Quarter;
 
   Sets how rendering of primitives is done.
 
-  See \ref SoRenderManager::RenderMode for a full descrition of the modes
+  See \ref SoRenderManager::RenderMode for a full description of the modes
 */
 
 /*!
@@ -126,7 +126,7 @@ using namespace SIM::Coin3D::Quarter;
 
   Sets how stereo rendering is performed.
 
-  See \ref SoRenderManager::StereoMode for a full descrition of the modes
+  See \ref SoRenderManager::StereoMode for a full description of the modes
 */
 
   enum StereoMode {
@@ -143,7 +143,7 @@ using namespace SIM::Coin3D::Quarter;
 #define GL_MULTISAMPLE_BIT_EXT 0x20000000
 #endif
 
-//We need to avoid buffer swaping when initializing a QPainter on this widget
+//We need to avoid buffer swapping when initializing a QPainter on this widget
 #if defined(HAVE_QT5_OPENGL)
 class CustomGLWidget : public QOpenGLWidget {
 public:
@@ -297,7 +297,7 @@ QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewi
 
   this->installEventFilter(PRIVATE(this)->eventfilter);
   this->installEventFilter(PRIVATE(this)->interactionmode);
-  
+
   initialized = false;
 }
 
@@ -450,7 +450,7 @@ QuarterWidget::clearWindow(void) const
 /*!
   Enable/disable interaction mode.
 
-  Specifies wether you may use the alt-key to enter interaction mode.
+  Specifies whether you may use the alt-key to enter interaction mode.
 */
 void
 QuarterWidget::setInteractionModeEnabled(bool onoff)
@@ -835,7 +835,14 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {
-    std::clock_t begin = std::clock();
+    if (updateDevicePixelRatio()) {
+        qreal dev_pix_ratio = devicePixelRatio();
+        int width = static_cast<int>(dev_pix_ratio * this->width());
+        int height = static_cast<int>(dev_pix_ratio * this->height());
+        SbViewportRegion vp(width, height);
+        PRIVATE(this)->sorendermanager->setViewportRegion(vp);
+        PRIVATE(this)->soeventmanager->setViewportRegion(vp);
+    }
 
     if(!initialized) {
 #if !defined(HAVE_QT5_OPENGL)
@@ -908,9 +915,6 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
-
-    std::clock_t end = std::clock();
-    renderTime = double(double(end-begin)/CLOCKS_PER_SEC)*1000.0;
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)
@@ -1168,8 +1172,8 @@ QuarterWidget::renderModeActions(void) const
 /*!
   \property QuarterWidget::navigationModeFile
 
-  An url to a navigation mode file which is a scxml file which defines
-  the possible states for the Coin navigation system
+  A url pointing to a navigation mode file which is a scxml file
+  that defines the possible states for the Coin navigation system
 
   Supports:
   \li \b coin for internal coinresources

@@ -31,6 +31,7 @@
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
+#include <SMESH_Version.h>
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -104,7 +105,11 @@ public:
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
     std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
-    //@}
+    /// retrieving IDs of edges not belonging to any face (and thus not belonging to any volume too)
+    std::set<int> getEdgesOnly(void) const;
+    /// retrieving IDs of faces not belonging to any volume
+    std::set<int> getFacesOnly(void) const;
+     //@}
 
     /** @name Placement control */
     //@{
@@ -144,7 +149,7 @@ public:
     /// import from files
     void read(const char *FileName);
     void write(const char *FileName) const;
-    void writeABAQUS(const std::string &Filename) const;
+    void writeABAQUS(const std::string &Filename, int elemParam, bool groupParam) const;
 
 private:
     void copyMeshData(const FemMesh&);
@@ -156,6 +161,9 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
+#if SMESH_VERSION_MAJOR >= 7
+    static SMESH_Gen *_mesh_gen;
+#endif
 };
 
 } //namespace Part

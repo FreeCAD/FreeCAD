@@ -493,6 +493,10 @@ void Hole::updateHoleCutParams()
 
     if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
         std::string holeCutType = HoleCutType.getValueAsString();
+        if (ThreadType.getValue() < 0)
+            throw Base::IndexError("Thread type out of range");
+        if (ThreadSize.getValue() < 0)
+            throw Base::IndexError("Thread size out of range");
         double diameter = PartDesign::Hole::threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
         double f = 1.0;
         double depth = 0;
@@ -528,6 +532,10 @@ void Hole::updateDiameterParam()
 
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
+    if (threadType < 0)
+        throw Base::IndexError("Thread type out of range");
+    if (threadSize < 0)
+        throw Base::IndexError("Thread size out of range");
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
 

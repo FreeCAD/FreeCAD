@@ -81,7 +81,7 @@ def main():
             defaultPath = a
 
 
-    # runing through the files
+    # running through the files
     if (len(args) ==0):
         #sys.stderr.write(Usage)
         generate("../Mod/PartDesign/PartDesign_Model.xml")

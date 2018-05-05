@@ -104,7 +104,7 @@ private:
 
 /**
  * This class searches for inconsistent orientation of neighboured facets.
- * Note: The 'TMP0' flag for facets must be resetted before using this class.
+ * Note: The 'TMP0' flag for facets must be reset before using this class.
  * @author Werner Mayer
  */
 class MeshExport MeshOrientationCollector : public MeshOrientationVisitor

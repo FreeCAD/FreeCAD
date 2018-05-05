@@ -306,7 +306,7 @@ Py::Object ViewProviderPy::getAnnotation(void) const
         return Py::Object(Ptr, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -324,7 +324,7 @@ Py::Object ViewProviderPy::getRootNode(void) const
         return Py::Object(Ptr, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 

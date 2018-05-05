@@ -54,6 +54,7 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
+    App::PropertyLinkList  Source;
     App::PropertyEnumeration ProjectionType;
 
     App::PropertyBool AutoDistribute;
@@ -89,12 +90,10 @@ public:
     int removeProjection(const char *viewProjType);
 
     int purgeProjections();
-    /// Automatically position child views
-    bool distributeProjections(void);
-    void resetPositions(void);
+    Base::Vector3d getXYPosition(const char *viewTypeCStr);
 
     short mustExecute() const override;
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void) override;
@@ -129,6 +128,7 @@ public:
     void spinCCW(void);
     
     void dumpISO(char * title);
+    std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -164,9 +164,10 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
-    void updateChildren(double scale);
+    void updateChildren(void);
     void setPropsFromCube(void);
     void setCubeFromProps(void);
+    int getViewIndex(const char *viewTypeCStr) const;
     
     TechDraw::Cube* m_cube;
 };

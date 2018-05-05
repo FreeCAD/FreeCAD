@@ -53,7 +53,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2017\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
                        "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -97,7 +97,7 @@ int main( int argc, char ** argv )
     catch (const Base::Exception& e) {
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
-        msg << "While initializing " << appName << " the  following exception occurred: '" << e.what() << "'\n\n";
+        msg << "While initializing " << appName << " the following exception occurred: '" << e.what() << "'\n\n";
         msg << "Python is searching for its runtime files in the following directories:\n" << Py_GetPath() << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");

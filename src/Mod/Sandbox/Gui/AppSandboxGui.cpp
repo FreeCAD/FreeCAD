@@ -45,7 +45,9 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
+#ifdef HAVE_PART
 #include <Mod/Part/App/PropertyGeometryList.h>
+#endif
 
 #include "Workbench.h"
 
@@ -64,6 +66,7 @@ public:
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
+#ifdef HAVE_PART
         if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {
             const Part::PropertyGeometryList& geom = static_cast<const Part::PropertyGeometryList&>(Prop);
             const std::vector<Part::Geometry*>& items = geom.getValues();
@@ -180,6 +183,10 @@ private:
                 Base::Console().Error("%s\n", e.what());
             }
         }
+#else
+        (void)Obj;
+        (void)Prop;
+#endif
     }
 
     App::DocumentObject* object;
@@ -263,7 +270,7 @@ PyMOD_INIT_FUNC(SandboxGui)
         PyMOD_Return(0);
     }
 
-    // instanciating the commands
+    // instantiating the commands
     CreateSandboxCommands();
     SandboxGui::Workbench::init();
     SandboxGui::SoWidgetShape::initClass();

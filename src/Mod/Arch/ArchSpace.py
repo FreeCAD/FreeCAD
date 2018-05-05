@@ -188,7 +188,8 @@ def makeSpace(objects=None,baseobj=None,name="Space"):
             objects = [objects]
         if len(objects) == 1:
             obj.Base = objects[0]
-            objects[0].ViewObject.hide()
+            if FreeCAD.GuiUp:
+                objects[0].ViewObject.hide()
         else:
             obj.Proxy.addSubobjects(obj,objects)
     return obj
@@ -237,7 +238,7 @@ class _CommandSpace:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object\n"))
+            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object")+"\n")
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
@@ -258,8 +259,8 @@ class _Space(ArchComponent.Component):
         obj.addProperty("App::PropertyLink",       "Zone",          "Arch",QT_TRANSLATE_NOOP("App::Property","A zone this space is part of"))
         obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Arch",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
         obj.addProperty("App::PropertyFloat",      "LightingPower", "Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"))
-        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipments of this space in Watts"))
-        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipments included in this space"))
+        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipment of this space in Watts"))
+        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipment included in this space"))
         obj.addProperty("App::PropertyEnumeration","Conditioning",  "Arch",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
         self.Type = "Space"
         obj.SpaceType = SpaceTypes
@@ -336,7 +337,7 @@ class _Space(ArchComponent.Component):
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print("created shape from boundbox")
 
-        # 3: identifing boundary faces
+        # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
                 if b[0].isDerivedFrom("Part::Feature"):

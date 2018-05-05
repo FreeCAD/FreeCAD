@@ -200,7 +200,7 @@ class ObjectArray:
                 for i in range(obj.Copies):
 
                     ang = 360
-                    if obj.CopiesPolar > 0:
+                    if obj.Copies > 0:
                         ang = obj.Angle / obj.Copies * (1 + i)
 
                     np = self.rotatePath(basepath, ang, obj.Centre)
@@ -255,11 +255,11 @@ class CommandPathArray:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object")+"\n")
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object")+"\n")
             return
 
         # if everything is ok, execute and register the transaction in the

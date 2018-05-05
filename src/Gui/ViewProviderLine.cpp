@@ -43,7 +43,9 @@ PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderOriginFeature)
 
 
 ViewProviderLine::ViewProviderLine()
-{ }
+{ 
+    sPixmap = "Std_Axis";
+}
 
 ViewProviderLine::~ViewProviderLine()
 { }

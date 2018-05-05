@@ -23,6 +23,8 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <boost/signals.hpp>
+
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -39,7 +41,7 @@ class DrawPage;
  */
 class TechDrawExport DrawView : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawView);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);
 
 public:
     /// Constructor
@@ -48,43 +50,48 @@ public:
 
     App::PropertyFloat X;
     App::PropertyFloat Y;
+    App::PropertyBool  LockPosition;
     App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
-    App::PropertyBool  KeepLabel;
     App::PropertyString Caption;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onDocumentRestored();
-    virtual short mustExecute() const;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onDocumentRestored() override;
+    virtual short mustExecute() const override;
     //@}
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
     bool isInClip();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     DrawPage* findParentPage() const;
-    bool allowAutoPos() {return autoPos;};                //sb in DPGI??
-    void setAutoPos(bool state) {autoPos = state;};
-    bool isMouseMove() {return mouseMove;};
-    void setMouseMove(bool state) {mouseMove = state;};
-    virtual QRectF getRect() const;                       //must be overridden by derived class
+    bool allowAutoPos() {return autoPos;}                //sb in DPGI??
+    void setAutoPos(bool state) {autoPos = state;}       //autopos is obsolete
+    bool isMouseMove() {return mouseMove;}
+    void setMouseMove(bool state) {mouseMove = state;}
+    virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y);
+    bool keepUpdated(void);
+    boost::signal<void (const DrawView*)> signalGuiPaint;
+    virtual double getScale(void) const;
+    void checkScale(void);
+    void requestPaint(void);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;

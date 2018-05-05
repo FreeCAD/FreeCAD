@@ -210,7 +210,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		double	y;																// y value
 
 		// constructors etc...
-		inline	Point(){ ok=false;};																// Point p1
+		inline	Point(){x=0; y=0; ok=false;}																// Point p1
 		inline	Point( double xord, double yord, bool okay = true) {					// Point p1(10,30);
 			x = xord; y = yord; ok = okay;}
 		inline	Point( const Point& p ) {												// copy constructor  Point p1(p2);
@@ -639,7 +639,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	Point	On(const CLine& s,  const Point& p);											// returns a point on s nearest to p
 	Point	On(const Circle& c, const Point& p);											// returns a point on c nearest to p
 
-	// cline definitons
+	// cline definitions
 
 	CLine	AtAngle(double angle, const Point& p, const CLine& s = HORIZ_CLINE);		// cline at angle to line thro' point
 	CLine	Tanto(int AT, const Circle& c,  double angle, const CLine& s0 = HORIZ_CLINE);//// cline tanto circle at angle to optional cline

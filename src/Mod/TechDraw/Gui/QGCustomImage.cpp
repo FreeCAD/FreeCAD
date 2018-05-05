@@ -31,6 +31,7 @@
 
 #include <QRectF>
 #include <QPixmap>
+
 #include "QGCustomImage.h"
 
 using namespace TechDrawGui;
@@ -55,20 +56,12 @@ void QGCustomImage::centerAt(QPointF centerPos)
 
 void QGCustomImage::centerAt(double cX, double cY)
 {
-//    QGraphicsItemGroup* g = group();
-//    if (g == nullptr) {
-//        return;
-//    }
-    QPointF parentPt(cX,cY);
-    QPointF myPt = mapFromParent(parentPt);
-
     QRectF br = boundingRect();
-    double width = br.width();
-    double height = br.height();
-    double newX = width/2.0;
-    double newY = height/2.0;
-    QPointF off(myPt.x() - newX,myPt.y() - newY);
-    setOffset(off);
+    double width = br.width() * scale();
+    double height = br.height() * scale();
+    double newX = cX - width/2.;
+    double newY = cY - height/2.;
+    setPos(newX, newY);
 }
 
 bool QGCustomImage::load(QString fileSpec)
@@ -76,9 +69,6 @@ bool QGCustomImage::load(QString fileSpec)
     bool success = true;
     QPixmap px(fileSpec);
     m_px = px;
-//    if (m_px.isNull()) {
-//        Base::Console().Message("TRACE - QGCustomImage::load - pixmap no good\n");
-//    }
     prepareGeometryChange();
     setPixmap(m_px);
     return(success);
@@ -88,5 +78,8 @@ void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    //painter->drawRect(boundingRect());          //good for debugging
+
     QGraphicsPixmapItem::paint (painter, &myOption, widget);
 }
+

@@ -26,8 +26,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
-import Preview
-import PlotAux
+from . import Preview
+from . import PlotAux
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -119,7 +119,7 @@ class TaskPanel:
                                self.onData)
 
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i

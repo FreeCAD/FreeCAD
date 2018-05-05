@@ -205,7 +205,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>An URL describing this material</string>
+        <string>A URL describing this material</string>
        </property>
       </widget>
      </item>

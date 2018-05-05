@@ -61,8 +61,8 @@ public:
       * exception is Angle = 360 degrees in which case the transformation angle will be
       * (Angle / Occurrences) so that the last transformed shape is not identical with the original shape
       * If Axis contains a feature and an edge name, then the transformation axis will be
-      *   the the given edge, which must be linear
-      * If Reversed is true, the direction of rotation will be opposite
+      * the given edge, which must be linear.
+      * If Reversed is true, the direction of rotation will be opposite.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>);
 };

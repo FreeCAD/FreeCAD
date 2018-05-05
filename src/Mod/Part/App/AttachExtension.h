@@ -82,7 +82,7 @@ public:
     App::PropertyLinkSubList    Support;
     App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
     App::PropertyBool           MapReversed; //inverts Z and X internal axes
-    App::PropertyPlacement      superPlacement;
+    App::PropertyPlacement      AttachmentOffset;
 
     /**
       * @brief MapPathParameter is a parameter value for mmNormalToPath (the
@@ -103,8 +103,11 @@ public:
     virtual short int extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
     virtual PyObject* getExtensionPyObject(void);
+    virtual void onExtendedDocumentRestored();
+
 protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
+    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
     
     App::PropertyPlacement& getPlacement();
 

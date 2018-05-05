@@ -123,6 +123,8 @@ SET(TechDrawGuiView_SRCS
     QGCustomBorder.h
     QGCustomImage.cpp
     QGCustomImage.h
+    QGDisplayArea.cpp
+    QGDisplayArea.h
     QGIView.cpp
     QGIView.h
     QGIArrow.cpp
@@ -245,6 +247,15 @@ SET(TechDrawGuiIcon_SVG
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})
 
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
+
+##install OSIFONT
+SET(TechDrawGuiFonts
+    Resources/fonts/osifont-lgpl3fe.ttf
+    Resources/fonts/osifont.license
+)
+fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
+INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
+
 
 SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)

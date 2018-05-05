@@ -1,465 +1,481 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="ca" sourcelanguage="en">
-<context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Create spreadsheet</source>
-        <translation>Crear el full de càlcul</translation>
+      <source>Create spreadsheet</source>
+      <translation>Crear el full de càlcul</translation>
     </message>
     <message>
-        <source>Create a new spreadsheet</source>
-        <translation>Crear un nou full de càlcul</translation>
+      <source>Create a new spreadsheet</source>
+      <translation>Crear un nou full de càlcul</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Align bottom</source>
-        <translation>Alineació inferior</translation>
+      <source>Align bottom</source>
+      <translation>Alineació inferior</translation>
     </message>
     <message>
-        <source>Bottom-align contents of selected cells</source>
-        <translation>Alineat inferior el contingut de les cel·les seleccionades</translation>
+      <source>Bottom-align contents of selected cells</source>
+      <translation>Alineat inferior el contingut de les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Align center</source>
-        <translation>Alineació al centre</translation>
+      <source>Align center</source>
+      <translation>Alineació al centre</translation>
     </message>
     <message>
-        <source>Center-align contents of selected cells</source>
-        <translation>Alineat centrat del contingut de les cel. les seleccionades</translation>
+      <source>Center-align contents of selected cells</source>
+      <translation>Alineat centrat del contingut de les cel. les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Align left</source>
-        <translation>Alineat esquerra</translation>
+      <source>Align left</source>
+      <translation>Alineat esquerra</translation>
     </message>
     <message>
-        <source>Left-align contents of selected cells</source>
-        <translation>Esquerra Alinea el contingut de les cel·les seleccionades</translation>
+      <source>Left-align contents of selected cells</source>
+      <translation>Esquerra Alinea el contingut de les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Align right</source>
-        <translation>Alinea a la dreta</translation>
+      <source>Align right</source>
+      <translation>Alinea a la dreta</translation>
     </message>
     <message>
-        <source>Right-align contents of selected cells</source>
-        <translation>Dreta Alinea el contingut de les cel·les seleccionades</translation>
+      <source>Right-align contents of selected cells</source>
+      <translation>Dreta Alinea el contingut de les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Align top</source>
-        <translation>Alineació superior</translation>
+      <source>Align top</source>
+      <translation>Alineació superior</translation>
     </message>
     <message>
-        <source>Top-align contents of selected cells</source>
-        <translation type="unfinished">Top-align contents of selected cells</translation>
+      <source>Top-align contents of selected cells</source>
+      <translation>Alineació a la part superior del contingut de les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Vertically center-align</source>
-        <translation>Centrar verticalment</translation>
+      <source>Vertically center-align</source>
+      <translation>Centrar verticalment</translation>
     </message>
     <message>
-        <source>Center-align contents vertically of selected cells</source>
-        <translation>Alineació al centre de les cel·les seleccionades</translation>
+      <source>Center-align contents vertically of selected cells</source>
+      <translation>Alineació al centre de les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Export spreadsheet</source>
-        <translation>Exportar full de càlcul</translation>
+      <source>Export spreadsheet</source>
+      <translation>Exportar full de càlcul</translation>
     </message>
     <message>
-        <source>Export spreadsheet to CSV file</source>
-        <translation>Exportar full de càlcul a CSV</translation>
+      <source>Export spreadsheet to CSV file</source>
+      <translation>Exportar full de càlcul a CSV</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Import spreadsheet</source>
-        <translation>Importar full de càlcul</translation>
+      <source>Import spreadsheet</source>
+      <translation>Importar full de càlcul</translation>
     </message>
     <message>
-        <source>Import CSV file into spreadsheet</source>
-        <translation>Importar CSV a un full de càlcul</translation>
+      <source>Import CSV file into spreadsheet</source>
+      <translation>Importar CSV a un full de càlcul</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Merge cells</source>
-        <translation type="unfinished">Merge cells</translation>
+      <source>Merge cells</source>
+      <translation>Fusiona les cel·les</translation>
     </message>
     <message>
-        <source>Merge selected cells in spreadsheet</source>
-        <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+      <source>Merge selected cells in spreadsheet</source>
+      <translation>Fusiona les cel·les seleccionades en el full de càlcul</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Set alias</source>
-        <translation type="unfinished">Set alias</translation>
+      <source>Set alias</source>
+      <translation>Estableix l'àlies</translation>
     </message>
     <message>
-        <source>Set alias for selected cell</source>
-        <translation type="unfinished">Set alias for selected cell</translation>
+      <source>Set alias for selected cell</source>
+      <translation>Estableix l'àlies per a les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Split cell</source>
-        <translation type="unfinished">Split cell</translation>
+      <source>Split cell</source>
+      <translation>Divideix la cel·la</translation>
     </message>
     <message>
-        <source>Split previously merged cells in spreadsheet</source>
-        <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+      <source>Split previously merged cells in spreadsheet</source>
+      <translation>Divideix les cel·les fusionades anteriorment en el full de càlcul</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Bold text</source>
-        <translation type="unfinished">Bold text</translation>
+      <source>Bold text</source>
+      <translation>Text en negreta</translation>
     </message>
     <message>
-        <source>Set bold text in selected cells</source>
-        <translation type="unfinished">Set bold text in selected cells</translation>
+      <source>Set bold text in selected cells</source>
+      <translation>Estableix el text en negreta en les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Italic text</source>
-        <translation type="unfinished">Italic text</translation>
+      <source>Italic text</source>
+      <translation>Text en cursiva</translation>
     </message>
     <message>
-        <source>Set italic text in selected cells</source>
-        <translation type="unfinished">Set italic text in selected cells</translation>
+      <source>Set italic text in selected cells</source>
+      <translation>Estableix el text en cursiva en les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
     <message>
-        <source>Underline text</source>
-        <translation type="unfinished">Underline text</translation>
+      <source>Underline text</source>
+      <translation>Text subratllat</translation>
     </message>
     <message>
-        <source>Set underline text in selected cells</source>
-        <translation type="unfinished">Set underline text in selected cells</translation>
+      <source>Set underline text in selected cells</source>
+      <translation>Estableix el text subratllat en les cel·les seleccionades</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ColorPickerPopup</name>
     <message>
-        <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+      <source>Custom</source>
+      <translation>Personalitzat</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
-        <source>Cell properties</source>
-        <translation type="unfinished">Cell properties</translation>
+      <source>Cell properties</source>
+      <translation>Propietats de cel·la</translation>
     </message>
     <message>
-        <source>&amp;Color</source>
-        <translation type="unfinished">&amp;Color</translation>
+      <source>&amp;Color</source>
+      <translation>&amp;Color</translation>
     </message>
     <message>
-        <source>Text</source>
-        <translation>Text</translation>
+      <source>Text</source>
+      <translation>Text</translation>
     </message>
     <message>
-        <source>Background</source>
-        <translation type="unfinished">Background</translation>
+      <source>Background</source>
+      <translation>Fons</translation>
     </message>
     <message>
-        <source>&amp;Alignment</source>
-        <translation type="unfinished">&amp;Alignment</translation>
+      <source>&amp;Alignment</source>
+      <translation>&amp;Alineació</translation>
     </message>
     <message>
-        <source>Horizontal</source>
-        <translation type="unfinished">Horizontal</translation>
+      <source>Horizontal</source>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
-        <source>Left</source>
-        <translation type="unfinished">Left</translation>
+      <source>Left</source>
+      <translation>Esquerra</translation>
     </message>
     <message>
-        <source>Center</source>
-        <translation>Centre</translation>
+      <source>Center</source>
+      <translation>Centre</translation>
     </message>
     <message>
-        <source>Right</source>
-        <translation type="unfinished">Right</translation>
+      <source>Right</source>
+      <translation>Dreta</translation>
     </message>
     <message>
-        <source>Vertical</source>
-        <translation type="unfinished">Vertical</translation>
+      <source>Vertical</source>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
-        <source>Top</source>
-        <translation type="unfinished">Top</translation>
+      <source>Top</source>
+      <translation>Planta</translation>
     </message>
     <message>
-        <source>Bottom</source>
-        <translation type="unfinished">Bottom</translation>
+      <source>Bottom</source>
+      <translation>Inferior</translation>
     </message>
     <message>
-        <source>&amp;Style</source>
-        <translation type="unfinished">&amp;Style</translation>
+      <source>&amp;Style</source>
+      <translation>E&amp;stil</translation>
     </message>
     <message>
-        <source>Bold</source>
-        <translation type="unfinished">Bold</translation>
+      <source>Bold</source>
+      <translation>Negreta</translation>
     </message>
     <message>
-        <source>Italic</source>
-        <translation type="unfinished">Italic</translation>
+      <source>Italic</source>
+      <translation>Cursiva</translation>
     </message>
     <message>
-        <source>Underline</source>
-        <translation type="unfinished">Underline</translation>
+      <source>Underline</source>
+      <translation>Subratllat</translation>
     </message>
     <message>
-        <source>&amp;Display unit</source>
-        <translation type="unfinished">&amp;Display unit</translation>
+      <source>&amp;Display unit</source>
+      <translation>&amp;Unitat de mesura</translation>
     </message>
     <message>
-        <source>Unit string</source>
-        <translation type="unfinished">Unit string</translation>
+      <source>Unit string</source>
+      <translation>Cadena d'unitats</translation>
     </message>
     <message>
-        <source>A&amp;lias</source>
-        <translation type="unfinished">A&amp;lias</translation>
+      <source>A&amp;lias</source>
+      <translation>À&amp;lies</translation>
     </message>
     <message>
-        <source>Alias for this cell</source>
-        <translation type="unfinished">Alias for this cell</translation>
+      <source>Alias for this cell</source>
+      <translation>Àlies per a aquesta cel·la</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <source>All (*)</source>
-        <translation type="unfinished">All (*)</translation>
+      <source>All (*)</source>
+      <translation>Tot (*)</translation>
     </message>
     <message>
-        <source>Import file</source>
-        <translation type="unfinished">Import file</translation>
+      <source>Import file</source>
+      <translation>Importa el fitxer</translation>
     </message>
     <message>
-        <source>Export file</source>
-        <translation type="unfinished">Export file</translation>
+      <source>Export file</source>
+      <translation>Exporta el fitxer</translation>
     </message>
     <message>
-        <source>Cell contents</source>
-        <translation type="unfinished">Cell contents</translation>
+      <source>Cell contents</source>
+      <translation>Contingut de la cel·la</translation>
     </message>
     <message>
-        <source>Show spreadsheet</source>
-        <translation type="unfinished">Show spreadsheet</translation>
+      <source>Show spreadsheet</source>
+      <translation>Mostra el full de càlcul</translation>
     </message>
-</context>
-<context>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Estableix el color de primer pla de les cel·la(es)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Estableix el color de primer pla de la(es) cel·la(es) del full de càlcul</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Estableix el color de fons de la(es) cel·la(es)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Estableix el color de fons de la(es) cel·la(es) del full de càlcul</translation>
+    </message>
+  </context>
+  <context>
     <name>QtColorPicker</name>
     <message>
-        <source>Black</source>
-        <translation type="unfinished">Black</translation>
+      <source>Black</source>
+      <translation>Negre</translation>
     </message>
     <message>
-        <source>White</source>
-        <translation type="unfinished">White</translation>
+      <source>White</source>
+      <translation>Blanc</translation>
     </message>
     <message>
-        <source>Red</source>
-        <translation type="unfinished">Red</translation>
+      <source>Red</source>
+      <translation>Vermell</translation>
     </message>
     <message>
-        <source>Dark red</source>
-        <translation type="unfinished">Dark red</translation>
+      <source>Dark red</source>
+      <translation>Vermell fosc</translation>
     </message>
     <message>
-        <source>Green</source>
-        <translation type="unfinished">Green</translation>
+      <source>Green</source>
+      <translation>Verd</translation>
     </message>
     <message>
-        <source>Dark green</source>
-        <translation type="unfinished">Dark green</translation>
+      <source>Dark green</source>
+      <translation>Verd fosc</translation>
     </message>
     <message>
-        <source>Blue</source>
-        <translation type="unfinished">Blue</translation>
+      <source>Blue</source>
+      <translation>Blau</translation>
     </message>
     <message>
-        <source>Dark blue</source>
-        <translation type="unfinished">Dark blue</translation>
+      <source>Dark blue</source>
+      <translation>Blau fosc</translation>
     </message>
     <message>
-        <source>Cyan</source>
-        <translation type="unfinished">Cyan</translation>
+      <source>Cyan</source>
+      <translation>Cian</translation>
     </message>
     <message>
-        <source>Dark cyan</source>
-        <translation type="unfinished">Dark cyan</translation>
+      <source>Dark cyan</source>
+      <translation>Cian fosc</translation>
     </message>
     <message>
-        <source>Magenta</source>
-        <translation type="unfinished">Magenta</translation>
+      <source>Magenta</source>
+      <translation>Magenta</translation>
     </message>
     <message>
-        <source>Dark magenta</source>
-        <translation type="unfinished">Dark magenta</translation>
+      <source>Dark magenta</source>
+      <translation>Magenta fosc</translation>
     </message>
     <message>
-        <source>Yellow</source>
-        <translation type="unfinished">Yellow</translation>
+      <source>Yellow</source>
+      <translation>Groc</translation>
     </message>
     <message>
-        <source>Dark yellow</source>
-        <translation type="unfinished">Dark yellow</translation>
+      <source>Dark yellow</source>
+      <translation>Groc fosc</translation>
     </message>
     <message>
-        <source>Gray</source>
-        <translation type="unfinished">Gray</translation>
+      <source>Gray</source>
+      <translation>Gris</translation>
     </message>
     <message>
-        <source>Dark gray</source>
-        <translation type="unfinished">Dark gray</translation>
+      <source>Dark gray</source>
+      <translation>Gris fosc</translation>
     </message>
     <message>
-        <source>Light gray</source>
-        <translation type="unfinished">Light gray</translation>
+      <source>Light gray</source>
+      <translation>Gris clar</translation>
     </message>
     <message>
-        <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+      <source>Custom</source>
+      <translation>Personalitzat</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Sheet</name>
     <message>
-        <source>Form</source>
-        <translation type="unfinished">Form</translation>
+      <source>Form</source>
+      <translation>Forma</translation>
     </message>
     <message>
-        <source>&amp;Contents</source>
-        <translation type="unfinished">&amp;Contents</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Contingut</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>SpreadsheetGui::Module</name>
     <message>
-        <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+      <source>Unnamed</source>
+      <translation>Sense nom</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-        <source>Insert rows</source>
-        <translation type="unfinished">Insert rows</translation>
+      <source>Insert rows</source>
+      <translation>Insereix files</translation>
     </message>
     <message>
-        <source>Remove rows</source>
-        <translation type="unfinished">Remove rows</translation>
+      <source>Remove rows</source>
+      <translation>Suprimeix files</translation>
     </message>
     <message>
-        <source>Insert columns</source>
-        <translation type="unfinished">Insert columns</translation>
+      <source>Insert columns</source>
+      <translation>Insereix columnes</translation>
     </message>
     <message>
-        <source>Remove columns</source>
-        <translation type="unfinished">Remove columns</translation>
+      <source>Remove columns</source>
+      <translation>Suprimeix columnes</translation>
     </message>
     <message>
-        <source>Properties...</source>
-        <translation type="unfinished">Properties...</translation>
+      <source>Properties...</source>
+      <translation>Propietats...</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <source>Spreadsheet</source>
-        <translation>Full de càlcul</translation>
+      <source>Spreadsheet</source>
+      <translation>Full de càlcul</translation>
     </message>
-</context>
+  </context>
 </TS>

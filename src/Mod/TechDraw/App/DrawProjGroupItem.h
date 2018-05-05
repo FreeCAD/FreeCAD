@@ -62,10 +62,10 @@ public:
     virtual void onDocumentRestored() override;
     virtual void unsetupObject() override;
 
-    DrawProjGroup* getGroup(void) const;
+    DrawProjGroup* getPGroup(void) const;
     double getRotateAngle();
 
-    /// returns the type name of the ViewProvider
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
@@ -75,6 +75,10 @@ public:
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;
+
+    virtual double getScale(void) const override;
+    void autoPosition(void);
+
 
 protected:
     void onChanged(const App::Property* prop) override;

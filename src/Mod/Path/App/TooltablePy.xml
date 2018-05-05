@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="PersistencePy" 
-        Name="TooltablePy" 
-        Twin="Tooltable" 
-        TwinPointer="Tooltable" 
-        Include="Mod/Path/App/Tooltable.h" 
-        Namespace="Path" 
-        FatherInclude="Base/PersistencePy.h" 
+    <PythonExport
+        Father="PersistencePy"
+        Name="TooltablePy"
+        Twin="Tooltable"
+        TwinPointer="Tooltable"
+        Include="Mod/Path/App/Tooltable.h"
+        Namespace="Path"
+        FatherInclude="Base/PersistencePy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">
@@ -52,5 +52,15 @@ deletes the tool found at the given position</UserDocu>
         <!--<ClassDeclarations>
             bool touched;
         </ClassDeclarations>-->
+        <Methode Name="setFromTemplate">
+            <Documentation>
+                <UserDocu>setFromTemplate(dict) ... restores receiver from given template attribute dictionary</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="templateAttrs" Const="true">
+            <Documentation>
+                <UserDocu>templateAttrs() ... returns a dictionary representing the receivers attributes for a template</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

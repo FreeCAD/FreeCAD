@@ -41,14 +41,14 @@
 #include <chrono>
 
 //**************************************************************************
-// Loging levels
+// Logging levels
 
 #ifdef FC_DEBUG
-/// switch on the loging of python object creation and destruction
+/// switch on the logging of python object creation and destruction
 #  undef FC_LOGPYOBJECTS 
-/// switch on the loging of Feature update and execution
+/// switch on the logging of Feature update and execution
 #  define FC_LOGFEATUREUPDATE 
-/// switch on the loging of the Update execution through Doc, App, GuiApp and GuiDoc
+/// switch on the logging of the Update execution through Doc, App, GuiApp and GuiDoc
 #  undef FC_LOGUPDATECHAIN 
 #endif
 
@@ -59,13 +59,13 @@
  *
  * \section Motivation 
  *
- * FreeCAD Base::Console() is capable of outputing to different targets, and has
+ * FreeCAD Base::Console() is capable of outputting to different targets, and has
  * some basic enable/disable control of different types of logs. There is,
- * however, no easy to use logging facility for various FC modules.  This set of
- * helper macros and function is aimed to provide a unified logging (and timing)
+ * however, no easy way to use logging facility for various FC modules.  This set
+ * of helper macros and function is aimed to provide a unified logging (and timing)
  * interface.  The interface is mainly designed for C++ code.  Python code can
  * also take some advantage of log level control interface. The developer can
- * now leave their logging code permantly active in the source code without
+ * now leave their logging code permanently active in the source code without
  * impact on performance, and the log can be easily turned on/off dynamically
  * using Python console for debugging purpose, even in release build.
  *
@@ -288,7 +288,7 @@
  * You can also use <tt>FC_DURATION_MSG, FC_DURATION_TRACE</tt> as usual. 
  *
  * If you use only macros provided here to do timing, the entire timing code
- * can be complied out by defining \c FC_LOG_NO_TIMING before including 
+ * can be compiled out by defining \c FC_LOG_NO_TIMING before including 
  * \c App/Console.h.
  *
  * \section Customization
@@ -460,13 +460,13 @@ public:
     ConsoleObserver()
         :bErr(true),bMsg(true),bLog(true),bWrn(true) {}
     virtual ~ConsoleObserver() {}
-    /// get calles when a Warning is issued
+    /// get calls when a Warning is issued
     virtual void Warning(const char *){}
-    /// get calles when a Message is issued
+    /// get calls when a Message is issued
     virtual void Message(const char *){}
-    /// get calles when a Error is issued
+    /// get calls when a Error is issued
     virtual void Error  (const char *)=0;
-    /// get calles when a Log Message is issued
+    /// get calls when a Log Message is issued
     virtual void Log    (const char *){}
 
     virtual const char *Name(void){return 0L;}

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QAction>
 #endif
 
 #include "ui_TaskBooleanParameters.h"
@@ -71,7 +72,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-    std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
+    std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
     {
         ui->listWidgetBodies->insertItem(0, QString::fromLatin1((*b)->getNameInDocument()));
@@ -108,12 +109,13 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 return;
         }
 
-        std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
+        std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
 
         if (selectionMode == bodyAdd) {
             if (std::find(bodies.begin(), bodies.end(), pcBody) == bodies.end()) {
                 bodies.push_back(pcBody);
-                pcBoolean->Bodies.setValues(bodies);
+                pcBoolean->Group.setValues(std::vector<App::DocumentObject*>());
+                pcBoolean->addObjects(bodies);
                 ui->listWidgetBodies->insertItem(ui->listWidgetBodies->count(),
                                                  QString::fromStdString(pcBody->getNameInDocument()));
 
@@ -145,7 +147,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<App::DocumentObject*>::iterator b = std::find(bodies.begin(), bodies.end(), pcBody);
             if (b != bodies.end()) {
                 bodies.erase(b);
-                pcBoolean->Bodies.setValues(bodies);
+                pcBoolean->setObjects(bodies);
                 QList<QListWidgetItem*> items = ui->listWidgetBodies->findItems(QString::fromStdString(body), Qt::MatchExactly);
                 if (!items.empty()) {
                     for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -180,7 +182,7 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
-        if (pcBoolean->Bodies.getValues().empty() && pcBoolean->BaseFeature.getValue())
+        if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue())
             doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
@@ -210,7 +212,6 @@ void TaskBooleanParameters::onTypeChanged(int index)
         case 0: pcBoolean->Type.setValue("Fuse"); break;
         case 1: pcBoolean->Type.setValue("Cut"); break;
         case 2: pcBoolean->Type.setValue("Common"); break;
-        case 3: pcBoolean->Type.setValue("Section"); break;
         default: pcBoolean->Type.setValue("Fuse");
     }
 
@@ -233,13 +234,13 @@ int TaskBooleanParameters::getType(void) const
 void TaskBooleanParameters::onBodyDeleted(void)
 {
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-    std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
+    std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     int index = ui->listWidgetBodies->currentRow();
     if (index < 0 && (size_t) index > bodies.size())
         return;
     App::DocumentObject* body = bodies[index];
     bodies.erase(bodies.begin() + ui->listWidgetBodies->currentRow());
-    pcBoolean->Bodies.setValues(bodies);
+    pcBoolean->setObjects(bodies);
     ui->listWidgetBodies->model()->removeRow(ui->listWidgetBodies->currentRow());
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 
@@ -322,11 +323,16 @@ bool TaskDlgBooleanParameters::accept()
 
     try {
         std::vector<std::string> bodies = parameter->getBodies();
+        if (bodies.empty()) {
+            QMessageBox::warning(parameter, tr("Empty body list"),
+                                 tr("The body list cannot be empty"));
+            return false;
+        }
         std::stringstream str;
-        str << "App.ActiveDocument." << name.c_str() << ".Bodies = [";
+        str << "App.ActiveDocument." << name.c_str() << ".setObjects( [";
         for (std::vector<std::string>::const_iterator it = bodies.begin(); it != bodies.end(); ++it)
             str << "App.ActiveDocument." << *it << ",";
-        str << "]";
+        str << "])";
         Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
@@ -350,7 +356,7 @@ bool TaskDlgBooleanParameters::reject()
     if (doc != NULL) {
         if (obj->BaseFeature.getValue() != NULL) {
             doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
-            std::vector<App::DocumentObject*> bodies = obj->Bodies.getValues();
+            std::vector<App::DocumentObject*> bodies = obj->Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
                 doc->setShow((*b)->getNameInDocument());
         }

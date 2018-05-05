@@ -49,7 +49,7 @@ except ImportError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, utf8_decode=False):
+    def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
                 context is typically a class name (e.g., "MyDialog")
@@ -75,7 +75,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version >= 3 or utf8_decode:
+        if sys.version_info.major >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None)
         else:
             return QtGui.QApplication.translate(context, text, None).encode("utf8")
@@ -118,6 +118,9 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
+                if sys.version_info.major < 3:
+                    if isinstance(name,unicode):
+                        name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
                     name = str(name)
@@ -586,8 +589,7 @@ class DraftToolBar:
         #QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.setFocus)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.selectAll)
+        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
@@ -839,7 +841,16 @@ class DraftToolBar:
     def redraw(self):
         "utility function that is performed after each clicked point"
         self.checkLocal()
-                
+    
+    def setFocus(self):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if p.GetBool("focusOnLength",False):
+            self.lengthValue.setFocus()
+            self.lengthValue.selectAll()
+        else:
+            self.xValue.setFocus()
+            self.xValue.selectAll()
+
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
         self.xyButton.show()
@@ -935,9 +946,16 @@ class DraftToolBar:
         self.xValue.show()
         self.yValue.show()
         self.zValue.show()
+        # reset UI to (0,0,0) on start
+        self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.x = 0
+        self.y = 0
+        self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.xValue.setFocus,None)
+        todo.delay(self.setFocus,None)
         self.xValue.selectAll()
         
     def labelUi(self,title=translate("draft","Label"),callback=None):
@@ -1181,8 +1199,7 @@ class DraftToolBar:
                 return False
         if (not self.taskmode) or self.isTaskOn:
             if isThere(self.xValue):
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif isThere(self.yValue):
                 self.yValue.setFocus()
                 self.yValue.selectAll()
@@ -1430,17 +1447,18 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    # print(fname)
-                    #fname = str(fname.toUtf8())                                 # QString to PyString
-                    fname = utf8_decode(fname[0])
-#                    print("debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname)))
-                                                              
+#                    fname = utf8_decode(fname[0])  # 1947: utf8_decode fails ('ascii' codec can't encode character)
+                                                    # when fname[0] contains accented chars
+                    fname = fname[0].encode('utf8') #TODO: this needs changing for Py3??
+                                                    # accented chars cause "UnicodeEncodeError" failure in DraftGui.todo without 
+                                                    # .encode('utf8')
+
                 except Exception as e:
                     FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
                     print(type(e))
                     print(e.args)
                 else:
-                    if fname:
+                    if fname[0]:
                         self.FFileValue.setText(fname)
                         self.sourceCmd.validFFile(fname)                      
                     else:
@@ -1692,8 +1710,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(False)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif (mask == "y") or (self.mask == "y"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(True)
@@ -1710,8 +1727,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(True)
                 self.zValue.setEnabled(True)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
                 
             
     def getDefaultColor(self,type,rgb=False):

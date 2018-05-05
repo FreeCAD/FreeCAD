@@ -30,7 +30,7 @@ in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import smoothie_post
-linuxcnc_post.export(object,"/path/to/file.ncc","")
+smoothie_post.export(object,"/path/to/file.ncc","")
 '''
 
 import argparse
@@ -55,7 +55,9 @@ parser.add_argument('--precision', default='4', help='number of digits of precis
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
 parser.add_argument('--IP_ADDR', help='IP Address for machine target machine')
-parser.add_argument('--verbose', action='store_false', help='verbose output for debugging, default="False"')
+parser.add_argument('--verbose', action='store_true', help='verbose output for debugging, default="False"')
+parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
+
 TOOLTIP_ARGS=parser.format_help()
 
 # These globals set common customization preferences
@@ -77,7 +79,9 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'mm/min'
+UNIT_SPEED_FORMAT = 'mm/min'
+UNIT_FORMAT = 'mm'
+
 MACHINE_NAME = "SmoothieBoard"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
@@ -117,6 +121,10 @@ def processArguments(argstring):
     global PRECISION
     global PREAMBLE
     global POSTAMBLE
+    global UNITS
+    global UNIT_SPEED_FORMAT
+    global UNIT_FORMAT
+
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -143,11 +151,14 @@ def processArguments(argstring):
             PREAMBLE = args.preamble
         if args.postamble is not None:
             POSTAMBLE = args.postamble
+        if args.inches:
+            UNITS = 'G20'
+            UNIT_SPEED_FORMAT = 'in/min'
+            UNIT_FORMAT = 'in'
 
         IP_ADDR = args.IP_ADDR
         VERBOSE = args.verbose
-        # elif arg == '--verbose':
-        #     VERBOSE = True
+
     except:
         return False
 
@@ -322,9 +333,11 @@ def linenumber():
     return ""
 
 def parse(pathobj):
+    global PRECISION
     out = ""
     lastcommand = None
     global SPINDLE_SPEED
+    precision_string = '.' + str(PRECISION) +'f'
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
@@ -363,15 +376,17 @@ def parse(pathobj):
                         if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), '.2f') )
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string ) )
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     elif param == 'S':
                         outstring.append(param + str(c.Parameters['S']))
                         SPINDLE_SPEED = c.Parameters['S']
                     else:
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(c.Parameters[param], '.4f'))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string) )
+                            #param + format(c.Parameters[param], precision_string))
             if command in ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']:
                 outstring.append('S' + str(SPINDLE_SPEED))
 

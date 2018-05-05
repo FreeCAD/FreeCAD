@@ -28,17 +28,24 @@ conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 
-
 def pythonToolbars():
     """Manage Python based toolbars in Arch and Draft workbench."""
 
     active = Gui.activeWorkbench().__class__.__name__
 
-    if active == "DraftWorkbench" or active == "ArchWorkbench":
+    if active == "DraftWorkbench" or active == "ArchWorkbench" or active == "BIMWorkbench":
         if hasattr(Gui, "draftToolBar"):
-            Gui.draftToolBar.Activated()
+            try:
+                Gui.draftToolBar.Activated()
+            except:
+                m = "Persistent toolbars: draftToolBar toolbar not managed.\n"
+                App.Console.PrintMessage(m)
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.show()
+            try:
+                Gui.Snapper.show()
+            except:
+                m = "Persistent toolbars: Snapper toolbar not managed.\n"
+                App.Console.PrintMessage(m)
     else:
         pass
 

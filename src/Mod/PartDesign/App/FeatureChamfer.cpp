@@ -84,6 +84,8 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         return new App::DocumentObjectExecReturn("No edges specified");
 
     double size = Size.getValue();
+    if (size <= 0)
+        return new App::DocumentObjectExecReturn("Size must be greater than zero");
 
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape

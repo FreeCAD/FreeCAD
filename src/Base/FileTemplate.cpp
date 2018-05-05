@@ -58,7 +58,7 @@ ClassTemplate::~ClassTemplate()
 
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 /**
  * a normal member taking two arguments and returning an integer value.
@@ -83,7 +83,7 @@ int ClassTemplate::testMe(int /*a*/,const char* /*s*/)
 
 //**************************************************************************
 //**************************************************************************
-// Seperator for additional classes
+// Separator for additional classes
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

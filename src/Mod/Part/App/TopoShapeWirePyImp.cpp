@@ -32,6 +32,7 @@
 # include <BRepTools_WireExplorer.hxx>
 # include <Precision.hxx>
 # include <ShapeFix_Wire.hxx>
+# include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
@@ -61,6 +62,11 @@
 #include "Tools.h"
 
 using namespace Part;
+
+namespace Part {
+    extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
+
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeWirePy::representation(void) const
@@ -603,7 +609,7 @@ Py::List TopoShapeWirePy::getOrderedEdges(void) const
 
     BRepTools_WireExplorer xp(TopoDS::Wire(getTopoShapePtr()->getShape()));
     while (xp.More()) {
-        ret.append(Py::asObject(new TopoShapeEdgePy(new TopoShape(xp.Current()))));
+        ret.append(shape2pyshape(xp.Current()));
         xp.Next();
     }
 
@@ -614,10 +620,20 @@ Py::List TopoShapeWirePy::getOrderedVertexes(void) const
 {
     Py::List ret;
 
-    BRepTools_WireExplorer xp(TopoDS::Wire(getTopoShapePtr()->getShape()));
+    TopoDS_Wire wire = TopoDS::Wire(getTopoShapePtr()->getShape());
+    BRepTools_WireExplorer xp(wire);
     while (xp.More()) {
-        ret.append(Py::asObject(new TopoShapeVertexPy(new TopoShape(xp.CurrentVertex()))));
+        ret.append(shape2pyshape(xp.CurrentVertex()));
         xp.Next();
+    }
+
+    // special treatment for open wires
+    TopoDS_Vertex Vfirst, Vlast;
+    TopExp::Vertices(wire, Vfirst, Vlast);
+    if (!Vfirst.IsNull() && !Vlast.IsNull()) {
+        if (!Vfirst.IsSame(Vlast)) {
+            ret.append(shape2pyshape(Vlast));
+        }
     }
 
     return ret;

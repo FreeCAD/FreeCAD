@@ -79,11 +79,11 @@ public:
     const std::vector<MeshGeomFacet>& GetTriangles() const { return _triangles;}
     /** Returns the topologic facets of the polygon. */
     const std::vector<MeshFacet>& GetFacets() const { return _facets;}
-    /** Returns the the triangle to a given topologic facet. */
+    /** Returns the triangle to a given topologic facet. */
     virtual MeshGeomFacet GetTriangle(const MeshPointArray&, const MeshFacet&) const;
     /** Returns the length of the polygon */
     float GetLength() const;
-    /** Get information about the pol<gons that were processed.
+    /** Get information about the polygons that were processed.
      * It returns an array of the number of edges for each closed
      * polygon.
      */

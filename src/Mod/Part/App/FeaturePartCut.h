@@ -38,7 +38,7 @@ class Cut : public Boolean
 public:
     Cut();
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
 protected:

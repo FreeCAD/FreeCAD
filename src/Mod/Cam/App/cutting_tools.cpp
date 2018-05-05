@@ -386,7 +386,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
                 z_level_corrected = z_level;
                 cut(z_level,temp_min, aCutShape,z_level_corrected);
                 if (z_level_corrected != z_level)
-                    std::cout << "Somehow we couldnt cut" << std::endl;
+                    std::cout << "Somehow we couldn't cut" << std::endl;
                 //Jetzt nur das gewünschte Resultat in den vector schieben (von oben nach unten große usw.)
                 Edgesort aCuttingShapeSorter(aCutShape);
                 tempPair.first = z_level_corrected;
@@ -492,7 +492,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //        gp_Vec first_u,first_v,second_u,second_v,third_u,third_v, Norm_first,Norm_second,Norm_third,Norm_average;
 //        double u_middle,v_middle;
 //        /*
-//        Generate three random point on the surface to get the surface normal and decide wether its a
+//        Generate three random point on the surface to get the surface normal and decide whether it's a
 //        planar face or not
 //        */
 //        FirstUParameter = aAdaptor_Surface.FirstUParameter();
@@ -1853,7 +1853,7 @@ Base::BoundBox3f cutting_tools::getWireBBox(TopoDS_Wire aWire)
 
 TopoDS_Shape cutting_tools::getProperCut(TopoDS_Shape& aShape)
 {
-    //A cutting Shape is coming as aShape
+    //A cutting Shape is aShape
     //check direction to decide which Topology to hold and which to delete
     if (m_direction)//From top to bottom
     {
@@ -2198,7 +2198,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
             }
 
-            //now we know where to  start at our PointCloud, its the index t
+            //now we know where to start at our PointCloud, it's the index t
 
             //Calculate the Slave Toolpath for the current flat area
             if (!slave_done)//if we did not calculate the slave toolpath for the current flat area
@@ -2256,7 +2256,7 @@ bool cutting_tools::OffsetWires_Spiral()
             //direction_vector.SetZ(0.0);
             direction_vector.Normalize();
             direction_vector.Multiply(1.0); //Zum testen bauen wir keinen Offset ein
-            //switch the Spiral-direction if the clockwise flag is checked and  the
+            //switch the Spiral-direction if the clockwise flag is checked and the
             //angle between the last and current round is more then 90°
             double angle = direction_vector.Angle(last_direction_vector);
             if (m_UserSettings.clockwise && angle<(D_PI*0.5))
@@ -2374,7 +2374,7 @@ bool cutting_tools::OffsetWires_Spiral()
                         continue;
                     }
                     //We switch to the end and skip the last point
-                    //as its the same as the point at j=0;
+                    //as it's the same as the point at j=0;
                     j=j-2;//As the for puts +1 for each step
                 }
             }
@@ -2514,7 +2514,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
             }
 
-            //now we know where to  start at our PointCloud, its the index t
+            //now we know where to start at our PointCloud, it's the index t
 
             //Calculate the Slave Toolpath for the current flat area
             if (!slave_done)//if we did not calculate the slave toolpath for the current flat area
@@ -2559,7 +2559,7 @@ bool cutting_tools::OffsetWires_Spiral()
             //direction_vector.SetZ(0.0);
             direction_vector.Normalize();
             direction_vector.Multiply(10.0);
-            //switch the Spiral-direction if the clockwise flag is checked and  the
+            //switch the Spiral-direction if the clockwise flag is checked and the
             //angle between the last and current round is more then 90°
             double angle = direction_vector.Angle(last_direction_vector);
 
@@ -2677,7 +2677,7 @@ bool cutting_tools::OffsetWires_Spiral()
                         continue;
                     }
                     //We switch to the end and skip the last point
-                    //as its the same as the point at j=0;
+                    //as it's the same as the point at j=0;
                     j=j-2;//As the for puts +1 for each step
                 }
             }

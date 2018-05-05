@@ -49,14 +49,17 @@ class TestMultiTransform(unittest.TestCase):
         self.Doc.recompute()
         self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
         self.Mirrored.MirrorPlane = (self.PadSketch, ["H_Axis"])
+        self.Body.addObject(self.Mirrored)
         self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern","LinearPattern")
         self.LinearPattern.Direction = (self.PadSketch, ["H_Axis"])
         self.LinearPattern.Length = 20
         self.LinearPattern.Occurrences = 3
+        self.Body.addObject(self.LinearPattern)
         self.PolarPattern = self.Doc.addObject("PartDesign::PolarPattern","PolarPattern")
         self.PolarPattern.Axis = (self.PadSketch, ["N_Axis"])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.Body.addObject(self.PolarPattern)
         self.MultiTransform.Transformations = [self.Mirrored,self.LinearPattern,self.PolarPattern]
         self.Doc.recompute()
         self.assertAlmostEqual(self.MultiTransform.Shape.Volume, 20000)

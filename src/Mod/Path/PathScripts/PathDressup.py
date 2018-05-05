@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,127 +21,34 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
+
 import FreeCAD
 import FreeCADGui
-import Path
-import PathScripts.PathUtils as P
-from PySide import QtCore, QtGui
+import PathScripts.PathJob as PathJob
 
-"""Path Dressup object and FreeCAD command"""
+def selection():
+    '''isActive() ... return True if a dressup command is possible.'''
+    if FreeCAD.ActiveDocument:
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature") and PathJob.Instances():
+            return sel[0].Object
+    return None
 
-# Qt tanslation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-class ObjectDressup:
-
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
-        obj.addProperty("App::PropertyInteger", "Position", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The position of this dressup in the base path"))
-        obj.addProperty("Path::PropertyPath", "Modification", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The modification to be added"))
-        obj.Proxy = self
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def execute(self, obj):
-
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Path::Feature"):
-                before = []
-                after = []
-                if obj.Base.Path:
-                    if obj.Base.Path.Commands:
-                        # split the base path
-                        before = obj.Base.Path.Commands[:obj.Position]
-                        after = obj.Base.Path.Commands[obj.Position:]
-                # join everything
-                commands = before + obj.Modification.Commands + after
-                path = Path.Path(commands)
-                obj.Path = path
-
-
-class ViewProviderDressup:
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        self.Object = vobj.Object
-        return
-
-    def claimChildren(self):
-        for i in self.Object.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.Object.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                print(i.Group)
-        return [self.Object.Base]
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the project and visible'''
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        P.addToProject(arg1.Object.Base)
-        arg1.Object.Base = None
+def hasEntryMethod(path):
+    '''hasEntryDressup(path) ... returns true if the given object already has an entry method attached.'''
+    if 'RampEntry' in path.Name or 'LeadInOut' in path.Name:
         return True
+    if 'Dressup' in path.Name and hasattr(path, 'Base'):
+        return hasEntryMethod(path.Base)
+    return False
 
-class CommandPathDressup:
+def baseOp(path):
+    '''baseOp(path) ... return the base operation underlying the given path'''
+    if 'Dressup' in path.Name:
+        return baseOp(path.Base)
+    return path
 
-    def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Dressup", "Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Dressup", "Creates a Path Dress-up object from a selected path")}
+def toolController(path):
+    '''toolController(path) ... return the tool controller from the base op.'''
+    return baseOp(path).ToolController
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
-
-    def Activated(self):
-
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select one path object\n"))
-            return
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "The selected object is not a path\n"))
-            return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select a Path object"))
-            return
-
-        # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Dressup", "Create Dress-up"))
-        FreeCADGui.addModule("PathScripts.PathDressup")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Dressup")')
-        FreeCADGui.doCommand('PathScripts.PathDressup.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathDressup.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
-if FreeCAD.GuiUp:
-    # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Dressup', CommandPathDressup())
-
-FreeCAD.Console.PrintLog("Loading PathDressup... done\n")

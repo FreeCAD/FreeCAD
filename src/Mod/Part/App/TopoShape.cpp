@@ -306,7 +306,7 @@ TopoDS_Shape TopoShape::getSubShape(const char* Type) const
         return anIndices.FindKey(index);
     }
 
-    Standard_Failure::Raise("Not supported sub-shape type");
+    Standard_Failure::Raise("Unsupported sub-shape type");
     return TopoDS_Shape(); // avoid compiler warning
 }
 
@@ -431,6 +431,36 @@ Base::Matrix4D TopoShape::getTransform(void) const
     gp_Trsf Trf = _Shape.Location().Transformation();
     convertToMatrix(Trf, mtrx);
     return mtrx;
+}
+
+void TopoShape::setPlacement(const Base::Placement& rclTrf)
+{
+    const Base::Vector3d& pos = rclTrf.getPosition();
+    Base::Vector3d axis;
+    double angle;
+    rclTrf.getRotation().getValue(axis, angle);
+
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0.,0.,0.), gp_Dir(axis.x, axis.y, axis.z)), angle);
+    trsf.SetTranslationPart(gp_Vec(pos.x, pos.y, pos.z));
+    TopLoc_Location loc(trsf);
+    _Shape.Location(loc);
+}
+
+Base::Placement TopoShape::getPlacemet(void) const
+{
+    TopLoc_Location loc = _Shape.Location();
+    gp_Trsf trsf = loc.Transformation();
+    gp_XYZ pos = trsf.TranslationPart();
+
+    gp_XYZ axis;
+    Standard_Real angle;
+    trsf.GetRotation(axis, angle);
+
+    Base::Rotation rot(Base::Vector3d(axis.X(), axis.Y(), axis.Z()), angle);
+    Base::Placement placement(Base::Vector3d(pos.X(), pos.Y(), pos.Z()), rot);
+
+    return placement;
 }
 
 void TopoShape::read(const char *FileName)
@@ -1366,8 +1396,13 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
             for (; BOPResultsIt.More(); BOPResultsIt.Next()) {
                 const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
 
+#if OCC_VERSION_HEX < 0x070000
                 const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
                 BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
+#else
+                const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
+                TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
+#endif
                 for (;faultyShapes1It.More(); faultyShapes1It.Next()) {
                     const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
                     str << "Error in " << shapeEnumToString[faultyShape.ShapeType()] << ": ";
@@ -2089,10 +2124,12 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
-                                 Standard_Boolean isClosed) const
+                                 Standard_Boolean isClosed,
+                                 Standard_Integer maxDegree) const
 {
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator (isSolid,isRuled);
+    aGenerator.SetMaxDegree(maxDegree);
 
     TopTools_ListIteratorOfListOfShape it;
     int countShapes = 0;
@@ -2114,7 +2151,8 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     }
 
     if (countShapes < 2) {
-        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face"); }
+        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
+    }
     else {
         // close loft by duplicating initial profile as last profile.  not perfect. 
         if (isClosed) {
@@ -2123,8 +2161,9 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-            if (profiles.Last().ShapeType() == TopAbs_VERTEX)  {
-                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n"); }
+            if (profiles.Last().ShapeType() == TopAbs_VERTEX) {
+                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+            }
             else {
                 // repeat Add logic above for first profile
                 const TopoDS_Shape& firstProfile = profiles.First();
@@ -2133,12 +2172,12 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                     countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_EDGE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_WIRE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
             }     
         }
@@ -2149,7 +2188,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     aGenerator.Build();
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
-    
+
     //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }
@@ -2449,7 +2488,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             offsetShape = mkOffset.Shape();
 
             if(offsetShape.IsNull())
-                throw Base::Exception("makeOffset2D: result of offseting is null!");
+                throw Base::Exception("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
@@ -3090,8 +3129,6 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     aSewingTool.Load(aComp);
     aSewingTool.Perform();
     _Shape = aSewingTool.SewedShape();
-    // TopAbs_Orientation o = _Shape.Orientation();
-    _Shape.Reverse(); // seems that we have to reverse the orientation
     if (_Shape.IsNull())
         _Shape = aComp;
 }
@@ -3140,8 +3177,10 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         // parameter ranges
         Standard_Real uFirst = surface.FirstUParameter();
         Standard_Real uLast = surface.LastUParameter();
+        Standard_Real uMid = (uFirst+uLast)/2;
         Standard_Real vFirst = surface.FirstVParameter();
         Standard_Real vLast = surface.LastVParameter();
+        Standard_Real vMid = (vFirst+vLast)/2;
 
         // get geometrical length and width of the surface
         //
@@ -3150,11 +3189,11 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         for (int i = 1; i <= pointsPerEdge; i++) {
             double u1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
             double s1 = (1.0-u1)*uFirst + u1*uLast;
-            p1 = surface.Value(s1,0.0);
+            p1 = surface.Value(s1,vMid);
 
             double u2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
             double s2 = (1.0-u2)*uFirst + u2*uLast;
-            p2 = surface.Value(s2,0.0);
+            p2 = surface.Value(s2,vMid);
 
             fLengthU += p1.Distance(p2);
         }
@@ -3162,17 +3201,19 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         for (int i = 1; i <= pointsPerEdge; i++) {
             double v1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
             double t1 = (1.0-v1)*vFirst + v1*vLast;
-            p1 = surface.Value(0.0,t1);
+            p1 = surface.Value(uMid,t1);
 
             double v2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
             double t2 = (1.0-v2)*vFirst + v2*vLast;
-            p2 = surface.Value(0.0,t2);
+            p2 = surface.Value(uMid,t2);
 
             fLengthV += p1.Distance(p2);
         }
 
         int uPointsPerEdge = static_cast<int>(fLengthU / lateralDistance);
         int vPointsPerEdge = static_cast<int>(fLengthV / lateralDistance);
+        uPointsPerEdge = std::max(uPointsPerEdge, 1);
+        vPointsPerEdge = std::max(vPointsPerEdge, 1);
 
         for (int i = 0; i <= uPointsPerEdge; i++) {
             double u = static_cast<double>(i)/static_cast<double>(uPointsPerEdge);

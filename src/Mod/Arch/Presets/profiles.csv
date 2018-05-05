@@ -8,7 +8,7 @@
 #U= U-profile
 ###########################################
 #Circular tube
-#Category,Name,H,Outside diameter,Thickness
+#Category,Name,C,Outside diameter,Thickness
 CTH,CTH423,C,42.4,3.2
 #H- or I-profile
 #Category,Name,H,width,height,web thickness,flange thickness

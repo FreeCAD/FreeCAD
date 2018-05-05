@@ -50,25 +50,25 @@ namespace TechDraw
  */
 class TechDrawExport DrawViewMulti : public DrawViewPart
 {
-    PROPERTY_HEADER(Part::DrawViewMulti);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewMulti);
 
 public:
     /// Constructor
     DrawViewMulti(void);
     virtual ~DrawViewMulti();
+  
+    App::PropertyLinkList    Sources;
 
-    App::PropertyLinkList Sources;
-
-    virtual short mustExecute() const;
-    /** @name methods overide Feature */
+    virtual short mustExecute() const override;
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onChanged(const App::Property* prop) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
 

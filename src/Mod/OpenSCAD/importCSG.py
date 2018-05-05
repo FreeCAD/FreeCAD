@@ -219,8 +219,8 @@ def p_anymodifier(p):
                    | MODIFIERDISABLE
     '''
     #just return the plain modifier for now
-    #has to be changed when the modifiers are inplemented
-    #please note that disabled objects usually are stript of the CSG ouput during compilation
+    #has to be changed when the modifiers are implemented
+    #please note that disabled objects usually are stripped of the CSG output during compilation
     p[0] = p[1]
 
 def p_statementwithmod(p):
@@ -632,7 +632,7 @@ def process_linear_extrude(obj,h) :
 
 def process_linear_extrude_with_twist(base,height,twist) :   
     newobj=doc.addObject("Part::FeaturePython",'twist_extrude')
-    Twist(newobj,base,height,-twist) #base is an FreeCAD Object, heigth and twist are floats
+    Twist(newobj,base,height,-twist) #base is an FreeCAD Object, height and twist are floats
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):

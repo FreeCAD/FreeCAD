@@ -30,6 +30,8 @@
 #endif
 
 #include "Workbench.h"
+#include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Selection.h>
@@ -188,11 +190,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Separator"
           << analyze << "Mesh_HarmonizeNormals" << "Mesh_FlipNormals" << "Separator" 
           << "Mesh_FillupHoles" << "Mesh_FillInteractiveHole" << "Mesh_RemoveComponents"
-          << "Mesh_RemoveCompByHand" << "Mesh_AddFacet" << "Mesh_Smoothing" << "Separator" 
-          << "Mesh_BuildRegularSolid" << boolean << "Separator" << "Mesh_Merge" << "Mesh_PolySelect" << "Mesh_PolyCut"
+          << "Mesh_RemoveCompByHand" << "Mesh_AddFacet" << "Mesh_Smoothing" << "Mesh_Scale"
+          << "Separator" << "Mesh_BuildRegularSolid" << boolean << "Separator"
+          << "Mesh_Merge" << "Mesh_PolySelect" << "Mesh_PolyCut"
           << "Mesh_PolySplit" << "Mesh_PolySegm" << "Mesh_PolyTrim" << "Separator"
           << "Mesh_TrimByPlane" << "Mesh_SectionByPlane" << "Mesh_Segmentation"
           << "Mesh_VertexCurvature";
+    Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
+    if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))
+        *mesh << "MeshPart_CreateFlatMesh";
+    if (mgr.getCommandByName("MeshPart_CreateFlatFace"))
+        *mesh << "MeshPart_CreateFlatFace";
     return root;
 }
 

@@ -71,7 +71,7 @@
 +  * control:
 +    - Update to standars-version 3.9.0.
 +    - Remove libblas-dev, libatlas-dev from build-deps.
-+  * Add debian/shlibs.local file containing the the correct binary dep
++  * Add debian/shlibs.local file containing the correct binary dep
 +    to libsoqt4-20 (closes: #575239).
 +  * copyright: Add a verbatim copy of Tiddlywiki BSD license. Fixes
 +    the lintian warning copyright-refers-to-deprecated-bsd-license-file.
@@ -353,9 +353,9 @@
 +\fB\-P, \-\-python\-path\fR \fIarg\fR
 +Additional Python path.
 +.SH SEE ALSO
-+To get more information about \fBFreeCAD\fR, please visit \fIhttp://juergen\-riegel.net/FreeCAD/Docu/index.php/Main_Page\fR
++To get more information about \fBFreeCAD\fR, please visit \fIhttps://freecadweb.org/wiki\fR
 +.SH BUGS
-+To report a bug, please visit \fIhttp://free-cad.sf.net/\fR
++To report a bug, please visit \fIhttps://freecadweb.org/tracker/\fR
 +.SH AUTHOR
 +This manual page was written by Werner Mayer.
 --- freecad-0.13.orig/debian/rules
@@ -846,7 +846,7 @@
 + tritritest.h has no licensing information, but Tomas Moller replied
 + the following, when asked about it:
 + .
-+ The code is is free to use for anyone and any projects, but I give no
++ The code is free to use for anyone and any projects, but I give no
 + warranties.
 +
 +Files: src/Mod/Mesh/App/WildMagic4/*

@@ -141,7 +141,7 @@ void ViewProviderInspection::show(void)
 
 void ViewProviderInspection::attach(App::DocumentObject *pcFeat)
 {
-    // creats the standard viewing modes
+    // creates the standard viewing modes
     inherited::attach(pcFeat);
 
     SoShapeHints * flathints = new SoShapeHints;
@@ -184,7 +184,7 @@ void ViewProviderInspection::attach(App::DocumentObject *pcFeat)
 void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         App::GeoFeature* object = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
         if (object) {
             float accuracy=0;

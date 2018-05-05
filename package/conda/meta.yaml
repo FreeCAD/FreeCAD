@@ -1,0 +1,60 @@
+package:
+    name: freecad_daily
+    version: 0.18
+
+build:
+    number: 0
+
+requirements:
+    build:
+        - toolchain
+        - gcc  # [unix]
+        - vc 14  # [win and py>=35]
+        - ninja
+        - cmake
+        - nomkl  # [unix]
+        - swig
+        - eigen
+        - boost-cpp 1.66.0
+        - boost 1.66.0  # [win]
+        - pybind11  # [unix]
+        - python
+        - matplotlib
+        - coin3d
+        - pivy
+        - qt 5.6.*
+        - pyside2 5.6.*
+        - occt 7.2.0
+        - smesh
+        - netgen  # [not win32]
+        - vtk 8.1.*
+        - hdf5
+        - xerces-c 3.2.*
+        - zlib 1.2.*
+        - doxygen
+        - git
+        - libglu  # [linux]
+    run:
+        - libgcc  # [unix]
+        - vc 14  # [win and py>=35]
+        - boost-cpp 1.66.0
+        - boost 1.66.0  # [win]
+        - python
+        - numpy
+        - matplotlib
+        - coin3d
+        - pivy
+        - qt 5.6.*
+        - pyside2 5.6.*
+        - occt 7.2.0
+        - vtk 8.1.*
+        - smesh
+        - netgen  # [not win32]
+        - xerces-c 3.2.*
+        - zlib 1.2*
+        - git
+        - calculix  # [unix]
+        - libglu  # [linux]
+about:
+    summary: freecad
+

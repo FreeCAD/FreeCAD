@@ -161,7 +161,7 @@ void LinePy::setLocation(Py::Object arg)
     try {
         GC_MakeLine ms(pnt, dir);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line
@@ -169,8 +169,7 @@ void LinePy::setLocation(Py::Object arg)
         this_curv->SetLin(that_curv->Lin());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 
@@ -211,7 +210,7 @@ void LinePy::setDirection(Py::Object arg)
     try {
         GC_MakeLine ms(pnt, dir);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line
@@ -219,8 +218,7 @@ void LinePy::setDirection(Py::Object arg)
         this_curv->SetLin(that_curv->Lin());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 

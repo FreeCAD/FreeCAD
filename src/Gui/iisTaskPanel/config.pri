@@ -5,7 +5,7 @@ VERSION       = 1.0
 # Do not change this line
 CONFIG += qt
 
-# Chose one of the following two lines to configure the build
+# Choose one of the following two lines to configure the build
 
 #CONFIG += release		
 #CONFIG += debug		
@@ -15,7 +15,7 @@ CONFIG += debug_and_release
 macx {
         # Using gcc
         QMAKESPEC=macx-g++
-        # uncoment this line if you want use xcode
+        # uncomment this line if you want use xcode
         # QMAKESPEC=macx-xcode
 }
 
@@ -38,7 +38,7 @@ CONFIG(release, debug|release) {
         RCC_DIR = ./release
 }
 
-# Chose one of the following two lines to configure the build
+# Choose one of the following two lines to configure the build
 #LIB_CONFIG = staticlib
 LIB_CONFIG = dll
 

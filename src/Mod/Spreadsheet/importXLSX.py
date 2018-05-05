@@ -158,7 +158,7 @@ tokenDic = {
 
 class exprNode(object):
   ''' This defines a tree class for expression parsing.
-  A tree is build, to step down into the levels of the expression.'''   
+  A tree is built, to step down into the levels of the expression.'''   
   def __init__(self, parent, state, actIndex):
     self.state = state #see comment: State used for Angle-functions and IF-function
     self.parent = parent # Parent tree node
@@ -167,7 +167,7 @@ class exprNode(object):
 
 
 class FormulaTranslator(object):
-  ''' This class tranlates a cell-formula from Excel to FreeCAD.'''
+  ''' This class translates a cell-formula from Excel to FreeCAD.'''
   def __init__(self):
     self.tokenList = ['=']
 

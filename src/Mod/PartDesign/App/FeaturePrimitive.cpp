@@ -160,6 +160,11 @@ void FeaturePrimitive::onChanged(const App::Property* prop)
     FeatureAddSub::onChanged(prop);
 }
 
+void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+{
+    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
+}
+
 PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
 

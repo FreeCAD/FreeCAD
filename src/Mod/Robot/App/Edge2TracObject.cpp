@@ -79,13 +79,13 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     // container for all the edges 
     std::vector<TopoDS_Edge> edges;
 
-    // run throug the edge name and get the real objects from the TopoShape
+    // run through the edge name and get the real objects from the TopoShape
     for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
          TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
          edges.push_back(edge);
     }
 
-    // instanciate a edge cluster sorter and get the result 
+    // instantiate an edge cluster sorter and get the result 
     Part::Edgecluster acluster(edges);
     Part::tEdgeClusterVector aclusteroutput = acluster.GetClusters();
 
@@ -102,7 +102,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     Robot::Trajectory trac;
     bool first = true;
 
-    // cycle trough the cluster
+    // cycle through the cluster
     for(std::vector<std::vector<TopoDS_Edge> >::const_iterator it=aclusteroutput.begin();it!=aclusteroutput.end();++it)
     {
         // cycle through the edges of the cluster

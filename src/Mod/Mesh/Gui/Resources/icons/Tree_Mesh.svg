@@ -133,10 +133,10 @@
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>plane</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Tesselated folded plane, lit from top</dc:description>
+        <dc:description>Tessellated folded plane, lit from top</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

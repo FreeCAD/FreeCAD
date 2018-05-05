@@ -60,7 +60,7 @@ DrawViewSpreadsheet::DrawViewSpreadsheet(void)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
     ADD_PROPERTY_TYPE(Source ,(0),vgroup,App::Prop_None,"Spreadsheet to view");
     ADD_PROPERTY_TYPE(CellStart ,("A1"),vgroup,App::Prop_None,"The top left cell of the range to display");
@@ -114,12 +114,13 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
 
     Symbol.setValue(getSheetImage());
 
+    requestPaint();
     return TechDraw::DrawView::execute();
 }
 
 std::vector<std::string> DrawViewSpreadsheet::getAvailColumns(void)
 {
-    // build a list of available colums: A, B, C, ... AA, AB, ... ZY, ZZ.
+    // build a list of available columns: A, B, C, ... AA, AB, ... ZY, ZZ.
     std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     std::vector<std::string> availcolumns;
     for (int i=0; i<26; ++i) {
@@ -197,6 +198,9 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
                 for (int j=rows.back()+1; j<=endrow; ++j) {
                     rows.push_back(j);
                 }
+
+                // after the first digit there will be no letter any more
+                break;
             }
         }
     } catch (std::exception) {
@@ -290,15 +294,19 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth
                        << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/Scale.getValue() << ";stroke:" << c.asCSSString() << ";\" />" << endl;
+                       << LineWidth.getValue()/getScale() << ";stroke:" << c.asCSSString() << ";\" />" << endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + TextSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\"" << coloffset + cellwidth/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
                     result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\"" << coloffset + (cellwidth - TextSize.getValue()/2) << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
-                result << Font.getValue() << "\"" << " font-size=\"" << TextSize.getValue() << "\""
-                       << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT) ||
+                    (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) ||
+                    (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
+                    result << Font.getValue() << "\"" << " font-size=\"" << TextSize.getValue() << "\""
+                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                }
             }
             rowoffset = rowoffset + cellheight;
         }

@@ -77,7 +77,7 @@ public:
     App::Document* newDocument(const char * Name=0l, const char * UserName=0l);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
-    /// find a unique docuement name
+    /// find a unique document name
     std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
     App::Document* openDocument(const char * FileName=0l);
@@ -164,7 +164,7 @@ public:
     /** Gets a parameter group by a full qualified path
      * It's an easy method to get a group:
      * \code
-     * // geting standard parameter
+     * // getting standard parameter
      * ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
      * std::string cDir             = hGrp->GetASCII("ProjectPath", "");
      * std::string cCameraName      = hGrp->GetASCII("CameraName", "TempCamera.inc");
@@ -292,6 +292,7 @@ private:
 
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sSaveParameter     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetVersion        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetConfig         (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sSetConfig         (PyObject *self,PyObject *args,PyObject *kwd);
@@ -305,6 +306,8 @@ private:
     static PyObject* sGetExportType     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetHelpDir        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args,PyObject *kwd);
@@ -376,7 +379,7 @@ private:
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
 
-/// Singleton getter of the Applicaton
+/// Singleton getter of the Application
 inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }

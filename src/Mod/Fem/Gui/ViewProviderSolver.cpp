@@ -46,13 +46,17 @@ PROPERTY_SOURCE(FemGui::ViewProviderSolver, Gui::ViewProviderDocumentObject)
 
 ViewProviderSolver::ViewProviderSolver()
 {
-  sPixmap = "fem-solver";
-
+    sPixmap = "fem-solver";
 }
 
 ViewProviderSolver::~ViewProviderSolver()
 {
 
+}
+
+std::vector<std::string> ViewProviderSolver::getDisplayModes(void) const
+{
+    return { "Solver" };
 }
 
 

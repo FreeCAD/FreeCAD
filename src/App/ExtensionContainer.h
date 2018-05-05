@@ -40,7 +40,7 @@ namespace App {
  * In FreeCAD normally inheritance is a chain, it is not possible to use multiple inheritance. 
  * The reason for this is that all objects need to be exposed to python, and it is basically 
  * impossible to handle multiple inheritance in the C-API for python extensions. Also using multiple
- * parent classes in python is currently not possible with the default object aproach.
+ * parent classes in python is currently not possible with the default object approach.
  * 
  * The concept of extensions allow to circumvent those problems. Extensions are FreeCAD objects 
  * which work like normal objects in the sense that they use properties and class methods to define 
@@ -92,7 +92,7 @@ namespace App {
  * @endcode
  * 
  * From python adding an extension is easier, it must be simply registered to a document object 
- * at object initialisation like done with proeprties. Note that the special python extension objects
+ * at object initialisation like done with properties. Note that the special python extension objects
  * need to be added, not the c++ objects. Normally the only difference in name is the additional 
  * "Python" at the end of the extension name.
  * @code{.py}
@@ -182,7 +182,7 @@ public:
     virtual void Save(Base::Writer& writer) const override;
     virtual void Restore(Base::XMLReader& reader) override;
     
-    //those methods save/restore the dynamic extenions without handling properties, which is something
+    //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);

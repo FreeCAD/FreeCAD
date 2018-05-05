@@ -73,7 +73,8 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
         _ViewProviderPanel(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
-        obj.Base.ViewObject.hide()
+        if FreeCAD.GuiUp:
+            obj.Base.ViewObject.hide()
     if width:
         obj.Width = width
     if thickness:
@@ -982,6 +983,11 @@ class PanelSheet(Draft._DraftObject):
         obj.setEditorMode("FillRatio",2)
         obj.Scale = 1.0
 
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, 'Scale'):
+            obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+            obj.Scale = 1.0
+
     def execute(self, obj):
         import Part
         self.sheettag = None
@@ -1338,7 +1344,7 @@ class NestTaskPanel:
         self.form.ButtonStop.setEnabled(True)
         self.form.ButtonStart.setEnabled(False)
         self.form.ButtonPreview.setEnabled(False)
-        QtGui.qApp.processEvents()
+        QtGui.QApplication.processEvents()
         result = self.nester.run()
         self.form.progressBar.hide()
         self.form.ButtonStart.setEnabled(True)

@@ -229,13 +229,13 @@ class _CommandBuilding:
                     warning = True
         if warning :
             message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
-Building object are not allowed to accept Site and Building object.\n\
+Building object is not allowed to accept Site and Building object.\n\
 Site and Building objects will be removed from the selection.\n\
-You can change that in the preferences.\n" )
+You can change that in the preferences.") + "\n" 
             ArchCommands.printMessage( message )
         if sel and len(buildingobj) == 0:
             message = translate( "Arch" , "There is no valid object in the selection.\n\
-Building creation aborted.\n" )
+Building creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "

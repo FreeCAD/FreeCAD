@@ -119,9 +119,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params['orientation'] = 0
         else:
             params['orientation'] = 1
+        if not obj.UseComp:
+            if direction == 'CCW':
+                params['orientation'] = 1
+            else:
+                params['orientation'] = 0
 
         return params
-
+    
     def areaOpUseProjection(self, obj):
         '''areaOpUseProjection(obj) ... returns True'''
         return True

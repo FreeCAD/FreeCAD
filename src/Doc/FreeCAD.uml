@@ -1907,7 +1907,7 @@
 <XPD:REF name="Associations[0]">8KD6N7QAJEChIE1a/RanLgAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[2]" type="UMLClass" guid="vPty16sJ90SbG7aChALkZgAA">
-<XPD:ATTR name="Name" type="string">Persistance</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">Persistence</XPD:ATTR>
 <XPD:REF name="Namespace">iAYOWyQEKE++31JRAbi8kQAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">d58NHGW8tkCxiyV+qSUYgQAA</XPD:REF>
@@ -3181,7 +3181,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="wm65Qe6sHU63AjyCEdPysAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="2WV3Z7nlBk2NAFYK5HC66AAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">Persistance</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">Persistence</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="v+2UByeDhUK2/3UJTeyDkAAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -7680,7 +7680,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="QUdlFz83S0KO4nMAqQKTtgAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="GHt2+Ee0UkqL54qPNurfYwAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">ProperyContainerPy</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">PropertyContainerPy</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="bLrdF3rXY0KowyyqtR4DugAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -10672,7 +10672,7 @@
 <XPD:REF name="Views[3]">7frq0ceQPUG1Lx9qZ7x7rQAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[102]" type="UMLClass" guid="Be85got/wUG36xLfME456gAA">
-<XPD:ATTR name="Name" type="string">ProperyContainerPy</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">PropertyContainerPy</XPD:ATTR>
 <XPD:REF name="Namespace">uG5h/oqs2UibFew/63X1wQAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">CHPj1fGko0iYBjvL9uBVHAAA</XPD:REF>

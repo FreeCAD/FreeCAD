@@ -28,7 +28,6 @@
 # include <qapplication.h>
 # include <qdir.h>
 # include <qfileinfo.h>
-# include <QGLWidget>
 # include <QKeySequence>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
@@ -612,15 +611,15 @@ bool Document::isModified() const
 
 ViewProvider* Document::getViewProviderByPathFromTail(SoPath * path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
+    // Get the lowest root node in the pick path!
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNodeFromTail(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = d->_ViewProviderMap.begin();
-            for(;it!= d->_ViewProviderMap.end();++it)
+            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
+            for(it = d->_ViewProviderMap.begin();it!= d->_ViewProviderMap.end();++it) {
                 if (node == it->second->getRoot())
                     return it->second;
-            
+            }
          }
     }
 
@@ -915,15 +914,19 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     // set camera settings
     QString viewPos;
-    if (d->_pcAppWnd->sendHasMsgToActiveView("GetCamera")) {
-        const char* ppReturn=0;
-        d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
-  
-        // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
-        if (lines.size() > 1) {
-            lines.pop_front();
-            viewPos = lines.join(QLatin1String(" "));
+    std::list<MDIView*> mdi = getMDIViews();
+    for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+        if ((*it)->onHasMsg("GetCamera")) {
+            const char* ppReturn=0;
+            (*it)->onMsg("GetCamera",&ppReturn);
+
+            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
+            QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
+            if (lines.size() > 1) {
+                lines.pop_front();
+                viewPos = lines.join(QLatin1String(" "));
+                break;
+            }
         }
     }
 
@@ -1055,7 +1058,14 @@ void Document::createView(const Base::Type& typeId)
 
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
-        View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+        QtGLWidget* shareWidget = 0;
+        // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
+        if (!theViews.empty()) {
+            View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
+            shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+        }
+
+        View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
         if (!theViews.empty()) {
             View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
             std::string overrideMode = firstView->getViewer()->getOverrideMode();
@@ -1150,7 +1160,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
                 it = d->passiveViews.begin();
             }
 
-            // is already  closing the document
+            // is already closing the document
             if (d->_isClosing == false)
                 d->_pcAppWnd->onLastWindowClosed(this);
         }
@@ -1412,7 +1422,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  This method opens a new UNDO transaction on the active document. This transaction
  *  will later appear in the UNDO/REDO dialog with the name of the command. If the user 
  *  recall the transaction everything changed on the document between OpenCommand() and 
- *  CommitCommand will be undone (or redone). You can use an alternetive name for the 
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the 
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
@@ -1448,7 +1458,7 @@ std::vector<std::string> Document::getRedoVector(void) const
     return getDocument()->getAvailableRedoNames();
 }
 
-/// Will UNDO  one or more steps
+/// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1456,7 +1466,7 @@ void Document::undo(int iSteps)
     }
 }
 
-/// Will REDO  one or more steps
+/// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1473,6 +1483,7 @@ PyObject* Document::getPyObject(void)
 void Document::handleChildren3D(ViewProvider* viewProvider)
 {
     // check for children
+    bool rebuild = false;
     if (viewProvider && viewProvider->getChildRoot()) {
         std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
         SoGroup* childGroup =  viewProvider->getChildRoot();
@@ -1480,6 +1491,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
         // size not the same -> build up the list new
         if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
 
+            rebuild = true;
             childGroup->removeAllChildren();
 
             for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
@@ -1492,6 +1504,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                     for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                         View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
                         if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+
                             // @Note hasViewProvider()
                             // remove the viewprovider serves the purpose of detaching the inventor nodes from the
                             // top level root in the viewer. However, if some of the children were grouped beneath the object
@@ -1504,22 +1517,29 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
                 }
             }
         }
-    } else if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
-
-        if (viewProvider->hasExtension(ViewProviderDocumentObjectGroup::getExtensionClassTypeId())) {
-            std::vector<App::DocumentObject*> children = viewProvider->claimChildren();
-
-            for (auto& child : children) {
-                ViewProvider* ChildViewProvider = getViewProvider(child);
-                if (ChildViewProvider) {
-                    for (BaseView* view : d->baseViews) {
-                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                        if (activeView && !activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                            activeView->getViewer()->addViewProvider(ChildViewProvider);
-                        }
-                    }
-                }
+    } 
+    
+    //find all unclaimed viewproviders and add them back to the document (this happens if a 
+    //viewprovider has been claimed before, but the object dropped it. 
+    if(rebuild) {
+        auto vpmap = d->_ViewProviderMap;
+        for( auto& pair  : d->_ViewProviderMap ) {
+            auto claimed = pair.second->claimChildren3D();
+            for(auto obj : claimed) {
+                auto it = vpmap.find(obj);
+                if(it != vpmap.end())
+                    vpmap.erase(it);
             }
         }
+        for(auto& pair : vpmap) {
+            
+            // cycling to all views of the document to add the viewprovider to the viewer itself
+            for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                if (activeView && !activeView->getViewer()->hasViewProvider(pair.second)) {
+                    activeView->getViewer()->addViewProvider(pair.second);
+                }
+            }   
+        }   
     }
 }

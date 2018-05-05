@@ -46,6 +46,8 @@ void DlgSettingsFemGeneralImp::saveSettings()
 {
     fc_analysis_working_directory->onSave();
 
+    cb_analysis_group_meshing->onSave();
+
     cb_use_built_in_materials->onSave();
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
@@ -54,11 +56,18 @@ void DlgSettingsFemGeneralImp::saveSettings()
     cb_restore_result_dialog->onSave();
     cb_keep_results_on_rerun->onSave();
     cb_hide_constraint->onSave();
+
+    cb_wd_temp->onSave();
+    cb_wd_beside->onSave();
+    cb_wd_custom->onSave();
+    le_wd_custom->onSave();
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()
 {
     fc_analysis_working_directory->onRestore();
+
+    cb_analysis_group_meshing->onRestore();
 
     cb_use_built_in_materials->onRestore();
     cb_use_mat_from_config_dir->onRestore();
@@ -68,6 +77,11 @@ void DlgSettingsFemGeneralImp::loadSettings()
     cb_restore_result_dialog->onRestore();
     cb_keep_results_on_rerun->onRestore();
     cb_hide_constraint->onRestore();
+
+    cb_wd_temp->onRestore();
+    cb_wd_beside->onRestore();
+    cb_wd_custom->onRestore();
+    le_wd_custom->onRestore();
 }
 
 /**

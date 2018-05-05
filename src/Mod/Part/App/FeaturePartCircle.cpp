@@ -70,8 +70,7 @@ App::DocumentObjectExecReturn *Circle::execute(void)
                                                Base::toRadians<double>(this->Angle1.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
-
-    return App::DocumentObject::StdReturn;
+    return Primitive::execute();
 }
 
 void Circle::onChanged(const App::Property* prop)

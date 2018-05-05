@@ -250,7 +250,7 @@ private:
                 return Py::asObject(new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf)));
             }
 
-            throw Py::RuntimeError("Computation of B-Spline surface failed");
+            throw Py::RuntimeError("Computation of B-spline surface failed");
         }
         catch (const Py::Exception&) {
             // re-throw
@@ -577,7 +577,7 @@ Mesh.show(m)
             return Py::asObject(new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf)));
         }
 
-        throw Py::RuntimeError("Computation of B-Spline surface failed");
+        throw Py::RuntimeError("Computation of B-spline surface failed");
     }
 #endif
 #if defined(HAVE_PCL_FILTERS)

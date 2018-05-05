@@ -23,7 +23,7 @@
 #ifndef PATH_AreaParams_H
 #define PATH_AreaParams_H
 
-// deifne this to enable offset algo selection
+// define this to enable offset algo selection
 // #define AREA_OFFSET_ALGO
 
 /** \file
@@ -89,9 +89,9 @@
     ((double,accuracy,Accuracy,0.01,"Arc fitting accuracy",App::PropertyPrecision))\
     ((double,units,Unit,1.0,"Scaling factor for conversion to inch",App::PropertyFloat))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
-    ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
+    ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization (ignored currently)"))\
     ((double,clipper_scale,ClipperScale,1e7,\
-        "ClipperLib operate on intergers. This is the scale factor to convert\n"\
+        "ClipperLib operate on integers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
 /** Pocket parameters 
@@ -105,11 +105,11 @@
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
-	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
+	((bool,from_center,FromCenter,false,"Start pocketing from center"))\
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
 	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\
-        "The pocket patter will be shifted in othgnal direction by this amount for each section.\n"\
+        "The pocket patter will be shifted in orthogonal direction by this amount for each section.\n"\
         "This gives a 3D pattern mainly for 3D printing. The shift only applies to 'Offset', 'Grid'\n"\
         "and 'Triangle'", App::PropertyDistance))
 
@@ -137,9 +137,9 @@
         "'BoundBox' means relative Z height to the bounding box of all the children shape.\n"\
         "'Workplane' means relative to workplane, minus SectionOffset.\n"\
         "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n"\
-        "those with non-planar surface. It is recommended to use Workplane to specifiy the intended\n"\
+        "those with non-planar surface. It is recommended to use Workplane to specify the intended\n"\
         "starting z height.\n",(Absolute)(BoundBox)(Workplane)))\
-    ((bool,project,Project,false, "The section is produced by normal pojecting the outline\n"\
+    ((bool,project,Project,false, "The section is produced by normal projecting the outline\n"\
         "of all added shapes to the section plane, instead of slicing."))
 
 /** Section parameters */
@@ -152,7 +152,7 @@
         "a positive value means offset downward, and if bottom up, it means upward",App::PropertyDistance))\
     ((double,tolerance,SectionTolerance,1e-6,"Offset value added when hitting the boundary.\n"\
         "When the section hits or over the shape boundary, a section with the height of that boundary\n"\
-        "will be created. A small offset is usually required to avoid the tagnetial cut.",\
+        "will be created. A small offset is usually required to avoid the tangential cut.",\
         App::PropertyPrecision))\
      AREA_PARAMS_SECTION_EXTRA
 
@@ -172,7 +172,7 @@
         (OpenRound)(ClosedPolygon)(ClosedLine)(OpenSquare)(OpenButt),(ClipperLib::EndType,ClipperLib::et)))\
     ((double,miter_limit,MiterLimit,2.0,\
         "Miter limit for joint type Miter. See https://goo.gl/K8xX9h",App::PropertyFloat))\
-    ((double,round_precision,RoundPreceision,0.0,\
+    ((double,round_precision,RoundPrecision,0.0,\
         "Round joint precision. If =0, it defaults to Accuracy. \n"\
         "See https://goo.gl/4odfQh",App::PropertyPrecision))
 
@@ -188,7 +188,7 @@
         "and the corresponding GCode will be inserted.\n"\
         "'Auto' means the plane is determined by the first encountered arc plane. If the found\n"\
         "plane does not align to any GCode plane, XY plane is used.\n"\
-        "'Variable' means the arc plane can be changed during operation to align to the the\n"\
+        "'Variable' means the arc plane can be changed during operation to align to the\n"\
         "arc encountered.",\
         (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 
@@ -203,27 +203,30 @@
         "'2D5' explode shapes into wires, and groups the shapes by its plane. The 'start' position\n"\
         "chooses the first plane to start. The algorithm will then sort within the plane and then\n"\
         "move on to the next nearest plane.\n"\
-        "'3D' makes no assumption of planarity. The sorting is done across 3D space\n",\
-        (None)(2D5)(3D)))\
+        "'3D' makes no assumption of planarity. The sorting is done across 3D space.\n"\
+        "'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below\n"\
+        "the current milling layer. The path in lower layer is only selected if the moving distance\n"\
+        "is within the value given in 'threshold'.",\
+        (None)(2D5)(3D)(Greedy)))\
     AREA_PARAMS_MIN_DIST \
     ((double, abscissa, SortAbscissa, 3.0, "Controls vertex sampling on wire for nearest point searching\n"\
         "The sampling is dong using OCC GCPnts_UniformAbscissa",App::PropertyLength))\
     ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))\
     AREA_PARAMS_ORIENTATION \
     ((enum, direction, Direction, 0, "Enforce open path direction",\
-        (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))
+        (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))\
+    ((double, threshold, RetractThreshold, 0.0,\
+        "If two wire's end points are separated within this threshold, they are consider\n"\
+        "as connected. You may want to set this to the tool diameter to keep the tool down.",\
+        App::PropertyLength))\
+    ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))
        
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \
     AREA_PARAMS_SORT \
-    ((double, threshold, RetractThreshold, 0.0,\
-        "If two wire's end points are separated within this threshold, they are consider\n"\
-        "as connected. You may want to set this to the tool diameter to keep the tool down.",\
-        App::PropertyLength))\
     ((double, retraction, Retraction, 0.0,"Tool retraction absolute coordinate along retraction axis",\
         App::PropertyLength))\
-    ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))\
     ((double, resume_height, ResumeHeight, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
         "value of the next move.", App::PropertyLength))\

@@ -87,7 +87,6 @@ void AbstractSplitView::setupSettings()
     OnChange(*hGrp,"BackgroundColor3");
     OnChange(*hGrp,"BackgroundColor4");
     OnChange(*hGrp,"UseBackgroundColorMid");
-    OnChange(*hGrp,"UseAntialiasing");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"Orthographic");
@@ -99,6 +98,10 @@ void AbstractSplitView::setupSettings()
     OnChange(*hGrp,"BacklightDirection");
     OnChange(*hGrp,"BacklightIntensity");
     OnChange(*hGrp,"NavigationStyle");
+    OnChange(*hGrp,"OrbitStyle");
+    OnChange(*hGrp,"Sensitivity");
+    OnChange(*hGrp,"ResetCursorPosition");
+    OnChange(*hGrp,"PickRadius");
 }
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
@@ -204,6 +207,21 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         //for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
         //    (*it)->setNavigationType(type);
     }
+    else if (strcmp(Reason,"OrbitStyle") == 0) {
+        int style = rGrp.GetInt("OrbitStyle",1);
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
+    }
+    else if (strcmp(Reason,"Sensitivity") == 0) {
+        float val = rGrp.GetFloat("Sensitivity",2.0f);
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->navigationStyle()->setSensitivity(val);
+    }
+    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
+        bool on = rGrp.GetBool("ResetCursorPosition",false);
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->navigationStyle()->setResetCursorPosition(on);
+    }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
@@ -220,17 +238,14 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setGradientBackground((rGrp.GetBool("Gradient",true)));
     }
-    else if (strcmp(Reason,"UseAntialiasing") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getSoRenderManager()->getGLRenderAction()->setSmoothing(rGrp.GetBool("UseAntialiasing",false));
-    }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setEnabledVBO(rGrp.GetBool("UseVBO",false));
+        // Disable VBO for split screen as this leads to random crashes
+        //for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+        //    (*it)->setEnabledVBO(rGrp.GetBool("UseVBO",false));
     }
 
     else if (strcmp(Reason,"Orthographic") == 0) {
@@ -243,6 +258,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
                 (*it)->setCameraType(SoPerspectiveCamera::getClassTypeId());
         }
+    }
+    else if (strcmp(Reason, "PickRadius") == 0) {
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
     }
     else {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
@@ -431,7 +450,7 @@ AbstractSplitViewPy::~AbstractSplitViewPy()
 void AbstractSplitViewPy::testExistence()
 {
     if (!(_view && _view->getViewer(0)))
-        throw Py::Exception("Object already deleted");
+        throw Py::RuntimeError("Object already deleted");
 }
 
 Py::Object AbstractSplitViewPy::repr()
@@ -454,13 +473,13 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
         _view->onMsg("ViewFit", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
 }
@@ -475,13 +494,13 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
         _view->onMsg("ViewBottom", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -497,13 +516,13 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
         _view->onMsg("ViewFront", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -519,13 +538,13 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
         _view->onMsg("ViewLeft", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -541,13 +560,13 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
         _view->onMsg("ViewRear", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -563,13 +582,13 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
         _view->onMsg("ViewRight", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -585,13 +604,13 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
         _view->onMsg("ViewTop", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -607,13 +626,13 @@ Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
         _view->onMsg("ViewAxo", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -633,13 +652,13 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
         return Py::Object(view->getPyObject());
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -684,37 +703,20 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     hGrp->Attach(this);
 
     //anti-aliasing settings
-    QtGLFormat f;
     bool smoothing = false;
     bool glformat = false;
-    switch (hGrp->GetInt("AntiAliasing",0) ) {
-    case View3DInventorViewer::MSAA2x:
+    int samples = View3DInventorViewer::getNumSamples();
+    QtGLFormat f;
+
+    if (samples > 1) {
         glformat = true;
 #if !defined(HAVE_QT5_OPENGL)
         f.setSampleBuffers(true);
 #endif
-        f.setSamples(2);
-        break;
-    case View3DInventorViewer::MSAA4x:
-        glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
-        f.setSamples(4);
-        break;
-    case View3DInventorViewer::MSAA8x:
-        glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
-        f.setSamples(8);
-        break;
-    case View3DInventorViewer::Smoothing:
+        f.setSamples(samples);
+    }
+    else if (samples > 0) {
         smoothing = true;
-        break;
-    case View3DInventorViewer::None:
-    default:
-        break;
     }
 
     // minimal 2 views

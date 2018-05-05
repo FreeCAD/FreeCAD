@@ -141,7 +141,7 @@ namespace geoff_geometry {
 
 	Point::Point(const Vector2d& v)
 	{
-		x = v.getx(); y = v.gety();
+		x = v.getx(); y = v.gety(); ok = true;
 	}
 
 	Point3d::Point3d(const Vector3d& v) {
@@ -368,6 +368,9 @@ namespace geoff_geometry {
 		if((ok = (p.ok && pc0.ok))) {
 			pc = pc0;
 			radius = p.Dist(pc0);
+		}
+		else {
+			radius = 0;
 		}
 	}
 
@@ -779,6 +782,7 @@ namespace geoff_geometry {
 		// constructor plane from point & vector
 		normal = v;
 		if(normalise == true) normal.normalise();
+		ok = (normal != NULL_VECTOR);
 		d = -(normal * Vector3d(p0));
 	}
 
@@ -787,6 +791,7 @@ namespace geoff_geometry {
 		double mag = normal.normalise();
 		ok = (normal != NULL_VECTOR);
 		if(ok) d = dist / mag;
+		else d = 0;
 	}
 
 	double Plane::Dist(const Point3d& p)const{

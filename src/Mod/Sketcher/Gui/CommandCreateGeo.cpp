@@ -27,6 +27,7 @@
 # include <QApplication>
 #endif
 
+#include <stdlib.h>
 #include <qdebug.h>
 #include <QString>
 #include <GC_MakeEllipse.hxx>
@@ -61,6 +62,8 @@
 #include <Gui/ToolBarManager.h>
 
 #include "GeometryCreationMode.h"
+
+#include "SketcherRegularPolygonDialog.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -226,10 +229,24 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 /* Sketch commands =======================================================*/
 
+static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
+static char cursor_crosshair_color[12];
+
+void DrawSketchHandler::setCrosshairColor()
+{
+    unsigned long color = 0xFFFFFFFF; // white
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
+    // from rgba to rgb
+    color = (color >> 8) & 0xFFFFFF;
+    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+}
+
 /* XPM */
 static const char *cursor_createline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -279,6 +296,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createline),7,7);
     }
 
@@ -436,7 +454,7 @@ bool CmdSketcherCreateLine::isActive(void)
 /* XPM */
 static const char *cursor_createbox[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -486,6 +504,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createbox),7,7);
     }
 
@@ -674,7 +693,7 @@ bool CmdSketcherCreateRectangle::isActive(void)
 /* XPM */
 static const char *cursor_createlineset[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -830,6 +849,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createlineset),7,7);
     }
 
@@ -1198,7 +1218,9 @@ public:
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), 
+                                          (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                            Sketcher::start : Sketcher::end);
                     sugConstr2.clear();
                 }
 
@@ -1365,7 +1387,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 /* XPM */
 static const char *cursor_createarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1424,6 +1446,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarc),7,7);
     }
 
@@ -1636,7 +1659,7 @@ bool CmdSketcherCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_create3pointarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1694,6 +1717,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_create3pointarc),7,7);
     }
 
@@ -2047,7 +2071,7 @@ bool CmdSketcherCompCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_createcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2097,6 +2121,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createcircle),7,7);
     }
 
@@ -2249,7 +2274,7 @@ bool CmdSketcherCreateCircle::isActive(void)
  */
 static const char *cursor_createellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2357,6 +2382,7 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createellipse),7,7);
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
@@ -3066,7 +3092,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create ellipse by center");
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Conics_Ellipse_Center";
     eType           = ForEdit;
@@ -3096,7 +3122,7 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create ellipse by 3 points");
     sToolTipText    = QT_TR_NOOP("Create an ellipse by 3 points in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreateEllipseBy3Points";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateEllipse_3points";
     eType           = ForEdit;
@@ -3116,7 +3142,7 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
 /* XPM */
 static const char *cursor_createarcofellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3173,6 +3199,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofellipse),7,7);
     }
 
@@ -3468,7 +3495,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create an arc of ellipse");
     sToolTipText    = QT_TR_NOOP("Create an arc of ellipse in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Elliptical_Arc";
     eType           = ForEdit;
@@ -3488,7 +3515,7 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 /* XPM */
 static const char *cursor_createarcofhyperbola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3546,6 +3573,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
     }
 
@@ -3851,7 +3879,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create an arc of hyperbola");
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Hyperbolic_Arc";
     eType           = ForEdit;
@@ -3870,7 +3898,7 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
 /* XPM */
 static const char *cursor_createarcofparabola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3930,6 +3958,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofparabola),7,7);
     }
 
@@ -4195,7 +4224,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create an arc of parabola");
     sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Parabolic_Arc";
     eType           = ForEdit;
@@ -4227,7 +4256,7 @@ CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create a conic");
     sToolTipText    = QT_TR_NOOP("Create a conic in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CompCreateConic";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
 }
@@ -4362,7 +4391,7 @@ bool CmdSketcherCompCreateConic::isActive(void)
 /* XPM */
 static const char *cursor_createbspline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4423,6 +4452,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createbspline),7,7);
     }
 
@@ -4533,13 +4563,34 @@ public:
                 //Gui::Command::openCommand("Add Pole circle");
                 
                 //Add pole
+                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
+
+                auto normalize = [](double guess) {
+                    double units=1.0;
+
+                    while (guess >= 10.0) {
+                        guess /= 10.0;
+                        units*=10.0;
+                    }
+
+                    while (guess < 1.0) {
+                        guess *= 10.0;
+                        units/=10.0;
+                    }
+
+                    return round(guess)*units;
+
+                };
+
+                guess = normalize(guess);
+
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                         sketchgui->getObject()->getNameInDocument(),
                                         EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
                 
                 if(EditCurve.size() == 2) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
+                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, guess );
                 }
 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -4807,7 +4858,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create periodic B-spline");
     sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control point in the sketch.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CreatePeriodicBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
     eType           = ForEdit;
@@ -4816,7 +4867,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(1) );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline(1) );
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive(void)
@@ -4838,7 +4889,7 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create a B-spline");
     sToolTipText    = QT_TR_NOOP("Create a B-spline in the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CompCreateBSpline";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
 }
@@ -4941,7 +4992,7 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 /* XPM */
 static const char *cursor_create3pointcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4993,6 +5044,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_create3pointcircle),7,7);
     }
 
@@ -5293,7 +5345,7 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 /* XPM */
 static const char *cursor_createpoint[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -5337,6 +5389,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createpoint),7,7);
     }
 
@@ -5539,7 +5592,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_createfillet[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5592,6 +5645,7 @@ public:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createfillet),7,7);
     }
 
@@ -5819,7 +5873,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_trimming[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5869,6 +5923,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_trimming),7,7);
     }
 
@@ -5986,7 +6041,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_extension[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6030,6 +6085,8 @@ public:
         , EditCurve(2)
         , BaseGeoId(-1)
         , ExtendFromStart(false)
+        , SavedExtendFromStart(false)
+        , Increment(0)
     {
     }
     virtual ~DrawSketchHandlerExtend()
@@ -6048,6 +6105,7 @@ public:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
+        setCrosshairColor();
         setCursor(QPixmap(cursor_extension),7,7);
     }
 
@@ -6307,7 +6365,6 @@ namespace SketcherGui {
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
 
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
@@ -6320,7 +6377,7 @@ namespace SketcherGui {
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
                 case Sketcher::SketchObject::rlOtherBody:
-                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link. Hold Ctrl to allow cross-references.");
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link.");
                     break;
                 case Sketcher::SketchObject::rlOtherPart:
                     this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
@@ -6360,7 +6417,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_external[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6418,6 +6475,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_external),7,7);
     }
 
@@ -6535,9 +6593,9 @@ namespace SketcherGui {
             Q_UNUSED(sSubName);
             
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
-            sketch->allowUnaligned = QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier);
-            
+            sketch->setAllowOtherBody(QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
+            sketch->setAllowUnaligned(QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
+
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
             // Reusing code: All good reasons not to allow a carbon copy
@@ -6552,6 +6610,9 @@ namespace SketcherGui {
                         break;
                     case Sketcher::SketchObject::rlOtherBody:
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another body. Hold Ctrl to allow crossreferences.");
+                        break;
+                    case Sketcher::SketchObject::rlOtherBodyWithLinks:
+                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body and it contains external geometry. Crossreference not allowed.");
                         break;
                     case Sketcher::SketchObject::rlOtherPart:
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
@@ -6580,7 +6641,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_carboncopy[]={
     "32 32 3 1",
-    "+ c white",
+    cursor_crosshair_color,
     "* c red",
     ". c None",
     "......+.........................",
@@ -6638,6 +6699,7 @@ static const char *cursor_carboncopy[]={
             Gui::Selection().clearSelection();
             Gui::Selection().rmvSelectionGate();
             Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+            setCrosshairColor();
             setCursor(QPixmap(cursor_carboncopy),7,7);
         }
         
@@ -6752,7 +6814,7 @@ static const char *cursor_carboncopy[]={
 /* XPM */
 static const char *cursor_creatslot[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -6807,6 +6869,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_creatslot),7,7);
     }
 
@@ -7031,7 +7094,7 @@ bool CmdSketcherCreateSlot::isActive(void)
 /* XPM */
 static const char *cursor_createregularpolygon[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -7089,6 +7152,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createregularpolygon),7,7);
     }
 
@@ -7125,7 +7189,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, dV)) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -7374,6 +7438,31 @@ bool CmdSketcherCreateOctagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+DEF_STD_CMD_A(CmdSketcherCreateRegularPolygon);
+CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
+: Command("Sketcher_CreateRegularPolygon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create regular polygon");
+    sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketch");
+    sWhatsThis      = "Sketcher_CreateRegularPolygon";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "CreateRegularPolygon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateRegularPolygon::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
+}
+
+bool CmdSketcherCreateRegularPolygon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateRegularPolygon);
 
@@ -7383,7 +7472,7 @@ CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create regular polygon");
-    sToolTipText    = QT_TR_NOOP("Create an regular polygon in the sketcher");
+    sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketcher");
     sWhatsThis      = "Sketcher_CompCreateRegularPolygon";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -7404,6 +7493,17 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7)); break;
     case 5:
         ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8)); break;
+    case 6:
+    {
+        // Pop-up asking for values
+        SketcherRegularPolygonDialog * srpd = new SketcherRegularPolygonDialog();
+
+        if (srpd->exec() == QDialog::Accepted)
+            ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(srpd->sides));
+
+        delete srpd;
+    }
+    break;
     default:
         return;
     }
@@ -7435,6 +7535,8 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
     heptagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
     QAction* octagon = pcAction->addAction(QString());
     octagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+    QAction* regular = pcAction->addAction(QString());
+    regular->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
 
     _pcAction = pcAction;
     languageChange();
@@ -7462,6 +7564,7 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
         a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
         a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
         a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
@@ -7471,6 +7574,7 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
         a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"));
         a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"));
         a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));
+        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -7509,6 +7613,10 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
     octagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Octagon"));
     octagon->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     octagon->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
+    QAction* regular = a[6];
+    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular Polygon"));
+    regular->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
+    regular->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
 }
 
 bool CmdSketcherCompCreateRegularPolygon::isActive(void)

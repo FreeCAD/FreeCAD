@@ -48,10 +48,10 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
   : QDialog(parent, fl), link(list), ui(new Ui_DlgPropertyLink)
 {
 #ifdef FC_DEBUG
-    assert(list.size() == 4);
+    assert(list.size() >= 5);
 #endif
     ui->setupUi(this);
-    findObjects(ui->checkObjectType->isChecked());
+    findObjects(ui->checkObjectType->isChecked(), QString());
 }
 
 /**
@@ -59,19 +59,28 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
  */
 DlgPropertyLink::~DlgPropertyLink()
 {
-  // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
+{
+    ui->listWidget->setSelectionMode(mode);
+    ui->listWidget->clear();
+    findObjects(ui->checkObjectType->isChecked(), ui->searchBox->text());
 }
 
 void DlgPropertyLink::accept()
 {
-    QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
-    if (items.isEmpty()) {
-        QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+    if (ui->listWidget->selectionMode() == QAbstractItemView::SingleSelection) {
+        QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
+        if (items.isEmpty()) {
+            QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+            return;
+        }
     }
-    else {
-        QDialog::accept();
-    }
+
+    QDialog::accept();
 }
 
 QStringList DlgPropertyLink::propertyLink() const
@@ -90,13 +99,35 @@ QStringList DlgPropertyLink::propertyLink() const
     }
 }
 
-void DlgPropertyLink::findObjects(bool on)
+QVariantList DlgPropertyLink::propertyLinkList() const
 {
-    QString docName = link[0];
-    QString objName = link[1];
-    QString parName = link[3];
-    QString searchText = ui->searchBox->text();
+    QVariantList varList;
+    QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
+    if (items.isEmpty()) {
+        varList << link;
+    }
+    else {
+        for (QList<QListWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            QStringList list = link;
+            list[1] = (*it)->data(Qt::UserRole).toString();
+            list[2] = (*it)->text();
+            if (list[1].isEmpty())
+                list[2] = QString::fromUtf8("");
+            varList << list;
+        }
+    }
 
+    return varList;
+}
+
+void DlgPropertyLink::findObjects(bool on, const QString& searchText)
+{
+    QString docName = link[0]; // document name
+    QString objName = link[1]; // internal object name
+    QString parName = link[3]; // internal object name of the parent of the link property
+    QString proName = link[4]; // property name
+
+    bool isSingleSelection = (ui->listWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
     if (doc) {
         Base::Type baseType = App::DocumentObject::getClassTypeId();
@@ -110,7 +141,6 @@ void DlgPropertyLink::findObjects(bool on)
 
                 // get the direct base class of App::DocumentObject which 'obj' is derived from
                 while (!objType.isBad()) {
-                    std::string name = objType.getName();
                     Base::Type parType = objType.getParent();
                     if (parType == baseType) {
                         baseType = objType;
@@ -121,11 +151,19 @@ void DlgPropertyLink::findObjects(bool on)
             }
         }
 
-        std::vector<App::DocumentObject*> outList;
+        std::vector<App::DocumentObject*> ignoreList;
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
         if (par) {
-            outList = par->getOutList();
-            outList.push_back(par);
+            // for multi-selection we need all objects
+            if (isSingleSelection) {
+                App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
+                ignoreList = par->getOutListOfProperty(prop);
+            }
+
+            // add the inlist to the ignore list to avoid dependency loops
+            std::vector<App::DocumentObject*> inList = par->getInListRecursive();
+            ignoreList.insert(ignoreList.end(), inList.begin(), inList.end());
+            ignoreList.push_back(par);
         }
 
         // Add a "None" entry on top
@@ -145,7 +183,7 @@ void DlgPropertyLink::findObjects(bool on)
             }
             if (vp && nameOk) {
                 // filter out the objects
-                if (std::find(outList.begin(), outList.end(), *it) == outList.end()) {
+                if (std::find(ignoreList.begin(), ignoreList.end(), *it) == ignoreList.end()) {
                     QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
                     item->setIcon(vp->getIcon());
                     item->setText(QString::fromUtf8((*it)->Label.getValue()));
@@ -160,14 +198,14 @@ void DlgPropertyLink::findObjects(bool on)
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
     ui->listWidget->clear();
-    findObjects(on);
+    findObjects(on, ui->searchBox->text());
 }
 
-void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
+void DlgPropertyLink::on_searchBox_textChanged(const QString& search)
 {
     ui->listWidget->clear();
     bool on = ui->checkObjectType->isChecked();
-    findObjects(on);
+    findObjects(on, search);
 }
 
 #include "moc_DlgPropertyLink.cpp"

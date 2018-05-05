@@ -73,16 +73,20 @@ const char* DrawPage::ProjectionTypeEnums[] = { "First Angle",
 DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
-    nowDeleting = false;
+    nowUnsetting = false;
+    
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
 
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_None), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
 
-    Base::Reference<ParameterGrp> hGrp =
-                        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
     // In preferences, 0 -> First Angle 1 -> Third Angle
     int projType = hGrp->GetInt("ProjectionAngle", -1);
@@ -108,25 +112,40 @@ void DrawPage::onBeforeChange(const App::Property* prop)
 
 void DrawPage::onChanged(const App::Property* prop)
 {
-    if (prop == &Template) {
+    if ((prop == &KeepUpdated)  &&
+         KeepUpdated.getValue()) {
         if (!isRestoring() &&
-            !isDeleting()) {
-        //TODO: reload if Template prop changes (ie different Template)
+            !isUnsetting()) {
+            //would be nice if this message was displayed immediately instead of after the recomputeFeature
+            Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
+            auto views(Views.getValues());
+            for (auto& v: views) {
+                //check for children of current view 
+                if (v->isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()))  {
+                    auto dvc = static_cast<TechDraw::DrawViewCollection*>(v);
+                    for (auto& vv: dvc->Views.getValues()) {
+                        vv->touch();
+                    }
+                }
+                v->recomputeFeature();                   //get all views up to date
+            }
         }
-    } else if (prop == &Views) {
+    } else if (prop == &Template) {
         if (!isRestoring() &&
-            !isDeleting() ) {
-            //TODO: reload if Views prop changes (ie adds/deletes)
+            !isUnsetting()) {
+            //nothing to page to do??
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
-      const std::vector<App::DocumentObject*> &vals = Views.getValues();
-      for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
-          TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-          if (view != NULL && view->ScaleType.isValue("Page")) {
-              view->Scale.touch();
-          }
-      }
+        const std::vector<App::DocumentObject*> &vals = Views.getValues();
+        for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
+            TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+            if (view != NULL && view->ScaleType.isValue("Page")) {
+                if(std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                   view->Scale.setValue(Scale.getValue());
+                }
+            }
+        }
     } else if (prop == &ProjectionType) {
       // touch all ortho views in the Page as they may be dependent on Projection Type
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
@@ -140,37 +159,18 @@ void DrawPage::onChanged(const App::Property* prop)
       // TODO: Also update Template graphic.
 
     }
-    App::DocumentObject::onChanged(prop);  //<<<<
+    App::DocumentObject::onChanged(prop); 
 }
 
+//Page is just a container. It doesn't "do" anything.
 App::DocumentObjectExecReturn *DrawPage::execute(void)
 {
-    //Page is just a property storage area? no real logic involved?
-    //all this does is trigger onChanged in this and ViewProviderPage
-    Template.touch();
-    Views.touch();
     return App::DocumentObject::StdReturn;
 }
 
+// this is now irrelevant, b/c DP::execute doesn't do anything. 
 short DrawPage::mustExecute() const
 {
-    if(Scale.isTouched())
-        return 1;
-
-    // Check the value of template if this has been modified
-    App::DocumentObject* tmpl = Template.getValue();
-    if(tmpl && tmpl->isTouched())
-        return 1;
-
-    // Check if within this Page, any Views have been touched
-    // Why does Page have to execute if a View changes?
-    const std::vector<App::DocumentObject*> &vals = Views.getValues();
-    for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
-       if((*it)->isTouched()) {
-            return 1;
-        }
-    }
-
     return App::DocumentObject::mustExecute();
 }
 
@@ -267,59 +267,98 @@ int DrawPage::addView(App::DocumentObject *docObj)
         view->ScaleType.setValue("Automatic");
     }
 
+    view->checkScale();
+
     return Views.getSize();
 }
 
+//Note Views might be removed from document elsewhere so need to check if a View is still in Document here
 int DrawPage::removeView(App::DocumentObject *docObj)
 {
     if(!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()))
         return -1;
 
+    App::Document* doc = docObj->getDocument();
+    if (doc == nullptr) {
+        return -1;
+    }
+
+    const char* name = docObj->getNameInDocument();
+    if (!name) {
+         return -1;
+    }
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
     std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
     for (; it != currViews.end(); it++) {
-        std::string viewName = docObj->getNameInDocument();
+        App::Document* viewDoc = (*it)->getDocument();
+        if (viewDoc == nullptr) {
+            continue;
+        }
+
+        std::string viewName = name;
         if (viewName.compare((*it)->getNameInDocument()) != 0) {
             newViews.push_back((*it));
         }
     }
     Views.setValues(newViews);
-
     return Views.getSize();
+}
+
+void DrawPage::requestPaint(void)
+{
+    signalGuiPaint(this);
 }
 
 void DrawPage::onDocumentRestored()
 {
-    std::vector<App::DocumentObject*> featViews = Views.getValues();
+    //control drawing updates on restore based on Preference
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
+    KeepUpdated.setValue(autoUpdate);
+
+    std::vector<App::DocumentObject*> featViews = getAllViews();
     std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for(; it != featViews.end(); ++it) {
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
         if (part != nullptr &&
             !part->hasGeometry()) {
-            part->execute();
-//            std::vector<App::DocumentObject*> parent = part->getInList();
-//            for (auto& p: parent) {
-//                p->touch();
-//            }
+            part->recomputeFeature();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
     for(it = featViews.begin(); it != featViews.end(); ++it) {
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim != nullptr &&
-            !dim->has2DReferences()) {
-            dim->execute();
+        if (dim != nullptr) {
+            dim->recomputeFeature();
         }
     }
-    recompute();
     App::DocumentObject::onDocumentRestored();
+}
+
+std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
+{
+    auto views = Views.getValues();   //list of docObjects
+    std::vector<App::DocumentObject*> allViews;
+    for (auto& v: views) {
+        if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
+            TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
+            if (dpg != nullptr) {                                              //can't really happen!
+              std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
+              allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
+            }
+        } else {
+            allViews.push_back(v);
+        }
+    }
+    return allViews;
 }
 
 void DrawPage::unsetupObject()
 {
-    nowDeleting = true;
+    nowUnsetting = true;
 
     // Remove the Page's views & template from document
     App::Document* doc = getDocument();

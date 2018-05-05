@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemSolverObject.h>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
@@ -51,6 +52,8 @@ class TaskFemConstraintFluidBoundary : public TaskFemConstraint
 public:
     TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = 0);
     virtual ~TaskFemConstraintFluidBoundary();
+
+    const Fem::FemSolverObject* getFemSolver(void) const;
 
     std::string getBoundaryType(void) const;
     std::string getSubtype(void) const;
@@ -80,7 +83,7 @@ private Q_SLOTS:
     void onThermalBoundaryTypeChanged(void);
     void onReferenceDeleted(void);
     void onButtonDirection(const bool pressed = true);
-    void onCheckReverse(bool); // consider remove this slot as the UI is hiden
+    void onCheckReverse(bool); // consider removing this slot as the UI is hidden
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -95,6 +98,8 @@ private:
 
 private:
     Ui_TaskFemConstraintFluidBoundary* ui;
+    int dimension;  // -1: unknown, 2 for 2D and 3 for 3D
+    Fem::FemSolverObject* pcSolver;
     App::PropertyBool* pHeatTransfering;
     App::PropertyEnumeration* pTurbulenceModel;
 };

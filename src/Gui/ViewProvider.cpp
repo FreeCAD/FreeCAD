@@ -281,7 +281,7 @@ void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 
 void ViewProvider::setDisplayMaskMode(const char* type)
 {
-    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
+    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(type);
     if (it != _sDisplayMaskModes.end())
         _iActualMode = it->second;
     else
@@ -339,7 +339,6 @@ vector<std::string> ViewProvider::getDisplayModes(void) const {
     return modes;
 }
 
-
 std::string ViewProvider::getActiveDisplayMode(void) const
 {
     return _sCurrentMode;
@@ -381,7 +380,7 @@ bool ViewProvider::isVisible() const
 }
 
 void ViewProvider::setOverrideMode(const std::string &mode)
-{    
+{
     if (mode == "As Is") {
         viewOverrideMode = -1;
         overrideMode = mode;
@@ -533,7 +532,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
 {
-    // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
+    // Note: There seems to be a bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
     
     //first get the path to this node and calculate the current setTransformation
@@ -612,6 +611,11 @@ bool ViewProvider::onDelete(const vector< string >& subNames) {
         del &= ext->extensionOnDelete(subNames);
 
     return del;
+}
+
+bool ViewProvider::canDelete(App::DocumentObject*) const
+{
+    return false;
 }
 
 bool ViewProvider::canDragObject(App::DocumentObject* obj) const {

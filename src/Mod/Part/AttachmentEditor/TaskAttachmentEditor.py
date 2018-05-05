@@ -25,10 +25,9 @@ from __future__ import absolute_import
 
 import FreeCAD as App
 import Part
-from FreeCAD import Units
-from Units import MilliMetre as mm
-from Units import Degree as deg
-from Units import Quantity as Q
+mm = App.Units.MilliMetre
+deg = App.Units.Degree
+Q = App.Units.Quantity
 
 from AttachmentEditor.FrozenClass import FrozenClass
 try:
@@ -161,7 +160,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.block = False #when True, event handlers return without doing anything (instead of doing-undoing blockSignals to everything)
         self.refLines = [] #reference lineEdit widgets, packed into a list for convenience
         self.refButtons = [] #buttons next to reference lineEdits
-        self.superPlacementEdits = [] #all edit boxes related to superplacement
+        self.attachmentOffsetEdits = [] #all edit boxes related to attachmentOffset
         self.i_active_ref = -1 #index of reference being selected (-1 means no reaction to selecting)
         self.auto_next = False #if true, references being selected are appended ('Selecting' state is automatically advanced to next button)
         
@@ -237,12 +236,12 @@ class AttachmentEditorTaskPanel(FrozenClass):
                            self.form.buttonRef2,
                            self.form.buttonRef3,
                            self.form.buttonRef4]
-        self.superPlacementEdits = [self.form.superplacementX,
-                                    self.form.superplacementY,
-                                    self.form.superplacementZ,
-                                    self.form.superplacementYaw,
-                                    self.form.superplacementPitch,
-                                    self.form.superplacementRoll]
+        self.attachmentOffsetEdits = [self.form.attachmentOffsetX,
+                                    self.form.attachmentOffsetY,
+                                    self.form.attachmentOffsetZ,
+                                    self.form.attachmentOffsetYaw,
+                                    self.form.attachmentOffsetPitch,
+                                    self.form.attachmentOffsetRoll]
                            
         self.block = False
                            
@@ -252,8 +251,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
         for i in range(len(self.refLines)):
             QtCore.QObject.connect(self.refButtons[i], QtCore.SIGNAL('clicked()'), lambda i=i: self.refButtonClicked(i))
         
-        for i in range(len(self.superPlacementEdits)):
-            QtCore.QObject.connect(self.superPlacementEdits[i], QtCore.SIGNAL('valueChanged(double)'), lambda val, i=i: self.superplacementChanged(i,val))
+        for i in range(len(self.attachmentOffsetEdits)):
+            QtCore.QObject.connect(self.attachmentOffsetEdits[i], QtCore.SIGNAL('valueChanged(double)'), lambda val, i=i: self.attachmentOffsetChanged(i,val))
             
         QtCore.QObject.connect(self.form.checkBoxFlip, QtCore.SIGNAL('clicked()'), self.checkBoxFlipClicked)
         
@@ -362,33 +361,33 @@ class AttachmentEditorTaskPanel(FrozenClass):
     
     # slots
 
-    def superplacementChanged(self, index, value):
+    def attachmentOffsetChanged(self, index, value):
         if self.block:
             return
-        plm = self.attacher.SuperPlacement
+        plm = self.attacher.AttachmentOffset
         pos = plm.Base
         if index==0:
-            pos.x = Q(self.form.superplacementX.text()).getValueAs(mm)
+            pos.x = Q(self.form.attachmentOffsetX.text()).getValueAs(mm)
         if index==1:
-            pos.y = Q(self.form.superplacementY.text()).getValueAs(mm)
+            pos.y = Q(self.form.attachmentOffsetY.text()).getValueAs(mm)
         if index==2:
-            pos.z = Q(self.form.superplacementZ.text()).getValueAs(mm)
+            pos.z = Q(self.form.attachmentOffsetZ.text()).getValueAs(mm)
         if index >= 0  and  index <= 2:
             plm.Base = pos
 
         rot = plm.Rotation;
         (yaw, pitch, roll) = rot.toEuler()
         if index==3:
-            yaw = Q(self.form.superplacementYaw.text()).getValueAs(deg)
+            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
         if index==4:
-            pitch = Q(self.form.superplacementPitch.text()).getValueAs(deg)
+            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
         if index==5:
-            roll = Q(self.form.superplacementRoll.text()).getValueAs(deg)
+            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
         if index >= 3  and  index <= 5:
             rot = App.Rotation(yaw,pitch,roll)
             plm.Rotation = rot
         
-        self.attacher.SuperPlacement = plm
+        self.attacher.AttachmentOffset = plm
         
         self.updatePreview()
 
@@ -432,16 +431,16 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if self.obj_is_attachable:
             self.attacher.readParametersFromFeature(self.obj)
         
-        plm = self.attacher.SuperPlacement
+        plm = self.attacher.AttachmentOffset
         try:
             old_selfblock = self.block 
             self.block = True
-            self.form.superplacementX.setText    ((plm.Base.x * mm).UserString)
-            self.form.superplacementY.setText    ((plm.Base.y * mm).UserString)
-            self.form.superplacementZ.setText    ((plm.Base.z * mm).UserString)
-            self.form.superplacementYaw.setText  ((plm.Rotation.toEuler()[0] * deg).UserString)
-            self.form.superplacementPitch.setText((plm.Rotation.toEuler()[1] * deg).UserString)
-            self.form.superplacementRoll.setText ((plm.Rotation.toEuler()[2] * deg).UserString)
+            self.form.attachmentOffsetX.setText    ((plm.Base.x * mm).UserString)
+            self.form.attachmentOffsetY.setText    ((plm.Base.y * mm).UserString)
+            self.form.attachmentOffsetZ.setText    ((plm.Base.z * mm).UserString)
+            self.form.attachmentOffsetYaw.setText  ((plm.Rotation.toEuler()[0] * deg).UserString)
+            self.form.attachmentOffsetPitch.setText((plm.Rotation.toEuler()[1] * deg).UserString)
+            self.form.attachmentOffsetRoll.setText ((plm.Rotation.toEuler()[2] * deg).UserString)
             
             self.form.checkBoxFlip.setChecked(self.attacher.Reverse)
             
@@ -472,8 +471,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
             list_widget = self.form.listOfModes
             list_widget.clear()
             sugr = self.last_sugr
+            # always have the option to choose Deactivated mode
+            valid_modes = ['Deactivated'] + sugr['allApplicableModes']
+            
             # add valid modes
-            for m in sugr['allApplicableModes']:
+            for m in valid_modes:
                 item = QtGui.QListWidgetItem()
                 txt = self.attacher.getModeInfo(m)['UserFriendlyName']
                 item.setText(txt)
@@ -521,8 +523,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 for refstr in mi['ReferenceCombinations']:
                     refstr_userfriendly = [self.attacher.getRefTypeInfo(t)['UserFriendlyName'] for t in refstr]
                     cmb.append(u", ".join(refstr_userfriendly))
-                tip = _translate('AttachmentEditor',"{docu}\n\nReference combinations:\n{combinations}",None).format(docu=mi['BriefDocu'], combinations= u"\n".join(cmb) )
-
+                
+                tip = mi['BriefDocu']
+                if (m != 'Deactivated'):
+                    tip += _translate('AttachmentEditor', "\n\nReference combinations:\n", None) + u"\n".join(cmb)
+                
                 item.setToolTip(tip)
 
         finally:
@@ -586,9 +591,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
         
         if new_plm is not None:
-            self.form.groupBox_superplacement.setTitle(_translate('AttachmentEditor',"Extra placement:",None))
+            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset:",None))
+            self.form.groupBox_AttachmentOffset.setEnabled(True)
         else:
-            self.form.groupBox_superplacement.setTitle(_translate('AttachmentEditor',"Extra placement (inactive - not attached):",None))
+            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset (inactive - not attached):",None))
+            self.form.groupBox_AttachmentOffset.setEnabled(False)
 
     def cleanUp(self):
         '''stuff that needs to be done when dialog is closed.'''

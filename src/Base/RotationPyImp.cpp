@@ -83,8 +83,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!d", &(Base::MatrixPy::Type), &o, &angle)) {
-      // NOTE: The last parameter defines the rotation angle in degree.
+    if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
       getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
       return 0;
     }
@@ -150,6 +149,32 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
+    PyErr_Clear();
+    PyObject *v3;
+    char *priority = nullptr;
+    if (PyArg_ParseTuple(args, "O!O!O!|s", &(Base::VectorPy::Type), &v1,
+                                           &(Base::VectorPy::Type), &v2,
+                                           &(Base::VectorPy::Type), &v3,
+                                           &priority)) {
+        Py::Vector xdir(v1, false);
+        Py::Vector ydir(v2, false);
+        Py::Vector zdir(v3, false);
+        if (!priority)
+            priority = "ZXY";
+        try {
+            *getRotationPtr() = (Rotation::makeRotationByAxes(xdir.toVector(), ydir.toVector(), zdir.toVector(), priority));
+        } catch(Base::Exception &e) {
+            std::string str;
+            str += "FreeCAD exception thrown (";
+            str += e.what();
+            str += ")";
+            PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
+            return -1;
+        }
+
+        return 0;
+    }
+
     PyErr_SetString(PyExc_TypeError, "Rotation constructor accepts:\n"
         "-- empty parameter list\n"
         "-- Rotation object"
@@ -160,6 +185,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         "-- Matrix object\n"
         "-- 16 floats (4x4 matrix)\n"
         "-- 9 floats (3x3 matrix)\n"
+        "-- 3 vectors + optional string"
        );
     return -1;
 }
@@ -255,13 +281,19 @@ PyObject* RotationPy::isSame(PyObject *args)
     return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 
+PyObject* RotationPy::isIdentity(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool null = getRotationPtr()->isIdentity();
+    return Py_BuildValue("O", (null ? Py_True : Py_False));
+}
+
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    Base::Rotation rot = * getRotationPtr();
-    Base::Rotation nullrot(0,0,0,1);
-    bool null = rot.isSame(nullrot);
+    bool null = getRotationPtr()->isNull();
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
@@ -317,13 +349,37 @@ void RotationPy::setAngle(Py::Float arg)
     this->getRotationPtr()->setValue(axis, angle);
 }
 
-PyObject *RotationPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *RotationPy::getCustomAttributes(const char* attr) const
 {
+    if (strcmp(attr, "Matrix") == 0) {
+        Matrix4D mat;
+        this->getRotationPtr()->getValue(mat);
+        return new MatrixPy(mat);
+    }
     return 0;
 }
 
-int RotationPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
+    if (strcmp(attr, "Matrix") == 0) {
+        if (PyObject_TypeCheck(obj, &(MatrixPy::Type))) {
+            this->getRotationPtr()->setValue(*static_cast<MatrixPy*>(obj)->getMatrixPtr());
+            return 1;
+        }
+    }
+    else if (strcmp(attr, "Axes") == 0) {
+        if (PySequence_Check(obj) && PySequence_Size(obj) == 2) {
+            PyObject* vec1 = PySequence_GetItem(obj, 0);
+            PyObject* vec2 = PySequence_GetItem(obj, 1);
+            if (PyObject_TypeCheck(vec1, &(VectorPy::Type)) &&
+                PyObject_TypeCheck(vec2, &(VectorPy::Type))) {
+                this->getRotationPtr()->setValue(
+                    *static_cast<VectorPy*>(vec1)->getVectorPtr(),
+                    *static_cast<VectorPy*>(vec2)->getVectorPtr());
+                return 1;
+            }
+        }
+    }
     return 0; 
 }
 

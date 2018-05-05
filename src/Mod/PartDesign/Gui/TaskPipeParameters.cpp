@@ -286,7 +286,7 @@ void TaskPipeParameters::exitSelectionMode() {
 
 //**************************************************************************
 //**************************************************************************
-// Tassk Orientation
+// Task Orientation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
@@ -322,8 +322,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxillery spine he already selected 
+    //make sure the user sees an important things: the base feature to select edges and the 
+    //spine/auxiliary spine he already selected
     if(pipe->AuxillerySpine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
         auxSpineShow = svp->isShow();
@@ -522,8 +522,9 @@ void TaskPipeOrientation::updateUI(int idx) {
     //make sure we resize to the size of the current page
     for(int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    
-    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (idx < ui->stackedWidget->count())
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -680,8 +681,9 @@ void TaskPipeScaling::updateUI(int idx) {
     //make sure we resize to the size of the current page
     for(int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    
-    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (idx < ui->stackedWidget->count())
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -783,7 +785,7 @@ bool TaskDlgPipeParameters::accept()
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
         
-        //we need to add the copied features to the body after the command action, as otherwise freecad crashs unexplainable
+        //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
         for(auto obj : copies) {
             //Dead code: pcActiveBody was previously used without checking for null, so it won't be null here either.
             //if(pcActiveBody)

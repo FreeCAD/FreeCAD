@@ -25,8 +25,12 @@
 
 #include <sstream>
 #include <Base/Stream.h>
+#ifdef HAVE_SMESH
+#include <SMESH_Version.h>
+#endif
 
 class TopoDS_Shape;
+class SMESH_Gen;
 
 namespace Mesh { class MeshObject; }
 namespace MeshPart {
@@ -81,6 +85,10 @@ public:
     { regular = s; }
     bool isRegular() const
     { return regular; }
+    void setRelative(bool s)
+    { relative = s; }
+    bool isRelative() const
+    { return relative; }
     void setSegments(bool s)
     { segments = s; }
     bool isSegments() const
@@ -134,6 +142,7 @@ private:
     double deflection;
     double angularDeflection;
     double minLen, maxLen;
+    bool relative;
     bool regular;
     bool segments;
 #if defined (HAVE_NETGEN)
@@ -147,6 +156,10 @@ private:
 #endif
     std::vector<uint32_t> colors;
     struct Vertex;
+
+#if SMESH_VERSION_MAJOR >= 7
+    static SMESH_Gen *_mesh_gen;
+#endif
 };
 
 class MeshingOutput : public std::streambuf

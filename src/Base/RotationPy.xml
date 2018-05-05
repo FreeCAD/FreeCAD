@@ -25,6 +25,10 @@
 				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
 				-- four floats (Quaternion) where the quaternion is specified as:
 				   q=xi+yj+zk+w, i.e. the last parameter is the real part
+				-- three vectors that define rotated axes directions + an optional
+				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
+				   order of importance of the axes (e.g., 'ZXY' means z direction is
+				   followed strictly, x is used but corrected if necessary, y is ignored).
 			</UserDocu>
 		</Documentation>
 		<Methode Name="invert">
@@ -80,10 +84,18 @@
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
-					returns True if the rotation equals the unity matrix
+                    returns True if all Q values are zero
 				</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="isIdentity" Const="true">
+            <Documentation>
+                <UserDocu>
+                    isIdentity() -> Bool
+                    returns True if the rotation equals the unity matrix
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>

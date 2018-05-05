@@ -37,7 +37,7 @@ class Common : public Boolean
 public:
     Common();
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
 protected:
@@ -54,6 +54,7 @@ public:
 
     App::PropertyLinkList Shapes;
     PropertyShapeHistory History;
+    App::PropertyBool Refine;
 
     /** @name methods override feature */
     //@{

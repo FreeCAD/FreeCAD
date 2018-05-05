@@ -81,7 +81,7 @@ DEF_STD_CMD(StdCmdOpen);
 StdCmdOpen::StdCmdOpen()
   : Command("Std_Open")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Open...");
     sToolTipText  = QT_TR_NOOP("Open a document or import files");
@@ -163,7 +163,7 @@ DEF_STD_CMD_A(StdCmdImport);
 StdCmdImport::StdCmdImport()
   : Command("Std_Import")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Import...");
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
@@ -249,7 +249,7 @@ DEF_STD_CMD_A(StdCmdExport);
 StdCmdExport::StdCmdExport()
   : Command("Std_Export")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export...");
     sToolTipText  = QT_TR_NOOP("Export an object in the active document");
@@ -319,7 +319,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Merge project...");
     sToolTipText  = QT_TR_NOOP("Merge project");
-    sWhatsThis    = QT_TR_NOOP("Merge project");
+    sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = QT_TR_NOOP("Merge project");
 }
 
@@ -367,7 +367,7 @@ DEF_STD_CMD_A(StdCmdExportGraphviz);
 StdCmdExportGraphviz::StdCmdExportGraphviz()
   : Command("Std_ExportGraphviz")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
@@ -577,7 +577,7 @@ DEF_STD_CMD_A(StdCmdProjectInfo);
 StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
 {
-  // seting the
+  // setting the
   sGroup        = QT_TR_NOOP("File");
   sMenuText     = QT_TR_NOOP("Project i&nformation...");
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
@@ -609,7 +609,7 @@ DEF_STD_CMD_A(StdCmdProjectUtil);
 StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sWhatsThis    = "Std_ProjectUtil";
     sMenuText     = QT_TR_NOOP("Project utility...");
@@ -946,7 +946,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sGroup        = QT_TR_NOOP("Edit");
     sMenuText     = QT_TR_NOOP("Duplicate selection");
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
-    sWhatsThis    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
 }
 
@@ -1110,20 +1110,13 @@ void StdCmdDelete::activated(int iMsg)
                     if (!links.empty()) {
                         // check if the referenced objects are groups or are selected too
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                            if (
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::Origin::getClassTypeId())) &&
-                                  (!rSel.isSelected(*lt)) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::BodyBase")))
-                                ){
-                                // TODO Do something with this hack of Part::BodyBase (2015-09-09, Fat-Zer)
-                                autoDeletion = false;
-                                affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
+                            if (!rSel.isSelected(*lt)) {
+                                ViewProvider* vp = pGuiDoc->getViewProvider(*lt);
+                                if (!vp->canDelete(obj)) {
+                                    autoDeletion = false;
+                                    affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
+                                }
                             }
-                        }
-
-                        if (!autoDeletion) {
-                            break;
                         }
                     }
                 }
@@ -1150,12 +1143,14 @@ void StdCmdDelete::activated(int iMsg)
                         Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                         if (vp) {
                             // ask the ViewProvider if it wants to do some clean up
-                            if (vp->onDelete(ft->getSubNames()))
+                            if (vp->onDelete(ft->getSubNames())) {
                                 doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
                                          ,(*it)->getName(), ft->getFeatName());
+                            }
                         }
                     }
                     (*it)->commitTransaction();
+
                     Gui::getMainWindow()->setUpdatesEnabled(true);
                     Gui::getMainWindow()->update();
                 }

@@ -39,6 +39,31 @@ namespace Gui {
 class SelectionChanges;
 
 /**
+ * The SoFCHighlightAction class is used to inform an SoFCSelection node
+ * whether an object gets highlighted.
+ * @author Jürgen Riegel
+ */
+class GuiExport SoFCHighlightAction : public SoAction
+{
+    SO_ACTION_HEADER(SoFCHighlightAction);
+
+public:
+    SoFCHighlightAction (const SelectionChanges &SelCh);
+    ~SoFCHighlightAction();
+
+    static void initClass();
+    static void finish(void);
+
+    const SelectionChanges &SelChange;
+
+protected:
+    virtual void beginTraversal(SoNode *node);
+
+private:
+    static void callDoAction(SoAction *action,SoNode *node);
+};
+
+/**
  * The SoFCSelectionAction class is used to inform an SoFCSelection node
  * whether an object gets selected. 
  * @author Jürgen Riegel

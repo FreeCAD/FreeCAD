@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepFill_Filling.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
@@ -70,6 +71,12 @@ Filling::Filling()
     ADD_PROPERTY_TYPE(TolCurvature,(0.1), "Filling", App::Prop_None, "G2 tolerance");
     ADD_PROPERTY_TYPE(MaximumDegree,(8), "Filling", App::Prop_None, "Maximum curve degree");
     ADD_PROPERTY_TYPE(MaximumSegments,(9), "Filling", App::Prop_None, "Maximum number of segments");
+
+    BoundaryEdges.setScope(App::LinkScope::Global);
+    UnboundEdges.setScope(App::LinkScope::Global);
+    FreeFaces.setScope(App::LinkScope::Global);
+    Points.setScope(App::LinkScope::Global);
+    InitialFace.setScope(App::LinkScope::Global);
 
     BoundaryEdges.setSize(0);
     BoundaryFaces.setSize(0);
@@ -133,6 +140,9 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 
     if (edge_obj.size() == edge_sub.size()) {
+        // BRepFill_Filling crashes if the boundary edges are not added in a consecutive order.
+        // these edges are first added to a test wire to check that they can be securely added to the Filling algo
+        BRepBuilderAPI_MakeWire testWire;
         for (std::size_t index = 0; index < edge_obj.size(); index++) {
             // get the part object
             App::DocumentObject* obj = edge_obj[index];
@@ -150,12 +160,38 @@ void Filling::addConstraints(BRepFill_Filling& builder,
 
                     // edge doesn't have set an adjacent face
                     if (subFace.empty()) {
-                        builder.Add(TopoDS::Edge(edge), cont, bnd);
+                        if (!bnd) {
+                            // not a boundary edge: safe to add it directly
+                            builder.Add(TopoDS::Edge(edge), cont, bnd);
+                        }
+                        else {
+                            // boundary edge: try to add it to the test wire first
+                            testWire.Add(TopoDS::Edge(edge));
+                            if (testWire.IsDone()) {
+                                builder.Add(TopoDS::Edge(edge), cont, bnd);
+                            }
+                            else {
+                                Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
+                            }
+                        }
                     }
                     else {
                         TopoDS_Shape face = shape.getSubShape(subFace.c_str());
                         if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
-                            builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                            if (!bnd) {
+                                // not a boundary edge: safe to add it directly
+                                builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                            }
+                            else {
+                                // boundary edge: try to add it to the test wire first
+                                testWire.Add(TopoDS::Edge(edge));
+                                if (testWire.IsDone()) {
+                                    builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                                }
+                                else {
+                                    Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
+                                }
+                            }
                         }
                         else {
                             Standard_Failure::Raise("Sub-shape is not a face");

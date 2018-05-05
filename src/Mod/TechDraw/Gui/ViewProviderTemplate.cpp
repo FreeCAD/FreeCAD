@@ -37,16 +37,20 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
+#include <Gui/ViewProvider.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 #include "QGITemplate.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
 #include "ViewProviderTemplate.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 
@@ -86,7 +90,16 @@ std::vector<std::string> ViewProviderTemplate::getDisplayModes(void) const
 
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
-    //Base::Console().Log("ViewProviderTemplate::updateData(%s)/n",prop->getName());
+    if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+        auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
+        if (prop == &(t->Template)) {
+            MDIViewPage* mdi = getMDIViewPage();
+            if (mdi != nullptr) {
+                mdi->attachTemplate(t);
+                mdi->viewAll();
+            }
+       }
+    }
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -105,6 +118,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
             hide();
         }
     }
+    
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -138,15 +152,25 @@ QGITemplate* ViewProviderTemplate::getQTemplate(void)
     QGITemplate *result = nullptr;
     TechDraw::DrawTemplate* dt = getTemplate();
     if (dt) {
-        Gui::MDIView* gmdi = getActiveView();
-        if (gmdi != nullptr) {
-            MDIViewPage*  mdi = dynamic_cast<MDIViewPage*>(gmdi);
-            if (mdi != nullptr) {
-             result = mdi->getQGVPage()->getTemplate();
-            }
+        MDIViewPage* mdi = getMDIViewPage();
+        if (mdi != nullptr) {
+            result = mdi->getQGVPage()->getTemplate();
         }
     }
     return result;
+}
+
+MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
+{
+    MDIViewPage* myMdi = nullptr;
+    auto t = getTemplate();
+    auto page = t->getParentPage();
+    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
+    TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+    if (dvp) {
+        myMdi = dvp->getMDIViewPage();
+    }
+    return myMdi;
 }
 
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const

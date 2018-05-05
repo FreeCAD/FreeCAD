@@ -60,43 +60,82 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* prim = new Gui::MenuItem;
     prim->setCommand("Primitives");
-    *prim << "Part_Box" << "Part_Cylinder" << "Part_Sphere"
-          << "Part_Cone" << "Part_Torus";
+    *prim << "Part_Box"
+          << "Part_Cylinder"
+          << "Part_Sphere"
+          << "Part_Cone"
+          << "Part_Torus";
 
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
-    *bop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common";
+    *bop << "Part_Boolean"
+         << "Part_Cut"
+         << "Part_Fuse"
+         << "Part_Common";
 
     Gui::MenuItem* join = new Gui::MenuItem;
     join->setCommand("Join");
-    *join << "Part_JoinConnect" << "Part_JoinEmbed" << "Part_JoinCutout";
+    *join << "Part_JoinConnect"
+          << "Part_JoinEmbed"
+          << "Part_JoinCutout";
 
     Gui::MenuItem* split = new Gui::MenuItem;
     split->setCommand("Split");
-    *split << "Part_BooleanFragments" << "Part_Slice" << "Part_XOR";
+    *split << "Part_BooleanFragments"
+           << "Part_Slice"
+           << "Part_XOR";
 
     Gui::MenuItem* compound = new Gui::MenuItem;
     compound->setCommand("Compound");
-    *compound << "Part_Compound" << "Part_CompoundFilter";
+    *compound << "Part_Compound"
+              << "Part_CompoundFilter";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
-    *part << "Part_Import" << "Part_Export" << "Separator";
-    *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
-          << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
-          << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry"
-          << "Separator" << bop << join << split << compound << "Separator"
-          << "Part_CrossSections" << "Part_MakeFace" << "Part_Extrude"
-          << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
-          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
-          << "Part_Offset" << "Part_Offset2D" << "Part_Thickness" << "Separator" << "Part_EditAttachment";
+    *part << "Part_Import"
+          << "Part_Export"
+          << "Separator";
+    *part << prim
+          << "Part_Primitives"
+          << "Part_Builder"
+          << "Separator"
+          << "Part_ShapeFromMesh"
+          << "Part_MakeSolid"
+          << "Part_ReverseShape"
+          << "Part_SimpleCopy"
+          << "Part_RefineShape"
+          << "Part_CheckGeometry"
+          << "Separator"
+          << bop << join << split << compound
+          << "Separator"
+          << "Part_Section"
+          << "Part_CrossSections"
+          << "Part_MakeFace"
+          << "Part_Extrude"
+          << "Part_Revolve"
+          << "Part_Mirror"
+          << "Part_Fillet"
+          << "Part_Chamfer"
+          << "Part_RuledSurface"
+          << "Part_Loft"
+          << "Part_Sweep"
+          << "Part_Offset"
+          << "Part_Offset2D"
+          << "Part_Thickness"
+          << "Separator"
+          << "Part_EditAttachment";
 
     Gui::MenuItem* measure = new Gui::MenuItem;
     root->insertItem(item,measure);
     measure->setCommand("Measure");
-    *measure << "Part_Measure_Linear" << "Part_Measure_Angular" << "Separator" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All" <<
-      "Part_Measure_Toggle_3d" << "Part_Measure_Toggle_Delta";
+    *measure << "Part_Measure_Linear"
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_Delta";
 
     // leave this for 0.14 until #0000477 is fixed
 #if 0
@@ -119,25 +158,48 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solids = new Gui::ToolBarItem(root);
     solids->setCommand("Solids");
-    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone"
-            << "Part_Torus" << "Part_Primitives" << "Part_Builder";
+    *solids << "Part_Box"
+            << "Part_Cylinder"
+            << "Part_Sphere"
+            << "Part_Cone"
+            << "Part_Torus"
+            << "Part_Primitives"
+            << "Part_Builder";
 
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
-    *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
-          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
-          << "Part_CompOffset" << "Part_Thickness";
+    *tool << "Part_Extrude"
+          << "Part_Revolve"
+          << "Part_Mirror"
+          << "Part_Fillet"
+          << "Part_Chamfer"
+          << "Part_RuledSurface"
+          << "Part_Loft"
+          << "Part_Sweep"
+          << "Part_CompOffset"
+          << "Part_Thickness";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
-            << "Part_CompJoinFeatures" << "Part_CompSplitFeatures" << "Part_CheckGeometry" << "Part_Section"
+    *boolop << "Part_Boolean"
+            << "Part_Cut"
+            << "Part_Fuse"
+            << "Part_Common"
+            << "Part_CompJoinFeatures"
+            << "Part_CompSplitFeatures"
+            << "Part_CheckGeometry"
+            << "Part_Section"
             << "Part_CrossSections";
 
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
-    *measure << "Part_Measure_Linear" << "Part_Measure_Angular"  << "Separator" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All"
-             << "Part_Measure_Toggle_3d" << "Part_Measure_Toggle_Delta";
+    *measure << "Part_Measure_Linear"
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_Delta";
 
     return root;
 }

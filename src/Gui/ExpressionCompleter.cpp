@@ -238,32 +238,47 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 void ExpressionCompleter::slotUpdate(const QString & prefix)
 {
     using namespace boost::tuples;
-    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
-    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix.mid(j)));
     std::string completionPrefix;
 
+    // Compute start; if prefix starts with =, start parsing from offset 1.
+    int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
+
+    // Tokenize prefix
+    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix.mid(start)));
+
+    // No tokens, or last char is a space?
     if (tokens.size() == 0 || (prefix.size() > 0 && prefix[prefix.size() - 1] == QChar(32))) {
         if (popup())
             popup()->setVisible(false);
         return;
     }
 
-    std::size_t i = tokens.size();
-
-    do {
-        --i;
-        if (!(get<0>(tokens[i]) == ExpressionParser::IDENTIFIER ||
-                get<0>(tokens[i]) == ExpressionParser::STRING ||
-                get<0>(tokens[i]) == '.'))
+    // Extract last tokens that can be rebuilt to a variable
+    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
+    while (i >= 0) {
+        if (get<0>(tokens[i]) != ExpressionParser::IDENTIFIER &&
+            get<0>(tokens[i]) != ExpressionParser::STRING &&
+            get<0>(tokens[i]) != ExpressionParser::UNIT &&
+            get<0>(tokens[i]) != '.')
             break;
-    } while (i > 0);
+        --i;
+    }
 
-    prefixStart = get<1>(tokens[i]);
-    while (i < tokens.size()) {
+    ++i;
+
+    // Set prefix start for use when replacing later
+    if (i == static_cast<ssize_t>(tokens.size()))
+        prefixStart = prefix.size();
+    else
+        prefixStart = (prefix.at(0) == QChar::fromLatin1('=') ? 1 : 0) + get<1>(tokens[i]);
+
+    // Build prefix from tokens
+    while (i < static_cast<ssize_t>(tokens.size())) {
         completionPrefix += get<2>(tokens[i]);
         ++i;
     }
 
+    // Set completion prefix
     setCompletionPrefix(Base::Tools::fromStdString(completionPrefix));
 
     if (!completionPrefix.empty() && widget()->hasFocus())

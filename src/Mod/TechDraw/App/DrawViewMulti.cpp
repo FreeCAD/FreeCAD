@@ -51,6 +51,7 @@
 
 #include <App/Application.h>
 #include <App/Material.h>
+#include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -60,6 +61,7 @@
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "DrawUtil.h"
 #include "DrawViewMulti.h"
 
 using namespace TechDraw;
@@ -78,9 +80,10 @@ DrawViewMulti::DrawViewMulti()
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Sources ,(0),group,App::Prop_None,"3D Shapes to view");
-
+    Sources.setScope(App::LinkScope::Global);
     //Source is replaced by Sources in Multi
     Source.setStatus(App::Property::ReadOnly,true);
+    Source.setStatus(App::Property::Hidden,true);
 
     geometryObject = nullptr;
 }
@@ -118,35 +121,36 @@ void DrawViewMulti::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
         Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");
-        return DrawViewPart::execute();
+        return DrawView::execute();
     }
 
-    //Base::Console().Message("TRACE - DVM::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
-
-    (void) DrawView::execute();          //make sure Scale is up to date
-
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    for (auto& l:links) {
-        const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
-        BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
-        TopoDS_Shape shape = BuilderCopy.Shape();
-        builder.Add(comp, shape);
+    m_compound = TopoDS::Compound(getSourceShape());
+    if (m_compound.IsNull()) {
+        return new App::DocumentObjectExecReturn("DVP - Linked shape object(s) is invalid");
     }
-    m_compound = comp;
+    TopoDS_Compound comp = m_compound;
 
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(comp,
                                                      Direction.getValue());
+        shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
-                                                    Scale.getValue());
+                                                    getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+                                                          viewAxis,
+                                                          Rotation.getValue());
+        }
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
@@ -158,6 +162,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    requestPaint();
     return App::DocumentObject::StdReturn;
 }
 

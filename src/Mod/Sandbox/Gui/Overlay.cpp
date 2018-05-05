@@ -23,14 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QGLFramebufferObject>
-# include <QGLWidget>
 # include <QImage>
 # include <QMouseEvent>
 # include <QPainter>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoImage.h>
 #endif
+
+#include <QtOpenGL.h>
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -44,9 +44,10 @@
 
 using namespace SandboxGui;
 
+
 class MyPaintable : public Gui::GLGraphicsItem
 {
-    QGLFramebufferObject* fbo;
+    QtGLFramebufferObject* fbo;
     Gui::View3DInventorViewer* view;
     QImage img;
 public:
@@ -62,18 +63,22 @@ public:
             p.drawText(200,200,QString::fromLatin1("Render to QImage"));
         }
 
-        img = QGLWidget::convertToGLFormat(img);
-        fbo = new QGLFramebufferObject(v->getGLWidget()->size());
+#if !defined(HAVE_QT5_OPENGL)
+        img = QtGLWidget::convertToGLFormat(img);
+#endif
+        fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
         fbo->bind();
         //glClear(GL_COLOR_BUFFER_BIT);
         fbo->release();
         {
+#if !defined(HAVE_QT5_OPENGL)
             QPainter p(fbo);
             p.setPen(Qt::white);
-            p.drawText(200,200,QString::fromLatin1("Render to QGLFramebufferObject"));
+            p.drawText(200,200,QString::fromLatin1("Render to QtGLFramebufferObject"));
             p.end();
+#endif
             //img = fbo->toImage();
-            //img = QGLWidget::convertToGLFormat(img);
+            //img = QtGLWidget::convertToGLFormat(img);
         }
         //fbo->bind();
         //glEnable(GL_DEPTH_TEST);
@@ -84,7 +89,7 @@ public:
         //a.apply(v->getSceneManager()->getSceneGraph());
         //fbo->release();
         //img = fbo->toImage();
-        //img = QGLWidget::convertToGLFormat(img);
+        //img = QtGLWidget::convertToGLFormat(img);
 
         view->getSoRenderManager()->scheduleRedraw();
     }
@@ -142,7 +147,7 @@ public:
 
 class Teapots : public Gui::GLGraphicsItem
 {
-    QGLFramebufferObject *fbObject;
+    QtGLFramebufferObject *fbObject;
     GLuint glTeapotObject;
     QPoint rubberBandCorner1;
     QPoint rubberBandCorner2;
@@ -158,8 +163,8 @@ Teapots(Gui::View3DInventorViewer* v) :view(v)
     rubberBandIsShown = false;
 
 //    makeCurrent();
-    fbObject = new QGLFramebufferObject(size[0],size[1],
-                                        QGLFramebufferObject::Depth);
+    fbObject = new QtGLFramebufferObject(size[0],size[1],
+                                         QtGLFramebufferObject::Depth);
     //initializeGL();
     resizeGL(size[0],size[1]);
 
@@ -201,7 +206,7 @@ void initializeGL()
     glDepthFunc(GL_LESS);
 }
 
-void resizeGL(int /*width*/, int /*height*/)
+void resizeGL(int width, int height)
 {
 #if 0
     fbObject->bind();
@@ -225,6 +230,8 @@ void resizeGL(int /*width*/, int /*height*/)
 
     fbObject->release();
 #else
+    (void)width;
+    (void)height;
     fbObject->bind();
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
@@ -441,7 +448,7 @@ void paintSelection()
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #if 0
-void MeshSelection::prepareBrushSelection(bool add)
+void MeshSelection::prepareFreehandSelection(bool add)
 {
     // a rubberband to select a rectangle area of the meshes
     Gui::View3DInventorViewer* viewer = this->getViewer();
@@ -485,7 +492,7 @@ DrawingPlane::~DrawingPlane()
 
 void DrawingPlane::initialize()
 {
-    fbo = new QGLFramebufferObject(128, 128,QGLFramebufferObject::Depth);
+    fbo = new QtGLFramebufferObject(128, 128,QtGLFramebufferObject::Depth);
 }
 
 void DrawingPlane::terminate()
@@ -506,7 +513,7 @@ void DrawingPlane::draw ()
 {return;
     if (1/*mustRedraw*/) {
         SbVec2s view = _pcView3D->getSoRenderManager()->getSize();
-        static_cast<QGLWidget*>(_pcView3D->getGLWidget())->makeCurrent();
+        static_cast<QtGLWidget*>(_pcView3D->getGLWidget())->makeCurrent();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -556,7 +563,7 @@ void DrawingPlane::draw ()
 int DrawingPlane::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
 {
     const int button = e->getButton();
-    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
         switch (button)
@@ -617,7 +624,9 @@ int DrawingPlane::keyboardEvent(const SoKeyboardEvent * const)
 
 void DrawingPlane::drawLineTo(const QPoint &endPoint)
 {
+    Q_UNUSED(endPoint);
     return;
+#if !defined(HAVE_QT5_OPENGL)
     QPainter painter(fbo);
   //QPainter painter(_pcView3D->getGLWidget());
     painter.setPen(QPen(myPenColor, myPenWidth, Qt::SolidLine, Qt::RoundCap,
@@ -628,6 +637,7 @@ void DrawingPlane::drawLineTo(const QPoint &endPoint)
 
     //_pcView3D->scheduleRedraw();
     lastPoint = endPoint;
+#endif
 }
     //Gui::Document* doc = Gui::Application::Instance->activeDocument();
     //Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventor*>(doc->getActiveView())->getViewer();

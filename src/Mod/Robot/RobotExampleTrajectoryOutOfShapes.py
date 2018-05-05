@@ -1,6 +1,7 @@
 # Examples to generate trajectories out of shapes
+import FreeCADGui as Gui
 
-# geting selected edges from the selection and sort them
+# getting selected edges from the selection and sort them
 count = 0
 FirstPos1 = None
 FirstPos2 = None

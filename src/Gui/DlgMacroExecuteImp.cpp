@@ -53,9 +53,9 @@ namespace Gui {
             MacroItem(QTreeWidget * widget, bool systemwide)
             : QTreeWidgetItem(widget),
             systemWide(systemwide){}
-            
+
             ~MacroItem(){}
-            
+
             bool systemWide;
         };
     }
@@ -65,8 +65,8 @@ namespace Gui {
 /* TRANSLATOR Gui::Dialog::DlgMacroExecuteImp */
 
 /**
- *  Constructs a DlgMacroExecuteImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgMacroExecuteImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -90,7 +90,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     fillUpList();
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgMacroExecuteImp::~DlgMacroExecuteImp()
@@ -136,11 +136,15 @@ void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem*
         executeButton->setEnabled(true);
         deleteButton->setEnabled(true);
         createButton->setEnabled(true);
+        editButton->setEnabled(true);
+        renameButton->setEnabled(true);
     }
     else {
         executeButton->setEnabled(false);
         deleteButton->setEnabled(false);
         createButton->setEnabled(true);
+        editButton->setEnabled(false);
+        renameButton->setEnabled(false);
     }
 }
 
@@ -152,11 +156,15 @@ void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetIte
         executeButton->setEnabled(true);
         deleteButton->setEnabled(false);
         createButton->setEnabled(false);
+        editButton->setEnabled(true); //look but don't touch
+        renameButton->setEnabled(false);
     }
     else {
         executeButton->setEnabled(false);
         deleteButton->setEnabled(false);
         createButton->setEnabled(false);
+        editButton->setEnabled(false);
+        renameButton->setEnabled(false);
     }
 }
 
@@ -170,11 +178,15 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
             executeButton->setEnabled(true);
             deleteButton->setEnabled(true);
             createButton->setEnabled(true);
+            editButton->setEnabled(true);
+            renameButton->setEnabled(true);
         }
         else {
             executeButton->setEnabled(false);
             deleteButton->setEnabled(false);
             createButton->setEnabled(true);
+            editButton->setEnabled(false);
+            renameButton->setEnabled(false);
         }
     }
     else { //index==1 system-wide
@@ -184,11 +196,15 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
             executeButton->setEnabled(true);
             deleteButton->setEnabled(false);
             createButton->setEnabled(false);
+            editButton->setEnabled(true); //but you can't save it
+            renameButton->setEnabled(false);
         }
         else {
             executeButton->setEnabled(false);
             deleteButton->setEnabled(false);
             createButton->setEnabled(false);
+            editButton->setEnabled(false);
+            renameButton->setEnabled(false);
         }
     }
 
@@ -316,7 +332,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
             fn += QLatin1String(".FCMacro");
         QDir dir(this->macroPath);
-        // create the macroPath if inexistant
+        // create the macroPath if nonexistent
         if (!dir.exists()) {
             dir.mkpath(this->macroPath);
         }
@@ -373,6 +389,52 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
         int index = userMacroListBox->indexOfTopLevelItem(item);
         userMacroListBox->takeTopLevelItem(index);
         delete item;
+    }
+}
+
+/**
+ * renames the selected macro
+ */
+void DlgMacroExecuteImp::on_renameButton_clicked()
+{
+    QDir dir;
+    QTreeWidgetItem* item = 0;
+
+    int index = tabMacroWidget->currentIndex();
+    if (index == 0) { //user-specific
+        item = userMacroListBox->currentItem();
+        dir.setPath(this->macroPath);
+    }
+
+    if (!item)
+        return;
+
+    QString oldName = item->text(0);
+    QFileInfo oldfi(dir, oldName);
+    QFile oldfile(oldfi.absoluteFilePath());
+
+    // query new name
+    QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
+        tr("Enter new name:"), QLineEdit::Normal, oldName, 0);
+    if (!fn.isEmpty() && fn != oldName) {
+        QString suffix = QFileInfo(fn).suffix().toLower();
+        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
+            fn += QLatin1String(".FCMacro");
+        QFileInfo fi(dir, fn);
+        // check if new name exists
+        if (fi.exists()) {
+            QMessageBox::warning(this, tr("Existing file"),
+                tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
+        }
+        else if (!oldfile.rename(fi.absoluteFilePath())) {
+            QMessageBox::warning(this, tr("Rename Failed"),
+                tr("Failed to rename to '%1'.\nPerhaps a file permission error?").arg(fi.absoluteFilePath()));
+        }
+        else {
+            // keep the item selected although it's not necessarily in alphabetic order
+            item->setText(0, fn);
+            LineEditMacroName->setText(fn);
+        }
     }
 }
 

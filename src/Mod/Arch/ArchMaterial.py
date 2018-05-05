@@ -64,7 +64,8 @@ def getMaterialContainer():
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","MaterialContainer")
     obj.Label = "Materials"
     _ArchMaterialContainer(obj)
-    _ViewProviderArchMaterialContainer(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderArchMaterialContainer(obj.ViewObject)
     return obj
 
 
@@ -180,7 +181,7 @@ class _ArchMaterial:
         obj.Proxy = self
         obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
         obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
-        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","An URL where to find information about this material"))
+        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","A URL where to find information about this material"))
         obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
         obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
 

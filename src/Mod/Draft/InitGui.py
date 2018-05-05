@@ -83,7 +83,7 @@ class DraftWorkbench (Workbench):
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.utils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
                       "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
-                      "Draft_Slope","Draft_SetWorkingPlaneProxy"]
+                      "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
@@ -109,14 +109,14 @@ class DraftWorkbench (Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
-        Msg("Draft workbench activated\n")
+        Log("Draft workbench activated\n")
         
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.hide()
-        Msg("Draft workbench deactivated\n")
+        Log("Draft workbench deactivated\n")
 
     def ContextMenu(self, recipient):
         if (recipient == "View"):

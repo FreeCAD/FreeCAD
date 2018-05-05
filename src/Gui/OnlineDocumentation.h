@@ -31,7 +31,7 @@
 
 namespace Gui {
 
-/// opens an URL in the system Browser
+/// opens a URL in the system Browser
 bool GuiExport OpenURLInBrowser(const char * URL);
 
 /**
@@ -49,6 +49,7 @@ public:
 
     QByteArray loadResource(const QString& filename) const;
     QByteArray fileNotFound() const;
+    QByteArray loadFailed(const QString& error) const;
 };
 
 /** 

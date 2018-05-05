@@ -23,7 +23,6 @@
 #ifndef MESHGUI_SOFCINDEXEDFACESET_H
 #define MESHGUI_SOFCINDEXEDFACESET_H
 
-
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 
 class SoGLCoordinateElement;
@@ -53,9 +52,11 @@ public:
 
     unsigned int renderTriangleLimit;
 
+    void invalidate();
+
 protected:
     // Force using the reference count mechanism.
-    virtual ~SoFCIndexedFaceSet() {};
+    virtual ~SoFCIndexedFaceSet() {}
     virtual void GLRender(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
@@ -78,6 +79,14 @@ private:
     void stopVisibility(SoAction * action);
     void renderVisibleFaces(const SbVec3f *);
 
+    void generateGLArrays(SoState * state);
+    void renderFacesGLArray(SoGLRenderAction *action);
+    void renderCoordsGLArray(SoGLRenderAction *action);
+
+private:
+    std::vector<int32_t> index_array;
+    std::vector<float> vertex_array;
+    SbBool updateGLArray;
     GLuint *selectBuf;
 };
 

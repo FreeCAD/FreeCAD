@@ -56,8 +56,7 @@ public:
   /*!
    * Sets source <edge> to take a mesh pattern from
    */
-  void SetSourceEdge(const TopoDS_Shape& edge)
-    throw ( SALOME_Exception );
+  void SetSourceEdge(const TopoDS_Shape& edge);
 
   /*!
    * Returns the source edge or a group containing edges
@@ -85,8 +84,7 @@ public:
    * This parameter is optional
    */
   void SetVertexAssociation(const TopoDS_Shape& sourceVertex,
-                            const TopoDS_Shape& targetVertex)
-    throw ( SALOME_Exception );
+                            const TopoDS_Shape& targetVertex);
 
   /*!
    * Returns the vertex associated with the target vertex.

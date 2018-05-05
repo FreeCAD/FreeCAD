@@ -43,7 +43,7 @@ else:
 #
 #  This module provides tools to build Rebar objects.
 #  Rebars (or Reinforcing Bars) are metallic bars placed
-#  inside concrete strutures to reinforce them.
+#  inside concrete structures to reinforce them.
 
 __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"
@@ -83,7 +83,6 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    ArchCommands.fixDAG(obj)
     return obj
 
 
@@ -142,7 +141,8 @@ class _CommandRebar:
                             print("Arch: error: couldn't extract a base object")
                             return
 
-        FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object")+"\n")
+        FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
         FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
         FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
@@ -164,8 +164,13 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
         obj.addProperty("App::PropertyLink","Host","Arch",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
         obj.addProperty("App::PropertyString", "CustomSpacing", "Arch", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"))
+        obj.addProperty("App::PropertyDistance", "Length", "Arch", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"))
+        obj.addProperty("App::PropertyDistance", "TotalLength", "Arch", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
         self.Type = "Rebar"
-        obj.setEditorMode("Spacing",1)
+        obj.setEditorMode("Spacing", 1)
+        obj.setEditorMode("Length", 1)
+        obj.setEditorMode("TotalLength", 1)
+
 
     def getBaseAndAxis(self,wire):
         "returns a base point and orientation axis from the base wire"
@@ -310,6 +315,10 @@ class _Rebar(ArchComponent.Component):
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
             return
         # all tests ok!
+        if hasattr(obj, "Length"):
+            length = getLengthOfRebar(obj)
+            if length:
+                obj.Length = length
         pl = obj.Placement
         import Part
         circle = Part.makeCircle(obj.Diameter.Value/2,bpoint,bvec)
@@ -381,6 +390,7 @@ class _Rebar(ArchComponent.Component):
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
+        obj.TotalLength = obj.Length * len(obj.PlacementList)
 
 class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     "A View Provider for the Rebar object"
@@ -411,8 +421,8 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
             if hasattr(self,"centerline"):
                 if self.centerline:
                     self.centerlinegroup.removeChild(self.centerline)
-            if hasattr(obj.Proxy,"wires"): 
-                if obj.Proxy.wires: 
+            if hasattr(obj.Proxy,"wires"):
+                if obj.Proxy.wires:
                     from pivy import coin
                     import re,Part
                     self.centerline = coin.SoSeparator()
@@ -448,7 +458,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         self.centerlinegroup.addChild(self.centerlinestyle)
         vobj.addDisplayMode(self.centerlinegroup,"Centerline")
         ArchComponent.ViewProviderComponent.attach(self,vobj)
-        
+
     def onChanged(self,vobj,prop):
         if (prop == "LineColor") and hasattr(vobj,"LineColor"):
             if hasattr(self,"centerlinecolor"):
@@ -495,24 +505,40 @@ def strprocessOfCustomSpacing(span_string):
     in specific syntax and return output in the form of list. For eg.
     Input: "3@100+2@200+3@100"
     Output: [100, 100, 100, 200, 200, 100, 100, 100]"""
-    import string
-    span_st = string.strip(span_string)
-    span_sp = string.split(span_st, '+')
+    # import string
+    span_st = span_string.strip()
+    span_sp = span_st.split('+')
     index = 0
     spacinglist = []
     while index < len(span_sp):
         # Find "@" recursively in span_sp array.
         # If not found, append the index value to "spacinglist" array.
-        if string.find(span_sp[index],'@') == -1:
+        if span_sp[index].find('@') == -1:
             spacinglist.append(float(span_sp[index]))
         else:
-            in_sp = string.split(span_sp[index], '@')
+            in_sp = span_sp[index].split('@')
             count = 0
             while count < int(in_sp[0]):
                 spacinglist.append(float(in_sp[1]))
                 count += 1
         index += 1
     return spacinglist
+
+def getLengthOfRebar(rebar):
+    """ getLengthOfRebar(RebarObject): Calculates the length of the rebar."""
+    base = rebar.Base
+    # When rebar is derived from DWire
+    if hasattr(base, "Length"):
+        return base.Length
+    # When rebar is derived from Sketch
+    elif base.isDerivedFrom("Sketcher::SketchObject"):
+        length = 0
+        for geo in base.Geometry:
+            length += geo.length()
+        return length
+    else:
+        FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
+        return None
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())

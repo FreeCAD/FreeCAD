@@ -8,9 +8,18 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
 )
+
+if (BUILD_QT5)
+    include_directories(
+        ${Qt5Core_INCLUDE_DIRS}
+    )
+else()
+    include_directories(
+        ${QT_INCLUDE_DIR}
+    )
+endif()
 
 
 set(Sandbox_LIBS

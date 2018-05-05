@@ -48,7 +48,7 @@ else:
 #  \brief The Equipment object and tools
 #
 #  This module provides tools to build equipment objects.
-#  Equipments are used to represent furniture and all kinds of electrical
+#  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
 # presets
@@ -261,7 +261,7 @@ class _Equipment(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyString","Model","Arch",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
-        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
+        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","The URL of the product page of this equipment"))
         obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))

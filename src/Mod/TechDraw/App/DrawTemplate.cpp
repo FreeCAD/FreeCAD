@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn *DrawTemplate::execute(void)
     }
 
     if(page) {
-        page->Template.touch();
+        page->Template.touch();     //if you are on a page, execute yourself???
     }
 
     return App::DocumentObject::execute();

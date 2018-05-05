@@ -146,6 +146,8 @@ public:
      * @see Base::Reader,Base::XMLReader
      */
     virtual void RestoreDocFile(Reader &/*reader*/);
+    /// Encodes an attribute upon saving.
+    static std::string encodeAttribute(const std::string&);
 };
 
 } //namespace Base

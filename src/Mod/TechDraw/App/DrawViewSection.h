@@ -34,7 +34,9 @@
 
 #include "DrawViewPart.h"
 
+class Bnd_Box;
 class gp_Pln;
+class gp_Pnt;
 class TopoDS_Face;
 
 namespace TechDrawGeometry
@@ -68,7 +70,9 @@ public:
     App::PropertyString SectionSymbol;
 
     virtual short mustExecute() const;
+
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
+    bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
 
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);

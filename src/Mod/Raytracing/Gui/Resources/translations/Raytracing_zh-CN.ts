@@ -1,600 +1,600 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="zh-CN" sourcelanguage="en">
-<context>
+  <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-        <location filename="../../Command.cpp" line="+496"/>
-        <source>File</source>
-        <translation>文件</translation>
+      <location filename="../../Command.cpp" line="+496"/>
+      <source>File</source>
+      <translation>文件</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Export project...</source>
-        <translation>导出项目(&amp;E)...</translation>
+      <location line="+1"/>
+      <source>&amp;Export project...</source>
+      <translation>导出项目(&amp;E)...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+      <location line="+1"/>
+      <source>Export a Raytracing project to a file</source>
+      <translation>将追踪项目导出到文件</translation>
     </message>
     <message>
-        <source>Export the Povray project file</source>
-        <translation type="obsolete">导出 Povray 项目文件</translation>
+      <source>Export the Povray project file</source>
+      <translation>导出 Povray 项目文件</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+207"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="+207"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>New Luxrender project</source>
-        <translation type="unfinished">New Luxrender project</translation>
+      <location line="+1"/>
+      <source>New Luxrender project</source>
+      <translation>新 Luxrender 项目</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Insert new Luxrender project into the document</translation>
+      <location line="+1"/>
+      <source>Insert new Luxrender project into the document</source>
+      <translation>在文档中插入新的 Luxrender 项目</translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>No template</source>
-        <translation>没有模板</translation>
+      <location line="+45"/>
+      <source>No template</source>
+      <translation>没有模板</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No template available</source>
-        <translation>没有可用的模板</translation>
+      <location line="+1"/>
+      <source>No template available</source>
+      <translation>没有可用的模板</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-341"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="-341"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Insert part</source>
-        <translation>插入零件</translation>
+      <location line="+1"/>
+      <source>Insert part</source>
+      <translation>插入零件</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Insert a new part object into a Raytracing project</source>
-        <translation type="unfinished">Insert a new part object into a Raytracing project</translation>
+      <location line="+1"/>
+      <source>Insert a new part object into a Raytracing project</source>
+      <translation>在追踪项目中插入新的零件对象</translation>
     </message>
     <message>
-        <source>Insert a new part object into a Povray project</source>
-        <translation type="obsolete">插入一个新的零件对象到PovRay项目</translation>
+      <source>Insert a new part object into a Povray project</source>
+      <translation>插入一个新的零件对象到PovRay项目</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-        <location line="-100"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="-100"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <source>New Povray project</source>
-        <translation type="obsolete">新建 Povray 项目</translation>
+      <source>New Povray project</source>
+      <translation>新建 Povray 项目</translation>
     </message>
     <message>
-        <source>Insert new Povray project into the document</source>
-        <translation type="obsolete">在文档中插入新PovRay项目</translation>
+      <source>Insert new Povray project into the document</source>
+      <translation>在文档中插入新PovRay项目</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>New POV-Ray project</source>
-        <translation type="unfinished">New POV-Ray project</translation>
+      <location line="+1"/>
+      <source>New POV-Ray project</source>
+      <translation>新的POV-Ray项目</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+      <location line="+1"/>
+      <source>Insert new POV-Ray project into the document</source>
+      <translation>在文档中插入新的 POV-Ray 项目</translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>No template</source>
-        <translation>没有模板</translation>
+      <location line="+45"/>
+      <source>No template</source>
+      <translation>没有模板</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No template available</source>
-        <translation>没有可用的模板</translation>
+      <location line="+1"/>
+      <source>No template available</source>
+      <translation>没有可用的模板</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+196"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="+196"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Render</source>
-        <translation type="unfinished">&amp;Render</translation>
+      <location line="+1"/>
+      <source>&amp;Render</source>
+      <translation>&amp;渲染</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+      <location line="+1"/>
+      <source>Renders the current raytracing project with an external renderer</source>
+      <translation>使用外部渲染器渲染当前的光线追踪项目</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-        <location line="+243"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="+243"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+      <location line="+1"/>
+      <source>&amp;Reset Camera</source>
+      <translation>&amp;复位摄像头</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Sets the camera of the selected Raytracing project to match the current view</translation>
+      <location line="+1"/>
+      <source>Sets the camera of the selected Raytracing project to match the current view</source>
+      <translation>设置所选追踪项目的照相机以匹配当前视图</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-723"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="-723"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+      <location line="+1"/>
+      <source>Export camera to POV-Ray...</source>
+      <translation>将相机输出到POV-Ray...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <location line="+1"/>
+      <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+      <translation>将活动3D 视图的相机位置以POV-Ray格式导出到文件</translation>
     </message>
     <message>
-        <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="obsolete">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+      <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
+      <translation>将活动3D 视图的相机位置导出到一个文件中的透视图格式</translation>
     </message>
     <message>
-        <source>Export camera to povray...</source>
-        <translation type="obsolete">导出相机到povray...</translation>
+      <source>Export camera to povray...</source>
+      <translation>导出相机到povray...</translation>
     </message>
     <message>
-        <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-        <translation type="obsolete">将PovRay格式中当前3d视图的相机位置输出到文件</translation>
+      <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
+      <translation>将PovRay格式中当前3d视图的相机位置输出到文件</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingWritePart</name>
     <message>
-        <location line="+91"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="+91"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Export part to POV-Ray...</source>
-        <translation type="unfinished">Export part to POV-Ray...</translation>
+      <location line="+1"/>
+      <source>Export part to POV-Ray...</source>
+      <translation>将零件输出到POV-Ray...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation type="unfinished">Write the selected Part (object) as a POV-Ray file</translation>
+      <location line="+1"/>
+      <source>Write the selected Part (object) as a POV-Ray file</source>
+      <translation>将所选部件 (对象) 写为POV-Ray文件</translation>
     </message>
     <message>
-        <source>Export part to povray...</source>
-        <translation type="obsolete">输出零件到Povray...</translation>
+      <source>Export part to povray...</source>
+      <translation>输出零件到Povray...</translation>
     </message>
     <message>
-        <source>Write the selected Part (object) as a povray file</source>
-        <translation type="obsolete">将选中零件(对象)写入Povray文件</translation>
+      <source>Write the selected Part (object) as a povray file</source>
+      <translation>将选中零件(对象)写入Povray文件</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdRaytracingWriteView</name>
     <message>
-        <location line="-79"/>
-        <location line="+139"/>
-        <location line="+93"/>
-        <location line="+391"/>
-        <source>No perspective camera</source>
-        <translation>没有透视相机</translation>
+      <location line="-79"/>
+      <location line="+139"/>
+      <location line="+93"/>
+      <location line="+391"/>
+      <source>No perspective camera</source>
+      <translation>没有透视相机</translation>
     </message>
     <message>
-        <location line="-622"/>
-        <location line="+139"/>
-        <location line="+93"/>
-        <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
+      <location line="-622"/>
+      <location line="+139"/>
+      <location line="+93"/>
+      <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>当前的视图照相机不是透视图, 因此POV-Ray图像的结果可能与您预期的不同。
+要继续吗？</translation>
     </message>
     <message>
-        <location line="-109"/>
-        <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+      <location line="-109"/>
+      <source>Export view to POV-Ray...</source>
+      <translation>导出视图到POV-Ray...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-        <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
+      <location line="+1"/>
+      <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
+      <translation>将活动的3D 视图与照相机及其所有内容一起写到一个POV-Ray文件中</translation>
     </message>
     <message>
-        <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="obsolete">当前相机非透视视图,因此povray图像的结果可能与您所期望的有所差异.您要继续吗?</translation>
+      <translation>当前相机非透视视图,因此povray图像的结果可能与您所期望的有所差异.您要继续吗?</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location line="-2"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <source>Export view to povray...</source>
-        <translation type="obsolete">视图输出为Povray...</translation>
+      <source>Export view to povray...</source>
+      <translation>视图输出为Povray...</translation>
     </message>
     <message>
-        <source>Write the active 3D view with camera and all its content to a povray file</source>
-        <translation type="obsolete">将当前相机3D视图以及所有内容写入到Povray文件</translation>
+      <source>Write the active 3D view with camera and all its content to a povray file</source>
+      <translation>将当前相机3D视图以及所有内容写入到Povray文件</translation>
     </message>
     <message>
-        <location line="+501"/>
-        <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
+      <location line="+501"/>
+      <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>当前的视图照相机不是透视图, 因此luxrender图像的结果可能与您预期的不同。
+要继续吗？</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <source>Povray(*.pov)</source>
-        <translation type="obsolete">Povray(*.pov)</translation>
+      <source>Povray(*.pov)</source>
+      <translation>Povray(*.pov)</translation>
     </message>
     <message>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="obsolete">POV-Ray (*.pov)</translation>
+      <source>POV-Ray (*.pov)</source>
+      <translation type="unfinished">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <source>All Files (*.*)</source>
-        <translation type="obsolete">所有文件(*.*)</translation>
+      <source>All Files (*.*)</source>
+      <translation>所有文件(*.*)</translation>
     </message>
     <message>
-        <location line="-585"/>
-        <location line="+51"/>
-        <location line="+63"/>
-        <location line="+276"/>
-        <source>Export page</source>
-        <translation>导出页面</translation>
+      <location line="-585"/>
+      <location line="+51"/>
+      <location line="+63"/>
+      <location line="+276"/>
+      <source>Export page</source>
+      <translation>导出页面</translation>
     </message>
     <message>
-        <source>POV-Ray(*.pov)</source>
-        <translation type="obsolete">POV-Ray(*.pov)</translation>
+      <source>POV-Ray(*.pov)</source>
+      <translation type="unfinished">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="-103"/>
-        <location line="+87"/>
-        <location line="+63"/>
-        <location line="+243"/>
-        <source>Wrong selection</source>
-        <translation>选择错误</translation>
+      <location line="-103"/>
+      <location line="+87"/>
+      <location line="+63"/>
+      <location line="+243"/>
+      <source>Wrong selection</source>
+      <translation>选择错误</translation>
     </message>
     <message>
-        <location line="-392"/>
-        <source>Select a Part object.</source>
-        <translation>选择零件对象.</translation>
+      <location line="-392"/>
+      <source>Select a Part object.</source>
+      <translation>选择零件对象.</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+12"/>
-        <source>No Raytracing project to insert</source>
-        <translation type="unfinished">No Raytracing project to insert</translation>
+      <location line="+10"/>
+      <location line="+12"/>
+      <source>No Raytracing project to insert</source>
+      <translation>没有要插入的光线追踪项目</translation>
     </message>
     <message>
-        <location line="-11"/>
-        <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+      <location line="-11"/>
+      <source>Create a Raytracing project to insert a view.</source>
+      <translation>创建一个光线追踪项目以插入视图。</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+      <location line="+12"/>
+      <source>Select a Raytracing project to insert the view.</source>
+      <translation>选择一个光线追踪项目以插入视图。</translation>
     </message>
     <message>
-        <location line="+64"/>
-        <location line="+63"/>
-        <location line="+243"/>
-        <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Select one Raytracing project object.</translation>
+      <location line="+64"/>
+      <location line="+63"/>
+      <location line="+243"/>
+      <source>Select one Raytracing project object.</source>
+      <translation>选择一个光线追踪项目对象。</translation>
     </message>
     <message>
-        <location line="-302"/>
-        <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+      <location line="-302"/>
+      <source>Luxrender</source>
+      <translation>Luxrender</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+6"/>
-        <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+      <location line="+74"/>
+      <location line="+6"/>
+      <source>POV-Ray not found</source>
+      <translation>未发现POV-Ray</translation>
     </message>
     <message>
-        <location line="-5"/>
-        <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+      <location line="-5"/>
+      <source>Please set the path to the POV-Ray executable in the preferences.</source>
+      <translation>请在首选项中设置POV-Ray可执行程序的路径。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
+      <location line="+6"/>
+      <source>Please correct the path to the POV-Ray executable in the preferences.</source>
+      <translation>请在首选项中更正POV-Ray可执行程序的路径。</translation>
     </message>
     <message>
-        <location line="+75"/>
-        <source>Lux project file missing</source>
-        <translation type="unfinished">Lux project file missing</translation>
+      <location line="+75"/>
+      <source>Lux project file missing</source>
+      <translation>Lux项目文件丢失</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
+      <location line="+1"/>
+      <source>The Lux project file doesn't exist.</source>
+      <translation>Lux项目文件不存在</translation>
     </message>
     <message>
-        <location line="-69"/>
-        <location line="+6"/>
-        <source>Luxrender not found</source>
-        <translation type="unfinished">Luxrender not found</translation>
+      <location line="-69"/>
+      <location line="+6"/>
+      <source>Luxrender not found</source>
+      <translation>未找到 Luxrender</translation>
     </message>
     <message>
-        <location line="-475"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+272"/>
-        <source>POV-Ray</source>
-        <translation type="unfinished">POV-Ray</translation>
+      <location line="-475"/>
+      <location line="+51"/>
+      <location line="+62"/>
+      <location line="+272"/>
+      <source>POV-Ray</source>
+      <translation>POV-Ray</translation>
     </message>
     <message>
-        <location line="-384"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+276"/>
-        <location line="+109"/>
-        <source>All Files</source>
-        <translation>所有文件</translation>
+      <location line="-384"/>
+      <location line="+51"/>
+      <location line="+62"/>
+      <location line="+276"/>
+      <location line="+109"/>
+      <source>All Files</source>
+      <translation>所有文件</translation>
     </message>
     <message>
-        <location line="-29"/>
-        <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <location line="-29"/>
+      <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
+      <translation>请在首选项中设置luxrender 或 luxconsole可执行程序的路径。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <location line="+6"/>
+      <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
+      <translation>请在首选项中更正luxrender 或 luxconsole可执行程序的路径。</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+      <location line="+12"/>
+      <source>POV-Ray file missing</source>
+      <translation>缺少POV-Ray文件</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The POV-Ray project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The POV-Ray project file doesn&apos;t exist.</translation>
+      <location line="+1"/>
+      <source>The POV-Ray project file doesn't exist.</source>
+      <translation>POV-Ray项目文件不存在</translation>
     </message>
     <message>
-        <source>Rendered image (*.bmp)</source>
-        <translation type="obsolete">Rendered image (*.bmp)</translation>
+      <source>Rendered image (*.bmp)</source>
+      <translation type="unfinished">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <source>Rendered image (*.png)</source>
-        <translation type="obsolete">Rendered image (*.png)</translation>
+      <source>Rendered image (*.png)</source>
+      <translation type="unfinished">Rendered image (*.png)</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+2"/>
-        <location line="+3"/>
-        <source>Rendered image</source>
-        <translation type="unfinished">Rendered image</translation>
+      <location line="+6"/>
+      <location line="+2"/>
+      <location line="+3"/>
+      <source>Rendered image</source>
+      <translation>渲染图像</translation>
     </message>
     <message>
-        <source>No Povray project to insert</source>
-        <translation type="obsolete">无Povray项目可插入</translation>
+      <source>No Povray project to insert</source>
+      <translation>无Povray项目可插入</translation>
     </message>
     <message>
-        <source>Create a Povray project to insert a view.</source>
-        <translation type="obsolete">创建一个Povray项目以插入视图.</translation>
+      <source>Create a Povray project to insert a view.</source>
+      <translation>创建一个Povray项目以插入视图.</translation>
     </message>
     <message>
-        <source>Select a Povray project to insert the view.</source>
-        <translation type="obsolete">选择Povray项目插入视图.</translation>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>选择Povray项目插入视图.</translation>
     </message>
     <message>
-        <source>Select one Povray project object.</source>
-        <translation type="obsolete">选择一个Povray项目.</translation>
+      <source>Select one Povray project object.</source>
+      <translation>选择一个Povray项目.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>RaytracingGui::DlgSettingsRay</name>
     <message>
-        <location filename="../../DlgSettingsRay.ui" line="+14"/>
-        <source>Raytracing</source>
-        <translation>光线追踪</translation>
+      <location filename="../../DlgSettingsRay.ui" line="+14"/>
+      <source>Raytracing</source>
+      <translation>光线追踪</translation>
     </message>
     <message>
-        <location line="+103"/>
-        <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+      <location line="+103"/>
+      <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
+      <translation>POV-Ray路径为可执行路径，您是否想从FreeCAD的路径进行渲染</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>POV-Ray executable:</source>
-        <translation type="unfinished">POV-Ray executable:</translation>
+      <location line="+13"/>
+      <source>POV-Ray executable:</source>
+      <translation>POV-Ray可执行文件:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>POV-Ray output parameters:</source>
-        <translation type="unfinished">POV-Ray output parameters:</translation>
+      <location line="+7"/>
+      <source>POV-Ray output parameters:</source>
+      <translation>POV-Ray输出参数:</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+      <location line="+9"/>
+      <source>The POV-Ray parameters to be passed to the render.</source>
+      <translation>要传递给渲染的POV-Ray参数。</translation>
     </message>
     <message>
-        <location line="+95"/>
-        <source>Directories</source>
-        <translation>目录</translation>
+      <location line="+95"/>
+      <source>Directories</source>
+      <translation>目录</translation>
     </message>
     <message>
-        <location line="+53"/>
-        <source>Default Project dir:</source>
-        <translation>默认项目路径:</translation>
+      <location line="+53"/>
+      <source>Default Project dir:</source>
+      <translation>默认项目路径:</translation>
     </message>
     <message>
-        <location line="-26"/>
-        <source>Camera file name:</source>
-        <translation>相机文件的名称:</translation>
+      <location line="-26"/>
+      <source>Camera file name:</source>
+      <translation>相机文件的名称:</translation>
     </message>
     <message>
-        <location line="-216"/>
-        <source>Max mesh deviation:</source>
-        <translation type="unfinished">Max mesh deviation:</translation>
+      <location line="-216"/>
+      <source>Max mesh deviation:</source>
+      <translation>最大网格偏差:</translation>
     </message>
     <message>
-        <location line="+57"/>
-        <source>Render</source>
-        <translation>呈现</translation>
+      <location line="+57"/>
+      <source>Render</source>
+      <translation>渲染</translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>+P +A</source>
-        <translation type="unfinished">+P +A</translation>
+      <location line="+40"/>
+      <source>+P +A</source>
+      <translation>+ P + A</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>+W: </source>
-        <translation type="unfinished">+W: </translation>
+      <location line="+13"/>
+      <source>+W: </source>
+      <translation>宽: </translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>The width of the rendered image</source>
-        <translation type="unfinished">The width of the rendered image</translation>
+      <location line="+7"/>
+      <source>The width of the rendered image</source>
+      <translation>渲染图像的宽度</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source> +H : </source>
-        <translation type="unfinished"> +H : </translation>
+      <location line="+19"/>
+      <source> +H : </source>
+      <translation> 高： </translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>The height of the rendered image</source>
-        <translation type="unfinished">The height of the rendered image</translation>
+      <location line="+7"/>
+      <source>The height of the rendered image</source>
+      <translation>渲染图像的高度</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Luxrender executable:</source>
-        <translation type="unfinished">Luxrender executable:</translation>
+      <location line="+21"/>
+      <source>Luxrender executable:</source>
+      <translation>Luxrender 可执行文件:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">The path to the luxrender (or luxconsole) executable</translation>
+      <location line="+7"/>
+      <source>The path to the luxrender (or luxconsole) executable</source>
+      <translation>Luxrender (或 luxconsole) 可执行文件的路径</translation>
     </message>
     <message>
-        <location line="+38"/>
-        <source>Part file name:</source>
-        <translation>零件文件名称:</translation>
+      <location line="+38"/>
+      <source>Part file name:</source>
+      <translation>零件文件名称:</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location line="+23"/>
-        <location line="+16"/>
-        <source>Used by utility tools</source>
-        <translation type="unfinished">Used by utility tools</translation>
+      <location line="+17"/>
+      <location line="+23"/>
+      <location line="+16"/>
+      <source>Used by utility tools</source>
+      <translation>由实用工具使用</translation>
     </message>
     <message>
-        <location line="-13"/>
-        <source>TempCamera.inc</source>
-        <translation>TempCamera.inc</translation>
+      <location line="-13"/>
+      <source>TempCamera.inc</source>
+      <translation>TempCamera.inc</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>TempPart.inc</source>
-        <translation>TempPart.inc</translation>
+      <location line="+16"/>
+      <source>TempPart.inc</source>
+      <translation>TempPart.inc</translation>
     </message>
     <message>
-        <location line="-294"/>
-        <source>Mesh export settings</source>
-        <translation>网格导出设置</translation>
+      <location line="-294"/>
+      <source>Mesh export settings</source>
+      <translation>网格导出设置</translation>
     </message>
     <message>
-        <source>max mesh deviation:</source>
-        <translation type="obsolete">最大网格偏差:</translation>
+      <source>max mesh deviation:</source>
+      <translation>最大网格偏差:</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <source>Do not calculate vertex normals</source>
-        <translation>不计算顶点法线</translation>
+      <location line="+54"/>
+      <source>Do not calculate vertex normals</source>
+      <translation>不计算顶点法线</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Write u,v coordinates</source>
-        <translation>写入U，V坐标</translation>
+      <location line="+13"/>
+      <source>Write u,v coordinates</source>
+      <translation>写入U，V坐标</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>RaytracingGui::ViewProviderLux</name>
     <message>
-        <location filename="../../ViewProvider.cpp" line="+68"/>
-        <source>Edit LuxRender project</source>
-        <translation type="unfinished">Edit LuxRender project</translation>
+      <location filename="../../ViewProvider.cpp" line="+68"/>
+      <source>Edit LuxRender project</source>
+      <translation>编辑 LuxRender 项目</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>LuxRender template</source>
-        <translation type="unfinished">LuxRender template</translation>
+      <location line="+24"/>
+      <source>LuxRender template</source>
+      <translation>光渲染模板</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Select a LuxRender template</source>
-        <translation type="unfinished">Select a LuxRender template</translation>
+      <location line="+0"/>
+      <source>Select a LuxRender template</source>
+      <translation>选择 LuxRender 模板</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-        <location line="+48"/>
-        <source>Edit Povray project</source>
-        <translation type="unfinished">Edit Povray project</translation>
+      <location line="+48"/>
+      <source>Edit Povray project</source>
+      <translation>编辑 Povray 项目</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Povray template</source>
-        <translation type="unfinished">Povray template</translation>
+      <location line="+24"/>
+      <source>Povray template</source>
+      <translation>Povray 模板</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Select a Povray template</source>
-        <translation type="unfinished">Select a Povray template</translation>
+      <location line="+0"/>
+      <source>Select a Povray template</source>
+      <translation>选择 Povray 模板</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+37"/>
-        <source>&amp;Raytracing</source>
-        <translation>光线追踪(&amp;R)</translation>
+      <location filename="../../Workbench.cpp" line="+37"/>
+      <source>&amp;Raytracing</source>
+      <translation>光线追踪(&amp;R)</translation>
     </message>
-</context>
+  </context>
 </TS>

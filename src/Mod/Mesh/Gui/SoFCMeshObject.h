@@ -155,7 +155,7 @@ protected:
  * The GLRender() method checks the status of the SoFCInteractiveElement to decide to be in
  * interactive mode or not.
  * To take advantage of this facility the client programmer must set the status of the
- * SoFCInteractiveElement to \a true if there is a user interation and set the status to
+ * SoFCInteractiveElement to \a true if there is a user interaction and set the status to
  * \a false if not. This can be done e.g. in the actualRedraw() method of the viewer.
  *
  * @author Werner Mayer
@@ -194,7 +194,7 @@ private:
 
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshObjectShape() {};
+    virtual ~SoFCMeshObjectShape();
     virtual void notify(SoNotList * list);
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
@@ -207,11 +207,18 @@ private:
     void stopSelection(SoAction * action, const Mesh::MeshObject*);
     void renderSelectionGeometry(const Mesh::MeshObject*);
 
+    void generateGLArrays(SoState * state);
+    void renderFacesGLArray(SoGLRenderAction *action);
+    void renderCoordsGLArray(SoGLRenderAction *action);
+
 private:
-    bool meshChanged;
     GLuint *selectBuf;
     GLfloat modelview[16];
     GLfloat projection[16];
+    // Vertex array handling
+    std::vector<int32_t> index_array;
+    std::vector<float> vertex_array;
+    SbBool updateGLArray;
 };
 
 class MeshGuiExport SoFCMeshSegmentShape : public SoShape {

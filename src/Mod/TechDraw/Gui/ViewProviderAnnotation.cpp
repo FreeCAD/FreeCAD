@@ -77,7 +77,6 @@ std::vector<std::string> ViewProviderAnnotation::getDisplayModes(void) const
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    Base::Console().Log("ViewProviderViewSection::updateData - Update View: %s\n",prop->getName());
     if (prop == &(getViewObject()->Text)   ||
         prop == &(getViewObject()->Font)   ||
         prop == &(getViewObject()->TextColor)   ||
@@ -90,7 +89,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
         if (qgiv) {
             qgiv->updateView(true);
         }
-     }
+    }
 
     ViewProviderDrawingView::updateData(prop);
 }

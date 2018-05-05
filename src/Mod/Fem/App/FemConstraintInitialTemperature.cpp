@@ -52,6 +52,9 @@ ConstraintInitialTemperature::ConstraintInitialTemperature()
                                                                              "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
+
+    References.setStatus(App::Property::ReadOnly, true);
+    References.setStatus(App::Property::Hidden, true);
 }
 
 App::DocumentObjectExecReturn *ConstraintInitialTemperature::execute(void)

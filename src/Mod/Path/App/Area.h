@@ -153,7 +153,7 @@ protected:
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */
     void makeOffset(std::list<std::shared_ptr<CArea> > &areas,
-                    PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
+                    PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), bool from_center=false);
 
     /** Make a pocket of the combined shape
      *
@@ -218,7 +218,8 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), int reoirent=0);
+    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), 
+            int reoirent=0, bool from_center=false);
 
     /** Make a pocket of the combined shape
      *
@@ -328,7 +329,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Wire toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
+    static TopoDS_Shape toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
 
     /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
@@ -339,7 +340,10 @@ public:
      * minimize traval distance
      *
      * \arg \c shapes: input list of shapes.
-     * \arg \c pstart: optional start point
+     * \arg \c has_start: if false or pstart is 0, then a start point will be
+     * auto selected.
+     * \arg \c pstart: optional start point. If has_start is false, then the
+     * auto selected start point will be returned with this point if not NULL.
      * \arg \c pend: optional output containing the ending point of the returned
      * \arg \c stepdown_hint: optional output of a hint of step down as the max
      * distance between two sections.
@@ -351,7 +355,7 @@ public:
      * \return sorted wires
      */
     static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
-            gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, double *stepdown_hint=NULL,
+            bool has_start=false, gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, double *stepdown_hint=NULL,
             short *arc_plane = NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Convert a list of wires to gcode

@@ -110,8 +110,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
     return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 
@@ -145,10 +144,14 @@ void ViewProviderGroupExtension::extensionHide(void) {
 
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
         Gui::Document* doc = Application::Instance->getDocument(getExtendedViewProvider()->getObject()->getDocument());
-        for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-            ViewProvider* view = doc->getViewProvider(*it);
-            if (view) 
-                view->hide();
+        // doc pointer can be null in case the document is about to be destroyed
+        // See https://forum.freecadweb.org/viewtopic.php?f=22&t=26797&p=218804#p218521
+        if (doc) {
+            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
+                ViewProvider* view = doc->getViewProvider(*it);
+                if (view)
+                    view->hide();
+            }
         }
     }
 

@@ -87,12 +87,12 @@ def getTeighaConverter():
         if os.path.exists(teigha):
             return teigha
     from DraftTools import translate
-    FreeCAD.Console.PrintMessage(translate("draft","Teigha File Converter not found, DWG support is disabled.\n"))
+    FreeCAD.Console.PrintMessage(translate("draft","Teigha File Converter not found, DWG support is disabled")+"\n")
     return None
     
 def convertToDxf(dwgfilename):
     "converts a DWG file to DXF"
-    import os,tempfile,subprocess     #import os,tempfile
+    import os,tempfile,subprocess,sys     #import os,tempfile
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dwgfilename)
@@ -100,10 +100,10 @@ def convertToDxf(dwgfilename):
         basename = os.path.basename(dwgfilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("Converting: " + cmdline)
-        if isinstance(cmdline,unicode):
-            import sys
-            encoding = sys.getfilesystemencoding()
-            cmdline = cmdline.encode(encoding)
+        if sys.version_info.major < 3:
+            if isinstance(cmdline,unicode):
+                encoding = sys.getfilesystemencoding()
+                cmdline = cmdline.encode(encoding)
         subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):

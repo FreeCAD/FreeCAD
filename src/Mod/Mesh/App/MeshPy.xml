@@ -27,14 +27,18 @@ Example:
   f.Mesh = m # Assign the mesh object to the internal property
   d.recompute()</UserDocu>
 		</Documentation>
-		<Methode Name="read">
+        <Methode Name="read" Keyword="true">
 			<Documentation>
-				<UserDocu>Read in a mesh object from file.</UserDocu>
+                <UserDocu>Read in a mesh object from file.
+mesh.read(Filename='mymesh.stl')
+mesh.read(Stream=file,Format='STL')</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="write" Const="true">
+        <Methode Name="write" Const="true" Keyword="true">
 			<Documentation>
-				<UserDocu>Write the mesh object into file.</UserDocu>
+				<UserDocu>Write the mesh object into file.
+mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
+mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="writeInventor" Const="true">
@@ -399,9 +403,23 @@ The argument int is the mode: 0=inner, 1=outer
 				<UserDocu>Fillup holes</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="smooth" Const="true">
+        <Methode Name="smooth" Const="true" Keyword="true">
 			<Documentation>
-				<UserDocu>Smooth the mesh</UserDocu>
+				<UserDocu>Smooth the mesh
+smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="decimate">
+			<Documentation>
+				<UserDocu>
+					Decimate the mesh
+					decimate(tolerance(Float), reduction(Float))
+					tolerance: maximum error
+					reduction: reduction factor must be in the range [0.0,1.0]
+					Example:
+					mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
+					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="optimizeTopology" Const="true">
@@ -502,7 +520,7 @@ for p in mesh.Facets:
 		</Attribute>
 		<ClassDeclarations>private:
     friend class PropertyMeshKernel;
-    class PropertyMeshKernel* parentProperty;
+    class PropertyMeshKernel* parentProperty = nullptr;
 		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

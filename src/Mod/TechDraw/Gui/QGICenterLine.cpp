@@ -26,6 +26,8 @@
 #include <QStyleOptionGraphicsItem>
 #endif
 
+#include <cmath>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
@@ -42,6 +44,7 @@ QGICenterLine::QGICenterLine()
     setWidth(0.0);
     setStyle(getCenterStyle());
     setColor(getCenterColor());
+    m_isintersection = false;              //Coverity CID 174669
 }
 
 void QGICenterLine::draw()
@@ -70,7 +73,7 @@ QColor QGICenterLine::getCenterColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x08080800));
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x00000000));
     return fcColor.asValue<QColor>();
 }
 
@@ -78,7 +81,7 @@ Qt::PenStyle QGICenterLine::getCenterStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine",3));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
     return centerStyle;
 }
 
@@ -90,10 +93,48 @@ void QGICenterLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QGIDecoration::paint (painter, &myOption, widget);
 }
 
+void QGICenterLine::setIntersection(bool isIntersecting) {
+    /**
+     * Set the intersection style for the centerline.
+     * If isIntersecting is set to true, the middle of the centerline
+     * will be the middle of a dash - therefore if two lines intersect, they
+     * will form a cross.
+     * If isIntersecting is set to false, the middle of the centerline will be a
+     * dot.
+     */
+    m_isintersection = isIntersecting;
+}
+
 void QGICenterLine::setTools()
 {
+    if (m_styleCurrent == Qt::DashDotLine) {
+        QVector<qreal> dashes;
+        qreal space = 4;  // in unit width
+        qreal dash = 16;
+        // dot must be really small when using CapStyle RoundCap but > 0
+        // for CapStyle FlatCap you would need to set it to 1
+        qreal dot = 0.000001;
+
+        dashes << dot << space << dash << space;
+        qreal dashlen = dot + 2 * space + dash;
+        qreal l_len = sqrt(pow(m_start.x() - m_end.x(), 2) + pow(m_start.y() - m_end.y(), 2)) / 2.0;
+        // convert from pixelunits to width units
+        l_len = l_len / m_width;
+        // note that the additional length using RoundCap or SquareCap does not
+        // count here!
+        if (m_isintersection) {
+            m_pen.setDashOffset(dashlen - fmod(l_len, dashlen) + space + dash / 2);
+        } else {
+            m_pen.setDashOffset(dashlen - fmod(l_len, dashlen));
+        }
+
+        m_pen.setDashPattern(dashes);
+    }
+    else {
+        m_pen.setStyle(m_styleCurrent);
+    }
+    m_pen.setCapStyle(Qt::RoundCap);
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
     m_line->setPen(m_pen);
 }

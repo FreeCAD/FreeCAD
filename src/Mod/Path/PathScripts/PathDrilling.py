@@ -116,29 +116,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command('G80'))
 
-    def setDepths(self, obj, zmax, zmin, bb):
-        '''setDepths(obj, zmax, zmin, bb) ... call base implementation and set RetractHeight accordingly.'''
-        super(self.__class__, self).setDepths(obj, zmax, zmin, bb)
-        if zmax is not None:
-            obj.RetractHeight = zmax + 1.0
-        else:
-            obj.RetractHeight = 6.0
-
     def opSetDefaultValues(self, obj):
         '''opSetDefaultValues(obj) ... set default value for RetractHeight'''
         obj.RetractHeight = 10
-
-    def opOnChanged(self, obj, prop):
-        '''opOnChanged(obj, prop) ... if Locations changed, check if depths should be calculated.'''
-        super(self.__class__, self).opOnChanged(obj, prop)
-        if prop == 'Locations' and not 'Restore' in obj.State and obj.Locations and not obj.Base:
-            if not hasattr(self, 'baseobject'):
-                job = PathUtils.findParentJob(obj)
-                if job and job.Base:
-                    self.setupDepthsFrom(obj, [], job.Base)
 
 def Create(name):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDrilling(obj)
+    if obj.Proxy:
+        proxy.findAllHoles(obj)
     return obj

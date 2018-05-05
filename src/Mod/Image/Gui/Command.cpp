@@ -53,7 +53,7 @@ CmdImageOpen::CmdImageOpen()
     sGroup          = QT_TR_NOOP("Image");
     sMenuText       = QT_TR_NOOP("Open...");
     sToolTipText    = QT_TR_NOOP("Open image view");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_Open";
     sStatusTip      = sToolTipText;
     sPixmap         = "image-import";
 }
@@ -78,7 +78,11 @@ void CmdImageOpen::activated(int iMsg)
         try{
             // load the file with the module
             Command::doCommand(Command::Gui, "import Image, ImageGui");
+#if PY_MAJOR_VERSION < 3
             Command::doCommand(Command::Gui, "ImageGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)s.toUtf8());
+#else
+            Command::doCommand(Command::Gui, "ImageGui.open(\"%s\",\"utf-8\")", (const char*)s.toUtf8());
+#endif
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -97,7 +101,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sGroup          = QT_TR_NOOP("Image");
     sMenuText       = QT_TR_NOOP("Create image plane...");
     sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_CreateImagePlane";
     sStatusTip      = sToolTipText;
     sPixmap         = "image-import";
 }
@@ -171,7 +175,7 @@ CmdImageCapturerTest::CmdImageCapturerTest()
     sGroup          = ("Image");
     sMenuText       = ("CapturerTest");
     sToolTipText    = ("test camara capturing");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_CapturerTest";
     sStatusTip      = sToolTipText;
     sPixmap         = "camera-photo";
 }

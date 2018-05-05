@@ -37,7 +37,7 @@ class GroupExtensionPy;
 
 class AppExport GroupExtension : public DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(App::GroupExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GroupExtension);
 
 public:
     /// Constructor
@@ -56,6 +56,11 @@ public:
     /* Adds the objects \a objs to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj);
+    
+    /* Sets the objects in this group. Everything contained already will be removed first
+     */
+    virtual std::vector< DocumentObject* > setObjects(std::vector< DocumentObject* > obj);    
+    
     /*override this function if you want only special objects
      */
     virtual bool allowObject(DocumentObject* ) {return true;}
@@ -78,12 +83,12 @@ public:
      * @param obj        the object to check for.
      * @param recursive  if true check also if the obj is child of some sub group (default is false).
      */
-    bool hasObject(const DocumentObject* obj, bool recursive=false) const;
+    virtual bool hasObject(const DocumentObject* obj, bool recursive=false) const;
     /**
-     * Checks whether this group object is a child (or sub-child)
+     * Checks whether this group object is a child (or sub-child if enabled)
      * of the given group object.
      */
-    bool isChildOf(const GroupExtension*) const;
+    bool isChildOf(const GroupExtension* group, bool recursive = true) const;
     /** Returns a list of all objects this group does have.
      */
     std::vector<DocumentObject*> getObjects() const;
@@ -101,7 +106,7 @@ public:
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
     
-    virtual PyObject* getExtensionPyObject(void);
+    virtual PyObject* getExtensionPyObject(void) override;
 
     virtual void extensionOnChanged(const Property* p) override;
     
@@ -110,6 +115,9 @@ public:
 
 private:
     void removeObjectFromDocument(DocumentObject*);
+    //this version if has object stores the already searched objects to prevent infinite recursion
+    //in case of a cyclic group graph
+    bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 };
 
 

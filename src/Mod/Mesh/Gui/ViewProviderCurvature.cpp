@@ -242,7 +242,7 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
 {
-    // creats the standard viewing modes
+    // creates the standard viewing modes
     inherited::attach(pcFeat);
     attachDocument(pcFeat->getDocument());
 
@@ -288,7 +288,7 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
 void ViewProviderMeshCurvature::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
+    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         Mesh::Feature* object = static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
         this->pcLinkRoot->removeAllChildren();
         if (object) {
@@ -301,6 +301,9 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
             ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
             this->pcLinkRoot->addChild(view->getHighlightNode());
+
+            Base::Placement p = static_cast<Mesh::Feature*>(view->getObject())->Placement.getValue();
+            ViewProviderMesh::updateTransform(p, pcTransform);
         }
     }
     else if (prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {

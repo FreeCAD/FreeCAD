@@ -47,6 +47,7 @@
 #include "ShapeBinder.h"
 
 #include "Body.h"
+#include "FeatureBase.h"
 #include "BodyPy.h"
 
 using namespace PartDesign;
@@ -55,7 +56,6 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
-    ADD_PROPERTY_TYPE (Origin, (0), 0, App::Prop_Hidden, "Origin linked to the body" );
 }
 
 /*
@@ -110,8 +110,7 @@ void Body::onChanged(const App::Property *prop)
 
 short Body::mustExecute() const
 {
-    if ( Tip.isTouched() ||
-         BaseFeature.isTouched() ) {
+    if ( Tip.isTouched() ) {
         return 1;
     }
     return Part::BodyBase::mustExecute();
@@ -134,18 +133,13 @@ App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
 
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 {
-    App::DocumentObject* baseFeature = BaseFeature.getValue();
-
     if ( !start ) { // default to tip
         start = Tip.getValue();
     }
 
     if ( !start ) { // No Tip
         return nullptr;
-    } else if ( start == baseFeature ) { // The base feature always considered as the first solid
-        return nullptr;
     }
-
     if (!hasObject(start))
         return nullptr;
 
@@ -157,15 +151,13 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
-    } else { // if solid is not present in the list the previous one is baseFeature
-        return baseFeature; // return it either it's set or nullptr
     }
+    
+    return nullptr;
 }
 
 App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
 {
-    App::DocumentObject* baseFeature = BaseFeature.getValue();
-
     if ( !start ) { // default to tip
         start = Tip.getValue();
     }
@@ -179,14 +171,9 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     const std::vector<App::DocumentObject*> & features = Group.getValues();
     std::vector<App::DocumentObject*>::const_iterator startIt;
 
-    if ( start == baseFeature ) {
-        // Handle the base feature, it's always considered to be solid
-        startIt = features.begin();
-    } else {
-        startIt = std::find ( features.begin(), features.end(), start );
-        assert ( startIt != features.end() );
-        startIt++;
-    }
+    startIt = std::find ( features.begin(), features.end(), start );
+    assert ( startIt != features.end() );
+    startIt++;
 
     if (startIt == features.end() ) { // features list is empty
         return nullptr;
@@ -196,9 +183,9 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
 
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
-    } else {
-        return nullptr;
     }
+    
+    return nullptr;
 }
 
 bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
@@ -219,8 +206,17 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
+    // ORIGINAL COMMENT:
     // This can be recognized because the Originals property is empty (it is contained
     // in the MultiTransform instead)
+    // COMMENT ON THE COMMENT:
+    // This is wrong because at the creation (addObject) and before assigning the originals, that 
+    // is when this code is executed, the originals property is indeed empty.
+    //
+    // However, for the purpose of setting the base feature, the transform feature has been modified
+    // to auto set it when the originals are not null. See:
+    // App::DocumentObjectExecReturn *Transformed::execute(void)
+    //
     return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
             static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
 }
@@ -300,18 +296,8 @@ std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentO
 
 void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
-    if (target) {
-        if (target == BaseFeature.getValue()) {
-            // Handle the insertion relative to the base feature in a special way
-            if (after) {
-                target = nullptr;
-            } else {
-                throw Base::Exception("Body: impossible to insert before the base object");
-            }
-        } else if (!hasObject (target)) {
-            // Check if the target feature belongs to the body
-            throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
-        }
+    if (target && !hasObject (target)) {
+        throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
     }
     
     //ensure that all origin links are ok
@@ -343,6 +329,11 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     Group.setValues (model);
 
     // Set the BaseFeature property
+    setBaseProperty(feature);
+}
+
+void Body::setBaseProperty(App::DocumentObject* feature)
+{
     if (Body::isSolidFeature(feature)) {
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
@@ -356,9 +347,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
             static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
         }
     }
-
 }
-
 
 std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* feature)
 {
@@ -421,8 +410,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
     Part::TopoShape tipShape;
     if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() )
-                && tip != BaseFeature.getValue () ) {
+        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
             return new App::DocumentObjectExecReturn ( "Linked object is not a PartDesign feature" );
         }
 
@@ -454,12 +442,36 @@ void Body::onSettingDocument() {
 }
 
 void Body::onChanged (const App::Property* prop) {
-    if ( prop == &BaseFeature ) {
-        App::DocumentObject *baseFeature = BaseFeature.getValue();
-        App::DocumentObject *nextSolid = getNextSolidFeature ( baseFeature );
-        if ( nextSolid ) {
-            assert ( nextSolid->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            static_cast<PartDesign::Feature*>(nextSolid)->BaseFeature.setValue( baseFeature );
+    // we neither load a project nor perform undo/redo
+    if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
+        if ( prop == &BaseFeature ) {
+            FeatureBase* bf = nullptr;
+            auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
+
+            if(BaseFeature.getValue()) {
+
+                //setup the FeatureBase if needed
+                if(!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
+                    bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                    insertObject(bf, first, false);
+                    if(!Tip.getValue())
+                        Tip.setValue(bf);
+                }
+                else
+                    bf = static_cast<FeatureBase*>(first);
+            }
+
+            if(bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
+                bf->BaseFeature.setValue(BaseFeature.getValue());
+        }
+        else if( prop == &Group ) {
+
+            //if the FeatureBase was deleted we set the BaseFeature link to nullptr
+            if(BaseFeature.getValue() &&
+               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
+
+                    BaseFeature.setValue(nullptr);
+            }
         }
     }
 

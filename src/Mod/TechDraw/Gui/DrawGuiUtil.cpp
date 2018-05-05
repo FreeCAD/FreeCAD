@@ -32,6 +32,7 @@
 # include <QStringList>
 # include <QRegExp>
 # include <QMessageBox>
+#include <QRectF>
 
 #endif
 
@@ -70,40 +71,57 @@ using namespace TechDrawGui;
 //===========================================================================
 // validate helper routines
 //===========================================================================
+
+//find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = 0;
-    //check if a DrawPage is currently displayed
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
-    if (mvp) {
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
-    } else {
-        //DrawPage not displayed, check Selection and/or Document for a DrawPage
-        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                            //no page in selection
-            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-            if (selPages.empty()) {                                        //no page in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                     QObject::tr("Create a page first."));
-                return page;
-            } else if (selPages.size() > 1) {                              //multiple pages in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Can not determine correct page."));
-                return page;
-            } else {                                                       //use only page in document
-                page = static_cast<TechDraw::DrawPage*>(selPages.front());
-            }
-        } else if (selPages.size() > 1) {                                  //multiple pages in selection
+    TechDraw::DrawPage* page;
+    bool warn = true;
+
+    //check Selection and/or Document for a DrawPage
+    std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (selPages.empty()) {                                            //no page in selection
+        selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (selPages.empty()) {                                        //no page in document
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                 QObject::tr("Create a page first."));
+            page = nullptr; 
+            warn = false;
+        } else if (selPages.size() > 1) {                              //multiple pages in document, but none selected
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                 QObject::tr("Select exactly 1 page."));
-            return page;
-        } else {                                                           //use only page in selection
+                                 QObject::tr("Can not determine correct page."));
+            page = nullptr;
+            warn = false;
+        } else {                                                       //use only page in document - use it
             page = static_cast<TechDraw::DrawPage*>(selPages.front());
         }
+    } else if (selPages.size() > 1) {                                  //multiple pages in selection
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                             QObject::tr("Select exactly 1 page."));
+        page = nullptr;
+        warn = false;
+    } else {                                                           //use only page in selection
+        page = static_cast<TechDraw::DrawPage*>(selPages.front());
     }
+
+    //default to currently displayed DrawPage is there is one         //code moved Coverity CID 174668
+    if (page == nullptr) {
+        Gui::MainWindow* w = Gui::getMainWindow();
+        Gui::MDIView* mv = w->activeWindow();
+        MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+        if (mvp) {
+            QString windowTitle = mvp->windowTitle();
+            QGVPage* qp = mvp->getQGVPage();
+            page = qp->getDrawPage();
+        }
+    }
+
+    if ((page == nullptr) && 
+        (warn) ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                 QObject::tr("Create a page first."));
+    }
+
     return page;
 }
 
@@ -140,4 +158,22 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
         }
     }
     return haveView;
+}
+
+void DrawGuiUtil::dumpRectF(const char* text, const QRectF& r)
+{
+    Base::Console().Message("DUMP - dumpRectF - %s\n",text);
+    double left = r.left();
+    double right = r.right();
+    double top = r.top();
+    double bottom = r.bottom();
+    Base::Console().Message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",left,right,top,bottom);
+    Base::Console().Message("Size: W: %.3f H: %.3f\n",r.width(),r.height());
+    Base::Console().Message("Centre: (%.3f, %.3f)\n",r.center().x(),r.center().y());
+}
+
+void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
+{
+    Base::Console().Message("DUMP - dumpPointF - %s\n",text);
+    Base::Console().Message("Point: (%.3f, %.3f)\n",p.x(),p.y());
 }

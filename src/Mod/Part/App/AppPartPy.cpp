@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepCheck_Analyzer.hxx>
+# include <BRepFeat_SplitShape.hxx>
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
@@ -75,6 +76,7 @@
 # include <TColgp_HArray2OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
 #endif
@@ -125,12 +127,17 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 #include "FaceMaker.h"
+#include "PartPyCXX.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
 #endif
 
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
+
+namespace Part {
+extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 #ifndef M_PI
 #define M_PI    3.14159265358979323846 /* pi */
@@ -252,7 +259,7 @@ public:
             "read(string) -- Load the file and return the shape."
         );
         add_varargs_method("show",&Module::show,
-            "show(shape) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
         );
         add_varargs_method("makeCompound",&Module::makeCompound,
             "makeCompound(list) -- Create a compound out of a list of shapes."
@@ -363,10 +370,30 @@ public:
             "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."
         );
         add_varargs_method("makeLoft",&Module::makeLoft,
-            "makeLoft(list of wires,[solid=False,ruled=False,closed=False]) -- Create a loft shape."
+            "makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."
         );
         add_varargs_method("makeWireString",&Module::makeWireString,
             "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."
+        );
+        add_varargs_method("makeSplitShape",&Module::makeSplitShape,
+            "makeSplitShape(shape, list of shape pairs,[check Interior=True]) -> two lists of shapes.\n"
+            "The following shape pairs are supported:\n"
+            "* Wire, Face\n"
+            "* Edge, Face\n"
+            "* Compound, Face\n"
+            "* Edge, Edge\n"
+            "* The face must be part of the specified shape and the edge, wire or compound must\n"
+            "lie on the face.\n"
+            "Output:\n"
+            "The first list contains the faces that are the left of the projected wires.\n"
+            "The second list contains the left part on the shape.\n\n"
+            "Example:\n"
+            "face = ...\n"
+            "edges = ...\n"
+            "split = [(edges[0],face),(edges[1],face)]\n"
+            "r = Part.makeSplitShape(face, split)\n"
+            "Part.show(r[0][0])\n"
+            "Part.show(r[1][0])\n"
         );
         add_varargs_method("exportUnits",&Module::exportUnits,
             "exportUnits([string=MM|M|IN]) -- Set units for exporting STEP/IGES files and returns the units."
@@ -580,17 +607,17 @@ private:
     }
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(TopoShapePy::Type), &pcObj))
+        PyObject *pcObj = 0;
+        char *name = "Shape";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
 
         App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
-        Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", "Shape");
+        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         // copy the data
-        //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
         pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
         pcDoc->recompute();
 
@@ -1250,7 +1277,7 @@ private:
         PyObject *pleft=Py_False;
         if (!PyArg_ParseTuple(args.ptr(), "ddd|dO!", &pitch, &height, &radius, &angle,
                                                &(PyBool_Type), &pleft)) {
-            throw Py::Exception("Part.makeLongHelix fails on parms");
+            throw Py::RuntimeError("Part.makeLongHelix fails on parms");
         }
 
         try {
@@ -1517,10 +1544,12 @@ private:
         PyObject *psolid=Py_False;
         PyObject *pruled=Py_False;
         PyObject *pclosed=Py_False;
-        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!", &pcObj,
+        int degMax = 5;
+        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!i", &pcObj,
                                               &(PyBool_Type), &psolid,
                                               &(PyBool_Type), &pruled,
-                                              &(PyBool_Type), &pclosed)) {
+                                              &(PyBool_Type), &pclosed,
+                                              &degMax)) {
             throw Py::Exception();
         }
 
@@ -1539,9 +1568,83 @@ private:
         Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
         Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
         Standard_Boolean anIsClosed = PyObject_IsTrue(pclosed) ? Standard_True : Standard_False;
-        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled,anIsClosed);
+        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled, anIsClosed, degMax);
         return Py::asObject(new TopoShapePy(new TopoShape(aResult)));
 #endif
+    }
+    Py::Object makeSplitShape(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        PyObject* list;
+        PyObject* checkInterior = Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "O!O|O!", &(TopoShapePy::Type), &shape, &list,
+                                                    &PyBool_Type, &checkInterior))
+            throw Py::Exception();
+
+        try {
+            TopoDS_Shape initShape = static_cast<TopoShapePy*>
+                    (shape)->getTopoShapePtr()->getShape();
+            BRepFeat_SplitShape splitShape(initShape);
+            splitShape.SetCheckInterior(PyObject_IsTrue(checkInterior) ? Standard_True : Standard_False);
+
+            Py::Sequence seq(list);
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
+                Py::Tuple tuple(*it);
+                Py::TopoShape sh1(tuple[0]);
+                Py::TopoShape sh2(tuple[1]);
+                const TopoDS_Shape& shape1= sh1.extensionObject()->getTopoShapePtr()->getShape();
+                const TopoDS_Shape& shape2= sh2.extensionObject()->getTopoShapePtr()->getShape();
+                if (shape1.IsNull() || shape2.IsNull())
+                    throw Py::RuntimeError("Cannot add null shape");
+                if (shape2.ShapeType() == TopAbs_FACE) {
+                    if (shape1.ShapeType() == TopAbs_EDGE) {
+                        splitShape.Add(TopoDS::Edge(shape1), TopoDS::Face(shape2));
+                    }
+                    else if (shape1.ShapeType() == TopAbs_WIRE) {
+                        splitShape.Add(TopoDS::Wire(shape1), TopoDS::Face(shape2));
+                    }
+                    else if (shape1.ShapeType() == TopAbs_COMPOUND) {
+                        splitShape.Add(TopoDS::Compound(shape1), TopoDS::Face(shape2));
+                    }
+                    else {
+                        throw Py::TypeError("First item in tuple must be Edge, Wire or Compound");
+                    }
+                }
+                else if (shape2.ShapeType() == TopAbs_EDGE) {
+                    if (shape1.ShapeType() == TopAbs_EDGE) {
+                        splitShape.Add(TopoDS::Edge(shape1), TopoDS::Edge(shape2));
+                    }
+                    else {
+                        throw Py::TypeError("First item in tuple must be Edge");
+                    }
+                }
+                else {
+                    throw Py::TypeError("Second item in tuple must be Face or Edge");
+                }
+            }
+
+            splitShape.Build();
+            const TopTools_ListOfShape& d = splitShape.DirectLeft();
+            const TopTools_ListOfShape& l = splitShape.Left();
+
+            Py::List list1;
+            for (TopTools_ListIteratorOfListOfShape it(d); it.More(); it.Next()) {
+                list1.append(shape2pyshape(it.Value()));
+            }
+
+            Py::List list2;
+            for (TopTools_ListIteratorOfListOfShape it(l); it.More(); it.Next()) {
+                list2.append(shape2pyshape(it.Value()));
+            }
+
+            Py::Tuple tuple(2);
+            tuple.setItem(0, list1);
+            tuple.setItem(1, list2);
+            return tuple;
+        }
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
+        }
     }
     Py::Object makeWireString(const Py::Tuple& args)
     {

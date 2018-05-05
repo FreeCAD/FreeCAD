@@ -47,7 +47,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence);
 //**************************************************************************
 // Construction/Destruction
 
-// here the implemataion! description should take place in the header file!
+// Here is the implementation! Description should take place in the header file!
 Property::Property()
   :father(0)
 {
@@ -153,31 +153,6 @@ void Property::Paste(const Property& /*from*/)
 {
     // have to be reimplemented by a subclass!
     assert(0);
-}
-
-std::string Property::encodeAttribute(const std::string& str)
-{
-    std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
-            tmp += "&lt;";
-        else if (*it == '"')
-            tmp += "&quot;";
-        else if (*it == '\'')
-            tmp += "&apos;";
-        else if (*it == '&')
-            tmp += "&amp;";
-        else if (*it == '>')
-            tmp += "&gt;";
-        else if (*it == '\r')
-            tmp += "&#xD;";
-        else if (*it == '\n')
-            tmp += "&#xA;";
-        else
-            tmp += *it;
-    }
-
-    return tmp;
 }
 
 //**************************************************************************

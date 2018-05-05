@@ -29,17 +29,23 @@
 
 #include "Rotation.h"
 #include "Matrix.h"
+#include "Base/Exception.h"
 
 using namespace Base;
 
 Rotation::Rotation()
 {
     quat[0]=quat[1]=quat[2]=0.0;quat[3]=1.0;
+
+    _axis.Set(0.0, 0.0, 1.0);
+    _angle = 0.0;
 }
 
 /** Construct a rotation by rotation axis and angle */
 Rotation::Rotation(const Vector3d& axis, const double fAngle)
 {
+    // set to (0,0,1) as fallback in case the passed axis is the null vector
+    _axis.Set(0.0, 0.0, 1.0);
     this->setValue(axis, fAngle);
 }
 
@@ -77,6 +83,11 @@ Rotation::Rotation(const Rotation& rot)
     this->quat[1] = rot.quat[1];
     this->quat[2] = rot.quat[2];
     this->quat[3] = rot.quat[3];
+
+    this->_axis[0] = rot._axis[0];
+    this->_axis[1] = rot._axis[1];
+    this->_axis[2] = rot._axis[2];
+    this->_angle   = rot._angle;
 }
 
 const double * Rotation::getValue(void) const
@@ -92,6 +103,29 @@ void Rotation::getValue(double & q0, double & q1, double & q2, double & q3) cons
     q3 = this->quat[3];
 }
 
+void Rotation::evaluateVector()
+{
+    // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
+    //
+    // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3])
+    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
+        double rfAngle = double(acos(this->quat[3])) * 2.0;
+        double scale = (double)sin(rfAngle / 2.0);
+        // Get a normalized vector 
+        double l = this->_axis.Length();
+        if (l < Base::Vector3d::epsilon()) l = 1;
+        this->_axis.x = this->quat[0] * l / scale;
+        this->_axis.y = this->quat[1] * l / scale;
+        this->_axis.z = this->quat[2] * l / scale;
+
+        _angle = rfAngle;
+    }
+    else {
+        _axis.Set(0.0, 0.0, 1.0);
+        _angle = 0.0;
+    }
+}
+
 void Rotation::setValue(const double q0, const double q1, const double q2, const double q3)
 {
     this->quat[0] = q0;
@@ -99,26 +133,24 @@ void Rotation::setValue(const double q0, const double q1, const double q2, const
     this->quat[2] = q2;
     this->quat[3] = q3;
     this->normalize();
+    this->evaluateVector();
 }
 
 void Rotation::getValue(Vector3d & axis, double & rfAngle) const
 {
-    // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    //
-    // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3]) 
-    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
-        rfAngle = double(acos(this->quat[3])) * 2.0;
-        double scale = (double)sin(rfAngle / 2.0);
-        // Get a normalized vector 
-        axis.x = this->quat[0] / scale;
-        axis.y = this->quat[1] / scale;
-        axis.z = this->quat[2] / scale;
-    }
-    else {
-        // The quaternion doesn't describe a rotation, so we can setup any value we want 
-        axis.Set(0.0, 0.0, 1.0);
-        rfAngle = 0.0;
-    }
+    rfAngle = _angle;
+    axis.x = _axis.x;
+    axis.y = _axis.y;
+    axis.z = _axis.z;
+    axis.Normalize();
+}
+
+void Rotation::getRawValue(Vector3d & axis, double & rfAngle) const
+{
+    rfAngle = _angle;
+    axis.x = _axis.x;
+    axis.y = _axis.y;
+    axis.z = _axis.z;
 }
 
 /**
@@ -161,6 +193,7 @@ void Rotation::setValue(const double q[4])
     this->quat[2] = q[2];
     this->quat[3] = q[3];
     this->normalize();
+    this->evaluateVector();
 }
 
 void Rotation::setValue(const Matrix4D & m)
@@ -192,16 +225,32 @@ void Rotation::setValue(const Matrix4D & m)
         this->quat[j] = (double)((m[j][i] + m[i][j]) * s);
         this->quat[k] = (double)((m[k][i] + m[i][k]) * s);
     }
+
+    this->evaluateVector();
 }
 
 void Rotation::setValue(const Vector3d & axis, const double fAngle)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
-    this->quat[3] = (double)cos(fAngle/2.0);
+    // normalization of the angle to be in [0, 2pi[
+    _angle = fAngle;
+    double theAngle = fAngle - floor(fAngle / (2.0 * D_PI))*(2.0 * D_PI);
+    this->quat[3] = (double)cos(theAngle/2.0);
+
     Vector3d norm = axis;
     norm.Normalize();
-    double scale = (double)sin(fAngle/2.0);
+    double l = norm.Length();
+    // Keep old axis in case the new axis is the null vector
+    if (l > 0.5) {
+        this->_axis = axis;
+    }
+    else {
+        norm = _axis;
+        norm.Normalize();
+    }
+
+    double scale = (double)sin(theAngle/2.0);
     this->quat[0] = norm.x * scale;
     this->quat[1] = norm.y * scale;
     this->quat[2] = norm.z * scale;
@@ -212,7 +261,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the roatation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();
@@ -257,6 +306,11 @@ Rotation & Rotation::invert(void)
     this->quat[0] = -this->quat[0];
     this->quat[1] = -this->quat[1];
     this->quat[2] = -this->quat[2];
+
+    this->_axis.x = -this->_axis.x;
+    this->_axis.y = -this->_axis.y;
+    this->_axis.z = -this->_axis.z;
+
     return *this;
 }
 
@@ -267,6 +321,10 @@ Rotation Rotation::inverse(void) const
     rot.quat[1] = -this->quat[1];
     rot.quat[2] = -this->quat[2];
     rot.quat[3] =  this->quat[3];
+
+    rot._axis[0] = -this->_axis[0];
+    rot._axis[1] = -this->_axis[1];
+    rot._axis[2] = -this->_axis[2];
     return rot;
 }
 
@@ -294,10 +352,14 @@ Rotation Rotation::operator*(const Rotation & q) const
 
 bool Rotation::operator==(const Rotation & q) const
 {
-    if (this->quat[0] == q.quat[0] &&
-        this->quat[1] == q.quat[1] &&
-        this->quat[2] == q.quat[2] &&
-        this->quat[3] == q.quat[3])
+     if ((this->quat[0] == q.quat[0] &&
+          this->quat[1] == q.quat[1] &&
+          this->quat[2] == q.quat[2] &&
+          this->quat[3] == q.quat[3]) ||
+         (this->quat[0] == -q.quat[0] &&
+          this->quat[1] == -q.quat[1] &&
+          this->quat[2] == -q.quat[2] &&
+          this->quat[3] == -q.quat[3]))
         return true;
     return false;
 }
@@ -309,10 +371,14 @@ bool Rotation::operator!=(const Rotation & q) const
 
 bool Rotation::isSame(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] || this->quat[0] == -q.quat[0]) &&
-        (this->quat[1] == q.quat[1] || this->quat[1] == -q.quat[1]) &&
-        (this->quat[2] == q.quat[2] || this->quat[2] == -q.quat[2]) &&
-        (this->quat[3] == q.quat[3] || this->quat[3] == -q.quat[3]))
+    if ((this->quat[0] == q.quat[0] &&
+         this->quat[1] == q.quat[1] &&
+         this->quat[2] == q.quat[2] &&
+         this->quat[3] == q.quat[3]) ||
+        (this->quat[0] == -q.quat[0] &&
+         this->quat[1] == -q.quat[1] &&
+         this->quat[2] == -q.quat[2] &&
+         this->quat[3] == -q.quat[3]))
         return true;
     return false;
 }
@@ -386,6 +452,150 @@ Rotation Rotation::identity(void)
     return Rotation(0.0, 0.0, 0.0, 1.0);
 }
 
+Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
+{
+    const double tol = 1e-7; //equal to OCC Precision::Confusion
+    enum dirIndex {
+        X,
+        Y,
+        Z
+    };
+
+    //convert priorityOrder string into a sequence of ints.
+    if(strlen(priorityOrder)!=3)
+        THROWM(ValueError, "makeRotationByAxes: length of priorityOrder is not 3");
+    int order[3];
+    for(int i = 0; i < 3; ++i){
+        order[i] = priorityOrder[i] - 'X';
+        if (order[i] < 0 || order[i] > 2)
+            THROWM(ValueError, "makeRotationByAxes: characters in priorityOrder must be uppercase X, Y, or Z. Some other character encountered.")
+    }
+
+    //ensure every axis is listed in priority list
+    if( order[0] == order[1] ||
+        order[1] == order[2] ||
+        order[2] == order[0])
+        THROWM(ValueError,"makeRotationByAxes: not all axes are listed in priorityOrder");
+
+
+    //group up dirs into an array, to access them by indexes stored in @order.
+    std::vector<Vector3d*> dirs = {&xdir, &ydir, &zdir};
+
+
+    auto dropPriority = [&order](int index){
+        char tmp;
+        if (index == 0){
+            tmp = order[0];
+            order[0] = order[1];
+            order[1] = order[2];
+            order[2] = tmp;
+        } else if (index == 1) {
+            tmp = order[1];
+            order[1] = order[2];
+            order[2] = tmp;
+        } //else if index == 2 do nothing
+    };
+
+    //pick up the strict direction
+    Vector3d mainDir;
+    for(int i = 0; i < 3; ++i){
+        mainDir = *(dirs[order[0]]);
+        if (mainDir.Length() > tol)
+            break;
+        else
+            dropPriority(0);
+        if (i == 2)
+            THROWM(ValueError, "makeRotationByAxes: all directions supplied are zero");
+    }
+    mainDir.Normalize();
+
+    //pick up the 2nd priority direction, "hint" direction.
+    Vector3d hintDir;
+    for(int i = 0; i < 2; ++i){
+        hintDir = *(dirs[order[1]]);
+        if ((hintDir.Cross(mainDir)).Length() > tol)
+            break;
+        else
+            dropPriority(1);
+        if (i == 1)
+            hintDir = Vector3d(); //no vector can be used as hint direction. Zero it out, to indicate that a guess is needed.
+    }
+    if (hintDir.Length() == 0){
+        switch (order[0]){
+        case X: { //xdir is main
+            //align zdir to OZ
+            order[1] = Z;
+            order[2] = Y;
+            hintDir = Vector3d(0,0,1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning to OZ is impossible, align to ydir to OY. Why so? I don't know, just feels right =)
+                hintDir = Vector3d(0,1,0);
+                order[1] = Y;
+                order[2] = Z;
+            }
+        } break;
+        case Y: { //ydir is main
+            //align zdir to OZ
+            order[1] = Z;
+            order[2] = X;
+            hintDir = mainDir.z > -tol ? Vector3d(0,0,1) : Vector3d(0,0,-1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning zdir to OZ is impossible, align xdir to OX then.
+                hintDir = Vector3d(1,0,0);
+                order[1] = X;
+                order[2] = Z;
+            }
+        } break;
+        case Z: { //zdir is main
+            //align ydir to OZ
+            order[1] = Y;
+            order[2] = X;
+            hintDir =  Vector3d(0,0,1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning ydir to OZ is impossible, align xdir to OX then.
+                hintDir = Vector3d(1,0,0);
+                order[1] = X;
+                order[2] = Y;
+            }
+        } break;
+        }//switch ordet[0]
+    }
+
+    //ensure every axis is listed in priority list
+    assert(order[0] != order[1]);
+    assert(order[1] != order[2]);
+    assert(order[2] != order[0]);
+
+    hintDir.Normalize();
+    //make hintDir perpendicular to mainDir. For that, we cross-product the two to obtain the third axis direction, and then recover back the hint axis by doing another cross product.
+    Vector3d lastDir = mainDir.Cross(hintDir);
+    lastDir.Normalize();
+    hintDir = lastDir.Cross(mainDir);
+    hintDir.Normalize(); //redundant?
+
+    Vector3d finaldirs[3];
+    finaldirs[order[0]] = mainDir;
+    finaldirs[order[1]] = hintDir;
+    finaldirs[order[2]] = lastDir;
+
+    //fix handedness
+    if (finaldirs[X].Cross(finaldirs[Y]) * finaldirs[Z] < 0.0)
+        //handedness is wrong. Switch the direction of the least important axis
+        finaldirs[order[2]] = finaldirs[order[2]] * (-1.0);
+
+    //build the rotation, by constructing a matrix first.
+    Matrix4D m;
+    m.setToUnity();
+    for(int i = 0; i < 3; ++i){
+        //matrix indexing: [row][col]
+        m[0][i] = finaldirs[i].x;
+        m[1][i] = finaldirs[i].y;
+        m[2][i] = finaldirs[i].z;
+    }
+
+    return Rotation(m);
+}
+
 void Rotation::setYawPitchRoll(double y, double p, double r)
 {
     // The Euler angles (yaw,pitch,roll) are in XY'Z''-notation
@@ -401,10 +611,17 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
 
-    quat[0] = c1*c2*s3 - s1*s2*c3;
-    quat[1] = c1*s2*c3 + s1*c2*s3;
-    quat[2] = s1*c2*c3 - c1*s2*s3;
-    quat[3] = c1*c2*c3 + s1*s2*s3;
+    // quat[0] = c1*c2*s3 - s1*s2*c3;
+    // quat[1] = c1*s2*c3 + s1*c2*s3;
+    // quat[2] = s1*c2*c3 - c1*s2*s3;
+    // quat[3] = c1*c2*c3 + s1*s2*s3;
+
+    this->setValue (
+      c1*c2*s3 - s1*s2*c3,
+      c1*s2*c3 + s1*c2*s3,
+      s1*c2*c3 - c1*s2*s3,
+      c1*c2*c3 + s1*s2*s3
+    );
 }
 
 void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
@@ -429,4 +646,21 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     y = (y/D_PI)*180;
     p = (p/D_PI)*180;
     r = (r/D_PI)*180;
+}
+
+bool Rotation::isIdentity() const
+{
+    return ((this->quat[0] == 0  &&
+             this->quat[1] == 0  &&
+             this->quat[2] == 0) &&
+            (this->quat[3] == 1 ||
+             this->quat[3] == -1));
+}
+
+bool Rotation::isNull() const
+{
+    return (this->quat[0] == 0 &&
+            this->quat[1] == 0 &&
+            this->quat[2] == 0 &&
+            this->quat[3] == 0);
 }

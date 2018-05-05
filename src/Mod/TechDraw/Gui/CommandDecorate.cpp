@@ -80,7 +80,7 @@ CmdTechDrawNewHatch::CmdTechDrawNewHatch()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
     sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
-    sWhatsThis      = "TechDraw_NewHatch";
+    sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
 }
@@ -142,7 +142,7 @@ CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
     sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sWhatsThis      = "TechDraw_NewGeomHatch";
+    sWhatsThis      = "TechDraw_GeomHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-geomhatch";
 }
@@ -211,9 +211,9 @@ CmdTechDrawImage::CmdTechDrawImage()
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert bitmap image");
-    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
     sWhatsThis    = "TechDraw_Image";
-    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
     sPixmap       = "actions/techdraw-image";
 }
 
@@ -264,7 +264,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Turn View Frames on or off");
     sToolTipText    = QT_TR_NOOP("Turn View Frames on or off");
-    sWhatsThis      = "TechDraw_ToggleFrame";
+    sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-toggleframe";
 }
@@ -298,6 +298,47 @@ bool CmdTechDrawToggleFrame::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_RedrawPage
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawRedrawPage);
+
+CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
+  : Command("TechDraw_RedrawPage")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Redraw a page");
+    sToolTipText    = QT_TR_NOOP("Redraw a page");
+    sWhatsThis      = "TechDraw_Redraw";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_Tree_Page_Sync";
+}
+
+void CmdTechDrawRedrawPage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+    bool keepUpdated = page->KeepUpdated.getValue();
+    if (!keepUpdated) {
+        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = True",PageName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = False",PageName.c_str());
+    } else {
+        page->requestPaint();
+    }
+}
+
+bool CmdTechDrawRedrawPage::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    return (havePage);
+}
+
 void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -306,6 +347,7 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
+    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
 }
 
 //===========================================================================

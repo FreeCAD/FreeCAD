@@ -153,9 +153,66 @@ class SketcherSolverTestCases(unittest.TestCase):
 		CreateSlotPlateInnerSet(self.Slot)
 		self.Doc.recompute()
 		self.failUnless(len(self.Slot.Shape.Edges) == 9)
-	
+
+	def testIssue3245(self):
+		self.Doc2 = FreeCAD.newDocument("Issue3245")
+		self.Doc2.addObject('Sketcher::SketchObject','Sketch')
+		self.Doc2.Sketch.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(0.000000,0.000000,0.000000,1.000000))
+		self.Doc2.Sketch.MapMode = "Deactivated"
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(-1.195999,56.041161,0),App.Vector(60.654316,56.382877,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',0))
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(0.512583,32.121155,0),App.Vector(60.654316,31.779440,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',1))
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(0.170867,13.326859,0),App.Vector(61.679455,13.326859,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',2,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,60.654316))
+		self.Doc2.Sketch.setExpression('Constraints[6]', u'60')
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',1,1,1,2,60.654316))
+		self.Doc2.Sketch.setExpression('Constraints[7]', u'65')
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',2,1,2,2,61.679455))
+		self.Doc2.Sketch.setExpression('Constraints[8]', u'70')
+		self.Doc2.recompute()
+		self.Doc2.Sketch.delGeometry(2)
+		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
+		self.failUnless(values['Constraints[4]'] == u'60')
+		self.failUnless(values['Constraints[5]'] == u'65')
+		FreeCAD.closeDocument("Issue3245")
+
+	def testIssue3245_2(self):
+		self.Doc2 = FreeCAD.newDocument("Issue3245")
+		ActiveSketch = self.Doc2.addObject('Sketcher::SketchObject','Sketch')
+		ActiveSketch.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(0.000000,0.000000,0.000000,1.000000))
+		ActiveSketch.MapMode = "Deactivated"
+		geoList = []
+		geoList.append(Part.LineSegment(App.Vector(-23.574591,42.399727,0),App.Vector(81.949776,42.399727,0)))
+		geoList.append(Part.LineSegment(App.Vector(81.949776,42.399727,0),App.Vector(81.949776,-19.256901,0)))
+		geoList.append(Part.LineSegment(App.Vector(81.949776,-19.256901,0),App.Vector(-23.574591,-19.256901,0)))
+		geoList.append(Part.LineSegment(App.Vector(-23.574591,-19.256901,0),App.Vector(-23.574591,42.399727,0)))
+		ActiveSketch.addGeometry(geoList,False)
+		conList = []
+		conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+		conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+		conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+		conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+		conList.append(Sketcher.Constraint('Horizontal',0))
+		conList.append(Sketcher.Constraint('Horizontal',2))
+		conList.append(Sketcher.Constraint('Vertical',1))
+		conList.append(Sketcher.Constraint('Vertical',3))
+		ActiveSketch.addConstraint(conList)
+		ActiveSketch.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,105.524367))
+		ActiveSketch.setExpression('Constraints[8]', u'10 + 10')
+		ActiveSketch.addConstraint(Sketcher.Constraint('DistanceY',3,1,3,2,61.656628))
+		ActiveSketch.setDatum(9,App.Units.Quantity('5.000000 mm'))
+		ActiveSketch.delConstraint(8)
+		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
+		self.Doc2.recompute()
+		self.failUnless(len(values) == 0)
+		FreeCAD.closeDocument("Issue3245")
 	
 	def tearDown(self):
 		#closing doc
 		FreeCAD.closeDocument("SketchSolverTest")
-		#print ("omit close document for debugging")
+		#print ("omit closing document for debugging")

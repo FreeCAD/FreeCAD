@@ -937,7 +937,6 @@ StdMeshers_Adaptive1D::~StdMeshers_Adaptive1D()
 //function : SetDeflection
 //purpose  : 
 void StdMeshers_Adaptive1D::SetDeflection(double value)
-  throw(SALOME_Exception)
 {
   if (value <= std::numeric_limits<double>::min() )
     throw SALOME_Exception("Deflection must be greater that zero");
@@ -951,7 +950,6 @@ void StdMeshers_Adaptive1D::SetDeflection(double value)
 //function : SetMinSize
 //purpose  : Sets minimal allowed segment length
 void StdMeshers_Adaptive1D::SetMinSize(double minSize)
-  throw(SALOME_Exception)
 {
   if (minSize <= std::numeric_limits<double>::min() )
     throw SALOME_Exception("Min size must be greater that zero");
@@ -966,7 +964,6 @@ void StdMeshers_Adaptive1D::SetMinSize(double minSize)
 //function : SetMaxSize
 //purpose  : Sets maximal allowed segment length
 void StdMeshers_Adaptive1D::SetMaxSize(double maxSize)
-  throw(SALOME_Exception)
 {
   if (maxSize <= std::numeric_limits<double>::min() )
     throw SALOME_Exception("Max size must be greater that zero");

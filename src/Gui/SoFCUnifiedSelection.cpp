@@ -119,6 +119,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
     highlighted = false;
+    setPreSelection = false;
     preSelection = -1;
 }
 
@@ -268,6 +269,19 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         this->colorHighlight = colaction->highlightColor;
     }
 
+    if (highlightMode.getValue() != OFF && action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
+        SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
+        // Do not clear currently highlighted object when setting new pre-selection
+        if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
+            if (currenthighlight) {
+                SoHighlightElementAction action;
+                action.apply(currenthighlight);
+                currenthighlight->unref();
+                currenthighlight = 0;
+            }
+        }
+    }
+
     if (selectionMode.getValue() == ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
         SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
         if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
@@ -374,20 +388,24 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             highlighted = false;
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {
                 std::string documentName = vpd->getObject()->getDocument()->getName();
+                std::string objectLabel = vpd->getObject()->Label.getStrValue();
                 std::string objectName = vpd->getObject()->getNameInDocument();
                 std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
 
                 this->preSelection = 1;
                 static char buf[513];
-                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                snprintf(buf,512,"Preselected: %s - %s.%s.%s (%g, %g, %g)"
+                                           ,objectLabel.c_str()
+                                           ,documentName.c_str()
                                            ,objectName.c_str()
                                            ,subElementName.c_str()
                                            ,pp->getPoint()[0]
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2]);
 
-                getMainWindow()->showMessage(QString::fromLatin1(buf));
+                getMainWindow()->showMessage(QString::fromUtf8(buf));
 
+                setPreSelection = true;
                 if (Gui::Selection().setPreselect(documentName.c_str()
                                        ,objectName.c_str()
                                        ,subElementName.c_str()
@@ -418,6 +436,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         currenthighlight->ref();
                     }
                 }
+
+                setPreSelection = false;
             }
             // nothing picked
             else if (!pp) {
@@ -481,7 +501,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         if (ok)
                             type = SoSelectionElementAction::Append;
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)"
+                                                       ,documentName.c_str()
                                                        ,objectName.c_str()
                                                        ,subElementName.c_str()
                                                        ,pp->getPoint()[0]
@@ -519,7 +540,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     }
 
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)"
+                                                   ,documentName.c_str()
                                                    ,objectName.c_str()
                                                    ,subElementName.c_str()
                                                    ,pp->getPoint()[0]
@@ -539,6 +561,15 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     this->touch();
                 }
             } // picked point
+            else if (!pp) {
+                // user clicked onto empty space but in case Ctrl key was pressed
+                // then mark the action as handled to avoid that the navigation style
+                // processes the action and clears the selection
+                if (event->wasCtrlDown()) {
+                    action->setHandled();
+                }
+
+            }
         } // mouse release
     }
 

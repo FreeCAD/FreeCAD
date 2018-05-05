@@ -91,7 +91,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   s1 = GTSAlgos::createGTSSurface(_Mesh);
   s2 = GTSAlgos::createGTSSurface(ToolMesh);
 
-  // clear the mesh (mermory)
+  // clear the mesh (memory)
   //Mesh1.clear();
   //Mesh2.clear();
 
@@ -245,7 +245,7 @@ GtsSurface* GTSAlgos::createGTSSurface(const Mesh::MeshObject& Mesh)
   Base::Vector3f Vertex;
 
 
-  // Geting all the points
+  // Getting all the points
   GtsVertex ** aVertex = (GtsVertex **) malloc(Mesh.getKernel().CountPoints() * sizeof (GtsVertex *));
   for (unsigned int PIter = 0;PIter < Mesh.getKernel().CountPoints(); PIter++)
   {

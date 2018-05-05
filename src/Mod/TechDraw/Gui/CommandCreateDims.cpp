@@ -97,9 +97,13 @@ char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
 
+//NOTE: this is not shown in toolbar and doesn't always work right in the menu. 
+//      should be removed. 
 //===========================================================================
 // TechDraw_NewDimension
 //===========================================================================
+
+// this is deprecated. use individual add dimension commands.
 
 DEF_STD_CMD_A(CmdTechDrawNewDimension);
 
@@ -108,7 +112,7 @@ CmdTechDrawNewDimension::CmdTechDrawNewDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a dimension into a drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
     sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
@@ -202,22 +206,15 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,dimType.c_str());
 
-    std::string contentStr;
-    if (dimType == "Radius") {
-        contentStr = "R%value%";
-    }
-    doCommand(Doc,"App.activeDocument().%s.FormatSpec = '%s'",FeatName.c_str()
-                                                          ,contentStr.c_str());
-
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::Exception("CmdTechDrawNewDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -242,9 +239,9 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new radius dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
-    sWhatsThis      = "TechDraw_NewRadiusDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
+    sWhatsThis      = "TechDraw_Dimension_Radius";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Radius";
 }
@@ -295,7 +292,6 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Radius");
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'R%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -303,10 +299,10 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -331,9 +327,9 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
-    sWhatsThis      = "TechDraw_NewDiameterDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
+    sWhatsThis      = "TechDraw_Dimension_Diameter";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Diameter";
 }
@@ -380,20 +376,10 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         return;
     }
     
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    std::string diamSym = hGrp->GetASCII("DiameterSymbol","\xe2\x8c\x80");
-    diamSym = diamSym.substr (0,79);                                            //coverity 156593
-    const char * format = "%value%";
-    char formatSpec[80];
-    std::strcpy (formatSpec,diamSym.c_str());
-    std::strcat (formatSpec,format);
-    
     openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),formatSpec);
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -401,10 +387,10 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -429,9 +415,9 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new length dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new length dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
-    sWhatsThis      = "TechDraw_NewLengthDimension";
+    sWhatsThis      = "TechDraw_Dimension_Length";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Length";
 }
@@ -510,12 +496,10 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -540,9 +524,9 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceXDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
+    sWhatsThis      = "TechDraw_Dimension_Horizontal";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Horizontal";
 }
@@ -621,12 +605,10 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -651,9 +633,9 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceYDimension";
+    sWhatsThis      = "TechDraw_Dimension_Vertical";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Vertical";
 }
@@ -731,12 +713,10 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -761,9 +741,9 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new angle dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
-    sWhatsThis      = "TechDraw_NewAngleDimension";
+    sWhatsThis      = "TechDraw_Dimension_Angle";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Angle";
 }
@@ -821,10 +801,10 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -853,7 +833,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Link a dimension to 3D geometry");
     sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
-    sWhatsThis      = "TechDraw_LinkDimension";
+    sWhatsThis      = "TechDraw_Dimension_Link";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Link";
 }

@@ -51,6 +51,7 @@
 #include "Core/Triangulation.h"
 #include "Core/Trim.h"
 #include "Core/Visitor.h"
+#include "Core/Decimation.h"
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -596,12 +597,16 @@ void MeshObject::addMesh(const MeshCore::MeshKernel& kernel)
 
 void MeshObject::deleteFacets(const std::vector<unsigned long>& removeIndices)
 {
+    if (removeIndices.empty())
+        return;
     _kernel.DeleteFacets(removeIndices);
     deletedFacets(removeIndices);
 }
 
 void MeshObject::deletePoints(const std::vector<unsigned long>& removeIndices)
 {
+    if (removeIndices.empty())
+        return;
     _kernel.DeletePoints(removeIndices);
     this->_segments.clear();
 }
@@ -934,6 +939,12 @@ void MeshObject::setPoint(unsigned long index, const Base::Vector3d& p)
 void MeshObject::smooth(int iterations, float d_max)
 {
     _kernel.Smooth(iterations, d_max);
+}
+
+void MeshObject::decimate(float fTolerance, float fReduction)
+{
+    MeshCore::MeshSimplify dm(this->_kernel);
+    dm.simplify(fTolerance, fReduction);
 }
 
 Base::Vector3d MeshObject::getPointNormal(unsigned long index) const

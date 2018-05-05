@@ -39,7 +39,7 @@
 				<UserDocu>
 					setBiNormalMode(direction)
 					Sets a fixed BiNormal direction to perform the sweeping.
-					Angular relations beetween the section(s) and the BiNormal direction will be constant.
+					Angular relations between the section(s) and the BiNormal direction will be constant.
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -198,6 +198,14 @@
 				<UserDocu>
 					setForceApproxC1(bool)
 					Set the flag that indicates attempt to approximate a C1-continuous surface if a swept surface proved to be C0.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="simulate">
+			<Documentation>
+				<UserDocu>
+					simulate(int nbsec)
+					Simulates the resulting shape by calculating the given number of cross-sections.
 				</UserDocu>
 			</Documentation>
 		</Methode>

@@ -110,7 +110,7 @@ using namespace Import;
 #define OCAF_KEEP_PLACEMENT
 
 ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), doc(d), default_name(name)
+    : pDoc(h), doc(d), merge(true), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -494,7 +494,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
 }
 
 
-// This function create an Assembly node into an XCAF document with it's relative placement information
+// This function creates an Assembly node in an XCAF document with its relative placement information
 
 void ExportOCAF::createNode(App::Part* part, int& root_id,
                             std::vector <TDF_Label>& hierarchical_label,

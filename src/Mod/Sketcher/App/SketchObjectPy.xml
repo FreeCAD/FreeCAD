@@ -28,6 +28,11 @@
         <UserDocu>delete a geometric object from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="deleteAllGeometry">
+        <Documentation>
+            <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="toggleConstruction">
       <Documentation>
         <UserDocu>switch a geometry to a construction line</UserDocu>
@@ -97,7 +102,22 @@
       <Documentation>
         <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
       </Documentation>
-    </Methode>    
+    </Methode>
+    <Methode Name="setVirtualSpace">
+        <Documentation>
+            <UserDocu>set the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getVirtualSpace">
+        <Documentation>
+            <UserDocu>Get the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="toggleVirtualSpace">
+        <Documentation>
+            <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>
@@ -254,7 +274,7 @@
     <Attribute Name="AxisCount" ReadOnly="true">
       <Documentation>
         <UserDocu>
-          return the the number of construction lines in the sketch which can be used as axes
+          Return the number of construction lines in the sketch which can be used as axes
         </UserDocu>
       </Documentation>
       <Parameter Name="AxisCount" Type="Long"/>

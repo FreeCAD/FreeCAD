@@ -108,7 +108,7 @@ void RobotAlgos::Test(void)
     kinematics_status = fksolver.JntToCart(jointpositions,cartpos);
     if(kinematics_status>=0){
         std::cout << cartpos <<std::endl;
-        printf("%s \n","Succes, thanks KDL!");
+        printf("%s \n","Success, thanks KDL!");
     }else{
         printf("%s \n","Error: could not calculate forward kinematics :(");
     }

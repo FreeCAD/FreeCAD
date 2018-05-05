@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 
+#include <SMESH_Version.h>
 #include "FemMeshPy.h"
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
@@ -76,7 +77,7 @@ extern PyObject* initModule();
 /* Python entry */
 PyMOD_INIT_FUNC(Fem)
 {
-    // load dependend module
+    // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
         //Base::Interpreter().loadModule("Mesh");
@@ -119,7 +120,9 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_SegmentAroundVertex_0DPy    ::init_type(femModule);
     Fem::StdMeshers_SegmentLengthAroundVertexPy ::init_type(femModule);
     Fem::StdMeshers_StartEndLengthPy            ::init_type(femModule);
+#if SMESH_VERSION_MAJOR < 7
     Fem::StdMeshers_TrianglePreferencePy        ::init_type(femModule);
+#endif
     Fem::StdMeshers_Hexa_3DPy                   ::init_type(femModule);
 
     // Add Types to module
@@ -149,19 +152,20 @@ PyMOD_INIT_FUNC(Fem)
 
     Fem::Constraint                 ::init();
     Fem::ConstraintPython           ::init();
+
     Fem::ConstraintBearing          ::init();
+    Fem::ConstraintContact          ::init();
     Fem::ConstraintFixed            ::init();
+    Fem::ConstraintFluidBoundary    ::init();
     Fem::ConstraintForce            ::init();
-    Fem::ConstraintPressure         ::init();
-    Fem::ConstraintGear             ::init();
-    Fem::ConstraintPulley           ::init();
     Fem::ConstraintDisplacement     ::init();
-    Fem::ConstraintTemperature      ::init();
+    Fem::ConstraintGear             ::init();
     Fem::ConstraintHeatflux         ::init();
     Fem::ConstraintInitialTemperature ::init();
     Fem::ConstraintPlaneRotation    ::init();
-    Fem::ConstraintContact          ::init();
-    Fem::ConstraintFluidBoundary    ::init();
+    Fem::ConstraintPressure         ::init();
+    Fem::ConstraintPulley           ::init();
+    Fem::ConstraintTemperature      ::init();
     Fem::ConstraintTransform        ::init();
 
     Fem::FemResultObject            ::init();
@@ -175,6 +179,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostFilter              ::init();
     Fem::FemPostClipFilter          ::init();
     Fem::FemPostDataAlongLineFilter ::init();
+    Fem::FemPostDataAtPointFilter   ::init();
     Fem::FemPostScalarClipFilter    ::init();
     Fem::FemPostWarpVectorFilter    ::init();
     Fem::FemPostCutFilter           ::init();

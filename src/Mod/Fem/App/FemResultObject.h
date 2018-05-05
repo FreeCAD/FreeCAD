@@ -43,7 +43,7 @@ public:
     virtual ~FemResultObject();
 
     App::PropertyIntegerList NodeNumbers;
-    /// Link to the corresponding  mesh
+    /// Link to the corresponding mesh
     App::PropertyLink Mesh;
     /// Stats of analysis
     App::PropertyFloat Time;

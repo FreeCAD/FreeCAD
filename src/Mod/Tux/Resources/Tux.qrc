@@ -52,6 +52,9 @@
         <file>icons/NavigationOpenInventor.svg</file>
         <file>icons/NavigationOpenInventor_ZoomAlt.svg</file>
         <file>icons/NavigationOpenInventor_Zoom.svg</file>
+        <file>icons/NavigationRevit_Pan.svg</file>
+        <file>icons/NavigationRevit_Rotate.svg</file>
+        <file>icons/NavigationRevit.svg</file>
         <file>icons/NavigationTouchpad_Pan.svg</file>
         <file>icons/NavigationTouchpad_PanTouch.svg</file>
         <file>icons/NavigationTouchpad_RotateAlt.svg</file>
@@ -65,5 +68,40 @@
         <file>icons/NavigationTouchpad_Zoom.svg</file>
         <file>icons/NavigationTouchpad_ZoomTouch.svg</file>
         <file>icons/NavigationUndefined.svg</file>
+        <file>translations/Tux_af.qm</file>
+        <file>translations/Tux_zh-CN.qm</file>
+        <file>translations/Tux_zh-TW.qm</file>
+        <file>translations/Tux_hr.qm</file>
+        <file>translations/Tux_cs.qm</file>
+        <file>translations/Tux_nl.qm</file>
+        <file>translations/Tux_fi.qm</file>
+        <file>translations/Tux_fr.qm</file>
+        <file>translations/Tux_de.qm</file>
+        <file>translations/Tux_hu.qm</file>
+        <file>translations/Tux_ja.qm</file>
+        <file>translations/Tux_no.qm</file>
+        <file>translations/Tux_pl.qm</file>
+        <file>translations/Tux_pt-PT.qm</file>
+        <file>translations/Tux_ro.qm</file>
+        <file>translations/Tux_ru.qm</file>
+        <file>translations/Tux_sr.qm</file>
+        <file>translations/Tux_es-ES.qm</file>
+        <file>translations/Tux_sv-SE.qm</file>
+        <file>translations/Tux_uk.qm</file>
+        <file>translations/Tux_it.qm</file>
+        <file>translations/Tux_pt-BR.qm</file>
+        <file>translations/Tux_el.qm</file>
+        <file>translations/Tux_sk.qm</file>
+        <file>translations/Tux_tr.qm</file>
+        <file>translations/Tux_sl.qm</file>
+        <file>translations/Tux_eu.qm</file>
+        <file>translations/Tux_ca.qm</file>
+        <file>translations/Tux_gl.qm</file>
+        <file>translations/Tux_kab.qm</file>
+        <file>translations/Tux_ko.qm</file>
+        <file>translations/Tux_fil.qm</file>
+        <file>translations/Tux_id.qm</file>
+        <file>translations/Tux_lt.qm</file>
+        <file>translations/Tux_val-ES.qm</file>
     </qresource>
 </RCC>

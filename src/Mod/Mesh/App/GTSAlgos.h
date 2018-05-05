@@ -35,7 +35,7 @@
 namespace Mesh
 {
 
-/** The mesh algorithems container class
+/** The mesh algorithms container class
  */
 class MeshExport GTSAlgos
 {

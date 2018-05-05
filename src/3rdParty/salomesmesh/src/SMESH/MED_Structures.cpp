@@ -367,11 +367,13 @@ bool
 TGaussInfo::TLess
 ::operator()(const TGaussInfo& theLeft, const TGaussInfo& theRight) const
 {
-  if(!&theLeft)
-    return true;
+  //clang: warning: reference cannot be bound to dereferenced null pointer in well-defined C++ code;
+  //       pointer may be assumed to always convert to true [-Wundefined-bool-conversion]
+  //if(!&theLeft)
+  //  return true;
 
-  if(!&theRight)
-    return false;
+  //if(!&theRight)
+  //  return false;
 
   if(theLeft.myGeom != theRight.myGeom)
     return theLeft.myGeom < theRight.myGeom;
@@ -661,8 +663,10 @@ TGrilleInfo
     switch(aDim){
     case 3:
       aCoord[2] = myCoord[aDim*theId+2];
+      /* FALLTHRU */
     case 2:
       aCoord[1] = myCoord[aDim*theId+1];
+      /* FALLTHRU */
     case 1:{
       aCoord[0] = myCoord[aDim*theId];
       break;

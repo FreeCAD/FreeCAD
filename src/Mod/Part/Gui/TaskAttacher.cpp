@@ -120,12 +120,12 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->superplacementX, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementXChanged(double)));
-    connect(ui->superplacementY, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementYChanged(double)));
-    connect(ui->superplacementZ, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementZChanged(double)));
-    connect(ui->superplacementYaw, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementYawChanged(double)));
-    connect(ui->superplacementPitch, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementPitchChanged(double)));
-    connect(ui->superplacementRoll, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementRollChanged(double)));
+    connect(ui->attachmentOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetXChanged(double)));
+    connect(ui->attachmentOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYChanged(double)));
+    connect(ui->attachmentOffsetZ, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetZChanged(double)));
+    connect(ui->attachmentOffsetYaw, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYawChanged(double)));
+    connect(ui->attachmentOffsetPitch, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetPitchChanged(double)));
+    connect(ui->attachmentOffsetRoll, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetRollChanged(double)));
     connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
             this, SLOT(onCheckFlip(bool)));
     connect(ui->buttonRef1, SIGNAL(clicked(bool)),
@@ -196,13 +196,14 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
         autoNext = false;
     }
 
-    ui->superplacementX->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Base.x")));
-    ui->superplacementY->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Base.y")));
-    ui->superplacementZ->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Base.z")));
+    ui->attachmentOffsetX->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.x")));
+    ui->attachmentOffsetY->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.y")));
+    ui->attachmentOffsetZ->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.z")));
     visibilityAutomation(true);
-    updateSuperplacementUI();
+    updateAttachmentOffsetUI();
     updateReferencesUI();
-    updateListOfModes(eMapMode(pcAttach->MapMode.getValue()));
+    updateListOfModes();
+    selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
 
     // connect object deletion with slot
@@ -213,7 +214,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
 
 TaskAttacher::~TaskAttacher()
 {
-    visibilityAutomation(false);
+    try {
+        visibilityAutomation(false);
+    }
+    catch (...) {
+    }
 
     connectDelObject.disconnect();
     delete ui;
@@ -294,8 +299,10 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Extra placement:") : tr("Extra placement (inactive - not attached):");
-    ui->groupBox_superplacement->setTitle(splmLabelText);
+    QString splmLabelText = attached ? tr("Attachment Offset:") : tr("Attachment Offset (inactive - not attached):");
+    ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
+    ui->groupBox_AttachmentOffset->setEnabled(attached);
+
     return attached;
 }
 
@@ -357,7 +364,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         try {
             pcAttach->Support.setValues(refs, refnames);
             updateListOfModes();
-            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if no modes are available
+            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
             if(mmode == mmDeactivated){
                 //error = true;
                 this->completed = false;
@@ -365,6 +372,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 this->completed = true;
             }
             pcAttach->MapMode.setValue(mmode);
+            selectMapMode(mmode);
             updatePreview();
         }
         catch(Base::Exception& e) {
@@ -395,20 +403,20 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskAttacher::onSuperplacementChanged(double /*val*/, int idx)
+void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 {
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    Base::Placement pl = pcAttach->superPlacement.getValue();
+    Base::Placement pl = pcAttach->AttachmentOffset.getValue();
 
     Base::Vector3d pos = pl.getPosition();
     if (idx == 0) {
-        pos.x = ui->superplacementX->value().getValueAs(Base::Quantity::MilliMetre);
+        pos.x = ui->attachmentOffsetX->value().getValueAs(Base::Quantity::MilliMetre);
     }
     if (idx == 1) {
-        pos.y = ui->superplacementY->value().getValueAs(Base::Quantity::MilliMetre);
+        pos.y = ui->attachmentOffsetY->value().getValueAs(Base::Quantity::MilliMetre);
     }
     if (idx == 2) {
-        pos.z = ui->superplacementZ->value().getValueAs(Base::Quantity::MilliMetre);
+        pos.z = ui->attachmentOffsetZ->value().getValueAs(Base::Quantity::MilliMetre);
     }
     if (idx >= 0  && idx <= 2){
         pl.setPosition(pos);
@@ -418,46 +426,46 @@ void TaskAttacher::onSuperplacementChanged(double /*val*/, int idx)
     double yaw, pitch, roll;
     rot.getYawPitchRoll(yaw, pitch, roll);
     if (idx == 3) {
-        yaw = ui->superplacementYaw->value().getValueAs(Base::Quantity::Degree);
+        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
     }
     if (idx == 4) {
-        pitch = ui->superplacementPitch->value().getValueAs(Base::Quantity::Degree);
+        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
     }
     if (idx == 5) {
-        roll = ui->superplacementRoll->value().getValueAs(Base::Quantity::Degree);
+        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
     }
     if (idx >= 3  &&  idx <= 5){
         rot.setYawPitchRoll(yaw,pitch,roll);
         pl.setRotation(rot);
     }
 
-    pcAttach->superPlacement.setValue(pl);
+    pcAttach->AttachmentOffset.setValue(pl);
     updatePreview();
 }
 
-void TaskAttacher::onSuperplacementXChanged(double val)
+void TaskAttacher::onAttachmentOffsetXChanged(double val)
 {
-    onSuperplacementChanged(val, 0);
+    onAttachmentOffsetChanged(val, 0);
 }
-void TaskAttacher::onSuperplacementYChanged(double val)
+void TaskAttacher::onAttachmentOffsetYChanged(double val)
 {
-    onSuperplacementChanged(val, 1);
+    onAttachmentOffsetChanged(val, 1);
 }
-void TaskAttacher::onSuperplacementZChanged(double val)
+void TaskAttacher::onAttachmentOffsetZChanged(double val)
 {
-    onSuperplacementChanged(val, 2);
+    onAttachmentOffsetChanged(val, 2);
 }
-void TaskAttacher::onSuperplacementYawChanged(double val)
+void TaskAttacher::onAttachmentOffsetYawChanged(double val)
 {
-    onSuperplacementChanged(val, 3);
+    onAttachmentOffsetChanged(val, 3);
 }
-void TaskAttacher::onSuperplacementPitchChanged(double val)
+void TaskAttacher::onAttachmentOffsetPitchChanged(double val)
 {
-    onSuperplacementChanged(val, 4);
+    onAttachmentOffsetChanged(val, 4);
 }
-void TaskAttacher::onSuperplacementRollChanged(double val)
+void TaskAttacher::onAttachmentOffsetRollChanged(double val)
 {
-    onSuperplacementChanged(val, 5);
+    onAttachmentOffsetChanged(val, 5);
 }
 
 void TaskAttacher::onCheckFlip(bool on)
@@ -524,6 +532,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         pcAttach->Support.setValues(newrefs, newrefnames);
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
+        selectMapMode(getActiveMapMode());
 
         updatePreview();
 
@@ -605,6 +614,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();
     pcAttach->MapMode.setValue(getActiveMapMode());
+    selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
 }
@@ -642,75 +652,77 @@ void TaskAttacher::updateRefButton(int idx)
     }
 }
 
-void TaskAttacher::updateSuperplacementUI()
+void TaskAttacher::updateAttachmentOffsetUI()
 {
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    Base::Placement pl = pcAttach->superPlacement.getValue();
+    Base::Placement pl = pcAttach->AttachmentOffset.getValue();
     Base::Vector3d pos = pl.getPosition();
     Base::Rotation rot = pl.getRotation();
     double yaw, pitch, roll;
     rot.getYawPitchRoll(yaw, pitch, roll);
 
     bool bBlock = true;
-    ui->superplacementX->blockSignals(bBlock);
-    ui->superplacementY->blockSignals(bBlock);
-    ui->superplacementZ->blockSignals(bBlock);
-    ui->superplacementYaw->blockSignals(bBlock);
-    ui->superplacementPitch->blockSignals(bBlock);
-    ui->superplacementRoll->blockSignals(bBlock);
+    ui->attachmentOffsetX->blockSignals(bBlock);
+    ui->attachmentOffsetY->blockSignals(bBlock);
+    ui->attachmentOffsetZ->blockSignals(bBlock);
+    ui->attachmentOffsetYaw->blockSignals(bBlock);
+    ui->attachmentOffsetPitch->blockSignals(bBlock);
+    ui->attachmentOffsetRoll->blockSignals(bBlock);
 
-    ui->superplacementX->setValue(Base::Quantity(pos.x,Base::Unit::Length));
-    ui->superplacementY->setValue(Base::Quantity(pos.y,Base::Unit::Length));
-    ui->superplacementZ->setValue(Base::Quantity(pos.z,Base::Unit::Length));
-    ui->superplacementYaw->setValue(yaw);
-    ui->superplacementPitch->setValue(pitch);
-    ui->superplacementRoll->setValue(roll);
+    ui->attachmentOffsetX->setValue(Base::Quantity(pos.x,Base::Unit::Length));
+    ui->attachmentOffsetY->setValue(Base::Quantity(pos.y,Base::Unit::Length));
+    ui->attachmentOffsetZ->setValue(Base::Quantity(pos.z,Base::Unit::Length));
+    ui->attachmentOffsetYaw->setValue(yaw);
+    ui->attachmentOffsetPitch->setValue(pitch);
+    ui->attachmentOffsetRoll->setValue(roll);
 
     auto expressions = ViewProvider->getObject()->ExpressionEngine.getExpressions();
     bool bRotationBound = false;
     bRotationBound = bRotationBound ||
-            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Rotation.Angle"))) != expressions.end();
+            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Angle"))) != expressions.end();
     bRotationBound = bRotationBound ||
-            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Rotation.Axis.x"))) != expressions.end();
+            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Axis.x"))) != expressions.end();
     bRotationBound = bRotationBound ||
-            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Rotation.Axis.y"))) != expressions.end();
+            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Axis.y"))) != expressions.end();
     bRotationBound = bRotationBound ||
-            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("superPlacement.Rotation.Axis.z"))) != expressions.end();
+            expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Axis.z"))) != expressions.end();
 
-    ui->superplacementYaw->setEnabled(!bRotationBound);
-    ui->superplacementPitch->setEnabled(!bRotationBound);
-    ui->superplacementRoll->setEnabled(!bRotationBound);
+    ui->attachmentOffsetYaw->setEnabled(!bRotationBound);
+    ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
+    ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation part of superplacement is bound by expressions.") : QString();
-    ui->superplacementYaw->setToolTip(tooltip);
-    ui->superplacementPitch->setToolTip(tooltip);
-    ui->superplacementRoll->setToolTip(tooltip);
+    QString tooltip = bRotationBound ? tr("Not editable because rotation part of AttachmentOffset is bound by expressions.") : QString();
+    ui->attachmentOffsetYaw->setToolTip(tooltip);
+    ui->attachmentOffsetPitch->setToolTip(tooltip);
+    ui->attachmentOffsetRoll->setToolTip(tooltip);
 
     bBlock = false;
-    ui->superplacementX->blockSignals(bBlock);
-    ui->superplacementY->blockSignals(bBlock);
-    ui->superplacementZ->blockSignals(bBlock);
-    ui->superplacementYaw->blockSignals(bBlock);
-    ui->superplacementPitch->blockSignals(bBlock);
-    ui->superplacementRoll->blockSignals(bBlock);
+    ui->attachmentOffsetX->blockSignals(bBlock);
+    ui->attachmentOffsetY->blockSignals(bBlock);
+    ui->attachmentOffsetZ->blockSignals(bBlock);
+    ui->attachmentOffsetYaw->blockSignals(bBlock);
+    ui->attachmentOffsetPitch->blockSignals(bBlock);
+    ui->attachmentOffsetRoll->blockSignals(bBlock);
 }
 
-void TaskAttacher::updateListOfModes(eMapMode curMode)
+void TaskAttacher::updateListOfModes()
 {
     //first up, remember currently selected mode.
-    if (curMode == mmDeactivated){
-        auto sel = ui->listOfModes->selectedItems();
-        if (sel.count() > 0)
-            curMode = modesInList[ui->listOfModes->row(sel[0])];
-    }
+    eMapMode curMode = mmDeactivated;
+    auto sel = ui->listOfModes->selectedItems();
+    if (sel.count() > 0)
+        curMode = modesInList[ui->listOfModes->row(sel[0])];
 
     //obtain list of available modes:
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     this->lastSuggestResult.bestFitMode = mmDeactivated;
     size_t lastValidModeItemIndex = mmDummy_NumberOfModes;
+
     if (pcAttach->Support.getSize() > 0){
         pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
+        modesInList.insert(modesInList.begin(), mmDeactivated); // always have the option to choose Deactivated mode
+
         //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size()-1;
         for(std::pair<const eMapMode, refTypeStringList> &rm: this->lastSuggestResult.reachableModes){
@@ -719,6 +731,8 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
     } else {
         //no references - display all modes
         modesInList.clear();
+        modesInList.push_back(mmDeactivated);
+
         for(  int mmode = 0  ;  mmode < mmDummy_NumberOfModes  ;  mmode++){
             if (pcAttach->attacher().modeEnabled[mmode])
                 modesInList.push_back(eMapMode(mmode));
@@ -735,10 +749,15 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),mmode);
             ui->listOfModes->addItem(mstr[0]);
             QListWidgetItem* item = ui->listOfModes->item(i);
-            item->setToolTip(mstr[1] + QString::fromLatin1("\n\n") +
-                             tr("Reference combinations:\n") +
-                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
-            if (mmode == curMode)
+            QString tooltip = mstr[1];
+
+            if (mmode != mmDeactivated) {
+                tooltip += tr("\n\nReference combinations:\n") +
+                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+            }
+            item->setToolTip(tooltip);
+
+            if (mmode == curMode && curMode != mmDeactivated)
                 iSelect = ui->listOfModes->item(i);
             if (i > lastValidModeItemIndex){
                 //potential mode - can be reached by selecting more stuff
@@ -767,10 +786,23 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
 
         }
     }
+
     //restore selection
-    ui->listOfModes->selectedItems().clear();
     if (iSelect)
         iSelect->setSelected(true);
+
+    ui->listOfModes->blockSignals(false);
+}
+
+void TaskAttacher::selectMapMode(eMapMode mmode) {
+    ui->listOfModes->blockSignals(true);
+    
+    for (size_t i = 0;  i < modesInList.size(); ++i) {
+        if (modesInList[i] == mmode) {
+            ui->listOfModes->item(i)->setSelected(true);
+        }
+    }
+    
     ui->listOfModes->blockSignals(false);
 }
 
@@ -876,7 +908,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                 ).toLatin1();
                 Base::Interpreter().runString(code_2.constData());
         }
-        catch (Base::Exception &e){
+        catch (const Base::Exception &e){
+            e.ReportException();
+        }
+        catch (const Py::Exception&) {
+            Base::PyException e;
             e.ReportException();
         }
     }
@@ -932,11 +968,11 @@ bool TaskDlgAttacher::accept()
         std::string name = ViewProvider->getObject()->getNameInDocument();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
-        if (pcAttach->superPlacement.isTouched()){
-            Base::Placement plm = pcAttach->superPlacement.getValue();
+        if (pcAttach->AttachmentOffset.isTouched()){
+            Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
                                     name.c_str(),
                                     plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
                                     yaw, pitch, roll);

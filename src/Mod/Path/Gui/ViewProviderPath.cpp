@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <Inventor/SbVec3f.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
@@ -58,7 +59,7 @@
 #include <Gui/SoFCUnifiedSelection.h>
 
 
-#define ARC_MIN_SEGMENTS   20.0  // minimum # segements to interpolate an arc
+#define ARC_MIN_SEGMENTS   20.0  // minimum # segments to interpolate an arc
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
@@ -77,7 +78,7 @@ using namespace PartGui;
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
 ViewProviderPath::ViewProviderPath()
-    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1)
+    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)
@@ -394,7 +395,7 @@ void ViewProviderPath::updateShowConstraints() {
         blockPropertyChange = false;
         StartIndex.purgeTouched();
     }
-    StartIndexConstraints.StepSize = ShowCount.getValue()>0?ShowCount.getValue():1;
+    StartIndexConstraints.StepSize = ShowCount.getValue()>2?ShowCount.getValue()-2:1;
 }
 
 void ViewProviderPath::updateData(const App::Property* prop)
@@ -627,7 +628,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         }
     }
 
-    // count = index + seperators
+    // count = index + separators
     edgeStart = -1;
     int i;
     for(i=StartIndex.getValue();i<(int)command2Edge.size();++i)

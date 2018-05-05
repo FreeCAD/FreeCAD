@@ -58,7 +58,8 @@ Constraint::Constraint()
   LabelDistance(10.f),
   LabelPosition(0.f),
   isDriving(true),
-  InternalAlignmentIndex(-1)
+  InternalAlignmentIndex(-1),
+  isInVirtualSpace(false)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -88,6 +89,7 @@ Constraint::Constraint(const Constraint& from)
   LabelPosition(from.LabelPosition),
   isDriving(from.isDriving),
   InternalAlignmentIndex(from.InternalAlignmentIndex),
+  isInVirtualSpace(from.isInVirtualSpace),
   tag(from.tag)
 {
 }
@@ -118,6 +120,7 @@ Constraint *Constraint::copy(void) const
     temp->LabelPosition = this->LabelPosition;
     temp->isDriving = this->isDriving;
     temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
+    temp->isInVirtualSpace = this->isInVirtualSpace;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
     return temp;
 }
@@ -125,16 +128,6 @@ Constraint *Constraint::copy(void) const
 PyObject *Constraint::getPyObject(void)
 {
     return new ConstraintPy(new Constraint(*this));
-}
-
-void Constraint::setValue(double newValue)
-{
-    Value = newValue;
-}
-
-double Constraint::getValue() const
-{
-    return Value;
 }
 
 Quantity Constraint::getPresentationValue() const
@@ -175,7 +168,7 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
-    std::string encodeName = App::Property::encodeAttribute(Name);
+    std::string encodeName = encodeAttribute(Name);
     writer.Stream() << writer.ind()     << "<Constrain "
     << "Name=\""                        <<  encodeName              << "\" "
     << "Type=\""                        <<  (int)Type               << "\" ";
@@ -193,8 +186,9 @@ void Constraint::Save (Writer &writer) const
     << "ThirdPos=\""                    <<  (int) ThirdPos          << "\" "
     << "LabelDistance=\""               <<  LabelDistance           << "\" "
     << "LabelPosition=\""               <<  LabelPosition           << "\" "
-    << "IsDriving=\""                   <<  (int)isDriving          << "\" />"
-
+    << "IsDriving=\""                   <<  (int)isDriving          << "\" "
+    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace          << "\" />"
+    
     << std::endl;
 }
 
@@ -234,4 +228,7 @@ void Constraint::Restore(XMLReader &reader)
 
     if (reader.hasAttribute("IsDriving"))
         isDriving = reader.getAttributeAsInteger("IsDriving") ? true : false;
+
+    if (reader.hasAttribute("IsInVirtualSpace"))
+        isInVirtualSpace = reader.getAttributeAsInteger("IsInVirtualSpace") ? true : false;
 }

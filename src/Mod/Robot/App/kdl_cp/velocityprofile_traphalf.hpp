@@ -55,7 +55,7 @@ namespace KDL {
 
 
 	/**
-	 * A 'Half' Trapezoidal VelocityProfile. A contructor flag
+	 * A 'Half' Trapezoidal VelocityProfile. A constructor flag
 	 * indicates if the calculated profile should be starting
 	 * or ending.
 	 * @ingroup Motion
@@ -93,7 +93,7 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 
 		/**
 		 * Plans a 'Half' Trapezoidal VelocityProfile between pos1 and pos2.
-		 * If the distance is too short betweeen pos1 and pos2,
+		 * If the distance is too short between pos1 and pos2,
 		 * only the acceleration phase is set and the max velocity is not reached.
 		 *
 		 * \param pos1 Starting position

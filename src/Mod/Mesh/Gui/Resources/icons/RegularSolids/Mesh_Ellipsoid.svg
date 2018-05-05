@@ -292,10 +292,10 @@
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>ellipsoid</rdf:li>
-            <rdf:li>tessealted</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Tesselated ellipsoid mesh, lit from top</dc:description>
+        <dc:description>Tessellated ellipsoid mesh, lit from top</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>

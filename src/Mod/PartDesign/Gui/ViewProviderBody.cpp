@@ -49,12 +49,14 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeatureBase.h>
 
 #include "ViewProviderDatum.h"
 #include "Utils.h"
 
 #include "ViewProviderBody.h"
 #include "ViewProvider.h"
+#include <Gui/Application.h>
 #include <Gui/MDIView.h>
 
 using namespace PartDesignGui;
@@ -109,7 +111,7 @@ void ViewProviderBody::setDisplayMode(const char* ModeName) {
     
     //if we show "Through" we must avoid to set the display mask modes, as this would result 
     //in going into "tip" mode. When through is chosen the child features are displayed, and all
-    //we need to ensure is that the display mode change is propagated to them fro within the
+    //we need to ensure is that the display mode change is propagated to them from within the
     //onChanged() method.
     if(DisplayModeBody.getValue() == 1)
         PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
@@ -134,6 +136,8 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
     func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+
+    Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderBody::doubleClicked(void)
@@ -178,83 +182,6 @@ bool ViewProviderBody::doubleClicked(void)
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
-{
-    PartDesign::Body* body= static_cast<PartDesign::Body*> ( getObject () );
-    const std::vector<App::DocumentObject*> &model = body->Group.getValues ();
-    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
-
-    // search for objects handled (claimed) by the features
-    for( auto obj: model){
-        if (!obj) { continue; }
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
-        if (!vp) { continue; }
-
-        auto children = vp->claimChildren();
-        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
-    }
-
-    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
-    std::vector<App::DocumentObject*> Result;
-
-    if (body->Origin.getValue()) { // Clame for the Origin
-        Result.push_back (body->Origin.getValue());
-    }
-    if (body->BaseFeature.getValue()) { // Clame for the base feature
-        Result.push_back (body->BaseFeature.getValue());
-    }
-
-    // claim for rest content not claimed by any other features
-    std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),
-            [outSet] (App::DocumentObject* obj) {
-                return outSet.find (obj) != outSet.end();
-            } );
-
-    return Result;
-}
-
-
-std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
-
-{
-
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-
-
-
-    const std::vector<App::DocumentObject*> & features = body->Group.getValues();
-
-
-
-    std::vector<App::DocumentObject*> rv;
-
-
-
-    if ( body->Origin.getValue() ) { // Add origin
-
-        rv.push_back (body->Origin.getValue());
-
-    }
-
-    if ( body->BaseFeature.getValue() ) { // Add Base Feature
-
-        rv.push_back (body->BaseFeature.getValue());
-
-    }
-
-
-
-    // Add all other stuff
-
-    std::copy (features.begin(), features.end(), std::back_inserter (rv) );
-
-
-
-    return rv;
-
-}
-
-
 
 // TODO To be deleted (2015-09-08, Fat-Zer)
 //void ViewProviderBody::updateTree()
@@ -298,6 +225,21 @@ void ViewProviderBody::updateData(const App::Property* prop)
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
     } 
+    
+    if (prop == &body->Tip) {
+        // We changed Tip
+        App::DocumentObject* tip = body->Tip.getValue();
+
+        auto features = body->Group.getValues();
+
+        // restore icons
+        for (auto feature : features) {
+            Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
+            if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+                static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
+            }
+        }
+    }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
@@ -438,6 +380,9 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
+
+        // #0002559: Body becomes visible upon changing DisplayModeBody
+        Visibility.touch();
     }
     else 
         unifyVisualProperty(prop);
@@ -452,16 +397,16 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
        prop == &Selectable ||
        prop == &DisplayModeBody)
         return;
-                
+
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
-       
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
     auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
-        
+
         //copy over the properties data
         auto p = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
         p->Paste(*prop);
@@ -471,23 +416,98 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 void ViewProviderBody::setVisualBodyMode(bool bodymode) {
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
-       
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
     auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
-        
-        static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature))->setBodyMode(bodymode);
+
+        auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
+        if (vp) vp->setBodyMode(bodymode);
     }
 }
 
 std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
     
-    //we get all dislay modes and remove the "Group" mode, as this is what we use for "Through" 
+    //we get all display modes and remove the "Group" mode, as this is what we use for "Through" 
     //body display mode
     std::vector< std::string > modes = ViewProviderPart::getDisplayModes();
     modes.erase(modes.begin());
     return modes;
+}
+
+bool ViewProviderBody::canDropObjects() const
+{
+    // if the BaseFeature property is marked as hidden or read-only then
+    // it's not allowed to modify it.
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
+        return false;
+    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
+        return false;
+    return true;
+}
+
+bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
+{
+    if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return false;
+    }
+    else if (PartDesign::Body::findBodyOf(obj)) {
+        return false;
+    }
+    else if (obj->isDerivedFrom (Part::BodyBase::getClassTypeId())) {
+        return false;
+    }
+
+    App::Part *actPart = PartDesignGui::getActivePart();
+    App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
+    if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
+        return false;
+
+    return true;
+}
+
+void ViewProviderBody::dropObject(App::DocumentObject* obj)
+{
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        body->addObject(obj);
+    }
+    else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {
+        std::vector<App::DocumentObject*> move;
+        move.push_back(obj);
+        std::vector<App::DocumentObject*> deps = PartDesignGui::collectMovableDependencies(move);
+        move.insert(std::end(move), std::begin(deps), std::end(deps));
+
+        PartDesign::Body* source = PartDesign::Body::findBodyOf(obj);
+        if (source)
+            source->removeObjects(move);
+        try {
+            body->addObjects(move);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+    }
+    else if (body->BaseFeature.getValue() == nullptr) {
+        body->BaseFeature.setValue(obj);
+    }
+
+    App::Document* doc  = body->getDocument();
+    doc->recompute();
+
+    // check if a proxy object has been created for the base feature
+    std::vector<App::DocumentObject*> links = body->Group.getValues();
+    for (auto it : links) {
+        if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
+            PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
+            if (base && base->BaseFeature.getValue() == obj) {
+                Gui::Application::Instance->hideViewProvider(obj);
+                break;
+            }
+        }
+    }
 }

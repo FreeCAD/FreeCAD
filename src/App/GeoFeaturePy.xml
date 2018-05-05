@@ -18,6 +18,13 @@
         <UserDocu>returns all possible paths to the root of the document</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getGlobalPlacement">
+      <Documentation>
+        <UserDocu>Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
+                  Note: This function is not available during recompute, as there the placements of parents can change 
+                  after the execution of this object, rendering the result wrong.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getPropertyNameOfGeometry">
       <Documentation>
         <UserDocu>Returns the property name of the actual geometry or None.

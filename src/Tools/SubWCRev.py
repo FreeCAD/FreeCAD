@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Werner Mayer LGPL
 #
-# FreeCAD RevInfo script to get the revision information from Subversion.
+# FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.
 #
 # Under Linux the Subversion tool SubWCRev shipped with TortoiseSVN isn't 
 # available which is provided by this script. 
+# 2012/02/01: The script was extended to support git
 # 2011/02/05: The script was extended to support also Bazaar
 
 import os,sys,string,re,time,getopt
@@ -241,7 +242,7 @@ class GitControl(VersionControl):
         # date/time
         import time
         info=os.popen("git log -1 --date=raw --pretty=format:%cd").read()
-        # commit time is more meaningfull than author time
+        # commit time is more meaningful than author time
         # use UTC
         self.date = time.strftime("%Y/%m/%d %H:%M:%S",time.gmtime(\
                 float(info.strip().split(' ',1)[0])))
@@ -275,7 +276,7 @@ class GitControl(VersionControl):
             else: # guess
                 self.branch = '(%s)' % \
                     os.popen("git describe --all --dirty").read().strip()
-        #if the branch name conainted any slashes but was not a remote
+        #if the branch name contained any slashes but was not a remote
         #there might be not result by now. Hence we assume origin
         if self.url == "Unknown":
             for i in info:

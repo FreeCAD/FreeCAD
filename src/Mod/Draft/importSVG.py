@@ -49,9 +49,16 @@ currently unsupported: use, image
 import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
 
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
+
 try: import FreeCADGui
 except ImportError: gui = False
 else: gui = True
+
 try: draftui = FreeCADGui.draftToolBar
 except AttributeError: draftui = None
 
@@ -421,7 +428,7 @@ class svgHandler(xml.sax.ContentHandler):
 
         def format(self,obj):
                 "applies styles to passed object"
-                if self.style and gui:
+                if gui:
                         v = obj.ViewObject
                         if self.color: v.LineColor = self.color
                         if self.width: v.LineWidth = self.width
@@ -449,7 +456,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if not data['style']:
                                 pass#empty style attribute stops inhertig from parent
                         else:
-                                content = data['style'][0].replace(' ','')
+                                content = data['style'].replace(' ','')
                                 content = content.split(';')
                                 for i in content:
                                         pair = i.split(':')
@@ -468,12 +475,12 @@ class svgHandler(xml.sax.ContentHandler):
                                         data[k]=data[k][0]
 
                 # extracting style info
-                        
+
                 self.fill = None
                 self.color = None
                 self.width = None
                 self.text = None
-                
+
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if not self.disableUnitScaling:
@@ -624,10 +631,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
                                                         currentvec = Vector(lastvec.x,-y,0)
-                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
-                                                lastvec = currentvec
-                                                lastpole = None
-                                                path.append(seg)
+                                                if lastvec!=currentvec:
+                                                    seg = Part.LineSegment(lastvec,currentvec).toShape()
+                                                    lastvec = currentvec
+                                                    lastpole = None
+                                                    path.append(seg)
                                 elif (d == "A" or d == "a"):
                                         for rx,ry,xrotation, largeflag, sweepflag,x,y in \
                                                 zip(pointlist[0::7],pointlist[1::7],pointlist[2::7],pointlist[3::7],pointlist[4::7],pointlist[5::7],pointlist[6::7]):
@@ -1115,7 +1123,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         cx = argsplit[1]
                                         cy = argsplit[2]
                                         m.move(Vector(cx,-cy,0))
-                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotaion
+                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotation
                                 if len(argsplit) >= 3:
                                         m.move(Vector(-cx,cy,0))
                         elif transformation == 'skewX':
@@ -1203,7 +1211,7 @@ def export(exportList,filename):
 
         svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
         if svg_export_style != 0 and svg_export_style != 1:
-            FreeCAD.Console.PrintMessage("unknown svg export style, switching to Translated\n")
+            FreeCAD.Console.PrintMessage(translate("Unknown SVG export style, switching to Translated")+"\n")
             svg_export_style = 0
 
         # finding sheet size
@@ -1277,3 +1285,6 @@ def export(exportList,filename):
         # closing
         svg.write('</svg>')
         svg.close()
+
+
+

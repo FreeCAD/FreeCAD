@@ -42,8 +42,9 @@ public:
     App::PropertyLink Base;
     App::PropertyLink Tool;
     PropertyShapeHistory History;
+    App::PropertyBool Refine;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);

@@ -63,7 +63,8 @@ void ViewProviderViewClip::updateData(const App::Property* prop)
     if (prop == &(getViewObject()->Height)      ||
         prop == &(getViewObject()->Width)       ||
         prop == &(getViewObject()->ShowFrame)   ||
-        prop == &(getViewObject()->ShowLabels) ) {
+        prop == &(getViewObject()->ShowLabels)  ||
+        prop == &(getViewObject()->Views) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {

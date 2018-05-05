@@ -70,6 +70,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
     ui->swapReversed->setEnabled(false);
+    ui->checkBoxIgnoreConstruction->setEnabled(true);
     double tolerances[8] = {
         Precision::Confusion() / 100,
         Precision::Confusion() / 10,
@@ -179,6 +180,10 @@ void SketcherValidation::on_findButton_clicked()
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
+
+        if(g->Construction && ui->checkBoxIgnoreConstruction->isChecked())
+            continue;
+
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
@@ -369,6 +374,10 @@ void SketcherValidation::on_highlightButton_clicked()
     std::vector<Base::Vector3d> points;
     TopoDS_Shape shape = sketch->Shape.getValue();
 
+    Base::Placement Plm = sketch->Placement.getValue();
+
+    Base::Placement invPlm = Plm.inverse();
+
     // build up map vertex->edge
     TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
     TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
@@ -377,7 +386,9 @@ void SketcherValidation::on_highlightButton_clicked()
         if (los.Extent() != 2) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
             gp_Pnt pnt = BRep_Tool::Pnt(vertex);
-            points.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Base::Vector3d pos;
+            invPlm.multVec(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),pos);
+            points.push_back(pos);
         }
     }
 

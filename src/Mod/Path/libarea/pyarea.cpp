@@ -2,6 +2,11 @@
 // Copyright 2017, Lorenz Lechner
 // This program is released under the BSD license. See the file COPYING for details.
 
+
+#ifdef _MSC_VER
+    #define strdup _strdup
+#endif
+
 #include "Area.h"
 #include "Point.h"
 #include "AreaDxf.h"
@@ -12,6 +17,8 @@
 #include <pybind11/operators.h>
 
 #include <vector>
+
+
 
 namespace py = pybind11;
 
@@ -189,7 +196,7 @@ std::list<Point> spanIntersect(const Span& span1, const Span& span2) {
 }
 
 
-void MatrixFromVector(geoff_geometry::Matrix& instance, std::vector<double> v){
+geoff_geometry::Matrix* MatrixFromVector(std::vector<double> v){
     double array[16];
     int i = 0;
     for (double vi: v){
@@ -197,7 +204,7 @@ void MatrixFromVector(geoff_geometry::Matrix& instance, std::vector<double> v){
         i++;
         if(i>=16) break;
     }
-    new (&instance) geoff_geometry::Matrix(array);
+    return new geoff_geometry::Matrix(array);
 }
 
 std::list<CCurve> InsideCurves(const CArea& a, const CCurve& curve) {
@@ -279,7 +286,7 @@ void init_pyarea(py::module &m){
     ;
 
     py::class_<CCurve>(m, "Curve") 
-        .def(py::init<CCurve>())
+        .def(py::init<>())
         .def("getVertices", &getVertices)
         .def("append",&CCurve::append)
         .def("append",&append_point)
@@ -318,7 +325,7 @@ void init_pyarea(py::module &m){
     ;
 
     py::class_<CArea>(m, "Area") 
-        .def(py::init<CArea>())
+        .def(py::init<>())
         .def("getCurves", &getCurves)
         .def("append",&CArea::append)
         .def("Subtract",&CArea::Subtract)
@@ -341,7 +348,7 @@ void init_pyarea(py::module &m){
 
     py::class_<geoff_geometry::Matrix, std::shared_ptr<geoff_geometry::Matrix> > (m, "Matrix")
         .def(py::init<geoff_geometry::Matrix>())
-        .def("__init__", &MatrixFromVector)
+        .def(py::init(&MatrixFromVector))
         .def("TransformedPoint", &transformed_point)
         .def("Multiply", &geoff_geometry::Matrix::Multiply)
     ;
@@ -353,8 +360,7 @@ void init_pyarea(py::module &m){
     m.def("TangentialArc", TangentialArc);
 }
 
-PYBIND11_PLUGIN(area){
-    py::module m("area");
+PYBIND11_MODULE(area, m){
+    m.doc()= "not yet";
     init_pyarea(m);
-    return m.ptr();
 };

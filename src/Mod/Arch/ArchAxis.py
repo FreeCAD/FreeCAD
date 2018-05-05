@@ -61,7 +61,10 @@ def makeAxis(num=5,size=1000,name="Axes"):
         dist = []
         angles = []
         for i in range(num):
-            dist.append(float(size))
+            if i == 0:
+                dist.append(0)
+            else:
+                dist.append(float(size))
             angles.append(float(0))
         obj.Distances = dist
         obj.Angles = angles
@@ -101,7 +104,7 @@ class _CommandAxis:
         return {'Pixmap'  : 'Arch_Axis',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
@@ -120,7 +123,7 @@ class _CommandAxisSystem:
         return {'Pixmap'  : 'Arch_Axis_System',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisSystem","Axis System"),
                 'Accel': "X, S",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes")}
 
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
@@ -128,7 +131,7 @@ class _CommandAxisSystem:
             s = "["
             for o in FreeCADGui.Selection.getSelection():
                 if Draft.getType(o) != "Axis":
-                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected\n"))
+                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected")+"\n")
                     return
                 s += "FreeCAD.ActiveDocument."+o.Name+","
             s += "]"
@@ -137,7 +140,7 @@ class _CommandAxisSystem:
             FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -904,7 +907,7 @@ class ArchGrid:
         rowsizes = []
         if obj.AutoHeight.Value:
             if obj.AutoHeight.Value > obj.Height.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Auto height is bigger than height"))
+                FreeCAD.Console.PrintError(translate("Arch","Auto height is larger than height"))
                 return [],[],[]
             rows = int(math.floor(obj.Height.Value/obj.AutoHeight.Value))
             for i in range(rows):
@@ -913,7 +916,7 @@ class ArchGrid:
         else:
             reserved_rowsize = sum(v for v in obj.RowSize)
             if reserved_rowsize > obj.Height.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Total row size is bigger than height"))
+                FreeCAD.Console.PrintError(translate("Arch","Total row size is larger than height"))
                 return [],[],[]
             for i in range(obj.Rows):
                 v = 0
@@ -935,7 +938,7 @@ class ArchGrid:
         columnsizes = []
         if obj.AutoWidth.Value:
             if obj.AutoWidth.Value > obj.Width.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Auto width is bigger than width"))
+                FreeCAD.Console.PrintError(translate("Arch","Auto width is larger than width"))
                 return [],[],[]
             cols = int(math.floor(obj.Width.Value/obj.AutoWidth.Value))
             for i in range(cols):
@@ -944,7 +947,7 @@ class ArchGrid:
         else:
             reserved_columnsize = sum(v for v in obj.ColumnSize)
             if reserved_columnsize > obj.Width.Value:
-                FreeCAD.Console.PrintError(translate("Arch","Total column size is bigger than width"))
+                FreeCAD.Console.PrintError(translate("Arch","Total column size is larger than width"))
                 return [],[],[]
             for i in range(obj.Columns):
                 v = 0

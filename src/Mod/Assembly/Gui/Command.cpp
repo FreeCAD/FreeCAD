@@ -52,7 +52,7 @@ CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Add new Part");
     sToolTipText    = QT_TR_NOOP("Add a new Part into the active Assembly");
-    sWhatsThis      = "Assembly_ConstraintAxle";
+    sWhatsThis      = "Assembly_AddNewPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "Assembly_Add_New_Part.svg";
 }
@@ -108,7 +108,7 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Add new Assembly");
     sToolTipText    = QT_TR_NOOP("Add a new Subassembly into the active Assembly");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_AddNewComponent";
     sStatusTip      = sToolTipText;
     sPixmap         = "Assembly_Assembly_Create_New";
 }
@@ -154,7 +154,7 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Add existing Component...");
     sToolTipText    = QT_TR_NOOP("Add a existing Component into the active Assembly, STEP, IGES or BREP");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_AddExistingComponent";
     sStatusTip      = sToolTipText;
     sPixmap         = "Assembly_Add_Existing_Part";
 }
@@ -217,7 +217,7 @@ CmdAssemblyImport::CmdAssemblyImport()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Import assembly...");
     sToolTipText    = QT_TR_NOOP("Import one or more files and create a assembly structure.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_Import";
     sStatusTip      = sToolTipText;
     sPixmap         = 0;
 }

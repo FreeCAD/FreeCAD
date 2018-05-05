@@ -400,6 +400,9 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
 double DrawUtil::sensibleScale(double working_scale)
 {
     double result = 1.0;
+    if (!(working_scale > 0.0)) {
+        return result;
+    }
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
 
@@ -420,6 +423,18 @@ double DrawUtil::sensibleScale(double working_scale)
     //now have the appropriate scale, reapply the *10^b
     result = valid_scales[(exponent >= 0)][i] * pow(10, exponent);
     return result;
+}
+
+double DrawUtil::getDefaultLineWeight(std::string lineType)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = LineGroup::lineGroupFactory(lgName);
+    
+    double weight = lg->getWeight(lineType);
+    delete lg;                                    //Coverity CID 174671
+    return weight;
 }
 
 //============================

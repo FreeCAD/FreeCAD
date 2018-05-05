@@ -58,7 +58,7 @@ class _CompoundFilter:
         obj.FilterType = 'bypass'
 
         # properties controlling "specific items" mode
-        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1,4,8:10).")
+        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1;4;8:10).")
 
         obj.addProperty("App::PropertyLink", "Stencil", "CompoundFilter", "Object that defines filtering")
 

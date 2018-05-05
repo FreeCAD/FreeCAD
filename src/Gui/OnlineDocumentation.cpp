@@ -23,7 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QBuffer>
+# include <QImageWriter>
 # include <QMessageBox>
 # include <QTcpSocket>
 #endif
@@ -33,6 +35,8 @@
 #include <zipios++/zipfile.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
 #include <App/Application.h>
 
 #include "MainWindow.h"
@@ -83,10 +87,24 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
     QByteArray res;
 
     if (fn == QLatin1String("favicon.ico")) {
-        // Return an resource icon in ico format
-        res.reserve(navicon_data_len);
-        for (int i=0; i<(int)navicon_data_len;i++) {
-            res[i] = navicon_data[i];
+        // Return a resource icon in ico format
+        QBuffer buffer;
+        buffer.open(QBuffer::WriteOnly);
+        QImageWriter writer;
+        writer.setDevice(&buffer);
+        writer.setFormat("ICO");
+        if (writer.canWrite()) {
+            QPixmap px = qApp->windowIcon().pixmap(24,24);
+            writer.write(px.toImage());
+            buffer.close();
+            res = buffer.data();
+        }
+        else {
+            // fallback
+            res.reserve(navicon_data_len);
+            for (int i=0; i<(int)navicon_data_len;i++) {
+                res[i] = navicon_data[i];
+            }
         }
     }
     else if (filename == QLatin1String("/")) {
@@ -163,8 +181,8 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         }
         else {
             // load the error page
-            PyErr_Clear();
-            res = fileNotFound();
+            Base::PyException e;
+            res = loadFailed(QString::fromUtf8(e.what()));
         }
 
         Py_DECREF(dict);
@@ -198,9 +216,10 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         else {
             // get information about the error
             Base::PyException e;
-            Base::Console().Warning("PythonOnlineHelp::loadResource: %s\n", e.what());
+            //Base::Console().Error("loadResource: %s\n", e.what());
             // load the error page
-            res = fileNotFound();
+            //res = fileNotFound();
+            res = loadFailed(QString::fromUtf8(e.what()));
         }
 
         Py_DECREF(dict);
@@ -230,6 +249,36 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "</html>"
         "\r\n"
     );
+
+    QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
+
+    QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
+    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+
+    QByteArray res;
+    res.append(httpResponseHeader);
+    return res;
+}
+
+QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
+{
+    QString contentType = QString::fromLatin1(
+        "text/html\r\n"
+        "\r\n"
+        "<html><head><title>Error</title></head>"
+        "<body bgcolor=\"#f0f0f8\">"
+        "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
+        "<tr bgcolor=\"#7799ee\">"
+        "<td valign=bottom>&nbsp;<br>"
+        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
+        "<td align=right valign=bottom>"
+        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
+        "<p><p>"
+        "<h1>%1</h1>"
+        "</body>"
+        "</html>"
+        "\r\n"
+    ).arg(error);
 
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
@@ -331,7 +380,7 @@ StdCmdPythonHelp::StdCmdPythonHelp()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
-    sWhatsThis    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sWhatsThis    = "Std_PythonHelp";
     sStatusTip    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sPixmap       = "applications-python";
 }

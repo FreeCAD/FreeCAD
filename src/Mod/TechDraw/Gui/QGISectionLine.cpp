@@ -43,7 +43,7 @@ QGISectionLine::QGISectionLine()
 {
     m_symbol = "";
     m_symSize = 0.0;
-    
+
     m_extLen = Rez::guiX(8.0);
     m_arrowSize = 0.0;
 
@@ -119,7 +119,7 @@ void QGISectionLine::makeSymbols()
 {
     QPointF extLineStart,extLineEnd;
     QPointF offset(m_arrowDir.x,-m_arrowDir.y);
-    offset = 2.0 * m_extLen * offset;
+    offset = 1.5 * m_extLen * offset;
     extLineStart = m_start + offset;
     extLineEnd = m_end + offset;
 
@@ -173,7 +173,7 @@ QColor QGISectionLine::getSectionColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x08080800));
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x00000000));
     return fcColor.asValue<QColor>();
 }
 
@@ -181,7 +181,7 @@ Qt::PenStyle QGISectionLine::getSectionStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine",2));
+    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine", 2));
     return sectStyle;
 }
 
@@ -195,9 +195,32 @@ void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem 
 
 void QGISectionLine::setTools()
 {
+    // Use our own style
+    if (m_styleCurrent == Qt::DashDotLine) {
+        QVector<qreal> dashes;
+        // the stroke width is double the one of center lines, but we like to
+        // have the same spacing. thus these values must be half as large
+        qreal space = 2;  // in unit r_width
+        qreal dash = 8;
+        // dot must be really small when using CapStyle RoundCap but > 0
+        // for CapStyle FlatCap you would need to set it to 1
+        qreal dot = 0.000001;
+
+        dashes << dot << space << dash << space;
+
+        // TODO for fancyness: calculate the offset so both arrows start with a
+        // dash!
+
+        m_pen.setDashPattern(dashes);
+
+        m_pen.setDashOffset(2);
+    }
+    else {
+        m_pen.setStyle(m_styleCurrent);
+    }
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
+    m_pen.setCapStyle(Qt::RoundCap);
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);
 

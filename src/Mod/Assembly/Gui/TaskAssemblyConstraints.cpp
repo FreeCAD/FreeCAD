@@ -58,7 +58,7 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    //initialy hide the value and orientation field
+    //initially hide the value and orientation field
     ui->value_widget->hide();
     ui->orientation_widget->hide();
 

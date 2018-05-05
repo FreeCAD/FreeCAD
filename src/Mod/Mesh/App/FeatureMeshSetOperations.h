@@ -51,7 +51,7 @@ public:
     App::PropertyLink   Source2;
     App::PropertyString OperationType;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);

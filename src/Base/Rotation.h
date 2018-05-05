@@ -50,7 +50,10 @@ public:
     const double * getValue(void) const;
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
+    /// If not a null quaternion then \a axis will be normalized
     void getValue(Vector3d & axis, double & rfAngle) const;
+    /// Does the same as the method above unless normalizing the axis.
+    void getRawValue(Vector3d & axis, double & rfAngle) const;
     void getValue(Matrix4D & matrix) const;
     void setValue(const double q[4]);
     void setValue(const Matrix4D& matrix);
@@ -60,6 +63,8 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+    bool isIdentity() const;
+    bool isNull() const;
     //@}
 
     /** Invert rotations. */
@@ -82,12 +87,32 @@ public:
     bool isSame(const Rotation&) const;
     //@}
 
+    /** Specialty constructors */
     static Rotation slerp(const Rotation & rot0, const Rotation & rot1, double t);
     static Rotation identity(void);
 
+    /**
+     * @brief makeRotationByAxes(xdir, ydir, zdir, priorityOrder): creates a rotation
+     * that converts a vector in local cs with axes given as arguments, into a
+     * vector in global cs.
+     * @param xdir is wanted direction of local X axis
+     * @param ydir ...
+     * @param zdir
+     * @param priorityOrder sets which directions are followed. It is a string
+     * like "ZXY". This means, Z direction is followed precisely; X direction is
+     * corrected to be perpendicular to Z direction, and used; Y direction
+     * argument is ignored altogether (Y direction is generated from Z and X).
+     *
+     * If only one vector provided is nonzero, the other two directions are picked automatically.
+     */
+    static Rotation makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder = "ZXY");
+
 private:
     void normalize();
+    void evaluateVector ();
     double quat[4];
+    Vector3d _axis; // the axis kept not to lose direction when angle is 0
+    double _angle; // this angle to keep the angle chosen by the user
 };
 
 }

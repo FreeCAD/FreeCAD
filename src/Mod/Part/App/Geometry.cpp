@@ -119,6 +119,7 @@
 #include <Mod/Part/App/ConePy.h>
 #include <Mod/Part/App/CylinderPy.h>
 #include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/PointPy.h>
 #include <Mod/Part/App/PlateSurfacePy.h>
 #include <Mod/Part/App/PlanePy.h>
 #include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
@@ -341,7 +342,7 @@ void GeomPoint::Restore(Base::XMLReader &reader)
 
 PyObject *GeomPoint::getPyObject(void)
 {
-    return new Base::VectorPy(getPoint());
+    return new PointPy(new GeomPoint(getPoint()));
 }
 
 // -------------------------------------------------
@@ -369,7 +370,7 @@ GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
     if (spline.IsNull())
-        throw Base::RuntimeError("Conversion to B-Spline failed");
+        throw Base::RuntimeError("Conversion to B-spline failed");
     return new GeomBSplineCurve(spline);
 }
 
@@ -1699,7 +1700,11 @@ void GeomCircle::Save(Base::Writer& writer) const
     GeomCurve::Save(writer);
 
     gp_Pnt center = this->myCurve->Axis().Location();
-    gp_Dir norm = this->myCurve->Axis().Direction();
+    gp_Dir normal = this->myCurve->Axis().Direction();
+    gp_Dir xdir = this->myCurve->XAxis().Direction();
+
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the circle
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
 
     writer.Stream()
          << writer.ind()
@@ -1707,9 +1712,10 @@ void GeomCircle::Save(Base::Writer& writer) const
                 << "CenterX=\"" <<  center.X() <<
                 "\" CenterY=\"" <<  center.Y() <<
                 "\" CenterZ=\"" <<  center.Z() <<
-                "\" NormalX=\"" <<  norm.X() <<
-                "\" NormalY=\"" <<  norm.Y() <<
-                "\" NormalZ=\"" <<  norm.Z() <<
+                "\" NormalX=\"" <<  normal.X() <<
+                "\" NormalY=\"" <<  normal.Y() <<
+                "\" NormalZ=\"" <<  normal.Z() <<
+                "\" AngleXU=\"" <<  AngleXU <<
                 "\" Radius=\"" <<  this->myCurve->Radius() <<
              "\"/>" << endl;
 }
@@ -1720,6 +1726,7 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     GeomCurve::Restore(reader);
 
     double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,Radius;
+    double AngleXU=0;
     // read my Element
     reader.readElement("Circle");
     // get the value of my Attribute
@@ -1729,13 +1736,20 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     NormalX = reader.getAttributeAsFloat("NormalX");
     NormalY = reader.getAttributeAsFloat("NormalY");
     NormalZ = reader.getAttributeAsFloat("NormalZ");
+    if (reader.hasAttribute("AngleXU"))
+        AngleXU = reader.getAttributeAsFloat("AngleXU");
     Radius = reader.getAttributeAsFloat("Radius");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
+
+    gp_Ax1 normaxis(p1,norm);
+    gp_Ax2 xdir(p1, norm);
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
-        GC_MakeCircle mc(p1, norm, Radius);
+        GC_MakeCircle mc(xdir, Radius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
 
@@ -1913,7 +1927,11 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(this->myCurve->BasisCurve());
 
     gp_Pnt center = circle->Axis().Location();
-    gp_Dir norm = circle->Axis().Direction();
+    gp_Dir normal = circle->Axis().Direction();
+    gp_Dir xdir = circle->XAxis().Direction();
+
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the arc
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
 
     writer.Stream()
          << writer.ind()
@@ -1921,9 +1939,10 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
                 << "CenterX=\"" <<  center.X() <<
                 "\" CenterY=\"" <<  center.Y() <<
                 "\" CenterZ=\"" <<  center.Z() <<
-                "\" NormalX=\"" <<  norm.X() <<
-                "\" NormalY=\"" <<  norm.Y() <<
-                "\" NormalZ=\"" <<  norm.Z() <<
+                "\" NormalX=\"" <<  normal.X() <<
+                "\" NormalY=\"" <<  normal.Y() <<
+                "\" NormalZ=\"" <<  normal.Z() <<
+                "\" AngleXU=\"" <<  AngleXU <<
                 "\" Radius=\"" <<  circle->Radius() <<
                 "\" StartAngle=\"" <<  this->myCurve->FirstParameter() <<
                 "\" EndAngle=\"" <<  this->myCurve->LastParameter() <<
@@ -1936,6 +1955,7 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     Geometry::Restore(reader);
 
     double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,Radius,StartAngle,EndAngle;
+    double AngleXU=0;
     // read my Element
     reader.readElement("ArcOfCircle");
     // get the value of my Attribute
@@ -1945,6 +1965,8 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     NormalX = reader.getAttributeAsFloat("NormalX");
     NormalY = reader.getAttributeAsFloat("NormalY");
     NormalZ = reader.getAttributeAsFloat("NormalZ");
+    if (reader.hasAttribute("AngleXU"))
+        AngleXU = reader.getAttributeAsFloat("AngleXU");
     Radius = reader.getAttributeAsFloat("Radius");
     StartAngle = reader.getAttributeAsFloat("StartAngle");
     EndAngle = reader.getAttributeAsFloat("EndAngle");
@@ -1952,8 +1974,13 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
+
+    gp_Ax1 normaxis(p1,norm);
+    gp_Ax2 xdir(p1, norm);
+    xdir.Rotate(normaxis,AngleXU);
+
     try {
-        GC_MakeCircle mc(p1, norm, Radius);
+        GC_MakeCircle mc(xdir, Radius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
         GC_MakeArcOfCircle ma(mc.Value()->Circ(), StartAngle, EndAngle, 1);

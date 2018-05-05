@@ -321,7 +321,7 @@ namespace geoff_geometry {
 		// returns the near point to span from p 
 		if(this->dir == LINEAR) {
 			double t;
-			t = (Vector2d(this->p0, p) * this->vs);		// t parametised 0 - line length
+			t = (Vector2d(this->p0, p) * this->vs);		// t parametrised 0 - line length
 			return this->vs * t + this->p0;
 		} else {
 			double r = p.Dist(this->pc);
@@ -917,7 +917,7 @@ return;
 	}
 
 	Point Kurve::Near(const Point& p, int& nearSpanNumber)const {
-		// finds the nearest span on kurve to the the given point, nearSpanNumber is the spannumber
+		// finds the nearest span on kurve to the given point, nearSpanNumber is the spannumber
 		double minDist = 1.0e100;
 		Point pNear, pn;
 
@@ -939,7 +939,7 @@ return;
 
 
 	Point Kurve::NearToVertex(const Point& p, int& nearSpanNumber)const {
-		// finds the nearest span endpoint on kurve to the the given point, nearSpanNumber is the spannumber
+		// finds the nearest span endpoint on kurve to the given point, nearSpanNumber is the spannumber
 		double minDistSquared = 1.0e100;
 		Point pn;
 
@@ -1036,7 +1036,7 @@ return;
 			temp.Add(sp.dir, sp.p1, sp.pc, true);
 			if(spanno == endSpanno)break;
 
-			spanno++;
+			//spanno++;
 		}
 
 		*this = temp;

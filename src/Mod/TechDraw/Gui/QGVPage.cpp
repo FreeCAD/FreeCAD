@@ -38,10 +38,12 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
+#include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
@@ -217,14 +219,14 @@ int QGVPage::removeQView(QGIView *view)
     return 0;
 }
 
-int QGVPage::removeQViewByDrawView(const TechDraw::DrawView* dv)
+int QGVPage::removeQViewByName(const char* name)
 {
     std::vector<QGIView*> items = getViews();
-    QString qsName = QString::fromUtf8(dv->getNameInDocument());
+    QString qsName = QString::fromUtf8(name);
     bool found = false;
     QGIView* ourItem = nullptr;
     for (auto& i:items) {
-        if (qsName == i->data(1).toString()) {          //is there really a QGIV for this DV in scene?
+        if (qsName == i->data(1).toString()) {          //is there a QGIV with this name in scene?
             found = true;
             ourItem = i;
             break;

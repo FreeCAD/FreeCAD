@@ -21,12 +21,14 @@ if(BUILD_GUI)
         LoadArchExample.py
         LoadFemExample2D.py
         LoadFemExample3D.py
+        LoadFemExample3DNewSolver.py
         Mesh.py
         PartDesign.py
         Ship.py
         StartPage.css
         StartPage.js
         StartPage.html
+        EnableDownload.py
         images/Background.jpg
         images/FreeCAD.png
         images/PartDesign.png

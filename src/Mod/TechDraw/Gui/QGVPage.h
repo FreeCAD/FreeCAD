@@ -84,7 +84,7 @@ public:
 
     int addQView(QGIView * view);
     int removeQView(QGIView *view);
-    int removeQViewByDrawView(const TechDraw::DrawView* dv);
+    int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView *view);
 
     //void setViews(const std::vector<QGIView *> &view) {views = view; }

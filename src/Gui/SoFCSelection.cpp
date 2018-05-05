@@ -803,7 +803,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
     //void* window;
     //void* context;
     //void *display;
-    QGLWidget* window;
+    QtGLWidget* window;
     SoGLRenderAction *glAction;
     //SoWindowElement::get(state, window, context, display, glAction);
     SoGLWidgetElement::get(state, window);
@@ -840,7 +840,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 SbBool 
 SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 {
-    // Note: The read in document name can be false, so the caller must ensure pointing to the correct documemt
+    // Note: The read in document name can be false, so the caller must ensure pointing to the correct document
     SbBool ret = inherited::readInstance(in, flags);
     return ret;
 }

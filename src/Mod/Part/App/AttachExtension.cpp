@@ -48,6 +48,7 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(Support, (0,0), "Attachment",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapMode, (mmDeactivated), "Attachment", App::Prop_None, "Mode of attachment to other object");
+    MapMode.setEditorName("PartGui::PropertyEnumAttacherItem");
     MapMode.setEnums(AttachEngine::eMapModeStrings);
     //a rough test if mode string list in Attacher.cpp is in sync with eMapMode enum.
     assert(MapMode.getEnumVector().size() == mmDummy_NumberOfModes);
@@ -56,7 +57,12 @@ AttachExtension::AttachExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter, (0.0), "Attachment", App::Prop_None, "Sets point of curve to map the sketch to. 0..1 = start..end");
 
-    EXTENSION_ADD_PROPERTY_TYPE(superPlacement, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
+    EXTENSION_ADD_PROPERTY_TYPE(AttachmentOffset, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
+
+    // Only show these properties when applicable. Controlled by extensionOnChanged
+    this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
+    this->MapReversed.setStatus(App::Property::Status::Hidden, true);
+    this->AttachmentOffset.setStatus(App::Property::Status::Hidden, true);
 
     setAttacher(new AttachEngine3D);//default attacher
     initExtensionType(AttachExtension::getExtensionClassTypeId());
@@ -118,7 +124,9 @@ bool AttachExtension::positionBySupport()
     if (!_attacher)
         throw Base::RuntimeError("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
-    try{
+    try {
+        if (_attacher->mapMode == mmDeactivated)
+            return false;
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
         return true;
     } catch (ExceptionCancel) {
@@ -156,22 +164,37 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
              || prop == &MapMode
              || prop == &MapPathParameter
              || prop == &MapReversed
-             || prop == &superPlacement)){
+             || prop == &AttachmentOffset)){
 
             bool bAttached = false;
             try{
                 bAttached = positionBySupport();
             } catch (Base::Exception &e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s",e.what());
+                Base::Console().Error("PositionBySupport: %s\n",e.what());
                 //set error message - how?
             } catch (Standard_Failure &e){
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
+                Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
             }
 
+            // Hide properties when not applicable to reduce user confusion
+
             eMapMode mmode = eMapMode(this->MapMode.getValue());
-            this->superPlacement.setReadOnly(!bAttached);
+
+            bool modeIsPointOnCurve = mmode == mmNormalToPath ||
+                mmode == mmFrenetNB || mmode == mmFrenetTN || mmode == mmFrenetTB ||
+                mmode == mmRevolutionSection || mmode == mmConcentric;
+
+            // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
+            bool hasOneRef = false;
+            if (_attacher && _attacher->references.getSubValues().size() == 1) {
+                hasOneRef = true;
+            }
+
+            this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+            this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
+            this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
             getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
@@ -184,6 +207,47 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
+void AttachExtension::extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+{
+    // Was superPlacement
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (AttachmentOffset.getClassTypeId() == type && strcmp(PropName, "superPlacement") == 0) {
+        AttachmentOffset.Restore(reader);
+    }
+}
+
+void AttachExtension::onExtendedDocumentRestored()
+{
+    try {
+        bool bAttached = positionBySupport();
+
+        // Hide properties when not applicable to reduce user confusion
+        eMapMode mmode = eMapMode(this->MapMode.getValue());
+        bool modeIsPointOnCurve =
+                (mmode == mmNormalToPath ||
+                 mmode == mmFrenetNB ||
+                 mmode == mmFrenetTN ||
+                 mmode == mmFrenetTB ||
+                 mmode == mmRevolutionSection ||
+                 mmode == mmConcentric);
+
+        // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
+        bool hasOneRef = false;
+        if (_attacher && _attacher->references.getSubValues().size() == 1) {
+            hasOneRef = true;
+        }
+
+        this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+        this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
+        this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
+        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+    }
+    catch (Base::Exception&) {
+    }
+    catch (Standard_Failure &) {
+    }
+}
+
 void AttachExtension::updateAttacherVals()
 {
     if (!_attacher)
@@ -193,7 +257,7 @@ void AttachExtension::updateAttacherVals()
                      this->MapReversed.getValue(),
                      this->MapPathParameter.getValue(),
                      0.0,0.0,
-                     this->superPlacement.getValue());
+                     this->AttachmentOffset.getValue());
 }
 
 App::PropertyPlacement& AttachExtension::getPlacement() {

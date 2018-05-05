@@ -59,7 +59,7 @@ public:
     App::PropertyBool   OutLineHCompound;
     App::PropertyBool   IsoLineHCompound;
 
-    /** @name methods overide feature */
+    /** @name methods override feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

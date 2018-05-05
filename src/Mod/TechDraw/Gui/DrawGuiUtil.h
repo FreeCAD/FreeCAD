@@ -24,6 +24,15 @@
 #define _DrawGuiUtil_h_
 
 #include <string>
+#include <QRectF>
+#include <QPointF>
+
+namespace TechDraw {
+class DrawPage;
+}
+namespace Gui {
+class Command;
+}
 
 namespace TechDrawGui
 {
@@ -34,6 +43,8 @@ class TechDrawGuiExport DrawGuiUtil {
     static TechDraw::DrawPage* findPage(Gui::Command* cmd);
     static bool needPage(Gui::Command* cmd);
     static bool needView(Gui::Command* cmd, bool partOnly = true);
+    static void dumpRectF(const char* text, const QRectF& r);
+    static void dumpPointF(const char* text, const QPointF& p);
 };
 
 } //end namespace TechDrawGui

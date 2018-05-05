@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QAction>
 # include <QTimer>
 #endif
 
@@ -163,7 +164,10 @@ void TaskLinearPatternParameters::setupUI()
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        this->fillAxisCombo(dirLinks,static_cast<Part::Part2DObject*>(sketch));
+        this->fillAxisCombo(dirLinks, static_cast<Part::Part2DObject*>(sketch));
+    }
+    else {
+        this->fillAxisCombo(dirLinks, nullptr);
     }
 
     //show the parts coordinate system axis for selection
@@ -196,7 +200,8 @@ void TaskLinearPatternParameters::updateUI()
 
     if (dirLinks.setCurrentLink(pcLinearPattern->Direction) == -1){
         //failed to set current, because the link isn't in the list yet
-        dirLinks.addLink(pcLinearPattern->Direction, getRefStr(pcLinearPattern->Direction.getValue(),pcLinearPattern->Direction.getSubValues()));
+        dirLinks.addLink(pcLinearPattern->Direction, getRefStr(pcLinearPattern->Direction.getValue(),
+                                                               pcLinearPattern->Direction.getSubValues()));
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
 
@@ -245,15 +250,19 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
-            App::DocumentObject* selObj;
+            App::DocumentObject* selObj = nullptr;
             PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-            // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
-                pcLinearPattern->Direction.setValue(selObj, directions);
+            if (pcLinearPattern) {
+                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
 
-                recomputeFeature();
-                updateUI();
+                // Note: ReferenceSelection has already checked the selection for validity
+                if (selObj && (selectionMode == reference ||
+                               selObj->isDerivedFrom(App::Line::getClassTypeId()))) {
+                    pcLinearPattern->Direction.setValue(selObj, directions);
+
+                    recomputeFeature();
+                    updateUI();
+                }
             }
         }
     }

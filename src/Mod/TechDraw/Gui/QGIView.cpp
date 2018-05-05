@@ -50,6 +50,7 @@
 
 
 #include "Rez.h"
+#include "ZVALUE.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -59,6 +60,9 @@
 #include "QGICaption.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
+#include "ViewProviderDrawingView.h"
+#include "MDIViewPage.h"
+#include "QGICMark.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -131,7 +135,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         // this is just a pair isn't it?
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
-            TechDraw::DrawProjGroup* dpg = dpgi->getGroup();
+            TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
             if ((dpg != nullptr) && dpg->AutoDistribute.getValue()) {
                 if(alignHash.size() == 1) {   //if aligned.
                     QGraphicsItem*item = alignHash.begin().value();
@@ -257,6 +261,11 @@ double QGIView::getYInClip(double y)
 
 void QGIView::updateView(bool update)
 {
+    if (getViewObject()->LockPosition.getValue()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
     if (update ||
         getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
@@ -267,23 +276,34 @@ void QGIView::updateView(bool update)
 
     if (update ||
         getViewObject()->Rotation.isTouched() ) {
-        //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
-        //Scale is handled in GeometryObject for DVP & descendents
-        //Objects not descended from DVP must setScale for themselves
-        //note that setTransform(,,rotation,,) is not the same as setRotation!!!
-        double rot = getViewObject()->Rotation.getValue();
-        QPointF centre = boundingRect().center();
-        setTransform(QTransform().translate(centre.x(), centre.y()).rotate(-rot).translate(-centre.x(), -centre.y()));
+        rotateView();
     }
 
     if (update)
         QGraphicsItem::update();
 }
 
+//QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
+void QGIView::rotateView(void)
+{
+//NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
+//Scale is handled in GeometryObject for DVP & descendents
+//Objects not descended from DVP must setScale for themselves
+//note that setTransform(,,rotation,,) is not the same as setRotation!!!
+    double rot = getViewObject()->Rotation.getValue();
+    QPointF centre = boundingRect().center();
+    setTransform(QTransform().translate(centre.x(), centre.y()).rotate(-rot).translate(-centre.x(), -centre.y()));
+}
+
 const char * QGIView::getViewName() const
 {
     return viewName.c_str();
 }
+const std::string QGIView::getViewNameAsString() const
+{
+    return viewName;
+}
+
 
 TechDraw::DrawView * QGIView::getViewObject() const
 {
@@ -299,7 +319,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 
     viewObj = obj;
     viewName = obj->getNameInDocument();
-    
+
     //mark the actual QGraphicsItem so we can check what's in the scene later
     setData(0,QString::fromUtf8("QGIV"));
     setData(1,QString::fromUtf8(obj->getNameInDocument()));
@@ -343,7 +363,8 @@ void QGIView::drawCaption()
     QPointF displayCenter = displayArea.center();
     m_caption->setX(displayCenter.x() - captionArea.width()/2.);
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
-    if (borderVisible || viewObj->KeepLabel.getValue()) {            //place below label if label visible
+    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (borderVisible || vp->KeepLabel.getValue()) {            //place below label if label visible
         m_caption->setY(displayArea.bottom() + labelHeight);
     } else {
         m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
@@ -355,7 +376,8 @@ void QGIView::drawBorder()
 {
     drawCaption();
     //show neither
-    if (!borderVisible && !viewObj->KeepLabel.getValue()) {
+    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (!borderVisible && !vp->KeepLabel.getValue()) {
          m_label->hide();
          m_border->hide();
         return;
@@ -376,6 +398,8 @@ void QGIView::drawBorder()
     double labelWidth = m_label->boundingRect().width();
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
 
+    QBrush b(Qt::NoBrush);
+    m_border->setBrush(b);
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
 
@@ -465,6 +489,22 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
     return result;
 }
 
+MDIViewPage* QGIView::getMDIViewPage(void) const
+{
+    MDIViewPage* result = nullptr;
+    QGraphicsScene* s = scene();
+    QObject* parent = nullptr;
+    if (s != nullptr) {
+        parent = s->parent();
+    }
+    if (parent != nullptr) {
+        MDIViewPage* mdi = dynamic_cast<MDIViewPage*>(parent);
+        if (mdi != nullptr) {
+            result = mdi;
+        }
+    }
+    return result;
+}
 
 QColor QGIView::getNormalColor()
 {
@@ -504,7 +544,7 @@ QString QGIView::getPrefFont()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
     return QString::fromStdString(fontName);
 }
 
@@ -512,7 +552,7 @@ double QGIView::getPrefFontSize()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    double fontSize = hGrp->GetFloat("LabelSize", 5.0);
+    double fontSize = hGrp->GetFloat("LabelSize", 3.5);
     return Rez::guiX(fontSize);
 }
 
@@ -520,3 +560,14 @@ void QGIView::dumpRect(char* text, QRectF r) {
     Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }
+
+void QGIView::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+

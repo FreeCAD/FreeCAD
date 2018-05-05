@@ -54,7 +54,7 @@ __url__ = "http://www.freecadweb.org"
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
-                   "Sliding 2-pane", "Simple door", "Glass door"]
+                   "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 Roles =           ["Undefined","Window","Door"]
 
@@ -73,7 +73,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     _Window(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
-        obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
+        #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
     if width:
         obj.Width = width
     if height:
@@ -98,8 +98,14 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
+        from DraftGui import todo
+        todo.delay(recolorize,obj)
     return obj
 
+def recolorize(obj):
+    if obj.ViewObject:
+        if obj.ViewObject.Proxy:
+            obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
@@ -343,6 +349,85 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2+w2)])
             wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2+w2/2)])
 
+        elif windowtype == "Sliding 4-pane":
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width/4-tol,h1+tol,0)
+            p3 = Vector(width/4-tol,height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector(width/4-h2,h1+h2,0)
+            p7 = Vector(width/4-h2,height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width/4+tol,h1+tol,0)
+            p2 = Vector(width/2-tol,h1+tol,0)
+            p3 = Vector(width/2-tol,height-(h1+tol),0)
+            p4 = Vector(width/4+tol,height-(h1+tol),0)
+            p5 = Vector(width/4+h2,h1+h2,0)
+            p6 = Vector(width/2-h2,h1+h2,0)
+            p7 = Vector(width/2-h2,height-(h1+h2),0)
+            p8 = Vector(width/4+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width/2+tol,h1+tol,0)
+            p2 = Vector(width*3/4-tol,h1+tol,0)
+            p3 = Vector(width*3/4-tol,height-(h1+tol),0)
+            p4 = Vector(width/2+tol,height-(h1+tol),0)
+            p5 = Vector(width/2+h2,h1+h2,0)
+            p6 = Vector(width*3/4-h2,h1+h2,0)
+            p7 = Vector(width*3/4-h2,height-(h1+h2),0)
+            p8 = Vector(width/2+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width*3/4+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(width*3/4+tol,height-(h1+tol),0)
+            p5 = Vector(width*3/4+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(width*3/4+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,2,16,1,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',17,1,27,2,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,2,32,1,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,2,4,2,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,2,6,2,tol)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',17,2,26,2,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',25,2,34,2,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',9,2,18,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,2,24,1,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,2,32,1,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',13,2,9,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',13,2,9,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,1,20,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,1,28,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,1,28,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',29,2,25,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',29,2,25,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,1,36,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',32,1,36,1,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',37,2,33,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',37,2,33,2,h2)) 
+            s.addConstraint(Sketcher.Constraint('Equal',14,22)) 
+            s.addConstraint(Sketcher.Constraint('Equal',22,30)) 
+            s.addConstraint(Sketcher.Constraint('Equal',30,38)) 
+            wp.extend(["LeftMostFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
+            wp.extend(["LeftMostGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
+            wp.extend(["LeftFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2+w2)])
+            wp.extend(["LeftGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2+w2/2)])
+            wp.extend(["RightFrame","Frame","Wire6,Wire7",str(w2),str(o1+o2+w2)])
+            wp.extend(["RightGlass","Glass panel","Wire7",str(w2/gla),str(o1+o2+w2+w2/2)])
+            wp.extend(["RightMostFrame","Frame","Wire8,Wire9",str(w2),str(o1+o2)])
+            wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o1+o2+w2/2)])
+
         elif windowtype == "Simple door":
             wp = doorFrame(s,width,height,h1,w1,o1)
             wp.extend(["Door","Solid panel","Wire1",str(w2),str(o1+o2)])
@@ -410,6 +495,7 @@ class _CommandWindow:
         self.Height = p.GetFloat("WindowHeight",1000)
         self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
         self.Preset = 0
+        self.LibraryPreset = 0
         self.Sill = 0
         self.Include = True
         self.baseFace = None
@@ -458,7 +544,7 @@ class _CommandWindow:
         self.tracker.width(self.Thickness)
         self.tracker.height(self.Height)
         self.tracker.on()
-        FreeCAD.Console.PrintMessage(translate("Arch","Pick a face on an existing object or select a preset\n"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
@@ -471,26 +557,43 @@ class _CommandWindow:
         if self.sel:
             obj = self.sel[0]
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
-        # preset
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-        FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
-        if obj and (self.baseFace != None):
-            FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
+        if self.Preset >= len(WindowPresets):
+            # library object
+            col = list(FreeCAD.ActiveDocument.Objects)
+            path = self.librarypresets[self.Preset-len(WindowPresets)][1]
+            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('"+path+"')")
+            # find the latest added window
+            nol = list(FreeCAD.ActiveDocument.Objects)
+            nol.reverse()
+            for o in nol:
+                if (Draft.getType(o) == "Window") and (not o in col):
+                    lastobj = o
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Placement.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Width = "+str(self.Width))
+                    FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Height = "+str(self.Height))
+                    break
+            
         else:
-            FreeCADGui.doCommand("m = FreeCAD.Matrix()")
-            FreeCADGui.doCommand("m.rotateX(math.pi/2)")
-            FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
-        FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
-        wp = ""
-        for p in self.wparams:
-            wp += p.lower() + "=" + str(getattr(self,p)) + ","
-        FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
-        if obj and self.Include:
-            if Draft.getType(obj) in AllowedHosts:
-                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
-                siblings = obj.Proxy.getSiblings(obj)
-                for sibling in siblings:
-                    FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
+            # preset
+            FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
+            if obj and (self.baseFace != None):
+                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
+            else:
+                FreeCADGui.doCommand("m = FreeCAD.Matrix()")
+                FreeCADGui.doCommand("m.rotateX(math.pi/2)")
+                FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
+            FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+            wp = ""
+            for p in self.wparams:
+                wp += p.lower() + "=" + str(getattr(self,p)) + ","
+            FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
+            if obj and self.Include:
+                if Draft.getType(obj) in AllowedHosts:
+                    FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
+                    siblings = obj.Proxy.getSiblings(obj)
+                    for sibling in siblings:
+                        FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return
@@ -534,6 +637,22 @@ class _CommandWindow:
         grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
+        # check for Parts library
+        self.librarypresets = []
+        librarypath = FreeCAD.ParamGet('User parameter:Plugins/parts_library').GetString('destination','')
+        if librarypath:
+            import os
+            if os.path.exists(librarypath):
+                for wtype in ["Windows","Doors"]:
+                    wdir = os.path.join(librarypath,"Architectural Parts",wtype)
+                    for subtype in os.listdir(wdir):
+                        subdir = os.path.join(wdir,subtype)
+                        for subfile in os.listdir(subdir):
+                            if subfile.lower().endswith(".fcstd"):
+                                self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
+            else:
+                librarypath = None
+
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         valuep = QtGui.QComboBox()
@@ -542,16 +661,24 @@ class _CommandWindow:
         grid.addWidget(labelp,2,0,1,1)
         grid.addWidget(valuep,2,1,1,1)
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
+        for it in self.librarypresets:
+            valuep.addItem(it[0])
 
         # image display
+        self.pic = QtGui.QLabel()
+        grid.addWidget(self.pic,3,0,1,2)
+        self.pic.setFixedHeight(128)
+        self.pic.hide()
+
+        # SVG display
         self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
-        grid.addWidget(self.im,3,0,1,2)
+        grid.addWidget(self.im,4,0,1,2)
         #self.im.hide()
 
         # parameters
-        i = 4
+        i = 5
         for param in self.wparams:
             lab = QtGui.QLabel(translate("Arch",param, utf8_decode=True))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
@@ -569,6 +696,7 @@ class _CommandWindow:
             valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
+
         return w
 
     def getValueChanged(self,p):
@@ -594,6 +722,8 @@ class _CommandWindow:
             self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
             self.tracker.on()
+            self.pic.hide()
+            self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
             elif i == 1:
@@ -605,8 +735,32 @@ class _CommandWindow:
             elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
             else:
-                self.im.load(":/ui/ParametersWindowDouble.svg")
-            self.im.show()
+                if i >= len(WindowPresets):
+                    # From Library
+                    self.im.hide()
+                    path = self.librarypresets[i-len(WindowPresets)][1]
+                    if path.lower().endswith(".fcstd"):
+                        try:
+                            import zipfile,tempfile
+                        except:
+                            pass
+                        else:
+                            zfile=zipfile.ZipFile(path)
+                            files=zfile.namelist()
+                            # check for meta-file if it's really a FreeCAD document
+                            if files[0] == "Document.xml":
+                                image="thumbnails/Thumbnail.png"
+                                if image in files:
+                                    image=zfile.read(image)
+                                    thumbfile = tempfile.mkstemp(suffix='.png')[1]
+                                    thumb = open(thumbfile,"wb")
+                                    thumb.write(image)
+                                    thumb.close()
+                                    im = QtGui.QPixmap(thumbfile)
+                                    self.pic.setPixmap(im)
+                                    self.pic.show()
+                else:
+                    self.im.load(":/ui/ParametersWindowDouble.svg")
             #for param in self.wparams:
             #    getattr(self,"val"+param).setEnabled(True)
         else:
@@ -622,19 +776,19 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLinkList","Hosts","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
-        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
-        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","an optional object that defines a volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
+        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
         obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
         obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
-        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
-        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
+        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"))
+        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"))
         obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
-        obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+        obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"))
         obj.addProperty("App::PropertyBool","SymbolPlan","Arch",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
         obj.addProperty("App::PropertyBool","SymbolElevation","Arch",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
         obj.setEditorMode("Preset",2)
@@ -650,18 +804,24 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop == "Hosts":
-            if hasattr(obj,"Hosts"):
-                for host in obj.Hosts:
-                    # mark host to recompute so it can detect this object
-                    host.touch()
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts"]:
-                self.execute(obj)
-            elif prop in ["HoleDepth"]:
-                for o in obj.InList:
-                    if Draft.getType(o) in AllowedHosts:
-                        o.Proxy.execute(o)
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
+                # anti-recursive loops, bc the base sketch will touch the Placement all the time
+                ok = True
+                if prop == "Placement":
+                    if hasattr(self,"Placement"):
+                        if self.Placement == obj.Placement:
+                            ok = False
+                    self.Placement = FreeCAD.Placement(obj.Placement)
+                elif prop == "Hosts":
+                    if hasattr(self,"Hosts"):
+                        if self.Hosts == obj.Hosts:
+                            ok = False
+                    self.Hosts = obj.Hosts
+                if ok and hasattr(obj,"Hosts"):
+                    for host in obj.Hosts:
+                        # mark host to recompute so it can detect this object
+                        host.touch()
             if prop in ["Width","Height"]:
                 if obj.Preset != 0:
                     if obj.Base:
@@ -866,20 +1026,20 @@ class _Window(ArchComponent.Component):
                                     if hasattr(obj,"LouvreWidth"):
                                         if obj.LouvreWidth and obj.LouvreSpacing:
                                             bb = shape.BoundBox
-                                            bb.enlarge(bb.DiagonalLength)
+                                            bb.enlarge(10)
                                             step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
-                                            if step < bb.YLength:
-                                                box = Part.makeBox(bb.XLength,obj.LouvreWidth.Value,bb.ZLength)
+                                            if step < bb.ZLength:
+                                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
                                                 boxes = []
-                                                for i in range(int(bb.YLength/step)+1):
+                                                for i in range(int(bb.ZLength/step)+1):
                                                     b = box.copy()
-                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
+                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin+i*step))
                                                     boxes.append(b)
                                                 self.boxes = Part.makeCompound(boxes)
-                                                rot = obj.Base.Placement.Rotation
-                                                self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                                #rot = obj.Base.Placement.Rotation
+                                                #self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
                                                 self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
-                                                shape = shape.common(self.boxes)
+                                                shape = shape.cut(self.boxes)
                                 if rotdata:
                                     shape.rotate(rotdata[0],rotdata[1],rotdata[2])
                                 shapes.append(shape)
@@ -1016,20 +1176,36 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Window_Tree.svg"
 
     def updateData(self,obj,prop):
-        if (prop in ["WindowParts","Shape"]):
-            if obj.Shape:
-                if not obj.Shape.isNull():
-                    self.colorize(obj)
-        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
+        if prop == "Shape":
+            if obj.Base:
+                if obj.Base.isDerivedFrom("Part::Compound"):
+                    if obj.ViewObject.DiffuseColor != obj.Base.ViewObject.DiffuseColor:
+                        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
+            self.colorize(obj)
+        elif prop == "CloneOf":
+            if obj.CloneOf:
+                mat = None
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        mat = obj.Material
+                if not mat: 
+                    if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                        if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
+
+    def onDelete(self,vobj,subelements):
+        for o in vobj.Object.Hosts:
+            o.touch()
+        return True
 
     def onChanged(self,vobj,prop):
-        if (prop == "DiffuseColor") and vobj.Object:
-            if vobj.Object.Base:
-                if not vobj.Object.Base.Shape.Solids:
-                    if len(vobj.DiffuseColor) < 2:
-                        if vobj.Object.Shape:
-                            if not vobj.Object.Shape.isNull():
-                                self.colorize(vobj.Object)
+        if (prop in ["DiffuseColor","Transparency"]) and vobj.Object:
+            self.colorize(vobj.Object)
+        elif prop == "ShapeColor":
+            self.colorize(vobj.Object,force=True)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
@@ -1053,9 +1229,17 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         FreeCADGui.Control.closeDialog()
         return
 
-    def colorize(self,obj):
+    def colorize(self,obj,force=False):
         "setting different part colors"
+        if obj.CloneOf:
+            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+            return
         if not obj.WindowParts:
+            return
+        if not obj.Shape:
+            return
+        if not obj.Shape.Solids:
             return
         solids = obj.Shape.copy().Solids
         #print("Colorizing ", solids)
@@ -1063,20 +1247,26 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         base = obj.ViewObject.ShapeColor
         for i in range(len(solids)):
             ccol = None
-            name = obj.WindowParts[(i*5)]
-            typeidx = (i*5)+1
-            if hasattr(obj,"Material"):
-                if obj.Material:
-                    if hasattr(obj.Material,"Materials"):
-                        if obj.Material.Names:
-                            if name in obj.Material.Names:
-                                mat = obj.Material.Materials[obj.Material.Names.index(name)]
-                                if 'DiffuseColor' in mat.Material:
-                                    if "(" in mat.Material['DiffuseColor']:
-                                        ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                                if 'Transparency' in mat.Material:
-                                    ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+            if len(obj.WindowParts) > i*5:
+                name = obj.WindowParts[(i*5)]
+                mtype = obj.WindowParts[(i*5)+1]
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        if hasattr(obj.Material,"Materials"):
+                            if obj.Material.Names:
+                                mat = None
+                                if name in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(name)]
+                                elif mtype in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(mtype)]
+                                if mat:
+                                    if 'DiffuseColor' in mat.Material:
+                                        if "(" in mat.Material['DiffuseColor']:
+                                            ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                    if 'Transparency' in mat.Material:
+                                        ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
             if not ccol:
+                typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
                     if typ == WindowPartTypes[2]: # transparent parts
@@ -1085,8 +1275,16 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 ccol = base
             colors.extend([ccol for f in solids[i].Faces])
         #print("colors: ",colors)
-        if colors:
+        if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
+
+    def areDifferentColors(self,a,b):
+        if len(a) != len(b):
+            return True
+        for i in range(len(a)):
+            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
+                return True
+        return False
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''
@@ -1434,7 +1632,7 @@ class _ArchWindowTaskPanel:
                 self.obj.WindowParts = parts
                 self.update()
         else:
-            FreeCAD.Console.PrintWarning(translate("Arch", "Unable to create component\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch", "Unable to create component")+"\n")
 
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)
@@ -1469,7 +1667,7 @@ class _ArchWindowTaskPanel:
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
-        self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire", None))
+        self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire", None))
         self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick selected", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))

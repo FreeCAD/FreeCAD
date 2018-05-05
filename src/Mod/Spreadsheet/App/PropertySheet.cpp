@@ -358,7 +358,9 @@ Cell * PropertySheet::cellAt(CellAddress address)
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -378,7 +380,9 @@ const Cell * PropertySheet::cellAt(CellAddress address) const
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -678,7 +682,8 @@ void PropertySheet::insertRows(int row, int count)
             moveCell(*i, CellAddress(i->row() + count, i->col()), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 /**
@@ -728,7 +733,8 @@ void PropertySheet::removeRows(int row, int count)
             moveCell(*i, CellAddress(i->row() - count, i->col()), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 void PropertySheet::insertColumns(int col, int count)
@@ -764,7 +770,8 @@ void PropertySheet::insertColumns(int col, int count)
             moveCell(*i, CellAddress(i->row(), i->col() + count), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 /**
@@ -814,7 +821,8 @@ void PropertySheet::removeColumns(int col, int count)
             moveCell(*i, CellAddress(i->row(), i->col() - count), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; } );
 }
 
 unsigned int PropertySheet::getMemSize() const
@@ -881,7 +889,9 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     if (i != mergedCells.end()) {
         CellAddress anchor = i->second;
 
-        cellAt(anchor)->getSpans(rows, cols);
+        const Cell* cell = cellAt(anchor);
+        if (cell)
+            cell->getSpans(rows, cols);
     }
     else {
         rows = cols = 1;
@@ -974,7 +984,7 @@ void PropertySheet::addDependencies(CellAddress key)
 }
 
 /**
-  * Remove dependecies given by \a expression for cell at \a key.
+  * Remove dependencies given by \a expression for cell at \a key.
   *
   * @param expression Expression to extract dependencies from
   * @param key        Address of cell containing the expression

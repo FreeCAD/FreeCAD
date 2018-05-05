@@ -81,6 +81,9 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 		}
 	}
 
+	if (mid_vt == NULL)
+		return false;
+
 	// create a circle to test
 	Point p0(prev_vt.m_p);
 	Point p1(mid_vt->m_p);
@@ -88,7 +91,11 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	Circle c(p0, p1, p2);
 
 	const CVertex* current_vt = &prev_vt;
-	double accuracy = CArea::m_accuracy * 1.4 / CArea::m_units;
+    // It seems that ClipperLib's offset ArcTolerance (same as m_accuracy here)
+    // is not exactly what's documented at https://goo.gl/4odfQh. Test shows the
+    // maximum arc distance deviate at about 2.2*ArcTolerance units. The maximum
+    // deviance seems to always occur at the end of arc.
+	double accuracy = CArea::m_accuracy * 2.3 / CArea::m_units;
 	for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++)
 	{
 		const CVertex* vt = *It;
@@ -185,7 +192,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 	}
 }
 
-void CCurve::FitArcs()
+void CCurve::FitArcs(bool retry)
 {
 	std::list<CVertex> new_vertices;
 
@@ -193,7 +200,6 @@ void CCurve::FitArcs()
 	CArc arc;
 	bool arc_found = false;
 	bool arc_added = false;
-
 	int i = 0;
 	for(std::list<CVertex>::iterator It = m_vertices.begin(); It != m_vertices.end(); It++, i++)
 	{
@@ -220,7 +226,46 @@ void CCurve::FitArcs()
 		}
 	}
 
-	if(might_be_an_arc.size() > 0)AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
+	if(might_be_an_arc.size() > 0) {
+        // check if the last edge can form an arc with the starting edge
+        if(!retry && 
+           m_vertices.size()>2 && 
+           m_vertices.begin()->m_type==0 && 
+           IsClosed()) 
+        {
+	        std::list<const CVertex*> tmp;
+            auto it = m_vertices.begin();
+            tmp.push_back(&(*it++));
+
+            // this condition check is to skip the situation when both the
+            // starting and ending has already been fitted with some arc
+            if(!arc_found || it->m_type==0) {
+                tmp.push_back(&(*it));
+                CArc tmpArc;
+                auto itEnd = m_vertices.end();
+                --itEnd;
+                --itEnd;
+                if(CheckForArc(*itEnd,tmp,tmpArc)) {
+                    if(arc_found) {
+                        // this means the last edge has already been fitted with
+                        // some arc, so we move the first edge to the end
+                        
+                        // Must pop first, because this is a closed curve,
+                        // meaning the last point must be equal to the first
+                        // point.
+                        m_vertices.pop_front();
+                        m_vertices.push_back(m_vertices.front());
+                    }else{
+                        m_vertices.push_front(CVertex(new_vertices.back().m_p));
+                        m_vertices.pop_back();
+                    }
+                    FitArcs(true);
+                    return;
+                }
+            }
+        }
+        AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
+    }
 
 	if(arc_added)
 	{
@@ -276,7 +321,7 @@ void CCurve::UnFitArcs()
 						phit=-(ang2-ang1);
 				}
 
-				//what is the delta phi to get an accurancy of aber
+				//what is the delta phi to get an accuracy of aber
 				double radius = sqrt(dx*dx + dy*dy);
 				dphi=2*acos((radius-CArea::m_accuracy)/radius);
 

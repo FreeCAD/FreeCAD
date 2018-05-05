@@ -84,9 +84,36 @@ class TestPathUtil(PathTestBase):
         body.addObject(pad)
         pad.Profile = sketch
         self.doc.recompute()
-        # the body and the pad are solids
-        self.assertTrue(PathUtil.isValidBaseObject(pad))
+
+        # the body is a solid
         self.assertTrue(PathUtil.isValidBaseObject(body))
-        # however, the sketch is no
+
+        # the pad inside the body cannot be used due to the linking constraints
+        self.assertFalse(PathUtil.isValidBaseObject(pad))
+
+        # the sketch is no good neither
         self.assertFalse(PathUtil.isValidBaseObject(sketch))
+
+    def test04(self):
+        '''Check that Part is handled correctly.'''
+        part = self.doc.addObject('App::Part', 'Part')
+
+        # an empty part is not a valid base object
+        self.assertFalse(PathUtil.isValidBaseObject(part))
+
+        # a non-empty part where none of the objects have a shape, is no good either
+        fp = self.doc.addObject('App::FeaturePython', 'Feature')
+        part.addObject(fp)
+        self.assertFalse(PathUtil.isValidBaseObject(part))
+
+        # create a valid base object
+        box = self.doc.addObject("Part::Box","Box")
+        self.assertTrue(PathUtil.isValidBaseObject(box))
+
+        # a part with at least one valid object is valid
+        part.addObject(box)
+        self.assertTrue(PathUtil.isValidBaseObject(part))
+
+        # however, the object itself is no longer valid
+        self.assertFalse(PathUtil.isValidBaseObject(box))
 

@@ -14,7 +14,7 @@ def makeSnapshotWithGui():
 	import FreeCADGui
 
 	def getMainWindow():
-		toplevel = QtGui.qApp.topLevelWidgets()
+		toplevel = QtGui.QApplication.topLevelWidgets()
 		for i in toplevel:
 			if i.metaObject().className() == "Gui::MainWindow":
 				return i
@@ -37,7 +37,7 @@ def makeSnapshotWithGui():
 	view.saveImage('crystal.png',800,600,'Current')
 	FreeCAD.closeDocument(doc.Name)
 	# close the application
-	QtGui.qApp.quit()
+	QtGui.QApplication.quit()
 
 def makeSnapshotWithoutGui():
 	from pivy import coin

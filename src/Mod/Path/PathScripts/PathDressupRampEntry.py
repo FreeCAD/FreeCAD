@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Part
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import math
 
@@ -34,7 +35,7 @@ from PySide import QtCore
 
 
 # Qt tanslation handling
-def translate(text, context="PathDressup_RampEntry", disambig=None):
+def translate(text, context="Path_DressupRampEntry", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -45,12 +46,15 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
-        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "The base path to modify"))
-        obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "Angle of ramp."))
+        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "The base path to modify"))
+        obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Angle of ramp."))
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
+        obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
+        obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
         obj.Method = ['RampMethod1', 'RampMethod2', 'RampMethod3', 'Helix']
+        obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
+        self.setEditorProperties(obj)
 
     def __getstate__(self):
         return None
@@ -58,18 +62,19 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "RampFeedRate":
+            self.setEditorProperties(obj)
+
+    def setEditorProperties(self, obj):
+        if obj.RampFeedRate == 'Custom':
+            obj.setEditorMode('CustomFeedRate', 0)
+        else:
+            obj.setEditorMode('CustomFeedRate', 2)
+
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            PathLog.error(translate("No Tool Controller is selected. We need a tool to build a Path\n"))
-            return
-        else:
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool:
-                PathLog.error(translate("No Tool found. We need a tool to build a Path.\n"))
-                return
 
     def execute(self, obj):
 
@@ -297,7 +302,7 @@ class ObjectDressup:
            by going the path backwards until the original plunge end point is reached
         4. Continue with the original path
 
-        This method causes unecessarily many moves with tool down
+        This method causes many unnecessary moves with tool down.
         """
         outedges = []
         rampremaining = projectionlen
@@ -307,7 +312,7 @@ class ObjectDressup:
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be splitted
+                    # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Ramp remaining: {}".format(rampremaining))
@@ -360,10 +365,10 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Ramp down along the path that comes after the plunge until
            traveled half of the Z distance
-        3. Change direction and ramp backwards to the origianal plunge end point
+        3. Change direction and ramp backwards to the original plunge end point
         4. Continue with the original path
 
-        This method causes unecessarily many moves with tool down
+        This method causes many unnecessary moves with tool down.
         """
         outedges = []
         rampremaining = projectionlen
@@ -373,7 +378,7 @@ class ObjectDressup:
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be splitted
+                    # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Got split edge (index: {}) with lengths: {}, {}".format(i, splitEdge[0].Length, splitEdge[1].Length))
@@ -440,7 +445,7 @@ class ObjectDressup:
         else:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # this edge needs to be splitted
+                    # this edge needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Got split edges with lengths: {}, {}".format(splitEdge[0].Length, splitEdge[1].Length))
@@ -505,22 +510,41 @@ class ObjectDressup:
 
         outCommands = []
 
-        horizFeed = obj.ToolController.HorizFeed.Value
-        vertFeed = obj.ToolController.VertFeed.Value
-        horizRapid = obj.ToolController.HorizRapid.Value
-        vertRapid = obj.ToolController.VertRapid.Value
+        tc = PathDressup.toolController(obj.Base)
+
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
+        if obj.RampFeedRate == "Horizontal Feed Rate":
+            rampFeed = tc.HorizFeed.Value
+        elif obj.RampFeedRate == "Vertical Feed Rate":
+            rampFeed = tc.VertFeed.Value
+        else:
+            rampFeed = obj.CustomFeedRate.Value
+        horizRapid = tc.HorizRapid.Value
+        vertRapid = tc.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
             zVal = params.get('Z', None)
             zVal2 = lastCmd.Parameters.get('Z', None)
 
+            xVal = params.get('X', None)
+            xVal2 = lastCmd.Parameters.get('X', None)
+
+            yVal2 = lastCmd.Parameters.get('Y', None)
+            yVal = params.get('Y', None)
+
             zVal = zVal and round(zVal, 8)
             zVal2 = zVal2 and round(zVal2, 8)
 
             if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
                 if zVal is not None and zVal2 != zVal:
-                    params['F'] = vertFeed
+                    if PathGeom.isRoughly(xVal, xVal2) and PathGeom.isRoughly(yVal, yVal2):
+                        # this is a straight plunge
+                        params['F'] = vertFeed
+                    else:
+                        # this is a ramp
+                        params['F'] = rampFeed
                 else:
                     params['F'] = horizFeed
                 lastCmd = cmd
@@ -563,7 +587,7 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        PathUtils.addObjectToJob(arg1.Object.Base, job)
+        job.Proxy.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
         return True
 
@@ -578,14 +602,13 @@ class CommandPathDressupRampEntry:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "RampEntry Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
+        op = PathDressup.selection()
+        if op:
+            return not PathDressup.hasEntryMethod(op)
         return False
 
     def Activated(self):
@@ -593,11 +616,11 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object\n"))
+            PathLog.error(translate("Please select one path object")+"\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path\n"))
+            PathLog.error(translate("The selected object is not a path")+"\n")
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))
@@ -613,7 +636,6 @@ class CommandPathDressupRampEntry:
         FreeCADGui.doCommand('PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -621,6 +643,6 @@ class CommandPathDressupRampEntry:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_RampEntry', CommandPathDressupRampEntry())
+    FreeCADGui.addCommand('Path_DressupRampEntry', CommandPathDressupRampEntry())
 
-PathLog.notice("Loading PathDressupRampEntry... done\n")
+PathLog.notice("Loading Path_DressupRampEntry... done\n")

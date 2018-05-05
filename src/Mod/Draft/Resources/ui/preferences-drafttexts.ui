@@ -198,7 +198,7 @@ such as &quot;Arial:Bold&quot;</string>
         <item>
          <widget class="QLabel" name="label_18">
           <property name="text">
-           <string>Extension lines  size</string>
+           <string>Extension lines size</string>
           </property>
          </widget>
         </item>
@@ -221,6 +221,78 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>extlines</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_extovershoot">
+        <item>
+         <widget class="QLabel" name="label_extovershoot">
+          <property name="text">
+           <string>Extension line overshoot</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_extovershoot">
+          <property name="toolTip">
+           <string>The default length of extension line above dimension line</string>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="minimum">
+           <double>-9999.989999999999782</double>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>extovershoot</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_dimovershoot">
+        <item>
+         <widget class="QLabel" name="label_dimovershoot">
+          <property name="text">
+           <string>Dimension line overshoot</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_dimovershoot">
+          <property name="toolTip">
+           <string>The default distance the dimension line is extended past extension lines</string>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="minimum">
+           <double>-9999.989999999999782</double>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dimovershoot</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -259,6 +331,16 @@ such as &quot;Arial:Bold&quot;</string>
           <item>
            <property name="text">
             <string>Arrow</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Tick</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Tick-2</string>
            </property>
           </item>
          </widget>

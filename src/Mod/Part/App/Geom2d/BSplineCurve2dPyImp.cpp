@@ -70,7 +70,7 @@ int BSplineCurve2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "B-Spline constructor accepts:\n"
+    PyErr_SetString(PyExc_TypeError, "B-spline constructor accepts:\n"
         "-- empty parameter list\n");
     return -1;
 }
@@ -1276,7 +1276,7 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
                 occweights.SetValue(i,1.0);
             }
         }
-        // check if the numer of poles matches the sum of mults
+        // check if the number of poles matches the sum of mults
         if ((PyObject_IsTrue(periodic) && sum_of_mults != number_of_poles) ||
                 (PyObject_Not(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");

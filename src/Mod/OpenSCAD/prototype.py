@@ -63,7 +63,7 @@ class Node:
         return bool(self.name or self.arguments or self.children)
 
     def __len__(self):
-        '''return the numer of children'''
+        '''return the number of children'''
         return len(self.children)
 
     def __getitem__(self,key):
@@ -235,8 +235,8 @@ class Node:
             obj.ViewObject.Transparency = transp
         elif namel == 'multmatrix':
             assert(len(self.children)>0)
-            m1l=[round(f,12) for f in sum(self.arguments,[])] #Thats the original matrix
-            m1=FreeCAD.Matrix(*tuple(m1l)) #Thats the original matrix
+            m1l=[round(f,12) for f in sum(self.arguments,[])] #That's the original matrix
+            m1=FreeCAD.Matrix(*tuple(m1l)) #That's the original matrix
             if isspecialorthogonalpython(fcsubmatrix(m1)): #a Placement can represent the transformation
                 if len(self.children) == 1:
                     obj = self.children[0].addtofreecad(doc,fcpar or True)
@@ -390,7 +390,7 @@ class Node:
                         f=edgestofaces(edges)
                     except Part.OCCError:
                         FreeCAD.Console.PrintError(\
- 'processing of dxf import faild\nPlease rework \'%s\' manualy\n' % layera)
+ 'processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
                         f=Part.Shape() #empty Shape
                     obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
                     #obj=doc.addObject('Part::Feature',)
@@ -549,7 +549,7 @@ class Node:
             child.pprint(level+1)
 
     def pprint2(self,path='root',pathjust=24):
-        """prints the tree. Left column contains the the systax to access a child"""
+        """prints the tree. Left column contains the syntax to access a child"""
         if self.arguments:
             argstr = ' (%s)' % self.arguments
         else:

@@ -143,6 +143,7 @@ protected:
     virtual void draw();
     virtual int popupMenu();
 
+protected:
     Gui::Polyline polyline;
     bool lastConfirmed;
 };

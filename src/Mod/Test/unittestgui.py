@@ -177,7 +177,7 @@ _HELP_TEXT="""\
 Enter the name of a callable object which, when called, will return a \
 TestCase or TestSuite. Click 'start', and the test thus produced will be run.
 
-Double click on an error in the listbox to see more information about it,\
+Double click on an error in the listbox to see more information about it, \
 including the stack trace.
 
 For more information, visit

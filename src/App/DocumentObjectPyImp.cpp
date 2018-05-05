@@ -37,7 +37,10 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentObjectPy::representation(void) const
 {
-    return std::string("<Document object>");
+    DocumentObject* object = this->getDocumentObjectPtr();
+    std::stringstream str;
+    str << "<" << object->getTypeId().getName() << " object>";
+    return str.str();
 }
 
 Py::String DocumentObjectPy::getName(void) const
@@ -186,7 +189,12 @@ Py::Object DocumentObjectPy::getViewObject(void) const
         arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
         Py::Object doc = method.apply(arg);
         method = doc.getAttr("getObject");
-        arg.setItem(0, Py::String(getDocumentObjectPtr()->getNameInDocument()));
+        const char* internalName = getDocumentObjectPtr()->getNameInDocument();
+        if (!internalName) {
+            throw Py::RuntimeError("Object has been removed from document");
+        }
+
+        arg.setItem(0, Py::String(internalName));
         Py::Object obj = method.apply(arg);
         return obj;
     }
@@ -245,7 +253,7 @@ Py::List DocumentObjectPy::getOutListRecursive(void) const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
-        // creat the python list for the output
+        // create the python list for the output
         for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
             ret.append(Py::Object((*It)->getPyObject(), true));
     }
@@ -347,6 +355,31 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
             return Py_None;
         }
         return grp->getPyObject();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O!", &DocumentObjectPy::Type, &o))
+        return NULL;
+
+    try {
+        DocumentObject* target = static_cast<DocumentObjectPy*>
+                (o)->getDocumentObjectPtr();
+        auto array = getDocumentObjectPtr()->getPathsByOutList(target);
+        Py::List list;
+        for (auto it : array) {
+            Py::List path;
+            for (auto jt : it) {
+                path.append(Py::asObject(jt->getPyObject()));
+            }
+            list.append(path);
+        }
+        return Py::new_reference_to(list);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

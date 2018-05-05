@@ -46,7 +46,7 @@ def process_nested_parent_str2(attr_str,idx=0):
             current_param = ''
             k += progress+1
         elif ch==')':
-            #print "Down one level parenthesis: %i caracters parsed"%k
+            #print "Down one level parenthesis: %i characters parsed"%k
             params.append(current_param)
             #print "Current params:",params#k -= acc-2
             return params,k

@@ -1,333 +1,343 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="it" sourcelanguage="en">
-<context>
+  <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-        <location filename="../../Command.cpp" line="+245"/>
-        <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+      <location filename="../../Command.cpp" line="+245"/>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Curve on mesh...</source>
-        <translation type="unfinished"></translation>
+      <location line="+1"/>
+      <source>Curve on mesh...</source>
+      <translation>Curvatura sulla mesh...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Curve on mesh</source>
-        <translation type="unfinished"></translation>
+      <location line="+1"/>
+      <source>Curve on mesh</source>
+      <translation>Curvatura sulla mesh</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location line="-191"/>
-        <source>Mesh</source>
-        <translation>Mesh</translation>
+      <location line="-191"/>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create mesh from shape...</source>
-        <translation>Crea mesh da una forma...</translation>
+      <location line="+1"/>
+      <source>Create mesh from shape...</source>
+      <translation>Crea mesh da una forma...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Tessellate shape</source>
-        <translation>Forma della tassellazione</translation>
+      <location line="+1"/>
+      <source>Tessellate shape</source>
+      <translation>Forma della tessellazione</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdMeshPartSection</name>
     <message>
-        <location line="+106"/>
-        <source>Mesh</source>
-        <translation>Mesh</translation>
+      <location line="+106"/>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create section from mesh and plane</source>
-        <translation>Crea una sezione da mesh e piano</translation>
+      <location line="+1"/>
+      <source>Create section from mesh and plane</source>
+      <translation>Crea una sezione da mesh e piano</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Section</source>
-        <translation>Sezione</translation>
+      <location line="+1"/>
+      <source>Section</source>
+      <translation>Sezione</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-        <location line="-85"/>
-        <source>Mesh</source>
-        <translation>Mesh</translation>
+      <location line="-85"/>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Trim mesh with a plane</source>
-        <translation>Taglia mesh con un piano</translation>
+      <location line="+1"/>
+      <source>Trim mesh with a plane</source>
+      <translation>Taglia mesh con un piano</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <source>Trims a mesh with a plane</source>
-        <translation>Taglia una mesh con un piano</translation>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Trims a mesh with a plane</source>
+      <translation>Taglia una mesh con un piano</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-        <location filename="../../CurveOnMesh.cpp" line="+353"/>
-        <source>Create</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../CurveOnMesh.cpp" line="+353"/>
+      <source>Create</source>
+      <translation>Crea</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Close wire</source>
-        <translation type="unfinished"></translation>
+      <location line="+2"/>
+      <source>Close wire</source>
+      <translation>Chiudi il wire</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
+      <location line="+2"/>
+      <source>Clear</source>
+      <translation>Pulisci</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
+      <location line="+1"/>
+      <source>Cancel</source>
+      <translation>Annulla</translation>
     </message>
     <message>
-        <location line="+208"/>
-        <source>Wrong mesh picked</source>
-        <translation type="unfinished"></translation>
+      <location line="+208"/>
+      <source>Wrong mesh picked</source>
+      <translation>Rilevata mesh errata</translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>No point was picked</source>
-        <translation type="unfinished"></translation>
+      <location line="+40"/>
+      <source>No point was picked</source>
+      <translation>Nessun punto è stato selezionato</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
-        <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
-        <source>Curve on mesh</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+      <source>Curve on mesh</source>
+      <translation>Curvatura sulla mesh</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Wire</source>
-        <translation type="unfinished"></translation>
+      <location line="+6"/>
+      <source>Wire</source>
+      <translation>Filo</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Snap tolerance to vertexes</source>
-        <translation type="unfinished"></translation>
+      <location line="+6"/>
+      <source>Snap tolerance to vertexes</source>
+      <translation>Tolleranza di snap ai vertici</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source> px</source>
-        <translation type="unfinished"></translation>
+      <location line="+7"/>
+      <source> px</source>
+      <translation> px</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Split threshold</source>
-        <translation type="unfinished"></translation>
+      <location line="+10"/>
+      <source>Split threshold</source>
+      <translation>Soglia di separazione</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Spline Approximation</source>
-        <translation type="unfinished"></translation>
+      <location line="+26"/>
+      <source>Spline Approximation</source>
+      <translation>Approssimazione con spline</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Tolerance to mesh</source>
-        <translation type="unfinished"></translation>
+      <location line="+6"/>
+      <source>Tolerance to mesh</source>
+      <translation>Tolleranza discretizzazione della mesh</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Continuity</source>
-        <translation type="unfinished"></translation>
+      <location line="+26"/>
+      <source>Continuity</source>
+      <translation>Continuità</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Maximum curve degree</source>
-        <translation type="unfinished"></translation>
+      <location line="+7"/>
+      <source>Maximum curve degree</source>
+      <translation>Massimo grado di curvatura</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
+      <location line="+24"/>
+      <source>Start</source>
+      <translation>Inizio</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-        <location filename="../../Tessellation.ui" line="+14"/>
-        <source>Tessellation</source>
-        <translation>Tassellazione</translation>
+      <location filename="../../Tessellation.ui" line="+14"/>
+      <source>Tessellation</source>
+      <translation>Tessellazione</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Shapes</source>
-        <translation>Forme</translation>
+      <location line="+10"/>
+      <source>Shapes</source>
+      <translation>Forme</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Meshing options</source>
-        <translation>Opzioni di mesh</translation>
+      <location line="+8"/>
+      <source>Meshing options</source>
+      <translation>Opzioni di mesh</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Standard</source>
-        <translation>Standard</translation>
+      <location line="+6"/>
+      <source>Standard</source>
+      <translation>Standard</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Mefisto</source>
-        <translation>Mefisto</translation>
+      <location line="+7"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Netgen</source>
-        <translation>Netgen</translation>
+      <location line="+7"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <source>Define segments by face colors</source>
-        <translation>Definisci i segmenti con i colori delle facce</translation>
+      <location line="+81"/>
+      <source>Define segments by face colors</source>
+      <translation>Definisci i segmenti con i colori delle facce</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Apply face colors to mesh</source>
-        <translation>Applica i colori delle facce alla mesh</translation>
+      <location line="-7"/>
+      <source>Apply face colors to mesh</source>
+      <translation>Applica i colori delle facce alla mesh</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Maximum edge length:</source>
-        <translation>Lunghezza massima dello spigolo:</translation>
+      <location line="-35"/>
+      <source>Angular deviation:</source>
+      <translation>Deviazione angolare:</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <source>Fineness:</source>
-        <translation>Finezza:</translation>
+      <location line="+28"/>
+      <source>Relative surface deviation</source>
+      <translation>Deviazione relativa delle superfici</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Very coarse</source>
-        <translation>Molto grossa</translation>
+      <location line="+40"/>
+      <source>Maximum edge length:</source>
+      <translation>Lunghezza massima dello spigolo:</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Coarse</source>
-        <translation>Grossolana</translation>
+      <location line="+44"/>
+      <source>Fineness:</source>
+      <translation>Finezza:</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Moderate</source>
-        <translation>Moderata</translation>
+      <location line="+17"/>
+      <source>Very coarse</source>
+      <translation>Molto grossa</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Fine</source>
-        <translation>Fine</translation>
+      <location line="+5"/>
+      <source>Coarse</source>
+      <translation>Grossolana</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Very fine</source>
-        <translation>Molto fine</translation>
+      <location line="+5"/>
+      <source>Moderate</source>
+      <translation>Moderata</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>User defined</source>
-        <translation>Definita dall&apos;utente</translation>
+      <location line="+5"/>
+      <source>Fine</source>
+      <translation>Fine</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Mesh size grading:</source>
-        <translation>Dimensione mesh:</translation>
+      <location line="+5"/>
+      <source>Very fine</source>
+      <translation>Molto fine</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Elements per edge:</source>
-        <translation>Numero di elementi per spigolo:</translation>
+      <location line="+5"/>
+      <source>User defined</source>
+      <translation>Definita dall'utente</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Elements per curvature radius:</source>
-        <translation>Numero di elementi per il raggio di curvatura:</translation>
+      <location line="+10"/>
+      <source>Mesh size grading:</source>
+      <translation>Dimensione mesh:</translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Optimize surface</source>
-        <translation>Ottimizza superficie</translation>
+      <location line="+29"/>
+      <source>Elements per edge:</source>
+      <translation>Numero di elementi per spigolo:</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Second order elements</source>
-        <translation>Elementi di secondo ordine</translation>
+      <location line="+29"/>
+      <source>Elements per curvature radius:</source>
+      <translation>Numero di elementi per il raggio di curvatura:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Quad dominated</source>
-        <translation>Dominato da quadrangoli</translation>
+      <location line="+31"/>
+      <source>Optimize surface</source>
+      <translation>Ottimizza superficie</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation type="obsolete">Impostazioni</translation>
+      <location line="+10"/>
+      <source>Second order elements</source>
+      <translation>Elementi di secondo ordine</translation>
     </message>
     <message>
-        <location line="-247"/>
-        <source>Surface deviation:</source>
-        <translation>Deviazione di superficie:</translation>
+      <location line="+7"/>
+      <source>Quad dominated</source>
+      <translation>Dominato da quadrangoli</translation>
     </message>
     <message>
-        <source>Max. edge length:</source>
-        <translation type="obsolete">Massima lunghezza del bordo:</translation>
+      <source>Settings</source>
+      <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+224"/>
-        <source>Select a shape for meshing, first.</source>
-        <translation>Selezionare prima una forma per il meshing.</translation>
+      <location line="-293"/>
+      <source>Surface deviation:</source>
+      <translation>Deviazione di superficie:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>No such document &apos;%1&apos;.</source>
-        <translation>Non esiste nessun documento &apos;%1&apos;.</translation>
+      <source>Max. edge length:</source>
+      <translation>Massima lunghezza del bordo:</translation>
     </message>
-</context>
-<context>
+    <message>
+      <location filename="../../Tessellation.cpp" line="+225"/>
+      <source>Select a shape for meshing, first.</source>
+      <translation>Selezionare prima una forma per il meshing.</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>No such document '%1'.</source>
+      <translation>Non esiste nessun documento '%1'.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPart_Section</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
-        <source>Select plane</source>
-        <translation>Seleziona piano</translation>
+      <location filename="../../Command.cpp" line="+93"/>
+      <source>Select plane</source>
+      <translation>Seleziona piano</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Please select a plane at which you section the mesh.</source>
-        <translation>Selezionare un piano con il quale tagliare la mesh.</translation>
+      <location line="+1"/>
+      <source>Please select a plane at which you section the mesh.</source>
+      <translation>Selezionare un piano con il quale tagliare la mesh.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-        <location line="-85"/>
-        <source>Select plane</source>
-        <translation>Seleziona piano</translation>
+      <location line="-85"/>
+      <source>Select plane</source>
+      <translation>Seleziona piano</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Please select a plane at which you trim the mesh.</source>
-        <translation>Seleziona un piano con il quale tagliare la mesh.</translation>
+      <location line="+1"/>
+      <source>Please select a plane at which you trim the mesh.</source>
+      <translation>Seleziona un piano con il quale tagliare la mesh.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+36"/>
-        <source>MeshPart</source>
-        <translation>MeshPart</translation>
+      <location filename="../../Workbench.cpp" line="+36"/>
+      <source>MeshPart</source>
+      <translation>MeshPart</translation>
     </message>
-</context>
+  </context>
 </TS>

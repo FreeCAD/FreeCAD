@@ -144,12 +144,15 @@ void Primitive::Restore(Base::XMLReader &reader)
                 Base::Type inputType = Base::Type::fromName(TypeName);
                 if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
                     inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-                    // Do not directly call the property's Restore method in case the implmentation
+                    // Do not directly call the property's Restore method in case the implementation
                     // has changed. So, create a temporary PropertyFloat object and assign the value.
                     App::PropertyFloat floatProp;
                     floatProp.Restore(reader);
                     static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
                 }
+            }
+            else {
+                extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
             }
         }
         catch (const Base::XMLParseException&) {
@@ -954,16 +957,11 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
 
-        Primitive::execute();
+        return Primitive::execute();
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
-
-
-
-    return Primitive::execute();
 }
 
 PROPERTY_SOURCE(Part::Wedge, Part::Primitive)
@@ -1044,7 +1042,6 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         this->Shape.setValue(mkSolid.Solid());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 

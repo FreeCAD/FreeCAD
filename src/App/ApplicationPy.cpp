@@ -58,6 +58,9 @@ using namespace App;
 PyMethodDef Application::Methods[] = {
     {"ParamGet",       (PyCFunction) Application::sGetParam,       1,
      "Get parameters by path"},
+    {"saveParameter",  (PyCFunction) Application::sSaveParameter,  1,
+     "saveParameter(config='User parameter') -> None\n"
+     "Save parameter set to file. The default set is 'User parameter'"},
     {"Version",        (PyCFunction) Application::sGetVersion,     1,
      "Print the version to the output."},
     {"ConfigGet",      (PyCFunction) Application::sGetConfig,      1,
@@ -82,6 +85,10 @@ PyMethodDef Application::Methods[] = {
      "Get the root directory of all resources"},
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir  ,1,
      "Get the root directory of user settings"},
+    {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir  ,1,
+     "Get the directory of the user's macro directory"},
+    {"getHelpDir", (PyCFunction) Application::sGetHelpDir  ,1,
+     "Get the directory of the documentation"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath  ,1,
      "Get the home path, i.e. the parent directory of the executable"},
 
@@ -342,6 +349,33 @@ PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args,PyObject * 
     }PY_CATCH;
 }
 
+PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr = "User parameter";
+    if (!PyArg_ParseTuple(args, "|s", &pstr))
+        return NULL;
+
+    PY_TRY {
+        ParameterManager* param = App::GetApplication().GetParameterSet(pstr);
+        if (!param) {
+            std::stringstream str;
+            str << "No parameter set found with name: " << pstr;
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return NULL;
+        }
+        else if (!param->HasSerializer()) {
+            std::stringstream str;
+            str << "Parameter set cannot be serialized: " << pstr;
+            PyErr_SetString(PyExc_RuntimeError, str.str().c_str());
+            return NULL;
+        }
+
+        param->SaveDocument();
+        Py_INCREF(Py_None);
+        return Py_None;
+    }PY_CATCH;
+}
+
 
 PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
@@ -550,6 +584,24 @@ PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args,Py
 
     Py::String user_data_dir(Application::getUserAppDataDir(),"utf-8");
     return Py::new_reference_to(user_data_dir);
+}
+
+PyObject* Application::sGetUserMacroDir(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+
+    Py::String user_macro_dir(Application::getUserMacroDir(),"utf-8");
+    return Py::new_reference_to(user_macro_dir);
+}
+
+PyObject* Application::sGetHelpDir(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+
+    Py::String user_macro_dir(Application::getHelpDir(),"utf-8");
+    return Py::new_reference_to(user_macro_dir);
 }
 
 PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

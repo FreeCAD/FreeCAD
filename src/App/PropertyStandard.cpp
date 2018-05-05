@@ -295,7 +295,7 @@ TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger);
 
 PropertyEnumeration::PropertyEnumeration()
 {
-
+    _editorTypeName = "Gui::PropertyEditor::PropertyEnumItem";
 }
 
 PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)
@@ -2229,7 +2229,7 @@ PyObject *PropertyBoolList::getPyObject(void)
 
 void PropertyBoolList::setPyObject(PyObject *value)
 {
-    // string is also a sequence and must be be treated differently
+    // string is also a sequence and must be treated differently
     std::string str;
     if (PyUnicode_Check(value)) {
 #if PY_MAJOR_VERSION >= 3

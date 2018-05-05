@@ -3,8 +3,8 @@ project(FreeCAD_trunk)
 set(PACKAGE_NAME "FreeCAD")
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
-set(PACKAGE_VERSION_MINOR "17")
-set(PACKAGE_VERSION_PATCH "10000")
+set(PACKAGE_VERSION_MINOR "18")
+set(PACKAGE_VERSION_PATCH "13500")
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
@@ -74,7 +74,13 @@ ENDIF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
 # Enabled C++11 for Freecad 0.17 and later
 IF(FREECAD_VERSION VERSION_GREATER 0.16)
-    OPTION(BUILD_ENABLE_CXX11 "Enable C++11 support." ON)
+    set(BUILD_ENABLE_CXX_STD "C++11"  CACHE STRING  "Enable C++ standard")
+    set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
+                 "C++11"
+                 "C++14"
+                 "C++17"
+    )
+
     IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
         MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
     ELSEIF(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
@@ -82,13 +88,23 @@ IF(FREECAD_VERSION VERSION_GREATER 0.16)
     ENDIF()
 ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
+# Log the compiler and version
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}, version: ${CMAKE_CXX_COMPILER_VERSION}")
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
-    if(BUILD_ENABLE_CXX11)
-       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    endif(BUILD_ENABLE_CXX11)
+
+    # Escape the two plus chars as otherwise cmake complains about invalid regex
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+11")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    endif()
+
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -101,6 +117,20 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 if(CMAKE_COMPILER_IS_CLANGXX)
+    # Disable warning about potentially uninstantiated static members
+    # because it leads to a lot of false-positives.
+    #
+    # https://en.wikipedia.org/wiki/Xcode#Latest_versions
+    if (APPLE)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    elseif (UNIX)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    endif()
+
     # older boost.preprocessor turn off variadics for clang
     add_definitions(-DBOOST_PP_VARIADICS=1)
     message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
@@ -119,7 +149,7 @@ endif(WIN32)
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
-# Don't set it without manual adaption of LibDir variable in src/App/FreeCADInit.py
+# Don't set it without manual adoption of LibDir variable in src/App/FreeCADInit.py
 SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 
 if(NOT WIN32)
@@ -163,12 +193,17 @@ endif(MSVC)
 # Switch to build FreeCAD with Qt5
 OPTION(BUILD_QT5 "Build with Qt5." OFF)
 OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
-OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
+OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is built." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+if (WIN32 OR APPLE)
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
+else()
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
+endif()
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
@@ -226,6 +261,7 @@ OPTION(BUILD_JTREADER "Build the FreeCAD jt reader module" OFF)
 OPTION(BUILD_MATERIAL "Build the FreeCAD material module" ON)
 OPTION(BUILD_MESH "Build the FreeCAD mesh module" ON)
 OPTION(BUILD_MESH_PART "Build the FreeCAD mesh part module" ON)
+OPTION(BUILD_FLAT_MESH "Build the FreeCAD flat mesh module" OFF)
 OPTION(BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
 OPTION(BUILD_PART "Build the FreeCAD part module" ON)
 OPTION(BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
@@ -307,6 +343,7 @@ REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
 REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
 REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
 REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH BUILD_SMESH)
+REQUIRES_MODS(BUILD_FLAT_MESH          BUILD_MESH_PART)
 REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
 REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
 REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
@@ -552,13 +589,24 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-
+    
+# -------------------------------- PyBind11 -----------------------------
+# necessary for flat-mesh feature
+OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
+if (FREECAD_USE_PYBIND11)
+    find_package(pybind11 REQUIRED)
+endif()
 # -------------------------------- Boost --------------------------------
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+
+    if(UNIX AND NOT APPLE)
+        # Boost.Thread 1.67+ headers reference pthread_condattr_*
+        list(APPEND Boost_LIBRARIES pthread)
+    endif()
 
     IF(NOT Boost_FOUND)
         MESSAGE(FATAL_ERROR "========================================\n"
@@ -602,6 +650,12 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
+        # set the internal smesh version:
+        set(SMESH_VERSION_MAJOR 5)  # in src/3rdParty it says smesh is version 5.*, is this true?
+        set(SMESH_VERSION_MINOR 1)
+        set(SMESH_VERSION_PATCH 2)
+        set(SMESH_VERSION_TWEAK 2)
+
         #if we use smesh we definitely also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
             vtkCommonCore
@@ -688,8 +742,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-        else()
-            find_package(SMESH)
+
+        else(NOT FREECAD_USE_EXTERNAL_SMESH)
+            find_package(SMESH CONFIG)
+            set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
+            SET(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
                               "SMESH not found.\n"
@@ -697,7 +754,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
+
         set(SMESH_FOUND TRUE)
+        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
     ENDIF(BUILD_SMESH)
 
 # -------------------------------- Netgen --------------------------------
@@ -729,6 +788,12 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 "Eigen3 not found.\n"
                 "=================\n")
     ENDIF(NOT EIGEN3_FOUND)
+
+    if (${EIGEN3_VERSION} VERSION_LESS "3.3.1")
+        message(WARNING "Disable module flatmesh because it requires "
+                        "minimum Eigen3 version 3.3.1 but version ${EIGEN3_VERSION} was found")
+        set (BUILD_FLAT_MESH OFF)
+    endif()
 
 # -------------------------------- Qt --------------------------------
 
@@ -802,9 +867,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(Qt5UiTools)
             find_package(Qt5Network)
             find_package(Qt5Concurrent)
-            if (NOT WIN32)
-            # Disable for Windows for now since building the Qt sources always fails
-            find_package(Qt5WebKitWidgets)
+            if (BUILD_WEB)
+                find_package(Qt5WebKitWidgets)
             endif()
         endif(BUILD_GUI)
 
@@ -886,64 +950,81 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     if(BUILD_QT5)
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-        SET(PYTHON_SUFFIX -python2.7) # for shiboken
-        SET(PYTHON_BASENAME -python2.7) # for PySide
+        # Below are two variables that can be left empty for standard python 3 version,
+        # but must be set by the user for different python versions such as 2.7, 3.5 ...
+        if (PYTHON_VERSION_MAJOR LESS 3)
+            SET(PYTHON_CONFIG_SUFFIX -python2.7 CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_CONFIG_SUFFIX.cmake>")
+            SET(PYTHON_BASENAME -python2.7 CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+        else()
+            SET(PYTHON_CONFIG_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_CONFIG_SUFFIX.cmake>")
+            SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+        endif()
 
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
-        find_package(Shiboken2)# REQUIRED
+        find_package(Shiboken2 QUIET)# REQUIRED
         if(NOT SHIBOKEN_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "====================\n"
-                                "shiboken2 not found.\n"
-                                "====================\n")
+            MESSAGE("====================\n"
+                    "shiboken2 not found.\n"
+                    "====================\n")
         endif(NOT SHIBOKEN_INCLUDE_DIR)
 
-        find_package(PySide2)# REQUIRED
+        find_package(PySide2 QUIET)# REQUIRED
         if(NOT PYSIDE_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "==================\n"
-                                "PySide2 not found.\n"
-                                "==================\n")
+            MESSAGE("==================\n"
+                    "PySide2 not found.\n"
+                    "==================\n")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
-        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        find_package(PySide2Tools QUIET) #REQUIRED # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        if(NOT PYSIDE2_TOOLS_FOUND)
+            MESSAGE("=======================\n"
+                    "PySide2Tools not found.\n"
+                    "=======================\n")
+        endif(NOT PYSIDE2_TOOLS_FOUND)
 
-        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/PySide)
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py "# PySide wrapper\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
+        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
+                                                              "from PySide2 import __version__\n"
+                                                              "from PySide2 import __version_info__\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
-                                                            "from PySide2.QtWidgets import *\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtGui.py  "from PySide2.QtGui import *\n"
+                                                            "from PySide2.QtWidgets import *\n"
+                                                            "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
 	if(APPLE)
 	    INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
-                    bin
+                    Ext
             )
 	endif()
     else()
-        if (PYTHON_VERSION_MAJOR LESS 3)
-            SET(PYTHON_SUFFIX -python2.7)
-            SET(PYTHON_BASENAME -python2.7)
-        else(PYTHON_VERSION_MAJOR LESS 3)
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-        # below are two variables that can be left empty for standard python, but must be set by the user for different python versions such as 3.5
-            SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default python version will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
-            SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. if left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
-        endif(PYTHON_VERSION_MAJOR LESS 3)
+        # Below are two variables that can be left empty for standard python 3 version,
+        # but must be set by the user for different python versions such as 2.7, 3.5 ...
+        if (PYTHON_VERSION_MAJOR LESS 3)
+            SET(PYTHON_SUFFIX -python2.7 CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
+            SET(PYTHON_BASENAME -python2.7 CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+        else()
+            SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
+            SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+        endif()
+
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
@@ -1026,7 +1107,7 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 IF(MSVC)
 	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa /Zm128")
 	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
@@ -1041,7 +1122,7 @@ IF(MSVC)
 	ENDIF(FREECAD_RELEASE_PDB)
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
-	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the the linker switch 'Enable Large Addresses'
+	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
 		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LARGEADDRESSAWARE")
 		SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")

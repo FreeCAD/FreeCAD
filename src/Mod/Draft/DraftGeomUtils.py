@@ -47,7 +47,7 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    return params.GetInt("precision")
+    return params.GetInt("precision",6)
 
 def vec(edge):
     "vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"
@@ -569,6 +569,9 @@ def orientEdge(edge, normal=None, make_arc=False):
         return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
     elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
         return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
+                                    edge.LastParameter,edge.Curve.Axis.z>0)
+    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
+        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
                                     edge.LastParameter,edge.Curve.Axis.z>0)
     return edge.Curve
 
@@ -2041,7 +2044,7 @@ def curvetowire(obj,steps):
 def cleanProjection(shape,tessellate=True,seglength=.05):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
-    # they dispay fine, but on loading the file the shape is invalid
+    # they display fine, but on loading the file the shape is invalid
     # Now with tanderson's fix to ProjectionAlgos, that isn't the case, but this
     # can be used for tessellating ellipses and splines for DXF output-DF
     oldedges = shape.Edges
@@ -2127,6 +2130,29 @@ def rebaseWire(wire,vidx):
         return wire
     #This can be done in one step
     return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+
+
+def removeSplitter(shape):
+    """an alternative, shared edge-based version of Part.removeSplitter. Returns a
+    face or None if the operation failed"""
+    lut = {}
+    for f in shape.Faces:
+        for e in f.Edges:
+            h = e.hashCode()
+            if h in lut:
+                lut[h].append(e)
+            else:
+                lut[h] = [e]
+    edges = [e[0] for e in lut.values() if len(e) == 1]
+    try:
+        face = Part.Face(Part.Wire(edges))
+    except:
+        # operation failed
+        return None
+    else:
+        if face.isValid():
+            return face
+    return None
 
 
 # circle functions *********************************************************

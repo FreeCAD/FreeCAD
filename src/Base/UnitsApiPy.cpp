@@ -209,7 +209,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args,PyObjec
     quant = *static_cast<Base::QuantityPy*>(q)->getQuantityPtr();
 
     std::unique_ptr<UnitsSchema> schema(createSchema(static_cast<UnitSystem>(index)));
-    if (!schema) {
+    if (!schema.get()) {
         PyErr_SetString(PyExc_ValueError, "invalid schema value");
         return 0;
     }

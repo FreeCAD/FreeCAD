@@ -35,6 +35,7 @@
 # include <ShapeExtend_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QMessageBox>
+# include <Python.h>
 # include <Inventor/system/inttypes.h>
 #endif
 

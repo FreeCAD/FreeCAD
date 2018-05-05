@@ -129,8 +129,15 @@ TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_S
 {
     TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit",nullptr);
 
-    geometryObject->projectShape(shape,
-                                 viewAxis);
+    if (geometryObject->usePolygonHLR()){
+        geometryObject->projectShapeWithPolygonAlgo(shape,
+            viewAxis);
+    }
+    else{
+        geometryObject->projectShape(shape,
+            viewAxis);
+    }
+        
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,

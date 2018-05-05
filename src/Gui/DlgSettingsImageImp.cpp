@@ -99,7 +99,7 @@ void DlgSettingsImageImp::setImageSize( const QSize& s )
 }
 
 /**
- * Returns the currenty set image size.
+ * Returns the currently set image size.
  */
 QSize DlgSettingsImageImp::imageSize() const
 {

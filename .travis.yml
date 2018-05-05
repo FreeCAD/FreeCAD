@@ -19,7 +19,7 @@
 ##
 env:
   global:
-    - FREECAD_RELEASE="0.17"
+    - FREECAD_RELEASE="0.18"
     - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
@@ -58,17 +58,10 @@ matrix:
           - PYTHON_MAJOR_VERSION=3
 
       - os: osx
-        osx_image: xcode6.4
+        osx_image: xcode7.3
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
-          - PYTHON_MAJOR_VERSION=2
-
-      - os: osx
-        osx_image: xcode6.4
-        compiler: clang
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
           - PYTHON_MAJOR_VERSION=2
 
 git:
@@ -177,30 +170,12 @@ before_install:
 
        brew tap FreeCAD/freecad
 
-       if [ "${QT}" == "Qt4" ]; then
-          # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
-          brew ls --versions qt@5.6 > /dev/null && \
-             brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
-
-          brew tap cartr/qt4
-
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
-          # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
-          # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
-          sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
-       elif [ "${QT}" == "Qt5" ]; then
-          # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
-          brew ls --versions cartr/qt4/qt > /dev/null && \
-             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
-
-          brew install --verbose --only-dependencies freecad --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
-
-          # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-          QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
-          CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
-       fi
+       brew install --verbose --only-dependencies freecad --with-packaging-utils
+       pip install six
+       # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+       QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
+       QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
+       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
 
        #Install the 3DConnexion frameworks
        if [ "${DEPLOY}" == "1" ]; then
@@ -216,7 +191,7 @@ before_install:
           export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
        fi
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DEIGEN3_INCLUDE_DIR=$(brew --prefix eigen@3.2)/include/eigen3"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
    *)
@@ -236,7 +211,7 @@ script:
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
   - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --run-test 0
+  - ${INSTALLED_APP_PATH} --console --run-test 0
   - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
   - sleep 10 && pkill FreeCAD
   - cat /tmp/FreeCAD_installed.log

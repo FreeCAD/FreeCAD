@@ -1,114 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="kab" sourcelanguage="en">
-<context>
+  <context>
     <name>TestGui::UnitTest</name>
     <message>
-        <source>FreeCAD UnitTest</source>
-        <translation>Test unitaire FreeCAD</translation>
+      <source>FreeCAD UnitTest</source>
+      <translation type="unfinished">FreeCAD UnitTest</translation>
     </message>
     <message>
-        <source>Failures and errors</source>
-        <translation>Échecs et erreurs</translation>
+      <source>Failures and errors</source>
+      <translation type="unfinished">Failures and errors</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Aglam</translation>
+      <source>Description</source>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
-        <source>&amp;Start</source>
-        <translation>&amp;Démarrer</translation>
+      <source>&amp;Start</source>
+      <translation type="unfinished">&amp;Start</translation>
     </message>
     <message>
-        <source>Alt+S</source>
-        <translation>Alt+M</translation>
+      <source>Alt+S</source>
+      <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Aide</translation>
+      <source>&amp;Help</source>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
+      <source>F1</source>
+      <translation>F1</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>À &amp;propos</translation>
+      <source>&amp;About</source>
+      <translation>&amp;Ɣef</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation>Alt+A</translation>
+      <source>Alt+A</source>
+      <translation type="unfinished">Alt+A</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Fermer</translation>
+      <source>&amp;Close</source>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
     <message>
-        <source>Alt+C</source>
-        <translation>Alt+F</translation>
+      <source>Alt+C</source>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
-        <source>Idle</source>
-        <translation>Inactif</translation>
+      <source>Idle</source>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
-        <source>Progress</source>
-        <translation>Progression</translation>
+      <source>Progress</source>
+      <translation type="unfinished">Progress</translation>
     </message>
     <message>
-        <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+      <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
+      <translation type="unfinished">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Remaining:</source>
-        <translation>Restant :</translation>
+      <source>Remaining:</source>
+      <translation type="unfinished">Remaining:</translation>
     </message>
     <message>
-        <source>Errors:</source>
-        <translation>Erreurs :</translation>
+      <source>Errors:</source>
+      <translation type="unfinished">Errors:</translation>
     </message>
     <message>
-        <source>Failures:</source>
-        <translation>Échecs :</translation>
+      <source>Failures:</source>
+      <translation type="unfinished">Failures:</translation>
     </message>
     <message>
-        <source>Run:</source>
-        <translation>Lancer :</translation>
+      <source>Run:</source>
+      <translation>Rmed:</translation>
     </message>
     <message>
-        <source>Test</source>
-        <translation>Akayad</translation>
+      <source>Test</source>
+      <translation>Akayad</translation>
     </message>
     <message>
-        <source>Select test name:</source>
-        <translation>Sélectionner le nom du test :</translation>
+      <source>Select test name:</source>
+      <translation type="unfinished">Select test name:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-        <source>Help</source>
-        <translation>Aide</translation>
+      <source>Help</source>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
-        <source>About FreeCAD UnitTest</source>
-        <translation>À propos des tests unitaires FreeCAD</translation>
+      <source>About FreeCAD UnitTest</source>
+      <translation type="unfinished">About FreeCAD UnitTest</translation>
     </message>
     <message>
-        <source>Copyright (c) Werner Mayer
+      <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-        <translation>Tous droits réservés (c) Werner Mayer
+      <translation type="unfinished">Copyright (c) Werner Mayer
 
-FreeCAD UnitTest fait partie de FreeCAD et supporte l&apos;écriture de tests unitaires pour vos propres modules.</translation>
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</translation>
     </message>
     <message>
-        <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
+      <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Saisir le nom d&apos;un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur &apos;Démarrer&apos; et le test démarrera.
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
-Double cliquer sur une erreur dans la vue arborescente pour voir plus d&apos;informations, y compris l&apos;historique de la pile.</translation>
+Double click on an error in the tree view to see more information about it,including the stack trace.</translation>
     </message>
-</context>
+  </context>
 </TS>

@@ -28,7 +28,6 @@
 # include <QLabel>
 # include <QMenu>
 # include <QMessageBox>
-# include <QGLWidget>
 # include <QPainter>
 # include <QSplitter>
 # include <QStatusBar>
@@ -340,12 +339,37 @@ public:
     AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0)
         : AbstractSplitView(pcDocument, parent, wflags)
     {
+        //anti-aliasing settings
+        bool smoothing = false;
+        bool glformat = false;
+        int samples = View3DInventorViewer::getNumSamples();
+        QtGLFormat f;
+
+        if (samples > 1) {
+            glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
+            f.setSampleBuffers(true);
+#endif
+            f.setSamples(samples);
+        }
+        else if (samples > 0) {
+            smoothing = true;
+        }
+
         QSplitter* mainSplitter=0;
         mainSplitter = new QSplitter(Qt::Horizontal, this);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        _viewer.back()->setDocument(pcDocument);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        _viewer.back()->setDocument(pcDocument);
+        if (glformat) {
+            _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
+            _viewer.back()->setDocument(pcDocument);
+            _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
+            _viewer.back()->setDocument(pcDocument);
+        }
+        else {
+            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+            _viewer.back()->setDocument(pcDocument);
+            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+            _viewer.back()->setDocument(pcDocument);
+        }
 
         QFrame* vbox = new QFrame(this);
         QVBoxLayout* layout = new QVBoxLayout();
@@ -373,6 +397,11 @@ public:
 
         // apply the user settings
         setupSettings();
+
+        if (smoothing) {
+            for (std::vector<int>::size_type i = 0; i != _viewer.size(); i++)
+                _viewer[i]->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+        }
 
         static_cast<SoGroup*>(getViewer(0)->getSoRenderManager()->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Movable object")));
@@ -759,7 +788,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (myAlignModel.isEmpty())
         return;
 
-    // create a splitted window for picking the points
+    // create a split window for picking the points
     myViewer = new AlignmentView(myDocument,Gui::getMainWindow());
     myViewer->setWindowTitle(tr("Alignment[*]"));
     myViewer->setWindowIcon(QApplication::windowIcon());

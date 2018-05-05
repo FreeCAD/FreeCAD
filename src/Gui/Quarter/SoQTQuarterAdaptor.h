@@ -1,5 +1,5 @@
 /*
- * Extends the QuarterWidget with all funcions the SoQtViewer has
+ * Extends the QuarterWidget with all functions the SoQtViewer has
  * Copyright (C) 2014  Stefan Tröger <stefantroeger@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <vector>
 
 class SbViewportRegion;
 class SoCamera;
@@ -96,7 +97,8 @@ public:
     }
     
     virtual bool processSoEvent(const SoEvent* event);
-          
+    virtual void paintEvent(QPaintEvent*);
+
     //this functions still need to be ported
     virtual void afterRealizeHook(void) {} //enables spacenav and joystick in soqt, dunno if this is needed
 
@@ -107,11 +109,19 @@ private:
     void getCameraCoordinateSystem(SoCamera * camera, SoNode * root, SbMatrix & matrix, SbMatrix & inverse);
     static void seeksensorCB(void * data, SoSensor * s);
     void moveCameraScreen(const SbVec2f & screenpos);
+    void resetFrameCounter(void);
+    SbVec2f addFrametime(double ft);
 
     bool m_viewingflag;
     int  m_interactionnesting;
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
+
+    // Keep track of the frames-per-second counter.
+    std::vector<float> frames;
+    float totaldraw;
+    double starttime;
+    int framecount;
 
     // Seek functionality
     SoTimerSensor* m_seeksensor;
@@ -130,6 +140,7 @@ private:
 protected:
     void draw2DString(const char * str, SbVec2s glsize, SbVec2f position);
     void printString(const char * s);
+    SbVec2f framesPerSecond;
 };
 
 } //Quarter

@@ -184,7 +184,7 @@ def explore(filename=None):
 
     if not filename:
         from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'IFC files','*.ifc')
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'IFC files','*.ifc')
         if filename:
             filename = filename[0]
 
@@ -257,6 +257,8 @@ def explore(filename=None):
                 item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
             elif entity.is_a() in ["IfcMaterial"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Material.svg"))
+            elif entity.is_a() in ["IfcReinforcingBar"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Rebar.svg"))
             item.setText(2,str(entity.is_a()))
             item.setFont(2,bold);
 
@@ -382,7 +384,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
-    overallboundbox = FreeCAD.BoundBox()
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -476,6 +477,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("Processing objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+        overallboundbox = None
         import FreeCADGui
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
@@ -569,18 +571,24 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
-            if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
-                try:
-                    if not overallboundbox.isInside(shape.BoundBox):
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
-                    overallboundbox.add(shape.BoundBox)
-                except:
-                    pass
-
             if not shape.isNull():
+                if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                    try:
+                        bb = shape.BoundBox
+                        # if DEBUG: print(' ' + str(bb),end="")
+                    except:
+                        bb = None
+                        if DEBUG: print(' BB could not be computed',end="")
+                    if bb.isValid():
+                        if not overallboundbox:
+                            overallboundbox = bb
+                        if not overallboundbox.isInside(bb):
+                            FreeCADGui.SendMsgToActiveView("ViewFit")
+                        overallboundbox.add(bb)
+
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
-                        if DEBUG: print("skipping space ",pid)
+                        if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
                         if DEBUG: print(shape.Solids," ",end="")
@@ -625,7 +633,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 #continue
 
         else:
-            if DEBUG: print(" no brep ")
+            if DEBUG: print(" no brep ",end="")
 
         if MERGE_MODE_ARCH == 0 and archobj:
 
@@ -688,7 +696,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = Arch.makeComponent(baseobj,name=name)
             if obj:
                 sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
-                if DEBUG: print(sols)
+                if DEBUG: print(sols,end="")
                 objects[pid] = obj
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
@@ -711,6 +719,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
+
+        if DEBUG: print("")  # newline for debug prints, print for a new object should be on a new line
 
         if obj:
 
@@ -1089,7 +1099,7 @@ def export(exportList,filename):
 
         # getting generic data
         name = str(obj.Label.encode("utf8"))
-        description = str(obj.Description) if hasattr(obj,"Description") else ""
+        description = str(obj.Description.encode("utf8")) if hasattr(obj,"Description") else ""
 
         # getting uid
         uid = None
@@ -1112,6 +1122,8 @@ def export(exportList,filename):
         if ifctype in translationtable.keys():
             ifctype = translationtable[ifctype]
         ifctype = "Ifc" + ifctype
+        if ifctype == "IfcVisGroup":
+            ifctype = "IfcGroup"
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
@@ -1134,36 +1146,44 @@ def export(exportList,filename):
         if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # setting the arguments
-        args = [uid,history,name,description,None,placement,representation,None]
+        kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
+            "Description": description, "ObjectPlacement": placement, "Representation": representation}
         if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
-            args = args + ["NOTDEFINED"]
+            kwargs.update({"PredefinedType": "NOTDEFINED"})
         elif ifctype in ["IfcWindow","IfcDoor"]:
             if hasattr(obj,"Width") and hasattr(obj,"Height"):
-                args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+                kwargs.update({"OverallHeight": obj.Width.Value/1000.0,
+                    "OverallWidth": obj.Height.Value/1000.0})
             else:
                 if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
                     l = obj.Shape.BoundBox.XLength
                 else:
                     l = obj.Shape.BoundBox.YLength
-                args = args + [l/1000.0,obj.Shape.BoundBox.ZLength/1000.0]
+                kwargs.update({"OverallHeight": l/1000.0,
+                    "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
         elif ifctype == "IfcSpace":
-            args = args + ["ELEMENT","INTERNAL",obj.Shape.BoundBox.ZMin/1000.0]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "InteriorOrExteriorSpace": "INTERNAL",
+                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
-            args = args + ["ELEMENT"]
+            if ifcopenshell.schema_identifier == "IFC4":
+                kwargs.update({"PredefinedType": "ELEMENT"})
+            else:
+                kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
-            latitude = None
-            longitude = None
-            elevation = None
-            landtitlenumber = None
-            address = None
-            args = args + ["ELEMENT",latitude,longitude,elevation,landtitlenumber,address]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
-            args = args + ["ELEMENT",None,None,None]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
-            args = args + ["ELEMENT",obj.Placement.Base.z]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "Elevation": obj.Placement.Base.z})
+        elif ifctype == "IfcReinforcingBar":
+            kwargs.update({"NominalDiameter": obj.Diameter.Value,
+                "BarLength": obj.Length.Value})
 
         # creating the product
-        product = getattr(ifcfile,"create"+ifctype)(*args)
+        #print(obj.Label," : ",ifctype," : ",kwargs)
+        product = getattr(ifcfile,"create"+ifctype)(**kwargs)
         products[obj.Name] = product
 
         # additions
@@ -1207,7 +1227,7 @@ def export(exportList,filename):
                                 key = key.encode("utf8")
                             else:
                                 key = str(key)
-                            tp = tp.encode("utf8")
+                            #tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
                             elif tp == "IfcBoolean":

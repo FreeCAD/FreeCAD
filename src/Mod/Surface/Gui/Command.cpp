@@ -39,6 +39,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <Python.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -52,6 +53,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionFilter.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -75,7 +77,7 @@ CmdSurfaceCut::CmdSurfaceCut()
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Surface Cut function");
     sToolTipText  = QT_TR_NOOP("Cuts a Shape with another Shape.\nReturns a modified version of the first shape");
-    sWhatsThis    = QT_TR_NOOP("Surface Cut function");
+    sWhatsThis    = "Surface_Cut";
     sStatusTip    = QT_TR_NOOP("Surface Cut function");
     sPixmap       = "Cut.svg";
     sAccel        = "CTRL+H";
@@ -134,7 +136,7 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sMenuText     = QT_TR_NOOP("Filling...");
     sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
     sStatusTip    = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
-    sWhatsThis    = QT_TR_NOOP("Surface_Filling");
+    sWhatsThis    = "Surface_Filling";
     sPixmap       = "Filling.svg";
 }
 
@@ -219,6 +221,46 @@ bool CmdSurfaceCurveOnMesh::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdSurfaceExtendFace)
+
+CmdSurfaceExtendFace::CmdSurfaceExtendFace()
+  : Command("Surface_ExtendFace")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Extend face");
+    sToolTipText  = QT_TR_NOOP("Extend face");
+    sWhatsThis    = "Surface_ExtendFace";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdSurfaceExtendFace::activated(int)
+{
+    Gui::SelectionFilter faceFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    if (faceFilter.match()) {
+        const std::vector<std::string> &sub = faceFilter.Result[0][0].getSubNames();
+        if (sub.size() == 1) {
+            openCommand("Extend surface");
+            std::string FeatName = getUniqueObjectName("Surface");
+            std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
+            doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
+            doCommand(Doc, "App.ActiveDocument.%s.Face = %s",FeatName.c_str(),supportString.c_str());
+            updateActive();
+            commitCommand();
+        }
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Surface_ExtendFace", "Wrong selection"),
+            qApp->translate("Surface_ExtendFace", "Select a single face"));
+    }
+}
+
+bool CmdSurfaceExtendFace::isActive(void)
+{
+    return Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
+}
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -227,4 +269,5 @@ void CreateSurfaceCommands(void)
     rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
+    rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
 }

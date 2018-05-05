@@ -215,7 +215,7 @@ PyMOD_INIT_FUNC(FreeCAD)
     catch (const Base::Exception& e) {
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
-        msg << "While initializing " << appName << " the  following exception occurred: '"
+        msg << "While initializing " << appName << " the following exception occurred: '"
             << e.what() << "'\n\n";
         msg << "\nPlease contact the application's support team for more information.\n\n";
         printf("Initialization of %s failed:\n%s", appName.c_str(), msg.str().c_str());

@@ -37,7 +37,7 @@ import time
 INSTANCE_DEFINITION_RE = re.compile("#(\d+)[^\S\n]?=[^\S\n]?(.*?)\((.*)\)[^\S\n]?;[\\r]?$")
 
 def map_string_to_num(stri):
-    """ Take a string, check wether it is an integer, a float or not
+    """ Take a string, check whether it is an integer, a float or not
     """
     if ('.' in stri) or ('E' in stri): #it's definitely a float
         return REAL(stri)
@@ -94,7 +94,7 @@ class Part21Parser:
     """
     Loads all instances definition of a Part21 file into memory.
     Two dicts are created:
-    self._instance_definition : stores attibutes, key is the instance integer id
+    self._instance_definition : stores attributes, key is the instance integer id
     self._number_of_ancestors : stores the number of ancestors of entity id. This enables
     to define the order of instances creation.
     """
@@ -130,9 +130,9 @@ class Part21Parser:
             line = fp.readline()
             if not line:
                 break
-            # there may be a multline definition. In this case, we read lines until we found
+            # there may be a multiline definition. In this case, we read lines until we found
             # a ;
-            while (line.find(';') == -1): #its a multiline
+            while (line.find(';') == -1): #it's a multiline
                 line = line.replace("\n","").replace("\r","") + fp.readline()
             # parse line
             match_instance_definition = INSTANCE_DEFINITION_RE.search(line)  # id,name,attrs

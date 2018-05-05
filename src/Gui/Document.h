@@ -114,6 +114,8 @@ public:
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const Gui::TreeItemMode&)>               signalExpandObject;
+    /// signal on scrolling to an object
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
     /// signal on undo Document
     mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document
@@ -165,8 +167,8 @@ public:
     /// Create a clone of the given view
     Gui::MDIView* cloneView(Gui::MDIView*);
     /** send messages to the active view
-     * Send a specific massage to the active view and is able to recive a
-     * return massage
+     * Send a specific massage to the active view and is able to receive a
+     * return message
      */
     /// send Messages to all views
     bool sendMsgToViews(const char* pMsg);
@@ -179,7 +181,7 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
@@ -234,13 +236,13 @@ public:
     std::vector<std::string> getUndoVector(void) const;
     /// Get an Redo string vector with the Redo names
     std::vector<std::string> getRedoVector(void) const;
-    /// Will UNDO  one or more steps
+    /// Will UNDO one or more steps
     void undo(int iSteps);
-    /// Will REDO  one or more steps
+    /// Will REDO one or more steps
     void redo(int iSteps) ;
     //@}
 
-    /// handels the application close event
+    /// handles the application close event
     bool canClose();
     bool isLastView(void);
 

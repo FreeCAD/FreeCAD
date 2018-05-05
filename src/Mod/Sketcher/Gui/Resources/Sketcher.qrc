@@ -59,6 +59,7 @@
         <file>icons/Sketcher_Conics_Ellipse_3points.svg</file>
         <file>icons/Sketcher_Conics_Ellipse_Center.svg</file>
         <file>icons/Sketcher_ConnectLines.svg</file>
+        <file>icons/Sketcher_ConstrainBlock.svg</file>
         <file>icons/Sketcher_ConstrainCoincident.svg</file>
         <file>icons/Sketcher_ConstrainDistance.svg</file>
         <file>icons/Sketcher_ConstrainHorizontal.svg</file>
@@ -97,6 +98,8 @@
         <file>icons/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/Sketcher_CreateRectangle.svg</file>
         <file>icons/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/Sketcher_CreateRegularPolygon.svg</file>
+        <file>icons/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/Sketcher_CreateSlot.svg</file>
         <file>icons/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/Sketcher_CreateSquare.svg</file>
@@ -166,6 +169,7 @@
         <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
+        <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
         <file>icons/Sketcher_Symmetry.svg</file>
         <file>icons/Sketcher_ToggleConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstruction.svg</file>
@@ -174,6 +178,7 @@
         <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
+        <file>icons/small/Constraint_Block_sm.xpm</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
         <file>icons/small/Constraint_EqualLength_sm.xpm</file>
         <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
@@ -229,5 +234,9 @@
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_fil.qm</file>
+        <file>translations/Sketcher_id.qm</file>
+        <file>translations/Sketcher_lt.qm</file>
+        <file>translations/Sketcher_val-ES.qm</file>
     </qresource>
 </RCC> 

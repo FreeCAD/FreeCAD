@@ -163,7 +163,16 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
     // Add move Tip Command
     if ( selection.size () >= 1 ) {
         App::DocumentObject *feature = selection.front().pObject;
-        PartDesign::Body *body =  PartDesignGui::getBodyFor ( feature, false );
+        PartDesign::Body *body = nullptr;
+
+        // if PD workflow is not new-style then add a command to the context-menu
+        bool assertModern = true;
+        if (feature && !isModernWorkflow(feature->getDocument())) {
+            assertModern = false;
+            *item << "PartDesign_Migrate";
+        }
+
+        body = PartDesignGui::getBodyFor (feature, false, false, assertModern);
         // lote of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
             feature->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
@@ -341,7 +350,6 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
-        "PartDesign_Part",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
@@ -436,8 +444,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "PartDesign_Part"
-          << "PartDesign_Body"
+    *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
@@ -449,11 +456,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Line"
           << "PartDesign_Plane"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_Clone"
           << "Separator"
-          << "PartDesign_Pad"         
-          << "PartDesign_Revolution"          
+          << "PartDesign_Pad"
+          << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"          
+          << "PartDesign_AdditivePipe"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
@@ -504,8 +512,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Helper");
-    *part << "PartDesign_Part"
-          << "PartDesign_Body"
+    *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
           << "Sketcher_MapSketch"
@@ -513,14 +520,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
-          << "PartDesign_ShapeBinder";
-          
+          << "PartDesign_ShapeBinder"
+          << "PartDesign_Clone";
+
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
-    *part << "PartDesign_Pad"         
-          << "PartDesign_Revolution"          
+    *part << "PartDesign_Pad"
+          << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"          
+          << "PartDesign_AdditivePipe"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"

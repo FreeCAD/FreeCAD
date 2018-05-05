@@ -49,7 +49,7 @@ public:
     App::PropertyFile Template;
     App::PropertyStringList EditableTexts;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

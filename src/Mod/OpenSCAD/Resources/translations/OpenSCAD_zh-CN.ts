@@ -4,203 +4,203 @@
   <context>
     <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
     <message>
-      <location filename="openscadprefs-base.ui" line="14"/>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
       <translation>常规设置</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="26"/>
+      <location filename="../ui/openscadprefs-base.ui" line="26"/>
       <source>General OpenSCAD Settings</source>
       <translation>OpenSCAD常规设置</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="34"/>
+      <location filename="../ui/openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
       <translation>OpenSCAD执行程序</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="47"/>
-      <source>The path to the OpenSCAD executeable</source>
-      <translation>OpenSCAD执行程序路径</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="65"/>
+      <location filename="../ui/openscadprefs-base.ui" line="65"/>
       <source>OpenSCAD import</source>
       <translation>OpenSCAD导入</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="../ui/openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>以树状图使用检视提供者功能</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="110"/>
+      <location filename="../ui/openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>选中此项则参数化多重矩阵对象</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="113"/>
+      <location filename="../ui/openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>使用多重矩阵特征</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="153"/>
+      <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>如果fn大于多边形、 棱形或锥形面之最大数目，物件将认为是一圆形。设定0表示没有限制。</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="133"/>
+      <location filename="../ui/openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>多边形面片的最大数量(fn)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="177"/>
+      <location filename="../ui/openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>OpenSCAD导出</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="185"/>
+      <location filename="../ui/openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>最大片段尺寸</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="215"/>
-      <source>minimum angle for a fragment</source>
-      <translation>片段最小角度</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="208"/>
+      <location filename="../ui/openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>角(fa)</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="218"/>
+      <location filename="../ui/openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="272"/>
-      <source>minimum size of a fragment</source>
-      <translation>片段最小尺寸</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="250"/>
+      <location filename="../ui/openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>尺寸(fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="278"/>
+      <location filename="../ui/openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="304"/>
+      <location filename="../ui/openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>凸度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="341"/>
+      <location filename="../ui/openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
-      <translation type="unfinished">Mesh fallback</translation>
+      <translation>网格退缩</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="383"/>
+      <location filename="../ui/openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>挠度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="386"/>
+      <location filename="../ui/openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>挠度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="393"/>
+      <location filename="../ui/openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>三角剖分设置</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="90"/>
+      <location filename="../ui/openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>若勾选此项，在树状检视中的特征将会纳入其子项</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>于主控台显示调试信息</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="47"/>
+      <source>The path to the OpenSCAD executable</source>
+      <translation>OpenSCAD 可执行文件路径</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="215"/>
+      <source>Minimum angle for a fragment</source>
+      <translation>片段的最小角度</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="272"/>
+      <source>Minimum size of a fragment</source>
+      <translation>片段最小尺寸</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="148"/>
+      <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
       <translation>转换边缘为面</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
       <source>Please select 3 objects first</source>
       <translation>请先选择三个对象</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1167"/>
+      <location filename="../../importCSG.py" line="1200"/>
       <source>Unsupported Function</source>
       <translation>不支持的功能</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1167"/>
+      <location filename="../../importCSG.py" line="1200"/>
       <source>Press OK</source>
       <translation>按确定</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="271"/>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="272"/>
+      <location filename="../../OpenSCADCommands.py" line="272"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="273"/>
+      <location filename="../../OpenSCADCommands.py" line="273"/>
       <source>as Mesh</source>
-      <translation>作为网格</translation>
+      <translation>当作网格</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="274"/>
       <source>Add OpenSCAD Element</source>
       <translation>添加OpenSCAD元素</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="../../OpenSCADCommands.py" line="347"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>执行</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="../../OpenSCADCommands.py" line="348"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>网格布林计算</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="566"/>
+      <location filename="../../OpenSCADUtils.py" line="566"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>错误：所有形状必须是2D 或两者必须都是3D</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="98"/>
+      <location filename="../../OpenSCADCommands.py" line="98"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>无法分解 %s</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="389"/>
+      <location filename="../../OpenSCADCommands.py" line="389"/>
       <source>Add OpenSCAD Element...</source>
       <translation>添加OpenSCAD元素...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="391"/>
+      <location filename="../../OpenSCADCommands.py" line="391"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>通过输入OpenSCAD代码和执行OpenSCAD程序添加OpenSCAD元素</translation>
     </message>
@@ -208,20 +208,20 @@
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="125"/>
+      <location filename="../../OpenSCADCommands.py" line="125"/>
       <source>Color Shapes</source>
-      <translation>形体着色</translation>
+      <translation>形状着色</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="127"/>
+      <location filename="../../OpenSCADCommands.py" line="127"/>
       <source>Color Shapes by validity and type</source>
-      <translation>按有效性和类型给形体着色</translation>
+      <translation>按有效性和类型给形状着色</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="146"/>
       <source>Convert Edges To Faces</source>
       <translation>转换边缘为面</translation>
     </message>
@@ -229,90 +229,90 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="207"/>
+      <location filename="../../OpenSCADCommands.py" line="207"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>扩大安置</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="209"/>
+      <location filename="../../OpenSCADCommands.py" line="209"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation type="unfinished">Expand all placements downwards the FeatureTree</translation>
+      <translation>扩大功能树下方配置</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="107"/>
+      <location filename="../../OpenSCADCommands.py" line="107"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>拆解群组</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation type="unfinished">remove fusion, apply placement to children and color randomly</translation>
+      <location filename="../../OpenSCADCommands.py" line="109"/>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>移除合并，随机分配子项位置及色彩</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="../../OpenSCADCommands.py" line="424"/>
       <source>Hull</source>
-      <translation type="unfinished">Hull</translation>
+      <translation>壳体</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="426"/>
+      <location filename="../../OpenSCADCommands.py" line="426"/>
       <source>Perform Hull</source>
-      <translation type="unfinished">Perform Hull</translation>
+      <translation>执行壳体</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="188"/>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Increase Tolerance Feature</translation>
+      <translation>提高容差特征</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="190"/>
+      <location filename="../../OpenSCADCommands.py" line="190"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
+      <translation>建立允许提高容差的特征</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="403"/>
+      <location filename="../../OpenSCADCommands.py" line="403"/>
       <source>Mesh Boolean...</source>
-      <translation type="unfinished">Mesh Boolean...</translation>
+      <translation>网格布尔运算...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation.</translation>
+      <location filename="../../OpenSCADCommands.py" line="405"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>将对象导出为网格, 并使用 OpenSCAD 执行布尔运算</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="445"/>
+      <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="447"/>
+      <location filename="../../OpenSCADCommands.py" line="447"/>
       <source>Perform Minkowski</source>
-      <translation type="unfinished">Perform Minkowski</translation>
+      <translation>执行 Minkowski</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="167"/>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Refine Shape Feature</source>
-      <translation>细化形体特征</translation>
+      <translation>细化形状特征</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="169"/>
+      <location filename="../../OpenSCADCommands.py" line="169"/>
       <source>Create Refine Shape Feature</source>
       <translation>创建细化形体特征</translation>
     </message>
@@ -320,43 +320,43 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="246"/>
+      <location filename="../../OpenSCADCommands.py" line="246"/>
       <source>Remove Objects and their Children</source>
       <translation>删除对象及其子对象</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="248"/>
+      <location filename="../../OpenSCADCommands.py" line="248"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>移除所有选择的对象及其子对象</translation>
+      <translation>移除所选对象及所有与其他对象无关的子对象</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="231"/>
+      <location filename="../../OpenSCADCommands.py" line="231"/>
       <source>Replace Object</source>
       <translation>替换对象</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>替换特征树中的对象.请选择原始对象、新对象和父节点对象</translation>
+      <location filename="../../OpenSCADCommands.py" line="233"/>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>替换特征树中的对象。请选择原始对象、新对象和父节点对象</translation>
     </message>
   </context>
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="80"/>
+      <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
-      <translation type="unfinished">OpenSCAD Part tools</translation>
+      <translation>OpenSCAD 零件工具</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="78"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
-      <translation type="unfinished">OpenSCADTools</translation>
+      <translation>OpenSCAD工具</translation>
     </message>
   </context>
 </TS>

@@ -109,7 +109,7 @@ protected:
 /**
  * \brief The SoFCMeshFaceSet class renders the mesh data structure.
  * It does basically the same as SoFCMeshNode by rendering directly the FreeCAD mesh  structure whereas this class follows more the Inventor way. 
- * While SoFCMeshFaceSet has a pointer to the mesh structure as a whole for SoFCMeshFaceSet the mesh is splitted into two nodes: 
+ * While SoFCMeshFaceSet has a pointer to the mesh structure as a whole for SoFCMeshFaceSet the mesh is split into two nodes: 
  * an SoFCMeshVertex has a field that holds a pointer to vertex array and SoFCMeshFacet has a field that holds a pointer to the face array.
  *
  * The advantage of separating the mesh structure is higher flexibility. E.g. to render open edges the class SoFCMeshOpenEdgeSet just takes the 

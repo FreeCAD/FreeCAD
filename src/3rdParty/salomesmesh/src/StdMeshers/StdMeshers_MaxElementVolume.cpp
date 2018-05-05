@@ -73,7 +73,6 @@ StdMeshers_MaxElementVolume::~StdMeshers_MaxElementVolume()
 //=============================================================================
 
 void StdMeshers_MaxElementVolume::SetMaxVolume(double maxVolume)
-  throw (SALOME_Exception)
 {
   double oldVolume = _maxVolume;
   if (maxVolume <= 0) 

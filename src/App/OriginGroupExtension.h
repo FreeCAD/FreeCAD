@@ -30,7 +30,7 @@ namespace App {
 class Origin;
 
 /**
- * Represents an abstact placeable group of objects with an associated Origin
+ * Represents an abstract placeable group of objects with an associated Origin
  */
 class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {
@@ -65,6 +65,7 @@ public:
     void relinkToOrigin(App::DocumentObject* obj);
     
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
+    virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
 
 protected:
     /// Checks integrity of the Origin

@@ -38,13 +38,13 @@ namespace Part
 class Geometry;
 
 /** 2D Shape
-  * This is a specialiced version of the PartShape for use with
+  * This is a specialized version of the PartShape for use with
   * flat (2D) geometry. The Z direction has always to be 0.
   * The position and orientation of the Plane this 2D geometry is
   * referenced is defined by the Placement property. It also
   * has a link to a supporting Face which defines the position
   * in space where it is located. If the support is changed the
-  * static methode positionBySupport() is used to calculate a
+  * static method positionBySupport() is used to calculate a
   * new position for the Part2DObject.
   * This object can be used stand alone or for constraint
   * geometry as its descend Sketcher::SketchObject .
@@ -82,7 +82,7 @@ public:
     static const int V_Axis;
     static const int N_Axis;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
@@ -94,6 +94,10 @@ public:
     //@}
 
     void Restore(Base::XMLReader &reader);
+
+protected:
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 };
 
 typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;

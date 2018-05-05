@@ -28,9 +28,9 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "ViewProviderCompound.h"
 #include <Gui/Application.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include "ViewProviderCompound.h"
 
 
 using namespace PartGui;
@@ -106,7 +106,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         this->DiffuseColor.setValues(compCol);
     }
-    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
             if (*it) Gui::Application::Instance->hideViewProvider(*it);

@@ -52,13 +52,13 @@ namespace KDL
 	 * \param V [INPUT/OUTPUT] is an \f$n \times n\f$ orthonormal matrix.
 	 * \param B [TEMPORARY] is an \f$m \times n\f$ matrix used for temporary storage.
 	 * \param tempi [TEMPORARY] is an \f$m\f$ vector used for temporary storage.
-	 * \param thresshold [INPUT] Thresshold to determine orthogonality.
+	 * \param threshold [INPUT] Threshold to determine orthogonality.
 	 * \param toggle [INPUT] toggle this boolean variable on each call of this routine.
 	 * \return number of sweeps.
 	 */
     int svd_eigen_Macie(const MatrixXd& A,MatrixXd& U,VectorXd& S, MatrixXd& V,
                         MatrixXd& B, VectorXd& tempi,
-                        double treshold,bool toggle)
+                        double threshold,bool toggle)
     {
         bool rotate = true;
         unsigned int sweeps=0;
@@ -79,8 +79,8 @@ namespace KDL
                         double q=qi-qj;
                         double alpha = pow(p,2.0)/(qi*qj);
                         //if columns are orthogonal with precision
-                        //treshold, don't perform rotation and continue
-                        if(alpha<treshold)
+                        //threshold, don't perform rotation and continue
+                        if(alpha<threshold)
                             continue;
                         rotations++;
                         double c = sqrt(4*pow(p,2.0)+pow(q,2.0));
@@ -144,9 +144,9 @@ namespace KDL
                         double q=qi-qj;
                         double alpha = pow(p,2.0)/(qi*qj);
                         //if columns are orthogonal with precision
-                        //treshold, don't perform rotation and
+                        //threshold, don't perform rotation and
                         //continue
-                        if(alpha<treshold)
+                        if(alpha<threshold)
                             continue;
                         rotations++;
                         double c = sqrt(4*pow(p,2.0)+pow(q,2.0));

@@ -67,7 +67,6 @@ crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
 locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
              ["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
-             ["Complete","../Mod/Complete/Gui/Resources/translations","../Mod/Complete/Gui/Resources/Complete.qrc"],
              ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
              ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
              ["Fem","../Mod/Fem/Gui/Resources/translations","../Mod/Fem/Gui/Resources/Fem.qrc"],
@@ -91,9 +90,10 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"],
              ["Path","../Mod/Path/Gui/Resources/translations","../Mod/Path/Gui/Resources/Path.qrc"],
              ["Tux","../Mod/Tux/Resources/translations","../Mod/Tux/Resources/Tux.qrc"],
+             ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
              ]
              
-default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko"
+default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko fil id lt val-ES"
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
@@ -136,8 +136,10 @@ def updateqrc(qrcpath,lncode):
     if ".qm" in line:
         line = re.sub("_.*\.qm","_"+lncode+".qm",line)
     else:
-        print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
-        sys.exit()
+        modname = os.path.splitext(os.path.basename(qrcpath))[0]
+        line = "        <file>translations/"+modname+"_"+lncode+".qm</file>\n"
+        #print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        #sys.exit()
     print "inserting line: ",line
     resources.insert(pos+1,line)
 

@@ -36,6 +36,7 @@
 # include <QRadioButton>
 # include <QStyle>
 # include <QUrl>
+# include <QResizeEvent>
 #endif
 
 #include <Base/Parameter.h>
@@ -149,7 +150,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -240,7 +241,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -310,7 +311,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -385,7 +386,7 @@ void FileDialog::setWorkingDirectory(const QString& dir)
     QString dirName = dir;
     if (!dir.isEmpty()) {
         QFileInfo info(dir);
-        if (info.isFile())
+        if (!info.exists() || info.isFile())
             dirName = info.absolutePath();
         else
             dirName = info.absoluteFilePath();
@@ -453,7 +454,7 @@ FileOptionsDialog::~FileOptionsDialog()
 
 void FileOptionsDialog::accept()
 {
-    // Fixes a bug of the default implementation when entering an asterik
+    // Fixes a bug of the default implementation when entering an asterisk
     QLineEdit* filename = this->findChild<QLineEdit*>();
     QString fn = filename->text();
     if (fn.startsWith(QLatin1String("*"))) {
@@ -589,7 +590,7 @@ FileChooser::FileChooser ( QWidget * parent )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
-    layout->setSpacing( 6 );
+    layout->setSpacing( 2 );
 
     lineEdit = new QLineEdit ( this );
     completer = new QCompleter ( this );
@@ -607,7 +608,11 @@ FileChooser::FileChooser ( QWidget * parent )
     connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
 
     button = new QPushButton(QLatin1String("..."), this);
-    button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
+
+#if defined (Q_OS_MAC)
+    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
+
     layout->addWidget(button);
 
     connect( button, SIGNAL(clicked()), this, SLOT(chooseFile()));
@@ -617,6 +622,12 @@ FileChooser::FileChooser ( QWidget * parent )
 
 FileChooser::~FileChooser()
 {
+}
+
+void FileChooser::resizeEvent(QResizeEvent* e)
+{
+    button->setFixedWidth(e->size().height());
+    button->setFixedHeight(e->size().height());
 }
 
 /**

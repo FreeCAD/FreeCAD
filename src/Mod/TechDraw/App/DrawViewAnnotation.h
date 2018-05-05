@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 #include "DrawView.h"
@@ -48,16 +49,16 @@ public:
     virtual ~DrawViewAnnotation();
 
     App::PropertyStringList   Text;
-    App::PropertyString       Font;
+    App::PropertyFont         Font;
     App::PropertyColor        TextColor;
-    App::PropertyInteger      TextSize;
+    App::PropertyLength       TextSize;
     App::PropertyInteger      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
     App::PropertyFloat        MaxWidth;
 
     virtual QRectF getRect() const;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

@@ -128,8 +128,9 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            if not isinstance(message,unicode):
-                message = message.decode('utf8')
+            if sys.version_info.major < 3:
+                if not isinstance(message,unicode):
+                    message = message.decode('utf8')
             reply = QtGui.QMessageBox.question(None,"",message,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
@@ -186,6 +187,9 @@ def decodeName(name):
         except UnicodeDecodeError:
                 print("dxf: error: couldn't determine character encoding")
                 decodedName = name
+    except AttributeError:
+        # this is python3 (nothing to do)
+        decodedName = name
     return decodedName
 
 def deformat(text):
@@ -910,8 +914,12 @@ def drawInsert(insert,num=None,clone=False):
 
 def drawLayerBlock(objlist):
     "draws a Draft block with the given shapes or objects"
+    isObj = True
+    for o in objlist:
+        if isinstance(o,Part.Shape):
+            isObj = False
     obj = None
-    if (dxfCreateDraft or dxfCreateSketch):
+    if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
             obj = Draft.makeBlock(objlist)
         except Part.OCCError:
@@ -1172,16 +1180,17 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             edges.extend(s.Edges)
         if len(edges) > (100):
             FreeCAD.Console.PrintMessage(str(len(edges))+" edges to join\n")
-            from PySide import QtGui
-            d = QtGui.QMessageBox()
-            d.setText("Warning: High number of entities to join (>100)")
-            d.setInformativeText("This might take a long time or even freeze your computer. Are you sure? You can also disable the \"join geometry\" setting in DXF import preferences")
-            d.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
-            d.setDefaultButton(QtGui.QMessageBox.Cancel)
-            res = d.exec_()
-            if res == QtGui.QMessageBox.Cancel:
-                FreeCAD.Console.PrintMessage("Aborted\n")
-                return
+            if FreeCAD.GuiUp:
+                from PySide import QtGui
+                d = QtGui.QMessageBox()
+                d.setText("Warning: High number of entities to join (>100)")
+                d.setInformativeText("This might take a long time or even freeze your computer. Are you sure? You can also disable the \"join geometry\" setting in DXF import preferences")
+                d.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+                d.setDefaultButton(QtGui.QMessageBox.Cancel)
+                res = d.exec_()
+                if res == QtGui.QMessageBox.Cancel:
+                    FreeCAD.Console.PrintMessage("Aborted\n")
+                    return
         shapes = DraftGeomUtils.findWires(edges)
         for s in shapes:
             newob = addObject(s)
@@ -1388,7 +1397,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                         if dxfUseStandardSize and draftui:
                             newob.ViewObject.FontSize = draftui.fontsize
                         else:
-                            st = vec(rawValue(dim,3))
+                            st = rawValue(dim,3)
                             size = getdimheight(st) or 1
                             newob.ViewObject.FontSize = float(size)*TEXTSCALING
     else:
@@ -1536,14 +1545,16 @@ def warn(dxfobject,num=None):
 
 def open(filename):
     "called when freecad opens a file."
+    import sys
     readPreferences()
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
-            if isinstance(docname,unicode): 
-                import sys #workaround since newDocument currently can't handle unicode filenames
-                docname = docname.encode(sys.getfilesystemencoding())
+            if sys.version_info.major < 3:
+                if isinstance(docname,unicode): 
+                    #workaround since newDocument currently can't handle unicode filenames
+                    docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
             doc.Label = decodeName(docname)
             processdxf(doc,filename)
@@ -1552,14 +1563,15 @@ def open(filename):
             errorDXFLib(gui)
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
-        if isinstance(docname,unicode): 
-            import sys #workaround since newDocument currently can't handle unicode filenames
-            docname = docname.encode(sys.getfilesystemencoding())
+        if sys.version_info.major < 3:
+            if isinstance(docname,unicode): 
+                #workaround since newDocument currently can't handle unicode filenames
+                docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         FreeCAD.setActiveDocument(doc.Name)
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def insert(filename,docname):
     "called when freecad imports a file"
@@ -1573,9 +1585,10 @@ def insert(filename,docname):
         getDXFlibs()
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
-            if isinstance(groupname,unicode): 
-                import sys #workaround since newDocument currently can't handle unicode filenames
-                groupname = groupname.encode(sys.getfilesystemencoding())
+            if sys.version_info.major < 3:
+                if isinstance(groupname,unicode): 
+                    #workaround since newDocument currently can't handle unicode filenames
+                    groupname = groupname.encode(sys.getfilesystemencoding())
             importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
             importgroup.Label = decodeName(groupname)
             processdxf(doc,filename)
@@ -1584,8 +1597,8 @@ def insert(filename,docname):
         else:
             errorDXFLib(gui)
     else:
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def getShapes(filename):
     "reads a dxf file and returns a list of shapes from its contents"
@@ -1888,16 +1901,17 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
 def getStrGroup(ob):
     "gets a string version of the group name"
     l = getGroup(ob)
-    if isinstance(l,unicode):
-        # dxf R12 files are rather over-sensitive with utf8...
-        try:
-            import unicodedata
-        except:
-            # fallback
-            return l.encode("ascii",errors="replace")
-        else:
-            # better encoding, replaces accented latin characters with corrsponding ascii letter
-            return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
+    if sys.version_info.major < 3:
+        if isinstance(l,unicode):
+            # dxf R12 files are rather over-sensitive with utf8...
+            try:
+                import unicodedata
+            except:
+                # fallback
+                return l.encode("ascii",errors="replace")
+            else:
+                # better encoding, replaces accented latin characters with corresponding ascii letter
+                return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
     return l
 
 def export(objectslist,filename,nospline=False,lwPoly=False):
@@ -2020,9 +2034,9 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                     layer=getStrGroup(ob)))
-
-            if isinstance(filename,unicode):
-                filename = filename.encode("utf8")
+            if sys.version_info.major < 3:
+                if isinstance(filename,unicode):
+                    filename = filename.encode("utf8")
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
     else:

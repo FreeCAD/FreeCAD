@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 # include <QMessageBox>
 #endif
 
@@ -66,6 +68,13 @@ ViewProviderPrimitive::~ViewProviderPrimitive()
 
 void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
     ViewProviderAddSub::attach(obj);
+}
+
+void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit primitive"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
 }
 
 bool ViewProviderPrimitive::setEdit(int ModNum)
@@ -158,5 +167,5 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     }
 
     str += QString::fromLatin1(".svg");
-    return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
+    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

@@ -25,6 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost/signal.hpp>
+#include <boost/bind.hpp>
+
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -43,6 +46,7 @@
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderPage.h"
 #include "QGIView.h"
@@ -57,6 +61,9 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "TechDraw_Tree_View";
+    static const char *group = "Base";
+
+    ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
 
     // Do not show in property editor   why? wf
     DisplayMode.setStatus(App::Property::ReadOnly,true);
@@ -70,6 +77,14 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
+
+    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, _1);
+    auto feature = getViewObject();
+    if (feature != nullptr) {
+        connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
+    } else {
+        Base::Console().Log("VPDV::attach has no Feature!\n");
+    }
 }
 
 void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
@@ -97,7 +112,13 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
         } else {
             hide();
         }
+    } else if (prop == &KeepLabel) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
     }
+
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -137,10 +158,6 @@ void ViewProviderDrawingView::hide(void)
 
 QGIView* ViewProviderDrawingView::getQView(void)
 {
-    //TODO: vp can get its MDIView with 1 call getActiveView()?
-    //      instead of going back to App side an up tree and back to Gui?
-    //MDIVPage* mdivp = static_cast<MDIVPage*>(getActiveView());
-    //qView = mdivp->getQGVPage()->findQViewForDocObj(getViewObject());
     QGIView *qView = nullptr;
     if (m_docReady){
         TechDraw::DrawView* dv = getViewObject();
@@ -184,13 +201,15 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Rotation)  ) {
-        // redraw QGIVP
+    if (prop == &(getViewObject()->Rotation) ||
+        prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
-     }
+    }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -214,6 +233,21 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
         result = dvp->getMDIViewPage();
     }
     return result;
+}
+
+void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
+{
+    if (dv == getViewObject()) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        } else {                                //we are not part of the Gui page yet. ask page to add us.
+            auto page = dv->findParentPage();
+            if (page != nullptr) {
+                page->requestPaint();
+            }
+        }
+    }
 }
 
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const

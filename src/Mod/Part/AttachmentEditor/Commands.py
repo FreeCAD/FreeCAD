@@ -24,7 +24,12 @@
 from __future__ import absolute_import 
 
 import FreeCAD as App
-from PySide import QtCore
+
+try:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+except ImportError:
+    def QT_TRANSLATE_NOOP(ctx, msg):
+        return msg
 
 def editAttachment(feature = None, 
                    take_selection = False, 
@@ -43,7 +48,7 @@ def editAttachment(feature = None,
     selection.
     take_selection: if True, current selection is filled into first references (but only 
     if object to be attached doesn't have any references already)
-    create_transaction = if False, no undo transation operations will be done by the 
+    create_transaction = if False, no undo transaction operations will be done by the 
     dialog (consequently, canceling the dialog will not reset the feature to original 
     state).
     callback_OK: function to be called upon OK. Invoked after writing values to feature, 
@@ -72,9 +77,9 @@ class CommandEditAttachment:
     'Command to edit attachment'
     def GetResources(self):
         return {'Pixmap': ':/icons/Part_Attachment.svg',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("AttachmentEditor","Attachment..."),
+                'MenuText': QT_TRANSLATE_NOOP("AttachmentEditor","Attachment..."),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("AttachmentEditor","Edit attachment of selected object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("AttachmentEditor","Edit attachment of selected object.")}
         
     def Activated(self):
         try:

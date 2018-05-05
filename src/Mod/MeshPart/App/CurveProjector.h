@@ -51,7 +51,7 @@ using MeshCore::MeshGeomFacet;
 namespace MeshPart
 {
 
-/** The father of all projection algorithems
+/** The father of all projection algorithms
  */
 class MeshPartExport CurveProjector
 {

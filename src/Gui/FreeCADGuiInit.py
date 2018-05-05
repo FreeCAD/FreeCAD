@@ -124,14 +124,36 @@ def InitApplications():
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
-					Err('Please look into the log file for further information')
+					Err('Please look into the log file for further information\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
 				Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
 
 
+	try:
+		import pkgutil
+		import importlib
+		import freecad
+		freecad.gui = FreeCADGui
+		for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
+			if freecad_module_ispkg:
+				Log('Init: Initializing ' + freecad_module_name + '\n')
+				freecad_module = importlib.import_module(freecad_module_name)
+				if any (module_name == 'init_gui' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
+					try:
+						importlib.import_module(freecad_module_name + '.init_gui')
+						Log('Init: Initializing ' + freecad_module_name + '... done\n')
+					except ImportError as error:
+						Err('During initialization the error ' + str(error) + ' occurred in ' + freecad_module_name + '\n')
+				else:
+					Log('Init: No init_gui module found in ' + freecad_module_name + ', skipping\n')
+	except ImportError as inst:
+		Err('During initialization the error ' + str(inst) + ' occurred\n')
+
 Log ('Init: Running FreeCADGuiInit.py start script...\n')
+
+
 
 # init the gui
 

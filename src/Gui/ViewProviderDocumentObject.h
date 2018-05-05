@@ -24,10 +24,9 @@
 #ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 #define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 
-#include <Inventor/SoType.h>
-
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
+#include <Inventor/SoType.h>
 
 class SoMaterial;
 class SoDrawStyle;
@@ -77,6 +76,8 @@ public:
     void updateView();
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
+    /// Asks the view provider if the given object can be deleted.
+    virtual bool canDelete(App::DocumentObject* obj) const;
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider

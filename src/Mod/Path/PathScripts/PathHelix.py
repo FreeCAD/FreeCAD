@@ -29,9 +29,8 @@ import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
 
-from PathUtils import fmt
+from PathScripts.PathUtils import fmt
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Helix Drill operation"
@@ -45,7 +44,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... enable features supported by Helix.'''
-        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels 
+        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... create helix specific properties.'''
@@ -80,7 +79,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         from numpy import ceil, linspace
 
         if (obj.StartDepth.Value <= obj.FinalDepth.Value):
-            return
+            return ""
 
         out = "(helix_cut <{0}, {1}>, {2})".format(x0, y0,
                     ", ".join(map(str, (r_out, r_in, dr, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value, obj.SafeHeight.Value,
@@ -197,4 +196,6 @@ def Create(name):
     '''Create(name) ... Creates and returns a Helix operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectHelix(obj)
+    if obj.Proxy:
+        proxy.findAllHoles(obj)
     return obj

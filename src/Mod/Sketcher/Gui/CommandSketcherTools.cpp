@@ -712,7 +712,7 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Show/hide internal geometry");
     sToolTipText    = QT_TR_NOOP("Show all internal geometry / hide unused internal geometry");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_RestoreInternalAlignmentGeometry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Element_Ellipse_All";
     sAccel          = "CTRL+SHIFT+E";
@@ -810,7 +810,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Symmetry");
     sToolTipText    = QT_TR_NOOP("Creates symmetric geometry with respect to the last selected line or point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_Symmetry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Symmetry";
     sAccel          = "";
@@ -832,6 +832,12 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     getSelection().clearSelection();
@@ -1164,6 +1170,12 @@ void SketcherCopy::activate(bool clone)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     getSelection().clearSelection();
@@ -1281,7 +1293,7 @@ CmdSketcherCopy::CmdSketcherCopy()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Copy");
     sToolTipText    = QT_TR_NOOP("Creates a simple copy of the geometry taking as reference the last selected point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_Copy";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Copy";
     sAccel          = "";
@@ -1318,7 +1330,7 @@ CmdSketcherClone::CmdSketcherClone()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Clone");
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_Clone";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Clone";
     sAccel          = "";
@@ -1598,7 +1610,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Rectangular Array");
     sToolTipText    = QT_TR_NOOP("Creates an rectangular array pattern of the geometry taking as reference the last selected point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_RectangularArray";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_RectangularArray";
     sAccel          = "";
@@ -1620,6 +1632,12 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     getSelection().clearSelection();
@@ -1720,6 +1738,71 @@ bool CmdSketcherRectangularArray::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
+// Select Origin
+DEF_STD_CMD_A(CmdSketcherDeleteAllGeometry);
+
+CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
+:Command("Sketcher_DeleteAllGeometry")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Delete All Geometry");
+    sToolTipText    = QT_TR_NOOP("Deletes all the geometry and constraints but external geometry");
+    sWhatsThis      = "Sketcher_DeleteAllGeometry";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherDeleteAllGeometry::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Delete All Geometry"),
+                                    QObject::tr("Are you really sure you want to delete all the geometry and constraints?"),
+                                    QMessageBox::Yes, QMessageBox::Cancel);
+    // use an equality constraint
+    if (ret == QMessageBox::Yes) {
+        Gui::Document * doc= getActiveGuiDocument();
+
+        SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+
+        Sketcher::SketchObject* Obj= vp->getSketchObject();
+
+        try {
+            Gui::Command::openCommand("Delete All Geometry");
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.deleteAllGeometry()",
+                                    Obj->getNameInDocument());
+
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("Failed to delete All Geometry: %s\n", e.what());
+            Gui::Command::abortCommand();
+        }
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+        else
+            Obj->solve();
+    }
+    else if (ret == QMessageBox::Cancel) {
+        // do nothing
+        return;
+    }
+
+}
+
+bool CmdSketcherDeleteAllGeometry::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
+}
+
 void CreateSketcherCommandsConstraintAccel(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1739,4 +1822,5 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherClone());
     rcCmdMgr.addCommand(new CmdSketcherCompCopy());
     rcCmdMgr.addCommand(new CmdSketcherRectangularArray());
+    rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
 }

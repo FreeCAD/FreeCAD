@@ -44,7 +44,7 @@ public:
     virtual ~ImageView();
 
     const char *getName(void) const {return "ImageView";}
-    void onUpdate(void){};
+    void onUpdate(void){}
 
     bool onMsg(const char* ,const char** ){ return true; }
     bool onHasMsg(const char* ) const { return false; }

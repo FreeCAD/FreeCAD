@@ -221,12 +221,12 @@
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>plane</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
             <rdf:li>normal</rdf:li>
             <rdf:li>arrow</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Planar tesselatad mesh with each face having an arrow pointing upwards</dc:description>
+        <dc:description>Planar tessellated mesh with each face having an arrow pointing upwards</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

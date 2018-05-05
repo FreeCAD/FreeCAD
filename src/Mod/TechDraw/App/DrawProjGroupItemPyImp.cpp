@@ -15,6 +15,15 @@ std::string DrawProjGroupItemPy::representation(void) const
     return std::string("<DrawProjGroupItem object>");
 }
 
+PyObject* DrawProjGroupItemPy::autoPosition(PyObject *args)
+{
+    (void) args;
+    DrawProjGroupItem* item = getDrawProjGroupItemPtr();
+    item->autoPosition();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 PyObject *DrawProjGroupItemPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

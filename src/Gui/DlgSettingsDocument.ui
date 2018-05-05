@@ -294,7 +294,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="prefSaveBackupFiles">
           <property name="text">
-           <string>Create up to backup files when resaving document</string>
+           <string>Maximum number of backup files to keep when resaving document</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -527,7 +527,7 @@
       <item row="3" column="1" colspan="2">
        <widget class="Gui::PrefLineEdit" name="prefLicenseUrl">
         <property name="toolTip">
-         <string>An URL where the user can find more details about the license</string>
+         <string>A URL where the user can find more details about the license</string>
         </property>
         <property name="text">
          <string notr="true">http://en.wikipedia.org/wiki/All_rights_reserved</string>
