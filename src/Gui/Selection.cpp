@@ -576,7 +576,7 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
     return getObjectsOfType(typeId, pDocName, resolve);
 }
 
-unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, const char* pDocName, bool resolve) const
+unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, const char* pDocName, int resolve) const
 {
     unsigned int iNbr=0;
     App::Document *pcDoc = 0;
@@ -594,7 +594,7 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
     return iNbr;
 }
 
-unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, bool resolve) const
+unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, int resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
     if (typeId == Base::Type::badType())
@@ -1413,7 +1413,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
      "clearPreselection() -- Clear the preselection"},
     {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
-     "countObjectsOfType(string, [string]) -- Get the number of selected objects\n"
+     "countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects\n"
      "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
@@ -1608,11 +1608,11 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
 {
     char* objecttype;
     char* document=0;
-    PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args, "s|sO", &objecttype, &document,&resolve))
+    int resolve = 1;
+    if (!PyArg_ParseTuple(args, "s|si", &objecttype, &document,&resolve))
         return NULL;
 
-    unsigned int count = Selection().countObjectsOfType(objecttype, document,PyObject_IsTrue(resolve));
+    unsigned int count = Selection().countObjectsOfType(objecttype, document, resolve);
 #if PY_MAJOR_VERSION < 3
     return PyInt_FromLong(count);
 #else

@@ -340,14 +340,14 @@ public:
      * field
      */
     unsigned int countObjectsOfType(const Base::Type& typeId=App::DocumentObject::getClassTypeId(),
-            const char* pDocName=0, bool resolve=true) const;
+            const char* pDocName=0, int resolve=1) const;
 
     /**
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type, otherwise 0 is returned.
      */
     unsigned int countObjectsOfType(const char* typeName, 
-            const char* pDocName=0, bool resolve=true) const;
+            const char* pDocName=0, int resolve=1) const;
 
     /** Returns a vector of objects of type \a TypeName selected for the given document name \a pDocName.
      * If no document name is specified the objects from the active document are regarded.
