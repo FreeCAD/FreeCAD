@@ -428,6 +428,13 @@ Base::Vector3d compensateRotation(const Base::Vector3d &pt, const Base::Rotation
     return ptRotated + center;
 }
 
+Base::Rotation yawPitchRoll(double a, double b, double c)
+{
+    Base::Rotation rot; 
+    rot.setYawPitchRoll(-c, b, -a);
+    return rot;
+}
+
 void ViewProviderPath::updateVisual(bool rebuild) {
 
     hideSelection();
@@ -458,8 +465,9 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         Base::Vector3d rotCenter = tp.getCenter();
         Base::Vector3d last(StartPosition.getValue());
         Base::Rotation lrot;
-        double A, B, C;
-        lrot.getYawPitchRoll(C, B, A);
+        double A = 0.0;
+        double B = 0.0;
+        double C = 0.0;
 
         colorindex.clear();
         bool absolute = true;
@@ -487,11 +495,10 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             if (!cmd.has("Y")) next.y = last.y;
             if (!cmd.has("Z")) next.z = last.z;
             if ( cmd.has("A")) a = cmd.getValue("A");
-            if ( cmd.has("B")) a = cmd.getValue("B");
-            if ( cmd.has("C")) a = cmd.getValue("C");
+            if ( cmd.has("B")) b = cmd.getValue("B");
+            if ( cmd.has("C")) c = cmd.getValue("C");
 
-            Base::Rotation nrot;
-            nrot.setYawPitchRoll(c, b, a);
+            Base::Rotation nrot = yawPitchRoll(a, b, c);
 
             Base::Vector3d rnext = compensateRotation(next, nrot, rotCenter);
 
@@ -512,9 +519,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     for (int j = 1; j < segments; j++) {
                         Base::Vector3d inter = last + dnext * j;
 
-                        Base::Rotation rot;
-                        rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
-
+                        Base::Rotation rot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
                         Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
 
                         points.push_back(rinter);
@@ -531,8 +536,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
 
                 last = next;
                 A = a;
-                b = b;
-                c = c;
+                B = b;
+                C = c;
                 lrot = nrot;
 
             } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
@@ -584,10 +589,9 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     rot.multVec((last0 - center0), inter);
                     inter.*pz = last.*pz + dZ * j; //Enable displaying helices
 
-                    Base::Rotation arot;
-                    arot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
-
+                    Base::Rotation arot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
                     Base::Vector3d rinter = compensateRotation(center0 + inter, arot, rotCenter);
+
                     points.push_back(rinter);
                     colorindex.push_back(1);
                 }
@@ -603,8 +607,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
 
                 last = next;
                 A = a;
-                b = b;
-                c = c;
+                B = b;
+                C = c;
                 lrot = nrot;
 
             } else if (name == "G90") {
@@ -646,9 +650,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                     for (int j = 1; j < segments; j++) {
                         Base::Vector3d inter = last + dnext * j;
 
-                        Base::Rotation rot;
-                        rot.setYawPitchRoll(C + dc*j, B + db*j, A + da*j);
-
+                        Base::Rotation rot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
                         Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
 
                         points.push_back(rinter);
@@ -692,8 +694,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
 
                 last = p3;
                 A = a;
-                b = b;
-                c = c;
+                B = b;
+                C = c;
                 lrot = nrot;
 
 
