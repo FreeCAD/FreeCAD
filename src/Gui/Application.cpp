@@ -519,8 +519,9 @@ void Application::open(const char* FileName, const char* Module)
             // TODO: Because the document may contains xlink which opens other
             // documents, we must make sure the requested document is the active
             // document. But this is ugly. Any better idea?
-            Command::doCommand(Command::App, "Gui.setActiveDocument(__openingDoc)");
-            Command::doCommand(Command::App, "__openingDoc = None");
+            Command::doCommand(Command::App, "if __openingDoc:\n"
+                                             "  Gui.setActiveDocument(__openingDoc)\n"
+                                             "  del(__openingDoc)");
 
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
@@ -771,7 +772,6 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         signalActiveDocument(*doc->second);
-
         getMainWindow()->updateActions();
     }
 }
