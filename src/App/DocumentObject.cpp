@@ -613,8 +613,8 @@ std::vector<std::string> DocumentObject::getSubObjects() const {
         if(ext->extensionGetSubObjects(ret))
             return ret;
     }
-    for(auto obj : getOutList(true))
-        ret.push_back(obj->getNameInDocument());
+    // for(auto obj : getOutList(true))
+    //     ret.push_back(obj->getNameInDocument());
     return ret;
 }
 

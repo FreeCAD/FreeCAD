@@ -382,14 +382,6 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
     return true;
 }
 
-bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string>&ret) const {
-    for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument())
-            ret.push_back(std::string(obj->getNameInDocument())+'.');
-    }
-    return true;
-}
-
 bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
 
     if(!obj)

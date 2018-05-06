@@ -92,6 +92,8 @@ public:
     static App::Part* getPartOfObject (const DocumentObject* obj);
 
     virtual PyObject *getPyObject(void);
+
+    virtual std::vector<std::string> getSubObjects() const override;
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;
