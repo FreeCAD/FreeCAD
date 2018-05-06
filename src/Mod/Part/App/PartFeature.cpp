@@ -184,35 +184,51 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     }
 }
 
-static std::pair<long,std::string> getElementSource(App::DocumentObject *owner, 
-        TopoShape shape, std::string name, char type)
+static std::vector<std::string> getElementSource(App::DocumentObject *owner, 
+        TopoShape shape, const char *name, char type)
 {
-    long tag = 0;
+    std::vector<std::string> ret;
+    auto mapped = shape.isMappedElement(name);
+    if(mapped)
+        name = mapped;
+    auto dot = strchr(name,'.');
+    if(dot)
+        ret.emplace_back(name,dot-name);
+    else
+        ret.emplace_back(name);
     while(1) {
         std::string original;
         std::vector<std::string> history;
-        long t = shape.getElementHistory(name.c_str(),&original,&history);
-        if(!t)
+        // It is possible the name does not belong to the shape, e.g. when user
+        // changes modeling order in PartDesign. So we try to assign the
+        // document hasher here in case getElementHistory() needs to de-hash
+        if(!shape.Hasher && owner)
+            shape.Hasher = owner->getDocument()->getStringHasher();
+        long tag = shape.getElementHistory(ret.back().c_str(),&original,&history);
+        if(!tag) 
             break;
-        auto obj = owner->getDocument()->getObjectByID(t);
-        if(!obj)
-            break;
-        if(type) {
-            for(auto &hist : history) {
-                if(shape.elementType(hist.c_str())!=type)
-                    return std::make_pair(tag,name);
+        auto obj = owner;
+        if(owner) {
+            obj = owner->getDocument()->getObjectByID(tag);
+            if(type) {
+                for(auto &hist : history) {
+                    if(shape.elementType(hist.c_str())!=type)
+                        return ret;
+                }
             }
         }
         owner = 0;
-        shape = Part::Feature::getTopoShape(obj,0,false,0,&owner); 
-        if(!owner || shape.isNull())
-            break;
+        if(!obj) {
+            // Object maybe deleted, but it is still possible to extract the
+            // source element name from hasher table.
+            shape.setShape(TopoDS_Shape());
+        }else 
+            shape = Part::Feature::getTopoShape(obj,0,false,0,&owner); 
         if(type && shape.elementType(original.c_str())!=type)
             break;
-        name = original;
-        tag = t;
+        ret.push_back(original);
     }
-    return std::make_pair(tag,name);
+    return ret;
 }
 
 std::list<Part::Feature::HistoryItem> 
@@ -258,21 +274,35 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
 {
     auto owner = obj;
     auto shape = getTopoShape(obj,0,false,0,&owner); 
+    std::vector<std::pair<std::string,std::string> > ret;
+    if(shape.getRelatedElementsCached(name,sameType,ret))
+        return ret;
+#if 0
     auto ret = shape.getRelatedElements(name,sameType); 
     if(ret.size()) {
         FC_LOG("topo shape returns " << ret.size() << " related elements");
         return ret;
     }
+#endif
 
     char element_type = shape.elementType(name);
     TopAbs_ShapeEnum type = TopoShape::shapeType(element_type,true);
     if(type == TopAbs_SHAPE)
         return ret;
     auto source = getElementSource(owner,shape,name,element_type);
-    if(!source.first ||
-       shape.getRelatedElementsCached(source.second.c_str(),source.first,sameType,ret))
-        return ret;
 
+    for(auto &src : source) {
+        auto element = shape.getElementName(src.c_str(),2);
+        if(element!=src.c_str() &&
+           (!sameType || shape.elementType(element) == element_type))
+        {
+            ret.emplace_back(src,element);
+            shape.cacheRelatedElements(name,sameType,ret);
+            return ret;
+        }
+    }
+
+    std::map<int,std::vector<std::pair<std::string,std::string> > > retMap;
     auto shapetype = TopoShape::shapeName(type);
     std::ostringstream ss;
     for(size_t i=1;i<=shape.countSubShapes(type);++i) {
@@ -282,11 +312,20 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
         auto mapped = shape.getElementName(element.c_str(),true);
         if(mapped == element.c_str())
             continue;
-        if(getElementSource(owner,shape,mapped,sameType?element_type:0) == source)
-            ret.emplace_back(mapped,element);
+        auto src = getElementSource(owner,shape,mapped,sameType?element_type:0);
+        int idx = (int)source.size()-1;
+        for(auto rit=src.rbegin();idx>=0&&rit!=src.rend();++rit,--idx) {
+            if(*rit != source[idx]) {
+                ++idx;
+                break;
+            }
+        }
+        if(idx < (int)source.size())
+            retMap[idx].emplace_back(mapped,element);
     }
-    shape.cacheRelatedElements(source.second.c_str(),source.first,sameType,ret);
-    FC_LOG("topo shape history returns " << ret.size() << " related elements");
+    if(retMap.size())
+        ret.swap(retMap.begin()->second);
+    shape.cacheRelatedElements(name,sameType,ret);
     return ret;
 }
 

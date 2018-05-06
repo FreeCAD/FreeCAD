@@ -530,10 +530,10 @@ public:
     std::vector<std::pair<std::string,std::string> > getRelatedElements(
             const char *name, bool sameType=true) const;
 
-    void cacheRelatedElements(const char *name, long tag, bool sameType,
+    void cacheRelatedElements(const char *name, bool sameType,
             const std::vector<std::pair<std::string,std::string> > &names) const;
 
-    bool getRelatedElementsCached(const char *name, long tag, bool sameType,
+    bool getRelatedElementsCached(const char *name, bool sameType,
             std::vector<std::pair<std::string,std::string> > &names) const;
 
     virtual std::string getElementMapVersion() const override;

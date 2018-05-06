@@ -461,23 +461,31 @@ char ComplexGeoData::elementType(const char *name) const {
         return 0;
     if(isMappedElement(name)) {
         auto element = getElementName(name);
-        if(element == name)
-            element = 0;
-        else
+        if(element != name)
             return element[0];
     }
     const char* element = strchr(name,'.');
-    if(element)
+    std::string _name;
+    if(element) {
+        _name = std::string(name,element);
         ++element;
-    else
-        element = getElementName(name,2);
-    for(auto &type : getElementTypes()) {
-        if(boost::starts_with(element,type))
-            return element[0];
+    }else{
+        _name = name;
+        if(!isMappedElement(name))
+            element = getElementName(name,2);
     }
+
     char element_type=0;
-    findTagInElementName(name,0,0,0,&element_type);
-    return element_type;
+    if(findTagInElementName(_name,0,0,0,&element_type)!=std::string::npos)
+        return element_type;
+
+    if(element) {
+        for(auto &type : getElementTypes()) {
+            if(boost::starts_with(element,type))
+                return element[0];
+        }
+    }
+    return 0;
 }
 
 std::string ComplexGeoData::renameDuplicateElement(int index, const char *element, 

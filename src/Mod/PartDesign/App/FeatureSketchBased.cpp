@@ -786,6 +786,13 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 {
+#if 1
+    (void)newShape;
+    // Realthunder: with the new topological naming, I don't think this function
+    // is necessary. A missing element will cause an explicity error, and the
+    // user will be force to manually select the element. Various editors, such
+    // as dress up editors, can perform element guessing when activated.
+#else
     TopTools_IndexedMapOfShape faceMap;
     TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
 
@@ -874,9 +881,11 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
                     newSubValues.push_back(*it);
             }
 
-            link->setValue(this, newSubValues);
+            if(newSubValues!=subValues)
+                link->setValue(this, newSubValues);
         }
     }
+#endif
 }
 
 namespace PartDesign {

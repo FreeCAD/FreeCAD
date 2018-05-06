@@ -212,17 +212,14 @@ static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) 
 
 struct ShapeRelationKey {
     std::string name;
-    long tag;
     bool sameType;
-    ShapeRelationKey(const char *name,long tag, bool sameType)
-        :name(name),tag(tag),sameType(sameType)
+    ShapeRelationKey(const char *name, bool sameType)
+        :name(name),sameType(sameType)
     {}
 
     bool operator<(const ShapeRelationKey &other) const {
         if(sameType != other.sameType)
             return sameType;
-        if(tag!=other.tag)
-            return tag<other.tag;
         return name < other.name;
     }
 };
@@ -2576,7 +2573,7 @@ std::vector<std::pair<std::string,std::string> >
 TopoShape::getRelatedElements(const char *_name, bool sameType) const {
 
     initCache();
-    ShapeRelationKey key(_name,0,sameType);
+    ShapeRelationKey key(_name,sameType);
     auto it = _Cache->relations.find(key);
     if(it!=_Cache->relations.end())
         return it->second;
@@ -2665,19 +2662,19 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     mapSubElement(tmp,postfix);
 }
 
-void TopoShape::cacheRelatedElements(const char *name, long tag, bool sameType,
+void TopoShape::cacheRelatedElements(const char *name, bool sameType,
         const std::vector<std::pair<std::string,std::string> > &names) const
 {
     initCache();
-    _Cache->relations[ShapeRelationKey(name,tag,sameType)] = names;
+    _Cache->relations[ShapeRelationKey(name,sameType)] = names;
 }
 
-bool TopoShape::getRelatedElementsCached(const char *name, long tag, bool sameType,
+bool TopoShape::getRelatedElementsCached(const char *name, bool sameType,
         std::vector<std::pair<std::string,std::string> > &names) const
 {
     if(!_Cache)
         return false;
-    auto it = _Cache->relations.find(ShapeRelationKey(name,tag,sameType));
+    auto it = _Cache->relations.find(ShapeRelationKey(name,sameType));
     if(it == _Cache->relations.end())
         return false;
     names.insert(names.end(),it->second.begin(),it->second.end());

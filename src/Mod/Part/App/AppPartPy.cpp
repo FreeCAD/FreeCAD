@@ -2156,7 +2156,7 @@ private:
         const char *name;
         PyObject *pyobj;
         PyObject *sameType=Py_True;
-        if (!PyArg_ParseTuple(args.ptr(), "!Os|O", 
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|O", 
                     &App::DocumentObjectPy::Type,&pyobj,&name,&sameType))
             throw Py::Exception();
         auto obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();

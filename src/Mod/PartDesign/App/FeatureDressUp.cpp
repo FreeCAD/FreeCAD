@@ -177,7 +177,13 @@ void DressUp::onChanged(const App::Property* prop)
     // the feature is inside a body (aka BaseFeature is nonzero)
     if (prop == &BaseFeature) {
         if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
-            Base.setValue (BaseFeature.getValue());
+            auto subs = Base.getSubValues();
+            auto shadows = Base.getShadowSubs();
+            for(auto &sub : subs) {
+                if(sub.size() && sub[0]!='?')
+                    sub = std::string("?") + sub;
+            }
+            Base.setValue (BaseFeature.getValue(),subs,subs.size()?&shadows:nullptr);
         }
     } else if (prop == &Base) {
         // track the vice-versa changes
