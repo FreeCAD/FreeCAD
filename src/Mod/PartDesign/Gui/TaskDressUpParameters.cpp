@@ -275,15 +275,12 @@ bool TaskDlgDressUpParameters::accept()
         str << "\"" << *it << "\",";
     str << "])";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-    App::GetApplication().closeActiveTransaction();
-
     return TaskDlgFeatureParameters::accept();
 }
 
 bool TaskDlgDressUpParameters::reject()
 {
     getDressUpView()->highlightReferences(false);
-    App::GetApplication().closeActiveTransaction(true);
     return TaskDlgFeatureParameters::reject();
 }
 
