@@ -255,7 +255,7 @@ Py::List DocumentObjectPy::getInListEx(void) const
     return ret;    
 }
 
-Py::List DocumentObjectPy::getInListExRecrusive(void) const
+Py::List DocumentObjectPy::getInListExRecursive(void) const
 {
     Py::List ret;
     for(auto obj : getDocumentObjectPtr()->getInListEx(true))

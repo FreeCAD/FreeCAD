@@ -211,11 +211,11 @@ getElementMapVersion(property_name): return element map version of a given geome
       </Documentation>
       <Parameter Name="InListEx" Type="List"/>
     </Attribute>
-    <Attribute Name="InListExRecrusive" ReadOnly="true">
+    <Attribute Name="InListExRecursive" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects which link to this object recursively, including any external parents.</UserDocu>
       </Documentation>
-      <Parameter Name="InListExRecrusive" Type="List"/>
+      <Parameter Name="InListExRecursive" Type="List"/>
     </Attribute>
     <Attribute Name="Name" ReadOnly="true">
 			<Documentation>
