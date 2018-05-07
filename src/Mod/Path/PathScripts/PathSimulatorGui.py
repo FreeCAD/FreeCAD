@@ -480,22 +480,30 @@ class PathSimulation:
         self.cutTool.ViewObject.hide()
         self.iprogress = 0
         self.EndSimulation()
+        
+    def InvalidOperation(self):
+        if len(self.activeOps) == 0:
+          return True
+        if (self.tool == None):
+          TSError("No tool assigned for the operation")
+          return True
+        return false
 
     def SimFF(self):
-        if len(self.activeOps) == 0:
+        if self.InvalidOperation():
             return
         self.GuiBusy(True)
         self.timer.start(1)
         self.disableAnim = True
 
     def SimStep(self):
-        if len(self.activeOps) == 0:
+        if self.InvalidOperation():
             return
         self.disableAnim = False
         self.PerformCut()
 
     def SimPlay(self):
-        if len(self.activeOps) == 0:
+        if self.InvalidOperation():
             return
         self.disableAnim = False
         self.GuiBusy(True)
