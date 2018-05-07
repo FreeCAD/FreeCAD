@@ -73,7 +73,7 @@ class ObjectDressup:
     def _stripArcs(self, path, d):
         '''converts all G2/G3 commands into G1 commands'''
         newcommandlist = []
-        currLocation = {}
+        currLocation = {'X':0,'Y':0,'Z':0}
 
         for p in path:
             if p.Name in arccommands:
@@ -131,6 +131,7 @@ class ObjectDressup:
 
                         path = Path.Path(newcommandlist)
                         obj.Path = path
+                        obj.Path.Center = FreeCAD.Vector(0, 0, 0-obj.radius.Value)
 
 class ViewProviderDressup:
 
