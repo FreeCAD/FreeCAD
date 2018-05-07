@@ -357,14 +357,16 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance","Offset","Arch",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
         obj.addProperty("App::PropertyLength","WaveLength","Arch", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"))
         obj.addProperty("App::PropertyLength","WaveHeight","Arch", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"))
+        obj.addProperty("App::PropertyDistance","WaveOffset","Arch", QT_TRANSLATE_NOOP("App::Property","The horizontal offset of waves for corrugated elements"))
         obj.addProperty("App::PropertyAngle","WaveDirection","Arch", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
         obj.addProperty("App::PropertyEnumeration","WaveType","Arch", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
+        obj.addProperty("App::PropertyBool","WaveBottom","Arch", QT_TRANSLATE_NOOP("App::Property","If the wave also affects the bottom side or not"))        
         obj.addProperty("App::PropertyArea","Area","Arch",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
         obj.addProperty("App::PropertyEnumeration","FaceMaker","Arch",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.Sheets = 1
         self.Type = "Panel"
-        obj.WaveType = ["Curved","Trapezoidal"]
+        obj.WaveType = ["Curved","Trapezoidal","Spikes"]
         obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
@@ -531,41 +533,125 @@ class _Panel(ArchComponent.Component):
                 # corrugated element
                 bb = baseprofile.BoundBox
                 bb.enlarge(bb.DiagonalLength)
-                p1 = Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z)
+                downsegment = None
+                if hasattr(obj,"WaveBottom"):
+                    if not obj.WaveBottom:
+                        if obj.WaveType == "Curved":
+                            if obj.Thickness.Value > obj.WaveHeight.Value:
+                                downsegment = obj.Thickness.Value
+                            else:
+                                downsegment = obj.WaveHeight.Value + obj.Thickness.Value
+                        else:
+                            downsegment = obj.Thickness.Value
+                p1 = Vector(0,0,0)
+                p5 = Vector(obj.WaveLength.Value*2,0,0)
                 if obj.WaveType == "Curved":
-                    p2 = p1.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
-                    p3 = p2.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
+                    p2 = Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value)
+                    p3 = Vector(obj.WaveLength.Value,0,0)
                     e1 = Part.Arc(p1,p2,p3).toShape()
-                    p4 = p3.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
-                    p5 = p4.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
+                    p4 = Vector(obj.WaveLength.Value*1.5,0,-obj.WaveHeight.Value)
                     e2 = Part.Arc(p3,p4,p5).toShape()
-                else:
-                    if obj.WaveHeight.Value < obj.WaveLength.Value:
-                        p2 = p1.add(Vector(obj.WaveHeight.Value,0,obj.WaveHeight.Value))
-                        p3 = p2.add(Vector(obj.WaveLength.Value-2*obj.WaveHeight.Value,0,0))
-                        p4 = p3.add(Vector(obj.WaveHeight.Value,0,-obj.WaveHeight.Value))
-                        e1 = Part.makePolygon([p1,p2,p3,p4])
-                        p5 = p4.add(Vector(obj.WaveHeight.Value,0,-obj.WaveHeight.Value))
-                        p6 = p5.add(Vector(obj.WaveLength.Value-2*obj.WaveHeight.Value,0,0))
-                        p7 = p6.add(Vector(obj.WaveHeight.Value,0,obj.WaveHeight.Value))
-                        e2 = Part.makePolygon([p4,p5,p6,p7])
-                    else:
-                        p2 = p1.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
-                        p3 = p2.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
-                        e1 = Part.makePolygon([p1,p2,p3])
-                        p4 = p3.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
-                        p5 = p4.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
-                        e2 = Part.makePolygon([p3,p4,p5])
-                edges = [e1,e2]
+                    upsegment = Part.Wire([e1,e2])
+                    if not downsegment:
+                        if obj.Thickness.Value < e1.Curve.Radius:
+                            c3 = e1.Curve.copy()
+                            c3.Radius = e1.Curve.Radius-obj.Thickness.Value
+                            e3 = Part.Arc(c3,e1.FirstParameter,e1.LastParameter).toShape()
+                            c4 = e2.Curve.copy()
+                            c4.Radius = e2.Curve.Radius+obj.Thickness.Value
+                            e4 = Part.Arc(c4,e2.FirstParameter,e2.LastParameter).toShape()
+                            downsegment = Part.Wire([e3,e4])
+                        else:
+                            r = e2.Curve.Radius+obj.Thickness.Value
+                            z = math.sqrt(r^2 - obj.WaveLength.Value^2)
+                            p6 = e2.Curve.Center.add(Vector(-obj.WaveLength,0,-z))
+                            p7 = e2.Curve.Center.add(Vector(0,0,-r))
+                            p8 = e2.Curve.Center.add(Vector(obj.WaveLength,0,-z))
+                            downsegment = Part.Arc(p6,p7,p8).toShape()
+
+                elif obj.WaveType == "Trapezoidal":
+                    p2 = Vector(obj.WaveLength.Value/4,0,obj.WaveHeight.Value)
+                    p3 = Vector(obj.WaveLength.Value,0,obj.WaveHeight.Value)
+                    p4 = Vector(obj.WaveLength.Value*1.25,0,0)
+                    upsegment = Part.makePolygon([p1,p2,p3,p4,p5])
+                    if not downsegment:
+                        a = ((p1.sub(p2)).getAngle(p3.sub(p2)))/2
+                        tx = obj.Thickness.Value*math.tan(a)
+                        d1 = Vector(tx,0,-obj.Thickness.Value)
+                        d2 = Vector(-tx,0,-obj.Thickness.Value)
+                        p6 = p1.add(d1)
+                        if tx >= p3.sub(p2).Length/2:
+                            d3 = p2.sub(p1)
+                            d3.normalize()
+                            d3.multiply((0.625*obj.WaveLength.Value)/d3.x)
+                            d4 = Vector(d3.x,0,-d3.z)
+                            p7 = p6.add(d3)
+                            p8 = p7.add(d4)
+                            p9 = p5.add(d1)
+                            downsegment = Part.makePolygon([p6,p7,p8,p9])
+                        elif tx <= 0.625*obj.WaveLength.Value:
+                            p7 = p2.add(d1)
+                            p8 = p3.add(d2)
+                            p9 = p4.add(d2)
+                            p10 = p5.add(d1)
+                            downsegment = Part.makePolygon([p6,p7,p8,p9,p10])
+                        else:
+                            downsegment = obj.Thickness.Value
+
+                else: # spike
+                    p2 = Vector(obj.WaveHeight.Value,0,obj.WaveHeight.Value)
+                    p3 = Vector(obj.WaveHeight.Value*2,0,0)
+                    upsegment = Part.makePolygon([p1,p2,p3,p5])
+                    if not downsegment:
+                        downsegment = obj.Thickness.Value
+                    
+                upsegment.translate(Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z))
+                if isinstance(downsegment,Part.Shape):
+                    downsegment.translate(Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z))
+                if hasattr(obj,"WaveOffset"):
+                    if obj.WaveOffset.Value:
+                        upsegment.translate(Vector(obj.WaveOffset.Value,0,0))
+                        if isinstance(downsegment,Part.Shape):
+                            downsegment.translate(Vector(obj.WaveOffset.Value,0,0))
+
+                upedges = []
+                downedges = []
                 for i in range(int(bb.XLength/(obj.WaveLength.Value*2))):
-                    e1 = e1.copy()
-                    e1.translate(Vector(obj.WaveLength.Value*2,0,0))
-                    e2 = e2.copy()
-                    e2.translate(Vector(obj.WaveLength.Value*2,0,0))
-                    edges.extend([e1,e2])
-                basewire = Part.Wire(edges)
-                baseface = basewire.extrude(Vector(0,bb.YLength,0))
-                base = baseface.extrude(Vector(0,0,thickness))
+                    w1 = upsegment.copy()
+                    w1.translate(Vector(obj.WaveLength.Value*2*i,0,0))
+                    upedges.extend(w1.Edges)
+                    if isinstance(downsegment,Part.Shape):
+                        w2 = downsegment.copy()
+                        w2.translate(Vector(obj.WaveLength.Value*2*i,0,0))
+                        downedges.extend(w2.Edges)
+                upwire = Part.Wire(upedges)
+                FreeCAD.upwire = upwire # REMOVE
+                if isinstance(downsegment,Part.Shape):
+                    downwire = Part.Wire(downedges)
+                    FreeCAD.downwire = downwire # REMOVE
+                    e1 = Part.LineSegment(upwire.Vertexes[0].Point,downwire.Vertexes[0].Point).toShape()
+                    e2 = Part.LineSegment(upwire.Vertexes[-1].Point,downwire.Vertexes[-1].Point).toShape()
+                    basewire = Part.Wire(upwire.Edges+[e1,e2]+downwire.Edges)
+                else:
+                    z = obj.Thickness.Value
+                    if obj.WaveType == "Curved":
+                        z += obj.WaveHeight.Value
+                    p1 = upwire.Vertexes[0].Point
+                    p2 = p1.add(Vector(0,0,-z))
+                    p3 = Vector(upwire.Vertexes[-1].Point.x,upwire.Vertexes[-1].Point.y,p2.z)
+                    p4 = upwire.Vertexes[-1].Point
+                    w = Part.makePolygon([p1,p2,p3,p4])
+                    basewire = Part.Wire(upwire.Edges+w.Edges)
+
+                #
+                FreeCAD.basewire = basewire
+                if not basewire.isClosed():
+                    print("Error closing base wire - check FreeCAD.basewire")
+                    return
+                #
+
+                baseface = Part.Face(basewire)
+                base = baseface.extrude(Vector(0,bb.YLength,0))
                 rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),normal)
                 base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
                 if obj.WaveDirection.Value:
