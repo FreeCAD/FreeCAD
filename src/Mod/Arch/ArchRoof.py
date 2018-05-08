@@ -55,6 +55,9 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
     roof shape. The default for angle is 45 and the list is
     automatically complete to match with number of edges in the wire.
     If the base object is a solid the roof take the shape.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)

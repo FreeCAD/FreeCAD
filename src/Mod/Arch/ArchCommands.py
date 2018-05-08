@@ -198,6 +198,9 @@ def removeComponents(objectsList,host=None):
 def makeComponent(baseobj=None,name="Component",delete=False):
     '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
     component from the given base object'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
     ArchComponent.Component(obj)

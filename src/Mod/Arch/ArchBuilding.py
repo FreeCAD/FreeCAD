@@ -193,6 +193,9 @@ BuildingTypes = ['Undefined',
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     '''makeBuilding(objectslist): creates a building including the
     objects from the given list.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Building(obj)
     if FreeCAD.GuiUp:

@@ -57,6 +57,9 @@ Roles = ["Undefined","Furniture", "Hydro Equipment", "Electric Equipment"]
 
 def makeEquipment(baseobj=None,placement=None,name="Equipment"):
     "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Equipment(obj)
     if baseobj:

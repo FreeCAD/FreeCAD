@@ -666,6 +666,9 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
     wireframe, otherwise as a face. If startangle AND endangle are given
     (in degrees), they are used and the object appears as an arc. If an edge
     is passed, its Curve must be a Part.Circle'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import Part, DraftGeomUtils
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     if startangle != endangle:
@@ -711,6 +714,9 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
     object with length in X direction and height in Y direction.
     If a placement is given, it is used. If face is False, the
     rectangle is shown as a wireframe, otherwise as a face.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeRectangle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
     _Rectangle(obj)
@@ -741,6 +747,9 @@ def makeDimension(p1,p2,p3=None,p4=None):
     to the given object, i1 is the index of the (curved) edge to measure,
     and mode is either "radius" or "diameter".
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
     _Dimension(obj)
     if gui:
@@ -802,6 +811,9 @@ def makeAngularDimension(center,angles,p3,normal=None):
     '''makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
     from the given center, with the given list of angles, passing through p3.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
     _AngularDimension(obj)
     obj.Center = center
@@ -835,6 +847,9 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import DraftGeomUtils, Part
     if not isinstance(pointslist,list):
         e = pointslist.Wires[0].Edges
@@ -874,6 +889,9 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
     with the given radius, otherwise it is inscribed. If face is True,
     the resulting shape is displayed as a face, otherwise as a wireframe.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if nfaces < 3: return None
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
     _Polygon(obj)
@@ -905,6 +923,9 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
@@ -944,6 +965,9 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
 def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -982,6 +1006,9 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     can also be one single string). The current color and text height and font
     specified in preferences are used.
     If screen is True, the text always faces the view direction.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
@@ -1002,6 +1029,9 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
 
 def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if (getType(obj) == "Rectangle") or (force == "Rectangle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
@@ -1108,6 +1138,9 @@ def makeCopy(obj,force=None,reparent=False):
 
 def makeBlock(objectslist):
     '''makeBlock(objectslist): Creates a Draft Block from the given objects'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
     _Block(obj)
     obj.Components = objectslist
@@ -1127,6 +1160,9 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
     and ynum. In case of polar array, center is a vector, totalangle is the angle
     to cover (in degrees) and totalnum is the number of objects, including the original.
     The result is a parametric Draft Array.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Array(obj)
     obj.Base = baseobject
@@ -1157,6 +1193,9 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
     pathobject. Optionally translates each copy by FreeCAD.Vector xlate direction
     and distance to adjust for difference in shape centre vs shape reference point.
     Optionally aligns baseobject to tangent/normal/binormal of path.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray")
     _PathArray(obj)
     obj.Base = baseobject
@@ -1185,6 +1224,9 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     '''makeEllipse(majradius,minradius,[placement],[face],[support]): makes
     an ellipse with the given major and minor radius, and optionally
     a placement.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
     _Ellipse(obj)
     if minradius > majradius:
@@ -1206,6 +1248,9 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
 def makeVisGroup(group=None,name="VisGroup"):
     '''makeVisGroup([group]): creates a VisGroup object in the given group, or in the
     active document if no group is given'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _VisGroup(obj)
     if FreeCAD.GuiUp:
@@ -1219,6 +1264,9 @@ def extrude(obj,vector,solid=False):
     '''makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
     gets hidden.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     newobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion","Extrusion")
     newobj.Base = obj
     newobj.Dir = vector
@@ -1235,6 +1283,9 @@ def fuse(object1,object2):
     the union of the 2 given objects. If the objects are
     coplanar, a special Draft Wire is used, otherwise we use
     a standard Part fuse.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import DraftGeomUtils, Part
     # testing if we have holes:
     holes = False
@@ -1267,6 +1318,9 @@ def fuse(object1,object2):
     return obj
 
 def cut(object1,object2):
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     '''cut(oject1,object2): returns a cut object made from
     the difference of the 2 given objects.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Cut","Cut")
@@ -2587,6 +2641,9 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     given page. lwmod modifies lineweights (in percent), tmod modifies text heights
     (in percent). The Hint scale, X and Y of the page are used.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if getType(obj) == "SectionPlane":
         import ArchSectionPlane
         viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
@@ -2639,6 +2696,9 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     2D projection of the given object. A specific projection vector can also be given. You can also
     specify a list of face numbers to be considered in individual faces mode.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
     _Shape2DView(obj)
     if gui:
@@ -2677,6 +2737,10 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
         radius constraint. If >0, the radius will be rounded according to this
         precision, and 'Equal' constraint will be added to curve with equal
         radius within precision.'''
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
 
     import Part, DraftGeomUtils
     from Sketcher import Constraint
@@ -2942,6 +3006,9 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         p1.X = 1 #move it in x
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     if isinstance(X,FreeCAD.Vector):
         Z = X.z
@@ -2965,6 +3032,9 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String
@@ -3154,6 +3224,9 @@ def heal(objlist=None,delete=True,reparent=True):
 def makeFacebinder(selectionset,name="Facebinder"):
     """makeFacebinder(selectionset,[name]): creates a Facebinder object from a selection set.
     Only faces will be added."""
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if not isinstance(selectionset,list):
         selectionset = [selectionset]
     fb = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)

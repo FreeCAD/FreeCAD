@@ -52,6 +52,9 @@ __url__ = "http://www.freecadweb.org"
 def makeAxis(num=5,size=1000,name="Axes"):
     '''makeAxis(num,size): makes an Axis set
     based on the given number of axes and interval distances'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     obj.Label = translate("Arch",name)
     _Axis(obj)

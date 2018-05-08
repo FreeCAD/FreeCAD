@@ -69,6 +69,9 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
@@ -101,6 +104,9 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
 def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
     '''makeStructuralSystem(objects,axes): makes a structural system
     based on the given objects and axes'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     result = []
     if not axes:
         print("At least one axis must be given")

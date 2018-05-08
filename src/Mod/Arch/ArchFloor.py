@@ -52,6 +52,9 @@ __url__ = "http://www.freecadweb.org"
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     '''makeFloor(objectslist): creates a floor including the
     objects from the given list.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     obj.Label = translate("Arch",name)
     _Floor(obj)

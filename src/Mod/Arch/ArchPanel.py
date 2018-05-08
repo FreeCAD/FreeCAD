@@ -66,6 +66,9 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
     panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
     length and width for a simple cubic object.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
     _Panel(obj)

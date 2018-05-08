@@ -52,6 +52,9 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
 
     "makePipe([baseobj,diamerter,length,placement,name]): creates an pipe object from the given base object"
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = name
     _ArchPipe(obj)
@@ -80,6 +83,9 @@ def makePipeConnector(pipes,radius=0,name="Connector"):
 
     "makePipeConnector(pipes,[radius,name]): creates a connector between the given pipes"
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = name
     _ArchPipeConnector(obj)
