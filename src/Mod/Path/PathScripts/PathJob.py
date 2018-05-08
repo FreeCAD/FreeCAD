@@ -276,6 +276,7 @@ class ObjectJob:
         if op not in group:
             group.append(op)
             self.obj.Operations.Group = group
+            op.Path.Center = self.obj.Operations.Path.Center
 
     def addToolController(self, tc):
         group = self.obj.ToolController
@@ -301,6 +302,13 @@ class ObjectJob:
         for op in self.obj.Operations.Group:
             collectBaseOps(op)
         return ops
+
+    def setCenterOfRotation(self, center):
+        if center != self.obj.Path.Center:
+            self.obj.Path.Center = center
+            self.obj.Operations.Path.Center = center
+            for op in self.allOperations():
+                op.Path.Center = center
 
     @classmethod
     def baseCandidates(cls):

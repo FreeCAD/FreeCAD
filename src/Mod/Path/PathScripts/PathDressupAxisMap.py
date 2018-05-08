@@ -25,7 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import math
-import PathScripts.PathUtils as P
+import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom
 from PySide import QtCore, QtGui
 
@@ -57,6 +57,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyEnumeration", "axisMap", "Path", "The input mapping axis")
         obj.addProperty("App::PropertyDistance", "radius", "Path", "The radius of the wrapped axis")
         obj.axisMap = maplist
+        obj.axisMap = "Y->A"
         obj.Proxy = self
 
     def __getstate__(self):
@@ -73,7 +74,7 @@ class ObjectDressup:
     def _stripArcs(self, path, d):
         '''converts all G2/G3 commands into G1 commands'''
         newcommandlist = []
-        currLocation = {'X':0,'Y':0,'Z':0}
+        currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
 
         for p in path:
             if p.Name in arccommands:
@@ -108,7 +109,7 @@ class ObjectDressup:
                             pathlist = self._stripArcs(pp, d)
 
                         newcommandlist = []
-                        currLocation = {}
+                        currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
 
                         for c in pathlist: #obj.Base.Path.Commands:
                             newparams = dict(c.Parameters)
@@ -130,8 +131,18 @@ class ObjectDressup:
                                 currLocation.update(c.Parameters)
 
                         path = Path.Path(newcommandlist)
+                        path.Center = self.center(obj)
                         obj.Path = path
-                        obj.Path.Center = FreeCAD.Vector(0, 0, 0-obj.radius.Value)
+
+    def onChanged(self, obj, prop):
+        if not 'Restore' in obj.State and prop == "radius":
+            job = PathUtils.findParentJob(obj)
+            if job:
+                job.Proxy.setCenterOfRotation(self.center(obj))
+
+
+    def center(self, obj):
+        return FreeCAD.Vector(0, 0, 0 - obj.radius.Value)
 
 class ViewProviderDressup:
 
@@ -139,19 +150,20 @@ class ViewProviderDressup:
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.Object = vobj.Object
+        self.obj = vobj.Object
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.obj.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+            # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
 
     def claimChildren(self):
-        for i in self.Object.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.Object.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                print i.Group
-        return [self.Object.Base]
+        return [self.obj.Base]
 
     def __getstate__(self):
         return None
@@ -162,7 +174,9 @@ class ViewProviderDressup:
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        P.addToProject(arg1.Object.Base)
+        job = PathUtils.findParentJob(arg1.Object)
+        job.Proxy.addOperation(arg1.Object.Base)
+        arg1.Object.Base = None
         return True
 
 class CommandPathDressup:
