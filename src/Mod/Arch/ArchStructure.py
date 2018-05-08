@@ -147,6 +147,8 @@ class _CommandStructure:
         self.Height = p.GetFloat("StructureHeight",1000)
         self.Profile = None
         self.continueCmd = False
+        self.bpoint = None
+        self.bmode = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -191,6 +193,10 @@ class _CommandStructure:
 
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
+        if self.modeb.isChecked() and (self.bpoint == None):
+            self.bpoint = point
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form])
+            return
         self.tracker.finalize()
         if point == None:
             return
@@ -224,12 +230,20 @@ class _CommandStructure:
                 else:
                     # horizontal
                     FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
-                    FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+                    if not self.bmode:
+                        FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
                 FreeCADGui.doCommand('s.Profile = "'+self.Profile[2]+'"')
         else :
             FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
-        FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
-        FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
+        if self.bmode and self.bpoint:
+            FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(self.bpoint))
+        else:
+            FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
+        if self.bmode and self.bpoint:
+            rot = FreeCAD.Rotation(Vector(1,0,0),(point.sub(self.bpoint)).normalize())
+            FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.Rotation'+str(rot.Q))
+        else:
+            FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -249,13 +263,25 @@ class _CommandStructure:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Structure options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
+        
+        # mode box
+        labelmode = QtGui.QLabel(translate("Arch","Drawing mode:", utf8_decode=True))
+        self.modeb = QtGui.QRadioButton(translate("Arch","Beam", utf8_decode=True))
+        self.modec = QtGui.QRadioButton(translate("Arch","Column", utf8_decode=True))
+        if self.bpoint:
+            self.modeb.setChecked(True)
+        else:
+            self.modec.setChecked(True)
+        grid.addWidget(labelmode,0,0,1,2)
+        grid.addWidget(self.modeb,1,0,1,1)
+        grid.addWidget(self.modec,1,1,1,1)
 
         # categories box
         labelc = QtGui.QLabel(translate("Arch","Category", utf8_decode=True))
         valuec = QtGui.QComboBox()
         valuec.addItems([" ","Precast concrete"]+Categories)
-        grid.addWidget(labelc,0,0,1,1)
-        grid.addWidget(valuec,0,1,1,1)
+        grid.addWidget(labelc,2,0,1,1)
+        grid.addWidget(valuec,2,1,1,1)
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
@@ -263,35 +289,35 @@ class _CommandStructure:
         self.pSelect = [None]
         fpresets = [" "]
         self.vPresets.addItems(fpresets)
-        grid.addWidget(labelp,1,0,1,1)
-        grid.addWidget(self.vPresets,1,1,1,1)
+        grid.addWidget(labelp,3,0,1,1)
+        grid.addWidget(self.vPresets,3,1,1,1)
 
         # length
         label1 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label1,2,0,1,1)
-        grid.addWidget(self.vLength,2,1,1,1)
+        grid.addWidget(label1,4,0,1,1)
+        grid.addWidget(self.vLength,4,1,1,1)
 
         # width
         label2 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
         self.vWidth = ui.createWidget("Gui::InputField")
         self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label2,3,0,1,1)
-        grid.addWidget(self.vWidth,3,1,1,1)
+        grid.addWidget(label2,5,0,1,1)
+        grid.addWidget(self.vWidth,5,1,1,1)
 
         # height
         label3 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
         self.vHeight = ui.createWidget("Gui::InputField")
         self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label3,4,0,1,1)
-        grid.addWidget(self.vHeight,4,1,1,1)
+        grid.addWidget(label3,6,0,1,1)
+        grid.addWidget(self.vHeight,6,1,1,1)
 
         # horizontal button
         value5 = QtGui.QPushButton(translate("Arch","Switch L/H", utf8_decode=True))
-        grid.addWidget(value5,5,0,1,1)
+        grid.addWidget(value5,7,0,1,1)
         value6 = QtGui.QPushButton(translate("Arch","Switch L/W", utf8_decode=True))
-        grid.addWidget(value6,5,1,1,1)
+        grid.addWidget(value6,7,1,1,1)
 
         # continue button
         label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
@@ -302,8 +328,8 @@ class _CommandStructure:
         if hasattr(FreeCADGui,"draftToolBar"):
             value4.setChecked(FreeCADGui.draftToolBar.continueMode)
             self.continueCmd = FreeCADGui.draftToolBar.continueMode
-        grid.addWidget(label4,6,0,1,1)
-        grid.addWidget(value4,6,1,1,1)
+        grid.addWidget(label4,8,0,1,1)
+        grid.addWidget(value4,8,1,1,1)
 
         QtCore.QObject.connect(valuec,QtCore.SIGNAL("currentIndexChanged(int)"),self.setCategory)
         QtCore.QObject.connect(self.vPresets,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
@@ -313,6 +339,7 @@ class _CommandStructure:
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLH)
         QtCore.QObject.connect(value6,QtCore.SIGNAL("pressed()"),self.rotateLW)
+        QtCore.QObject.connect(self.modeb,QtCore.SIGNAL("toggled(bool)"),self.switchLH)
         return w
 
     def update(self,point,info):
@@ -322,7 +349,18 @@ class _CommandStructure:
                 delta = Vector(0,0,self.Height/2)
             else:
                 delta = Vector(self.Length/2,0,0)
-            self.tracker.pos(point.add(delta))
+            if self.modec.isChecked():
+                self.tracker.pos(point.add(delta))
+                self.tracker.on()
+            else:
+                if self.bpoint:
+                    delta = Vector(0,0,-self.Height/2)
+                    self.tracker.update([self.bpoint.add(delta),point.add(delta)])
+                    self.tracker.on()
+                    l = (point.sub(self.bpoint)).Length
+                    self.vLength.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+                else:
+                    self.tracker.off()
 
     def setWidth(self,d):
         self.Width = d
@@ -378,6 +416,16 @@ class _CommandStructure:
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
 
+    def switchLH(self,bmode):
+        if bmode:
+            self.bmode = True
+            if self.Height > self.Length:
+                self.rotateLH()
+        else:
+            self.bmode = False
+            if self.Length > self.Height:
+                self.rotateLH()
+                self.tracker.setRotation(FreeCAD.Rotation())
 
     def rotateLH(self):
         h = self.Height
