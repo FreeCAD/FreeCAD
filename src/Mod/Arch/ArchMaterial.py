@@ -47,6 +47,9 @@ __url__ = "http://www.freecadweb.org"
 
 def makeMaterial(name="Material"):
     '''makeMaterial(name): makes an Material object'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
     obj.Label = name
     _ArchMaterial(obj)

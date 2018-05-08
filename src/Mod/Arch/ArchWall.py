@@ -57,6 +57,9 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
     all, then you must provide length, width and height. Align can be "Center","Left" or "Right",
     face can be an index number of a face in the base object to base the wall on.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)

@@ -53,6 +53,9 @@ __url__ = "http://www.freecadweb.org"
 def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
     """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)

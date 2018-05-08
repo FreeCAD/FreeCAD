@@ -54,6 +54,9 @@ __url__ = "http://www.freecadweb.org"
 def makeSite(objectslist=None,baseobj=None,name="Site"):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)

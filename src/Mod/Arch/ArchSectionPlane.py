@@ -48,6 +48,9 @@ else:
 def makeSectionPlane(objectslist=None,name="Section"):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     obj.Label = translate("Arch",name)
     _SectionPlane(obj)

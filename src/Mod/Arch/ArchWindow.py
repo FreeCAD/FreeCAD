@@ -63,6 +63,9 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if baseobj:
         if Draft.getType(baseobj) == "Window":
             obj = Draft.clone(baseobj)
@@ -111,6 +114,10 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
     window object based on the given data. windowtype must be one of the names
     defined in Arch.WindowPresets"""
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
 
     def makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2):
 
