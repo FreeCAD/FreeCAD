@@ -60,10 +60,10 @@ public:
 
     const SymmetricMatrix operator+(const SymmetricMatrix& n) const
     { 
-        return SymmetricMatrix( m[0]+n[0],    m[1]+n[1],   m[2]+n[2],   m[3]+n[3]
+        return SymmetricMatrix( m[0]+n[0],    m[1]+n[1],   m[2]+n[2],   m[3]+n[3],
                                               m[4]+n[4],   m[5]+n[5],   m[6]+n[6],
                                                          m[ 7]+n[ 7], m[ 8]+n[8 ],
-                                                                      m[ 9]+n[9 ]);
+                                                                     m[ 9]+n[9 ]);
     }
 
     SymmetricMatrix& operator+=(const SymmetricMatrix& n)
