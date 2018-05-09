@@ -131,6 +131,7 @@ protected Q_SLOTS:
     void onFinishEditing();
     void onSkipRecompute(bool on);
     void onMarkRecompute();
+    void onRecomputeObject();
     void onSyncSelection();
     void onPreSelection();
     void onPreSelectTimer();
@@ -163,6 +164,7 @@ private:
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
+    QAction* recomputeObjectAction;
     QAction* preSelectionAction;
     QAction* syncSelectionAction;
     QAction* syncViewAction;

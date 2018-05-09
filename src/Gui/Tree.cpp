@@ -143,6 +143,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->markRecomputeAction, SIGNAL(triggered()),
             this, SLOT(onMarkRecompute()));
 
+    this->recomputeObjectAction = new QAction(this);
+    connect(this->recomputeObjectAction, SIGNAL(triggered()),
+            this, SLOT(onRecomputeObject()));
+
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
     Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
@@ -298,6 +302,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
             contextMenu.addAction(this->createGroupAction);
 
         contextMenu.addAction(this->markRecomputeAction);
+        contextMenu.addAction(this->recomputeObjectAction);
         contextMenu.addAction(this->relabelObjectAction);
     }
 
@@ -462,6 +467,23 @@ void TreeWidget::onMarkRecompute()
         }
     }
 }
+
+void TreeWidget::onRecomputeObject() {
+    std::vector<App::DocumentObject*> objs;
+    for(auto ti : selectedItems()) {
+        if (ti->type() == ObjectType) {
+            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(ti);
+            objs.push_back(objitem->object()->getObject());
+            objs.back()->touch();
+        }
+    }
+    if(objs.empty())
+        return;
+    App::GetApplication().setActiveTransaction("Recompute");
+    objs.front()->getDocument()->recompute(objs,true);
+    App::GetApplication().closeActiveTransaction();
+}
+
 
 DocumentItem *TreeWidget::getDocumentItem(const Gui::Document *doc) const {
     auto it = DocumentMap.find(doc);
@@ -1216,6 +1238,9 @@ void TreeWidget::setupText() {
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+
+    this->recomputeObjectAction->setText(tr("Recompute object"));
+    this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
 }
 
 void TreeWidget::onSyncSelection() {
