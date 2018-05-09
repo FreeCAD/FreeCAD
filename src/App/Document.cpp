@@ -152,6 +152,7 @@ struct DocumentP
 {
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
+    std::set<App::DocumentObject*> touchedObjs;
     std::map<std::string,DocumentObject*> objectMap;
     std::map<long,DocumentObject*> objectIdMap;
     long lastObjectId;
@@ -1737,6 +1738,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    d->touchedObjs.clear();
     d->pendingRecomputes.clear();
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
@@ -1790,8 +1792,10 @@ Document::readObjects(Base::XMLReader& reader)
                 reader.addName(name.c_str(), obj->getNameInDocument());
 
                 // restore touch/error status flags
-                if (reader.hasAttribute("Touched"))
-                    obj->setStatus(ObjectStatus::Touch, reader.getAttributeAsInteger("Touched") != 0);
+                if (reader.hasAttribute("Touched")) {
+                    if(reader.getAttributeAsInteger("Touched") != 0)
+                        d->touchedObjs.insert(obj);
+                }
                 if (reader.hasAttribute("Invalid"))
                     obj->setStatus(ObjectStatus::Error, reader.getAttributeAsInteger("Invalid") != 0);
             }
@@ -2124,14 +2128,13 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
                     << obj->getNameInDocument() << "': " << e.what());
         }
 
-        bool purge = true;
-        if(checkXLink) {
+        if(checkXLink && !d->touchedObjs.count(obj)) {
             std::vector<Property*> props;
             obj->getPropertyList(props);
             for(auto prop : props) {
                 auto link = dynamic_cast<PropertyXLink*>(prop);
                 if(link && !link->isRestored()) {
-                    purge = false;
+                    d->touchedObjs.insert(obj);
                     FC_WARN("'" << getName() << "' object '" << obj->getNameInDocument() 
                         << "' xlink property '" << obj->getPropertyName(prop) 
                         << (link->getValue()?"' time stamp changed":"' not restored"));
@@ -2139,7 +2142,7 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
                 }
             }
         }
-        if(purge) 
+        if(!d->touchedObjs.count(obj)) 
             obj->purgeTouched();
 
         signalFinishRestoreObject(*obj);
@@ -2154,6 +2157,7 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
         // recompute(objs);
     }
+    d->touchedObjs.clear();
     d->pendingRecomputes.clear();
 }
 
