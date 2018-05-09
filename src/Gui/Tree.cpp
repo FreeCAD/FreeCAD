@@ -1634,7 +1634,12 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 void DocumentItem::onDeleteDocument(DocumentItem *docItem) {
-    if(docItem == this) return;
+    if(docItem == this) {
+        FOREACH_ITEM_ALL(item);
+            item->myOwner = 0;
+        END_FOREACH_ITEM;
+        return;
+    }
     for(auto it=ObjectMap.begin(),itNext=it;it!=ObjectMap.end();it=itNext) {
         ++itNext;
         auto data = it->second;
@@ -1690,6 +1695,7 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
     auto &items = it->second->items;
     for(auto cit=items.begin(),citNext=cit;cit!=items.end();cit=citNext) {
         ++citNext;
+        (*cit)->myOwner = 0;
         delete *cit;
     }
     
@@ -2455,6 +2461,12 @@ DocumentObjectItem::~DocumentObjectItem()
 
     if(myData->rootItem == this)
         myData->rootItem = 0;
+
+    if(myOwner && myData->items.empty()) {
+        auto it = _ParentMap.find(object()->getObject());
+        if(it!=_ParentMap.end() && it->second.size())
+            myOwner->populateObject(*it->second.begin());
+    }
 }
 
 const char *DocumentObjectItem::getTreeName() const {
