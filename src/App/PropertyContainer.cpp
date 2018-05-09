@@ -198,13 +198,14 @@ void PropertyContainer::Save (Base::Writer &writer) const
     getPropertyMap(Map);
 
     std::vector<std::pair<std::string,Property*> > transients;
-    for(auto it=Map.begin();it!=Map.end();++it) {
+    for(auto it=Map.begin();it!=Map.end();) {
         if (it->second->testStatus(Property::Transient) ||
             (getPropertyType(it->second) & Prop_Transient)) 
         {
             transients.push_back(*it);
-            Map.erase(it);
-        }
+            it = Map.erase(it);
+        }else
+            ++it;
     }
 
     writer.incInd(); // indentation for 'Properties Count'
