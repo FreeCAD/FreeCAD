@@ -98,6 +98,8 @@ protected:
     bool event(QEvent *e);
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
+    QList<App::DocumentObject *> buildListChildren(QTreeWidgetItem* targetitem,
+                                                   Gui::ViewProviderDocumentObject* vp);
 
 protected Q_SLOTS:
     void onCreateGroup();
