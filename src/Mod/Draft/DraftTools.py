@@ -3601,13 +3601,23 @@ class Scale(Modifier):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
+        self.refs = []
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.ghost = ghostTracker(self.sel)
+        self.pickmode = False
+        self.task = None
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick base point:")+"\n")
+
+    def pickRef(self):
+        self.pickmode = True
+        if self.node:
+            self.node = self.node[:1] # remove previous picks
+        msg(translate("draft", "Pick reference distance from base point:")+"\n")
+        self.call = self.view.addEventCallback("SoEvent",self.action)
 
     def finish(self,closed=False,cont=False):
         Modifier.finish(self)
@@ -3664,22 +3674,36 @@ class Scale(Modifier):
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
-                    self.ui.redraw()
+                    #self.ui.redraw()
                     self.numericInput(self.point.x,self.point.y,self.point.z)
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when a valid base point has been entered"
         self.point = Vector(numx,numy,numz)
         self.node.append(self.point)
-        self.ui.offUi()
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        task = DraftGui.ScaleTaskPanel()
-        task.sourceCmd = self
-        DraftGui.todo.delay(FreeCADGui.Control.showDialog,task)
-        if self.ghost:
-            self.ghost.on()
-
+        if not self.pickmode:
+            self.ui.offUi()
+            if self.call:
+                self.view.removeEventCallback("SoEvent",self.call)
+            self.task = DraftGui.ScaleTaskPanel()
+            self.task.sourceCmd = self
+            DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+            if self.ghost:
+                self.ghost.on()
+        elif len(self.node) == 2:
+            msg(translate("draft", "Pick new distance from base point:")+"\n")
+        elif len(self.node) == 3:
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.off()
+            if self.call:
+                self.view.removeEventCallback("SoEvent",self.call)
+            d1 = (self.node[1].sub(self.node[0])).Length
+            d2 = (self.node[2].sub(self.node[0])).Length
+            #print d2,"/",d1,"=",d2/d1
+            if hasattr(self,"task"):
+                if self.task:
+                    self.task.lock.setChecked(True)
+                    self.task.setValue(d2/d1)
 
 class ToggleConstructionMode():
     "The Draft_ToggleConstructionMode FreeCAD command definition"
