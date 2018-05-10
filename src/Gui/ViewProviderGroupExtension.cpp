@@ -82,6 +82,8 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 #endif
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+	if (group == NULL) 
+		return false;
 
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
