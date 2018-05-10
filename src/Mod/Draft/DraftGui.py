@@ -2221,9 +2221,12 @@ class ScaleTaskPanel:
         layout.addWidget(self.isOriginal,7,0,1,2)
         self.isCopy = QtGui.QRadioButton()
         layout.addWidget(self.isCopy,8,0,1,2)
+        self.pickrefButton = QtGui.QPushButton()
+        layout.addWidget(self.pickrefButton,9,0,1,2)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
+        QtCore.QObject.connect(self.pickrefButton,QtCore.SIGNAL("clicked()"),self.pickRef)
         self.retranslateUi()
         
     def setValue(self,val=None):
@@ -2245,6 +2248,11 @@ class ScaleTaskPanel:
         self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
         self.isOriginal.setText(QtGui.QApplication.translate("Draft", "Modify original", None))
         self.isCopy.setText(QtGui.QApplication.translate("Draft", "Create a copy", None))
+        self.pickrefButton.setText(QtGui.QApplication.translate("Draft", "Pick from/to points", None))
+
+    def pickRef(self):
+        if self.sourceCmd:
+            self.sourceCmd.pickRef()
 
     def accept(self):
         if self.sourceCmd:
