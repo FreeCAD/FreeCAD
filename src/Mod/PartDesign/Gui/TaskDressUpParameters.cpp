@@ -107,6 +107,7 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             continue;
         }
         FC_WARN("missing element reference: " << pcDressUp->getNameInDocument() << "." << ref);
+        touched = true;
         refs.pop_back();
         for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
             if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
@@ -114,7 +115,6 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             FC_WARN("guess element reference: " << ref << " -> " << name.first);
             widget->addItem(QString::fromStdString(name.second));
             refs.push_back(name.second);
-            touched = true;
         }
     }
     if(touched){
