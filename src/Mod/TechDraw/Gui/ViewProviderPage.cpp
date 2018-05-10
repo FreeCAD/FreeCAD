@@ -29,7 +29,8 @@
 # include <QMenu>
 # include <QTimer>
 #include <QPointer>
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
+#include <boost/signals2/connection.hpp>
 #include <boost/bind.hpp>
 
 #endif
