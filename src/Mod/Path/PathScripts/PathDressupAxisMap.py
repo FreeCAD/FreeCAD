@@ -33,31 +33,22 @@ from PySide import QtCore, QtGui
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-
-except AttributeError:
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
-
-
 
 class ObjectDressup:
 
     def __init__(self, obj):
         maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
-        obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
-        obj.addProperty("App::PropertyEnumeration", "axisMap", "Path", "The input mapping axis")
-        obj.addProperty("App::PropertyDistance", "radius", "Path", "The radius of the wrapped axis")
-        obj.axisMap = maplist
-        obj.axisMap = "Y->A"
+        obj.addProperty("App::PropertyLink",        "Base",     "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
+        obj.addProperty("App::PropertyEnumeration", "AxisMap",  "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"))
+        obj.addProperty("App::PropertyDistance",    "Radius",   "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The radius of the wrapped axis"))
+        obj.AxisMap = maplist
+        obj.AxisMap = "Y->A"
         obj.Proxy = self
 
     def __getstate__(self):
@@ -94,8 +85,8 @@ class ObjectDressup:
 
     def execute(self, obj):
 
-        inAxis = obj.axisMap[0]
-        outAxis = obj.axisMap[3]
+        inAxis = obj.AxisMap[0]
+        outAxis = obj.AxisMap[3]
         d = 0.1
 
         if obj.Base:
@@ -115,14 +106,14 @@ class ObjectDressup:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(obj.radius, remapvar)
+                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
                                 locdiff = dict(set(newparams.items()) - set(currLocation.items()))
                                 if len(locdiff) == 1 and outAxis in locdiff:  #pure rotation.  Calculate rotational feed rate
                                     if 'F' in c.Parameters:
                                         feed = c.Parameters['F']
                                     else:
                                         feed = currLocation['F']
-                                    newparams.update({"F":self._linear2angular(obj.radius, feed)})
+                                    newparams.update({"F":self._linear2angular(obj.Radius, feed)})
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
@@ -135,14 +126,14 @@ class ObjectDressup:
                         obj.Path = path
 
     def onChanged(self, obj, prop):
-        if not 'Restore' in obj.State and prop == "radius":
+        if not 'Restore' in obj.State and prop == "Radius":
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
 
 
     def center(self, obj):
-        return FreeCAD.Vector(0, 0, 0 - obj.radius.Value)
+        return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
 
 class ViewProviderDressup:
 
@@ -209,13 +200,13 @@ class CommandPathDressup:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Dressup", "Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupAxisMap", "Create Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupAxisMap")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")')
         FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('obj.radius = 45')
+        FreeCADGui.doCommand('obj.Radius = 45')
         FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
