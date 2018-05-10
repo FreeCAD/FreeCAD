@@ -23,7 +23,7 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include <QRectF>
 
@@ -85,7 +85,7 @@ public:
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y);
     bool keepUpdated(void);
-    boost::signal<void (const DrawView*)> signalGuiPaint;
+    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
     void checkScale(void);
     void requestPaint(void);
