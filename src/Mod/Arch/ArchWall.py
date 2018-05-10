@@ -515,6 +515,7 @@ class _Wall(ArchComponent.Component):
                 # blocks calculation
                 elif hasattr(obj,"MakeBlocks") and hasattr(self,"basewires"):
                     if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.BlockLength.Value and obj.BlockHeight.Value:
+                        #print "calculating blocks"
                         if len(self.basewires) == 1:
                             blocks = []
                             n = FreeCAD.Vector(extv)
@@ -608,17 +609,18 @@ class _Wall(ArchComponent.Component):
         
         # count blocks
         if hasattr(obj,"MakeBlocks"):
-            fvol = obj.BlockLength.Value * obj.BlockHeight.Value * obj.Width.Value
-            if fvol:
-                print("base volume:",fvol)
-                for s in base.Solids:
-                    print(abs(s.Volume - fvol))
-                ents = [s for s in base.Solids if abs(s.Volume - fvol) < 1]
-                obj.CountEntire = len(ents)
-                obj.CountBroken = len(base.Solids) - len(ents)
-            else:
-                obj.CountEntire = 0
-                obj.CountBroken = 0
+            if obj.MakeBlocks:
+                fvol = obj.BlockLength.Value * obj.BlockHeight.Value * obj.Width.Value
+                if fvol:
+                    #print("base volume:",fvol)
+                    #for s in base.Solids:
+                        #print(abs(s.Volume - fvol))
+                    ents = [s for s in base.Solids if abs(s.Volume - fvol) < 1]
+                    obj.CountEntire = len(ents)
+                    obj.CountBroken = len(base.Solids) - len(ents)
+                else:
+                    obj.CountEntire = 0
+                    obj.CountBroken = 0
 
         # set the length property
         if obj.Base:
