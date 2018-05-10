@@ -357,7 +357,6 @@ bool DrawView::keepUpdated(void)
 
 void DrawView::requestPaint(void)
 {
-    Base::Console().Message("TRACE - DV::requestPaint()\n");
     signalGuiPaint(this);
 }
 
