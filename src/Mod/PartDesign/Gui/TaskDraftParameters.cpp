@@ -297,16 +297,20 @@ bool TaskDlgDraftParameters::accept()
     std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
 
     // Force the user to select a neutral plane
-    if (neutralPlane.empty() || neutralPlane == "None") {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
-            QObject::tr("Please select a plane or an edge plus a pull direction"));
-        return false;
-    }
+    // if (neutralPlane.empty() || neutralPlane == "None") {
+    //     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
+    //         QObject::tr("Please select a plane or an edge plus a pull direction"));
+    //     return false;
+    // }
 
     auto tobj = vp->getObject();
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
+    if(neutralPlane.empty())
+        neutralPlane = "None";
     FCMD_OBJ_CMD(tobj,"NeutralPlane = " << neutralPlane);
+    if(pullDirection.empty())
+        pullDirection = "None";
     FCMD_OBJ_CMD(tobj,"PullDirection = " << pullDirection);
 
     return TaskDlgDressUpParameters::accept();

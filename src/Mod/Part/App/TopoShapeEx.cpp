@@ -2544,7 +2544,7 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
     BRepOffsetAPI_DraftAngle mkDraft;
     do {
         if(faces.empty())
-            HANDLE_NULL_INPUT;
+            Standard_Failure::Raise("no faces can be used");
 
         mkDraft.Init(shape.getShape());
         done = true;

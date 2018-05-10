@@ -63,6 +63,8 @@
 
 using namespace PartDesign;
 
+FC_LOG_LEVEL_INIT("PartDesign", true,true)
+
 
 PROPERTY_SOURCE(PartDesign::Draft, PartDesign::DressUp)
 
@@ -168,6 +170,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 if (c.GetType() == GeomAbs_Circle) {
                     neutralPlane = gp_Pln(p1, c.Circle().Axis().Direction());
                     found = true;
+                    FC_LOG("guess draft neutral plane using Edge" << i);
                     break;
                 }
             } else {
@@ -189,6 +192,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 BRepAdaptor_Curve c(edge);
                 neutralPlane = gp_Pln(pm, c.Line().Direction());
                 found = true;
+                FC_LOG("guess draft neutral plane using Edge" << i);
                 break;
             }
         }
@@ -270,8 +274,10 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         TopoShape shape(0,getDocument()->getStringHasher());
         try {
             shape.makEDraft(baseShape,faces,pullDirection,angle,neutralPlane);
-        }catch(Standard_Failure &) {
-            return new App::DocumentObjectExecReturn("Failed to create draft");
+        }catch(Standard_Failure &e) {
+            std::ostringstream ss;
+            ss << "Failed to create draft: " << e.GetMessageString();
+            return new App::DocumentObjectExecReturn(ss.str().c_str());
         }
         if (shape.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
