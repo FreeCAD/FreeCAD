@@ -2469,7 +2469,7 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 }
 
 #ifdef USE_OLD_DAG
-int Document::recompute(const std::vector<App::DocumentObject*> &objs)
+int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force)
 {
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
@@ -2480,8 +2480,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
-    bool skip = testStatus(Document::SkipRecompute);
-    if (skip)
+    if(!force && testStatus(Document::SkipRecompute))
         return 0;
 
     ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
@@ -2606,7 +2605,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
+int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force) {
     int objectCount = 0;
 
     if (testStatus(Document::Recomputing)) {
@@ -2615,9 +2614,10 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
     }
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
-    bool skip = testStatus(Document::SkipRecompute);
-    if (skip)
+    if(!force && testStatus(Document::SkipRecompute)) {
+        signalSkipRecompute(*this,objs);
         return 0;
+    }
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
@@ -2658,20 +2658,25 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
         std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
     }
 #endif
+    std::set<App::DocumentObject *> filter;
     size_t idx = 0;
     // maximum two passes to allow some form of dependency inversion
     for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
         FC_LOG("Recompute pass " << passes);
         for (;idx<topoSortedObjects.size();++idx) {
             auto obj = topoSortedObjects[idx];
+            if(filter.find(obj)!=filter.end())
+                continue;
             // ask the object if it should be recomputed
             if (obj->isTouched() || obj->mustExecute() == 1) {
-                objectCount++;
                 if (_recomputeFeature(obj)) {
-                    // if something happened break execution of recompute
-                    return -1;
+                    // if something happened filter all object in its
+                    // inListRecursive from the queue then proceed
+                    obj->getInListEx(filter,true);
+                    filter.insert(obj);
                 }
                 else{
+                    objectCount++;
                     obj->purgeTouched();
                     // set all dependent object touched to force recompute
                     for (auto inObjIt : obj->getInList())
@@ -2683,7 +2688,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
         for (size_t i=0;i<topoSortedObjects.size();++i) {
             auto obj = topoSortedObjects[i];
             obj->setStatus(ObjectStatus::Recompute2,false);
-            if(obj->isTouched()) {
+            if(!filter.count(obj) && obj->isTouched()) {
                 if(passes>0) 
                     FC_ERR(obj->getNameInDocument() << " still touched after recompute");
                 else{
@@ -2916,13 +2921,13 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         e.ReportException();
         _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
         Feat->setError();
-        return false;
+        return true;
     }
     catch (std::exception &e) {
         Base::Console().Warning("exception in Feature \"%s\" thrown: %s\n",Feat->getNameInDocument(),e.what());
         _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
         Feat->setError();
-        return false;
+        return true;
     }
 #ifndef FC_DEBUG
     catch (...) {
@@ -2944,6 +2949,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         Base::Console().Error("%s\n",returnCode->Why.c_str());
 #endif
         Feat->setError();
+        return true;
     }
     return false;
 }
@@ -2957,11 +2963,9 @@ void Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 
     // verify that the feature is (active) part of the document
     if (Feat->getNameInDocument()) {
-        if(recursive) {
-            std::vector<App::DocumentObject*> objs;
-            objs.push_back(Feat);
-            recompute(objs);
-        }else
+        if(recursive) 
+            recompute({Feat},true);
+        else
             _recomputeFeature(Feat);
     }
 }

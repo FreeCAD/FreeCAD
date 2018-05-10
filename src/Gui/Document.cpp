@@ -116,6 +116,7 @@ struct DocumentP
     Connection connectUndoDocument;
     Connection connectRedoDocument;
     Connection connectRecomputed;;
+    Connection connectSkipRecompute;
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
     Connection connectTouchedObject;;
@@ -181,6 +182,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotRedoDocument, this, _1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
         (boost::bind(&Gui::Document::slotRecomputed, this, _1));
+    d->connectSkipRecompute = pcDocument->signalSkipRecompute.connect
+        (boost::bind(&Gui::Document::slotSkipRecompute, this, _1, _2));
     d->connectTouchedObject = pcDocument->signalTouchedObject.connect
         (boost::bind(&Gui::Document::slotTouchedObject, this, _1));
 
@@ -222,6 +225,7 @@ Document::~Document()
     d->connectUndoDocument.disconnect();
     d->connectRedoDocument.disconnect();
     d->connectRecomputed.disconnect();
+    d->connectSkipRecompute.disconnect();
     d->connectTransactionAppend.disconnect();
     d->connectTransactionRemove.disconnect();
     d->connectTouchedObject.disconnect();
@@ -790,6 +794,31 @@ void Document::slotRecomputed(const App::Document& doc)
         return;
     getMainWindow()->updateActions();
     TreeWidget::updateStatus();
+}
+
+// This function is called when some asks to recompute a document that is marked
+// as 'SkipRecompute'. We'll check if we are the current document, and if either
+// not given an explicit recomputing object list, or the given single object is
+// the eidting object or the active object. If the conditions are met, we'll
+// force recompute only that object and all its dependent objects.
+void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*> &objs)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    if(objs.size()>1 || App::GetApplication().getActiveDocument()!=&doc)
+        return;
+    App::DocumentObject *obj = 0;
+    auto editDoc = Application::Instance->editDocument();
+    if(editDoc) {
+        auto vp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+        if(vp)
+            obj = vp->getObject();
+    }
+    if(!obj)
+        obj = doc.getActiveObject();
+    if(!obj || !obj->getNameInDocument() || (objs.size() && objs.front()!=obj))
+        return;
+    obj->recomputeFeature(true);
 }
 
 void Document::slotTouchedObject(const App::DocumentObject &)

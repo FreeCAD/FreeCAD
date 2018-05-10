@@ -289,9 +289,8 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
 // it does not detect cyclic reference, althgouth it won't crash either.
-std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
+void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inList, bool recursive) const
 {
-    std::set<App::DocumentObject*> inList;
     std::map<DocumentObject*,std::set<App::DocumentObject*> > outLists;
 
     // collect all objects and their outLists from all documents.
@@ -322,10 +321,13 @@ std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
             }
         }
     }
-
-    return inList;
 }
 
+std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const {
+    std::set<App::DocumentObject*> ret;
+    getInListEx(ret,recursive);
+    return ret;
+}
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {

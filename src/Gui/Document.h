@@ -88,6 +88,7 @@ protected:
     void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     void slotFinishRestoreObject(const App::DocumentObject &obj);
     void slotRecomputed(const App::Document&);
+    void slotSkipRecompute(const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotTouchedObject(const App::DocumentObject &);
     //@}
 

@@ -161,6 +161,7 @@ public:
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
     boost::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalRecomputed;
+    boost::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalSkipRecompute;
     boost::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     //@}
 
@@ -306,7 +307,7 @@ public:
      * @param objs: specify a sub set of objects to recompute. If empty, then
      * all object in this document is checked for recompute
      */
-    int recompute(const std::vector<App::DocumentObject*> &objs=std::vector<App::DocumentObject*>());
+    int recompute(const std::vector<App::DocumentObject*> &objs={},bool force=false);
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the error log from the recompute run
