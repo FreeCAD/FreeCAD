@@ -53,9 +53,6 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-# Possible roles for structural elements
-Roles = ["Undefined","Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
-
 #Reads preset profiles and categorizes them
 Categories=[]
 Presets=ArchProfile.readPresets()
@@ -463,7 +460,6 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyEnumeration","FaceMaker","Arch",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
         self.Type = "Structure"
         obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
-        obj.Role = Roles
         obj.Role = "Beam"
 
     def execute(self,obj):

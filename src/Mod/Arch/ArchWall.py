@@ -49,9 +49,6 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# Possible roles for walls
-Roles = ['Undefined','Wall','Wall Layer','Beam','Column','Curtain Wall']
-
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
@@ -478,7 +475,6 @@ class _Wall(ArchComponent.Component):
         obj.setEditorMode("CountBroken",1)
 
         obj.Align = ['Left','Right','Center']
-        obj.Role = Roles
         self.Type = "Wall"
         obj.Role = "Wall"
 
