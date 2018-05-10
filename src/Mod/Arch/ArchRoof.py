@@ -182,6 +182,7 @@ class _Roof(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","BorderLength","Arch", QT_TRANSLATE_NOOP("App::Property","The total length of borders of this roof"))
         obj.addProperty("App::PropertyBool","Flip","Arch",QT_TRANSLATE_NOOP("App::Property","Flip the roof direction if going the wrong way"))
         self.Type = "Roof"
+        obj.Role = "Roof"
         obj.Proxy = self
         obj.setEditorMode("RidgeLength",1)
         obj.setEditorMode("BorderLength",1)

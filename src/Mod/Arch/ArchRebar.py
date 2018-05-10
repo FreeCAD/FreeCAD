@@ -170,6 +170,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance", "Length", "Arch", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"))
         obj.addProperty("App::PropertyDistance", "TotalLength", "Arch", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
         self.Type = "Rebar"
+        obj.Role = "Reinforcing Bar"
         obj.setEditorMode("Spacing", 1)
         obj.setEditorMode("Length", 1)
         obj.setEditorMode("TotalLength", 1)

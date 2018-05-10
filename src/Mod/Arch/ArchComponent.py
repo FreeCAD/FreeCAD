@@ -29,7 +29,8 @@ __url__ = "http://www.freecadweb.org"
 Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
          'Door','Foundation','Furniture','Hydro Equipment','Electric Equipment',
          'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
-         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
+         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window','Pipe Segment','Curtain Wall',
+         'Pipe Fitting','Reinforcing Bar']
 
 import FreeCAD,Draft,ArchCommands,math
 from FreeCAD import Vector

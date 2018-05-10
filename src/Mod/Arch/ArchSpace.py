@@ -27,8 +27,6 @@ __title__="FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-Roles = ["Undefined","Space"]
-
 SpaceTypes = [
 "Undefined",
 "Exterior",
@@ -268,7 +266,6 @@ class _Space(ArchComponent.Component):
         self.Type = "Space"
         obj.SpaceType = SpaceTypes
         obj.Conditioning = ConditioningTypes
-        obj.Role = Roles
         obj.Role = "Space"
         obj.setEditorMode("HorizontalArea",2)
 
