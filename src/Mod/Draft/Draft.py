@@ -1011,18 +1011,20 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
         return
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
-    obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
-    obj.LabelText=stringslist
-    obj.Position=point
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Text")
+    DraftText(obj)
+    obj.Text = stringslist
+    obj.Placement.Base = point
     if FreeCAD.GuiUp:
+        ViewProviderDraftText(obj.ViewObject)
         if not screen:
-            obj.ViewObject.DisplayMode="World"
+            obj.ViewObject.DisplayMode = "3D text"
         h = getParam("textheight",0.20)
         if screen:
             h = h*10
         obj.ViewObject.FontSize = h
         obj.ViewObject.FontName = getParam("textfont","")
-        obj.ViewObject.LineSpacing = 0.6
+        obj.ViewObject.LineSpacing = 1
         formatObject(obj)
         select(obj)
     return obj
@@ -7023,6 +7025,124 @@ class ViewProviderDraftLabel:
                     pts.append(pts[0])
                     self.fcoords.point.setValues(pts)
                     self.frame.coordIndex.setValues(0,len(pts),range(len(pts)))
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+
+class DraftText:
+    
+    "The Draft Text object"
+    
+    def __init__(self,obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+        obj.addProperty("App::PropertyStringList","Text","Base",QT_TRANSLATE_NOOP("App::Property","The text displayed by this object"))
+        self.Type = "DraftText"
+
+    def execute(self,obj):
+        pass
+
+
+class ViewProviderDraftText:
+
+    "A View Provider for the Draft Label"
+
+    def __init__(self,vobj):
+        vobj.addProperty("App::PropertyLength","FontSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the text"))
+        vobj.addProperty("App::PropertyFont","FontName","Base",QT_TRANSLATE_NOOP("App::Property","The font of the text"))
+        vobj.addProperty("App::PropertyEnumeration","Justification","Base",QT_TRANSLATE_NOOP("App::Property","The vertical alignment of the text"))
+        vobj.addProperty("App::PropertyColor","TextColor","Base",QT_TRANSLATE_NOOP("App::Property","Text color"))
+        vobj.addProperty("App::PropertyFloat","LineSpacing","Base",QT_TRANSLATE_NOOP("App::Property","Line spacing (relative to font size)"))
+        vobj.Proxy = self
+        self.Object = vobj.Object
+        vobj.Justification = ["Left","Center","Right"]
+        vobj.FontName = getParam("textfont","sans")
+        vobj.FontSize = getParam("textheight",1)
+
+    def getIcon(self):
+        import Draft_rc
+        return ":/icons/Draft_Text.svg"
+
+    def claimChildren(self):
+        return []
+
+    def attach(self,vobj):
+        from pivy import coin
+        self.mattext = coin.SoMaterial()
+        textdrawstyle = coin.SoDrawStyle()
+        textdrawstyle.style = coin.SoDrawStyle.FILLED
+        self.trans = coin.SoTransform()
+        self.font = coin.SoFont()
+        self.text2d = coin.SoText2()
+        self.text3d = coin.SoAsciiText()
+        self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
+        self.text2d.justification = coin.SoText2.LEFT
+        self.text3d.justification = coin.SoAsciiText.LEFT
+        self.node2d = coin.SoGroup()
+        self.node2d.addChild(self.trans)
+        self.node2d.addChild(self.mattext)
+        self.node2d.addChild(textdrawstyle)
+        self.node2d.addChild(self.font)
+        self.node2d.addChild(self.text2d)
+        self.node3d = coin.SoGroup()
+        self.node3d.addChild(self.trans)
+        self.node3d.addChild(self.mattext)
+        self.node3d.addChild(textdrawstyle)
+        self.node3d.addChild(self.font)
+        self.node3d.addChild(self.text3d)
+        vobj.addDisplayMode(self.node2d,"2D text")
+        vobj.addDisplayMode(self.node3d,"3D text")
+        self.onChanged(vobj,"TextColor")
+
+    def getDisplayModes(self,vobj):
+        return ["2D text","3D text"]
+
+    def getDefaultDisplayMode(self):
+        return "3D text"
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def updateData(self,obj,prop):
+        if prop == "Text":
+            if obj.Text:
+                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+        elif prop == "Placement":
+            self.trans.translation.setValue(obj.Placement.Base)
+            self.trans.rotation.setValue(obj.Placement.Rotation.Q)
+
+    def onChanged(self,vobj,prop):
+        if prop == "TextColor":
+            if hasattr(vobj,"TextColor"):
+                l = vobj.TextColor
+                self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif (prop == "FontName"):
+            if hasattr(vobj,"FontName"):
+                self.font.name = vobj.FontName.encode("utf8")
+        elif prop  == "FontSize":
+            if hasattr(vobj,"FontSize"):
+                self.font.size = vobj.FontSize.Value
+        elif prop == "Justification":
+            if hasattr(vobj,"Justification"):
+                from pivy import coin
+                if vobj.Justification == "Left":
+                    self.text2d.justification = coin.SoText2.LEFT
+                    self.text3d.justification = coin.SoAsciiText.LEFT
+                elif vobj.Justification == "Right":
+                    self.text2d.justification = coin.SoText2.RIGHT
+                    self.text3d.justification = coin.SoAsciiText.RIGHT
+                else:
+                    self.text2d.justification = coin.SoText2.CENTER
+                    self.text3d.justification = coin.SoAsciiText.CENTER
+        elif prop == "LineSpacing":
+            if hasattr(vobj,"LineSpacing"):
+                self.text2d.spacing = vobj.LineSpacing
+                self.text3d.spacing = vobj.LineSpacing
 
     def __getstate__(self):
         return None
