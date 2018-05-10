@@ -2156,11 +2156,13 @@ private:
         const char *name;
         PyObject *pyobj;
         PyObject *sameType=Py_True;
-        if (!PyArg_ParseTuple(args.ptr(), "O!s|O", 
-                    &App::DocumentObjectPy::Type,&pyobj,&name,&sameType))
+        PyObject *withCache=Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "O!s|OO", 
+                    &App::DocumentObjectPy::Type,&pyobj,&name,&sameType,&withCache))
             throw Py::Exception();
         auto obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
-        auto ret = Part::Feature::getRelatedElements(obj,name,PyObject_IsTrue(sameType));
+        auto ret = Part::Feature::getRelatedElements(obj,name,
+                PyObject_IsTrue(sameType), PyObject_IsTrue(withCache));
         Py::Dict dict;
         for(auto &v : ret)
             dict.setItem(Py::String(v.first),Py::String(v.second));

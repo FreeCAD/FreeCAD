@@ -122,7 +122,7 @@ public:
     }
 
     static std::vector<std::pair<std::string,std::string> > 
-    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true);
+    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
 
     TopLoc_Location getLocation() const;
     

@@ -579,7 +579,15 @@ long ComplexGeoData::getElementHistory(const char *_name,
 {
     long tag = 0;
     size_t len = 0;
-    std::string name = newElementName(_name);
+    std::string name;
+    auto mapped = isMappedElement(_name);
+    if(mapped)
+        _name = mapped;
+    auto dot = strchr(_name,'.');
+    if(dot)
+        name = std::string(_name,dot-_name);
+    else
+        name = _name;
     auto pos = findTagInElementName(name,&tag,&len);
     if(pos == std::string::npos) {
         if(original)

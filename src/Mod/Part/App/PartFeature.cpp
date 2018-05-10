@@ -270,12 +270,12 @@ Feature::getElementHistory(App::DocumentObject *feature,
 }
 
 std::vector<std::pair<std::string,std::string> > 
-Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType)
+Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType, bool withCache)
 {
     auto owner = obj;
     auto shape = getTopoShape(obj,0,false,0,&owner); 
     std::vector<std::pair<std::string,std::string> > ret;
-    if(shape.getRelatedElementsCached(name,sameType,ret))
+    if(withCache && shape.getRelatedElementsCached(name,sameType,ret))
         return ret;
 #if 0
     auto ret = shape.getRelatedElements(name,sameType); 
