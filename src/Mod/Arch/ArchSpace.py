@@ -266,7 +266,7 @@ class _Space(ArchComponent.Component):
         self.Type = "Space"
         obj.SpaceType = SpaceTypes
         obj.Conditioning = ConditioningTypes
-        obj.Role = "Space"
+        obj.IfcRole = "Space"
         obj.setEditorMode("HorizontalArea",2)
 
     def execute(self,obj):

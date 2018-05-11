@@ -185,7 +185,7 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.Type = "Pipe"
-        obj.Role = "Pipe Segment"
+        obj.IfcRole = "Pipe Segment"
         obj.addProperty("App::PropertyLength", "Diameter",    "Arch", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
         obj.addProperty("App::PropertyLength", "Length",      "Arch", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
         obj.addProperty("App::PropertyLink",   "Profile",     "Arch", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
@@ -299,7 +299,7 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.Type = "PipeConnector"
-        obj.Role = "Pipe Fitting"
+        obj.IfcRole = "Pipe Fitting"
         obj.addProperty("App::PropertyLength",      "Radius",        "Arch", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
         obj.addProperty("App::PropertyLinkList",    "Pipes",         "Arch", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
         obj.addProperty("App::PropertyEnumeration", "ConnectorType", "Arch", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))

@@ -369,7 +369,7 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.Sheets = 1
         self.Type = "Panel"
-        obj.Role = "Plate"
+        obj.IfcRole = "Plate"
         obj.WaveType = ["Curved","Trapezoidal","Spikes"]
         obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         obj.setEditorMode("VerticalArea",2)

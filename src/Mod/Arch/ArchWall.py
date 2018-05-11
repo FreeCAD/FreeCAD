@@ -476,7 +476,7 @@ class _Wall(ArchComponent.Component):
 
         obj.Align = ['Left','Right','Center']
         self.Type = "Wall"
-        obj.Role = "Wall"
+        obj.IfcRole = "Wall"
 
     def execute(self,obj):
         "builds the wall shape"

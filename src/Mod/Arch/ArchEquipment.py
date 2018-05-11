@@ -266,7 +266,7 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
         self.Type = "Equipment"
-        obj.Role = "Furniture"
+        obj.IfcRole = "Furniture"
         obj.Proxy = self
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)

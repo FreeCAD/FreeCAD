@@ -156,13 +156,19 @@ class _ArchSchedule:
                                 if Draft.getType(o).upper() == args[1].upper():
                                     ok = False
                             elif args[0].upper() == "ROLE":
-                                if hasattr(o,"Role"):
+                                if hasattr(o,"IfcRole"):
+                                    if o.IfcRole.upper() != args[1].upper():
+                                        ok = False
+                                elif hasattr(o,"Role"):
                                     if o.Role.upper() != args[1].upper():
                                         ok = False
                                 else:
                                     ok = False
                             elif args[0].upper() == "!ROLE":
                                 if hasattr(o,"Role"):
+                                    if o.IfcRole.upper() == args[1].upper():
+                                        ok = False
+                                elif hasattr(o,"Role"):
                                     if o.Role.upper() == args[1].upper():
                                         ok = False
                         if ok:
