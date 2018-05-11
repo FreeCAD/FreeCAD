@@ -104,17 +104,20 @@ class todo:
     
     @staticmethod
     def doTasks():
-        # print("debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary)
-        for f, arg in todo.itinerary:
-            try:
-                # print("debug: executing",f)
-                if arg:
-                    f(arg)
-                else:
-                    f()
-            except:
-                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
-                FreeCAD.Console.PrintWarning (wrn)
+        #print("debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary)
+        try:
+            for f, arg in todo.itinerary:
+                try:
+                    # print("debug: executing",f)
+                    if arg:
+                        f(arg)
+                    else:
+                        f()
+                except:
+                    wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                    FreeCAD.Console.PrintWarning (wrn)
+        except ReferenceError:
+            print ("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
