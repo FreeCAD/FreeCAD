@@ -926,6 +926,56 @@ struct ColorInfo {
     }
 };
 
+std::vector<App::Color> ViewProviderPartExt::getShapeColors(
+        const Part::TopoShape &shape, App::Document *sourceDoc)
+{
+    if(!sourceDoc) {
+        sourceDoc = App::GetApplication().getActiveDocument();
+        if(!sourceDoc)
+            return {};
+    }
+    auto obj = sourceDoc->getObjectByID(shape.Tag);
+    if(obj) {
+        for(int depth=0;;++depth) {
+            auto vp = dynamic_cast<Gui::ViewProviderLink*>(
+                    Gui::Application::Instance->getViewProvider(obj));
+            if(vp && vp->OverrideMaterial.getValue())
+                return {vp->ShapeMaterial.getValue().diffuseColor};
+            auto linked = obj->getLinkedObject(false,0,false,depth);
+            if(!linked || linked==obj)
+                break;
+            obj = linked;
+        }
+    }
+    auto vp = dynamic_cast<ViewProviderPartExt*>(
+                Gui::Application::Instance->getViewProvider(obj));
+    if(vp)
+        return vp->DiffuseColor.getValues();
+
+    size_t count = shape.countSubShapes(TopAbs_FACE);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    App::Color defColor;
+    defColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",3435973887UL));
+    std::vector<App::Color> colors(count,defColor);
+    bool touched = false;
+    for(size_t i=0;i<=count;++i) {
+        std::string element("Face");
+        element += std::to_string(i+1);
+        auto mapped = shape.getElementName(element.c_str(),1);
+        if(mapped != element.c_str()) {
+            auto color = getElementColor(defColor,shape,sourceDoc,TopAbs_FACE,mapped);
+            if(color!=defColor) {
+                colors[i] = color;
+                touched = true;
+            }
+        }
+    }
+    if(touched)
+        return colors;
+    return {defColor};
+}
+
 App::Color ViewProviderPartExt::getElementColor(const App::Color &color, 
     Part::TopoShape shape, App::Document *doc, int type, std::string mapped)
 {

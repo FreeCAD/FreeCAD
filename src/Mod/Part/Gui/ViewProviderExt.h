@@ -149,6 +149,9 @@ public:
     static App::Color getElementColor(const App::Color &color, 
             Part::TopoShape shape, App::Document *doc, int type, std::string mapped);
 
+    static std::vector<App::Color> getShapeColors(
+            const Part::TopoShape &shape, App::Document *sourceDoc=0);
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
