@@ -574,26 +574,8 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
 TopoShape &TopoShape::makETransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale) 
 {
-    if(checkScale) {
-        bool gtrsf = false;
-        // check for uniform scaling
-        //
-        // scaling factors are the colum vector length. We use square distance and
-        // ignore the actual scaling signess
-        //
-        double dx = Base::Vector3d(rclTrf[0][0],rclTrf[1][0],rclTrf[2][0]).Sqr();
-        double dy = Base::Vector3d(rclTrf[0][1],rclTrf[1][1],rclTrf[2][1]).Sqr();
-        if(fabs(dx-dy)>Precision::SquareConfusion())
-            gtrsf = true;
-        else {
-            double dz = Base::Vector3d(rclTrf[0][2],rclTrf[1][2],rclTrf[2][2]).Sqr();
-            if(fabs(dy-dz)>Precision::SquareConfusion())
-                gtrsf = true;
-        }
-        if(gtrsf)
-            return makEGTransform(shape,rclTrf,op);
-    }
-
+    if(checkScale && rclTrf.hasScale(Precision::Confusion())<0)
+        return makEGTransform(shape,rclTrf,op);
     return makETransform(shape,convert(rclTrf),op);
 }
 
