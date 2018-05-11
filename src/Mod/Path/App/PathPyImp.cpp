@@ -29,6 +29,7 @@
 #include "PathPy.h"
 #include "PathPy.cpp"
 
+#include "Base/GeometryPyCXX.h"
 #include "CommandPy.h"
 
 using namespace Path;
@@ -103,6 +104,16 @@ void PathPy::setCommands(Py::List list)
             throw Py::TypeError("The list can only contain Path Commands");
         }
     }
+}
+
+Py::Object PathPy::getCenter(void) const
+{
+    return Py::Vector(getToolpathPtr()->getCenter());
+}
+
+void PathPy::setCenter(Py::Object obj)
+{
+    getToolpathPtr()->setCenter(Py::Vector(obj).toVector());
 }
 
 // read-only attributes
