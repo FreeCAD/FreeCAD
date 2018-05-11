@@ -40,6 +40,7 @@
 #include <QSvgRenderer>
 #endif // #ifndef _PreComp_
 
+#include <chrono>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -293,6 +294,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
 
 void QGIViewPart::updateView(bool update)
 {
+    auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
@@ -304,28 +306,14 @@ void QGIViewPart::updateView(bool update)
 
     QGIView::updateView(update);
 
-    if (update ||
-        viewPart->isTouched() ||
-        viewPart->Source.isTouched() ||
-        viewPart->Direction.isTouched() ||
-        viewPart->Rotation.isTouched() ||
-        viewPart->Scale.isTouched() ||
-        viewPart->HardHidden.isTouched() ||
-        viewPart->SmoothVisible.isTouched() ||
-        viewPart->SeamVisible.isTouched()   ||
-        viewPart->IsoVisible.isTouched()    ||
-        viewPart->SmoothHidden.isTouched()    ||
-        viewPart->SeamHidden.isTouched()      ||
-        viewPart->IsoHidden.isTouched()       ||
-        viewPart->IsoCount.isTouched()  ) {
+    if (update ) {
         draw();
-    } else if (update ||
-              vp->LineWidth.isTouched() ||
-              vp->HiddenWidth.isTouched()) {
-        draw();
-    } else {
-        QGIView::draw();
     }
+
+    auto end   = std::chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
+    Base::Console().Log("TIMING - QGIVP::updateView - total %.3f millisecs\n",diffOut);
 }
 
 void QGIViewPart::draw() {
