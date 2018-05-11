@@ -490,7 +490,7 @@ CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Increase degree");
+    sMenuText       = QT_TR_NOOP("Increase knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Increases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseKnotMultiplicity";
     sStatusTip      = sToolTipText;
