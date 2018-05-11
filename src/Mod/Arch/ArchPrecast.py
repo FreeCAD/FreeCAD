@@ -61,7 +61,6 @@ class _Precast(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         self.Type = "Precast"
-        obj.Role = ["Beam","Column","Panel","Slab","Stairs"]
 
     def execute(self,obj):
 
@@ -80,7 +79,7 @@ class _PrecastBeam(_Precast):
         obj.addProperty("App::PropertyDistance","DentLength","Arch",QT_TRANSLATE_NOOP("App::Property","The dent length of this element"))
         obj.addProperty("App::PropertyDistance","DentHeight","Arch",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"))
         obj.addProperty("App::PropertyStringList","Dents","Arch",QT_TRANSLATE_NOOP("App::Property","The dents of this element"))
-        obj.Role = ["Beam"]
+        obj.IfcRole = "Beam"
 
     def execute(self,obj):
 
@@ -183,7 +182,7 @@ class _PrecastIbeam(_Precast):
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The chamfer length of this element"))
         obj.addProperty("App::PropertyDistance","BeamBase","Arch",QT_TRANSLATE_NOOP("App::Property","The base length of this element"))
-        obj.Role = ["Beam"]
+        obj.IfcRole = "Beam"
 
     def execute(self,obj):
 
@@ -238,7 +237,7 @@ class _PrecastPillar(_Precast):
         obj.addProperty("App::PropertyDistance","GrooveSpacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the grooves of this element"))
         obj.addProperty("App::PropertyInteger","GrooveNumber","Arch",QT_TRANSLATE_NOOP("App::Property","The number of grooves of this element"))
         obj.addProperty("App::PropertyStringList","Dents","Arch",QT_TRANSLATE_NOOP("App::Property","The dents of this element"))
-        obj.Role = ["Column"]
+        obj.IfcRole = "Column"
 
     def execute(self,obj):
 
@@ -357,7 +356,7 @@ class _PrecastPanel(_Precast):
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
         obj.addProperty("App::PropertyDistance","DentWidth","Arch",QT_TRANSLATE_NOOP("App::Property","The dent width of this element"))
         obj.addProperty("App::PropertyDistance","DentHeight","Arch",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"))
-        obj.Role = ["Plate"]
+        obj.IfcRole = "Plate"
 
     def execute(self,obj):
 
@@ -455,7 +454,7 @@ class _PrecastSlab(_Precast):
         obj.addProperty("App::PropertyDistance","HoleMajor","Arch",QT_TRANSLATE_NOOP("App::Property","The major radius of the holes of this element"))
         obj.addProperty("App::PropertyDistance","HoleMinor","Arch",QT_TRANSLATE_NOOP("App::Property","The minor radius of the holes of this element"))
         obj.addProperty("App::PropertyDistance","HoleSpacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the holes of this element"))
-        obj.Role = ["Slab"]
+        obj.IfcRole = "Slab"
         obj.SlabType = ["Champagne","Hat"]
 
     def execute(self,obj):
@@ -546,7 +545,7 @@ class _PrecastStairs(_Precast):
         obj.addProperty("App::PropertyInteger","RiserNumber","Arch",QT_TRANSLATE_NOOP("App::Property","The number of risers in this element"))
         obj.addProperty("App::PropertyDistance","Riser","Arch",QT_TRANSLATE_NOOP("App::Property","The riser height of this element"))
         obj.addProperty("App::PropertyDistance","Tread","Arch",QT_TRANSLATE_NOOP("App::Property","The tread depth of this element"))
-        obj.Role = ["Stairs"]
+        obj.IfcRole = "Stairs"
 
     def execute(self,obj):
 

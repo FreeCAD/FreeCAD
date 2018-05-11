@@ -106,7 +106,7 @@ class _Frame(ArchComponent.Component):
         obj.addProperty("App::PropertyBool","Fuse","Arch",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
         self.Type = "Frame"
         obj.Align = True
-        obj.Role = "Railing"
+        obj.IfcRole = "Railing"
         obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
 
     def execute(self,obj):

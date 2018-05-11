@@ -25,12 +25,51 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# Possible roles for IFC objects
-Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
-         'Door','Foundation','Furniture','Hydro Equipment','Electric Equipment',
-         'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
-         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window','Pipe Segment','Curtain Wall',
-         'Pipe Fitting','Reinforcing Bar']
+# IFC types
+
+IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHeatRecovery",
+"IfcAlarm", "IfcAnnotation", "IfcAudioVisualAppliance", "IfcBeam", "IfcBeamStandardCase",
+"IfcBoiler", "IfcBuilding", "IfcBuildingElement", "IfcBuildingElementPart", "IfcBuildingElementProxy",
+"IfcBuildingStorey", "IfcBurner", "IfcCableCarrierFitting", "IfcCableCarrierSegment",
+"IfcCableFitting", "IfcCableSegment", "IfcChiller", "IfcChimney", "IfcCivilElement",
+"IfcCoil", "IfcColumn", "IfcColumnStandardCase", "IfcCommunicationsAppliance", "IfcCompressor",
+"IfcCondenser", "IfcController", "IfcCooledBeam", "IfcCoolingTower", "IfcCovering",
+"IfcCurtainWall", "IfcDamper", "IfcDiscreteAccessory", "IfcDistributionChamberElement",
+"IfcDistributionControlElement", "IfcDistributionElement", "IfcDistributionFlowElement",
+"IfcDistributionPort", "IfcDoor", "IfcDoorStandardCase", "IfcDuctFitting", "IfcDuctSegment",
+"IfcDuctSilencer", "IfcElectricAppliance", "IfcElectricDistributionBoard", "IfcElectricFlowStorageDevice",
+"IfcElectricGenerator", "IfcElectricMotor", "IfcElectricTimeControl",
+"IfcElementAssembly", "IfcElementComponent", "IfcEnergyConversionDevice", "IfcEngine",
+"IfcEvaporativeCooler", "IfcEvaporator", "IfcExternalSpatialElement", "IfcExternalSpatialStructureElement",
+"IfcFan", "IfcFastener", "IfcFeatureElement", "IfcFeatureElementAddition", "IfcFeatureElementSubtraction",
+"IfcFilter", "IfcFireSuppressionTerminal", "IfcFlowController", "IfcFlowFitting", "IfcFlowInstrument",
+"IfcFlowMeter", "IfcFlowMovingDevice", "IfcFlowSegment", "IfcFlowStorageDevice", "IfcFlowTerminal",
+"IfcFlowTreatmentDevice", "IfcFooting", "IfcFurnishingElement", "IfcFurniture", "IfcGeographicElement",
+"IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
+"IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
+"IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
+"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase", "IfcPort",
+"IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
+"IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
+"IfcReinforcingElement", "IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
+"IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
+"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater", "IfcSpatialElement", "IfcSpatialStructureElement",
+"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight", "IfcStructuralAction",
+"IfcStructuralActivity", "IfcStructuralConnection", "IfcStructuralCurveAction",
+"IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
+"IfcStructuralCurveReaction", "IfcStructuralItem", "IfcStructuralLinearAction",
+"IfcStructuralMember", "IfcStructuralPlanarAction", "IfcStructuralPointAction",
+"IfcStructuralPointConnection", "IfcStructuralPointReaction", "IfcStructuralReaction",
+"IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
+"IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
+"IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
+"IfcTransformer", "IfcTransportElement", "IfcTubeBundle", "IfcUnitaryControlElement",
+"IfcUnitaryEquipment", "IfcValve", "IfcVibrationIsolator", "IfcVirtualElement", "IfcVoidingFeature",
+"IfcWall", "IfcWallElementedCase", "IfcWallStandardCase", "IfcWasteTerminal", "IfcWindow",
+"IfcWindowStandardCase"]
+
+# Possible roles for FreeCAD BIM objects
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IFCTYPES]
 
 import FreeCAD,Draft,ArchCommands,math
 from FreeCAD import Vector
@@ -318,7 +357,7 @@ class Component:
         obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+        obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
         obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
         obj.addProperty("App::PropertyLink","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
@@ -330,7 +369,7 @@ class Component:
         self.Type = "Component"
         self.Subvolume = None
         self.MoveWithHost = False
-        obj.Role = Roles
+        obj.IfcRole = IfcRoles
         obj.setEditorMode("VerticalArea",1)
         obj.setEditorMode("HorizontalArea",1)
         obj.setEditorMode("PerimeterLength",1)

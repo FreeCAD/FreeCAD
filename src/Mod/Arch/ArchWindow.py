@@ -55,7 +55,8 @@ WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                    "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane"]
-WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
+WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
+                      "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 
 
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
@@ -803,7 +804,7 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
         self.Type = "Window"
-        obj.Role = "Window"
+        obj.IfcRole = "Window"
         obj.Proxy = self
         obj.MoveWithHost = True
 

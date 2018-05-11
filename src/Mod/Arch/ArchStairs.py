@@ -141,7 +141,7 @@ class _Stairs(ArchComponent.Component):
         obj.setEditorMode("RiserHeight",1)
         obj.setEditorMode("BlondelRatio",1)
         self.Type = "Stairs"
-        obj.Role = "Stair"
+        obj.IfcRole = "Stair"
 
 
     def execute(self,obj):
