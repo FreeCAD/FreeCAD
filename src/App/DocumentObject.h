@@ -153,6 +153,8 @@ public:
 
     /// test if this object is in the InList and recursive further down
     bool isInInListRecursive(DocumentObject* objToTest) const;
+    /// test if this object is in the InList and recursive further down
+    bool hasInInListRecursive(DocumentObject* objToTest) const;
     /// test if this object is directly (non recursive) in the InList
     bool isInInList(DocumentObject* objToTest) const;
     /// test if the given object is in the OutList and recursive further down
@@ -300,6 +302,8 @@ private:
     bool _isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
     // helper for isInOutListRecursive()
     bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
+    // helper for hasInInListRecursive()
+    bool _hasInInListRecursive(DocumentObject* objToTest, int depth) const;
 };
 
 } //namespace App

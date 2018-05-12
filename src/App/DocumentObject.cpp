@@ -369,8 +369,8 @@ bool DocumentObject::_isInInListRecursive(const DocumentObject* /*act*/,
     for (auto obj : _inList){
         // if the check object is in the recursive inList we have a cycle!
         if (obj == checkObj || depth <= 0){
-            std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
-            throw Base::RuntimeError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+            std::cerr << "DocumentObject::_isInInListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::RuntimeError("DocumentObject::_isInInListRecursive(): cyclic dependency detected!");
         }
 
         if (_isInInListRecursive(obj, test, checkObj, depth - 1))
@@ -389,6 +389,38 @@ bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
     return _isInInListRecursive(this, linkTo, this, getDocument()->countObjects());
 }
+
+
+bool DocumentObject::_hasInInListRecursive(DocumentObject* objToTest, int depth) const
+{
+#ifndef  USE_OLD_DAG
+
+    for (auto obj : _inList){
+        // if the check object is in the recursive inList we have a cycle!
+        if (obj == objToTest)
+                return true;
+        if (depth <= 0){
+            std::cerr << "DocumentObject::_hasInInListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::RuntimeError("DocumentObject::_hasInInListRecursive(): cyclic dependency detected!");
+        }
+
+        if (obj->_hasInInListRecursive(objToTest, depth - 1))
+            return true;
+    }
+#else
+    (void)objToTest;
+    (void)depth;
+#endif
+
+    return false;
+    
+}
+
+bool DocumentObject::hasInInListRecursive(DocumentObject *objToTest) const
+{
+    return _hasInInListRecursive(objToTest, getDocument()->countObjects());
+}
+
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
 {

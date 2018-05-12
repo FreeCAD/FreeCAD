@@ -559,7 +559,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 					event->ignore();
 					return;
 				}
-				// dropping an object on the document that is not part of a compose object is non-sense
+				// dropping an object on the document that is not part of a composed object is non-sense
 				// Dropping an object on document means remove the object of a composed object
 				QTreeWidgetItem* parent = item->parent();
 				if (!parent || parent->type() != TreeWidget::ObjectType) {
@@ -588,8 +588,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 			
 			QList<App::DocumentObject *> children = buildListChildren(targetitem, vp);
 
-			App::DocumentObject* grp = vp->getObject();
-			App::Document* doc = grp->getDocument();
+			App::DocumentObject* targetObj = vp->getObject();
+			App::Document* doc = targetObj->getDocument();
 			QList<QModelIndex> idxs = selectedIndexes();
 			int s = idxs.size();
 
@@ -613,8 +613,12 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
 				// To avoid a cylic dependency it must be made sure to not allow to
 				// drag'n'drop a tree item onto a child or grandchild item of it.
-				if (static_cast<DocumentObjectItem*>(targetitem)->isChildOfItem(
-						static_cast<DocumentObjectItem*>(item))) {
+				// if (static_cast<DocumentObjectItem*>(targetitem)->isChildOfItem(
+						// static_cast<DocumentObjectItem*>(item))) {
+					// event->ignore();
+					// return;
+				// }
+				if (targetObj->hasInInListRecursive(obj)) {
 					event->ignore();
 					return;
 				}
@@ -631,7 +635,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 									static_cast<DocumentObjectItem*>(parentTarget);
 								Gui::ViewProviderDocumentObject* vpp = parentTargetItemObj->object();
 
-								if (!buildListChildren(parentTarget, vpp).contains(vpc->getObject())) {
+								if (!buildListChildren(parentTarget, vpp).contains(vpc->getObject()) &&
+                                    !vpp->getObject()->hasInInListRecursive(obj)) {
 									if (da == Qt::CopyAction || da == Qt::MoveAction) {
 										event->setDropAction(Qt::LinkAction);
 										event->accept();
@@ -655,16 +660,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 						if (!parentTarget || parentTarget->type() != TreeWidget::ObjectType) {
 							event->ignore();
 							return;
-							// if (event->possibleActions() & Qt::MoveAction) {
-								// event->setDropAction(Qt::MoveAction);
-								// event->accept();
-								// return;
-							// }
 						}
 						
 					}
 				}
-				//
 				
 			}
 			event->acceptProposedAction();
