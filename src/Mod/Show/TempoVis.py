@@ -59,7 +59,13 @@ class TempoVis(FrozenClass):
         self.__define_attributes()
 
         self.document = document
-
+    
+    @staticmethod
+    def is3DObject(obj):
+        """is3DObject(obj): tests if the object is supposed to ever have some 3d geometry. 
+        TempoVis is made only for objects in 3d view, so all objects that don't pass this check should be ignored."""
+        return obj.isDerivedFrom('App::GeoFeature') or obj.isDerivedFrom('App::Origin')
+    
     def modifyVPProperty(self, doc_obj_or_list, prop_name, new_value):
         '''modifyVPProperty(self, doc_obj_or_list, prop_name, new_value): modifies
         prop_name property of ViewProvider of doc_obj_or_list, and remembers
@@ -70,6 +76,8 @@ class TempoVis(FrozenClass):
             if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
             for doc_obj in doc_obj_or_list:
+                if not self.is3DObject(doc_obj):
+                    continue
                 if not hasattr(doc_obj.ViewObject, prop_name):
                     App.Console.PrintWarning("TempoVis: object {obj} has no attribute {attr}. Skipped.\n"
                                              .format(obj= doc_obj.Name, attr= prop_name))
@@ -85,11 +93,11 @@ class TempoVis(FrozenClass):
 
     def show(self, doc_obj_or_list):
         '''show(doc_obj_or_list): shows objects (sets their Visibility to True). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.modifyVPProperty(doc_obj_or_list, "Visibility", True)
+        self.modifyVPProperty(doc_obj_or_list, 'Visibility', True)
 
     def hide(self, doc_obj_or_list):
         '''hide(doc_obj_or_list): hides objects (sets their Visibility to False). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.modifyVPProperty(doc_obj_or_list, "Visibility", False)
+        self.modifyVPProperty(doc_obj_or_list, 'Visibility', False)
 
     def get_all_dependent(self, doc_obj):
         '''get_all_dependent(doc_obj): gets all objects that depend on doc_obj. Containers of the object are excluded from the list.'''
@@ -230,6 +238,8 @@ class TempoVis(FrozenClass):
             if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
             for doc_obj in doc_obj_or_list:
+                if not self.is3DObject(doc_obj):
+                    continue
                 if doc_obj.Document is not self.document:  #ignore objects from other documents
                     raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
                 oldval = self._getPickStyle(doc_obj.ViewObject)
@@ -268,7 +278,9 @@ class TempoVis(FrozenClass):
         is placement's XY plane), and should be in global CS. 
         Offest shifts the plane; positive offset reveals more material, negative offset 
         hides more material."""
-        
+        if not hasattr(obj, 'Placement'):
+            return #can't clip these yet... skip them for now.
+            
         node = self._getClipplaneNode(obj.ViewObject, make_if_missing= enable)
         if node is None:
             if enable:
@@ -300,8 +312,11 @@ class TempoVis(FrozenClass):
             if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
             for doc_obj in doc_obj_or_list:
+                if not self.is3DObject(doc_obj):
+                    continue
                 if doc_obj.Document is not self.document:  #ignore objects from other documents
                     raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                print("Clipping {obj}".format(obj= doc_obj.Name))
                 self._enableClipPlane(doc_obj, enable, placement, offset)
                 self.restore_on_delete = True
                 if doc_obj.Name not in self.data_pickstyle:
@@ -325,7 +340,9 @@ class TempoVis(FrozenClass):
         for i in range(len(chain)):
             cnt = chain[i]
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
-            for obj in Container(cnt).getCSChildren():
+            for obj in Container(cnt)._getCSChildren():
+                if not self.is3DObject(obj):
+                    continue
                 if obj is not cnt_next:
                     if obj.ViewObject.Visibility:
                         result.append(obj)

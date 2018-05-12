@@ -44,17 +44,17 @@ class Container(object):
         self.self_check()
         container = self.Object
         
-        if container.hasExtension("App::OriginGroupExtension"):
+        if container.hasExtension('App::OriginGroupExtension'):
             if container.Origin is not None:
                 return [container.Origin]
-        elif container.isDerivedFrom("App::Origin"):
+        elif container.isDerivedFrom('App::Origin'):
             return container.OriginFeatures
 
     def getDynamicChildren(self):
         self.self_check()
         container = self.Object
         
-        if container.isDerivedFrom("App::Document"):
+        if container.isDerivedFrom('App::Document'):
             # find all objects not contained by any Part or Body
             result = set(container.Objects)
             for obj in container.Objects:
@@ -62,13 +62,13 @@ class Container(object):
                     children = set(getAllChildren(obj))
                     result = result - children
             return result
-        elif container.hasExtension("App::GroupExtension"):
+        elif container.hasExtension('App::GroupExtension'):
             result = container.Group
             if container.hasExtension('App::GeoFeatureGroupExtension'):
                 #geofeaturegroup's group contains all objects within the CS, we don't want that
                 result = [obj for obj in result if obj.getParentGroup() is not container]
             return result
-        elif container.isDerivedFrom("App::Origin"):
+        elif container.isDerivedFrom('App::Origin'):
             return []
         raise RuntimeError("getDynamicChildren: unexpected container type!")
     
@@ -77,27 +77,45 @@ class Container(object):
         self.self_check()
         container = self.Object
         
-        if container.isDerivedFrom("App::Document"):
+        if container.isDerivedFrom('App::Document'):
             return True #Document is a special thing... is it a CS or not is a matter of coding convenience. 
-        elif container.hasExtension("App::GeoFeatureGroupExtension"):
+        elif container.hasExtension('App::GeoFeatureGroupExtension'):
             return True
         else:
             return False
-            
-    def getCSChildren(self):
+                
+    def isAVisGroup(self):
+        self.self_check()
+        container = self.Object
+        
+        if container.isDerivedFrom('App::Document'):
+            return False #Document is a special thing... Return value is a matter of coding convenience. 
+        elif container.hasExtension('App::GeoFeatureGroupExtension'):
+            return True
+        elif container.isDerivedFrom('App::Origin'):
+            return True
+        else:
+            return False
+        
+    
+    #temporary solution. To be replaced with a separate Container-like structure.         
+    def _getCSChildren(self):
         if not self.isACS():
             raise TypeError("Container is not a coordinate system")
         container = self.Object
 
-        if container.isDerivedFrom("App::Document"):
+        if container.isDerivedFrom('App::Document'):
             result = set(container.Objects)
             for obj in container.Objects:
                 if isAContainer(obj) and Container(obj).isACS():
-                    children = set(Container(obj).getCSChildren())
+                    children = set(Container(obj)._getCSChildren())
                     result = result - children
             return result
         elif container.hasExtension('App::GeoFeatureGroupExtension'):
-            return container.Group + self.getStaticChildren()
+            result = container.Group + self.getStaticChildren()
+            if hasattr(container, 'Origin') and container.Origin is not None:
+                result = result + container.Origin.OriginFeatures
+            return result    
         else:
             assert(False)
     
