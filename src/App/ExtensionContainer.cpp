@@ -288,7 +288,7 @@ void ExtensionContainer::onChanged(const Property* prop) {
 void ExtensionContainer::Save(Base::Writer& writer) const {
 
     //Note: save extensions must be called first to ensure that the extension element is always the 
-    //      very first inside the object element. That is needed as extension eleent works together with 
+    //      very first inside the object element. This is needed since extension element works together with 
     //      an object attribute, and if another element would be read first the object attributes would be
     //      cleared.
     saveExtensions(writer);

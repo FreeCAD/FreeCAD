@@ -486,7 +486,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         Py_SetProgramName(argv[0]);
 #endif
         // There is a serious bug in VS from 2010 until 2013 where the file descriptor for stdin, stdout or stderr
-        // returns a valid value for GUI applications (i.e. subsytem = Windows) where it shouldn't.
+        // returns a valid value for GUI applications (i.e. subsystem = Windows) where it shouldn't.
         // This causes Python to fail during initialization.
         // A workaround is to use freopen on stdin, stdout and stderr. See the class Redirection inside main()
         // https://bugs.python.org/issue17797#msg197474
