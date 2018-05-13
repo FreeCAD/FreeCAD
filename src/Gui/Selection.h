@@ -103,7 +103,7 @@ public:
 // 'explicit instantiation of 'class Base::Subject<const Gui::SelectionChanges&>'
 // in namespace 'Gui' (which does not enclose namespace 'Base')
 // 
-// It seems that this costruct is not longer needed for gcc4.4 and even leads to
+// It seems that this construct is not longer needed for gcc4.4 and even leads to
 // errors under Mac OS X. Thus, we check for version between 4.1 and 4.4.
 // It seems that for Mac OS X this can be completely ignored
 

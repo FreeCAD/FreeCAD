@@ -4288,7 +4288,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         return false;
     }
 
-    // we succeeded with the multiplicity modification, so aligment geometry may be invalid/inconsistent for the new bspline
+    // we succeeded with the multiplicity modification, so alignment geometry may be invalid/inconsistent for the new bspline
 
     std::vector<int> delGeoId;
     
@@ -4344,7 +4344,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                     newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
                     newcVals.push_back(newConstr);
                 }
-                else { // it is an internal aligment geometry that is no longer valid => delete it and the pole circle
+                else { // it is an internal alignment geometry that is no longer valid => delete it and the pole circle
                     delGeoId.push_back((*it)->First);
                 }
             }
@@ -4355,7 +4355,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                     newConstr->InternalAlignmentIndex = prevknot[(*it)->InternalAlignmentIndex];
                     newcVals.push_back(newConstr);
                 }
-                else { // it is an internal aligment geometry that is no longer valid => delete it and the knot point
+                else { // it is an internal alignment geometry that is no longer valid => delete it and the knot point
                     delGeoId.push_back((*it)->First);
                 }
             }
@@ -6065,8 +6065,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 ///
 ///Arguments:
 /// cstr - pointer to a constraint to be locked/unlocked
-/// bForce - specifies whether to ignore tha already locked constraint or not.
-/// bLock - specufies whether to lock the constraint or not (if bForce is
+/// bForce - specifies whether to ignore the already locked constraint or not.
+/// bLock - specifies whether to lock the constraint or not (if bForce is
 ///  true, the constraint gets unlocked, otherwise nothing is done at all).
 ///
 ///Return values:

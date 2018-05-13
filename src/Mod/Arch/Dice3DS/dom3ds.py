@@ -1743,7 +1743,7 @@ def read_3ds_mem(membuf,check_magic=True,tight=False,recover=True):
                            recover=True)
 
     buffer: is an image of the 3DS file in memory.  It could be
-    a string, an mmaped file, or something else.
+    a string, a mapped file, or something else.
 
     check_magic: If true, this function checks that the top level
     chunk is the 3DS magic chunk (0x4D4D), and raises an exception

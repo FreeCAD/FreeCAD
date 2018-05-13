@@ -58,7 +58,7 @@ int SketchPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-// +++ methodes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
+// +++ methods implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
 PyObject* SketchPy::solve(PyObject *args)
 {

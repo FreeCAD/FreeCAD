@@ -1015,7 +1015,7 @@ void Application::destruct(void)
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
 
-    // not initialized or doubel destruct!
+    // not initialized or double destruct!
     assert(_pcSingleton);
     delete _pcSingleton;
 

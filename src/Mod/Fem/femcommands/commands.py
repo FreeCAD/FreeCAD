@@ -708,7 +708,7 @@ class _CommandFemSolverZ88(CommandManager):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument))")
 
 
-# the sting in add command will be the page name on FreeCAD wiki
+# the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())
 FreeCADGui.addCommand('FEM_ConstraintBodyHeatSource', _CommandFemConstraintBodyHeatSource())
 FreeCADGui.addCommand('FEM_ConstraintElectrostaticPotential', _CommandFemConstraintElectrostaticPotential())

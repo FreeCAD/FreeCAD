@@ -1876,7 +1876,7 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
   * returned expression. If the parser fails for some reason, and exception is thrown.
   *
   * @param owner  The DocumentObject that will own the expression.
-  * @param buffer The sting buffer to parse.
+  * @param buffer The string buffer to parse.
   *
   * @returns A pointer to an expression.
   *

@@ -1,5 +1,4 @@
-Changelog you find now here:
-http://www.freecadweb.org/tracker/changelog_page.php
+Note: Future changelog now located at: http://www.freecadweb.org/tracker/changelog_page.php
 
 Version: 0.14
   * Python path messed up after installation
@@ -906,7 +905,7 @@ Version: V0.1B50 Date: Fri Apr 04 22:10:24 2003 +++++++++++++++++++++++++++++++
   * some work on the Linux port
 
 Version: V0.1B49 Date: Thu Apr 03 22:45:35 2003 +++++++++++++++++++++++++++++++
-  * Master redisign of the window system, not yet full working
+  * Master redesign of the window system, not yet full working
 
 Version: V0.1B48 Date: Sun Mar 30 15:06:23 2003 +++++++++++++++++++++++++++++++
   * Big patch from Werner about:
@@ -952,10 +951,10 @@ Version: V0.1B39 Date: Mon Mar 03 12:32:14 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B38 Date: Thu Feb 27 22:19:35 2003 +++++++++++++++++++++++++++++++
   * fix of memory leack in CmdBar (werner)
-  * start rebulding FCCommand framework
+  * start rebuilding FCCommand framework
 
 Version: V0.1B37 Date: Tue Feb 25 20:29:19 2003 +++++++++++++++++++++++++++++++
-  * massiv improved costomize dialog (werner)
+  * massively improved customize dialog (werner)
     - sorting position of toolbars
 
 Version: V0.1B36 Date: Sat Feb 22 18:12:19 2003 +++++++++++++++++++++++++++++++

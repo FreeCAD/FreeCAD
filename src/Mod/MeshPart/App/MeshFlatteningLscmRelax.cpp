@@ -203,19 +203,19 @@ void LscmRelax::relax(double weight)
                 K_g_triplets.push_back(trip(row_pos * 2 + 1, col_pos * 2,        K_m(j * 2 + 1,  k * 2)));
                 K_g_triplets.push_back(trip(row_pos * 2 + 1, col_pos * 2 + 1,    K_m(j * 2 + 1,  k * 2 + 1)));
                 K_g_triplets.push_back(trip(row_pos * 2,     col_pos * 2 + 1,    K_m(j * 2,      k * 2 + 1)));
-                // we don't have to fill all because the matrix is symetric.
+                // we don't have to fill all because the matrix is symmetric.
             }
         }
     }
     // FIXING SOME PINS:
     // - if there are no pins (or only one pin) selected solve the system without the nullspace solution.
-    // - if there are some pins selected, delete all colums, rows that refer to this pins
+    // - if there are some pins selected, delete all columns, rows that refer to this pins
     //          set the diagonal element of these pins to 1 + the rhs to zero
     //          (? is it possible to fix in the inner of the face? for sure for fem, but lscm could have some problems)
     //          (we also need some extra variables to see if the pins come from user)
     
     // fixing some points
-    // allthough only internal forces are applied there has to be locked
+    // although only internal forces are applied there has to be locked
     // at least 3 degrees of freedom to stop the mesh from pure rotation and pure translation
     // std::vector<long> fixed_dof;
     // fixed_dof.push_back(this->triangles(0, 0) * 2); //x0
@@ -539,7 +539,7 @@ void LscmRelax::set_q_l_m()
 void LscmRelax::set_fixed_pins()
 {
     // if less then one fixed pin is set find two by an automated algorithm and align them to y = 0
-    // if more then two pins are choosen find a leastsquare-plane and project the points on it
+    // if more then two pins are chosen find a leastsquare-plane and project the points on it
     // insert the points in the flat-vertices vector
     if (this->fixed_pins.size() == 0)
         this->fixed_pins.push_back(0);

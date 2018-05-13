@@ -95,7 +95,7 @@ else:
 
 def convertOldComponents(objs=[]):
     """converts Arch Objects with a Role property to the new IfcRole.
-    if no object is given, all object sof the active document are converted"""
+    if no object is given, all objects of the active document are converted"""
     if not objs:
         objs = FreeCAD.ActiveDocument.Objects
     if not isinstance(objs,list):

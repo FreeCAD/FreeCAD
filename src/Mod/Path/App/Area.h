@@ -145,10 +145,10 @@ protected:
      * Mainly for checking if there is any faces for auto fill*/
     void addToBuild(CArea &area, const TopoDS_Shape &shape);
 
-    /** Called internally to obtain the combained children shapes */
+    /** Called internally to obtain the combined children shapes */
     TopoDS_Shape toShape(CArea &area, short fill, int reorient=0);
 
-    /** Obtain a list of offseted areas
+    /** Obtain a list of offsetted areas
      *
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */
@@ -259,7 +259,7 @@ public:
 
     /** Clean internal caches
      *
-     * The combained shapes is cached internally to make other operation more
+     * The combined shapes is cached internally to make other operation more
      * efficient, such as makeOffset() and makePocket()
      *
      * \arg \c deleteShapes: if true, delete all children shapes.

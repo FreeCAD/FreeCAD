@@ -114,7 +114,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 def read_z88_disp(z88_disp_input):
     '''
     read a z88 disp file and extract the nodes and elements
-    z88 Displacment output file is z88o2.txt
+    z88 Displacement output file is z88o2.txt
     works with Z88OS14
     '''
     nodes = {}
