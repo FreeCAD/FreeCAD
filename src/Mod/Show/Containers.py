@@ -25,7 +25,7 @@
 
 class Container(object):
     """Container class: a unified interface for container objects, such as Group, Part, Body, or Document.
-    This is a temporary implementation"""
+    This is a temporary implementation."""
     Object = None #DocumentObject or Document, the actual container
     
     def __init__(self, obj):
@@ -38,9 +38,13 @@ class Container(object):
             raise NotAContainerError(self.Object)
             
     def getAllChildren(self):
+        """Returns all objects directly contained by the container. all = static + dynamic."""
         return self.getStaticChildren() + self.getDynamicChildren()
     
     def getStaticChildren(self):
+        """Returns children tightly bound to the container, such as Origin. The key thing 
+        about them is that they are not supposed to be removed or added from/to the container."""
+        
         self.self_check()
         container = self.Object
         
@@ -51,6 +55,7 @@ class Container(object):
             return container.OriginFeatures
 
     def getDynamicChildren(self):
+        """Returns dynamic children, i.e. the stuff that can be removed from the container."""
         self.self_check()
         container = self.Object
         
@@ -85,6 +90,7 @@ class Container(object):
             return False
                 
     def isAVisGroup(self):
+        """isAVisGroup(): returns True if the container consumes viewproviders of children, and thus affects their visibility."""
         self.self_check()
         container = self.Object
         
@@ -120,8 +126,9 @@ class Container(object):
             assert(False)
     
     def hasObject(self, obj):
+        """Returns True if the container contains specified object directly."""
         return obj in self.getAllChildren()
-            
+
 def isAContainer(obj):
     '''isAContainer(obj): returns True if obj is an object container, such as 
     Group, Part, Body. The important characterisic of an object being a 

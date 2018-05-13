@@ -62,9 +62,25 @@ class TempoVis(FrozenClass):
     
     @staticmethod
     def is3DObject(obj):
-        """is3DObject(obj): tests if the object is supposed to ever have some 3d geometry. 
-        TempoVis is made only for objects in 3d view, so all objects that don't pass this check should be ignored."""
-        return obj.isDerivedFrom('App::GeoFeature') or obj.isDerivedFrom('App::Origin')
+        """is3DObject(obj): tests if the object has some 3d geometry. 
+        TempoVis is made only for objects in 3d view, so all objects that don't pass this check are ignored by TempoVis."""
+        
+        # See "Gui Problem Sketcher and TechDraw" https://forum.freecadweb.org/viewtopic.php?f=3&t=22797
+ 
+        # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
+        try:
+            viewprovider = obj.ViewObject
+            from pivy import coin
+            sa = coin.SoSearchAction()
+            sa.setType(coin.SoSwitch.getClassTypeId())
+            sa.traverse(viewprovider.RootNode)
+            if not sa.isFound(): #shouldn't happen...
+                return False 
+            n = sa.getPath().getTail().getNumChildren()
+            return n > 0
+        except Exception as err:
+            App.Console.PrintWarning(u"Show.TempoVis.isIn3DView error: {err}".format(err= str(err)))
+            return True #assume.
     
     def modifyVPProperty(self, doc_obj_or_list, prop_name, new_value):
         '''modifyVPProperty(self, doc_obj_or_list, prop_name, new_value): modifies
@@ -111,6 +127,10 @@ class TempoVis(FrozenClass):
     def show_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): shows all objects that depend on doc_obj. This method is probably useless.'''
         self.show( getAllDependent(doc_obj) )
+
+    def restore_all_dependent(self, doc_obj):
+        '''show_all_dependent(doc_obj): restores original visibilities of all dependent objects.'''
+        self.restoreVPProperty( getAllDependent(doc_obj), 'Visibility' )
 
     def hide_all_dependencies(self, doc_obj):
         '''hide_all_dependencies(doc_obj): hides all objects that doc_obj depends on (directly and indirectly).'''
@@ -165,6 +185,25 @@ class TempoVis(FrozenClass):
             App.Console.PrintWarning("TempoVis: failed to restore camera. {err}\n"
                                      .format(err= err.message))
         self.restore_on_delete = False
+    
+    def restoreVPProperty(self, object_or_list, prop_name):
+        """restoreVPProperty(object_or_list, prop_name): restores original values of certain property for certain objects."""
+        if App.GuiUp:
+            if not hasattr(object_or_list, '__iter__'):
+                object_or_list = [object_or_list]
+            for doc_obj in object_or_list:
+                if not self.is3DObject(doc_obj):
+                    continue
+                key = (doc_obj.Name, prop_name)
+                if key in self.data:
+                    try:
+                        setattr(doc_obj.ViewObject, prop_name, self.data[key])
+                    except Exception as err:
+                        App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
+                                                 .format(err= err.message,
+                                                         obj= doc_obj.Name,
+                                                         prop= prop_name))
+    
 
     def forget(self):
         '''forget(): resets TempoVis'''
@@ -262,6 +301,7 @@ class TempoVis(FrozenClass):
         from pivy import coin
         sa = coin.SoSearchAction()
         sa.setType(coin.SoClipPlane.getClassTypeId())
+        sa.setName('TVClipPlane')
         sa.traverse(viewprovider.RootNode)
         if sa.isFound() and sa.getPath().getLength() == 1:
             return sa.getPath().getTail()
@@ -270,6 +310,7 @@ class TempoVis(FrozenClass):
                 return None
             clipplane = coin.SoClipPlane()
             viewprovider.RootNode.insertChild(clipplane, 0)
+            clipplane.setName('TVClipPlane')
             clipplane.on.setValue(False) #make sure the plane is not activated by default
             return clipplane
             
@@ -278,8 +319,9 @@ class TempoVis(FrozenClass):
         is placement's XY plane), and should be in global CS. 
         Offest shifts the plane; positive offset reveals more material, negative offset 
         hides more material."""
-        if not hasattr(obj, 'Placement'):
-            return #can't clip these yet... skip them for now.
+        if not hasattr(obj, 'getGlobalPlacement'):
+            print("    {obj} has no attribute 'getGlobalPlacement'".format(obj= obj.Name))
+            return #can't clip these yet... skip them for now. Example object: Draft Label
             
         node = self._getClipplaneNode(obj.ViewObject, make_if_missing= enable)
         if node is None:
@@ -331,8 +373,9 @@ class TempoVis(FrozenClass):
                                          .format(err= err.message,
                                                  obj= obj_name))
 
-    def allVisibleObjects(self, aroundObject):
-        """allVisibleObjects(self, aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
+    @staticmethod
+    def allVisibleObjects(aroundObject):
+        """allVisibleObjects(aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
         If a whole container can be made invisible, it is returned, instead of its child objects."""
         
         chain = Containers.CSChain(aroundObject)
@@ -340,8 +383,8 @@ class TempoVis(FrozenClass):
         for i in range(len(chain)):
             cnt = chain[i]
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
-            for obj in Container(cnt)._getCSChildren():
-                if not self.is3DObject(obj):
+            for obj in Container(cnt)._getCSChildren(): #should be vischildren, not cschildren. Assume them same for now...
+                if not TempoVis.is3DObject(obj):
                     continue
                 if obj is not cnt_next:
                     if obj.ViewObject.Visibility:
