@@ -45,6 +45,8 @@ class TempoVis(FrozenClass):
         self.data_pickstyle = {} # dict. key = "Object", value = original value of pickstyle
         self.data_clipplane = {} # dict. key = "Object", value = original state of plane-clipping
 
+        self.sketch_clipplane_on = False #True if some clipping planes are active
+        
         self.cam_string = ""          # inventor ASCII string representing the camera
         self.viewer = None            # viewer the camera is saved from
 
@@ -391,6 +393,11 @@ class TempoVis(FrozenClass):
                         result.append(obj)
         return result
         
-    def sketchClipPlane(self, sketch, enable = True):
-        """Clips all objects by plane of sketch"""
+    def sketchClipPlane(self, sketch, enable = None):
+        """sketchClipPlane(sketch, enable = None): Clips all objects by plane of sketch. 
+        If enable argument is omitted, calling the routine repeatedly will toggle clipping plane."""
+        
+        if enable is None:
+            enable = not self.sketch_clipplane_on
+            self.sketch_clipplane_on = enable
         self.clipPlane(self.allVisibleObjects(sketch), enable, sketch.getGlobalPlacement(), 0.02)
