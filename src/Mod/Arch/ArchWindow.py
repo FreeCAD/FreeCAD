@@ -610,7 +610,7 @@ class _CommandWindow:
         delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
         delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
         rot = FreeCAD.Rotation()
-        self.baseFace = None
+        #self.baseFace = None
         if info:
             if "Face" in info['Component']:
                 import WorkingPlane
@@ -621,8 +621,9 @@ class _CommandWindow:
                 if p:
                     rot = p.Rotation
                     delta = rot.multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
+                    self.tracker.setRotation(rot)
         self.tracker.pos(point.add(delta))
-        self.tracker.setRotation(rot)
+        #self.tracker.setRotation(rot)
 
     def taskbox(self):
         "sets up a taskbox widget"
