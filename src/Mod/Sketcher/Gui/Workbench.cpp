@@ -347,6 +347,7 @@ inline void Sketcher_addWorkbenchSketchActions(T& sketch){
             << "Sketcher_EditSketch"
             << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
+            << "Sketcher_ViewSection"
             << "Sketcher_MapSketch";
     SketcherAddWorkspaceSketchExtra( sketch );
 }
