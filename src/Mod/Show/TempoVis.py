@@ -380,12 +380,12 @@ class TempoVis(FrozenClass):
         """allVisibleObjects(aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
         If a whole container can be made invisible, it is returned, instead of its child objects."""
         
-        chain = Containers.CSChain(aroundObject)
+        chain = Containers.VisGroupChain(aroundObject)
         result = []
         for i in range(len(chain)):
             cnt = chain[i]
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
-            for obj in Container(cnt)._getCSChildren(): #should be vischildren, not cschildren. Assume them same for now...
+            for obj in Container(cnt).getVisGroupChildren():
                 if not TempoVis.is3DObject(obj):
                     continue
                 if obj is not cnt_next:

@@ -36,7 +36,7 @@ class Container(object):
             raise ValueError("Null!")
         if not isAContainer(self.Object):
             raise NotAContainerError(self.Object)
-            
+    
     def getAllChildren(self):
         """Returns all objects directly contained by the container. all = static + dynamic."""
         return self.getStaticChildren() + self.getDynamicChildren()
@@ -47,12 +47,18 @@ class Container(object):
         
         self.self_check()
         container = self.Object
-        
-        if container.hasExtension('App::OriginGroupExtension'):
+        if container.isDerivedFrom('App::Document'):
+            return []
+        elif container.hasExtension('App::OriginGroupExtension'):
             if container.Origin is not None:
                 return [container.Origin]
+            else:
+                return []
         elif container.isDerivedFrom('App::Origin'):
             return container.OriginFeatures
+        elif container.hasExtension('App::GroupExtension'):
+            return []
+        raise RuntimeError("getStaticChildren: unexpected container type!")
 
     def getDynamicChildren(self):
         """Returns dynamic children, i.e. the stuff that can be removed from the container."""
@@ -64,9 +70,9 @@ class Container(object):
             result = set(container.Objects)
             for obj in container.Objects:
                 if isAContainer(obj):
-                    children = set(getAllChildren(obj))
+                    children = set(Container(obj).getAllChildren())
                     result = result - children
-            return result
+            return list(result)
         elif container.hasExtension('App::GroupExtension'):
             result = container.Group
             if container.hasExtension('App::GeoFeatureGroupExtension'):
@@ -95,7 +101,7 @@ class Container(object):
         container = self.Object
         
         if container.isDerivedFrom('App::Document'):
-            return False #Document is a special thing... Return value is a matter of coding convenience. 
+            return True #Document is a special thing... Return value is a matter of coding convenience. 
         elif container.hasExtension('App::GeoFeatureGroupExtension'):
             return True
         elif container.isDerivedFrom('App::Origin'):
@@ -103,31 +109,52 @@ class Container(object):
         else:
             return False
         
-    
-    #temporary solution. To be replaced with a separate Container-like structure.         
-    def _getCSChildren(self):
+    def getCSChildren(self):
         if not self.isACS():
             raise TypeError("Container is not a coordinate system")
         container = self.Object
+        return _getMetacontainerChildren(self, Container.isACS)
 
-        if container.isDerivedFrom('App::Document'):
-            result = set(container.Objects)
-            for obj in container.Objects:
-                if isAContainer(obj) and Container(obj).isACS():
-                    children = set(Container(obj)._getCSChildren())
-                    result = result - children
-            return result
-        elif container.hasExtension('App::GeoFeatureGroupExtension'):
-            result = container.Group + self.getStaticChildren()
-            if hasattr(container, 'Origin') and container.Origin is not None:
-                result = result + container.Origin.OriginFeatures
-            return result    
-        else:
-            assert(False)
-    
+    def getVisGroupChildren(self):
+        if not self.isAVisGroup():
+            raise TypeError("Container is not a visibility group")
+        container = self.Object
+        return _getMetacontainerChildren(self, Container.isAVisGroup)
+        
     def hasObject(self, obj):
         """Returns True if the container contains specified object directly."""
         return obj in self.getAllChildren()
+    
+    def hasObjectRecursive(self, obj):
+        return self.Object in ContainerChain(obj)
+
+def _getMetacontainerChildren(container, isrightcontainer_func):
+    """Gathers up children of metacontainer - a container structure formed by containers of specific type. 
+    For example, coordinate systems form a kind of container structure.
+    
+    container: instance of Container class
+    isrightcontainer_func: a function f(cnt)->bool, where cnt is a Container object."""
+    
+    result = []
+    list_traversing_now = [container] #list of Container instances
+    list_to_be_traversed_next = [] #list of Container instances
+    visited_containers = set([container.Object]) #set of DocumentObjects
+    
+    while len(list_traversing_now) > 0:
+        list_to_be_traversed_next = []
+        for itcnt in list_traversing_now:
+            children = itcnt.getAllChildren()
+            result.extend(children)
+            for child in children:
+                if isAContainer(child):
+                    newcnt = Container(child)
+                    if not isrightcontainer_func(newcnt):
+                        list_to_be_traversed_next.append(newcnt)
+        list_traversing_now = list_to_be_traversed_next
+    
+    return result
+        
+    
 
 def isAContainer(obj):
     '''isAContainer(obj): returns True if obj is an object container, such as 
@@ -156,10 +183,14 @@ def ContainerOf(obj):
     if cnt is None: 
         return obj.Document
     return cnt
+    
+def getVisGroupOf(obj):
+    chain = VisGroupChain(obj)
+    return chain[-1]
 
 #from Part-o-magic... over-engineered, but proven to work
 def ContainerChain(feat):
-    '''ContainerChain(feat): return a list of containers feat is in. 
+    '''ContainerChain(feat): container path to feat (not including feat itself). 
     Last container directly contains the feature. 
     Example of output:  [<document>,<SuperPart>,<Part>,<Body>]'''
     
@@ -189,6 +220,9 @@ def CSChain(feat):
     cnt_chain = ContainerChain(feat)
     return [cnt for cnt in cnt_chain if Container(cnt).isACS()]
 
+def VisGroupChain(feat):
+    cnt_chain = ContainerChain(feat)
+    return [cnt for cnt in cnt_chain if Container(cnt).isAVisGroup()]
 
 class ContainerError(RuntimeError):
     pass
