@@ -107,6 +107,12 @@ TreeWidget::TreeWidget(QWidget* parent)
     connect(this->markRecomputeAction, SIGNAL(triggered()),
             this, SLOT(onMarkRecompute()));
 
+    this->insertIntermediateCompound = new QAction(this);
+    this->insertIntermediateCompound->setText(tr("Insert intermediate Compound"));
+    this->insertIntermediateCompound->setStatusTip(tr("Insert an intermediate Compound"));
+    connect(this->insertIntermediateCompound, SIGNAL(triggered()),
+            this, SLOT(onInsertIntermediateCompound()));
+
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
     Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
@@ -216,7 +222,19 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
                 contextMenu.setDefaultAction(first);
                 if (objitem->object()->isEditing())
                     contextMenu.insertAction(topact, this->finishEditingAction);
+                if (!objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup
+                    ::getClassTypeId())) {
+                    DocumentObjectItem* itemObj = static_cast<DocumentObjectItem*>(this->contextItem);
+    
+                    Gui::ViewProviderDocumentObject* vp = itemObj->object();
+                    
+                    App::Document* doc = vp->getObject()->getDocument();
+                    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+                    if (activeDoc == doc) 
+                        contextMenu.addAction(this->insertIntermediateCompound);
+                }
                 contextMenu.insertSeparator(topact);
+                
             }
         }
     }
@@ -362,6 +380,51 @@ void TreeWidget::onMarkRecompute()
         }
     }
 }
+
+//PGA adds an intermediate Compound this allows for example to set attributes 
+// to a part in the operation without changing the attributes of the part everywhere in the model
+// for example the position orientation and colors, or colors
+void TreeWidget::onInsertIntermediateCompound()
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() != TreeWidget::ObjectType) return;
+    
+    DocumentObjectItem* itemObj = static_cast<DocumentObjectItem*>(this->contextItem);
+    Gui::ViewProviderDocumentObject* vp = itemObj->object();
+    
+    if (vp->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) return;
+    
+    App::Document* doc = vp->getObject()->getDocument();
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (activeDoc != doc) return;
+    
+    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+    // does this have a parent object
+    QTreeWidgetItem* parent = this->contextItem->parent();
+    
+    gui->openCommand("Compound");
+    
+    std::string FeatName = doc->getUniqueObjectName("Compound");
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Links = [" << "App.activeDocument()." 
+        << vp->getObject()->getNameInDocument() << ",]";
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+
+    if (parent && parent->type() == TreeWidget::ObjectType) {
+        Gui::ViewProviderDocumentObject* vpp = static_cast<DocumentObjectItem *>(parent)->object();
+        
+        App::DocumentObject* obj = doc->getObject(FeatName.c_str());
+        // now add the object to the target object
+        vpp->dropReplaceObject(vp->getObject(), obj);
+    }
+
+    Gui::Command::updateActive();
+    Gui::Command::commitCommand();
+}
+
 
 void TreeWidget::onActivateDocument(QAction* active)
 {
@@ -534,18 +597,18 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     if (!event->isAccepted())
         return;
 
-    QTreeWidgetItem* targetitem = itemAt(event->pos());
+    QTreeWidgetItem* targetItem = itemAt(event->pos());
 	
-    if (!targetitem || this->isItemSelected(targetitem)) {
+    if (!targetItem || this->isItemSelected(targetItem)) {
         event->ignore();
     }
     else {
-		QTreeWidgetItem* parentTarget = targetitem->parent();
+		QTreeWidgetItem* parentTarget = targetItem->parent();
 		Qt::DropAction da = event->proposedAction();
 
-		if (targetitem->type() == TreeWidget::DocumentType) {
+		if (targetItem->type() == TreeWidget::DocumentType) {
 			QList<QModelIndex> idxs = selectedIndexes();
-			App::Document* doc = static_cast<DocumentItem*>(targetitem)->
+			App::Document* doc = static_cast<DocumentItem*>(targetItem)->
 				document()->getDocument();
 			for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
 				QTreeWidgetItem* item = itemFromIndex(*it);
@@ -579,53 +642,46 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 			}
 
 		}
-		else if (targetitem->type() == TreeWidget::ObjectType) {
-			DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
-			Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
-
-			// Qt::KeyboardModifiers km = event->keyboardModifiers();
-			// Base::Console().Log("dragMoveEvent keyboardModifiers = %x + proposedAction %x\n", km, da);
-			
-			QList<App::DocumentObject *> children = buildListChildren(targetitem, vp);
-
-			App::DocumentObject* targetObj = vp->getObject();
-			App::Document* doc = targetObj->getDocument();
-			QList<QModelIndex> idxs = selectedIndexes();
-			int s = idxs.size();
+		else if (targetItem->type() == TreeWidget::ObjectType) {
+			DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
+			Gui::ViewProviderDocumentObject* vpTarget = targetItemObj->object();
+			QList<App::DocumentObject *> children = buildListChildren(targetItem, vpTarget);
+			App::DocumentObject* targetObj = vpTarget->getObject();
+			App::Document* docTarget = targetObj->getDocument();
+            
+            
+			QList<QModelIndex> idxsSelected = selectedIndexes();
+			int s = idxsSelected.size();
 
 			std::vector<const App::DocumentObject*> dropObjects;
 			dropObjects.reserve(s);
 
-			for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
+			for (QList<QModelIndex>::Iterator it = idxsSelected.begin(); it != idxsSelected.end(); ++it) {
 				QTreeWidgetItem* item = itemFromIndex(*it);
 				if (item->type() != TreeWidget::ObjectType) {
 					event->ignore();
 					return;
 				}
-				App::DocumentObject* obj = static_cast<DocumentObjectItem*>(item)->
-					object()->getObject();
-				if (doc != obj->getDocument()) {
+                
+                
+				Gui::ViewProviderDocumentObject* vpDropped = static_cast<DocumentObjectItem*>(item)->object();
+				App::DocumentObject* objDropped = vpDropped->getObject();
+				if (docTarget != objDropped->getDocument()) {
 					event->ignore();
 					return;
 				}
 
-				dropObjects.push_back(obj);
+				dropObjects.push_back(objDropped);
 
 				// To avoid a cylic dependency it must be made sure to not allow to
 				// drag'n'drop a tree item onto a child or grandchild item of it.
-				// if (static_cast<DocumentObjectItem*>(targetitem)->isChildOfItem(
-						// static_cast<DocumentObjectItem*>(item))) {
-					// event->ignore();
-					// return;
-				// }
-				if (targetObj->hasInInListRecursive(obj)) {
-					event->ignore();
-					return;
-				}
+				bool canDrop =  !targetObj->hasInInListRecursive(objDropped) && (
+                    (!objDropped->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) || // 
+                    (targetObj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+                );
 
 				// if the item is already a child of the target item there is nothing to do
-				Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(item)->object();
-				bool canDrop = vp->canDropObjects() && !children.contains(vpc->getObject());
+				canDrop = canDrop && vpTarget->canDropObjects() && !children.contains(objDropped);
 
 				if (!canDrop) {
 					if (s == 1) {
@@ -633,10 +689,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 							if (parentTarget->type() == TreeWidget::ObjectType) { 
 								DocumentObjectItem* parentTargetItemObj = 
 									static_cast<DocumentObjectItem*>(parentTarget);
-								Gui::ViewProviderDocumentObject* vpp = parentTargetItemObj->object();
+								Gui::ViewProviderDocumentObject* vpParent = parentTargetItemObj->object();
+                                App::DocumentObject* objParentTarget = vpParent->getObject();
 
-								if (!buildListChildren(parentTarget, vpp).contains(vpc->getObject()) &&
-                                    !vpp->getObject()->hasInInListRecursive(obj)) {
+								if (!buildListChildren(parentTarget, vpParent).contains(objDropped) &&
+                                    !objParentTarget->hasInInListRecursive(objDropped) && (
+                                        (!objDropped->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) || // 
+                                        (objParentTarget->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) )
+                                    ) {
 									if (da == Qt::CopyAction || da == Qt::MoveAction) {
 										event->setDropAction(Qt::LinkAction);
 										event->accept();
@@ -653,11 +713,13 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 					return;
 				} else {
 					// let the view provider decide to accept the object or ignore it
-					if (!vp->canDropObject(obj)) {
+					if (!vpTarget->canDropObject(objDropped)) {
 						event->ignore();
 						return;
 					} else if (da == Qt::LinkAction) {
 						if (!parentTarget || parentTarget->type() != TreeWidget::ObjectType) {
+                            // no need to test compatibility between parent and objDropped and objParentTarget
+                            // as test between objDropped and targetObj has been tested before
 							event->ignore();
 							return;
 						}
@@ -712,9 +774,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // add object to group
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
 		
-		//Qt::KeyboardModifiers km = event->keyboardModifiers();
-		//QApplication::keyboardModifiers()
-
 		Qt::DropAction da = event->dropAction();
 
 		Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
@@ -931,6 +990,10 @@ void TreeWidget::changeEvent(QEvent *e)
 
         this->markRecomputeAction->setText(tr("Mark to recompute"));
         this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+        
+        this->insertIntermediateCompound->setText(tr("Insert intermediate Compound"));
+        this->insertIntermediateCompound->setStatusTip(tr("Insert an intermediate Compound"));
+        
     }
 
     QTreeWidget::changeEvent(e);

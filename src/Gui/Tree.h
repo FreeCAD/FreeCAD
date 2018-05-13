@@ -108,6 +108,7 @@ protected Q_SLOTS:
     void onFinishEditing();
     void onSkipRecompute(bool on);
     void onMarkRecompute();
+    void onInsertIntermediateCompound();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -131,6 +132,7 @@ private:
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
+    QAction* insertIntermediateCompound;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
