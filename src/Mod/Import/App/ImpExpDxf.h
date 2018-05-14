@@ -80,7 +80,10 @@ namespace Import
         std::string getOptionSource() { return m_optionSource; }
         void setOptionSource(std::string s) { m_optionSource = s; }
         void setOptions(void);
-      
+
+        static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
+        static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
+
     protected:
         void exportCircle(BRepAdaptor_Curve c);
         void exportEllipse(BRepAdaptor_Curve c);

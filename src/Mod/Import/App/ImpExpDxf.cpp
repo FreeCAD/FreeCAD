@@ -384,13 +384,51 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         }
     }
 
-    //export Vertices
-//    TopExp_Explorer verts(input, TopAbs_VERTEX);
-//    for (int i = 1 ; verts.More(); verts.Next(),i++) {
-//        const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
-
-//    }
+    //export Vertice
+    //wf: this is a lot of work. Not sure that Points are worth that much in dxf??
+    TopExp_Explorer verts(input, TopAbs_VERTEX);
+    std::vector<gp_Pnt> duplicates;
+    for (int i = 1 ; verts.More(); verts.Next(),i++) {
+        const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
+        gp_Pnt p = BRep_Tool::Pnt(v);
+        duplicates.push_back(p);
+    }
+    
+    std::sort(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntCompare);
+    auto newEnd = std::unique(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntEqual);
+    std::vector<gp_Pnt> uniquePts(duplicates.begin(),newEnd);
+    for (auto& p: uniquePts) {
+        double point[3] = {0,0,0};
+        gPntToTuple(point, p);
+        WritePoint(point, getLayerName().c_str());
+    }
 }
+
+bool ImpExpDxfWrite::gp_PntEqual(gp_Pnt p1, gp_Pnt p2) 
+{
+    bool result = false;
+    if (p1.IsEqual(p2,Precision::Confusion())) {
+        result = true;
+    }
+    return result;
+}
+
+//is p1 "less than" p2?
+bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2) 
+{
+    bool result = false;
+    if (!(p1.IsEqual(p2,Precision::Confusion()))) {                       //ie v1 != v2
+        if (!(fabs(p1.X() - p2.X()) < Precision::Confusion())) {          // x1 != x2
+            result = p1.X() < p2.X();        
+        } else if (!(fabs(p1.Y() - p2.Y()) < Precision::Confusion())) {   // y1 != y2
+            result = p1.Y() < p2.Y();
+        } else {
+            result = p1.Z() < p2.Z();
+        }
+    }
+    return result;
+}
+
 
 void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve c)
 {
