@@ -108,13 +108,16 @@ void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
     (*m_ofs) << 230              << endl;
     (*m_ofs) << pd.Extr.z        << endl;
 }
+
 void CDxfWrite::WritePoint(const double* s, const char* layer_name)
 {
     (*m_ofs) << 0           << endl;
     (*m_ofs) << "POINT"     << endl;
     (*m_ofs) << 8           << endl;    // Group code for layer name
-    (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << 10          << endl;    // Start point of line
+    (*m_ofs) << layer_name  << endl;    // Layer name
+    (*m_ofs) << 100         << endl;
+    (*m_ofs) << "AcDbPoint" << endl;
+    (*m_ofs) << 10          << endl;
     (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
     (*m_ofs) << 20          << endl;
     (*m_ofs) << s[1]        << endl;    // Y in WCS coordinates
@@ -171,7 +174,7 @@ void CDxfWrite::WriteCircle(const double* c, double radius, const char* layer_na
     (*m_ofs) << radius      << endl;    // Radius
 }
 
-void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir, const char* layer_name )
+void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool endIsCW, const char* layer_name )
 {
     double m[3];
     m[2]=0;
@@ -180,7 +183,7 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
 
     double ratio = minor_radius/major_radius;
 
-    if(!dir){
+    if(!endIsCW){                          //end is NOT CW from start
         double temp = start_angle;
         start_angle = end_angle;
         end_angle = temp;
@@ -203,9 +206,10 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
     (*m_ofs) << m[1]        << endl;    // Major Y
     (*m_ofs) << 31          << endl;
     (*m_ofs) << m[2]        << endl;    // Major Z
-    (*m_ofs) << 41      << endl;
-    (*m_ofs) << start_angle << endl;    // Start angle
-    (*m_ofs) << 42      << endl;
+    // 210,220,230 extrusion direction X,Y,Z
+    (*m_ofs) << 41          << endl;
+    (*m_ofs) << start_angle << endl;    // Start angle (radians [0..2pi])
+    (*m_ofs) << 42          << endl;
     (*m_ofs) << end_angle   << endl;    // End angle
 }
 
@@ -217,11 +221,12 @@ void CDxfWrite::WriteSpline(SplineDataOut sd, const char* layer_name)
     (*m_ofs) << 0              << endl;
     (*m_ofs) << "SPLINE"       << endl;
     (*m_ofs) << 8              << endl;    // Group code for layer name
-    (*m_ofs) << layer_name     << endl;    // Layer number
+    (*m_ofs) << layer_name     << endl;    // Layer name
     (*m_ofs) << 100            << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
     (*m_ofs) << 100            << endl;
-    (*m_ofs) << "AcDbSpline"   << endl;    //normal 210,220,230
+    (*m_ofs) << "AcDbSpline"   << endl;
+    //normal 210,220,230
     (*m_ofs) << 70             << endl;
     (*m_ofs) << sd.flag        << endl;      //flags
     (*m_ofs) << 71             << endl; 
@@ -274,6 +279,28 @@ void CDxfWrite::WriteSpline(SplineDataOut sd, const char* layer_name)
     }
 }
 
+//***************************
+//WriteVertex
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteVertex(double x, double y, double z, const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "VERTEX"       << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbVertex"   << endl;
+    (*m_ofs) << 10             << endl;
+    (*m_ofs) << x              << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << y              << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << z              << endl;
+    (*m_ofs) << 70             << endl;      //flag
+    (*m_ofs) << 0              << endl;
+}
 
 
 CDxfRead::CDxfRead(const char* filepath)
