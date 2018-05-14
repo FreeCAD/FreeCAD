@@ -173,10 +173,10 @@ void Constraint::Save (Writer &writer) const
     << "Name=\""                        <<  encodeName              << "\" "
     << "Type=\""                        <<  (int)Type               << "\" ";
     if(this->Type==InternalAlignment)
-        writer.Stream() 
+        writer.Stream()
         << "InternalAlignmentType=\""   <<  (int)AlignmentType      << "\" "
         << "InternalAlignmentIndex=\""  <<  InternalAlignmentIndex  << "\" ";
-    writer.Stream()     
+    writer.Stream()
     << "Value=\""                       <<  Value                   << "\" "
     << "First=\""                       <<  First                   << "\" "
     << "FirstPos=\""                    <<  (int)  FirstPos         << "\" "
@@ -187,8 +187,8 @@ void Constraint::Save (Writer &writer) const
     << "LabelDistance=\""               <<  LabelDistance           << "\" "
     << "LabelPosition=\""               <<  LabelPosition           << "\" "
     << "IsDriving=\""                   <<  (int)isDriving          << "\" "
-    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace          << "\" />"
-    
+    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace   << "\" />"
+
     << std::endl;
 }
 
