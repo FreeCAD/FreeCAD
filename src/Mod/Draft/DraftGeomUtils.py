@@ -888,7 +888,8 @@ def flattenWire(wire):
     verts = [o]
     for v in wire.Vertexes[1:]:
         verts.append(plane.projectPoint(v.Point))
-    verts.append(o)
+    if wire.isClosed():
+        verts.append(o)
     w = Part.makePolygon(verts)
     return w
 
