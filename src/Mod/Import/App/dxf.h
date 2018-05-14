@@ -130,11 +130,11 @@ public:
     void WriteLine(const double* s, const double* e, const char* layer_name );
     void WritePoint(const double*, const char*);
     void WriteArc(const double* s, const double* e, const double* c, bool dir, const char* layer_name );
-    void WriteEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir, const char* layer_name );
+    void WriteEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool endIsCW, const char* layer_name);
     void WriteCircle(const double* c, double radius, const char* layer_name );
     void WriteSpline(SplineDataOut sd, const char* layer_name);
     void WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name);
-
+    void WriteVertex(double x, double y, double z, const char* layer_name);
 };
 
 // derive a class from this and implement it's virtual functions
