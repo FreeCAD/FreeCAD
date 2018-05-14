@@ -248,6 +248,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
         TechDrawGeometry::Circle* circle;
         arcPoints pts;
+        pts.center = Base::Vector3d(0.0,0.0,0.0);
+        pts.radius = 0.0;
         if( (base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
            (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE))  {
             circle = static_cast<TechDrawGeometry::Circle*> (base);
@@ -277,6 +279,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
         TechDrawGeometry::Circle* circle;
         arcPoints pts;
+        pts.center = Base::Vector3d(0.0,0.0,0.0);
+        pts.radius = 0.0;
         if ((base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
            (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE)) {
             circle = static_cast<TechDrawGeometry::Circle*> (base);
@@ -364,7 +368,7 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());    //internal units!
-
+    
     Base::Quantity qVal;
     qVal.setValue(val);
     if (Type.isValue("Angle")) {
@@ -490,6 +494,7 @@ double DrawViewDimension::getDimValue()
         } else if(Type.isValue("Radius")){
             arcPoints pts = m_arcPoints;
             result = pts.radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
+
             
         } else if(Type.isValue("Diameter")){
             arcPoints pts = m_arcPoints;
