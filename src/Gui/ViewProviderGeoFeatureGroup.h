@@ -48,5 +48,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoF
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#endif // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 
