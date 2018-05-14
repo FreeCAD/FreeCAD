@@ -5242,6 +5242,28 @@ class _ViewProviderWire(_ViewProviderDraft):
             return [self.Object.Base,self.Object.Tool]
         return []
 
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Flatten this wire",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.flatten)
+        menu.addAction(action1)
+
+    def flatten(self):
+        if hasattr(self,"Object"):
+            if len(self.Object.Shape.Wires) == 1:
+                import DraftGeomUtils
+                fw = DraftGeomUtils.flattenWire(self.Object.Shape.Wires[0])
+                points = [v.Point for v in fw.Vertexes]
+                if len(points) == len(self.Object.Points):
+                    if points != self.Object.Points:
+                        FreeCAD.ActiveDocument.openTransaction("Flatten wire")
+                        FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Points="+str(points).replace("Vector","FreeCAD.Vector").replace(" ",""))
+                        FreeCAD.ActiveDocument.commitTransaction()
+                        FreeCAD.ActiveDocument.recompute()
+                    else:
+                        from DraftTools import translate
+                        FreeCAD.Console.PrintMessage(translate("Draft","This Wire is already flat")+"\n")
+
 class _Polygon(_DraftObject):
     "The Polygon object"
 
@@ -6607,8 +6629,6 @@ class ViewProviderWorkingPlaneProxy:
                 if o.ViewObject:
                     vis[o.Name] = str(o.ViewObject.Visibility)
             self.Object.ViewObject.VisibilityMap = vis
-
-
 
     def attach(self,vobj):
         from pivy import coin
