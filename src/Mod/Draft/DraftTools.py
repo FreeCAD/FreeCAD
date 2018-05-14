@@ -533,6 +533,7 @@ class Line(Creator):
 
     def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
+        self.pointPrinted = 0
         if self.doc:
             self.obj = None # stores the temp shape
             self.oldWP = None # stores the WP if we modify it
@@ -547,10 +548,15 @@ class Line(Creator):
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            msg(translate("draft", "Pick first point:")+"\n")
+            msg(translate("draft", "First point:")+" ")
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
+        if len(self.node) > self.pointPrinted:
+            msg(str(tuple(self.node[-1])))
+        if closed:
+            msg(translate("draft","Closing")+"\n")
+        msg("\n")
         if self.obj:
             # remove temporary object, if any
             try:
@@ -624,7 +630,7 @@ class Line(Creator):
                             if ((self.point-self.node[0]).Length < Draft.tolerance()):
                                 self.undolast()
                                 self.finish(True,cont=True)
-                                msg(translate("draft", "DWire has been closed")+"\n")
+                                #msg(translate("draft", "DWire has been closed")+"\n")
 
     def undolast(self):
         "undoes last line segment"
@@ -639,21 +645,26 @@ class Line(Creator):
                 else:
                     self.obj.ViewObject.hide()
                 # DNC: report on removal
-                msg(translate("draft", "Last point has been removed")+"\n")
+                msg(translate("draft", "Removing last point")+"\n")
+                msg(translate("draft", "Next point:")+" ")
 
     def drawSegment(self,point):
         "draws a new segment"
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
         if (len(self.node) == 1):
-            msg(translate("draft", "Pick next point:")+"\n")
+            msg(str(tuple(self.node[-1]))+"\n")
+            msg(translate("draft", "Next point:")+" ")
+            self.pointPrinted += 1
         elif (len(self.node) == 2):
             last = self.node[len(self.node)-2]
             newseg = Part.LineSegment(last,point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
             if self.isWire:
-                msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
+                msg(str(tuple(self.node[-1]))+"\n")
+                msg(translate("draft", "Next point:")+" ")
+                self.pointPrinted += 1
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
@@ -661,7 +672,9 @@ class Line(Creator):
                 newseg = Part.LineSegment(last,point).toShape()
                 newshape=currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
+            msg(str(tuple(self.node[-1]))+"\n")
+            msg(translate("draft", "Next point:")+" ")
+            self.pointPrinted += 1
 
     def wipe(self):
         "removes all previous segments and starts from last point"
@@ -671,7 +684,8 @@ class Line(Creator):
             self.node = [self.node[-1]]
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            msg(translate("draft", "Pick next point:")+"\n")
+            msg("\n"+translate("draft","Restarting from")+" "+str(tuple(self.node[-1]))+"\n")
+            msg(translate("draft", "Next point:"))
 
     def orientWP(self):
         if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -1024,7 +1038,7 @@ class Rectangle(Creator):
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.rect = rectangleTracker()
-            msg(translate("draft", "Pick first point:\n"))
+            msg(translate("draft", "Pick first point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
