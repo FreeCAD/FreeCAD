@@ -4119,7 +4119,7 @@ class Edit(Modifier):
             tol = 0.001
             if ( ( self.editing == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( self.editing == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
                 self.obj.Closed = True
-            # DNC: fix error message if edited point coinsides with one of the existing points
+            # DNC: fix error message if edited point coincides with one of the existing points
             if ( editPnt in pts ) == False:
                 if Draft.getType(self.obj) in ["BezCurve"]:
                     knot = None
