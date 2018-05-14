@@ -432,8 +432,10 @@ class _ViewProviderSectionPlane:
         vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyLength","CutDistance","Arch",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
         vobj.addProperty("App::PropertyBool","CutView","Arch",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
+        vobj.addProperty("App::PropertyLength","CutMargin","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
         vobj.DisplayLength = 1000
         vobj.DisplayHeight = 1000
         vobj.ArrowSize = 50
@@ -441,6 +443,7 @@ class _ViewProviderSectionPlane:
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.0,0.4,1.0)
         vobj.CutView = False
+        vobj.CutMargin = 1
         vobj.Proxy = self
         self.Object = vobj.Object
 
@@ -540,7 +543,7 @@ class _ViewProviderSectionPlane:
             self.fcoords.point.setValues(fverts)
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop == "CutView":
+        elif prop in ["CutView","CutMargin"]:
             if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
                 sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
                 if vobj.CutView:
@@ -557,11 +560,14 @@ class _ViewProviderSectionPlane:
                     mp = DraftVecUtils.project(mp,norm)
                     dist = mp.Length #- 0.1 # to not clip exactly on the section object
                     norm = norm.negative()
+                    marg = 1
+                    if hasattr(vobj,"CutMargin"):
+                        marg = vobj.CutMargin.Value
                     if mp.getAngle(norm) > 1:
-                        dist += 1
+                        dist += marg
                         dist = -dist
                     else:
-                        dist -= 0.1
+                        dist -= marg
                     plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
