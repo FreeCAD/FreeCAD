@@ -506,7 +506,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 // straight line
                 int color = ((name == "G0") || (name == "G00")) ? 0 : 1;
                 if (nrot != lrot) {
-                    double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+                    double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
                     double angle = amax / 180 * M_PI;
                     int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
 
@@ -573,7 +573,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 } else if (angle == 0)
                     angle = M_PI * 2;
 
-                double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+                double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
 
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/std::max(angle, amax))); //we use a rather simple rule here, provisorily
                 double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
@@ -637,7 +637,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 p1.*pz = last.*pz;
 
                 if (nrot != lrot) {
-                    double amax = std::max(fmod(abs(a - A), 360), std::max(fmod(abs(b - B), 360), fmod(abs(c - C), 360)));
+                    double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
                     double angle = amax / 180 * M_PI;
                     int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
 
@@ -823,4 +823,3 @@ PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderPathPython, PathGui::ViewProviderP
 // explicit template instantiation
 template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderPath>;
 }
-
