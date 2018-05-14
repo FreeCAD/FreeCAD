@@ -1005,11 +1005,11 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                     edgeType = isDiagonal;
                 }
             } else if (geom->geomType == TechDrawGeometry::CIRCLE ||
-                       geom->geomType == TechDrawGeometry::ELLIPSE ||
-                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ||
-                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ) {
+                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ) {
                 edgeType = isCircle;
-            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
+            } else if (geom->geomType == TechDrawGeometry::ELLIPSE ||
+                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ||
+                       geom->geomType == TechDrawGeometry::BSPLINE) {
                 edgeType = isCurve;
             } else {
                 edgeType = isInvalid;
