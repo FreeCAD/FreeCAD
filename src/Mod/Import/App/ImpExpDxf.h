@@ -80,6 +80,7 @@ namespace Import
         std::string getOptionSource() { return m_optionSource; }
         void setOptionSource(std::string s) { m_optionSource = s; }
         void setOptions(void);
+        void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
 
         static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
@@ -93,6 +94,7 @@ namespace Import
         void exportBCurve(BRepAdaptor_Curve c);
         void exportLine(BRepAdaptor_Curve c);
         void exportLWPoly(BRepAdaptor_Curve c);
+
         std::string m_layerName;
         std::string m_optionSource;
         double optionMaxLength;

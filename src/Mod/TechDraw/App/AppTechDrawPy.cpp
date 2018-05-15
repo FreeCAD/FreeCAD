@@ -60,6 +60,7 @@
 #include "DrawProjectSplit.h"
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
+#include "DrawViewAnnotation.h"
 #include "DrawPage.h"
 #include "DrawPagePy.h"
 #include "Geometry.h"
@@ -579,6 +580,7 @@ private:
 
             App::DocumentObject* obj = 0;
             TechDraw::DrawViewPart* dvp = 0;
+            TechDraw::DrawViewAnnotation* dva = 0;
             TechDraw::DrawPage* dp = 0;
             if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
@@ -590,7 +592,18 @@ private:
                         layerName = dvp->getNameInDocument();
                         writer.setLayerName(layerName);
                         write1ViewDxf(writer,dvp,true);
-                    }
+                    } else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+                        dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
+                        layerName = dva->getNameInDocument();
+                        writer.setLayerName(layerName);
+                        double height = dva->TextSize.getValue();  //mm
+                        int just = 1;                              //centered
+                        double x = dva->X.getValue();
+                        double y = dva->Y.getValue();
+                        Base::Vector3d loc(x,y,0.0);
+                        auto lines = dva->Text.getValues();
+                        writer.exportText(lines[0].c_str(),loc,loc, height,just);
+                   }
                 }
             }
         }

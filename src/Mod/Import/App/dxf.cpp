@@ -302,6 +302,46 @@ void CDxfWrite::WriteVertex(double x, double y, double z, const char* layer_name
     (*m_ofs) << 0              << endl;
 }
 
+//***************************
+//WriteText
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteText(const char* text, const double* location1, const double* location2,
+                          const double height, const int horizJust, const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "TEXT"         << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbText"     << endl;
+    (*m_ofs) << 39             << endl;
+    (*m_ofs) << 0              << endl;     //thickness
+    (*m_ofs) << 10             << endl;     //first alignment point
+    (*m_ofs) << location1[0]   << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << location1[1]   << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << location1[2]   << endl;
+    (*m_ofs) << 40             << endl;
+    (*m_ofs) << height         << endl;
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << text           << endl;
+    (*m_ofs) << 50             << endl;
+    (*m_ofs) << 0              << endl;    //rotation
+    (*m_ofs) << 7              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+    (*m_ofs) << 72             << endl;
+    (*m_ofs) << horizJust      << endl;
+    (*m_ofs) << 11             << endl;    //second alignment point
+    (*m_ofs) << location2[0]   << endl;
+    (*m_ofs) << 21             << endl; 
+    (*m_ofs) << location2[1]   << endl;
+    (*m_ofs) << 31             << endl;
+    (*m_ofs) << location2[2]   << endl;
+}
+
 
 CDxfRead::CDxfRead(const char* filepath)
 {

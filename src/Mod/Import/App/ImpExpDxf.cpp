@@ -632,4 +632,18 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
     }
 }
 
+void ImpExpDxfWrite::exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just)
+{
+    double location1[3] = {0,0,0};
+    location1[0] = position1.x;
+    location1[1] = position1.y;
+    location1[2] = position1.z;
+    double location2[3] = {0,0,0};
+    location2[0] = position2.x;
+    location2[1] = position2.y;
+    location2[2] = position2.z;
 
+    WriteText(text, location1, location2, size, just, getLayerName().c_str());
+
+
+}
