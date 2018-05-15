@@ -2641,6 +2641,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     Hasher = hasher;
     initCache(true);
     Tag = tag;
+    resetElementMap();
     mapSubElement(tmp,postfix);
 }
 
