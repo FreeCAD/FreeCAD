@@ -26,6 +26,7 @@
 # include <QGridLayout>
 # include <QHeaderView>
 # include <QEvent>
+# include <QTimer>
 #endif
 
 #include <boost/bind.hpp>
@@ -67,6 +68,10 @@ PropertyView::PropertyView(QWidget *parent)
     QGridLayout* pLayout = new QGridLayout( this ); 
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
+
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
@@ -237,8 +242,15 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::ClrSelection)
         return;
 
+    PropertyModel::PropertyList props;
+    // clear the properties.
+    propertyEditorData->buildUp(props);
+    propertyEditorView->buildUp(props);
     clearPropertyItemSelection();
+    timer->start(100);
+}
 
+void PropertyView::onTimer() {
     std::set<App::DocumentObject *> objSet;
 
     // group the properties by <name,id>

@@ -69,6 +69,7 @@ public:
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
     void tabChanged(int index);
+    void onTimer();
 
 protected:
     void changeEvent(QEvent *e);
@@ -96,6 +97,7 @@ private:
     Connection connectUndoDocument;
     Connection connectRedoDocument;
     QTabWidget* tabs;
+    QTimer* timer;
 };
 
 namespace DockWnd {
