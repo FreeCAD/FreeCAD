@@ -1421,11 +1421,8 @@ ViewProviderLink::ViewProviderLink()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
-    unsigned long lcol = hGrp->GetUnsigned("DefaultLinkColor",0x66FFFF00);
-    float r,g,b;
-    r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
     App::Material mat(App::Material::DEFAULT);
-    mat.diffuseColor.set(r,g,b);
+    mat.diffuseColor.setPackedValue(hGrp->GetUnsigned("DefaultLinkColor",0x66FFFF00));
     ADD_PROPERTY_TYPE(ShapeMaterial, (mat), " Link", App::Prop_None, 0);
     ShapeMaterial.setStatus(App::Property::MaterialEdit, true);
 
@@ -1637,7 +1634,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 overrideMaterials.resize(elements.size(),false);
                 bool overrideMaterial = false;
                 bool hasMaterial = false;
-                App::Material defMat(App::Material::DEFAULT);
                 materials.reserve(elements.size());
                 for(size_t i=0;i<elements.size();++i) {
                     auto element = dynamic_cast<App::LinkElement*>(elements[i]);
@@ -1645,15 +1641,16 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                     auto vp = dynamic_cast<ViewProviderLink*>(
                             Application::Instance->getViewProvider(element));
                     if(!vp) continue;
-                    hasMaterial = hasMaterial || vp->ShapeMaterial.getValue()!=defMat;
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
+                    hasMaterial = overrideMaterial || hasMaterial 
+                        || vp->ShapeMaterial.getValue()!=ShapeMaterial.getValue();
                     materials.push_back(vp->ShapeMaterial.getValue());
                     overrideMaterials[i] = vp->OverrideMaterial.getValue();
                 }
                 if(!overrideMaterial)
                     overrideMaterials.clear();
                 OverrideMaterialList.setStatus(App::Property::User3,true);
-                OverrideMaterialList.setValue(overrideMaterial);
+                OverrideMaterialList.setValue(overrideMaterials);
                 OverrideMaterialList.setStatus(App::Property::User3,false);
                 if(!hasMaterial)
                     materials.clear();
@@ -1662,6 +1659,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 MaterialList.setStatus(App::Property::User3,false);
                 
                 linkView->setSize(ext->getElementCountValue());
+                applyMaterial();
             }
         }
     }else if(prop==ext->getScaleListProperty() || prop==ext->getPlacementListProperty()) {
@@ -1712,8 +1710,25 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 linkView->setElementVisible(i,true);
         }
     }else if(prop == ext->getElementListProperty()) {
-        if(ext->getShowElementValue())
-            linkView->setChildren(ext->getElementListValue(), ext->getVisibilityListValue());
+        if(ext->getShowElementValue()) {
+            const auto &elements = ext->getElementListValue();
+            if(OverrideMaterialList.getSize() || MaterialList.getSize()) {
+                int i=-1;
+                for(auto obj : elements) {
+                    ++i;
+                    auto vp = dynamic_cast<ViewProviderLink*>(
+                            Application::Instance->getViewProvider(obj));
+                    if(!vp) continue;
+                    if(OverrideMaterialList.getSize()>i)
+                        vp->OverrideMaterial.setValue(OverrideMaterialList[i]);
+                    if(MaterialList.getSize()>i)
+                        vp->ShapeMaterial.setValue(MaterialList[i]);
+                }
+                OverrideMaterialList.setSize(0);
+                MaterialList.setSize(0);
+            }
+            linkView->setChildren(elements, ext->getVisibilityListValue());
+        }
         checkIcon(ext);
     }
 }
@@ -1740,8 +1755,8 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
 }
 
 void ViewProviderLink::applyMaterial() {
-    if(!OverrideMaterial.getValue()) return;
-    linkView->setMaterial(-1,&ShapeMaterial.getValue());
+    if(OverrideMaterial.getValue())
+        linkView->setMaterial(-1,&ShapeMaterial.getValue());
     for(int i=0;i<linkView->getSize();++i) {
         if(MaterialList.getSize()>i && 
            OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
