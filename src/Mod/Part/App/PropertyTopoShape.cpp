@@ -89,8 +89,14 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     aboutToSetValue();
     _Shape = sh;
     auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj)
-        _Shape.Tag = obj->getID();
+    if(obj) {
+        auto tag = obj->getID();
+        if(_Shape.Tag && tag!=_Shape.Tag) {
+            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
+            _Shape.reTagElementMap(tag,hasher);
+        } else
+            _Shape.Tag = obj->getID();
+    }
     hasSetValue();
 }
 
