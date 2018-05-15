@@ -496,13 +496,8 @@ std::string ComplexGeoData::renameDuplicateElement(int index, const char *elemen
     std::string renamed(name);
     encodeElementName(element[0],renamed,ss,sids);
     renamed += ss.str();
-    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_MSG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
-                << element << '/' << element2);
-    }else{
-        FC_LOG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
-                << element << '/' << element2);
-    }
+    FC_LOG("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+            << element << '/' << element2);
     return renamed;
 }
 
