@@ -473,7 +473,7 @@ public:
             "Obtain the element references related to 'name'"
         );
         add_varargs_method("getElementHistory",&Module::getElementHistory,
-            "getElementHistory(name,recursive=True,sameType=False)\n"
+            "getElementHistory(obj,name,recursive=True,sameType=False)\n"
             "Returns the element mapped name history\n\n"
             "name: mapped element name belonging to this shape.\n"
             "recursive: if True, then track back the history through other objects till the origin.\n"

@@ -508,6 +508,7 @@ public:
     static const std::string &modgenPostfix();
     static const std::string &upperPostfix();
     static const std::string &lowerPostfix();
+    static const std::string &indexPostfix();
     //@}
 
     /** @name Element name mapping helper functions

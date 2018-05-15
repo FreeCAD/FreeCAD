@@ -2243,6 +2243,11 @@ const std::string &TopoShape::lowerPostfix() {
     return postfix;
 }
 
+const std::string &TopoShape::indexPostfix() {
+    static std::string postfix(elementMapPrefix() + ":I");
+    return postfix;
+}
+
 TopoShape &TopoShape::makESlice(const TopoShape &shape, 
         const Base::Vector3d& dir, double d, const char *op) 
 {
