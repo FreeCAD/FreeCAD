@@ -151,13 +151,26 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
             }
         }
 
+        // build list of objects names already in property so we can mark them as selected later on
+        std::vector<const char *> selectedNames;
+
+        // build ignore list
         std::vector<App::DocumentObject*> ignoreList;
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
+        App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
         if (par) {
             // for multi-selection we need all objects
             if (isSingleSelection) {
-                App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
                 ignoreList = par->getOutListOfProperty(prop);
+            } else {
+                // gather names of objects currently in property
+                if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+                    const App::PropertyLinkList* propll = static_cast<const App::PropertyLinkList*>(prop);
+                    std::vector<App::DocumentObject*> links = propll->getValues();
+                    for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
+                        selectedNames.push_back((*it)->getNameInDocument());
+                    }
+                }
             }
 
             // add the inlist to the ignore list to avoid dependency loops
@@ -189,6 +202,13 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
                     item->setText(QString::fromUtf8((*it)->Label.getValue()));
                     QByteArray ba((*it)->getNameInDocument());
                     item->setData(Qt::UserRole, ba);
+                    // mark items as selected if needed
+                    for (std::vector<const char *>::iterator nit = selectedNames.begin(); nit != selectedNames.end(); ++nit) {
+                        if (strcmp(*nit,(*it)->getNameInDocument()) == 0) {
+                            item->setSelected(true);
+                            break;
+                        }
+                    }
                 }
             }
         }
