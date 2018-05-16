@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 # include <QHeaderView>
+# include <QTextStream>
 #endif
 
 #include "SceneInspector.h"
@@ -102,12 +103,14 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             setNode(this->index(i, 0, index), child);
 
             QMap<SoNode*, QString>::iterator it = nodeNames.find(child);
-            if (it != nodeNames.end()) {
-                this->setData(this->index(i, 1, index), QVariant(it.value()));
-            }
-            else {
-                this->setData(this->index(i, 1, index), QVariant(QString::fromLatin1(child->getName())));
-            }
+            QString name;
+            QTextStream stream(&name);
+            stream << child << " ";
+            if (it != nodeNames.end())
+                stream << it.value();
+            else
+                stream << child->getName();
+            this->setData(this->index(i, 1, index), QVariant(name));
         }
     }
     // insert icon
