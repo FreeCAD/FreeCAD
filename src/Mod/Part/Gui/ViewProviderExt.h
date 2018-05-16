@@ -146,11 +146,11 @@ public:
 
     void updateColors(Part::Feature *feature, App::Document *sourceDoc=0, bool forceColorMap=false);
 
-    static App::Color getElementColor(const App::Color &color, 
+    static App::Color getElementColor(App::Color color, 
             Part::TopoShape shape, App::Document *doc, int type, std::string mapped);
 
-    static std::vector<App::Color> getShapeColors(
-            const Part::TopoShape &shape, App::Document *sourceDoc=0);
+    static std::vector<App::Color> getShapeColors(const Part::TopoShape &shape, App::Color &defColor,
+            App::Document *sourceDoc=0, bool linkOnly=false);
 
     /** @name Edit methods */
     //@{
