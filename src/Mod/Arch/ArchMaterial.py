@@ -114,6 +114,7 @@ class _CommandArchMaterial:
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument."+obj.Name+".Material = mat")
         FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -144,6 +145,7 @@ class _CommandArchMultiMaterial:
                     FreeCADGui.doCommand("FreeCAD.ActiveDocument."+obj.Name+".Material = mat")
         FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -302,6 +304,7 @@ class _ViewProviderArchMaterial:
 
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
         return
 
     def __getstate__(self):
@@ -386,6 +389,7 @@ class _ArchMaterialTaskPanel:
                 self.obj.Label = self.material['Name']
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
 
     def chooseMat(self, card):
         "sets self.material from a card"
@@ -488,6 +492,7 @@ class _ViewProviderArchMultiMaterial:
 
     def unsetEdit(self,vobj,mode=0):
         FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
         return True
 
     def __getstate__(self):
@@ -503,7 +508,9 @@ class _ViewProviderArchMultiMaterial:
         return True
 
 if FreeCAD.GuiUp:
+
     class MultiMaterialDelegate(QtGui.QStyledItemDelegate):
+
         def __init__(self, parent=None, *args):
             self.mats = []
             for obj in FreeCAD.ActiveDocument.Objects:
@@ -512,7 +519,10 @@ if FreeCAD.GuiUp:
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
     
         def createEditor(self,parent,option,index):
-            if index.column() == 1:
+            if index.column() == 0:
+                editor = QtGui.QComboBox(parent)
+                editor.setEditable(True)
+            elif index.column() == 1:
                 editor = QtGui.QComboBox(parent)
             elif index.column() == 2:
                 ui = FreeCADGui.UiLoader()
@@ -524,7 +534,10 @@ if FreeCAD.GuiUp:
             return editor
     
         def setEditorData(self, editor, index):
-            if index.column() == 1:
+            if index.column() == 0:
+                import ArchWindow
+                editor.addItems([index.data()]+ArchWindow.WindowPartTypes)
+            elif index.column() == 1:
                 idx = -1
                 for i,m in enumerate(self.mats):
                     editor.addItem(m.Label)
@@ -535,7 +548,12 @@ if FreeCAD.GuiUp:
                 QtGui.QStyledItemDelegate.setEditorData(self, editor, index)
     
         def setModelData(self, editor, model, index):
-            if index.column() == 1:
+            if index.column() == 0:
+                if editor.currentIndex() == -1:
+                    model.setData(index, "")
+                else:
+                    model.setData(index, editor.currentText())
+            elif index.column() == 1:
                 if editor.currentIndex() == -1:
                     model.setData(index, "")
                 else:
@@ -660,6 +678,7 @@ class _ArchMultiMaterialTaskPanel:
             self.obj.Thicknesses = thicknesses
             if self.form.nameField.text():
                 self.obj.Label = self.form.nameField.text()
+        FreeCAD.ActiveDocument.recompute()
         return True
 
 
