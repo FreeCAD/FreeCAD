@@ -7171,4 +7171,28 @@ class ViewProviderDraftText:
         return None
 
 
+def convertDraftTexts(textslist=[]):
+    "converts the given Draft texts (or all that are found in the active document) to the new object"
+    if not isinstance(textslist,list):
+        textslist = [textslist]
+    if not textslist:
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.TypeId == "App::Annotation":
+                textslist.append(o)
+    todelete = []
+    for o in textslist:
+        l = o.Label
+        o.Label = l+".old"
+        obj = makeText(o.LabelText,point=o.Position)
+        obj.Label = l
+        todelete.append(o.Name)
+        for p in o.InList:
+            if p.isDerivedFrom("App::DocumentObjectGroup"):
+                if o in p.Group:
+                    g = p.Group
+                    g.append(obj)
+                    p.Group = g
+    for n in todelete:
+        FreeCAD.ActiveDocument.removeObject(n)
+
 ## @}
