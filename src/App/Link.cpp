@@ -654,6 +654,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 auto offset = name.size();
                 auto placementProp = getPlacementListProperty();
                 auto scaleProp = getScaleListProperty();
+                const auto &vis = getVisibilityListValue();
                 for(size_t i=objs.size();i<elementCount;++i) {
                     name.resize(offset);
                     name += std::to_string(i);
@@ -668,6 +669,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
+
+                    if(vis.size()>i && !vis[i])
+                        myHiddenElements.insert(obj);
 
                     if(placementProp && placementProp->getSize()>(int)i)
                         obj->Placement.setValue(placementProp->getValues()[i]);

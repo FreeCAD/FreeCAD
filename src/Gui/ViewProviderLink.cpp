@@ -1632,8 +1632,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getLinkTransformProperty()) {
         setLinkType(ext);
     }else if(prop==ext->getElementCountProperty()) {
-        if(!ext->getShowElementValue()) 
+        if(!ext->getShowElementValue()) {
             linkView->setSize(ext->getElementCountValue());
+            updateDataPrivate(ext,ext->getVisibilityListProperty());
+        }
         checkIcon(ext);
     }else if(prop == ext->getShowElementProperty()) {
         if(!ext->getShowElementValue()) {
@@ -1671,6 +1673,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 MaterialList.setStatus(App::Property::User3,false);
                 
                 linkView->setSize(ext->getElementCountValue());
+                updateDataPrivate(ext,ext->getVisibilityListProperty());
                 applyMaterial();
             }
         }
