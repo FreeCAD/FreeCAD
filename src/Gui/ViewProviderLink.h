@@ -35,6 +35,7 @@
 
 class SoBase;
 class SoDragger;
+class SoMaterialBinding;
 
 namespace Gui {
 
@@ -173,6 +174,7 @@ protected:
     CoinPtr<SoTransform> pcTransform;
     CoinPtr<SoSeparator> pcLinkedRoot;
     CoinPtr<SoMaterial> pcMaterial;
+    CoinPtr<SoMaterialBinding> pcMaterialBind;
     CoinPtr<SoDrawStyle> pcDrawStyle; // for override line width and point size
     CoinPtr<SoShapeHints> pcShapeHints; // for override double side rendering for mirror
     SnapshotType nodeType;

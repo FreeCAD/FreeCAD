@@ -30,6 +30,7 @@
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/misc/SoChildList.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoAnnotation.h>
@@ -673,10 +674,8 @@ public:
     friend LinkView;
 
     Element(LinkView &handle):handle(handle) {
-        pcMaterial = handle.pcMaterial;
         pcTransform = new SoTransform;
         pcRoot = new SoFCSelectionRoot;
-        pcRoot->addChild(pcMaterial);
         pcSwitch = new SoSwitch;
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
@@ -699,7 +698,10 @@ public:
             linkInfo.reset();
         }
         pcRoot->removeAllChildren();
-        pcRoot->addChild(pcMaterial);
+        if(pcMaterial) {
+            pcRoot->addChild(handle.pcMaterialBind);
+            pcRoot->addChild(pcMaterial);
+        }
     }
 
     void link(App::DocumentObject *obj) {
@@ -725,8 +727,9 @@ LinkView::LinkView()
     ,childType((SnapshotType)-1),autoSubLink(true)
 {
     pcLinkRoot = new SoFCSelectionRoot;
-    pcMaterial = new SoMaterial;
-    pcLinkRoot->addChild(pcMaterial);
+    pcMaterialBind = new SoMaterialBinding;
+    pcMaterialBind->value = SoMaterialBinding::OVERALL;
+    pcMaterialBind->setOverride(true);
 }
 
 LinkView::~LinkView() {
@@ -839,27 +842,42 @@ void LinkView::setMaterial(int index, const App::Material *material) {
     auto pcMat = pcMaterial;
     if(index < 0) {
         if(!material) {
-            pcMaterial->setOverride(false);
+            if(pcMaterial) {
+                pcLinkRoot->removeChild(pcMaterial);
+                pcLinkRoot->removeChild(pcMaterialBind);
+                pcMaterial.reset();
+            }
             return;
         }
+        if(!pcMaterial) {
+            pcMat = pcMaterial = new SoMaterial;
+            pcMaterial->setOverride(true);
+            pcLinkRoot->insertChild(pcMaterial,0);
+            pcLinkRoot->insertChild(pcMaterialBind,0);
+        }
+        for(int i=0;i<getSize();++i)
+            setMaterial(i,0);
     }else if(index >= (int)nodeArray.size())
         LINK_THROW(Base::ValueError,"LinkView: material index out of range");
     else {
         auto &info = *nodeArray[index];
-        if(info.pcMaterial == pcMaterial) {
+        if(!info.pcMaterial) {
             if(!material) 
                 return;
-            info.pcMaterial = pcMat = new SoMaterial;
-            info.pcRoot->replaceChild(pcMaterial,pcMat);
+            pcMat = info.pcMaterial = new SoMaterial;
+            pcMat->setOverride(true);
+            info.pcRoot->insertChild(pcMat,0);
+            info.pcRoot->insertChild(pcMaterialBind,0);
         }else if (!material) {
-            info.pcRoot->replaceChild(info.pcMaterial,pcMaterial);
-            info.pcMaterial = pcMaterial;
+            if(info.pcMaterial) {
+                info.pcRoot->removeChild(pcMaterialBind);
+                info.pcRoot->removeChild(info.pcMaterial);
+                info.pcMaterial.reset();
+            }
             return;
         }else
             pcMat = info.pcMaterial;
     }
-
-    pcMat->setOverride(true);
 
     const App::Material &Mat = *material;
     pcMat->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
@@ -994,14 +1012,16 @@ void LinkView::setSize(int _size) {
 
 void LinkView::resetRoot() {
     pcLinkRoot->removeAllChildren();
+    if(pcMaterial) {
+        pcLinkRoot->addChild(pcMaterialBind);
+        pcLinkRoot->addChild(pcMaterial);
+    }
     if(pcTransform)
         pcLinkRoot->addChild(pcTransform);
     if(pcShapeHints)
         pcLinkRoot->addChild(pcShapeHints);
     if(pcDrawStyle)
         pcLinkRoot->addChild(pcDrawStyle);
-    if(pcMaterial)
-        pcLinkRoot->addChild(pcMaterial);
 }
 
 void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
@@ -1502,17 +1522,9 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
         inherited::onChanged(prop);
         return;
     }
-    if (prop == &OverrideMaterial) {
-        if(!OverrideMaterial.getValue()) {
-            linkView->setMaterial(-1,0);
-            for(int i=0;i<linkView->getSize();++i)
-                linkView->setMaterial(i,0);
-        }else
-            applyMaterial();
-    }else if (prop == &ShapeMaterial) {
-        if(OverrideMaterial.getValue())
-            linkView->setMaterial(-1,&ShapeMaterial.getValue());
-    }else if(prop == &MaterialList || prop == &OverrideMaterialList) {
+    if (prop == &OverrideMaterial || prop == &ShapeMaterial ||
+        prop == &MaterialList || prop == &OverrideMaterialList) 
+    {
         applyMaterial();
     }else if(prop==&DrawStyle || prop==&PointSize || prop==&LineWidth) {
         if(!DrawStyle.getValue())
@@ -1757,10 +1769,15 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
 void ViewProviderLink::applyMaterial() {
     if(OverrideMaterial.getValue())
         linkView->setMaterial(-1,&ShapeMaterial.getValue());
-    for(int i=0;i<linkView->getSize();++i) {
-        if(MaterialList.getSize()>i && 
-           OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
-            linkView->setMaterial(i,&MaterialList[i]);
+    else {
+        for(int i=0;i<linkView->getSize();++i) {
+            if(MaterialList.getSize()>i && 
+               OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
+                linkView->setMaterial(i,&MaterialList[i]);
+            else
+                linkView->setMaterial(i,0);
+        }
+        linkView->setMaterial(-1,0);
     }
 }
 
