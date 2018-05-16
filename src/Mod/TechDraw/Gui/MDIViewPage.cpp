@@ -387,7 +387,6 @@ void MDIViewPage::updateDrawing(void)
         }
         QGIView* qv = m_view->findQViewForDocObj(dv);
         if (qv == nullptr) {
-            Base::Console().Message("TRACE - MDIVP::updateDrawing - making a missing graphic\n");
             attachView(dv);
         }
     }

@@ -164,9 +164,6 @@ bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
 
 short DrawViewSymbol::mustExecute() const
 {
-    if (Scale.isTouched()) {
-        Base::Console().Message("TRACE - DVS::mustExecute - Scale is touched\n");
-    }
     short result = 0;
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
