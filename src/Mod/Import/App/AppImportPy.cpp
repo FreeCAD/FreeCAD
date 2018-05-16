@@ -73,16 +73,16 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("Import")
     {
-        add_varargs_method("open",&Module::importer,
+        add_keyword_method("open",&Module::importer,
             "open(string) -- Open the file and create a new document."
         );
-        add_varargs_method("insert",&Module::importer,
+        add_keyword_method("insert",&Module::importer,
             "insert(string,string) -- Insert the file into the given document."
         );
 //        add_varargs_method("openAssembly",&Module::importAssembly,
 //            "openAssembly(string) -- Open the assembly file and create a new document."
 //        );
-        add_varargs_method("export",&Module::exporter,
+        add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
         initialize("This module is the Import module."); // register with Python       
@@ -91,11 +91,16 @@ public:
     virtual ~Module() {}
 
 private:
-    Py::Object importer(const Py::Tuple& args)
+    Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
         char* DocName=0;
-        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+        PyObject *importHidden = Py_None;
+        PyObject *merge = Py_None;
+        PyObject *useLinkGroup = Py_None;
+        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOO", 
+                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -184,12 +189,18 @@ private:
 
 #if 1
             Import::ImportOCAF ocaf(hDoc, pcDoc, file.fileNamePure());
+            if(merge!=Py_None)
+                ocaf.setMerge(PyObject_IsTrue(merge));
+            if(importHidden!=Py_None)
+                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
+            if(useLinkGroup!=Py_None)
+                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
             ocaf.loadShapes();
 #else
             Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
             xcaf.loadShapes();
-#endif
             pcDoc->recompute();
+#endif
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
@@ -201,11 +212,14 @@ private:
 
         return Py::None();
     }
-    Py::Object exporter(const Py::Tuple& args)
+    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
     {
         PyObject* object;
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+        PyObject *exportHidden = Py_None;
+        static char* kwd_list[] = {"obj", "name", "exportHidden",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O",
+                    kwd_list,&object,"utf-8",&Name,&exportHidden))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -218,47 +232,18 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            bool keepExplicitPlacement = list.size() > 1;
-            keepExplicitPlacement = Standard_True;
-            Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+            Import::ExportOCAF ocaf(hDoc);
+            if(exportHidden!=Py_None)
+                ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
 
+            std::vector<App::DocumentObject*> objs;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
-                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        Part::Feature* part = static_cast<Part::Feature*>(obj);
-                        std::vector<App::Color> colors;
-                        std::vector <TDF_Label> hierarchical_label;
-                        std::vector <TopLoc_Location> hierarchical_loc;
-                        std::vector <App::DocumentObject*> hierarchical_part;
-                        ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
-                    }
-                    else {
-                        Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
-                    }
-                }
-                else if (PyTuple_Check(item) && PyTuple_Size(item) == 2) {
-                    Py::Tuple tuple(*it);
-                    Py::Object item0 = tuple.getItem(0);
-                    Py::Object item1 = tuple.getItem(1);
-                    if (PyObject_TypeCheck(item0.ptr(), &(App::DocumentObjectPy::Type))) {
-                        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item0.ptr())->getDocumentObjectPtr();
-                        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                            Part::Feature* part = static_cast<Part::Feature*>(obj);
-                            App::PropertyColorList colors;
-                            colors.setPyObject(item1.ptr());
-                            std::vector <TDF_Label> hierarchical_label;
-                            std::vector <TopLoc_Location> hierarchical_loc;
-                            std::vector <App::DocumentObject*> hierarchical_part;
-                            ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc, hierarchical_part);
-                        }
-                        else {
-                            Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
-                        }
-                    }
-                }
+                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type)))
+                    objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
+
+            ocaf.exportObjects(objs);
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {

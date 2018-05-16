@@ -57,14 +57,29 @@ class ImportExport ImportOCAF
 public:
     ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF();
-    void loadShapes();
-    void setMerge(bool);
+    App::DocumentObject* loadShapes();
+    void setMerge(bool enable) { merge=enable;};
+    void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
+    void setImportHiddenObject(bool enable) {importHidden=enable;}
 
 private:
-    void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, std::vector<App::DocumentObject*> &);
-    void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &, bool);
-    void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
+    struct Info {
+        App::DocumentObject *obj = 0;
+        App::PropertyPlacement *propPlacement = 0;
+        App::Color color;
+        bool hasColor = false;
+        bool free = true;
+    };
+
+    App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool isArrayElement=false);
+    bool createAssembly(const TopoDS_Shape &shape, Info &info);
+    bool createObject(const TopoDS_Shape &shape, Info &info);
+    bool createGroup(Info &info, const TopoDS_Shape &shape,
+        const std::vector<App::DocumentObject*> &children, const boost::dynamic_bitset<> &visibilities);
+    App::DocumentObject *createObject(TDF_Label label, const TopoDS_Shape &shape);
+    bool getColor(const TopoDS_Shape &shape, App::Color &color, bool check=false, bool noDefault=false);
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
+    virtual void applyLinkColor(App::DocumentObject *, int /*index*/, App::Color){}
 
 private:
     Handle(TDocStd_Document) pDoc;
@@ -73,38 +88,44 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     bool merge;
     std::string default_name;
-    std::set<int> myRefShapes;
-    static const int HashUpper = INT_MAX;
+    bool useLinkGroup;
+    bool importHidden;
+
+    struct ShapeHasher {
+        std::size_t operator()(const TopoDS_Shape &s) const {
+            return s.HashCode(INT_MAX);
+        }
+    };
+    std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myObjects;
+    App::Color defaultColor;
 };
 
 class ImportExport ExportOCAF
 {
 public:
-    void createNode(App::Part* part, int& root_it,
-                    std::vector <TDF_Label>& hierarchical_label,
-                    std::vector <TopLoc_Location>& hierarchical_loc,
-                    std::vector <App::DocumentObject*>& hierarchical_part);
-    ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
-    int saveShape(Part::Feature* part, const std::vector<App::Color>&,
-                  std::vector <TDF_Label>& hierarchical_label,
-                  std::vector <TopLoc_Location>& hierarchical_loc,
-                  std::vector <App::DocumentObject*>& hierarchical_part);
-    void reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part,
-                             std::vector <TDF_Label> FreeLabels,
-                             std::vector <int> part_id,
-                             std::vector< std::vector<App::Color> >& Colors);
-    void getFreeLabels(std::vector <TDF_Label>& hierarchical_label,
-                       std::vector <TDF_Label>& labels,
-                       std::vector <int>& label_part_id);
-    void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,
-                  std::vector <TopLoc_Location>& hierarchical_loc);
+    typedef std::function<std::vector<App::Color>(const Part::TopoShape &, App::Color &,
+            App::Document*, bool)> GetShapeColorsFunc;
+    ExportOCAF(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
+
+    void setExportHiddenObject(bool enable) {exportHidden=enable;}
+    void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=0);
+
+private:
+    TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=0);
+    void setupObject(TDF_Label label, App::DocumentObject *obj, 
+            const Part::TopoShape &shape, const char *name=0);
+    void setName(TDF_Label label, App::DocumentObject *obj, const char *name=0);
 
 private:
     Handle(TDocStd_Document) pDoc;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
-    TDF_Label rootLabel;
-    bool keepExplicitPlacement;
+
+    std::map<App::DocumentObject *, TDF_Label> myObjects;
+    GetShapeColorsFunc getShapeColors;
+
+    App::Color defaultColor;
+    bool exportHidden;
 };
 
 
