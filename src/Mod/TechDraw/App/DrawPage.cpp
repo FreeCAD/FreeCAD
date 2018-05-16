@@ -347,14 +347,13 @@ std::vector<App::DocumentObject*> DrawPage::getAllViews(void)
     auto views = Views.getValues();   //list of docObjects
     std::vector<App::DocumentObject*> allViews;
     for (auto& v: views) {
+        allViews.push_back(v);
         if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
             TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
             if (dpg != nullptr) {                                              //can't really happen!
               std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
               allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
             }
-        } else {
-            allViews.push_back(v);
         }
     }
     return allViews;
