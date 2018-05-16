@@ -1233,6 +1233,49 @@ bool StdCmdRefresh::isActive(void)
 }
 
 //===========================================================================
+// Std_Refresh
+//===========================================================================
+DEF_STD_CMD_A(StdCmdForceRefresh);
+
+StdCmdForceRefresh::StdCmdForceRefresh()
+  : Command("Std_Refresh")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("&Refresh");
+    sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
+    sWhatsThis    = "Std_Refresh";
+    sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
+    sPixmap       = "view-refresh";
+    sAccel        = "Ctrl+F5";
+    // sAccel        = keySequenceToAccel(QKeySequence("Ctrl+F5"));
+    eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
+}
+
+void StdCmdForceRefresh::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    if (getActiveGuiDocument()) {
+        //Note: Don't add the recompute to undo/redo because it complicates
+        //testing the changes of properties.
+        //openCommand("Refresh active document");
+        this->getDocument()->setStatus(App::Document::SkipRecompute, false);
+        Gui::Document* docGui = Application::Instance->activeDocument();
+        App::Document* doc = docGui->getDocument();
+        std::vector<App::DocumentObject*> obj = doc->getObjects();
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+            (*it)->touch();
+
+        doCommand(Doc,"App.activeDocument().recompute()");
+        //commitCommand();
+    }
+}
+
+bool StdCmdForceRefresh::isActive(void)
+{
+    return this->getDocument() ;
+}
+
+//===========================================================================
 // Std_Transform
 //===========================================================================
 DEF_STD_CMD_A(StdCmdTransform);
@@ -1467,6 +1510,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelectAll());
     rcCmdMgr.addCommand(new StdCmdDelete());
     rcCmdMgr.addCommand(new StdCmdRefresh());
+    rcCmdMgr.addCommand(new StdCmdForceRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());
     rcCmdMgr.addCommand(new StdCmdPlacement());
     rcCmdMgr.addCommand(new StdCmdTransformManip());
