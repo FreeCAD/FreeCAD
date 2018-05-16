@@ -204,7 +204,8 @@ int QGVPage::addQView(QGIView *view)
     }
 
     view->setPos(viewPos);
-
+    view->updateView(true);
+    
     return 0;
 }
 
