@@ -1153,7 +1153,7 @@ def makeBlock(objectslist):
         select(obj)
     return obj
 
-def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
+def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array"):
     '''makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
     of the given object
@@ -1162,13 +1162,18 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
     and ynum. In case of polar array, center is a vector, totalangle is the angle
     to cover (in degrees) and totalnum is the number of objects, including the original.
     The result is a parametric Draft Array.'''
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Array(obj)
     obj.Base = baseobject
-    if arg4:
+    if arg6:
+        obj.ArrayType = "ortho"
+        obj.IntervalX = arg1
+        obj.IntervalY = arg2
+        obj.IntervalZ = arg3
+        obj.NumberX = arg4
+        obj.NumberY = arg5
+        obj.NumberZ = arg6
+    elif arg4:
         obj.ArrayType = "ortho"
         obj.IntervalX = arg1
         obj.IntervalY = arg2
@@ -1411,7 +1416,7 @@ def move(objectslist,vector,copy=False):
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
-def array(objectslist,arg1,arg2,arg3,arg4=None):
+def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     '''array(objectslist,xvector,yvector,xnum,ynum) for rectangular array, or
     array(objectslist,center,totalangle,totalnum) for polar array: Creates an array
     of the objects contained in list (that can be an object or a list of objects)
@@ -1435,6 +1440,22 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
                 currentyvector=currentxvector.add(Vector(yvector).multiply(ycount))
                 if not ycount==0:
                     move(objectslist,currentyvector,True)
+    def rectArray2(objectslist,xvector,yvector,zvector,xnum,ynum,znum):
+        typecheck([(xvector,Vector), (yvector,Vector), (zvector,Vector),(xnum,int), (ynum,int),(znum,int)], "rectArray2")
+        if not isinstance(objectslist,list): objectslist = [objectslist]
+        for xcount in range(xnum):
+            currentxvector=Vector(xvector).multiply(xcount)
+            if not xcount==0:
+                move(objectslist,currentxvector,True)
+            for ycount in range(ynum):
+                currentxvector=FreeCAD.Base.Vector(currentxvector)
+                currentyvector=currentxvector.add(Vector(yvector).multiply(ycount))
+                if not ycount==0:
+                    move(objectslist,currentyvector,True)
+                for zcount in range(znum):
+                    currentzvector=currentyvector.add(Vector(zvector).multiply(zcount))
+                    if not zcount==0:
+                        move(objectslist,currentzvector,True)
     def polarArray(objectslist,center,angle,num):
         typecheck([(center,Vector), (num,int)], "polarArray")
         if not isinstance(objectslist,list): objectslist = [objectslist]
@@ -1442,8 +1463,9 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
         for i in range(num):
             currangle = fraction + (i*fraction)
             rotate(objectslist,currangle,center,copy=True)
-
-    if arg4:
+    if arg6:
+        rectArray2(objectslist,arg1,arg2,arg3,arg4,arg5,arg6)
+    elif arg4:
         rectArray(objectslist,arg1,arg2,arg3,arg4)
     else:
         polarArray(objectslist,arg1,arg2,arg3)
