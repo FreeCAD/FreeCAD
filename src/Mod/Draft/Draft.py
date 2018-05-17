@@ -1155,13 +1155,14 @@ def makeBlock(objectslist):
 
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array"):
     '''makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
+    makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
     makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
     of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
-    at xvector distance between iterations, and same for y direction with yvector
-    and ynum. In case of polar array, center is a vector, totalangle is the angle
-    to cover (in degrees) and totalnum is the number of objects, including the original.
-    The result is a parametric Draft Array.'''
+    at xvector distance between iterations, same for y direction with yvector and ynum, 
+    same for z direction with zvector and znum. In case of polar array, center is a vector, 
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
+    including the original. The result is a parametric Draft Array.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Array(obj)
     obj.Base = baseobject
@@ -1417,13 +1418,15 @@ def move(objectslist,vector,copy=False):
     return newobjlist
 
 def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
-    '''array(objectslist,xvector,yvector,xnum,ynum) for rectangular array, or
-    array(objectslist,center,totalangle,totalnum) for polar array: Creates an array
+    '''array(objectslist,xvector,yvector,xnum,ynum) for rectangular array, 
+    array(objectslist,xvector,yvector,zvector,xnum,ynum,znum) for rectangular array,
+    or array(objectslist,center,totalangle,totalnum) for polar array: Creates an array
     of the objects contained in list (that can be an object or a list of objects)
     with, in case of rectangular array, xnum of iterations in the x direction
-    at xvector distance between iterations, and same for y direction with yvector
-    and ynum. In case of polar array, center is a vector, totalangle is the angle
-    to cover (in degrees) and totalnum is the number of objects, including the original.
+    at xvector distance between iterations, and same for y and z directions with yvector
+    and ynum and zvector and znum. In case of polar array, center is a vector, totalangle 
+    is the angle to cover (in degrees) and totalnum is the number of objects, including 
+    the original.
 
     This function creates an array of independent objects. Use makeArray() to create a
     parametric array object.'''
