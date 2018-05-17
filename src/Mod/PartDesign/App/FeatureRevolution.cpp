@@ -163,8 +163,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
                 return new App::DocumentObjectExecReturn("Fusion with base feature failed");
             }
             result = refineShapeIfActive(result);
-            this->Shape.setValue(getSolid(result));
         }
+
+        this->Shape.setValue(getSolid(result));
 
         return App::DocumentObject::StdReturn;
     }
