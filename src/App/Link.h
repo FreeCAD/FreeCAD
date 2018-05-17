@@ -452,7 +452,7 @@ public:
         inherited::onDocumentRestored();
     }
 
-    bool canDelete() const {return myOwner!=0;}
+    bool canDelete() const {return myOwner==0;}
 };
 
 ///////////////////////////////////////////////////////////////////////////
