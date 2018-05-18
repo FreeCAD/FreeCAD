@@ -28,13 +28,13 @@ def main():
     git = SubWCRev.GitControl()
     
     if(git.extractInfo(input)):
-        print git.hash
-        print git.branch
-        print git.rev[0:4]
-        print git.date
-        print git.url
-        print input
-        print output
+        print(git.hash)
+        print(git.branch)
+        print(git.rev[0:4])
+        print(git.date)
+        print(git.url)
+        print(input)
+        print(output)
         
         f = open(input,'r')
         o = open(output,'w')
