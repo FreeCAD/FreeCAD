@@ -39,22 +39,22 @@ def ParseUserData(element):
 
 def addPart(partElement):
     global FreeCAD_On,FreeCAD_Doc,FreeCAD_ObjList
-    print "=== Part ======================================================"
+    print("=== Part ======================================================")
     name = partElement.attrib['name']
     id = partElement.attrib['id']
     userData = ParseUserData(partElement)
 
     bound = partElement.find('{http://www.plmxml.org/Schemas/PLMXMLSchema}Bound')
-    print bound.attrib['values']
+    print(bound.attrib['values'])
 
     representation = partElement.find('{http://www.plmxml.org/Schemas/PLMXMLSchema}Representation')
     format =  representation.attrib['format']
     location = representation.attrib['location']
 
-    print id, name, userData, format, location
+    print(id, name, userData, format, location)
     if FreeCAD_On:
         import FreeCAD,Assembly
-        print"Create Reference"
+        print("Create Reference")
         partObject =FreeCAD_Doc.addObject("App::Part",id)
         FreeCAD_ObjList.append(partObject)
         partObject.Label = name
@@ -62,17 +62,17 @@ def addPart(partElement):
 
 def addAssembly(asmElement):
     global FreeCAD_On,FreeCAD_Doc,FreeCAD_ObjList
-    print "=== Assembly ======================================================"
+    print("=== Assembly ======================================================")
     userData = ParseUserData(asmElement)
     name = asmElement.attrib['name']
     id = asmElement.attrib['id']
     instanceRefs = asmElement.attrib['instanceRefs']
     userData['instanceRefs'] = instanceRefs
 
-    print id, name, instanceRefs, userData
+    print(id, name, instanceRefs, userData)
     if FreeCAD_On:
         import FreeCAD,Assembly
-        print"Create Reference"
+        print("Create Reference")
         admObject =FreeCAD_Doc.addObject("Assembly::Product",id)
         FreeCAD_ObjList.append(admObject)
         admObject.Label = name
@@ -80,7 +80,7 @@ def addAssembly(asmElement):
 
 def addReference(refElement):
     global FreeCAD_On,FreeCAD_Doc,FreeCAD_ObjList
-    print "=== Reference ======================================================"
+    print("=== Reference ======================================================")
     userData = ParseUserData(refElement)
     partRef = refElement.attrib['partRef'][1:]
     userData['partRef'] = partRef
@@ -88,12 +88,12 @@ def addReference(refElement):
     name = refElement.attrib['name']
     transform = refElement.find('{http://www.plmxml.org/Schemas/PLMXMLSchema}Transform')
     mtrx = [float(i) for i in transform.text.split(' ')]
-    print mtrx
-    print id,name,partRef
+    print(mtrx)
+    print(id,name,partRef)
 
     if FreeCAD_On:
         import FreeCAD,Assembly
-        print"Create Reference"
+        print("Create Reference")
         refObject =FreeCAD_Doc.addObject("Assembly::ProductRef",id)
         FreeCAD_ObjList.append(refObject)
         refObject.Label = name
@@ -101,7 +101,7 @@ def addReference(refElement):
 
 def resolveRefs():
     global FreeCAD_On,FreeCAD_Doc,FreeCAD_ObjList
-    print "=== Resolve References ======================================================"
+    print("=== Resolve References ======================================================")
     if FreeCAD_On:
         for i in FreeCAD_ObjList:
             if i.TypeId == 'Assembly::Product':
@@ -159,15 +159,15 @@ def parse(fileName):
     instanceTypesSet = set()
     for child in InstanceGraph:
         instanceTypesSet.add(child.tag)
-    print "All types below the InstanceGraph:"
+    print("All types below the InstanceGraph:")
     for i in instanceTypesSet:
-        print i
-    print ""
+        print(i)
+    print("")
 
-    print len(Instances),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}Instance'
-    print len(Parts),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}Part'
-    print len(ProductInstances),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}ProductInstance'
-    print len(ProductRevisionViews),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}ProductRevisionView'
+    print(len(Instances),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}Instance')
+    print(len(Parts),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}Part')
+    print(len(ProductInstances),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}ProductInstance')
+    print(len(ProductRevisionViews),'\t{http://www.plmxml.org/Schemas/PLMXMLSchema}ProductRevisionView')
 
     # handle all instances
     for child in Instances:
@@ -182,9 +182,9 @@ def parse(fileName):
             if child.attrib['type'] == 'assembly' :
                 addAssembly(child)
                 continue
-            print "Unknown Part type:",child
+            print("Unknown Part type:",child)
         else:
-            print "not Type in Part", child
+            print("not Type in Part", child)
 
 
 if __name__ == '__main__':
