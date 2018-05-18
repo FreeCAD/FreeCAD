@@ -1267,6 +1267,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
     )
 endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
+
 # Print message to start build process
 if (${CMAKE_BUILD_TOOL} MATCHES "make")
     MESSAGE("=======================================\n"
