@@ -139,6 +139,15 @@ int DlgSettingsImageImp::backgroundType() const
     return comboBackground->currentIndex();
 }
 
+/**
+ * Sets the image size to (\a w, \a h).
+ */
+void DlgSettingsImageImp::setBackgroundType(int t)
+{
+    if ( t < comboBackground->count() )
+        comboBackground->setCurrentIndex(t);
+}
+
 bool DlgSettingsImageImp::addWatermark() const
 {
     return checkWatermark->isChecked();
