@@ -36,8 +36,8 @@ import time
 BuildNumber = int(FCVersionBuild[23:-1]) +1
 
 # writing new Version.h File
-open("../Version.h",'w').writelines([FCVersionMajor,FCVersionMinor,FCVersionBuild[:23]+`BuildNumber`+'\n',FCVersionDisDa[:23]+ '"'+time.asctime()+'"'])
+open("../Version.h",'w').writelines([FCVersionMajor,FCVersionMinor,FCVersionBuild[:23]+str(BuildNumber)+'\n',FCVersionDisDa[:23]+ '"'+time.asctime()+'"'])
 
 # writing the ChangeLog.txt
-open("../ChangeLog.txt",'a').write("\nVersion: V"+FCVersionMajor[23:-1]+"."+FCVersionMinor[23:-1]+"B"+`BuildNumber`+" Date: "+time.asctime()+' +++++++++++++++++++++++++++++++\n')
+open("../ChangeLog.txt",'a').write("\nVersion: V"+FCVersionMajor[23:-1]+"."+FCVersionMinor[23:-1]+"B"+str(BuildNumber)+" Date: "+time.asctime()+' +++++++++++++++++++++++++++++++\n')
 

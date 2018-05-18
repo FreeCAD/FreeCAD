@@ -331,7 +331,8 @@ Embedding_FreeCADGui
 Code_snippets"""
 
 import sys, os, re, tempfile, getopt, shutil, time
-from urllib2 import urlopen, HTTPError
+from urllib.request import urlopen
+from urllib.error import HTTPError
 
 #    CONFIGURATION       #################################################
 
@@ -363,19 +364,19 @@ def crawl():
             return 1
     elif PDFCONVERTOR == 'htmldoc':
         if os.system('htmldoc --version'):
-            print "Error: Htmldoc not found, exiting."
+            print("Error: Htmldoc not found, exiting.")
             return 1
     try:
         from PyPDF2 import PdfFileReader,PdfFileWriter
     except:
-        print "Error: Python-pypdf2 not installed, exiting."
+        print("Error: Python-pypdf2 not installed, exiting.")
 
     # run ########################################################
     
     buildpdffiles()
     joinpdf()
 
-    if VERBOSE: print "All done!"
+    if VERBOSE: print("All done!")
     return 0
 
 
@@ -389,10 +390,10 @@ def buildpdffiles():
     for i in templist:
         if i[-5:] == '.html':
             fileslist.append(i)
-    print "converting ",len(fileslist)," pages"
+    print("converting ",len(fileslist)," pages")
     i = 1
     for f in fileslist:
-        print i," : ",f
+        print(i," : ",f)
         if PDFCONVERTOR == 'pisa':
             createpdf_pisa(f[:-5])
         elif PDFCONVERTOR == 'wkhtmltopdf': 
@@ -421,7 +422,7 @@ def createpdf_pisa(pagename):
     if (not exists(pagename+".pdf",image=True)) or OVERWRTIE:
         infile = open(FOLDER + os.sep + pagename+'.html','ro')
         outfile = open(FOLDER + os.sep + pagename+'.pdf','wb')
-        if VERBOSE: print "Converting " + pagename + " to pdf..."
+        if VERBOSE: print("Converting " + pagename + " to pdf...")
         pdf = pisa.CreatePDF(infile,outfile,FOLDER,link_callback=fetch_resources)
         outfile.close()
         if pdf.err: 
@@ -441,7 +442,7 @@ def createpdf_firefox(pagename):
         if os.path.exists(FIREFOXPDFFOLDER + os.sep + pagename + ".pdf"):
             shutil.move(FIREFOXPDFFOLDER+os.sep+pagename+".pdf",outfile)
         else:
-            print "-----------------------------------------> Couldn't find print output!"
+            print("-----------------------------------------> Couldn't find print output!")
 
 
 def createpdf_htmldoc(pagename):
@@ -458,16 +459,16 @@ def createpdf_wkhtmltopdf(pagename):
         infile = FOLDER + os.sep + pagename+'.html'
         outfile = FOLDER + os.sep + pagename+'.pdf'
         cmd = 'wkhtmltopdf -L 5mm --user-style-sheet '+FOLDER+os.sep+'wkhtmltopdf.css '+infile+' '+outfile
-        print cmd
+        print(cmd)
         #return os.system(cmd)
     else:
-        print "skipping"
+        print("skipping")
 
 
 def joinpdf():
     "creates one pdf file from several others, following order from the cover"
     from PyPDF2 import PdfFileReader,PdfFileWriter
-    if VERBOSE: print "Building table of contents..."
+    if VERBOSE: print("Building table of contents...")
     
     result = PdfFileWriter()
     createCover()
@@ -488,7 +489,7 @@ def joinpdf():
             if page == "end":
                 parent = False
                 continue
-            if VERBOSE: print 'Appending',page, "at position",count
+            if VERBOSE: print('Appending',page, "at position",count)
             title = page.replace("_"," ")
             pdffile = page + ".pdf"
             if exists(pdffile,True):
@@ -504,16 +505,16 @@ def joinpdf():
                     result.addBookmark(title,count,parent)
                 count += numpages
             else:
-                print "page",pdffile,"not found, aborting."
+                print("page",pdffile,"not found, aborting.")
                 sys.exit()
 
-    if VERBOSE: print "Writing..."
+    if VERBOSE: print("Writing...")
     outputfile = open(FOLDER+os.sep+"freecad.pdf",'wb')
     result.write(outputfile)
     outputfile.close()
     if VERBOSE: 
-        print ' '
-        print 'Successfully created '+FOLDER+os.sep+'freecad.pdf'
+        print(' ')
+        print('Successfully created '+FOLDER+os.sep+'freecad.pdf')
 
 
 def local(page,image=False):
@@ -544,7 +545,7 @@ def makeStyleSheet():
 
 def createCover():
     "downloads and creates a cover page"
-    if VERBOSE: print "fetching " + COVER
+    if VERBOSE: print("fetching " + COVER)
     data = (urlopen(COVER).read())
     path = FOLDER + os.sep + "Cover.svg"
     fil = open(path,'wb')
