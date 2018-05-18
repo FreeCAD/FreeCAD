@@ -13,6 +13,7 @@ SET(Test_SRCS
     unittestgui.py
     InitGui.py
     testmakeWireString.py
+    TestPythonSyntax.py
 )
 SOURCE_GROUP("" FILES ${Test_SRCS})
 
