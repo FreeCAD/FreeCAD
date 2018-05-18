@@ -353,7 +353,7 @@ def print_node(graph, node, path):
 
 def main():
     if len(sys.argv) < 2:
-        print "Usage " + sys.argv[0] + " path [additional search paths]"
+        print("Usage " + sys.argv[0] + " path [additional search paths]")
         quit()
 
     path = sys.argv[1]

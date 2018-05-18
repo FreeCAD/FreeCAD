@@ -109,7 +109,7 @@ def find_tools():
         PYLUPDATE = "pylupdate4"
     else:
         raise Exception("Cannot find pylupdate")
-    print "Qt tools:", QMAKE, LUPDATE, PYLUPDATE
+    print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE)
 
 def filter_dirs(item):
     global DirFilter
@@ -136,7 +136,7 @@ def update_python_translation(item):
     cur = os.getcwd()
     os.chdir(item[0])
     execline = item[1].replace("pylupdate",PYLUPDATE)
-    print "Executing special command in ",item[0],": ",execline
+    print("Executing special command in ",item[0],": ",execline)
     os.system(execline)
     os.chdir(cur)
 
