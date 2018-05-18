@@ -91,6 +91,7 @@ SO_NODE_SOURCE(SoBrepFaceSet);
 
 class SoBrepFaceSet::SelContext {
 public:
+    bool secondary;
     int highlightIndex;
     std::set<int> selectionIndex;
 
@@ -101,7 +102,7 @@ public:
     SbColor selectionColor;
     SbColor highlightColor;
 
-    SelContext():highlightIndex(-1)
+    SelContext():secondary(false),highlightIndex(-1)
     {}
 
     void removeIndex(int index) {
@@ -110,12 +111,33 @@ public:
             selectionIndex.erase(it);
     }
 
-    bool isSelectAll() const {
+    bool isSelectAll() const{
         return selectionIndex.size() && *selectionIndex.begin()<0;
     }
 
-    bool isHighlightAll() const {
+    bool isHighlightAll() const{
         return highlightIndex==INT_MAX && (selectionIndex.empty() || isSelectAll());
+    }
+
+    bool checkGlobal(std::shared_ptr<SelContext> ctx) {
+        bool sel = false;
+        bool hl = false;
+        Gui::SoFCSelectionRoot::checkSelection(sel,selectionColor,hl,highlightColor);
+        if(sel) 
+            selectionIndex.insert(-1);
+        else if(ctx && hl) {
+            selectionColor = ctx->selectionColor;
+            selectionIndex = ctx->selectionIndex;
+        }else
+            selectionIndex.clear();
+        if(hl)
+            highlightIndex = INT_MAX;
+        else if(ctx && sel) {
+            highlightIndex = ctx->highlightIndex;
+            highlightColor = ctx->highlightColor;
+        }else
+            highlightIndex = -1;
+        return sel||hl;
     }
 };
 
@@ -212,6 +234,7 @@ SoBrepFaceSet::SoBrepFaceSet()
     SO_NODE_ADD_FIELD(partIndex, (-1));
 
     selContext = std::make_shared<SelContext>();
+    selContext2 = std::make_shared<SelContext>();
 
     pimpl.reset(new VBO);
 }
@@ -257,6 +280,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
         }
 
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
+        ctx->secondary = selaction->isSecondary();
         ctx->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
             ctx->selectionIndex.clear();
@@ -517,6 +541,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
     if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
         ctx.reset();
 

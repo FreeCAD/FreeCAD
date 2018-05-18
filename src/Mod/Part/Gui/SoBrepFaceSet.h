@@ -147,6 +147,7 @@ private:
     std::vector<float> vertex_array;
 #endif
     SelContextPtr selContext;
+    SelContextPtr selContext2;
     std::vector<int32_t> matIndex;
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;

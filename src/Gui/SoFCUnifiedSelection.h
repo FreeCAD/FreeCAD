@@ -190,7 +190,8 @@ public:
      */
     template<class T>
     static std::shared_ptr<T> getRenderContext(SoNode *node,  
-                    std::shared_ptr<T> def, std::shared_ptr<T> *ctx2 = 0) 
+                    std::shared_ptr<T> def = std::shared_ptr<T>(), 
+                    std::shared_ptr<T> *ctx2 = 0) 
     {
         ContextPtr _ctx2;
         auto ctx = std::static_pointer_cast<T>(getContext(node,def,ctx2?&_ctx2:0));
@@ -213,7 +214,7 @@ public:
      */
     template<class T>
     static std::shared_ptr<T> getActionContext(
-            SoAction *action, SoNode *node, std::shared_ptr<T> def) 
+            SoAction *action, SoNode *node, std::shared_ptr<T> def=std::shared_ptr<T>(), bool create=true) 
     {
         ContextPtr pdef(def);
         ContextPtr *pctx = getContext(action,node,&pdef);
@@ -221,7 +222,7 @@ public:
             return def;
         // make a new context if there is none
         auto &ctx = *pctx;
-        if(!ctx) ctx = std::make_shared<T>();
+        if(!ctx && create) ctx = std::make_shared<T>();
         return std::static_pointer_cast<T>(ctx);
     }
 
@@ -229,12 +230,15 @@ public:
         getContext(action,node,0);
     }
 
+    static void checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor);
+
     static SoNode *getCurrentRoot(bool front, SoNode *def);
 
     void resetContext();
 
 protected:
     virtual ~SoFCSelectionRoot();
+    void setup();
 
     typedef std::shared_ptr<void> ContextPtr;
 
@@ -246,9 +250,23 @@ protected:
     static Stack SelStack; // stack for non-secondary-only nodes
     static Stack SelStack2; // stack for all selection root nodes
 
+    static unsigned SelCounter;
+    static unsigned HiliCounter;
+
     typedef std::map<Stack,ContextPtr> ContextMap;
     ContextMap contextMap;
     ContextMap contextMap2;//holding secondary context
+
+    struct SelContext {
+        SbColor selColor;
+        SbColor hlColor;
+        bool selAll;
+        bool hlAll;
+    };
+    typedef std::shared_ptr<SelContext> SelContextPtr;
+    typedef std::vector<SbColor> ColorStack;
+    static ColorStack SelColorStack;
+    static ColorStack HlColorStack;
 
     bool pushed;//to prevent double push into the stack
     bool secondary;//indicate if this node for secondary context only

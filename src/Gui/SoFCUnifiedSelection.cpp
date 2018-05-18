@@ -178,6 +178,7 @@ void SoFCUnifiedSelection::applySettings()
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         this->colorHighlight.setValue(highlightColor);
     }
+
     if (!enableSel) {
         this->selectionMode = SoFCUnifiedSelection::OFF;
     }
@@ -962,6 +963,8 @@ void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack2;
+SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
+SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 
 SO_NODE_SOURCE(SoFCSelectionRoot);
 
@@ -1079,13 +1082,29 @@ void SoFCSelectionRoot::_name(SoGLRenderAction * action) {\
         inherited::_name(action);\
     else {\
         pushed = true;\
-        if(!secondary)\
+        bool selPushed = false;\
+        bool hlPushed = false;\
+        bool sec = secondary;\
+        if(!sec){\
             SelStack.push_back(this);\
+            auto ctx = getRenderContext<SelContext>(this);\
+            if(ctx){\
+                if((selPushed = ctx->selAll)) \
+                    SelColorStack.push_back(ctx->selColor);\
+                if((hlPushed = ctx->hlAll)) \
+                    HlColorStack.push_back(ctx->hlColor);\
+            }\
+        }\
         SelStack2.push_back(this);\
         inherited::_name(action);\
         SelStack2.pop_back();\
-        if(!secondary)\
+        if(!sec){\
+            if(selPushed)\
+                SelColorStack.pop_back();\
+            if(hlPushed)\
+                HlColorStack.pop_back();\
             SelStack.pop_back();\
+        }\
         pushed = false;\
     }\
 }
@@ -1095,26 +1114,86 @@ DEFINE_RENDER(GLRenderBelowPath)
 DEFINE_RENDER(GLRenderInPath)
 DEFINE_RENDER(GLRenderOffPath)
 
+void SoFCSelectionRoot::checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor) {
+    sel = false;
+    hl = false;
+    if((sel = !SelColorStack.empty()))
+        selColor = SelColorStack.back();
+    if((hl = !HlColorStack.empty()))
+        hlColor = HlColorStack.back();
+}
+
 void SoFCSelectionRoot::resetContext() {
     contextMap.clear();
 }
 
 void SoFCSelectionRoot::doAction(SoAction *action) {
-    // The idea here is that if the 'select none' action is applied to a node,
-    // and we are the first SoFCSelectionRoot encounted (which means all
-    // children stores selection context here), then we can simply perform the
-    // action by clearing the selection context here, and save the time for
-    // traversing a potentially large amount of children nodes. The time saving
-    // is very noticable for large groups.
-    if(action->getWhatAppliedTo() == SoAction::NODE && 
-       action->isOfType(SoSelectionElementAction::getClassTypeId())) {
-        auto selAction = static_cast<SoSelectionElementAction*>(action);
-        if(selAction->getType() == SoSelectionElementAction::None &&
-           !selAction->isSecondary())
-        {
-            resetContext();
-            touch();
-            return;
+
+    // Selection action short-circuit optimization. In case of whole object
+    // selection/pre-selection, we shall store a SelContext keyed by ourself.
+    // And the action traversal can be short-curcuited once the first targeted
+    // SoFCSelectionRoot is found here. New fuction checkSelection() is exposed
+    // to check for whole object selection. This greatly imporve performance on
+    // large group.
+
+    if(action->getWhatAppliedTo() == SoAction::NODE ||
+       action->getCurPathCode() == SoAction::BELOW_PATH) 
+    {
+        if(action->isOfType(SoSelectionElementAction::getClassTypeId())) {
+            auto selAction = static_cast<SoSelectionElementAction*>(action);
+            if(!selAction->isSecondary()) {
+                if(selAction->getType() == SoSelectionElementAction::None) {
+                    if(action->getWhatAppliedTo() == SoAction::NODE) {
+                        // Here the 'select none' action is applied to a node,
+                        // and we are the first SoFCSelectionRoot encounted
+                        // (which means all children stores selection context
+                        // here, both whole object and element selection), then
+                        // we can simply perform the action by clearing the
+                        // selection context here, and save the time for
+                        // traversing a potentially large amount of children
+                        // nodes.
+                        resetContext();
+                        touch();
+                        return;
+                    }
+                    auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
+                    if(ctx && ctx->selAll) {
+                        ctx->selAll = false;
+                        touch();
+                        return;
+                    }
+                }else if(selAction->getType() == SoSelectionElementAction::All) {
+                    auto ctx = getActionContext<SelContext>(action,this);
+                    assert(ctx);
+                    ctx->selAll = true;
+                    ctx->selColor = selAction->getColor();
+                    touch();
+                    return;
+                }
+            }
+        } else if(action->isOfType(SoHighlightElementAction::getClassTypeId())) {
+            auto hlAction = static_cast<SoHighlightElementAction*>(action);
+            if(hlAction->isHighlighted()) {
+                if(hlAction->getElement()) {
+                    auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
+                    if(ctx)
+                        ctx->hlAll = false;
+                } else {
+                    auto ctx = getActionContext<SelContext>(action,this);
+                    assert(ctx);
+                    ctx->hlAll = true;
+                    ctx->hlColor = hlAction->getColor();
+                    touch();
+                    return;
+                }
+            } else {
+                auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
+                if(ctx && ctx->hlAll) {
+                    ctx->hlAll = false;
+                    touch();
+                    return;
+                }
+            }
         }
     }
     inherited::doAction(action);

@@ -82,6 +82,27 @@ public:
         return selectionIndex.size() && *selectionIndex.begin()<0;
     }
 
+    bool checkGlobal(std::shared_ptr<SelContext> ctx) {
+        bool sel = false;
+        bool hl = false;
+        Gui::SoFCSelectionRoot::checkSelection(sel,selectionColor,hl,highlightColor);
+        if(sel) 
+            selectionIndex.insert(-1);
+        else if(ctx && hl) {
+            selectionColor = ctx->selectionColor;
+            selectionIndex = ctx->selectionIndex;
+        }else
+            selectionIndex.clear();
+        if(hl)
+            highlightIndex = INT_MAX;
+        else if(ctx && sel) {
+            highlightIndex = ctx->highlightIndex;
+            highlightColor = ctx->highlightColor;
+        }else
+            highlightIndex = -1;
+        return sel||hl;
+    }
+
     int highlightIndex;
     std::set<int> selectionIndex;
 
@@ -97,6 +118,7 @@ void SoBrepEdgeSet::initClass()
 
 SoBrepEdgeSet::SoBrepEdgeSet()
     :selContext(std::make_shared<SelContext>())
+    ,selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
 }
@@ -110,6 +132,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
 
     if(ctx && ctx->highlightIndex==INT_MAX) {
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {

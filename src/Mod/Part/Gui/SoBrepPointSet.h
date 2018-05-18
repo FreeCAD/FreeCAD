@@ -63,6 +63,7 @@ private:
 
 private:
     SelContextPtr selContext;
+    SelContextPtr selContext2;
     uint32_t packedColor;
 };
 
