@@ -1658,7 +1658,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
 }
 
 TopoShape &TopoShape::makEShape(const char *maker, 
-        const std::vector<TopoShape> &_shapes, const char *op, double tol)
+        const std::vector<TopoShape> &shapes, const char *op, double tol)
 {
     if(!maker)
         Standard_Failure::Raise("no maker");
@@ -1667,18 +1667,10 @@ TopoShape &TopoShape::makEShape(const char *maker,
     _Shape.Nullify();
     resetElementMap();
 
-    std::vector<TopoShape> shapes;
-    for(auto &s : _shapes)
-        expandCompound(s,shapes);
-
     if(shapes.empty())
         HANDLE_NULL_SHAPE;
 
     if(strcmp(maker,TOPOP_COMPOUND)==0) {
-        return makECompound(shapes,op,false);
-    } else if(strcmp(maker,TOPOP_REFINE)==0) {
-        for(auto &s : shapes)
-            s = s.makERefine(op);
         return makECompound(shapes,op,false);
     } else if(boost::starts_with(maker,TOPOP_FACE)) {
         std::string prefix(TOPOP_FACE);
@@ -1754,14 +1746,24 @@ TopoShape &TopoShape::makEShape(const char *maker,
     mk->SetNonDestructive(Standard_True);
 #endif
     TopTools_ListOfShape shapeArguments,shapeTools;
-    shapeArguments.Append(shapes.front().getShape());
-    for(size_t i=1;i<shapes.size();++i) {
-        TopoShape &shape = shapes[i];
-        if (tol > 0.0) {
+
+    std::vector<TopoShape> _shapes;
+    if(shapes.size()==1) {
+        expandCompound(shapes.front(),_shapes);
+        if(_shapes.size()==1)
+            Standard_Failure::Raise("Boolean operation with only one shape");
+    }
+    int i=-1;
+    for(const auto &shape : shapes.size()==1?_shapes:shapes) {
+        if(shape.isNull())
+            HANDLE_NULL_INPUT;
+        if(++i == 0)
+            shapeArguments.Append(shape.getShape());
+        else if (tol > 0.0) {
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shape = TopoShape(shape.Tag).makECopy(shape);
-        }
-        shapeTools.Append(shape.getShape());
+            shapeTools.Append(TopoShape(shape.getShape()).makECopy().getShape());
+        }else
+            shapeTools.Append(shape.getShape());
     }
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
