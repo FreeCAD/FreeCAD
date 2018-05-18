@@ -61,10 +61,10 @@ def process_nested_parent_str(attr_str,idx=0):
     return params,k
 
 if __name__=="__main__":
-    print process_nested_parent_str2("'A'")[0]
-    print process_nested_parent_str2("30.0,0.0,5.0")[0]
-    print process_nested_parent_str2("1,2,(3,4,5),6,7,8")[0]
-    print process_nested_parent_str2("(#9149,#9166),#9142,.T.")[0]
+    print(process_nested_parent_str2("'A'")[0])
+    print(process_nested_parent_str2("30.0,0.0,5.0")[0])
+    print(process_nested_parent_str2("1,2,(3,4,5),6,7,8")[0])
+    print(process_nested_parent_str2("(#9149,#9166),#9142,.T.")[0])
 
 
 
