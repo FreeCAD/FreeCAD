@@ -268,8 +268,10 @@ class _TaskPanelFemMeshGmsh:
         self.form.cb_dimension.setCurrentIndex(index_dimension)
 
     def console_log(self, message="", color="#000000"):
+        if not isinstance(message, bytes):
+            message = message.encode('utf-8', 'replace')
         self.console_message_gmsh = self.console_message_gmsh + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-            format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
+            format(time.time() - self.Start, color, message)
         self.form.te_output.setText(self.console_message_gmsh)
         self.form.te_output.moveCursor(QtGui.QTextCursor.End)
 
