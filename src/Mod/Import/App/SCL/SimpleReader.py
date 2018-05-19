@@ -77,7 +77,7 @@ class SimpleParser:
 
 
     def writeGraphViz(self,fileName):
-        print("Writing GraphViz file %s..."%fileName, end=' ')
+        print("Writing GraphViz file %s..."%fileName)
         gvFile = open(fileName,'w')
 
         gvFile.write('digraph G {\n  node [fontname=Verdana,fontsize=12]\n  node [style=filled]\n  node [fillcolor="#EEEEEE"]\n  node [color="#EEEEEE"]\n  edge [color="#31CEF0"]\n')
