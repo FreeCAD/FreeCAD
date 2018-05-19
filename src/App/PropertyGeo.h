@@ -342,7 +342,7 @@ private:
     Base::Placement _cPos;
 };
 
-/** the general Link Poperty
+/** the general Link Property
  *  Main Purpose of this property is to Link Objects and Features in a document.
  */
 class AppExport PropertyPlacementLink : public PropertyLink

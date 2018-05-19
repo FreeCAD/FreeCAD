@@ -1205,7 +1205,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
     case mmFrenetTN:
     case mmFrenetTB:
     case mmRevolutionSection:
-    case mmConcentric: {//all alignments to poing on curve
+    case mmConcentric: {//all alignments to point on curve
         if (shapes.size() < 1)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subshapes specified (need one edge, and an optional vertex).");
 

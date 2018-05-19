@@ -189,7 +189,7 @@ struct SuggestResult{
     std::set<eRefType> nextRefTypeHint;
 
     /**
-     * @brief reachableModes. List of modes that can be reached by selecing
+     * @brief reachableModes. List of modes that can be reached by selecting
      * more references. Is a map, where key is the mode that can be reached,
      * and value is a list of reference sequences that can be added to reach
      * the mode (stuff already linked is omitted from these lists; only extra

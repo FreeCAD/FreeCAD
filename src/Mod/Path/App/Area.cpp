@@ -3213,7 +3213,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (pstart.*setter)(resume_height);
 
     gp_Pnt plast,p;
-    // initial vertial rapid pull up to retraction (or start Z height if higher)
+    // initial vertical rapid pull up to retraction (or start Z height if higher)
     (p.*setter)(std::max(retraction,(pstart.*getter)()));
     addGCode(false,path,plast,p,"G0");
     plast = p;
@@ -3225,7 +3225,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         plast = p;
         p = pstart;
     }
-    // vertial rapid down to feed start
+    // vertical rapid down to feed start
     addGCode(false,path,plast,p,"G0");
 
     plast = p;

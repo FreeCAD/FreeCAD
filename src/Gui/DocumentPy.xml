@@ -121,7 +121,7 @@
 	</Attribute>
 		<Attribute Name="Modified" ReadOnly="true">
 			<Documentation>
-				<UserDocu>Returns True if the document is marked as modified, and False otherwse</UserDocu>
+				<UserDocu>Returns True if the document is marked as modified, and False otherwise</UserDocu>
 			</Documentation>
 			<Parameter Name="Modified" Type="Boolean" />
 		</Attribute>

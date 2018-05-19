@@ -639,7 +639,7 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
 
         // Execute the Python block
         // No need to open a transaction because this is already done in the command
-        // class or when starting to edit a primitve.
+        // class or when starting to edit a primitive.
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }

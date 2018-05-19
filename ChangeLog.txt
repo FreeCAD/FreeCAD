@@ -750,7 +750,7 @@ Version: V0.1B78 Date: Sun Nov 23 13:15:15 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B77 Date: Fri Nov 14 14:56:14 2003 +++++++++++++++++++++++++++++++
   * Finished Setup stuff
-  * Removed all relativ paths
+  * Removed all relative paths
   * config HomePath is now not in bin anymore
   * all config files one dir up
   * FC runs now from every directory
@@ -1012,7 +1012,7 @@ Version: V0.1B26 Date: Tue Jan 21 05:59:01 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B25 Date: Sun Jan 19 18:20:51 2003 +++++++++++++++++++++++++++++++
   * Big Linux port patch from Vaclav
-    - some fixes on implicite type conversion (Vaclav)
+    - some fixes on implicit type conversion (Vaclav)
     - moving all .cxx to .cpp mainly in gui
     - moving DlgCusomizeImpl to Imp
     - and InitGui to GuiInit

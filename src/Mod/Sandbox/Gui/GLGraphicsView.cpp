@@ -115,7 +115,7 @@ void GraphicsView::resizeEvent(QResizeEvent *event)
 //QDialog *dialog = new QDialog(0, Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
 ////dialog->setWindowOpacity(0.8);
-//dialog->setWindowTitle(tr("Titel"));
+//dialog->setWindowTitle(tr("Title"));
 //dialog->setLayout(new QVBoxLayout);
 //dialog->layout()->addWidget(new QLabel(tr("Use mouse wheel to zoom model, and click and drag to rotate model")));
 //dialog->layout()->addWidget(new QLabel(tr("Move the sun around to change the light position")));

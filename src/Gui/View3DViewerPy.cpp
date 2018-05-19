@@ -63,9 +63,9 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("seekToPoint",&View3DInventorViewerPy::seekToPoint,"seekToPoint(tuple) -> None\n"
      "Initiate a seek action towards the 3D intersection of the scene and the\n"
      "ray from the screen coordinate's point and in the same direction as the\n"
-     "camera is pointing. If the tuple has two entries it is interpretet as the\n"
+     "camera is pointing. If the tuple has two entries it is interpreted as the\n"
      "screen coordinates xy and the intersection point with the scene is\n"
-     "calculated. If three entries are given it is interpretet as the intersection\n"
+     "calculated. If three entries are given it is interpreted as the intersection\n"
      "point xyz and the seek is done towards this point"
     );
     add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
