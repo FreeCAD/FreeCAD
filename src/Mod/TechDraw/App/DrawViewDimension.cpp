@@ -166,7 +166,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
         if (prop == &Arbitrary) {
             if (!Arbitrary.getValue()) {
-                FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a useable FormatSpec
+                FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a usable FormatSpec
             }
         }
 

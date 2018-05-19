@@ -810,7 +810,7 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
     // With extremely acute-angled triangles it may happen that the algorithm
     // claims an intersection but the intersection points are far outside the
-    // model. So, a plausability check is to verify that the intersection points
+    // model. So, a plausibility check is to verify that the intersection points
     // are inside the bounding boxes of both triangles.
     Base::BoundBox3f box1 = this->GetBoundBox();
     if (!box1.IsInBox(rclPt0) || !box1.IsInBox(rclPt1))
