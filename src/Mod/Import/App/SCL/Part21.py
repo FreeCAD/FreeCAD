@@ -124,7 +124,7 @@ class Part21Parser:
 
     def parse_file(self):
         init_time = time.time()
-        print("Parsing file %s..."%self._filename, end=' ')
+        print("Parsing file %s..."%self._filename)
         fp = open(self._filename)
         while True:
             line = fp.readline()
