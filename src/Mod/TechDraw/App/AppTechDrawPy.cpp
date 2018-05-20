@@ -610,6 +610,10 @@ private:
                         }
                         double parentX = dvp->X.getValue();
                         double parentY = dvp->Y.getValue();
+                        Base::Vector3d parentPos(parentX,parentY,0.0);
+                        std::string sDimText = dvd->getFormatedValue();
+                        char* dimText = &sDimText[0u];                  //hack for const-ness
+                        float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
                         writer.setLayerName(layerName);
                         if ( dvd->Type.isValue("Distance")  ||
@@ -617,19 +621,36 @@ private:
                              dvd->Type.isValue("DistanceY") )  {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
-                            std::string sDimText = dvd->getFormatedValue();
-                            char* dimText = &sDimText[0u];                  //hack for const-ness
                             pointPair pts = dvd->getLinearPoints();
                             Base::Vector3d dimLine = pts.first - pts.second;
                             Base::Vector3d norm(-dimLine.y,dimLine.x,0.0);
                             norm.Normalize();
-                            float gap = 5.0;                               //hack. don't know font size here.
                             lineLocn = lineLocn + (norm * gap);
                             Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x,-pts.first.y,0.0) + 
                                                            Base::Vector3d(parentX,parentY,0.0);
                             Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) + 
                                                            Base::Vector3d(parentX,parentY,0.0);
                             writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
+                        }else if (dvd->Type.isValue("Angle")) {
+                            Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
+                            Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
+                            anglePoints pts = dvd->getAnglePoints();
+                            Base::Vector3d end1 = pts.ends.first;
+                            end1.y = -end1.y;
+                            Base::Vector3d end2 = pts.ends.second;
+                            end2.y = -end2.y;
+
+                            Base::Vector3d apex = pts.vertex;
+                            apex.y = -apex.y;
+                            apex = apex + parentPos;
+
+                            Base::Vector3d dimLine = end2 - end1;
+                            Base::Vector3d norm(-dimLine.y,dimLine.x,0.0);
+                            norm.Normalize();
+                            lineLocn = lineLocn + (norm * gap);
+                            end1 = end1 + parentPos;
+                            end2 = end2 + parentPos;
+                            writer.exportAngularDim(textLocn, lineLocn, end1, end2, apex, dimText);
                         }
                    }
                 }
