@@ -644,6 +644,27 @@ void ImpExpDxfWrite::exportText(const char* text, Base::Vector3d position1, Base
     location2[2] = position2.z;
 
     WriteText(text, location1, location2, size, just, getLayerName().c_str());
+}
 
-
+void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
+                                     Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
+                                     char* dimText)
+{
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double line[3] = {0,0,0};
+    line[0] = lineLocn.x;
+    line[1] = lineLocn.y;
+    line[2] = lineLocn.z;
+    double ext1[3] = {0,0,0};
+    ext1[0] = extLine1Start.x;
+    ext1[1] = extLine1Start.y;
+    ext1[2] = extLine1Start.z;
+    double ext2[3] = {0,0,0};
+    ext2[0] = extLine2Start.x;
+    ext2[1] = extLine2Start.y;
+    ext2[2] = extLine2Start.z;
+    WriteDim(text, line, ext1,ext2,dimText, getLayerName().c_str());
 }
