@@ -137,8 +137,13 @@ public:
     void WriteVertex(double x, double y, double z, const char* layer_name);
     void WriteText(const char* text, const double* location1, const double* location2,
                    const double height, const int horizJust, const char* layer_name);
-    void WriteDim(const double* textMidPoint, const double* lineDefPoint,
+    void WriteLinearDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
+                  const char* dimText,
+                  const char* layer_name);
+    void WriteAngularDim(const double* textMidPoint, const double* lineDefPoint,
+                  const double* startExt1, const double* endExt1,
+                  const double* startExt2, const double* endExt2,
                   const char* dimText,
                   const char* layer_name);
 // const char* blockName, const int dimType, const int attachPoint,  

@@ -84,6 +84,10 @@ namespace Import
         void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
                              char* dimText);
+        void exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
+                             Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
+                             Base::Vector3d apexPoint,
+                             char* dimText);
 
         static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
