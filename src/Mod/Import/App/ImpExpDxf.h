@@ -81,6 +81,9 @@ namespace Import
         void setOptionSource(std::string s) { m_optionSource = s; }
         void setOptions(void);
         void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
+        void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
+                             Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
+                             char* dimText);
 
         static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);

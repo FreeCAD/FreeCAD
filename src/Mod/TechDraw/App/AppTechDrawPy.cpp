@@ -61,6 +61,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
 #include "DrawViewAnnotation.h"
+#include "DrawViewDimension.h"
 #include "DrawPage.h"
 #include "DrawPagePy.h"
 #include "Geometry.h"
@@ -579,8 +580,6 @@ private:
             writer.setLayerName(layerName);
 
             App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
-            TechDraw::DrawViewAnnotation* dva = 0;
             TechDraw::DrawPage* dp = 0;
             if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
@@ -588,12 +587,12 @@ private:
                 auto views = dp->getAllViews();
                 for (auto& v: views) {
                     if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-                        dvp = static_cast<TechDraw::DrawViewPart*>(v);
+                        TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(v);
                         layerName = dvp->getNameInDocument();
                         writer.setLayerName(layerName);
                         write1ViewDxf(writer,dvp,true);
                     } else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
-                        dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
+                        TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
                         layerName = dva->getNameInDocument();
                         writer.setLayerName(layerName);
                         double height = dva->TextSize.getValue();  //mm
@@ -603,6 +602,35 @@ private:
                         Base::Vector3d loc(x,y,0.0);
                         auto lines = dva->Text.getValues();
                         writer.exportText(lines[0].c_str(),loc,loc, height,just);
+                    } else if (v->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+                        DrawViewDimension* dvd = static_cast<TechDraw::DrawViewDimension*>(v);
+                        TechDraw::DrawViewPart* dvp = dvd->getViewPart();
+                        if (dvp == nullptr) {
+                            continue;
+                        }
+                        double parentX = dvp->X.getValue();
+                        double parentY = dvp->Y.getValue();
+                        layerName = dvd->getNameInDocument();
+                        writer.setLayerName(layerName);
+                        if ( dvd->Type.isValue("Distance")  ||
+                             dvd->Type.isValue("DistanceX") ||
+                             dvd->Type.isValue("DistanceY") )  {
+                            Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
+                            Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
+                            std::string sDimText = dvd->getFormatedValue();
+                            char* dimText = &sDimText[0u];                  //hack for const-ness
+                            pointPair pts = dvd->getLinearPoints();
+                            Base::Vector3d dimLine = pts.first - pts.second;
+                            Base::Vector3d norm(-dimLine.y,dimLine.x,0.0);
+                            norm.Normalize();
+                            float gap = 5.0;                               //hack. don't know font size here.
+                            lineLocn = lineLocn + (norm * gap);
+                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x,-pts.first.y,0.0) + 
+                                                           Base::Vector3d(parentX,parentY,0.0);
+                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) + 
+                                                           Base::Vector3d(parentX,parentY,0.0);
+                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
+                        }
                    }
                 }
             }
