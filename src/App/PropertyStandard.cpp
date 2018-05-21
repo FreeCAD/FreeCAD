@@ -1250,7 +1250,7 @@ void PropertyFloatList::Save (Base::Writer &writer) const
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\"" << 
-        writer.addFile(getName(), this) << "\"/>" << std::endl;
+            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }
 
@@ -2421,7 +2421,8 @@ Color PropertyColorList::getPyValue(PyObject *item) const {
 void PropertyColorList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<ColorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<ColorList file=\"" << 
+            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }
 
@@ -2660,7 +2661,8 @@ Material PropertyMaterialList::getPyValue(PyObject *value) const {
 void PropertyMaterialList::Save(Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<MaterialList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<MaterialList file=\"" << 
+            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }
 
