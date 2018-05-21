@@ -65,6 +65,11 @@ class _ViewProviderFemElementGeometry2D:
         return
 
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         taskd = _TaskPanelFemElementGeometry2D(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
