@@ -208,14 +208,15 @@ class SmallListView(QtGui.QListView):
         return QtCore.QSize(50, 50)
 
 
-class FacesSelection(QtGui.QWidget):
+class GeometryElementsSelection(QtGui.QWidget):
 
-    def __init__(self, ref):
-        super(FacesSelection, self).__init__()
+    def __init__(self, ref, eltypes=[]):
+        super(GeometryElementsSelection, self).__init__()
         # init ui stuff
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj_notvisible = []
+        self.initElemTypes(eltypes)
         self.initUI()
         # set references and fill the list widget
         self.references = []
@@ -224,18 +225,28 @@ class FacesSelection(QtGui.QWidget):
             self.get_references()
         self.rebuild_list_References()
 
+    def initElemTypes(self, eltypes):
+        self.sel_elem_types = eltypes
+        # FreeCAD.Console.PrintMessage('Selection of: {} is allowed.\n'.format(self.sel_elem_types))
+        self.sel_elem_text = ''
+        for e in self.sel_elem_types:
+            self.sel_elem_text += (e + ', ')
+        self.sel_elem_text = self.sel_elem_text.rstrip(', ')
+        # FreeCAD.Console.PrintMessage('Selection of: ' + self.sel_elem_text + ' is allowed.\n')
+
     def initUI(self):
         # auch ArchPanel ist coded ohne ui-file
         # title
-        self.setWindowTitle(self.tr("Geometry reference selector"))
+        self.setWindowTitle(self.tr("Geometry reference selector for a ") + self.sel_elem_text)
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         # label
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
         self._helpTextLbl.setText(self.tr(
-            "Click on \"Add\" and select Faces. Only adding of Faces is allowed."
-            " If no geometry is added to the list, all remaining ones are used."))
+            "Click on \"Add\" and select geometric elements to add them to the list."
+            " If no geometry is added to the list, all remaining ones are used."
+            " The following geometry elemets are allowed to select: ") + self.sel_elem_text)
         # list
         self.list_References = QtGui.QListWidget()
         # layout
@@ -333,7 +344,7 @@ class FacesSelection(QtGui.QWidget):
         self.setback_listobj_visibility()
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        print_message = "Select Faces by single click on them to add them to the list"
+        print_message = "Single click on a " + self.sel_elem_text + " will add it to the list"
         if not self.sel_server:
             # if we do not check, we would start a new SelectionObserver on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
@@ -345,9 +356,11 @@ class FacesSelection(QtGui.QWidget):
         if hasattr(selection[0], "Shape"):
             if selection[1]:
                 elt = selection[0].Shape.getElement(selection[1])
-                if elt.ShapeType == 'Face':
+                if elt.ShapeType in self.sel_elem_types:
                     if selection not in self.references:
                         self.references.append(selection)
                         self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
                     else:
                         FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
+                else:
+                    FreeCAD.Console.PrintMessage(elt.ShapeType + ' not allowed to add to the list!\n')
