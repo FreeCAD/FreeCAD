@@ -32,6 +32,7 @@ import FreeCADGui
 
 
 # for the panel
+import femmesh.meshtools as FemMeshTools
 from PySide import QtCore
 from PySide import QtGui
 
@@ -271,7 +272,25 @@ class _TaskPanelFemMeshRegion:
                         self.obj_notvisible.append(ref[0])
                         ref[0].ViewObject.Visibility = True
                     FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(ref[0], ref[1])
+                    if ref[1].startswith('Solid') and (ref[0].Shape.ShapeType == 'Compound' or ref[0].Shape.ShapeType == 'CompSolid'):
+                        # selection of Solids of Compounds or CompSolids is not possible, because a Solid is no Subelement
+                        # since only Subelements can be selected, we gone select all Faces of such an Solids
+                        solid = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
+                        if not solid:
+                            return
+                        faces = []
+                        for fs in solid.Faces:
+                            # find these faces in ref[0]
+                            for i, fref in enumerate(ref[0].Shape.Faces):
+                                if fs.isSame(fref):
+                                    fref_elstring = 'Face' + str(i + 1)
+                                    if fref_elstring not in faces:
+                                        faces.append(fref_elstring)
+                        for f in faces:
+                            FreeCADGui.Selection.addSelection(ref[0], f)
+                    else:
+                        # Selection of all other element types is supported
+                        FreeCADGui.Selection.addSelection(ref[0], ref[1])
 
     def setback_listobj_visibility(self):
         '''set back Visibility of the list objects
