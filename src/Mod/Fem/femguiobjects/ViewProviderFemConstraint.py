@@ -27,8 +27,8 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-if FreeCAD.GuiUp:
-    from pivy import coin
+import FreeCADGui
+from pivy import coin
 
 
 class ViewProxy(object):
@@ -51,3 +51,17 @@ class ViewProxy(object):
 
     def setDisplayMode(self, mode):
         return mode
+
+    def setEdit(self, vobj, mode=0):
+        # needs to be overwritten if task panel exists
+        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        return False
+
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
