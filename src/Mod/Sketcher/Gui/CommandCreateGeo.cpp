@@ -735,6 +735,7 @@ public:
     DrawSketchHandlerLineSet()
       : Mode(STATUS_SEEK_First), SegmentMode(SEGMENT_MODE_Line)
       , TransitionMode(TRANSITION_MODE_Free)
+      , SnapMode(SNAP_MODE_Free)
       , suppressTransition(false)
       , EditCurve(2)
       , firstCurve(-1)
@@ -769,6 +770,12 @@ public:
         TRANSITION_MODE_Perpendicular_L,
         TRANSITION_MODE_Perpendicular_R
     };
+    
+    enum SNAP_MODE
+    {
+        SNAP_MODE_Free,
+        SNAP_MODE_45Degree
+    };
 
     virtual void registerPressedKey(bool pressed, int key)
     {
@@ -784,6 +791,8 @@ public:
             // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_L
             // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_R
 
+            SnapMode = SNAP_MODE_Free;
+            
             Base::Vector2d onSketchPos;
             if (SegmentMode == SEGMENT_MODE_Line)
                 onSketchPos = EditCurve[EditCurve.size()-1];
@@ -900,6 +909,12 @@ public:
                 }
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) {
+                
+                if(QApplication::keyboardModifiers() == Qt::ControlModifier)
+                    SnapMode = SNAP_MODE_45Degree;
+                else
+                    SnapMode = SNAP_MODE_Free;
+                
                 Base::Vector2d Tangent;
                 if  (TransitionMode == TRANSITION_MODE_Tangent)
                     Tangent = Base::Vector2d(dirVec.x,dirVec.y);
@@ -909,7 +924,9 @@ public:
                     Tangent = Base::Vector2d(dirVec.y,-dirVec.x);
 
                 double theta = Tangent.GetAngle(onSketchPos - EditCurve[0]);
+
                 arcRadius = (onSketchPos - EditCurve[0]).Length()/(2.0*sin(theta));
+
                 // At this point we need a unit normal vector pointing torwards
                 // the center of the arc we are drawing. Derivation of the formula
                 // used here can be found at http://people.richland.edu/james/lecture/m116/matrices/area.html
@@ -940,6 +957,10 @@ public:
                     arcAngle -=  2*M_PI;
                 if (arcRadius < 0 && arcAngle < 0)
                     arcAngle +=  2*M_PI;
+                
+                if (SnapMode == SNAP_MODE_45Degree)
+                    arcAngle = round(arcAngle / (M_PI/4)) * M_PI/4;
+
                 endAngle = startAngle + arcAngle;
 
                 for (int i=1; i <= 29; i++) {
@@ -988,8 +1009,10 @@ public:
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
                         updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditCurve[0]
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
+                            SnapMode = SNAP_MODE_Free;
+                        }
                         sugConstr1.erase(sugConstr1.begin()+i); // actually we should clear the vector completely
                         break;
                     }
@@ -1021,6 +1044,7 @@ public:
                     Mode=STATUS_SEEK_First;
                     SegmentMode=SEGMENT_MODE_Line;
                     TransitionMode=TRANSITION_MODE_Free;
+                    SnapMode = SNAP_MODE_Free;
                     suppressTransition=false;
                     firstCurve=-1;
                     previousCurve=-1;
@@ -1127,6 +1151,15 @@ public:
                     "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
                     sketchgui->getObject()->getNameInDocument(), constrType.c_str(),
                     previousCurve, previousPosId, lastCurve, lastStartPosId);
+
+                if(SnapMode == SNAP_MODE_45Degree && Mode != STATUS_Close) {
+                    // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225, 270, 315, 360
+                    //  N/A,    a, perp,    a,  par,    a,perp,   a,N/A,  a,perp,   a, par,   a,perp,   a, N/A
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                                            "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,%f)) ",
+                                            sketchgui->getObject()->getNameInDocument(),
+                                            lastCurve, abs(endAngle-startAngle));
+                }
                 if (Mode == STATUS_Close) {
                     // close the loop by constrain to the first curve point
                     Gui::Command::doCommand(Gui::Command::Doc,
@@ -1178,6 +1211,7 @@ public:
                     Mode=STATUS_SEEK_First;
                     SegmentMode=SEGMENT_MODE_Line;
                     TransitionMode=TRANSITION_MODE_Free;
+                    SnapMode = SNAP_MODE_Free;
                     suppressTransition=false;
                     firstCurve=-1;
                     previousCurve=-1;
@@ -1247,6 +1281,7 @@ public:
                     EditCurve.resize(2);
                 }
                 SegmentMode = SEGMENT_MODE_Line;
+                SnapMode = SNAP_MODE_Free;
                 EditCurve[1] = EditCurve[0];
                 mouseMove(onSketchPos); // trigger an update of EditCurve
             }
@@ -1276,6 +1311,7 @@ public:
                 Mode=STATUS_SEEK_First;
                 SegmentMode=SEGMENT_MODE_Line;
                 TransitionMode=TRANSITION_MODE_Free;
+                SnapMode = SNAP_MODE_Free;
                 suppressTransition=false;
                 firstCurve=-1;
                 previousCurve=-1;
@@ -1294,6 +1330,7 @@ protected:
     SELECT_MODE Mode;
     SEGMENT_MODE SegmentMode;
     TRANSITION_MODE TransitionMode;
+    SNAP_MODE SnapMode;
     bool suppressTransition;
 
     std::vector<Base::Vector2d> EditCurve;
