@@ -107,7 +107,7 @@ class _TaskPanelFemElementFluid1D:
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
         QtCore.QObject.connect(self.form.btn_add, QtCore.SIGNAL("clicked()"), self.add_references)
-        QtCore.QObject.connect(self.form.btn_remove, QtCore.SIGNAL("clicked()"), self.remove_reference)
+        QtCore.QObject.connect(self.form.btn_remove, QtCore.SIGNAL("clicked()"), self.remove_selected_reference)
         QtCore.QObject.connect(self.form.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
         QtCore.QObject.connect(self.form.cb_liquid_section_type, QtCore.SIGNAL("activated(int)"), self.liquidsectiontype_changed)
         QtCore.QObject.connect(self.form.if_manning_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_area_changed)
@@ -398,15 +398,18 @@ class _TaskPanelFemElementFluid1D:
 
     def references_list_right_clicked(self, QPos):
         self.form.contextMenu = QtGui.QMenu()
-        menu_item = self.form.contextMenu.addAction("Remove Reference")
+        menu_item_remove_selected = self.form.contextMenu.addAction("Remove selected reference")
+        menu_item_remove_all = self.form.contextMenu.addAction("Remove all references")
         if not self.references:
-            menu_item.setDisabled(True)
-        self.form.connect(menu_item, QtCore.SIGNAL("triggered()"), self.remove_reference)
+            menu_item_remove_selected.setDisabled(True)
+            menu_item_remove_all.setDisabled(True)
+        self.form.connect(menu_item_remove_selected, QtCore.SIGNAL("triggered()"), self.remove_selected_reference)
+        self.form.connect(menu_item_remove_all, QtCore.SIGNAL("triggered()"), self.remove_all_references)
         parentPosition = self.form.list_References.mapToGlobal(QtCore.QPoint(0, 0))
         self.form.contextMenu.move(parentPosition + QPos)
         self.form.contextMenu.show()
 
-    def remove_reference(self):
+    def remove_selected_reference(self):
         if not self.references:
             return
         currentItemName = str(self.form.list_References.currentItem().text())
@@ -414,6 +417,10 @@ class _TaskPanelFemElementFluid1D:
             refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
             if refname_to_compare_listentry == currentItemName:
                 self.references.remove(ref)
+        self.rebuild_list_References()
+
+    def remove_all_references(self):
+        self.references = []
         self.rebuild_list_References()
 
     def add_references(self):
