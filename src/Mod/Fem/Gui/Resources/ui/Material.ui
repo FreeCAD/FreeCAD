@@ -104,7 +104,7 @@
         <item row="1" column="2">
          <widget class="QRadioButton" name="rb_solid">
           <property name="text">
-           <string>Body (3D)</string>
+           <string>Solid</string>
           </property>
          </widget>
         </item>
