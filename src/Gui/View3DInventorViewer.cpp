@@ -469,7 +469,7 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(cb);
 #endif
 
-    pcGroupOnTop = new SoFCSelectionRoot(true);
+    pcGroupOnTop = new SoSeparator;
     pcGroupOnTop->ref();
     pcViewProviderRoot->addChild(pcGroupOnTop);
 
@@ -486,10 +486,10 @@ void View3DInventorViewer::init()
     pcOnTopMaterial->setOverride(true);
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
-    pcGroupOnTopSel = new SoGroup;
+    pcGroupOnTopSel = new SoFCSelectionRoot;
     pcGroupOnTopSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopSel);
-    pcGroupOnTopPreSel = new SoGroup;
+    pcGroupOnTopPreSel = new SoFCSelectionRoot;
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
@@ -638,14 +638,16 @@ void View3DInventorViewer::initialize()
 }
 
 void View3DInventorViewer::clearGroupOnTop() {
-    objectsOnTop.clear();
-    objectsOnTopPreSel.clear();
-    SoSelectionElementAction action(SoSelectionElementAction::None,true);
-    action.apply(pcGroupOnTopSel);
-    action.apply(pcGroupOnTopPreSel);
-    pcGroupOnTopSel->removeAllChildren();
-    pcGroupOnTopPreSel->removeAllChildren();
-    FC_LOG("clear annoation");
+    if(objectsOnTop.size() || objectsOnTopPreSel.size()) {
+        objectsOnTop.clear();
+        objectsOnTopPreSel.clear();
+        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        action.apply(pcGroupOnTopPreSel);
+        action.apply(pcGroupOnTopSel);
+        pcGroupOnTopSel->removeAllChildren();
+        pcGroupOnTopPreSel->removeAllChildren();
+        FC_LOG("clear annoation");
+    }
 }
 
 void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
@@ -655,8 +657,8 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
     }
     if(Reason.Type == SelectionChanges::RmvPreselect) {
-        SoHighlightElementAction haction;
-        haction.apply(pcGroupOnTopPreSel);
+        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        action.apply(pcGroupOnTopPreSel);
         pcGroupOnTopPreSel->removeAllChildren();
         objectsOnTopPreSel.clear();
         return;
@@ -679,11 +681,22 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
         int index = pcGroup->findChild(it->second);
         if(index >= 0) {
-            SoSelectionElementAction action(SoSelectionElementAction::None,true);
-            action.apply(it->second);
+            auto node = static_cast<SoFCPathAnnotation*>(it->second);
+            SoSelectionElementAction action(node->getDetail()?
+                    SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
+            auto path = node->getPath();
+            SoTempPath tmpPath(2+path?path->getLength():0);
+            tmpPath.ref();
+            tmpPath.append(pcGroup);
+            tmpPath.append(node);
+            tmpPath.append(node->getPath());
+            action.setElement(node->getDetail());
+            action.apply(&tmpPath);
+            tmpPath.unrefNoDelete();
             pcGroup->removeChild(index);
-        }
-        FC_LOG("remove annoation " << Reason.Type << " " << key);
+            FC_LOG("remove annoation " << Reason.Type << " " << key);
+        }else
+            FC_LOG("remove annoation object " << Reason.Type << " " << key);
         objs.erase(it);
         return;
     }
@@ -713,12 +726,21 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
+    onTop = vp->OnTopWhenSelected.getValue() || svp->OnTopWhenSelected.getValue();
     if(Reason.Type == SelectionChanges::SetPreselect) {
-        onTop = svp->OnTopWhenSelected.getValue();
+        SoHighlightElementAction action;
+        action.setHighlighted(true);
+        action.setColor(selectionRoot->colorHighlight.getValue());
+        action.apply(pcGroupOnTopPreSel);
         if(!onTop)
             onTop = 2;
-    }else if(!(onTop=svp->OnTopWhenSelected.getValue()))
-        return;
+    }else {
+        if(!onTop)
+            return;
+        SoSelectionElementAction action(SoSelectionElementAction::All);
+        action.setColor(selectionRoot->colorSelection.getValue());
+        action.apply(pcGroupOnTopSel);
+    }
     if(onTop==2 || onTop==3) {
         if(subname && *subname) {
             size_t len = strlen(subname);
@@ -758,38 +780,39 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         groups.push_back(grpVp);
     }
 
-    SoPath *path = new SoPath(10);
-    path->ref();
+    SoTempPath path(10);
+    path.ref();
 
     for(auto it=groups.rbegin();it!=groups.rend();++it) {
         auto grpVp = *it;
-        path->append(grpVp->getRoot());
-        path->append(grpVp->getModeSwitch());
-        path->append(grpVp->getChildRoot());
+        path.append(grpVp->getRoot());
+        path.append(grpVp->getModeSwitch());
+        path.append(grpVp->getChildRoot());
     }
 
     SoDetail *det = 0;
-    if(vp->getDetailPath(subname, static_cast<SoFullPath*>(path),true,det) && path->getLength()) {
+    if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
         auto node = new SoFCPathAnnotation;
-        node->setPath(path);
+        node->setPath(&path);
         pcGroup->addChild(node);
         if(det) {
             SoSelectionElementAction action(SoSelectionElementAction::Append,true);
             action.setElement(det);
-            SoTempPath tmpPath(path->getLength()+2);
+            SoTempPath tmpPath(path.getLength()+2);
             tmpPath.ref();
-            tmpPath.append(pcGroupOnTop);
             tmpPath.append(pcGroup);
             tmpPath.append(node);
-            tmpPath.append(path);
+            tmpPath.append(&path);
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
+            node->setDetail(det);
+            det = 0;
         }
         FC_LOG("add annoation " << Reason.Type << " " << key);
         objs[key.c_str()] = node;
     }
     delete det;
-    path->unref();
+    path.unrefNoDelete();
 }
 
 /// @cond DOXERR

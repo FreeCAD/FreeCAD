@@ -695,13 +695,13 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     hz = z;
 
     // set up the change object
-    SelectionChanges Chng(signal?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
+    SelectionChanges Chng(signal==1?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
     Notify(Chng);
     signalSelectionChanged(Chng);
 
-    if(signal) {
+    if(signal==1) {
         Chng.Type = SelectionChanges::SetPreselect;
         Notify(Chng);
         signalSelectionChanged(Chng);

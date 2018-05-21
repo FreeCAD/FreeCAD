@@ -419,7 +419,7 @@ private:
 
     SoSeparator * pcViewProviderRoot;
 
-    SoSeparator * pcGroupOnTop;
+    SoGroup * pcGroupOnTop;
     SoGroup * pcGroupOnTopSel;
     SoGroup * pcGroupOnTopPreSel;
     std::map<std::string,SoNode*> objectsOnTop;
