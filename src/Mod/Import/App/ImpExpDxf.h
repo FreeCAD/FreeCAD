@@ -91,6 +91,10 @@ namespace Import
         void exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d textLocn, 
                              Base::Vector3d arcPoint,
                              char* dimText);
+        void exportDiametricDim(Base::Vector3d textLocn, 
+                             Base::Vector3d arcPoint1, Base::Vector3d arcPoint2,
+                             char* dimText);
+
 
         static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);

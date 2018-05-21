@@ -631,7 +631,7 @@ private:
                             Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) + 
                                                            Base::Vector3d(parentX,parentY,0.0);
                             writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
-                        }else if (dvd->Type.isValue("Angle")) {
+                        } else if (dvd->Type.isValue("Angle")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
                             anglePoints pts = dvd->getAnglePoints();
@@ -651,7 +651,7 @@ private:
                             end1 = end1 + parentPos;
                             end2 = end2 + parentPos;
                             writer.exportAngularDim(textLocn, lineLocn, end1, end2, apex, dimText);
-                        }else if (dvd->Type.isValue("Radius")) {
+                        } else if (dvd->Type.isValue("Radius")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             arcPoints pts = dvd->getArcPoints();
                             Base::Vector3d center = pts.center;
@@ -661,6 +661,16 @@ private:
                             center = center + parentPos;
                             arcPoint = arcPoint + parentPos;
                             writer.exportRadialDim(center, textLocn, arcPoint, dimText);
+                        } else if(dvd->Type.isValue("Diameter")){
+                            Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
+                            arcPoints pts = dvd->getArcPoints();
+                            Base::Vector3d end1 = pts.onCurve.first;
+                            end1.y = -end1.y;
+                            Base::Vector3d end2 = pts.onCurve.second;
+                            end2.y = -end2.y;
+                            end1 = end1 + parentPos;
+                            end2 = end2 + parentPos;
+                            writer.exportDiametricDim(textLocn, end1, end2, dimText);
                         }
                    }
                 }
