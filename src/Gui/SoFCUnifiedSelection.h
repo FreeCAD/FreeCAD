@@ -31,6 +31,7 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include "View3DInventorViewer.h"
+#include "SoFCSelectionContext.h"
 #include <list>
 
 class SoFullPath;
@@ -136,6 +137,9 @@ public:
     SoFCPathAnnotation();
 
     void setPath(SoPath *);
+    SoPath *getPath() {return path;}
+    void setDetail(SoDetail *d);
+    SoDetail *getDetail() {return det;}
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -146,6 +150,7 @@ protected:
 
 protected:
     SoPath *path;
+    SoDetail *det;
 };
 
 class GuiExport SoFCSelectionRoot : public SoSeparator {
@@ -156,7 +161,7 @@ class GuiExport SoFCSelectionRoot : public SoSeparator {
 public:
     static void initClass(void);
     static void finish(void);
-    SoFCSelectionRoot(bool secondary=false);
+    SoFCSelectionRoot();
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -164,40 +169,46 @@ public:
     virtual void GLRenderOffPath(SoGLRenderAction * action);
 
     virtual void doAction(SoAction *action);
+    virtual void pick(SoPickAction * action);
+    virtual void rayPick(SoRayPickAction * action);
+
+    template<class T>
+    static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def = std::shared_ptr<T>()) {
+        return std::dynamic_pointer_cast<T>(getNodeContext(SelStack,node,def));
+    }
 
     /** Returns selection context for rendering. 
      *
      * @param node: the querying node
      * @param def: default context if none is found
-     * @param secCtx: optional, for querying secondary context
+     * @param ctx2: secondary context output
      *
      * @return Returned the primary context for selection, and the context is
      * always stored in the first encounted SoFCSelectionRoot in the path. It
      * is keyed using the entires sequence of SoFCSelectionRoot along the path
      * to \c node, replacing the first SoFCSelectionRoot with the given node. 
      *
-     * @return Secondary context returned in \c secCtx is for customized
+     * @return Secondary context returned in \c ctx2 is for customized
      * highlighting, and is not affected by mouse event. The highlight is
      * applied manually using SoSelectionElementAction. It is stored in the
      * last encountered SoFCSelectionRoot, and is keyed using the querying 
      * \c node and (if there are more than one SoFCSelectionRoot along the
      * path) the first SoFCSelectionRoot. The reason is so that any link to a
      * node (new links means additional SoFCSelectionRoot added in front) with
-     * customized subelement highlight will also show the highlight.
+     * customized subelement highlight will also show the highlight. Secondary
+     * context can be chained, which why the secondary context type must provide
+     * an function called merge() for getRenderContext() to merge the context.
+     * See SoFCSelectionContext::merge() for an implementation of merging multiple
+     * context.
      *
      * @note For simplicity reason, currently secondary context is only freed
      * when the storage SoFCSSelectionRoot node is freed.
      */
     template<class T>
-    static std::shared_ptr<T> getRenderContext(SoNode *node,  
-                    std::shared_ptr<T> def = std::shared_ptr<T>(), 
-                    std::shared_ptr<T> *ctx2 = 0) 
+    static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def, std::shared_ptr<T> &ctx2) 
     {
-        ContextPtr _ctx2;
-        auto ctx = std::static_pointer_cast<T>(getContext(node,def,ctx2?&_ctx2:0));
-        if(ctx2) 
-            *ctx2 = std::static_pointer_cast<T>(_ctx2);
-        return ctx;
+        ctx2 = std::dynamic_pointer_cast<T>(getNodeContext2(SelStack,node,T::merge));
+        return std::dynamic_pointer_cast<T>(getNodeContext(SelStack,node,def));
     }
 
     /** Get the selection context for an action. 
@@ -206,7 +217,9 @@ public:
      * query for secondary context. \sa getRenderContext for detail about
      * secondary context
      * @param node: the querying node
-     * @param def: default context if none is found
+     * @param def: default context if none is found, only used if querying
+     * non-secondary context
+     * @param create: create a new context if none is found
      *
      * @return If no SoFCSelectionRoot is found in the current path of action,
      * \c def is returned. Otherwise a selection context returned. A new one
@@ -216,18 +229,27 @@ public:
     static std::shared_ptr<T> getActionContext(
             SoAction *action, SoNode *node, std::shared_ptr<T> def=std::shared_ptr<T>(), bool create=true) 
     {
-        ContextPtr pdef(def);
-        ContextPtr *pctx = getContext(action,node,&pdef);
-        if(pctx == &pdef)
+        auto res = findActionContext(action,node,create,false);
+        if(!res.second) {
+            if(res.first)
+                return std::shared_ptr<T>();
+            // default context is only applicable for non-secondary context query
             return def;
+        }
         // make a new context if there is none
-        auto &ctx = *pctx;
-        if(!ctx && create) ctx = std::make_shared<T>();
+        auto &ctx = *res.second;
+        if(ctx) {
+            auto ret = std::dynamic_pointer_cast<T>(ctx);
+            if(!ret)
+                ctx.reset();
+        }
+        if(!ctx && create) 
+            ctx = std::make_shared<T>();
         return std::static_pointer_cast<T>(ctx);
     }
 
-    static void removeActionContext(SoAction *action, SoNode *node) {
-        getContext(action,node,0);
+    static bool removeActionContext(SoAction *action, SoNode *node) {
+        return findActionContext(action,node,false,true).second!=0;
     }
 
     static void checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor);
@@ -238,38 +260,55 @@ public:
 
 protected:
     virtual ~SoFCSelectionRoot();
-    void setup();
 
-    typedef std::shared_ptr<void> ContextPtr;
+    typedef void (SoFCSelectionRoot::*RenderFunc)(SoGLRenderAction*);
+    void renderPrivate(SoGLRenderAction *, RenderFunc);
 
-    static ContextPtr getContext(SoNode *node, ContextPtr def, ContextPtr *ctx2);
-    static ContextPtr *getContext(SoAction *action, SoNode *node, ContextPtr *pdef);
+    void GLRenderBelowPathPrivate(SoGLRenderAction * action);
+    void GLRenderPrivate(SoGLRenderAction * action);
+    void GLRenderInPathPrivate(SoGLRenderAction * action);
+    void GLRenderOffPathPrivate(SoGLRenderAction * action);
 
-    //selection root node stack during rendering
-    typedef std::vector<SoFCSelectionRoot*> Stack;
-    static Stack SelStack; // stack for non-secondary-only nodes
-    static Stack SelStack2; // stack for all selection root nodes
+    class Stack : public std::vector<SoFCSelectionRoot*> {
+    public:
+        size_t offset = 0;
+    };
 
-    static unsigned SelCounter;
-    static unsigned HiliCounter;
+    static SoFCSelectionContextBasePtr getNodeContext(
+            Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def);
+    static SoFCSelectionContextBasePtr getNodeContext2(
+            Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge);
+    static std::pair<bool,SoFCSelectionContextBasePtr*> findActionContext(
+            SoAction *action, SoNode *node, bool create, bool erase);
 
-    typedef std::map<Stack,ContextPtr> ContextMap;
+    static Stack SelStack;
+    static std::map<SoAction*,Stack> ActionStacks;
+
+    struct StackComp {
+        bool operator()(const Stack &a, const Stack &b) const;
+    };
+
+    typedef std::map<Stack,SoFCSelectionContextBasePtr,StackComp> ContextMap;
     ContextMap contextMap;
     ContextMap contextMap2;//holding secondary context
 
-    struct SelContext {
+    struct SelContext: SoFCSelectionContextBase {
+    public:
         SbColor selColor;
         SbColor hlColor;
-        bool selAll;
-        bool hlAll;
+        bool selAll = false;
+        bool hlAll = false;
+        bool hideAll = false;
+        static MergeFunc merge;
     };
     typedef std::shared_ptr<SelContext> SelContextPtr;
     typedef std::vector<SbColor> ColorStack;
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
 
+    bool doActionPrivate(Stack &stack, SoAction *);
+
     bool pushed;//to prevent double push into the stack
-    bool secondary;//indicate if this node for secondary context only
 };
 
 /**
@@ -312,18 +351,35 @@ class GuiExport SoSelectionElementAction : public SoAction
     SO_ACTION_HEADER(SoSelectionElementAction);
 
 public:
-    enum Type {None, Append, Remove, All};
+    enum Type {None, Append, Remove, All, Color, Hide, Show};
 
-    SoSelectionElementAction (Type, bool secondary = false);
+    SoSelectionElementAction (Type=None, bool secondary = false);
     ~SoSelectionElementAction();
 
     Type getType() const;
+    void setType(Type type) {
+        _type = type;
+    }
+
     void setColor(const SbColor&);
     const SbColor& getColor() const;
     void setElement(const SoDetail*);
     const SoDetail* getElement() const;
 
     bool isSecondary() const {return _secondary;}
+    void setSecondary(bool enable) {
+        _secondary = enable;
+    }
+
+    const std::map<std::string,App::Color> &getColors() const {
+        return _colors;
+    }
+    void setColors(const std::map<std::string,App::Color> &colors) {
+        _colors = colors;
+    }
+    void swapColors(std::map<std::string,App::Color> &colors) {
+        _colors.swap(colors);
+    }
 
     static void initClass();
 
@@ -337,6 +393,7 @@ private:
     Type _type;
     SbColor _color;
     const SoDetail* _det;
+    std::map<std::string,App::Color> _colors;
     bool _secondary;
 };
 

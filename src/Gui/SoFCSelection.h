@@ -43,6 +43,7 @@
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <memory>
+#include "SoFCSelectionContext.h"
 
 class SoFullPath;
 class SoPickedPoint;
@@ -109,9 +110,10 @@ public:
 protected:
     virtual ~SoFCSelection();
 
-    class SelContext;
+    typedef SoFCSelectionContext SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
     SelContextPtr selContext;
+    SelContextPtr selContext2;
 
     virtual void redrawHighlighted(SoAction * act, SbBool flag);
 

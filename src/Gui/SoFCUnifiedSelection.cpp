@@ -960,17 +960,32 @@ void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 }
 
 // ---------------------------------------------------------------------------------
+bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) const {
+    if(a.size()-a.offset < b.size()-b.offset) 
+        return true;
+    if(a.size()-a.offset > b.size()-b.offset) 
+        return false;
+    auto it1=a.rbegin(), end1=a.rend()-a.offset; 
+    auto it2=b.rbegin();
+    for(;it1!=end1;++it1,++it2) {
+        if(*it1 < *it2) 
+            return true;
+        if(*it1 > *it2) 
+            return false;
+    }
+    return false;
+}
+// ---------------------------------------------------------------------------------
 
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
-SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack2;
+std::map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 
 SO_NODE_SOURCE(SoFCSelectionRoot);
 
-SoFCSelectionRoot::SoFCSelectionRoot(bool secondary)
+SoFCSelectionRoot::SoFCSelectionRoot()
     :pushed(false)
-    ,secondary(secondary)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
 }
@@ -995,118 +1010,130 @@ SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
     return def;
 }
 
-SoFCSelectionRoot::ContextPtr SoFCSelectionRoot::getContext(SoNode *_node, ContextPtr def, ContextPtr *ctx2)
+SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
+        Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def)
 {
+    if(stack.empty())
+        return def;
+
+    SoFCSelectionRoot *front = stack.front();
+
     // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
     // here since we only use it as searching key, although it is probably not
     // a best practice.
-    auto node = static_cast<SoFCSelectionRoot*>(_node);
+    stack.front() = static_cast<SoFCSelectionRoot*>(node);
 
-    if(ctx2 && SelStack2.size() && SelStack2.back()->contextMap2.size()) {
-        auto &map = SelStack2.back()->contextMap2;
-        Stack key;
-        key.resize(2);
-        key[0] = node;
-        for(size_t i=0;i<SelStack2.size();++i) {
-            if(i+1<SelStack2.size())
-                key[1] = SelStack2[i];
-            else 
-                key.resize(1);
-            auto it = map.find(key);
-            if(it == map.end()) continue;
-            *ctx2 = it->second;
-            break;
-        }
-    }
-
-    if(SelStack.empty())
-        return def;
-
-    SoFCSelectionRoot *front = SelStack.front();
-    SelStack.front() = node;
-    auto it = front->contextMap.find(SelStack);
-    SelStack.front() = front;
+    auto it = front->contextMap.find(stack);
+    stack.front() = front;
     if(it!=front->contextMap.end()) 
         return it->second;
-    return ContextPtr();
+    return SoFCSelectionContextBasePtr();
 }
 
-SoFCSelectionRoot::ContextPtr *SoFCSelectionRoot::getContext(
-        SoAction *action, SoNode *_node, ContextPtr *pdef) 
+SoFCSelectionContextBasePtr 
+SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge) 
 {
-    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
-    // here since we only use it as searching key. But it is probably not a
-    // best practice.
+    SoFCSelectionContextBasePtr ret;
+    if(stack.empty() || stack.back()->contextMap2.empty())
+        return ret;
+
+    int status = 0;
+    auto *back = stack.back();
+    auto &map = back->contextMap2;
+    stack.back() = static_cast<SoFCSelectionRoot*>(node);
+    for(stack.offset=0;stack.offset<stack.size();++stack.offset) {
+        auto it = map.find(stack);
+        if(it!=map.end() && (status = merge(status,ret,it->second))<0)
+            break;
+    }
+    stack.offset = 0;
+    stack.back() = back;
+    return ret;
+}
+
+std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContext(
+        SoAction *action, SoNode *_node, bool create, bool erase)
+{
+    std::pair<bool,SoFCSelectionContextBasePtr*> res(false,0);
+    if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
+        res.first = static_cast<SoSelectionElementAction*>(action)->isSecondary();
+
+    auto it = ActionStacks.find(action);
+    if(it==ActionStacks.end() || it->second.empty())
+        return res;
+
+    auto &stack = it->second;
+    
     auto node = static_cast<SoFCSelectionRoot*>(_node);
 
-    const SoFullPath *path = (const SoFullPath*)action->getCurPath();
-    bool secondary = false;
-    if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
-        secondary = static_cast<SoSelectionElementAction*>(action)->isSecondary();
-    Stack stack;
-    for(int i=0,count=path->getLength();i<count;++i) {
-        SoNode *n = path->getNode(i);
-        if(n->getTypeId().isDerivedFrom(SoFCSelectionRoot::getClassTypeId())) {
-            auto sel = static_cast<SoFCSelectionRoot*>(n);
-            if(secondary || !sel->secondary)
-                stack.push_back(sel);
+    if(res.first) {
+        auto back = stack.back();
+        stack.back() = node;
+        if(create)
+            res.second = &back->contextMap2[stack];
+        else {
+            auto it = back->contextMap2.find(stack);
+            if(it!=back->contextMap2.end()) {
+                res.second = &it->second;
+                if(erase)
+                    back->contextMap2.erase(it);
+            }
         }
+        stack.back() = back;
+    }else{
+        auto front = stack.front();
+        stack.front() = node;
+        if(create) 
+            res.second = &front->contextMap[stack];
+        else {
+            auto it = front->contextMap.find(stack);
+            if(it!=front->contextMap.end()) {
+                res.second = &it->second;
+                if(erase)
+                    front->contextMap.erase(it);
+            }
+        }
+        stack.front() = front;
     }
-    if(stack.empty())
-        return pdef;
+    return res;
+}
 
-    if(secondary) {
-        Stack key;
-        key.reserve(2);
-        key.push_back(node);
-        if(stack.size()>1)
-            key.push_back(stack.front());
-        SoFCSelectionRoot *back = stack.back();
-        if(pdef)
-            return &back->contextMap2[key];
-        back->contextMap2.erase(key);
-        return 0;
+void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc render) {
+    if(pushed)
+        (this->*render)(action);
+    else {
+        pushed = true;
+        SelStack.push_back(this);
+        auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
+        if(!ctx2 || !ctx2->hideAll) {
+            auto ctx = getRenderContext<SelContext>(this);
+            if(!ctx) 
+                (this->*render)(action);
+            else {
+                bool selPushed;
+                bool hlPushed;
+                if((selPushed = ctx->selAll)) 
+                    SelColorStack.push_back(ctx->selColor);
+                if((hlPushed = ctx->hlAll)) 
+                    HlColorStack.push_back(ctx->hlColor);
+                (this->*render)(action);
+                if(selPushed)
+                    SelColorStack.pop_back();
+                if(hlPushed)
+                    HlColorStack.pop_back();
+            }
+        }
+        SelStack.pop_back();
+        pushed = false;
     }
-
-    SoFCSelectionRoot *front = stack.front();
-    stack.front() = node;
-    if(pdef) 
-        return &front->contextMap[stack];
-    front->contextMap.erase(stack);
-    return 0;
 }
 
 #define DEFINE_RENDER(_name) \
 void SoFCSelectionRoot::_name(SoGLRenderAction * action) {\
-    if(pushed)\
-        inherited::_name(action);\
-    else {\
-        pushed = true;\
-        bool selPushed = false;\
-        bool hlPushed = false;\
-        bool sec = secondary;\
-        if(!sec){\
-            SelStack.push_back(this);\
-            auto ctx = getRenderContext<SelContext>(this);\
-            if(ctx){\
-                if((selPushed = ctx->selAll)) \
-                    SelColorStack.push_back(ctx->selColor);\
-                if((hlPushed = ctx->hlAll)) \
-                    HlColorStack.push_back(ctx->hlColor);\
-            }\
-        }\
-        SelStack2.push_back(this);\
-        inherited::_name(action);\
-        SelStack2.pop_back();\
-        if(!sec){\
-            if(selPushed)\
-                SelColorStack.pop_back();\
-            if(hlPushed)\
-                HlColorStack.pop_back();\
-            SelStack.pop_back();\
-        }\
-        pushed = false;\
-    }\
+    renderPrivate(action,&SoFCSelectionRoot::_name##Private);\
+}\
+void SoFCSelectionRoot::_name##Private(SoGLRenderAction * action) {\
+    inherited::_name(action);\
 }
 
 DEFINE_RENDER(GLRender)
@@ -1127,8 +1154,32 @@ void SoFCSelectionRoot::resetContext() {
     contextMap.clear();
 }
 
-void SoFCSelectionRoot::doAction(SoAction *action) {
+void SoFCSelectionRoot::pick(SoPickAction * action) {
+    doAction(action);
+}
 
+void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
+    doAction(action);
+}
+
+void SoFCSelectionRoot::doAction(SoAction *action) {
+    auto &stack = ActionStacks[action];
+    stack.push_back(this);
+    auto size = stack.size();
+
+    if(doActionPrivate(stack,action))
+        inherited::doAction(action);
+
+    if(stack.size()!=size || stack.back()!=this)
+        FC_WARN("action stack fault");
+    else {
+        stack.pop_back();
+        if(stack.empty())
+            ActionStacks.erase(action);
+    }
+}
+
+bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
     // selection/pre-selection, we shall store a SelContext keyed by ourself.
     // And the action traversal can be short-curcuited once the first targeted
@@ -1136,67 +1187,131 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
     // to check for whole object selection. This greatly imporve performance on
     // large group.
 
-    if(action->getWhatAppliedTo() == SoAction::NODE ||
-       action->getCurPathCode() == SoAction::BELOW_PATH) 
-    {
-        if(action->isOfType(SoSelectionElementAction::getClassTypeId())) {
-            auto selAction = static_cast<SoSelectionElementAction*>(action);
-            if(!selAction->isSecondary()) {
-                if(selAction->getType() == SoSelectionElementAction::None) {
-                    if(action->getWhatAppliedTo() == SoAction::NODE) {
-                        // Here the 'select none' action is applied to a node,
-                        // and we are the first SoFCSelectionRoot encounted
-                        // (which means all children stores selection context
-                        // here, both whole object and element selection), then
-                        // we can simply perform the action by clearing the
-                        // selection context here, and save the time for
-                        // traversing a potentially large amount of children
-                        // nodes.
-                        resetContext();
-                        touch();
-                        return;
-                    }
-                    auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
-                    if(ctx && ctx->selAll) {
-                        ctx->selAll = false;
-                        touch();
-                        return;
-                    }
-                }else if(selAction->getType() == SoSelectionElementAction::All) {
-                    auto ctx = getActionContext<SelContext>(action,this);
-                    assert(ctx);
-                    ctx->selAll = true;
-                    ctx->selColor = selAction->getColor();
+    SelContextPtr ctx2;
+    bool ctx2Searched = false;
+    bool isTail = false;
+    if(action->getCurPathCode()==SoAction::IN_PATH) {
+        isTail = action->getPathAppliedTo() && action->getPathAppliedTo()->getTail()==this;
+
+        if(!action->isOfType(SoSelectionElementAction::getClassTypeId())) {
+            ctx2Searched = true;
+            ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(stack,this,SelContext::merge));
+            if(ctx2 && ctx2->hideAll)
+                return false;
+        }
+        if(!isTail)
+            return true;
+    }else if(action->getWhatAppliedTo()!=SoAction::NODE && action->getCurPathCode()!=SoAction::BELOW_PATH)
+        return true;
+
+    if(action->isOfType(SoSelectionElementAction::getClassTypeId())) {
+        auto selAction = static_cast<SoSelectionElementAction*>(action);
+        if(selAction->isSecondary()) {
+            if(selAction->getType() == SoSelectionElementAction::Show ||
+               (selAction->getType() == SoSelectionElementAction::Color && 
+                selAction->getColors().empty() &&
+                action->getWhatAppliedTo()==SoAction::NODE))
+            {
+                auto ctx = getActionContext(action,this,SelContextPtr(),false);
+                if(ctx && ctx->hideAll) {
+                    ctx->hideAll = false;
+                    if(!ctx->hlAll && !ctx->selAll)
+                        removeActionContext(action,this);
                     touch();
-                    return;
+                }
+                // applied to a node means clear all visibility setting, so
+                // return true to propgate the action
+                return selAction->getType()==SoSelectionElementAction::Color ||
+                       action->getWhatAppliedTo()==SoAction::NODE;
+
+            }else if(selAction->getType() == SoSelectionElementAction::Hide) {
+                if(action->getCurPathCode()==SoAction::BELOW_PATH || isTail) {
+                    auto ctx = getActionContext(action,this,SelContextPtr());
+                    if(ctx && !ctx->hideAll) {
+                        ctx->hideAll = true;
+                        touch();
+                    }
+                    return false;
                 }
             }
-        } else if(action->isOfType(SoHighlightElementAction::getClassTypeId())) {
-            auto hlAction = static_cast<SoHighlightElementAction*>(action);
-            if(hlAction->isHighlighted()) {
-                if(hlAction->getElement()) {
-                    auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
-                    if(ctx)
-                        ctx->hlAll = false;
-                } else {
-                    auto ctx = getActionContext<SelContext>(action,this);
-                    assert(ctx);
-                    ctx->hlAll = true;
-                    ctx->hlColor = hlAction->getColor();
-                    touch();
-                    return;
-                }
-            } else {
-                auto ctx = getActionContext<SelContext>(action,this,SelContextPtr(),false);
+            return true;
+        } 
+        
+        if(selAction->getType() == SoSelectionElementAction::None) {
+            if(action->getWhatAppliedTo() == SoAction::NODE) {
+                // Here the 'select none' action is applied to a node, and we
+                // are the first SoFCSelectionRoot encounted (which means all
+                // children stores selection context here, both whole object
+                // and element selection), then we can simply perform the
+                // action by clearing the selection context here, and save the
+                // time for traversing a potentially large amount of children
+                // nodes.
+                resetContext();
+                touch();
+                return false;
+            }
+            auto ctx = getActionContext(action,this,SelContextPtr(),false);
+            if(ctx && ctx->selAll) {
+                ctx->selAll = false;
+                touch();
+                return false;
+            }
+        } else if(selAction->getType() == SoSelectionElementAction::All) {
+            auto ctx = getActionContext(action,this,SelContextPtr());
+            assert(ctx);
+            ctx->selAll = true;
+            ctx->selColor = selAction->getColor();
+            touch();
+            return false;
+        }
+        return true;
+    }
+
+    if(action->isOfType(SoHighlightElementAction::getClassTypeId())) {
+        auto hlAction = static_cast<SoHighlightElementAction*>(action);
+        if(hlAction->isHighlighted()) {
+            if(hlAction->getElement()) {
+                auto ctx = getActionContext(action,this,SelContextPtr(),false);
                 if(ctx && ctx->hlAll) {
                     ctx->hlAll = false;
                     touch();
-                    return;
                 }
+            } else {
+                auto ctx = getActionContext(action,this,SelContextPtr());
+                assert(ctx);
+                ctx->hlAll = true;
+                ctx->hlColor = hlAction->getColor();
+                touch();
+                return false;
+            }
+        } else {
+            auto ctx = getActionContext(action,this,SelContextPtr(),false);
+            if(ctx && ctx->hlAll) {
+                ctx->hlAll = false;
+                touch();
+                return false;
             }
         }
+        return true;
     }
-    inherited::doAction(action);
+
+    if(!ctx2Searched) {
+        ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(stack,this,SelContext::merge));
+        if(ctx2 && ctx2->hideAll)
+            return false;
+    }
+    return true;
+}
+
+int SoFCSelectionRoot::SelContext::merge(int status, 
+        SoFCSelectionContextBasePtr &output, SoFCSelectionContextBasePtr input)
+{
+    auto ctx = std::dynamic_pointer_cast<SelContext>(input);
+    if(ctx && ctx->hideAll) {
+        output = ctx;
+        return -1;
+    }
+    return status;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1207,11 +1322,13 @@ SoFCPathAnnotation::SoFCPathAnnotation()
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
     path = 0;
+    det = 0;
 }
 
 SoFCPathAnnotation::~SoFCPathAnnotation()
 {
     if(path) path->unref();
+    delete det;
 }
 
 void SoFCPathAnnotation::finish() 
@@ -1266,6 +1383,13 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
     GLRenderBelowPath(action);
+}
+
+void SoFCPathAnnotation::setDetail(SoDetail *d) {
+    if(d!=det) {
+        delete det;
+        det = d;
+    }
 }
 
 void SoFCPathAnnotation::setPath(SoPath *newPath) {

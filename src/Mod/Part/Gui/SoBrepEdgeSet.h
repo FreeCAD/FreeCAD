@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
 #include <memory>
+#include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -60,7 +61,7 @@ protected:
         const SoPrimitiveVertex *v2,
         SoPickedPoint *pp);
 private:
-    class SelContext;
+    struct SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
 
     void renderShape(const SoGLCoordinateElement * const vertexlist,

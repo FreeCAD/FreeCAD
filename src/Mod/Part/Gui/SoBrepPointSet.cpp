@@ -66,48 +66,6 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepPointSet);
 
-class SoBrepPointSet::SelContext {
-public:
-    int highlightIndex;
-    std::set<int> selectionIndex;
-    SbColor selectionColor;
-    SbColor highlightColor;
-
-    SelContext():highlightIndex(-1)
-    {}
-     
-    void removeIndex(int index) {
-        auto it = selectionIndex.find(index);
-        if(it != selectionIndex.end())
-            selectionIndex.erase(it);
-    }
-
-    bool isSelectAll() const {
-        return selectionIndex.size() && *selectionIndex.begin()<0;
-    }
-
-    bool checkGlobal(std::shared_ptr<SelContext> ctx) {
-        bool sel = false;
-        bool hl = false;
-        Gui::SoFCSelectionRoot::checkSelection(sel,selectionColor,hl,highlightColor);
-        if(sel) 
-            selectionIndex.insert(-1);
-        else if(ctx && hl) {
-            selectionColor = ctx->selectionColor;
-            selectionIndex = ctx->selectionIndex;
-        }else
-            selectionIndex.clear();
-        if(hl)
-            highlightIndex = INT_MAX;
-        else if(ctx && sel) {
-            highlightIndex = ctx->highlightIndex;
-            highlightColor = ctx->highlightColor;
-        }else
-            highlightIndex = -1;
-        return sel||hl;
-    }
-};
-
 void SoBrepPointSet::initClass()
 {
     SO_NODE_INIT_CLASS(SoBrepPointSet, SoPointSet, "PointSet");
@@ -132,7 +90,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         return;
     }
     SelContextPtr ctx2;
-    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
     if(selContext2->checkGlobal(ctx))
@@ -286,12 +244,15 @@ void SoBrepPointSet::doAction(SoAction* action)
 {
     if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
         Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
-        SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
         if (!hlaction->isHighlighted()) {
-            ctx->highlightIndex = -1;
-            touch();
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+            if(ctx) {
+                ctx->highlightIndex = -1;
+                touch();
+            }
             return;
         }
+        SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
         const SoDetail* detail = hlaction->getElement();
         if (!detail) {
             ctx->highlightIndex = INT_MAX;
@@ -314,49 +275,59 @@ void SoBrepPointSet::doAction(SoAction* action)
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
-
-        if(selaction->isSecondary() && selaction->getType() == Gui::SoSelectionElementAction::None) {
-            Gui::SoFCSelectionRoot::removeActionContext(action,this);
-            touch();
-            return;
-        }
-
-        SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
-        ctx->selectionColor = selaction->getColor();
-        if (selaction->getType() == Gui::SoSelectionElementAction::All) {
+        switch(selaction->getType()) {
+        case Gui::SoSelectionElementAction::All: {
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+            ctx->selectionColor = selaction->getColor();
             ctx->selectionIndex.clear();
             ctx->selectionIndex.insert(-1);
             touch();
             return;
-        }
-        else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
-            ctx->selectionIndex.clear();
-            touch();
+        } case Gui::SoSelectionElementAction::None:
+            if(selaction->isSecondary()) {
+                if(Gui::SoFCSelectionRoot::removeActionContext(action,this))
+                    touch();
+            } else {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx) {
+                    ctx->selectionIndex.clear();
+                    touch();
+                }
+            }
             return;
-        }
-
-        const SoDetail* detail = selaction->getElement();
-        if (detail) {
-            if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
+        case Gui::SoSelectionElementAction::Remove:
+        case Gui::SoSelectionElementAction::Append: {
+            const SoDetail* detail = selaction->getElement();
+            if (!detail || !detail->isOfType(SoPointDetail::getClassTypeId())) {
+                if(selaction->isSecondary()) {
+                    // For secondary context, a detail of different type means
+                    // the user may want to partial render only other type of
+                    // geometry. So we call below to obtain a action context.
+                    // If no secondary context exist, it will create an empty
+                    // one, and an empty secondary context inhibites drawing
+                    // here.
+                    auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                    touch();
+                }
                 return;
             }
-
             int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-            switch (selaction->getType()) {
-            case Gui::SoSelectionElementAction::Append:
+            if(selaction->getType() == Gui::SoSelectionElementAction::Append) {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
                 if(ctx->isSelectAll()) 
                     ctx->selectionIndex.clear();
-                ctx->selectionIndex.insert(index);
-                touch();
-                break;
-            case Gui::SoSelectionElementAction::Remove:
-                ctx->removeIndex(index);
-                touch();
-                break;
-            default:
-                break;
+                if(ctx->selectionIndex.insert(index).second)
+                    touch();
+            } else {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx && ctx->removeIndex(index))
+                    touch();
             }
+            break;
+        } default:
+            break;
         }
+        return;
     }
 
     inherited::doAction(action);

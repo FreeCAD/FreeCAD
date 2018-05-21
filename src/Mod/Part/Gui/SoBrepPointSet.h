@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
 #include <memory>
+#include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -56,8 +57,8 @@ protected:
     virtual void doAction(SoAction* action); 
 
 private:
-    class SelContext;
-    typedef std::shared_ptr<SelContext> SelContextPtr;
+    typedef Gui::SoFCSelectionContext SelContext;
+    typedef Gui::SoFCSelectionContextPtr SelContextPtr;
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 

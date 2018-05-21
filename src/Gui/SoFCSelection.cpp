@@ -68,23 +68,6 @@ using namespace Gui;
 SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
 
 
-class SoFCSelection::SelContext {
-public:
-    SoSFColor colorHighlight;
-    SoSFColor colorSelection;
-    SbBool selected;
-    SbBool highlighted;
-    SoColorPacker colorpacker;
-
-    SelContext() {
-        colorHighlight = SbColor(0.8f, 0.1f, 0.1f);
-        colorSelection = SbColor(0.1f, 0.8f, 0.1f);
-        selected = false;
-        highlighted = false;
-    }
-};
-
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCSelection);
@@ -135,6 +118,7 @@ SoFCSelection::SoFCSelection()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     useNewSelection = hGrp->GetBool("UseNewSelection",true);
     selContext = std::make_shared<SelContext>();
+    selContext2 = std::make_shared<SelContext>();
 }
 
 /*!
@@ -178,27 +162,36 @@ void SoFCSelection::doAction(SoAction *action)
     if(useNewSelection.getValue()) {
         if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
             Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
-            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
-            ctx->colorHighlight = hlaction->getColor();
-            if(ctx->highlighted != hlaction->isHighlighted()){
-                ctx->highlighted = hlaction->isHighlighted();
-                this->touch();
+            if(!hlaction->isHighlighted()) {
+                auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx->isHighlighted()) {
+                    ctx->highlightIndex = -1;
+                    touch();
+                }
+            }else{
+                auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                ctx->highlightColor = hlaction->getColor();
+                if(!ctx->isHighlighted()) {
+                    ctx->highlightIndex = 0;
+                    touch();
+                }
             }
             return;
         } else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
             Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
-            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
-            this->colorSelection = selaction->getColor();
             if (selaction->getType() == Gui::SoSelectionElementAction::All ||
                 selaction->getType() == Gui::SoSelectionElementAction::Append) {
-                if(!ctx->selected) {
-                    ctx->selected = true;
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                ctx->selectionColor = selaction->getColor();
+                if(!ctx->isSelectAll()) {
+                    ctx->selectAll();
                     this->touch();
                 }
             } else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
                        selaction->getType() == Gui::SoSelectionElementAction::Remove) {
-                if(ctx->selected) {
-                    ctx->selected = false;
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx && ctx->isSelected()) {
+                    ctx->selectionIndex.clear();
                     this->touch();
                 }
             }
@@ -674,20 +667,25 @@ void
 SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
     if(!useNewSelection.getValue() && selContext == ctx) {
-        ctx->colorSelection = this->colorSelection;
-        ctx->colorHighlight = this->colorHighlight;
-        ctx->selected = this->selected.getValue()==SELECTED;
-        ctx->highlighted = this->highlighted;
+        ctx->selectionColor = this->colorSelection.getValue();
+        ctx->highlightColor = this->colorHighlight.getValue();
+        if(this->selected.getValue()==SELECTED)
+            ctx->selectAll();
+        else
+            ctx->selectionIndex.clear();
+        ctx->highlightIndex = this->highlighted?0:-1;
     }
 
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = ctx && ctx->highlighted && (useNewSelection.getValue()||mymode == AUTO);
+    bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->selected)) {
+    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->isSelected())) {
         this->setOverride(action,ctx);
     }
     inherited::GLRenderBelowPath(action);
@@ -720,19 +718,24 @@ void
 SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 {
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
     if(!useNewSelection.getValue() && selContext == ctx) {
-        ctx->colorSelection = this->colorSelection;
-        ctx->colorHighlight = this->colorHighlight;
-        ctx->selected = this->selected.getValue()==SELECTED;
-        ctx->highlighted = this->highlighted;
+        ctx->selectionColor = this->colorSelection.getValue();
+        ctx->highlightColor = this->colorHighlight.getValue();
+        if(this->selected.getValue()==SELECTED)
+            ctx->selectAll();
+        else
+            ctx->selectionIndex.clear();
+        ctx->highlightIndex = this->highlighted?0:-1;
     }
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = ctx && ctx->highlighted && (useNewSelection.getValue()||mymode == AUTO);
+    bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->selected)) {
+    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->isSelected())) {
         this->setOverride(action,ctx);
     }
     inherited::GLRenderInPath(action);
@@ -919,18 +922,18 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
     //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
     SoState * state = action->getState();
-    if(ctx->selected)
-        SoLazyElement::setEmissive(state, &ctx->colorSelection.getValue());
+    if(ctx->isSelected())
+        SoLazyElement::setEmissive(state, &ctx->selectionColor);
     else
-        SoLazyElement::setEmissive(state, &ctx->colorHighlight.getValue());
+        SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     Styles mystyle = (Styles) this->style.getValue();
     if (mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
-        if(ctx->selected)
-            SoLazyElement::setDiffuse(state, this,1, &ctx->colorSelection.getValue(),&ctx->colorpacker);
+        if(ctx->isSelected())
+            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
         else
-            SoLazyElement::setDiffuse(state, this,1, &ctx->colorHighlight.getValue(),&ctx->colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 }
