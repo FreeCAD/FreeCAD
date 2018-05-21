@@ -63,6 +63,11 @@ class _ViewProviderFemMaterial:
         return
 
     def setEdit(self, vobj, mode):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         taskd = _TaskPanelFemMaterial(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)

@@ -66,6 +66,11 @@ class _ViewProviderFemElementRotation1D:
     '''
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         taskd = _TaskPanelFemElementRotation1D(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)

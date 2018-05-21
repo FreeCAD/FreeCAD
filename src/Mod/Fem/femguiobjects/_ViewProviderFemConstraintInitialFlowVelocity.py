@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD as App
+import FreeCAD
 import femtools.femutils as FemUtils
 from . import ViewProviderFemConstraint
 from FreeCAD import Units
@@ -40,6 +40,11 @@ class ViewProxy(ViewProviderFemConstraint.ViewProxy):
         return ":/icons/fem-constraint-initial-flow-velocity.svg"
 
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         task = _TaskPanel(vobj.Object)
         Gui.Control.showDialog(task)
 
@@ -58,7 +63,7 @@ class _TaskPanel(object):
     def __init__(self, obj):
         self._obj = obj
         self._paramWidget = Gui.PySideUic.loadUi(
-            App.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._paramWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)
