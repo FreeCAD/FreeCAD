@@ -1449,7 +1449,12 @@ def is_same_geometry(shape1, shape2):
 
 def get_element(part, element):
     if element.startswith('Solid'):
-        return part.Shape.Solids[int(element.lstrip('Solid')) - 1]  # Solid
+        index = int(element.lstrip('Solid')) - 1
+        if index >= len(part.Shape.Solids):
+            FreeCAD.Console.PrintError('Index out of range. This Solid does not exist in the Shape!\n')
+            return None
+        else:
+            return part.Shape.Solids[index]  # Solid
     else:
         return part.Shape.getElement(element)  # Face, Edge, Vertex
 
