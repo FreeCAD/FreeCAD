@@ -146,7 +146,10 @@ public:
                   const double* startExt2, const double* endExt2,
                   const char* dimText,
                   const char* layer_name);
-// const char* blockName, const int dimType, const int attachPoint,  
+    void WriteRadialDim(const double* centerPoint, const double* textMidPoint, 
+                         const double* arcPoint,
+                         const char* dimText,
+                         const char* layer_name);
 };
 
 // derive a class from this and implement it's virtual functions

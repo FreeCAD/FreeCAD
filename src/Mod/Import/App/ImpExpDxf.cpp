@@ -695,5 +695,24 @@ void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn, Base::Vector3d li
     apex[1] = apexPoint.y;
     apex[2] = apexPoint.z;
     WriteAngularDim(text, line, apex, ext1, apex, ext2, dimText, getLayerName().c_str());
+}
+
+void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d textLocn, 
+                             Base::Vector3d arcPoint,
+                             char* dimText)
+{
+    double center[3] = {0,0,0};
+    center[0] = centerPoint.x;
+    center[1] = centerPoint.y;
+    center[2] = centerPoint.z;
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double arc[3] = {0,0,0};
+    arc[0] = arcPoint.x;
+    arc[1] = arcPoint.y;
+    arc[2] = arcPoint.z;
+    WriteRadialDim(center, text, arc, dimText, getLayerName().c_str());
 
 }
