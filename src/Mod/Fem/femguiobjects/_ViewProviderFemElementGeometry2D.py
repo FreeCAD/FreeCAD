@@ -107,10 +107,12 @@ class _TaskPanelFemElementGeometry2D:
         # parameter widget
         self.obj = obj
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui")
-        self.init_parameter_widget()
         QtCore.QObject.connect(self.parameterWidget.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
+        self.init_parameter_widget()
+
         # geometry selection widget
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Face'])
+
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]
 
@@ -125,15 +127,15 @@ class _TaskPanelFemElementGeometry2D:
         self.set_back_all()
         return True
 
+    def set_back_all(self):
+        self.selectionWidget.setback_listobj_visibility()
+        if self.selectionWidget.sel_server:
+            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
+        FreeCADGui.ActiveDocument.resetEdit()
+
     def init_parameter_widget(self):
         self.thickness = self.obj.Thickness
         self.parameterWidget.if_thickness.setText(self.thickness.UserString)
 
     def thickness_changed(self, base_quantity_value):
         self.thickness = base_quantity_value
-
-    def set_back_all(self):
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        FreeCADGui.ActiveDocument.resetEdit()
