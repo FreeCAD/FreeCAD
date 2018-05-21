@@ -158,6 +158,8 @@ class _TaskPanelFemMaterial:
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
             self.choose_material(index)
+        # TODO check if the reference shapes realy exists, if the reference shape is an element of a Shape check if the Shape realy has this element
+        # this should be done in all constraints with reference shapes too !
         self.has_equal_references_shape_types()
         self.rebuild_list_References()
 
