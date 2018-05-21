@@ -110,7 +110,7 @@ class _TaskPanelFemElementGeometry2D:
         self.init_parameter_widget()
         QtCore.QObject.connect(self.parameterWidget.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.FacesSelection(obj.References)
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Face'])
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]
 
