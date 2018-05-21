@@ -160,6 +160,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    Gui::MenuItem* elec = new Gui::MenuItem;
+    elec->setCommand("&Electrostatic Constraints");
+    *elec << "FEM_ConstraintElectrostaticPotential";
+
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical Constraints");
     *mech << "FEM_ConstraintFixed"
@@ -204,9 +208,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D"
            << "Separator"
+           << elec
+           << fluid
            << mech
-           << thermal
-           << fluid;
+           << thermal;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
