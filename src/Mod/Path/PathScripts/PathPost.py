@@ -252,6 +252,7 @@ class CommandPathPost:
             if tc is not None:
                 if tc.ToolNumber != currTool:
                     postlist.append(tc)
+                    currTool = tc.ToolNumber
             postlist.append(obj)
 
         fail = True
