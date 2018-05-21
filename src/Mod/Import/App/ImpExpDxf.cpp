@@ -716,3 +716,22 @@ void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d 
     WriteRadialDim(center, text, arc, dimText, getLayerName().c_str());
 
 }
+
+void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn, 
+                             Base::Vector3d arcPoint1, Base::Vector3d arcPoint2,
+                             char* dimText)
+{
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double arc1[3] = {0,0,0};
+    arc1[0] = arcPoint1.x;
+    arc1[1] = arcPoint1.y;
+    arc1[2] = arcPoint1.z;
+    double arc2[3] = {0,0,0};
+    arc2[0] = arcPoint2.x;
+    arc2[1] = arcPoint2.y;
+    arc2[2] = arcPoint2.z;
+    WriteDiametricDim(text, arc1, arc2, dimText, getLayerName().c_str());
+}

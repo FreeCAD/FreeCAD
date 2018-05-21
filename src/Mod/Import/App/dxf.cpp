@@ -396,17 +396,6 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << extLine2[1]    << endl;
     (*m_ofs) << 34             << endl;
     (*m_ofs) << extLine2[2]    << endl;
-////radial dims
-//    (*m_ofs) << 100            << endl;
-//    (*m_ofs) << "AcDbRadialDimension"     << endl;
-//    (*m_ofs) << 15             << endl;
-//    (*m_ofs) << arcPoint[0]    << endl;
-//    (*m_ofs) << 25             << endl; 
-//    (*m_ofs) << arcPoint[1]    << endl;
-//    (*m_ofs) << 35             << endl;
-//    (*m_ofs) << arcPoint[2]    << endl;
-//    (*m_ofs) << 40             << endl;
-//    (*m_ofs) << lenLeader      << endl;
 ////diametric dims
 //    (*m_ofs) << 100            << endl;
 //    (*m_ofs) << "AcDbRadialDimension"     << endl;
@@ -542,6 +531,57 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << arcPoint[1]    << endl;
     (*m_ofs) << 35             << endl;
     (*m_ofs) << arcPoint[2]    << endl;
+    (*m_ofs) << 40             << endl;   // leader length????
+    (*m_ofs) << 0              << endl;
+}
+
+//***************************
+//WriteDiametricDim
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteDiametricDim(const double* textMidPoint, 
+                         const double* arcPoint1, const double* arcPoint2,
+                         const char* dimText,
+                         const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "DIMENSION"    << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDimension"     << endl;
+    (*m_ofs) << 2              << endl;
+    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << 10             << endl;
+    (*m_ofs) << arcPoint1[0]   << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << arcPoint1[1]   << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << arcPoint1[2]   << endl;
+    (*m_ofs) << 11                << endl;     //text mid point
+    (*m_ofs) << textMidPoint[0]   << endl;
+    (*m_ofs) << 21                << endl; 
+    (*m_ofs) << textMidPoint[1]   << endl;
+    (*m_ofs) << 31                << endl;
+    (*m_ofs) << textMidPoint[2]   << endl;
+    (*m_ofs) << 70             << endl;
+    (*m_ofs) << 3              << endl;    // dimType 3 = Diameter
+    (*m_ofs) << 71             << endl;
+    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle center
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << dimText        << endl;    
+    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+//diametric dims
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDiametricDimension"     << endl;
+    (*m_ofs) << 15             << endl;
+    (*m_ofs) << arcPoint2[0]    << endl;
+    (*m_ofs) << 25             << endl; 
+    (*m_ofs) << arcPoint2[1]    << endl;
+    (*m_ofs) << 35             << endl;
+    (*m_ofs) << arcPoint2[2]    << endl;
     (*m_ofs) << 40             << endl;   // leader length????
     (*m_ofs) << 0              << endl;
 }

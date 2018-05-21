@@ -150,6 +150,10 @@ public:
                          const double* arcPoint,
                          const char* dimText,
                          const char* layer_name);
+    void WriteDiametricDim(const double* textMidPoint, 
+                         const double* arcPoint1, const double* arcPoint2,
+                         const char* dimText,
+                         const char* layer_name);
 };
 
 // derive a class from this and implement it's virtual functions
