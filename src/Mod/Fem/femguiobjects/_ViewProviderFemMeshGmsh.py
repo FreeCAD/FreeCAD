@@ -61,7 +61,13 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def setEdit(self, vobj, mode):
-        self.ViewObject.show()  # show the mesh on edit if it is hided
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show the mesh we like to edit
+        self.ViewObject.show()
+        # show task panel
         taskd = _TaskPanelFemMeshGmsh(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
