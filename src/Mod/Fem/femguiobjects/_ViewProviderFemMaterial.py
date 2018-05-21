@@ -204,6 +204,9 @@ class _TaskPanelFemMaterial:
         ref_shty = ''
         for ref in self.references:
             r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
+            if not r:
+                FreeCAD.Console.PrintError('Problem in retrieving element: {} \n'.format(ref[1]))
+                continue
             # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
             if not ref_shty:
                 ref_shty = r.ShapeType
