@@ -27,11 +27,12 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-import femtools.femutils as FemUtils
+import FreeCADGui
 from . import ViewProviderFemConstraint
-from FreeCAD import Units
 
-import FreeCADGui as Gui
+# for the panel
+import femtools.femutils as FemUtils
+from FreeCAD import Units
 from . import FemSelectionWidgets
 
 
@@ -47,16 +48,12 @@ class ViewProxy(ViewProviderFemConstraint.ViewProxy):
                 o.ViewObject.hide()
         # show task panel
         task = _TaskPanel(vobj.Object)
-        Gui.Control.showDialog(task)
+        FreeCADGui.Control.showDialog(task)
+        return True
 
     def unsetEdit(self, vobj, mode=0):
-        Gui.Control.closeDialog()
-
-    def doubleClicked(self, vobj):
-        if Gui.Control.activeDialog():
-            Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
-        return True
+        FreeCADGui.Control.closeDialog()
+        return
 
 
 class _TaskPanel(object):
@@ -65,7 +62,7 @@ class _TaskPanel(object):
         self._obj = obj
         self._refWidget = FemSelectionWidgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
-        self._paramWidget = Gui.PySideUic.loadUi(
+        self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
@@ -87,6 +84,8 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
+        # self._obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True
 
@@ -95,6 +94,8 @@ class _TaskPanel(object):
             self._obj.References = self._refWidget.references()
         self._applyWidgetChanges()
         self._obj.Document.recompute()
+        # self._obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True
 
