@@ -651,6 +651,16 @@ private:
                             end1 = end1 + parentPos;
                             end2 = end2 + parentPos;
                             writer.exportAngularDim(textLocn, lineLocn, end1, end2, apex, dimText);
+                        }else if (dvd->Type.isValue("Radius")) {
+                            Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
+                            arcPoints pts = dvd->getArcPoints();
+                            Base::Vector3d center = pts.center;
+                            center.y = -center.y;
+                            Base::Vector3d arcPoint = pts.midArc;
+                            arcPoint.y = -arcPoint.y;
+                            center = center + parentPos;
+                            arcPoint = arcPoint + parentPos;
+                            writer.exportRadialDim(center, textLocn, arcPoint, dimText);
                         }
                    }
                 }
