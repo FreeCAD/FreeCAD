@@ -155,6 +155,54 @@ class _ViewProviderFemMeshGmsh:
             FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
         return True
 
+    def canDragObjects(self):
+        return True
+
+    def canDropObjects(self):
+        return True
+
+    def canDragObject(self, dragged_object):
+        if hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            return True
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+            return True
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+            return True
+        else:
+            return False
+
+    def canDropObject(self, incoming_object):
+        return True
+
+    def dragObject(self, selfvp, dragged_object):
+        if hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            objs = self.Object.MeshBoundaryLayerList
+            objs.remove(dragged_object)
+            self.Object.MeshBoundaryLayerList = objs
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+            objs = self.Object.MeshGroupList
+            objs.remove(dragged_object)
+            self.Object.MeshGroupList = objs
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+            objs = self.Object.MeshRegionList
+            objs.remove(dragged_object)
+            self.Object.MeshRegionList = objs
+
+    def dropObject(self, selfvp, incoming_object):
+        if hasattr(incoming_object, "Proxy") and incoming_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            objs = self.Object.MeshBoundaryLayerList
+            objs.append(incoming_object)
+            self.Object.MeshBoundaryLayerList = objs
+        elif hasattr(incoming_object, "Proxy") and incoming_object.Proxy.Type == "Fem::FemMeshGroup":
+            objs = self.Object.MeshGroupList
+            objs.append(incoming_object)
+            self.Object.MeshGroupList = objs
+        elif hasattr(incoming_object, "Proxy") and incoming_object.Proxy.Type == "Fem::FemMeshRegion":
+            objs = self.Object.MeshRegionList
+            objs.append(incoming_object)
+            self.Object.MeshRegionList = objs
+        FreeCAD.ActiveDocument.recompute()
+
 
 class _TaskPanelFemMeshGmsh:
     '''The TaskPanel for editing References property of FemMeshGmsh objects and creation of new FEM mesh'''
