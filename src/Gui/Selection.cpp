@@ -651,18 +651,22 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
         if (!pDoc || !pObjectName) 
             return false;
         std::pair<std::string,std::string> elementName;
-        auto &newElementName = elementName.first;
-        auto &oldElementName = elementName.second;
-        auto pObject = App::GeoFeature::resolveElement(
-                pDoc->getObject(pObjectName),pSubName,elementName);
-        if (!pObject)
+        auto pObject = pDoc->getObject(pObjectName);
+        if(!pObject)
             return false;
 
         const char *subelement = pSubName;
-        if(gateResolve > 1)
-            subelement = newElementName.size()?newElementName.c_str():oldElementName.c_str();
-        else if(gateResolve)
-            subelement = oldElementName.c_str();
+        if(gateResolve) {
+            auto &newElementName = elementName.first;
+            auto &oldElementName = elementName.second;
+            pObject = App::GeoFeature::resolveElement(pObject,pSubName,elementName);
+            if (!pObject)
+                return false;
+            if(gateResolve > 1)
+                subelement = newElementName.size()?newElementName.c_str():oldElementName.c_str();
+            else
+                subelement = oldElementName.c_str();
+        }
         if (!ActiveGate->allow(pObject->getDocument(),pObject,subelement)) {
             QString msg;
             if (ActiveGate->notAllowedReason.length() > 0){
@@ -684,7 +688,8 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             }
             return false;
         }
-
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        mdi->restoreOverrideCursor();
     }
 
     DocName = pDocName;
