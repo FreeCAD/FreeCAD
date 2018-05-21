@@ -50,7 +50,7 @@ class _FemMeshGmsh():
         obj.MeshRegionList = []
 
         obj.addProperty("App::PropertyLinkList", "MeshGroupList", "Base", "Mesh groups of the mesh")
-        obj.MeshRegionList = []
+        obj.MeshGroupList = []
 
         obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
         obj.Part = None
