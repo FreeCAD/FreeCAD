@@ -53,7 +53,7 @@ else:
             for (key, value) in self.group_value_dict.iteritems():
                 # Fenics interface here: create cell function of type int for every group
                 # TODO: examine whether int is appropriate or this class could be generalized
-                self.markers[key] = fenics.CellFunction("int", self.mesh)
+                self.markers[key] = fenics.CellFunction("size_t", self.mesh)
                 xdmffile.read(self.markers[key], key)
                 self.dx[key] = fenics.Measure("dx", domain=self.mesh, subdomain_data=self.markers[key])
             xdmffile.close()
