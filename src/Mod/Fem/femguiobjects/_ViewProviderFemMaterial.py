@@ -689,7 +689,7 @@ class _TaskPanelFemMaterial:
             for ref in self.references:
                 refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
                 if refname_to_compare_listentry == currentItemName:
-                    # print( 'found: shape: ' + ref[0].Name + ' element: ' + ref[1])
+                    # print('found: shape: ' + ref[0].Name + ' element: ' + ref[1])
                     if not ref[0].ViewObject.Visibility:
                         self.obj_notvisible.append(ref[0])
                         ref[0].ViewObject.Visibility = True
