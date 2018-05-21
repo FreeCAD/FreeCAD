@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,7 +23,7 @@
 
 
 __title__ = "_Base ViewProvider"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
@@ -58,10 +59,13 @@ class ViewProxy(object):
         return False
 
     def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
         # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
