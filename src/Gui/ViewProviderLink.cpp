@@ -51,6 +51,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/BoundBoxPy.h>
 #include <App/ComplexGeoData.h>
+#include <App/GeoFeature.h>
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
@@ -65,6 +66,7 @@
 #include "SoFCCSysDragger.h"
 #include "Control.h"
 #include "TaskCSysDragger.h"
+#include "TaskElementColors.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -73,8 +75,9 @@ using namespace Gui;
 ////////////////////////////////////////////////////////////////////////////
 
 #ifdef FC_DEBUG
-#define appendPath(_path,_node)  \
+#define appendPath(__path,_node)  \
 do{\
+    auto _path = __path;\
     if(_path->getLength()) {\
         SoNode * tail = _path->getTail();\
         const SoChildList * children = tail->getChildren();\
@@ -84,7 +87,7 @@ do{\
     _path->append(_node);\
 }while(0)
 #else
-#define appendPath(_path, _node) _path->append(_node)
+#define appendPath(_path, _node) (_path)->append(_node)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1222,7 +1225,9 @@ void LinkView::updateLink() {
         linkedRoot->removeAllChildren();
     }
 
-    CoinPtr<SoFullPath> path;
+    SoTempPath path(10);
+    path.ref();
+    appendPath(&path,linkedRoot);
     auto obj = linkInfo->pcLinked->getObject();
     for(auto &v : subInfo) {
         auto &sub = *v.second;
@@ -1238,24 +1243,21 @@ void LinkView::updateLink() {
         setTransform(sub.pcTransform,mat);
 
         if(sub.subElements.size()) {
-            if(!path) {
-                path = static_cast<SoFullPath*>(new SoPath(10));
-                appendPath(path,linkedRoot);
-            }
-            path->truncate(1);
-            appendPath(path,sub.pcNode);
+            path.truncate(1);
+            appendPath(&path,sub.pcNode);
             SoSelectionElementAction action(SoSelectionElementAction::Append,true);
             for(const auto &subelement : sub.subElements) {
-                path->truncate(2);
+                path.truncate(2);
                 SoDetail *det = 0;
-                if(!sub.linkInfo->getDetail(false,SnapshotTransform,subelement.c_str(),det,path))
+                if(!sub.linkInfo->getDetail(false,SnapshotTransform,subelement.c_str(),det,&path))
                     continue;
                 action.setElement(det);
-                action.apply(path);
+                action.apply(&path);
                 delete det;
             }
         }
     }
+    path.unrefNoDelete();
     replaceLinkedRoot(linkedRoot);
 }
 
@@ -1463,6 +1465,7 @@ ViewProviderLink::ViewProviderLink()
     MaterialList.setStatus(App::Property::NoMaterialListEdit, true);
 
     ADD_PROPERTY(OverrideMaterialList,());
+    ADD_PROPERTY(OverrideColorList,());
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
@@ -1523,9 +1526,11 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
         return;
     }
     if (prop == &OverrideMaterial || prop == &ShapeMaterial ||
-        prop == &MaterialList || prop == &OverrideMaterialList) 
+        prop == &MaterialList || prop == &OverrideMaterialList)
     {
         applyMaterial();
+    }else if(prop == &OverrideColorList) {
+        applyColors();
     }else if(prop==&DrawStyle || prop==&PointSize || prop==&LineWidth) {
         if(!DrawStyle.getValue())
             linkView->setDrawStyle(0);
@@ -1586,6 +1591,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     if(prop == &ext->_LinkRecomputed) {
         if(linkView->hasSubs())
             linkView->updateLink();
+        applyColors();
+    }else if(prop==ext->getColoredElementsProperty()) {
+        if(!prop->testStatus(App::Property::User3))
+            applyColors();
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
         const auto &v = ext->getScaleVector();
         pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
@@ -1627,10 +1636,12 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
 
             auto obj = ext->getLinkedObjectValue();
             linkView->setLink(obj,subs);
+            applyColors();
             signalChangeIcon();
         }
     }else if(prop == ext->getLinkTransformProperty()) {
         setLinkType(ext);
+        applyColors();
     }else if(prop==ext->getElementCountProperty()) {
         if(!ext->getShowElementValue()) {
             linkView->setSize(ext->getElementCountValue());
@@ -1675,6 +1686,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 linkView->setSize(ext->getElementCountValue());
                 updateDataPrivate(ext,ext->getVisibilityListProperty());
                 applyMaterial();
+                applyColors();
             }
         }
     }else if(prop==ext->getScaleListProperty() || prop==ext->getPlacementListProperty()) {
@@ -1743,6 +1755,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 MaterialList.setSize(0);
             }
             linkView->setChildren(elements, ext->getVisibilityListValue());
+            applyColors();
         }
         checkIcon(ext);
     }
@@ -1801,6 +1814,7 @@ void ViewProviderLink::finishRestoring() {
         updateDataPrivate(ext,ext->getScaleListProperty());
     updateDataPrivate(ext,ext->getElementListProperty());
     applyMaterial();
+    applyColors();
 
     // TODO: notify the tree. This is ugly, any other way?
     getDocument()->signalChangedObject(*this,ext->_LinkRecomputed);
@@ -2060,8 +2074,23 @@ bool ViewProviderLink::doubleClicked() {
 
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    if(linkEdit()) 
+    auto ext = getLinkExtension();
+    if(linkEdit(ext)) 
         linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
+    if(ext && ext->getColoredElementsProperty()) {
+        bool found = false;
+        for(auto action : menu->actions()) {
+            if(action->data().toInt() == ViewProvider::Color) {
+                action->setText(QObject::tr("Override colors..."));
+                found = true;
+                break;
+            }
+        }
+        if(!found) {
+            QAction* act = menu->addAction(QObject::tr("Override colors..."), receiver, member);
+            act->setData(QVariant((int)ViewProvider::Color));
+        }
+    }
 }
 
 bool ViewProviderLink::initDraggingPlacement() {
@@ -2132,6 +2161,15 @@ bool ViewProviderLink::initDraggingPlacement() {
 }
 
 ViewProvider *ViewProviderLink::startEditing(int mode) {
+    if(mode==ViewProvider::Color) {
+        auto ext = getLinkExtension();
+        if(!ext || !ext->getColoredElementsProperty()) {
+            if(linkEdit(ext))
+                return linkView->getLinkedView()->startEditing(mode);
+        }
+        return inherited::startEditing(mode);
+    }
+
     if(mode==ViewProvider::Transform) {
         if(!initDraggingPlacement())
             return 0;
@@ -2176,9 +2214,29 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     return vpd->startEditing(mode);
 }
 
+bool ViewProviderLink::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Color) {
+        auto ext = getLinkExtension();
+        if(!ext || !ext->getColoredElementsProperty())
+            return false;
+        TaskView::TaskDialog *dlg = Control().activeDialog();
+        if (dlg) {
+            Control().showDialog(dlg);
+            return false;
+        }
+        Selection().clearSelection();
+        return true;
+    }
+    return inherited::setEdit(ModNum);
+}
+
 void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    Q_UNUSED(ModNum);
+    if (ModNum == ViewProvider::Color) {
+        Gui::Control().showDialog(new TaskElementColors(this));
+        return;
+    }
 
     if (pcDragger && viewer)
     {
@@ -2371,6 +2429,194 @@ PyObject *ViewProviderLink::getPyLinkView() {
     return linkView->getPyObject();
 }
 
+std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char *subname) const {
+    bool isPrefix = true;
+    if(!subname)
+        subname = "";
+    else {
+        auto len = strlen(subname);
+        isPrefix = !len || subname[len-1]=='.';
+    }
+    std::map<std::string, App::Color> colors;
+    auto ext = getLinkExtension();
+    if(!ext || ! ext->getColoredElementsProperty())
+        return colors;
+    const auto &subs = ext->getColoredElementsProperty()->getShadowSubs();
+    int size = OverrideColorList.getSize();
+
+    std::string wildcard(subname);
+    if(wildcard == "Face*" || wildcard == "Edge*")
+        wildcard.resize(4);
+    else if(wildcard == "Vertex*")
+        wildcard.resize(5);
+    else if(wildcard == ViewProvider::hiddenMarker()+"*")
+        wildcard.resize(ViewProvider::hiddenMarker().size());
+    else
+        wildcard.clear();
+
+    int i=-1;
+    if(wildcard.size()) {
+        for(auto &sub : subs) {
+            if(++i >= size)
+                break;
+            auto pos = sub.second.rfind('.');
+            if(pos == std::string::npos)
+                pos = 0;
+            else
+                ++pos;
+            const char *element = sub.second.c_str()+pos;
+            if(boost::starts_with(element,wildcard))
+                colors[sub.second] = OverrideColorList[i];
+            else if(!element[0] && wildcard=="Face")
+                colors[sub.second.substr(0,element-sub.second.c_str())+subname] = OverrideColorList[i];
+        }
+
+        // In case of multi-level linking, we recursively call into each level,
+        // and merge the colors
+        auto vp = this;
+        while(1) {
+            if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
+                auto color = ShapeMaterial.getValue().diffuseColor;
+                color.a = ShapeMaterial.getValue().transparency;
+                colors.emplace(subname,color);
+            }
+            auto link = getObject()->getLinkedObject(false);
+            if(!link || link==getObject())
+                break;
+            auto next = dynamic_cast<ViewProviderLink*>(Application::Instance->getViewProvider(link));
+            if(!next)
+                break;
+            for(auto &v : next->getElementColors(subname))
+                colors.insert(v);
+            vp = next;
+        }
+        if(wildcard!=ViewProvider::hiddenMarker()) {
+            // Get collapsed array color override.
+            auto ext = vp->getLinkExtension();
+            if(ext->getElementCountValue() && !ext->getShowElementValue()) {
+                const auto &overrides = vp->OverrideMaterialList.getValues();
+                int i=-1;
+                for(auto &mat : vp->MaterialList.getValues()) {
+                    if(++i>=(int)overrides.size())
+                        break;
+                    if(!overrides[i])
+                        continue;
+                    auto color = mat.diffuseColor;
+                    color.a = mat.transparency;
+                    colors.emplace(std::to_string(i)+"."+subname,color);
+                }
+            }
+        }
+        return colors;
+    }
+
+    for(auto &sub : subs) {
+        if(++i >= size)
+            break;
+        if((isPrefix && (boost::starts_with(sub.first,subname) || boost::starts_with(sub.second,subname))) ||
+           (!isPrefix && (sub.first==subname || sub.second==subname)))
+            colors[sub.second] = OverrideColorList[i];
+    }
+    if(!subname[0])
+        return colors;
+
+    bool found = true;
+    if(colors.empty()) {
+        found = false;
+        colors.emplace(subname,App::Color());
+    }
+    std::map<std::string, App::Color> ret;
+    for(auto &v : colors) {
+        const char *pos = 0;
+        auto sobj = getObject()->resolve(v.first.c_str(),0,0,&pos);
+        if(!sobj || !pos)
+            continue;
+        auto link = sobj->getLinkedObject(true);
+        if(!link || link==getObject())
+            continue;
+        auto vp = Application::Instance->getViewProvider(sobj->getLinkedObject(true));
+        if(!vp)
+            continue;
+        for(auto &v2 : vp->getElementColors(!pos[0]?"Face":pos)) {
+            std::string name;
+            if(pos[0])
+                name = v.first.substr(0,pos-v.first.c_str())+v2.first;
+            else
+                name = v.first;
+            ret[name] = found?v.second:v2.second;
+        }
+    }
+    return ret;
+}
+
+void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> &colorMap) {
+    auto ext = getLinkExtension();
+    if(!ext || ! ext->getColoredElementsProperty())
+        return;
+
+    std::vector<std::string> subs;
+    std::vector<App::Color> colors;
+    for(auto &v : colorMap) {
+        subs.push_back(v.first);
+        colors.push_back(v.second);
+    }
+    auto prop = ext->getColoredElementsProperty();
+    if(subs!=prop->getSubValues() || colors!=OverrideColorList.getValues()) {
+        prop->setStatus(App::Property::User3,true);
+        prop->setValue(getObject(),subs);
+        prop->setStatus(App::Property::User3,false);
+        OverrideColorList.setValues(colors);
+    }
+}
+
+void ViewProviderLink::applyColors() {
+    auto ext = getLinkExtension();
+    if(!ext || ! ext->getColoredElementsProperty())
+        return;
+
+    SoSelectionElementAction action(SoSelectionElementAction::Color,true);
+    // reset color and visibility first
+    action.apply(linkView->getLinkRoot());
+
+    std::map<std::string, std::map<std::string,App::Color> > colorMap;
+    std::set<std::string> hideList;
+    for(auto &v : getElementColors()) {
+        const char *subname = v.first.c_str();
+        const char *element = 0;
+        auto sobj = getObject()->resolve(subname,0,0,&element);
+        if(!sobj || !element)
+            continue;
+        if(ViewProvider::hiddenMarker() == element)
+            hideList.emplace(subname,element-subname);
+        else
+            colorMap[std::string(subname,element-subname)][element] = v.second;
+    }
+
+    SoTempPath path(10);
+    path.ref();
+    for(auto &v : colorMap) {
+        action.swapColors(v.second);
+        if(v.first.empty()) {
+            action.apply(linkView->getLinkRoot());
+            continue;
+        }
+        SoDetail *det=0;
+        path.truncate(0);
+        if(getDetailPath(v.first.c_str(), &path, false, det))
+            action.apply(&path);
+        delete det;
+    }
+
+    action.setType(SoSelectionElementAction::Hide);
+    for(auto &sub : hideList) {
+        SoDetail *det=0;
+        path.truncate(0);
+        if(sub.size() && getDetailPath(sub.c_str(), &path, false, det))
+            action.apply(&path);
+        delete det;
+    }
+    path.unrefNoDelete();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 

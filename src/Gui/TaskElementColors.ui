@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PartGui::TaskElementColors</class>
- <widget class="QWidget" name="PartGui::TaskElementColors">
+ <class>Gui::TaskElementColors</class>
+ <widget class="QWidget" name="Gui::TaskElementColors">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,13 +17,6 @@
    <item row="1" column="0" rowspan="2">
     <layout class="QGridLayout" name="gridLayout_6">
      <item row="0" column="2">
-      <widget class="QPushButton" name="removeAll">
-       <property name="text">
-        <string>Remove all</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
       <widget class="QPushButton" name="removeSelection">
        <property name="text">
         <string>Remove</string>
@@ -33,7 +26,21 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="addSelection">
        <property name="text">
-        <string>Add</string>
+        <string>Edit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="removeAll">
+       <property name="text">
+        <string>Remove all</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="hideSelection">
+       <property name="text">
+        <string>Hide</string>
        </property>
       </widget>
      </item>

@@ -131,6 +131,22 @@
                 </UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="getElementColors">
+			<Documentation>
+                <UserDocu>
+getElementColors(elementName=None) -> dict(elementName:color) 
+                </UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="setElementColors">
+			<Documentation>
+                <UserDocu>
+setElementColors(colors): set element colors
+
+colors: color dictonary of type elementName:(r,g,b,a)
+                </UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="getElementPicked" Const="true">
 			<Documentation>
                 <UserDocu>getElementPicked(pickPoint): return the picked subelement</UserDocu>

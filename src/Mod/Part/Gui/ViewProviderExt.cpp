@@ -116,13 +116,13 @@
 #include <Gui/Utilities.h>
 #include <Gui/Control.h>
 #include <Gui/ViewProviderLink.h>
+#include <Gui/TaskElementColors.h>
 
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
-#include "TaskElementColors.h"
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
@@ -753,22 +753,91 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     }
 }
 
-std::map<std::string,App::Color> ViewProviderPartExt::getElementColors() const {
+std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const char *element) const {
     std::map<std::string,App::Color> ret;
-    auto obj = dynamic_cast<Part::Feature*>(getObject());
-    if(!obj)
+    if(!element || !element[0]) {
+        auto obj = dynamic_cast<Part::Feature*>(getObject());
+        if(!obj)
+            return ret;
+        const auto &subs = obj->ColoredElements.getSubValues();
+        const auto &colors = MappedColors.getValues();
+        if(subs.size()!=colors.size())
+            return ret;
+        for(size_t i=0;i<subs.size();++i)
+            ret.emplace(subs[i],colors[i]);
         return ret;
-    const auto &subs = obj->ColoredElements.getSubValues();
-    const auto &colors = MappedColors.getValues();
-    if(subs.size()!=colors.size())
-        return ret;
-    for(size_t i=0;i<subs.size();++i)
-        ret.emplace(subs[i],colors[i]);
+    }
+
+    if(Part::TopoShape::isMappedElement(element)) {
+        auto mapped = element;
+        element = Part::Feature::getTopoShape(getObject()).getElementName(mapped);
+        if(element == mapped) {
+            for(auto &names : Part::Feature::getRelatedElements(getObject(),element)) {
+                for(auto &v : getElementColors(names.second.c_str()))
+                    ret.insert(v);
+            }
+            return ret;
+        }
+    }
+
+    if(boost::starts_with(element,"Face")) {
+        auto size = DiffuseColor.getSize();
+        if(element[4]=='*' && size>1 && size==faceset->partIndex.getNum()) {
+            auto color = ShapeColor.getValue();
+            color.a = Transparency.getValue()/100.0f;
+            for(int i=0;i<size;++i) {
+                if(DiffuseColor[i]!=color)
+                    ret[std::string(element,4)+std::to_string(i+1)] = DiffuseColor[i];
+            }
+            ret["Face*"] = color;
+        }else{
+            int idx = atoi(element+4);
+            if(idx>0 && idx<=size)
+                ret[element] = DiffuseColor[idx-1];
+            else
+                ret[element] = ShapeColor.getValue();
+            if(size==1)
+                ret[element].a = Transparency.getValue()/100.0f;
+        }
+    } else if (boost::starts_with(element,"Edge")) {
+        auto size = LineColorArray.getSize();
+        if(element[4]=='*' && size>1 && size==lineset->coordIndex.getNum()) {
+            auto color = LineColor.getValue();
+            color.a = Transparency.getValue()/100.0f;
+            for(int i=0;i<size;++i) {
+                if(LineColorArray[i]!=color)
+                    ret[std::string(element,4)+std::to_string(i+1)] = LineColorArray[i];
+            }
+            ret["Edge*"] = color;
+        }else{
+            int idx = atoi(element+4);
+            if(idx>0 && idx<=size)
+                ret[element] = LineColorArray[idx-1];
+            else
+                ret[element] = LineColor.getValue();
+        }
+    } else if (boost::starts_with(element,"Vertex")) {
+        auto size = PointColorArray.getSize();
+        if(element[5]=='*' && size>1 && size==coords->point.getNum()-nodeset->startIndex.getValue()) {
+            auto color = PointColor.getValue();
+            color.a = Transparency.getValue()/100.0f;
+            for(int i=0;i<size;++i) {
+                if(PointColorArray[i]!=color)
+                    ret[std::string(element,5)+std::to_string(i+1)] = PointColorArray[i];
+            }
+            ret["Vertex*"] = color;
+        }else{
+            int idx = atoi(element+5);
+            if(idx>0 && idx<=size)
+                ret[element] = PointColorArray[idx-1];
+            else
+                ret[element] = PointColor.getValue();
+        }
+    }
     return ret;
 }
 
-void ViewProviderPartExt::setElementColors(
-        const std::map<std::string,App::Color> &info) 
+void ViewProviderPartExt::setElementColors(const std::map<std::string,App::Color> &info) 
 {
     auto obj = dynamic_cast<Part::Feature*>(getObject());
     if(!obj)
@@ -1240,7 +1309,7 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
 
 void ViewProviderPartExt::setEditViewer(Gui::View3DInventorViewer *viewer, int ModNum) {
     if (ModNum == ViewProvider::Color)
-        Gui::Control().showDialog(new TaskElementColors(this));
+        Gui::Control().showDialog(new Gui::TaskElementColors(this,true));
     else
         Gui::ViewProviderGeometryObject::setEditViewer(viewer,ModNum);
 }

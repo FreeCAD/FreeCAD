@@ -787,6 +787,14 @@ bool ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool
     return true;
 }
 
+const std::string &ViewProvider::hiddenMarker() {
+    return App::DocumentObject::hiddenMarker();
+}
+
+const char *ViewProvider::hasHiddenMarker(const char *subname) {
+    return App::DocumentObject::hasHiddenMarker(subname);
+}
+
 int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
     if(elements.empty()) {
         auto node = pcModeSwitch->getChild(_iActualMode);
@@ -799,17 +807,24 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     int count = 0;
     SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
     path->ref();
-    SoSelectionElementAction action(clear?SoSelectionElementAction::Remove:
-        SoSelectionElementAction::Append,true);
-    for(const auto &element : elements) {
+    SoSelectionElementAction action;
+    action.setSecondary(true);
+    for(auto element : elements) {
+        bool hidden = hasHiddenMarker(element.c_str());
+        if(hidden) 
+            element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
         SoDetail *det = 0;
         if(getDetailPath(element.c_str(),path,false,det)) {
-            if(!det) {
+            if(!hidden && !det) {
                 FC_LOG("partial render element not found: " << element);
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
+            if(!hidden) 
+                action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
+            else
+                action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);
             action.setElement(det);
             action.apply(path);
             ++count;

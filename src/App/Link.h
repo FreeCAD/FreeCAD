@@ -120,6 +120,10 @@ public:
 #define LINK_PARAM_MODE(...) \
     (LinkMode, long, App::PropertyEnumeration, ((long)0), "Link group mode", ##__VA_ARGS__)
 
+#define LINK_PARAM_COLORED_ELEMENTS(...) \
+    (ColoredElements, App::DocumentObject*, App::PropertyLinkSubHidden, \
+     0, "Link colored elements", ##__VA_ARGS__)
+
 #define LINK_PARAM(_param) (LINK_PARAM_##_param())
 
 #define LINK_PNAME(_param) BOOST_PP_TUPLE_ELEM(0,_param)
@@ -145,7 +149,8 @@ public:
     LINK_PARAM(COUNT)\
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
-    LINK_PARAM(MODE)
+    LINK_PARAM(MODE)\
+    LINK_PARAM(COLORED_ELEMENTS)
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -404,7 +409,8 @@ public:
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(SUB_ELEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
-    LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)
+    LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
+    LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -466,7 +472,8 @@ public:
     LINK_PARAM_EXT(ELEMENTS)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(VISIBILITIES)\
-    LINK_PARAM_EXT(MODE)
+    LINK_PARAM_EXT(MODE)\
+    LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_GROUP)

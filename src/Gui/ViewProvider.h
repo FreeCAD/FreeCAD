@@ -32,6 +32,7 @@
 #include <boost/signals.hpp>
 
 #include <App/TransactionalObject.h>
+#include <App/Material.h>
 #include <Base/Vector3D.h>
 
 class SbVec2s;
@@ -306,6 +307,19 @@ public:
     const std::string getOverrideMode();
     //@}
 
+    /** @name Color mangement methods 
+     */
+    //@{
+    virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
+        (void)element;
+        return {};
+    }
+    virtual void setElementColors(const std::map<std::string, App::Color> &colors) {
+        (void)colors;
+    }
+    static const std::string &hiddenMarker();
+    static const char *hasHiddenMarker(const char *subname);
+    //@}
 
     /** @name Edit methods
      * if the Viewprovider goes in edit mode

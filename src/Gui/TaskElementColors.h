@@ -20,28 +20,24 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PARTGUI_TASKELEMENTCOLORS_H
-#define PARTGUI_TASKELEMENTCOLORS_H
+#ifndef GUI_TASKELEMENTCOLORS_H
+#define GUI_TASKELEMENTCOLORS_H
 
 #include <QListWidgetItem>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include "TaskView/TaskView.h"
+#include "TaskView/TaskDialog.h"
 
 namespace Gui {
-    class Document;
-    class ViewProvider;
-}
+class Document;
+class ViewProvider;
+class ViewProviderDocumentObject;
 
-namespace PartGui { 
-
-class ViewProviderPartExt;
-
-class ElementColors : public QWidget, public Gui::SelectionObserver
+class ElementColors : public QWidget, public SelectionObserver
 {
     Q_OBJECT
 
 public:
-    ElementColors(ViewProviderPartExt* vp, QWidget* parent = 0);
+    ElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
     ~ElementColors();
 
     bool accept();
@@ -55,24 +51,25 @@ private Q_SLOTS:
     void on_elementList_itemSelectionChanged();
     void on_elementList_itemEntered(QListWidgetItem *item);
     void on_recompute_clicked(bool checked);
+    void on_hideSelection_clicked();
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const SelectionChanges& msg);
     void changeEvent(QEvent *e);
     void leaveEvent(QEvent *);
-    void slotDeleteDocument(const Gui::Document&);
-    void slotDeleteObject(const Gui::ViewProvider&);
+    void slotDeleteDocument(const Document&);
+    void slotDeleteObject(const ViewProvider&);
 private:
     class Private;
-    std::unique_ptr<Private> d;
+    Private *d;
 };
 
-class TaskElementColors : public Gui::TaskView::TaskDialog
+class TaskElementColors : public TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskElementColors(ViewProviderPartExt* vp);
+    TaskElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
     ~TaskElementColors();
 
 public:
@@ -86,9 +83,9 @@ public:
 
 private:
     ElementColors* widget;
-    Gui::TaskView::TaskBox* taskbox;
+    TaskView::TaskBox* taskbox;
 };
 
-} //namespace PartGui
+} //namespace Gui
 
-#endif // PARTGUI_TASKELEMENTCOLORS_H
+#endif // GUI_TASKELEMENTCOLORS_H

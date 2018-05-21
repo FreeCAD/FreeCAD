@@ -172,6 +172,7 @@
         <file>LinkSelectFinal.svg</file>
         <file>LinkSelectAll.svg</file>
         <file>Unlink.svg</file>
+        <file>Invisible.svg</file>
     </qresource>
     <!-- Alternative directory names for icons that should be loaded from a theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

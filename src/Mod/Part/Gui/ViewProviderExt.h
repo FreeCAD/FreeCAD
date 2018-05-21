@@ -135,8 +135,13 @@ public:
     void unsetHighlightedEdges();
     void setHighlightedPoints(const std::vector<App::Color>& colors);
     void unsetHighlightedPoints();
-    void setElementColors(const std::map<std::string,App::Color> &colors);
-    std::map<std::string,App::Color> getElementColors() const;
+    //@}
+
+    /** @name Color mangement methods 
+     */
+    //@{
+    virtual void setElementColors(const std::map<std::string,App::Color> &colors) override;
+    virtual std::map<std::string,App::Color> getElementColors(const char *element=0) const override;
     //@}
 
     virtual bool isUpdateForced() const override {

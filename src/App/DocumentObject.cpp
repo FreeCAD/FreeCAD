@@ -958,3 +958,19 @@ std::string DocumentObject::getElementMapVersion(const App::Property *_prop) con
     ss << prop->getComplexData()->getElementMapVersion();
     return ss.str();
 }
+
+const std::string &DocumentObject::hiddenMarker() {
+    static std::string marker("!hide");
+    return marker;
+}
+
+const char *DocumentObject::hasHiddenMarker(const char *subname) {
+    if(!subname) return 0;
+    const char *marker = strrchr(subname,'.');
+    if(!marker)
+        marker = subname;
+    else
+        ++marker;
+    return hiddenMarker()==marker?marker:0;
+}
+

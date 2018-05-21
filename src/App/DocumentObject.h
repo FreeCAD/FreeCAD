@@ -419,6 +419,15 @@ public:
 
     virtual void onUpdateElementReference(const Property *) {}
 
+    /** Sepecial marker to mark the object has hidden
+     *
+     * It is used by Gui::ViewProvider::getElementColors(), but exposed here
+     * for convenience
+     */
+    static const std::string &hiddenMarker();
+    /// Check if the subname reference ends with hidden marker.
+    static const char *hasHiddenMarker(const char *subname);
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);

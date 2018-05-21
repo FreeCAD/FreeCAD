@@ -206,6 +206,7 @@ public:
     App::PropertyMaterialList MaterialList;
     App::PropertyBoolList OverrideMaterialList;
     App::PropertyBool Selectable;
+    App::PropertyColorList OverrideColorList;
 
     ViewProviderLink();
     virtual ~ViewProviderLink();
@@ -259,9 +260,13 @@ public:
     void enableCenterballDragger(bool enable);
     bool isUsingCenterballDragger() const { return useCenterballDragger; }
 
+    std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
+    void setElementColors(const std::map<std::string, App::Color> &colors) override;
+
 protected:
-    void setEditViewer(View3DInventorViewer*, int ModNum);
-    void unsetEditViewer(View3DInventorViewer*);
+    bool setEdit(int ModNum) override;
+    void setEditViewer(View3DInventorViewer*, int ModNum) override;
+    void unsetEditViewer(View3DInventorViewer*) override;
     bool linkEdit(const App::LinkBaseExtension *ext=0) const;
 
     enum LinkType {
@@ -284,6 +289,7 @@ protected:
     std::vector<App::DocumentObject*> claimChildrenPrivate() const;
 
     void applyMaterial();
+    void applyColors();
 
     void checkIcon(const App::LinkBaseExtension *ext=0);
 

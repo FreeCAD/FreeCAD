@@ -429,6 +429,45 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* ViewProviderPy::getElementColors(PyObject* args)
+{
+    const char *element = 0;
+    if (!PyArg_ParseTuple(args, "|s", &element)) 
+        return 0;
+
+    Py::Dict dict;
+    for(auto &v : getViewProviderPtr()->getElementColors(element)) {
+        auto &c = v.second;
+        dict.setItem(Py::String(v.first),
+                Py::TupleN(Py::Float(c.r),Py::Float(c.g),Py::Float(c.b),Py::Float(c.a)));
+    }
+    return Py::new_reference_to(dict);
+}
+
+PyObject* ViewProviderPy::setElementColors(PyObject* args)
+{
+    PyObject *pyObj;
+    if (!PyArg_ParseTuple(args, "O", &pyObj)) 
+        return 0;
+
+    if(!PyDict_Check(pyObj))
+        throw Py::TypeError("Expect a dict");
+
+    std::map<std::string,App::Color> colors;
+    Py::Dict dict(pyObj);
+    for(auto it=dict.begin();it!=dict.end();++it) {
+        const auto &value = *it;
+        if(!value.first.isString() || !value.second.isSequence())
+            throw Py::TypeError("Expect the dictonary contain items of type elementName:(r,g,b,a)");
+
+        App::PropertyColor prop;
+        prop.setPyObject(value.second.ptr());
+        colors[value.first.as_string()] = prop.getValue();
+    }
+    getViewProviderPtr()->setElementColors(colors);
+    Py_Return;
+}
+
 PyObject* ViewProviderPy::getElementPicked(PyObject* args)
 {
     PyObject *obj;
