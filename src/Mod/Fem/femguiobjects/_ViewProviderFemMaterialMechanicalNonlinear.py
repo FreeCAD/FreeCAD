@@ -27,6 +27,8 @@ __url__ = "http://www.freecadweb.org"
 ## @package ViewProviderFemMaterialMechanicalNonLinear
 #  \ingroup FEM
 
+import FreeCAD
+import FreeCADGui
 from pivy import coin
 
 
@@ -55,6 +57,19 @@ class _ViewProviderFemMaterialMechanicalNonlinear:
 
     def onChanged(self, vobj, prop):
         return
+
+    def setEdit(self, vobj, mode=0):
+        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        return False
+
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
 
     def __getstate__(self):
         return None
