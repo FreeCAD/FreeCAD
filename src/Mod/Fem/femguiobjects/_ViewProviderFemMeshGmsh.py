@@ -135,7 +135,10 @@ class _ViewProviderFemMeshGmsh:
                 print('No analysis in the active document.')
                 gui_doc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def __getstate__(self):

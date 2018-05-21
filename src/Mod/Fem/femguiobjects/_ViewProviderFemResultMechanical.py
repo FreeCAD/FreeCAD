@@ -65,11 +65,15 @@ class _ViewProviderFemResultMechanical:
     def doubleClicked(self, vobj):
         if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
             FreeCADGui.activateWorkbench("FemWorkbench")
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def setEdit(self, vobj, mode=0):
