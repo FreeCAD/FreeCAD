@@ -271,7 +271,7 @@ class _CommandWall:
                 self.Activated()
 
     def addDefault(self,l):
-        FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","'+translate('Arch','WallTrace')+'")')
+        FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
         FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
         FreeCADGui.doCommand('base.addGeometry(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
