@@ -46,17 +46,17 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="min_thickness">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
           <property name="text">
            <string>1.0</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="min_thickness" stdset="0">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="singleStep" stdset="0">
            <double>1.000000000000000</double>
@@ -109,53 +109,6 @@
           </property>
           <property name="value">
            <double>1.300000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_1">
-     <property name="title">
-      <string>References</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QPushButton" name="pushButton_Reference">
-        <property name="text">
-         <string>Add reference</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="list_References"/>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="2">
-         <widget class="QRadioButton" name="rb_solid">
-          <property name="text">
-           <string>Solid</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QRadioButton" name="rb_standard">
-          <property name="text">
-           <string>Face, Edge</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="l_label_text_5">
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
