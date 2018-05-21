@@ -77,13 +77,17 @@ class _ViewProviderFemMaterial:
         FreeCADGui.Control.closeDialog()
         return
 
-    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
+    # overwrite the doubleClicked of material object python to make sure no other Material taskd (and thus no selection observer) is still active
     def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def __getstate__(self):
