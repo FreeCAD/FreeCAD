@@ -175,15 +175,18 @@ class _TaskPanelFemMeshGroup:
 
     def references_list_right_clicked(self, QPos):
         self.form.contextMenu = QtGui.QMenu()
-        menu_item = self.form.contextMenu.addAction("Remove Reference")
+        menu_item_remove_selected = self.form.contextMenu.addAction("Remove selected reference")
+        menu_item_remove_all = self.form.contextMenu.addAction("Remove all references")
         if not self.references:
-            menu_item.setDisabled(True)
-        self.form.connect(menu_item, QtCore.SIGNAL("triggered()"), self.remove_reference)
+            menu_item_remove_selected.setDisabled(True)
+            menu_item_remove_all.setDisabled(True)
+        self.form.connect(menu_item_remove_selected, QtCore.SIGNAL("triggered()"), self.remove_selected_reference)
+        self.form.connect(menu_item_remove_all, QtCore.SIGNAL("triggered()"), self.remove_all_references)
         parentPosition = self.form.list_References.mapToGlobal(QtCore.QPoint(0, 0))
         self.form.contextMenu.move(parentPosition + QPos)
         self.form.contextMenu.show()
 
-    def remove_reference(self):
+    def remove_selected_reference(self):
         if not self.references:
             return
         currentItemName = str(self.form.list_References.currentItem().text())
@@ -191,6 +194,10 @@ class _TaskPanelFemMeshGroup:
             refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
             if refname_to_compare_listentry == currentItemName:
                 self.references.remove(ref)
+        self.rebuild_list_References()
+
+    def remove_all_references(self):
+        self.references = []
         self.rebuild_list_References()
 
     def add_references(self):
