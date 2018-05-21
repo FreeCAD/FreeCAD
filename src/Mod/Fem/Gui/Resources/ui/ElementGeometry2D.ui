@@ -84,32 +84,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_1">
-     <property name="title">
-      <string>References</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="l_label_text_1">
-        <property name="text">
-         <string>Leave blank to choose all remaining shapes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_Reference">
-        <property name="text">
-         <string>Add reference</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="list_References"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
