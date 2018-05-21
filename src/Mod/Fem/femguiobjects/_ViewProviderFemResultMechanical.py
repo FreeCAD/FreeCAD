@@ -63,8 +63,6 @@ class _ViewProviderFemResultMechanical:
         return
 
     def doubleClicked(self, vobj):
-        if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-            FreeCADGui.activateWorkbench("FemWorkbench")
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
         # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
