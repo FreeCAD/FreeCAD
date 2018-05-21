@@ -1163,6 +1163,9 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
     same for z direction with zvector and znum. In case of polar array, center is a vector, 
     totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
     including the original. The result is a parametric Draft Array.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Array(obj)
     obj.Base = baseobject
