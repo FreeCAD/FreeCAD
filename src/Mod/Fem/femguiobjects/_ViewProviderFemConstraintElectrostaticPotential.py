@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer Solver Object"
+__title__ = "view provider for constraint electrostatic potential object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
