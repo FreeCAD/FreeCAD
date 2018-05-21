@@ -374,7 +374,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     bool single=true;
     if (PyUnicode_Check(obj)) {
 #if PY_MAJOR_VERSION >= 3
-        string = PyUnicode_AsUTF8(obj);
+        subs.push_back(PyUnicode_AsUTF8(obj));
 #else
         PyObject* unicode = PyUnicode_AsUTF8String(obj);
         subs.push_back(PyString_AsString(unicode));
@@ -390,7 +390,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             PyObject* item = (*it).ptr();
             if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                string = PyUnicode_AsUTF8(item);
+               subs.push_back(PyUnicode_AsUTF8(item));
 #else
                 PyObject* unicode = PyUnicode_AsUTF8String(item);
                 subs.push_back(PyString_AsString(unicode));
