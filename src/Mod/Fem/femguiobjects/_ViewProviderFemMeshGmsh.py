@@ -31,7 +31,6 @@ import FreeCAD
 import FreeCADGui
 import FemGui
 
-
 # for the panel
 from femobjects import _FemMeshGmsh
 from PySide import QtCore

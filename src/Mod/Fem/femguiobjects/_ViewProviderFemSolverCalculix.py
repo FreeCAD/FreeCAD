@@ -31,7 +31,6 @@ import FreeCAD
 import FreeCADGui
 import FemGui
 
-
 # for the panel
 from femtools import ccxtools
 from PySide import QtCore
