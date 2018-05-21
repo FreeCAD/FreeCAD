@@ -220,13 +220,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
      *mesh << "FEM_MeshNetgenFromShape";
 #endif
      *mesh << "FEM_MeshGmshFromShape"
-          << "Separator"
-          << "FEM_MeshBoundaryLayer"
-          << "FEM_MeshRegion"
-          << "FEM_MeshGroup"
-          << "Separator"
-          << "FEM_CreateNodesSet"
-          << "FEM_FEMMesh2Mesh";
+           << "Separator"
+           << "FEM_MeshBoundaryLayer"
+           << "FEM_MeshRegion"
+           << "FEM_MeshGroup"
+           << "Separator"
+           << "FEM_CreateNodesSet"
+           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);
