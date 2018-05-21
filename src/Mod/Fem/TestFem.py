@@ -42,25 +42,30 @@ https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
 
 examples from within FreeCAD:
 
+# module
 import Test, TestFem
 Test.runTestsFromModule(TestFem)
 
 import Test, femtest.testcommon
 Test.runTestsFromModule(femtest.testcommon)
 
+# class
 import Test, TestFem
 Test.runTestsFromClass(TestFem.FemTest)
 
 import Test, femtest.testcommon
 Test.runTestsFromClass(femtest.testcommon.FemTest)
 
-
+# method
 import unittest
 mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
 unittest.TextTestRunner().run(mytest)
 
+import unittest
+mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_femobjects_make")
+unittest.TextTestRunner().run(mytest)
 
-
+# it may be useful to temporary comment FreeCAD.closeDocument("FemTest") in tearDown method to not close the document
 
 examples from shell in build dir:
 
