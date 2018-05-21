@@ -190,11 +190,12 @@ class _TaskPanelFemMeshGroup:
         if not self.references:
             return
         currentItemName = str(self.form.list_References.currentItem().text())
+        currentRow = self.form.list_References.currentRow()
         for ref in self.references:
             refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
             if refname_to_compare_listentry == currentItemName:
                 self.references.remove(ref)
-        self.rebuild_list_References()
+        self.rebuild_list_References(currentRow)
 
     def remove_all_references(self):
         self.references = []
@@ -257,7 +258,7 @@ class _TaskPanelFemMeshGroup:
             else:
                 FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
 
-    def rebuild_list_References(self):
+    def rebuild_list_References(self, current_row=0):
         self.form.list_References.clear()
         items = []
         for ref in self.references:
@@ -265,6 +266,10 @@ class _TaskPanelFemMeshGroup:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
+        if current_row > self.form.list_References.count() - 1:  # first row is 0
+            current_row = self.form.list_References.count() - 1
+        if self.form.list_References.count() > 0:
+            self.form.list_References.setCurrentItem(self.form.list_References.item(current_row))
 
     def select_clicked_reference_shape(self):
         self.setback_listobj_visibility()
