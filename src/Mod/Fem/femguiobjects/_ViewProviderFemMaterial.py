@@ -699,6 +699,7 @@ class _TaskPanelFemMaterial:
     def setback_listobj_visibility(self):
         '''set back Visibility of the list objects
         '''
+        FreeCADGui.Selection.clearSelection()
         for obj in self.obj_notvisible:
             obj.ViewObject.Visibility = False
         self.obj_notvisible = []
