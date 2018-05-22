@@ -270,7 +270,6 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemMeshResult.py
     femguiobjects/_ViewProviderFemResultMechanical.py
     femguiobjects/_ViewProviderFemSolverCalculix.py
-    femguiobjects/FemSelectionObserver.py
     femguiobjects/FemSelectionWidgets.py
     femguiobjects/ViewProviderFemConstraint.py
 )
