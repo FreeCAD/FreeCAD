@@ -437,7 +437,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'
-                    print('selection variable adaped to hold the Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+                    FreeCAD.Console.PrintMessage('selection variable adaped to hold the Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
                 else:
                     return
             if ele_ShapeType in self.sel_elem_types:
@@ -448,15 +448,20 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 self.references.append(selection)
                                 self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
                             else:
-                                # since the selected shape will not added to the list we gone clear selection
-                                FreeCADGui.Selection.clearSelection()
+                                FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
                         else:  # multiple shape types are allowed to add
                             self.references.append(selection)
                             self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
                     else:
-                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
+                        FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
+                        message = self.get_item_text(selection) + ' is in reference list already!\n'
+                        FreeCAD.Console.PrintMessage(message)
+                        QtGui.QMessageBox.critical(None, "Geomety already in list", message)
             else:
-                FreeCAD.Console.PrintMessage(ele_ShapeType + ' not allowed to add to the list!\n')
+                FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
+                message = ele_ShapeType + ' is not allowed to add to the list!\n'
+                FreeCAD.Console.PrintMessage(message)
+                QtGui.QMessageBox.critical(None, "Wrong shape type", message)
 
     def has_equal_references_shape_types(self, ref_shty=''):
         for ref in self.references:
