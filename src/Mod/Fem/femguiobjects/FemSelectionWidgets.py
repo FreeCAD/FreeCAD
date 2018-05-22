@@ -399,8 +399,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         if not self.sel_server:
             # if we do not check, we would start a new SelectionObserver on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
-            from . import FemSelectionObserver
-            self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
+            self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
@@ -448,3 +447,17 @@ class GeometryElementsSelection(QtGui.QWidget):
                         FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
             else:
                 FreeCAD.Console.PrintMessage(ele_ShapeType + ' not allowed to add to the list!\n')
+
+
+class FemSelectionObserver:
+    '''selection observer especially for the needs of geometry reference selection of FEM'''
+    def __init__(self, parseSelectionFunction, print_message=''):
+        self.parseSelectionFunction = parseSelectionFunction
+        FreeCADGui.Selection.addObserver(self)
+        FreeCAD.Console.PrintMessage(print_message + "!\n")
+
+    def addSelection(self, docName, objName, sub, pos):
+        selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
+        self.added_obj = (selected_object, sub)
+        # on double click on a vertex of a solid sub is None and obj is the solid
+        self.parseSelectionFunction(self.added_obj)
