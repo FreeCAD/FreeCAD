@@ -51,13 +51,13 @@ class _ViewProviderFemElementGeometry2D:
         self.ViewObject = vobj
         self.Object = vobj.Object
         self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
+        vobj.addDisplayMode(self.standard, "Default")
 
     def getDisplayModes(self, obj):
-        return ["Standard"]
+        return ["Default"]
 
     def getDefaultDisplayMode(self):
-        return "Standard"
+        return "Default"
 
     def updateData(self, obj, prop):
         return
