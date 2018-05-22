@@ -34,6 +34,7 @@ False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just re
 
 # for the panel
 from FreeCAD import Units
+from . import FemSelectionWidgets
 import femmesh.meshtools as FemMeshTools
 from PySide import QtCore
 from PySide import QtGui
@@ -102,53 +103,38 @@ class _TaskPanelFemMaterial:
     '''The editmode TaskPanel for FemMaterial objects'''
 
     def __init__(self, obj):
-        FreeCADGui.Selection.clearSelection()
-        self.sel_server = None
-        self.obj = obj
-        self.selection_mode_solid = False
-        self.selection_mode_std_print_message = "Select Faces and Edges by single click on them to add them to the list."
-        self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
-        self.obj_notvisible = []
-        self.material = self.obj.Material
-        self.references = []
-        if self.obj.References:
-            self.tuplereferences = self.obj.References
-            self.get_references()
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Material.ui")
-        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
-        QtCore.QObject.connect(self.form.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
-        QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
-        QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
-        QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
-        QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
+        self.obj = obj
+        self.material = self.obj.Material
+
+        # parameter widget
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Material.ui")
+        QtCore.QObject.connect(self.parameterWidget.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
+        QtCore.QObject.connect(self.parameterWidget.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
+        QtCore.QObject.connect(self.parameterWidget.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         # basic properties must be provided
-        QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         # mechanical properties
-        QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
-        QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
+        QtCore.QObject.connect(self.parameterWidget.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         # thermal properties
-        QtCore.QObject.connect(self.form.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
-        QtCore.QObject.connect(self.form.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
-        QtCore.QObject.connect(self.form.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
         # fluidic properties, only volumetric thermal expansion coeff makes sense
-        QtCore.QObject.connect(self.form.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
-        QtCore.QObject.connect(self.form.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
+        QtCore.QObject.connect(self.parameterWidget.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
 
         # hide some groupBox according to material category
-        self.form.label_category.setText(self.obj.Category)
+        self.parameterWidget.label_category.setText(self.obj.Category)
         if self.obj.Category == 'Fluid':
-            self.form.groupBox_mechanical.setVisible(0)
-            self.form.label_expansion_coefficient.setVisible(0)
-            self.form.input_fd_expansion_coefficient.setVisible(0)
+            self.parameterWidget.groupBox_mechanical.setVisible(0)
+            self.parameterWidget.label_expansion_coefficient.setVisible(0)
+            self.parameterWidget.input_fd_expansion_coefficient.setVisible(0)
         else:
-            self.form.groupBox_fluidic.setVisible(0)
-            self.form.label_vol_expansion_coefficient.setVisible(0)
-            self.form.input_fd_vol_expansion_coefficient.setVisible(0)
-
-        self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
-        self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
+            self.parameterWidget.groupBox_fluidic.setVisible(0)
+            self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
+            self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
 
         self.import_materials()
         previous_mat_path = self.get_material_path(self.material)
@@ -157,62 +143,53 @@ class _TaskPanelFemMaterial:
             if material_name != 'None':
                 FreeCAD.Console.PrintMessage("Previously used material cannot be found in material directories. Using transient material.\n")
                 self.add_transient_material(self.material)
-                index = self.form.cb_materials.findData(material_name)
+                index = self.parameterWidget.cb_materials.findData(material_name)
             else:
                 if not self.material:
-                    index = self.form.cb_materials.findText(material_name)
+                    index = self.parameterWidget.cb_materials.findText(material_name)
                 else:
                     FreeCAD.Console.PrintMessage("None material was previously used. Reload values.\n")
                     self.add_transient_material(self.material)
-                    index = self.form.cb_materials.findData(material_name)
+                    index = self.parameterWidget.cb_materials.findData(material_name)
             self.choose_material(index)
         else:
-            index = self.form.cb_materials.findData(previous_mat_path)
+            index = self.parameterWidget.cb_materials.findData(previous_mat_path)
             self.choose_material(index)
+
+        # geometry selection widget
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge'])  # start with Solid in list!
+
+        # form made from param and selection widget
+        self.form = [self.parameterWidget, self.selectionWidget]
+
+        # reference shape checks, should be moved into the selection widget or better in another separate module, class
         # TODO check if the reference shapes realy exists, if the reference shape is an element of a Shape check if the Shape realy has this element
         # this should be done in all constraints with reference shapes too !
-        self.has_equal_references_shape_types()
-        self.rebuild_list_References()
+        self.has_equal_references_shape_types()  # has to be after initializion of selectionWidget
 
     def accept(self):
-        self.setback_listobj_visibility()
         # print(self.material)
-        self.remove_active_sel_server()
         if self.has_equal_references_shape_types():
             self.obj.Material = self.material
-            self.obj.References = self.references
-            doc = FreeCADGui.getDocument(self.obj.Document)
-            doc.resetEdit()
-            doc.Document.recompute()
+            self.obj.References = self.selectionWidget.references
+            self.set_back_all_and_recompute()
+            return True
 
     def reject(self):
-        self.setback_listobj_visibility()
-        self.remove_active_sel_server()
+        self.set_back_all_and_recompute()
+        return True
+
+    def set_back_all_and_recompute(self):
         doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
+        self.selectionWidget.setback_listobj_visibility()
+        if self.selectionWidget.sel_server:
+            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
-
-    def remove_active_sel_server(self):
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
-
-    def choose_selection_mode_standard(self, state):
-        self.selection_mode_solid = not state
-        if self.sel_server and not self.selection_mode_solid:
-            print(self.selection_mode_std_print_message)
-
-    def choose_selection_mode_solid(self, state):
-        self.selection_mode_solid = state
-        if self.sel_server and self.selection_mode_solid:
-            print(self.selection_mode_solid_print_message)
-
-    def get_references(self):
-        for ref in self.tuplereferences:
-            for elem in ref[1]:
-                self.references.append((ref[0], elem))
 
     def has_equal_references_shape_types(self):
         ref_shty = ''
-        for ref in self.references:
+        for ref in self.selectionWidget.references:
             r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
             if not r:
                 FreeCAD.Console.PrintError('Problem in retrieving element: {} \n'.format(ref[1]))
@@ -227,6 +204,7 @@ class _TaskPanelFemMaterial:
                 return False
         return True
 
+    ################ parameter widget methods #########################
     def goto_MatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
@@ -390,15 +368,15 @@ class _TaskPanelFemMaterial:
     def choose_material(self, index):
         if index < 0:
             return
-        mat_file_path = self.form.cb_materials.itemData(index)
+        mat_file_path = self.parameterWidget.cb_materials.itemData(index)
         self.material = self.materials[mat_file_path]
-        self.form.cb_materials.setCurrentIndex(index)
+        self.parameterWidget.cb_materials.setCurrentIndex(index)
         self.check_material_keys()
         self.set_mat_params_in_combo_box(self.material)
         gen_mat_desc = ""
         if 'Description' in self.material:
             gen_mat_desc = self.material['Description']
-        self.form.l_mat_description.setText(gen_mat_desc)
+        self.parameterWidget.l_mat_description.setText(gen_mat_desc)
 
     def get_material_name(self, material):
         if 'Name' in self.material:
@@ -419,60 +397,60 @@ class _TaskPanelFemMaterial:
             ym = FreeCAD.Units.Quantity(matmap['YoungsModulus'])
             ym_with_new_unit = ym.getValueAs(ym_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(ym_with_new_unit, ym_new_unit))
-            self.form.input_fd_young_modulus.setText(q.UserString)
+            self.parameterWidget.input_fd_young_modulus.setText(q.UserString)
         if 'PoissonRatio' in matmap:
-            self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
+            self.parameterWidget.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
         # Fluidic properties
         if 'KinematicViscosity' in matmap:
             nu_new_unit = "m^2/s"
             nu = FreeCAD.Units.Quantity(matmap['KinematicViscosity'])
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
-            self.form.input_fd_kinematic_viscosity.setText(q.UserString)
+            self.parameterWidget.input_fd_kinematic_viscosity.setText(q.UserString)
         # For isotropic materials the volumetric thermal expansion coefficient is three times the linear coefficient:
         if 'VolumetricThermalExpansionCoefficient' in matmap:  # linear, only for solid
             vtec_new_unit = "m/m/K"
             vtec = FreeCAD.Units.Quantity(matmap['VolumetricThermalExpansionCoefficient'])
             vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
-            self.form.input_fd_vol_expansion_coefficient.setText(q.UserString)
+            self.parameterWidget.input_fd_vol_expansion_coefficient.setText(q.UserString)
         if 'Density' in matmap:
             density_new_unit = "kg/m^3"
             density = FreeCAD.Units.Quantity(matmap['Density'])
             density_with_new_unit = density.getValueAs(density_new_unit)
-            #self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+            #self.parameterWidget.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
             q = FreeCAD.Units.Quantity("{} {}".format(density_with_new_unit, density_new_unit))
-            self.form.input_fd_density.setText(q.UserString)
+            self.parameterWidget.input_fd_density.setText(q.UserString)
         # thermal properties
         if 'ThermalConductivity' in matmap:
             tc_new_unit = "W/m/K"
             tc = FreeCAD.Units.Quantity(matmap['ThermalConductivity'])
             tc_with_new_unit = tc.getValueAs(tc_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(tc_with_new_unit, tc_new_unit))
-            self.form.input_fd_thermal_conductivity.setText(q.UserString)
+            self.parameterWidget.input_fd_thermal_conductivity.setText(q.UserString)
         if 'ThermalExpansionCoefficient' in matmap:  # linear, only for solid
             tec_new_unit = "um/m/K"
             tec = FreeCAD.Units.Quantity(matmap['ThermalExpansionCoefficient'])
             tec_with_new_unit = tec.getValueAs(tec_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(tec_with_new_unit, tec_new_unit))
-            self.form.input_fd_expansion_coefficient.setText(q.UserString)
+            self.parameterWidget.input_fd_expansion_coefficient.setText(q.UserString)
         if 'SpecificHeat' in matmap:
             sh_new_unit = "J/kg/K"
             sh = FreeCAD.Units.Quantity(matmap['SpecificHeat'])
             sh_with_new_unit = sh.getValueAs(sh_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
-            self.form.input_fd_specific_heat.setText(q.UserString)
+            self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)
-        self.form.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
+        self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
         self.materials[material_name] = material
 
     ######################## material import and export ###################
     def import_materials(self):
         self.materials = {}
         self.pathList = []
-        self.form.cb_materials.clear()
+        self.parameterWidget.cb_materials.clear()
 
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         if self.obj.Category == 'Fluid':
@@ -527,7 +505,7 @@ class _TaskPanelFemMaterial:
             material_name_list.append([material_name, a_path])
         material_name_list.sort()
         for mat in material_name_list:
-            self.form.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
+            self.parameterWidget.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
 
     def export_FCMat(self, fileName, matDict):
         """
@@ -577,7 +555,7 @@ class _TaskPanelFemMaterial:
         saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir, "*.FCMat")
         if not saveName == "":
             print(saveName)
-            knownMaterials = [self.form.cb_materials.itemText(i) for i in range(self.form.cb_materials.count())]
+            knownMaterials = [self.parameterWidget.cb_materials.itemText(i) for i in range(self.parameterWidget.cb_materials.count())]
             material_name = os.path.basename(saveName[:-len('.FCMat')])
             if material_name not in knownMaterials:
                 self.export_FCMat(saveName, self.material)
@@ -596,150 +574,3 @@ class _TaskPanelFemMaterial:
                     self.export_FCMat(saveName, self.obj.Material)
                     FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: "+ saveName + "\n")
                 """
-
-    ###################geometry reference selection #################
-    def references_list_right_clicked(self, QPos):
-        self.form.contextMenu = QtGui.QMenu()
-        menu_item_remove_selected = self.form.contextMenu.addAction("Remove selected reference")
-        menu_item_remove_all = self.form.contextMenu.addAction("Remove all references")
-        if not self.references:
-            menu_item_remove_selected.setDisabled(True)
-            menu_item_remove_all.setDisabled(True)
-        self.form.connect(menu_item_remove_selected, QtCore.SIGNAL("triggered()"), self.remove_selected_reference)
-        self.form.connect(menu_item_remove_all, QtCore.SIGNAL("triggered()"), self.remove_all_references)
-        parentPosition = self.form.list_References.mapToGlobal(QtCore.QPoint(0, 0))
-        self.form.contextMenu.move(parentPosition + QPos)
-        self.form.contextMenu.show()
-
-    def remove_selected_reference(self):
-        if not self.references:
-            return
-        currentItemName = str(self.form.list_References.currentItem().text())
-        currentRow = self.form.list_References.currentRow()
-        for ref in self.references:
-            refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
-            if refname_to_compare_listentry == currentItemName:
-                self.references.remove(ref)
-        self.rebuild_list_References(currentRow)
-
-    def remove_all_references(self):
-        self.references = []
-        self.rebuild_list_References()
-
-    def add_references(self):
-        '''Called if Button add_reference is triggered'''
-        # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
-        # here the addReference button EditTaskPanel has to be triggered to start selection mode
-        self.setback_listobj_visibility()
-        FreeCADGui.Selection.clearSelection()
-        # start SelectionObserver and parse the function to add the References to the widget
-        if self.selection_mode_solid:  # print message on button click
-            print_message = self.selection_mode_solid_print_message
-        else:
-            print_message = self.selection_mode_std_print_message
-        if not self.sel_server:
-            # if we do not check, we would start a new SelectionObserver on every click on addReference button
-            # but close only one SelectionObserver on leaving the task panel
-            from . import FemSelectionObserver
-            self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
-
-    def selectionParser(self, selection):
-        print('selection: ', selection[0].Shape.ShapeType, ' --> ', selection[0].Name, ' --> ', selection[1])
-        if hasattr(selection[0], "Shape") and selection[1]:
-            elt = selection[0].Shape.getElement(selection[1])
-            if self.selection_mode_solid:
-                # in solid selection mode use edges and faces for selection of a solid
-                solid_to_add = None
-                if elt.ShapeType == 'Edge':
-                    found_edge = False
-                    for i, s in enumerate(selection[0].Shape.Solids):
-                        for e in s.Edges:
-                            if elt.isSame(e):
-                                if not found_edge:
-                                    solid_to_add = str(i + 1)
-                                else:
-                                    FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
-                                    solid_to_add = None
-                                found_edge = True
-                elif elt.ShapeType == 'Face':
-                    found_face = False
-                    for i, s in enumerate(selection[0].Shape.Solids):
-                        for e in s.Faces:
-                            if elt.isSame(e):
-                                if not found_face:
-                                    solid_to_add = str(i + 1)
-                                else:
-                                    FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
-                                    solid_to_add = None
-                                found_edge = True
-                if solid_to_add:
-                    selection = (selection[0], 'Solid' + solid_to_add)
-                    print('selection element changed to Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
-                else:
-                    return
-            if selection not in self.references:
-                self.references.append(selection)
-                self.rebuild_list_References()
-            else:
-                FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
-
-    def rebuild_list_References(self, current_row=0):
-        self.form.list_References.clear()
-        items = []
-        for ref in self.references:
-            if ref[1]:
-                item_name = ref[0].Name + ':' + ref[1]
-            else:
-                item_name = ref[0].Name
-            items.append(item_name)
-        for listItemName in sorted(items):
-            self.form.list_References.addItem(listItemName)
-        if current_row > self.form.list_References.count() - 1:  # first row is 0
-            current_row = self.form.list_References.count() - 1
-        if self.form.list_References.count() > 0:
-            self.form.list_References.setCurrentItem(self.form.list_References.item(current_row))
-
-    def select_clicked_reference_shape(self):
-        self.setback_listobj_visibility()
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
-            self.sel_server = None
-        if not self.sel_server:
-            if not self.references:
-                return
-            currentItemName = str(self.form.list_References.currentItem().text())
-            for ref in self.references:
-                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
-                if refname_to_compare_listentry == currentItemName:
-                    # print('found: shape: ' + ref[0].Name + ' element: ' + ref[1])
-                    if not ref[0].ViewObject.Visibility:
-                        self.obj_notvisible.append(ref[0])
-                        ref[0].ViewObject.Visibility = True
-                    FreeCADGui.Selection.clearSelection()
-                    if ref[1].startswith('Solid') and (ref[0].Shape.ShapeType == 'Compound' or ref[0].Shape.ShapeType == 'CompSolid'):
-                        # selection of Solids of Compounds or CompSolids is not possible, because a Solid is no Subelement
-                        # since only Subelements can be selected, we gone select all Faces of such an Solids
-                        solid = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
-                        if not solid:
-                            return
-                        faces = []
-                        for fs in solid.Faces:
-                            # find these faces in ref[0]
-                            for i, fref in enumerate(ref[0].Shape.Faces):
-                                if fs.isSame(fref):
-                                    fref_elstring = 'Face' + str(i + 1)
-                                    if fref_elstring not in faces:
-                                        faces.append(fref_elstring)
-                        for f in faces:
-                            FreeCADGui.Selection.addSelection(ref[0], f)
-                    else:
-                        # Selection of all other element types is supported
-                        FreeCADGui.Selection.addSelection(ref[0], ref[1])
-
-    def setback_listobj_visibility(self):
-        '''set back Visibility of the list objects
-        '''
-        FreeCADGui.Selection.clearSelection()
-        for obj in self.obj_notvisible:
-            obj.ViewObject.Visibility = False
-        self.obj_notvisible = []
