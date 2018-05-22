@@ -51,6 +51,8 @@ class ObjectDressup:
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
         obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
         obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
+        obj.addProperty("App::PropertyBool", "IgnoreAbove", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Should the dressup ignore motion commands above certain height"))
+        obj.addProperty("App::PropertyDistance", "IgnoreAboveDepth", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height above which the ramp is not generated"))
         obj.Method = ['RampMethod1', 'RampMethod2', 'RampMethod3', 'Helix']
         obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
@@ -63,10 +65,15 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "RampFeedRate":
+        if prop == "RampFeedRate" or prop == "IgnoreAbove":
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
+        if obj.IgnoreAbove:
+            obj.setEditorMode('IgnoreAboveDepth', 0)
+        else:
+            obj.setEditorMode('IgnoreAboveDepth', 2)
+
         if obj.RampFeedRate == 'Custom':
             obj.setEditorMode('CustomFeedRate', 0)
         else:
@@ -75,9 +82,10 @@ class ObjectDressup:
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2
+        if PathDressup.baseOp(obj).StartDepth is not None:
+            obj.IgnoreAboveDepth = PathDressup.baseOp(obj).StartDepth
 
     def execute(self, obj):
-
         if not obj.Base:
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
@@ -88,6 +96,10 @@ class ObjectDressup:
             obj.Angle = 89.9
         elif obj.Angle <= 0:
             obj.Angle = 0.1
+
+        self.ignoreAboveEnabled = obj.IgnoreAbove
+        self.ignoreAbove = obj.IgnoreAboveDepth
+
         self.angle = obj.Angle
         self.method = obj.Method
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
@@ -111,11 +123,21 @@ class ObjectDressup:
                 p1 = edge.Vertexes[1].Point
                 rampangle = self.angle
                 if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
+
+                    # check if above ignoreAbove parameter - do not generate ramp if it is
+                    newEdge, cont = self.checkIgnoreAbove(edge)
+                    if newEdge is not None:
+                        outedges.append(newEdge)
+                        p0.z = self.ignoreAbove
+                    if cont:
+                        continue
+
                     plungelen = abs(p0.z - p1.z)
                     projectionlen = plungelen * math.tan(math.radians(rampangle))  # length of the forthcoming ramp projected to XY plane
+                    PathLog.debug("Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(p0.x, p0.y, p0.z, p1.z, projectionlen))
                     if self.method == 'RampMethod3':
                         projectionlen = projectionlen / 2
-                    PathLog.debug("Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(p0.x, p0.y, p0.z, p1.z, projectionlen))
+
                     # next need to determine how many edges in the path after
                     # plunge are needed to cover the length:
                     covered = False
@@ -191,6 +213,14 @@ class ObjectDressup:
                 if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
                     # plungelen = abs(p0.z-p1.z)
                     PathLog.debug("Found plunge move at X:{} Y:{} From Z:{} to Z{}, Searching for closed loop".format(p0.x, p0.y, p0.z, p1.z))
+                    # check if above ignoreAbove parameter - do not generate helix if it is
+                    newEdge, cont = self.checkIgnoreAbove(edge)
+                    if newEdge is not None:
+                        outedges.append(newEdge)
+                        p0.z = self.ignoreAbove
+                    if cont:
+                        i = i + 1
+                        continue
                     # next need to determine how many edges in the path after plunge are needed to cover the length:
                     loopFound = False
                     rampedges = []
@@ -228,6 +258,22 @@ class ObjectDressup:
                 outedges.append(edge)
             i = i + 1
         return outedges
+
+    def checkIgnoreAbove(self, edge):
+        if self.ignoreAboveEnabled:
+            p0 = edge.Vertexes[0].Point
+            p1 = edge.Vertexes[1].Point
+            if p0.z > self.ignoreAbove and (p1.z > self.ignoreAbove or PathGeom.isRoughly(p1.z, self.ignoreAbove.Value)):
+                PathLog.debug("Whole plunge move above 'ignoreAbove', ignoring")
+                return (edge, True)
+            elif p0.z > self.ignoreAbove and not PathGeom.isRoughly(p0.z, self.ignoreAbove.Value):
+                PathLog.debug("Plunge move partially above 'ignoreAbove', splitting into two")
+                newPoint = FreeCAD.Base.Vector(p0.x, p0.y, self.ignoreAbove)
+                return (Part.makeLine(p0, newPoint), False)
+            else:
+                return None, False
+        else:
+            return None, False
 
     def createHelix(self, rampedges, startPoint, endPoint):
         outedges = []
@@ -616,11 +662,11 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object")+"\n")
+            PathLog.error(translate("Please select one path object") + "\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path")+"\n")
+            PathLog.error(translate("The selected object is not a path") + "\n")
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))
