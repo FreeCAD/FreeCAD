@@ -109,8 +109,9 @@ class _TaskPanelFemElementRotation1D:
     '''The TaskPanel for editing References property of FemElementRotation1D objects'''
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementRotation1D.ui")
         QtCore.QObject.connect(self.parameterWidget.if_rotation, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rotation_changed)
         self.rotation = self.obj.Rotation

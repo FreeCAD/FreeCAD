@@ -104,8 +104,9 @@ class _TaskPanelFemMeshRegion:
 
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui")
         QtCore.QObject.connect(self.parameterWidget.if_elelen, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.elelen_changed)
         self.init_parameter_widget()

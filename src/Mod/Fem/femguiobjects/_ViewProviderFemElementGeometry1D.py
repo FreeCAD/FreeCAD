@@ -105,8 +105,9 @@ class _TaskPanelFemElementGeometry1D:
 
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry1D.ui")
         QtCore.QObject.connect(self.parameterWidget.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
         QtCore.QObject.connect(self.parameterWidget.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)

@@ -104,8 +104,9 @@ class _TaskPanelFemElementGeometry2D:
 
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui")
         QtCore.QObject.connect(self.parameterWidget.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
         self.init_parameter_widget()
