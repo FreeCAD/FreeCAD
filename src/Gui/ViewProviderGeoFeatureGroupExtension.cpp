@@ -33,7 +33,7 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
-#include <Inventor/nodes/SoGroup.h>
+#include "SoFCUnifiedSelection.h"
 
 using namespace Gui;
 
@@ -43,7 +43,7 @@ ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
 
-    pcGroupChildren = new SoGroup();
+    pcGroupChildren = new SoFCSelectionRoot;
     pcGroupChildren->ref();
 }
 
