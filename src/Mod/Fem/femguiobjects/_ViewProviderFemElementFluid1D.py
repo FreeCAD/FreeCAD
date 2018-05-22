@@ -108,8 +108,9 @@ class _TaskPanelFemElementFluid1D:
 
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
         QtCore.QObject.connect(self.parameterWidget.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
         QtCore.QObject.connect(self.parameterWidget.cb_liquid_section_type, QtCore.SIGNAL("activated(int)"), self.liquidsectiontype_changed)
