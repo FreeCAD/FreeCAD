@@ -211,7 +211,7 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
-    def __init__(self, ref, eltypes=[]):
+    def __init__(self, ref, eltypes=[], multigeom=True):
         super(GeometryElementsSelection, self).__init__()
         # init ui stuff
         FreeCADGui.Selection.clearSelection()
@@ -219,6 +219,8 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.sel_server = None
         self.obj_notvisible = []
         self.initElemTypes(eltypes)
+        self.allow_multiple_geom_types = multigeom
+        print(self.allow_multiple_geom_types)
         self.initUI()
         # set references and fill the list widget
         self.references = []
@@ -441,12 +443,36 @@ class GeometryElementsSelection(QtGui.QWidget):
             if ele_ShapeType in self.sel_elem_types:
                 if (self.selection_mode_solid and ele_ShapeType == 'Solid') or self.selection_mode_solid is False:
                     if selection not in self.references:
-                        self.references.append(selection)
-                        self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
+                        if self.allow_multiple_geom_types is False:  # only equal shape types are allowed to add
+                            if self.has_equal_references_shape_types(ele_ShapeType):
+                                self.references.append(selection)
+                                self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
+                            else:
+                                # since the selected shape will not added to the list we gone clear selection
+                                FreeCADGui.Selection.clearSelection()
+                        else:  # multiple shape types are allowed to add
+                            self.references.append(selection)
+                            self.rebuild_list_References(self.get_allitems_text().index(self.get_item_text(selection)))
                     else:
                         FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
             else:
                 FreeCAD.Console.PrintMessage(ele_ShapeType + ' not allowed to add to the list!\n')
+
+    def has_equal_references_shape_types(self, ref_shty=''):
+        for ref in self.references:
+            r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
+            if not r:
+                FreeCAD.Console.PrintError('Problem in retrieving element: {} \n'.format(ref[1]))
+                continue
+            # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+            if not ref_shty:
+                ref_shty = r.ShapeType
+            if r.ShapeType != ref_shty:
+                message = 'Multiple shape types are not allowed in the reference list.\n'
+                FreeCAD.Console.PrintMessage(message)
+                QtGui.QMessageBox.critical(None, "Multiple ShapeTypes not allowed", message)
+                return False
+        return True
 
 
 class FemSelectionObserver:
