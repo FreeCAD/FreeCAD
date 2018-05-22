@@ -644,6 +644,94 @@ void ImpExpDxfWrite::exportText(const char* text, Base::Vector3d position1, Base
     location2[2] = position2.z;
 
     WriteText(text, location1, location2, size, just, getLayerName().c_str());
+}
 
+void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
+                                     Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
+                                     char* dimText)
+{
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double line[3] = {0,0,0};
+    line[0] = lineLocn.x;
+    line[1] = lineLocn.y;
+    line[2] = lineLocn.z;
+    double ext1[3] = {0,0,0};
+    ext1[0] = extLine1Start.x;
+    ext1[1] = extLine1Start.y;
+    ext1[2] = extLine1Start.z;
+    double ext2[3] = {0,0,0};
+    ext2[0] = extLine2Start.x;
+    ext2[1] = extLine2Start.y;
+    ext2[2] = extLine2Start.z;
+    WriteLinearDim(text, line, ext1,ext2,dimText, getLayerName().c_str());
+}
 
+void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
+                             Base::Vector3d extLine1End, Base::Vector3d extLine2End, 
+                             Base::Vector3d apexPoint,
+                             char* dimText)
+{
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double line[3] = {0,0,0};
+    line[0] = lineLocn.x;
+    line[1] = lineLocn.y;
+    line[2] = lineLocn.z;
+    double ext1[3] = {0,0,0};
+    ext1[0] = extLine1End.x;
+    ext1[1] = extLine1End.y;
+    ext1[2] = extLine1End.z;
+    double ext2[3] = {0,0,0};
+    ext2[0] = extLine2End.x;
+    ext2[1] = extLine2End.y;
+    ext2[2] = extLine2End.z;
+    double apex[3] = {0,0,0};
+    apex[0] = apexPoint.x;
+    apex[1] = apexPoint.y;
+    apex[2] = apexPoint.z;
+    WriteAngularDim(text, line, apex, ext1, apex, ext2, dimText, getLayerName().c_str());
+}
+
+void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d textLocn, 
+                             Base::Vector3d arcPoint,
+                             char* dimText)
+{
+    double center[3] = {0,0,0};
+    center[0] = centerPoint.x;
+    center[1] = centerPoint.y;
+    center[2] = centerPoint.z;
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double arc[3] = {0,0,0};
+    arc[0] = arcPoint.x;
+    arc[1] = arcPoint.y;
+    arc[2] = arcPoint.z;
+    WriteRadialDim(center, text, arc, dimText, getLayerName().c_str());
+
+}
+
+void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn, 
+                             Base::Vector3d arcPoint1, Base::Vector3d arcPoint2,
+                             char* dimText)
+{
+    double text[3] = {0,0,0};
+    text[0] = textLocn.x;
+    text[1] = textLocn.y;
+    text[2] = textLocn.z;
+    double arc1[3] = {0,0,0};
+    arc1[0] = arcPoint1.x;
+    arc1[1] = arcPoint1.y;
+    arc1[2] = arcPoint1.z;
+    double arc2[3] = {0,0,0};
+    arc2[0] = arcPoint2.x;
+    arc2[1] = arcPoint2.y;
+    arc2[2] = arcPoint2.z;
+    WriteDiametricDim(text, arc1, arc2, dimText, getLayerName().c_str());
 }

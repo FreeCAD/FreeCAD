@@ -342,6 +342,250 @@ void CDxfWrite::WriteText(const char* text, const double* location1, const doubl
     (*m_ofs) << location2[2]   << endl;
 }
 
+//***************************
+//WriteLinearDim
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDefPoint,
+                         const double* extLine1, const double* extLine2,
+                         const char* dimText,
+                         const char* layer_name)
+//const char* blockName, const int dimType, const int attachPoint,
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "DIMENSION"    << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDimension"     << endl;
+    (*m_ofs) << 2              << endl;
+    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << 10             << endl;     //dimension line definition point
+    (*m_ofs) << lineDefPoint[0]    << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << lineDefPoint[1]    << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << lineDefPoint[2]    << endl;
+    (*m_ofs) << 11             << endl;     //text mid point
+    (*m_ofs) << textMidPoint[0]    << endl;
+    (*m_ofs) << 21             << endl; 
+    (*m_ofs) << textMidPoint[1]    << endl;
+    (*m_ofs) << 31             << endl;
+    (*m_ofs) << textMidPoint[2]    << endl;
+    (*m_ofs) << 70             << endl;
+    (*m_ofs) << 1              << endl;    // dimType1 = Aligned
+    (*m_ofs) << 71             << endl;
+    (*m_ofs) << 1              << endl;    // attachPoint ??1 = topleft
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << dimText        << endl;    
+    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+//linear dims
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbAlignedDimension"     << endl;
+    (*m_ofs) << 13             << endl;
+    (*m_ofs) << extLine1[0]    << endl;
+    (*m_ofs) << 23             << endl; 
+    (*m_ofs) << extLine1[1]    << endl;
+    (*m_ofs) << 33             << endl;
+    (*m_ofs) << extLine1[2]    << endl;
+    (*m_ofs) << 14             << endl;
+    (*m_ofs) << extLine2[0]    << endl;
+    (*m_ofs) << 24             << endl; 
+    (*m_ofs) << extLine2[1]    << endl;
+    (*m_ofs) << 34             << endl;
+    (*m_ofs) << extLine2[2]    << endl;
+////diametric dims
+//    (*m_ofs) << 100            << endl;
+//    (*m_ofs) << "AcDbRadialDimension"     << endl;
+//    (*m_ofs) << 15             << endl;
+//    (*m_ofs) << arcPoint[0]    << endl;
+//    (*m_ofs) << 25             << endl; 
+//    (*m_ofs) << arcPoint[1]    << endl;
+//    (*m_ofs) << 35             << endl;
+//    (*m_ofs) << arcPoint[2]    << endl;
+//    (*m_ofs) << 40             << endl;
+//    (*m_ofs) << lenLeader      << endl;
+}
+
+//***************************
+//WriteAngularDim
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDefPoint,
+                         const double* startExt1, const double* endExt1,
+                         const double* startExt2, const double* endExt2,
+                         const char* dimText,
+                         const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "DIMENSION"    << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDimension"     << endl;
+    (*m_ofs) << 2              << endl;
+    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+
+    (*m_ofs) << 10             << endl;
+    (*m_ofs) << endExt2[0]     << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << endExt2[1]     << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << endExt2[2]     << endl;
+
+    (*m_ofs) << 11               << endl;
+    (*m_ofs) << textMidPoint[0]  << endl;
+    (*m_ofs) << 21               << endl; 
+    (*m_ofs) << textMidPoint[1]  << endl;
+    (*m_ofs) << 31               << endl;
+    (*m_ofs) << textMidPoint[2]  << endl;
+
+    (*m_ofs) << 70             << endl;
+    (*m_ofs) << 34             << endl;    // dimType 2 = Angular  5 = Angular 3 point
+                                           // +32 for block??
+    (*m_ofs) << 71             << endl;
+    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << dimText        << endl;    
+    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+//angular dims
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDb2LineAngularDimension"     << endl;
+
+    (*m_ofs) << 13              << endl;
+    (*m_ofs) << startExt1[0]    << endl;
+    (*m_ofs) << 23              << endl; 
+    (*m_ofs) << startExt1[1]    << endl;
+    (*m_ofs) << 33              << endl;
+    (*m_ofs) << startExt1[2]    << endl;
+
+    (*m_ofs) << 14             << endl;
+    (*m_ofs) << endExt1[0]     << endl;
+    (*m_ofs) << 24             << endl; 
+    (*m_ofs) << endExt1[1]     << endl;
+    (*m_ofs) << 34             << endl;
+    (*m_ofs) << endExt1[2]     << endl;
+
+    (*m_ofs) << 15             << endl;
+    (*m_ofs) << startExt2[0]   << endl;
+    (*m_ofs) << 25             << endl; 
+    (*m_ofs) << startExt2[1]   << endl;
+    (*m_ofs) << 35             << endl;
+    (*m_ofs) << startExt2[2]   << endl;
+
+    (*m_ofs) << 16                 << endl;
+    (*m_ofs) << lineDefPoint[0]    << endl;
+    (*m_ofs) << 26                 << endl; 
+    (*m_ofs) << lineDefPoint[1]    << endl;
+    (*m_ofs) << 36                 << endl;
+    (*m_ofs) << lineDefPoint[2]    << endl;
+}
+//***************************
+//WriteRadialDim
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidPoint, 
+                         const double* arcPoint,
+                         const char* dimText,
+                         const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "DIMENSION"    << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDimension"     << endl;
+    (*m_ofs) << 2              << endl;
+    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << 10                << endl;     // arc center point
+    (*m_ofs) << centerPoint[0]    << endl;
+    (*m_ofs) << 20                << endl; 
+    (*m_ofs) << centerPoint[1]    << endl;
+    (*m_ofs) << 30                << endl;
+    (*m_ofs) << centerPoint[2]    << endl;
+    (*m_ofs) << 11                << endl;     //text mid point
+    (*m_ofs) << textMidPoint[0]   << endl;
+    (*m_ofs) << 21                << endl; 
+    (*m_ofs) << textMidPoint[1]   << endl;
+    (*m_ofs) << 31                << endl;
+    (*m_ofs) << textMidPoint[2]   << endl;
+    (*m_ofs) << 70             << endl;
+    (*m_ofs) << 4              << endl;    // dimType 4 = Radius
+    (*m_ofs) << 71             << endl;
+    (*m_ofs) << 1              << endl;    // attachPoint 5 = middle center
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << dimText        << endl;    
+    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+//radial dims
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbRadialDimension"     << endl;
+    (*m_ofs) << 15             << endl;
+    (*m_ofs) << arcPoint[0]    << endl;
+    (*m_ofs) << 25             << endl; 
+    (*m_ofs) << arcPoint[1]    << endl;
+    (*m_ofs) << 35             << endl;
+    (*m_ofs) << arcPoint[2]    << endl;
+    (*m_ofs) << 40             << endl;   // leader length????
+    (*m_ofs) << 0              << endl;
+}
+
+//***************************
+//WriteDiametricDim
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WriteDiametricDim(const double* textMidPoint, 
+                         const double* arcPoint1, const double* arcPoint2,
+                         const char* dimText,
+                         const char* layer_name)
+{
+    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "DIMENSION"    << endl;
+    (*m_ofs) << 8              << endl;
+    (*m_ofs) << layer_name     << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbEntity"   << endl;
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDimension"     << endl;
+    (*m_ofs) << 2              << endl;
+    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << 10             << endl;
+    (*m_ofs) << arcPoint1[0]   << endl;
+    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << arcPoint1[1]   << endl;
+    (*m_ofs) << 30             << endl;
+    (*m_ofs) << arcPoint1[2]   << endl;
+    (*m_ofs) << 11                << endl;     //text mid point
+    (*m_ofs) << textMidPoint[0]   << endl;
+    (*m_ofs) << 21                << endl; 
+    (*m_ofs) << textMidPoint[1]   << endl;
+    (*m_ofs) << 31                << endl;
+    (*m_ofs) << textMidPoint[2]   << endl;
+    (*m_ofs) << 70             << endl;
+    (*m_ofs) << 3              << endl;    // dimType 3 = Diameter
+    (*m_ofs) << 71             << endl;
+    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle center
+    (*m_ofs) << 1              << endl;
+    (*m_ofs) << dimText        << endl;    
+    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "STANDARD"     << endl;    //style
+//diametric dims
+    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "AcDbDiametricDimension"     << endl;
+    (*m_ofs) << 15             << endl;
+    (*m_ofs) << arcPoint2[0]    << endl;
+    (*m_ofs) << 25             << endl; 
+    (*m_ofs) << arcPoint2[1]    << endl;
+    (*m_ofs) << 35             << endl;
+    (*m_ofs) << arcPoint2[2]    << endl;
+    (*m_ofs) << 40             << endl;   // leader length????
+    (*m_ofs) << 0              << endl;
+}
+
 
 CDxfRead::CDxfRead(const char* filepath)
 {
