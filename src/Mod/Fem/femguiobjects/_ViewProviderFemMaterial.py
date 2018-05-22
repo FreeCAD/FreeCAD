@@ -35,11 +35,9 @@ False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just re
 # for the panel
 from FreeCAD import Units
 from . import FemSelectionWidgets
-import femmesh.meshtools as FemMeshTools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtGui import QFileDialog
-from PySide.QtGui import QMessageBox
 import sys
 if sys.version_info.major >= 3:
     unicode = str
@@ -157,19 +155,17 @@ class _TaskPanelFemMaterial:
             self.choose_material(index)
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge'])  # start with Solid in list!
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge'], False)  # start with Solid in list!
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]
 
-        # reference shape checks, should be moved into the selection widget or better in another separate module, class
-        # TODO check if the reference shapes realy exists, if the reference shape is an element of a Shape check if the Shape realy has this element
-        # this should be done in all constraints with reference shapes too !
-        self.has_equal_references_shape_types()  # has to be after initializion of selectionWidget
+        # check references, has to be after initialisation of selectionWidget
+        self.selectionWidget.has_equal_references_shape_types()
 
     def accept(self):
         # print(self.material)
-        if self.has_equal_references_shape_types():
+        if self.selectionWidget.has_equal_references_shape_types():
             self.obj.Material = self.material
             self.obj.References = self.selectionWidget.references
             self.set_back_all_and_recompute()
@@ -186,23 +182,6 @@ class _TaskPanelFemMaterial:
         if self.selectionWidget.sel_server:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
-
-    def has_equal_references_shape_types(self):
-        ref_shty = ''
-        for ref in self.selectionWidget.references:
-            r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
-            if not r:
-                FreeCAD.Console.PrintError('Problem in retrieving element: {} \n'.format(ref[1]))
-                continue
-            # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
-            if not ref_shty:
-                ref_shty = r.ShapeType
-            if r.ShapeType != ref_shty:
-                message = 'Multiple shape types are not allowed in the reference list.\n'
-                FreeCAD.Console.PrintError(message)
-                QMessageBox.critical(None, "Multiple ShapeTypes not allowed", message)
-                return False
-        return True
 
     ################ parameter widget methods #########################
     def goto_MatWeb(self):
