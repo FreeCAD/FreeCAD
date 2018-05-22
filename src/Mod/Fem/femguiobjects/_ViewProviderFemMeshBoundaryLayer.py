@@ -103,10 +103,10 @@ class _TaskPanelFemMeshBoundaryLayer:
     '''The TaskPanel for editing References property of FemMeshBoundaryLayer objects'''
 
     def __init__(self, obj):
-        FreeCADGui.Selection.clearSelection()
+
+        self.obj = obj
 
         # parameter widget
-        self.obj = obj
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui")
         QtCore.QObject.connect(self.parameterWidget.bl_number_of_layers, QtCore.SIGNAL("valueChanged(int)"), self.bl_number_of_layers_changed)
         QtCore.QObject.connect(self.parameterWidget.bl_min_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bl_min_thickness_changed)

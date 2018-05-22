@@ -103,8 +103,9 @@ class _TaskPanelFemMeshGroup:
 
     def __init__(self, obj):
 
-        # parameter widget
         self.obj = obj
+
+        # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGroup.ui")
         QtCore.QObject.connect(self.parameterWidget.rb_name, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_name)
         QtCore.QObject.connect(self.parameterWidget.rb_label, QtCore.SIGNAL("toggled(bool)"), self.choose_exportidentifier_label)
