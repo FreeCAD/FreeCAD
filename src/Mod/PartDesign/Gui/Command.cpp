@@ -361,6 +361,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
         FeatName = getUniqueObjectName("Binder",pcActiveBody);
     }
+    Base::Matrix4D mat;
     if(obj && binderParent && binderParent!=binder) {
         App::DocumentObject *sobj = 0;
         App::DocumentObject *parent = 0;
@@ -387,7 +388,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         obj = sobj;
         binderParent = parent;
         binderSub = parentSub;
-        binderParent->getSubObject(binderSub.c_str());
+        binderParent->getSubObject(binderSub.c_str(),0,&mat);
     }
         
     try {
@@ -407,6 +408,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             if(!binder) return;
         }
         binder->setLinks(obj,subs);
+        binder->updatePlacement(mat);
         updateActive();
         commitCommand();
     }catch(Base::Exception &e) {
