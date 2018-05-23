@@ -107,9 +107,11 @@ class _TaskPanelFemMaterial:
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Material.ui")
+        # globals
         QtCore.QObject.connect(self.parameterWidget.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
         QtCore.QObject.connect(self.parameterWidget.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.parameterWidget.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
+        QtCore.QObject.connect(self.parameterWidget.chbu_allow_edit, QtCore.SIGNAL("clicked()"), self.toggleInputFieldsReadOnly)
         # basic properties must be provided
         QtCore.QObject.connect(self.parameterWidget.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         # mechanical properties
@@ -122,6 +124,10 @@ class _TaskPanelFemMaterial:
         # fluidic properties, only volumetric thermal expansion coeff makes sense
         QtCore.QObject.connect(self.parameterWidget.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
         QtCore.QObject.connect(self.parameterWidget.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
+
+        # init all parameter input fiels with read only
+        self.parameterWidget.chbu_allow_edit.setCheckState(QtCore.Qt.CheckState.Unchecked)
+        self.toggleInputFieldsReadOnly()
 
         # hide some groupBox according to material category
         self.parameterWidget.label_category.setText(self.obj.Category)
@@ -184,6 +190,26 @@ class _TaskPanelFemMaterial:
         doc.resetEdit()
 
     ################ parameter widget methods #########################
+    def toggleInputFieldsReadOnly(self):
+        if self.parameterWidget.chbu_allow_edit.isChecked():
+            self.parameterWidget.input_fd_density.setReadOnly(False)
+            self.parameterWidget.input_fd_young_modulus.setReadOnly(False)
+            self.parameterWidget.spinBox_poisson_ratio.setReadOnly(False)
+            self.parameterWidget.input_fd_thermal_conductivity.setReadOnly(False)
+            self.parameterWidget.input_fd_expansion_coefficient.setReadOnly(False)
+            self.parameterWidget.input_fd_specific_heat.setReadOnly(False)
+            self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(False)
+            self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(False)
+        else:
+            self.parameterWidget.input_fd_density.setReadOnly(True)
+            self.parameterWidget.input_fd_young_modulus.setReadOnly(True)
+            self.parameterWidget.spinBox_poisson_ratio.setReadOnly(True)
+            self.parameterWidget.input_fd_thermal_conductivity.setReadOnly(True)
+            self.parameterWidget.input_fd_expansion_coefficient.setReadOnly(True)
+            self.parameterWidget.input_fd_specific_heat.setReadOnly(True)
+            self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
+            self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
+
     def goto_MatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
