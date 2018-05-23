@@ -51,8 +51,8 @@ class ObjectDressup:
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
         obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
         obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
-        obj.addProperty("App::PropertyBool", "IgnoreAbove", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Should the dressup ignore motion commands above certain height"))
-        obj.addProperty("App::PropertyDistance", "IgnoreAboveDepth", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height above which the ramp is not generated"))
+        obj.addProperty("App::PropertyBool", "UseStartDepth", "StartDepth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Should the dressup ignore motion commands above DressupStartDepth"))
+        obj.addProperty("App::PropertyDistance", "DressupStartDepth", "StartDepth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is."))
         obj.Method = ['RampMethod1', 'RampMethod2', 'RampMethod3', 'Helix']
         obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
@@ -65,14 +65,14 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "RampFeedRate" or prop == "IgnoreAbove":
+        if prop == "RampFeedRate" or prop == "UseStartDepth":
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
-        if obj.IgnoreAbove:
-            obj.setEditorMode('IgnoreAboveDepth', 0)
+        if obj.UseStartDepth:
+            obj.setEditorMode('DressupStartDepth', 0)
         else:
-            obj.setEditorMode('IgnoreAboveDepth', 2)
+            obj.setEditorMode('DressupStartDepth', 2)
 
         if obj.RampFeedRate == 'Custom':
             obj.setEditorMode('CustomFeedRate', 0)
@@ -83,7 +83,7 @@ class ObjectDressup:
         obj.Angle = 60
         obj.Method = 2
         if PathDressup.baseOp(obj).StartDepth is not None:
-            obj.IgnoreAboveDepth = PathDressup.baseOp(obj).StartDepth
+            obj.DressupStartDepth = PathDressup.baseOp(obj).StartDepth
 
     def execute(self, obj):
         if not obj.Base:
@@ -97,8 +97,8 @@ class ObjectDressup:
         elif obj.Angle <= 0:
             obj.Angle = 0.1
 
-        self.ignoreAboveEnabled = obj.IgnoreAbove
-        self.ignoreAbove = obj.IgnoreAboveDepth
+        self.ignoreAboveEnabled = obj.UseStartDepth
+        self.ignoreAbove = obj.DressupStartDepth
 
         self.angle = obj.Angle
         self.method = obj.Method
