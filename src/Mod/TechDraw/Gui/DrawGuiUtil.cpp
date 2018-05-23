@@ -116,8 +116,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
         }
     }
 
-    if ((page == nullptr)
-        ) {
+    if (page == nullptr) {
         switch(failCase) {
             case 1:
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
