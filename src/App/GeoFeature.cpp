@@ -148,8 +148,11 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     obj = ret->getLinkedObject(true);
     if(!obj || (filter && obj!=filter))
         return 0;
-    if(!element || !element[0])
+    if(!element || !element[0]) {
+        if(append)
+            elementName.second = subname;
         return ret;
+    }
 
     auto geo = dynamic_cast<GeoFeature*>(obj);
     if(!geo)
