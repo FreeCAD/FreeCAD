@@ -646,7 +646,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
 
     rmvPreselect();
 
-    if (ActiveGate && !signal) {
+    if (ActiveGate && signal!=1) {
         App::Document* pDoc = getDocument(pDocName);
         if (!pDoc || !pObjectName) 
             return false;
