@@ -203,7 +203,30 @@ std::string ComplexGeoData::newElementName(const char *name) {
         }
     }
     if(isMappedElement(c))
-        return std::string(name,dot);
+        return std::string(name,dot-name);
+    return name;
+}
+
+std::string ComplexGeoData::oldElementName(const char *name) {
+    if(!name) return std::string();
+    const char *dot = strrchr(name,'.');
+    if(!dot || dot==name) return name;
+    const char *c = dot-1;
+    for(;c!=name;--c) {
+        if(*c == '.') {
+            ++c;
+            break;
+        }
+    }
+    if(isMappedElement(c))
+        return std::string(name,c-name)+(dot+1);
+    return name;
+}
+
+std::string ComplexGeoData::noElementName(const char *name) {
+    auto element = findElementName(name);
+    if(element)
+        return std::string(name,element-name);
     return name;
 }
 

@@ -177,6 +177,10 @@ public:
 
     /// Strip out the trailing element name if there is mapped element name preceeds it.
     static std::string newElementName(const char *name);
+    /// Strip out the mapped element name if there is one.
+    static std::string oldElementName(const char *name);
+    /// Strip out the old and new element name if there is one.
+    static std::string noElementName(const char *name);
 
     /// Find the start of an element name in a subname
     static const char *findElementName(const char *subname);
