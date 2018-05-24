@@ -71,7 +71,7 @@ class _ViewProviderFemSolverCalculix:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)

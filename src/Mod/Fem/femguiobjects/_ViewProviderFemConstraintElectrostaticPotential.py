@@ -53,7 +53,7 @@ class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
 
 class _TaskPanel(object):

@@ -75,7 +75,7 @@ class _ViewProviderFemMeshGmsh:
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
         self.ViewObject.hide()  # hide the mesh after edit is finished
-        return
+        return True
 
     def doubleClicked(self, vobj):
         # Group meshing is only active on active analysis, we should make sure the analysis the mesh belongs too is active

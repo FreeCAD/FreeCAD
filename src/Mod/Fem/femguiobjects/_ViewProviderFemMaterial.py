@@ -75,7 +75,7 @@ class _ViewProviderFemMaterial:
 
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     # overwrite the doubleClicked of material object python to make sure no other Material taskd (and thus no selection observer) is still active
     def doubleClicked(self, vobj):
@@ -174,14 +174,14 @@ class _TaskPanelFemMaterial:
         if self.selectionWidget.has_equal_references_shape_types():
             self.obj.Material = self.material
             self.obj.References = self.selectionWidget.references
-            self.set_back_all_and_recompute()
+            self.recompute_and_set_back_all()
             return True
 
     def reject(self):
-        self.set_back_all_and_recompute()
+        self.recompute_and_set_back_all()
         return True
 
-    def set_back_all_and_recompute(self):
+    def recompute_and_set_back_all(self):
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.Document.recompute()
         self.selectionWidget.setback_listobj_visibility()

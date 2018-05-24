@@ -94,7 +94,7 @@ class _ViewProviderFemResultMechanical:
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         self.Object.Mesh.ViewObject.hide()  # hide the mesh after result viewing is finished, but do not reset the coloring
-        return
+        return True
 
     def __getstate__(self):
         return None
