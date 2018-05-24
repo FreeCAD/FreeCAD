@@ -264,10 +264,15 @@ void Document::resetEdit(void)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
-        d->_editViewProvider->finishEditing();
-        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
-        d->_editViewProvider = 0;
+        // Nullify the member variable before calling finishEditing().
+        // This is to avoid a possible stack overflow when a view provider wrongly
+        // invokes the document's resetEdit() method.
+        ViewProvider* editViewProvider = d->_editViewProvider;
+        d->_editViewProvider = nullptr;
+
+        editViewProvider->finishEditing();
+        if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
     }
 }
 
