@@ -65,7 +65,7 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "RampFeedRate" or prop == "UseStartDepth":
+        if prop in ["RampFeedRate", "UseStartDepth"]:
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
@@ -103,7 +103,7 @@ class ObjectDressup:
         self.angle = obj.Angle
         self.method = obj.Method
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
-        if self.method == 'RampMethod1' or self.method == 'RampMethod2' or self.method == 'RampMethod3':
+        if self.method in ['RampMethod1', 'RampMethod2', 'RampMethod3']:
             self.outedges = self.generateRamps()
         else:
             self.outedges = self.generateHelix()
