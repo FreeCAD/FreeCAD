@@ -77,7 +77,7 @@ class _ViewProviderFemMeshGroup:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
@@ -120,19 +120,20 @@ class _TaskPanelFemMeshGroup:
     def accept(self):
         self.obj.UseLabel = self.use_label
         self.obj.References = self.selectionWidget.references
-        FreeCAD.ActiveDocument.recompute()
-        self.set_back_all()
+        self.recompute_and_set_back_all()
         return True
 
     def reject(self):
-        self.set_back_all()
+        self.recompute_and_set_back_all()
         return True
 
-    def set_back_all(self):
+    def recompute_and_set_back_all(self):
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
         self.selectionWidget.setback_listobj_visibility()
         if self.selectionWidget.sel_server:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        FreeCADGui.ActiveDocument.resetEdit()
+        doc.resetEdit()
 
     def init_parameter_widget(self):
         self.use_label = self.obj.UseLabel

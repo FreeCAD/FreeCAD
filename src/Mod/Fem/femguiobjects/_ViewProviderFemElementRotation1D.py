@@ -79,7 +79,7 @@ class _ViewProviderFemElementRotation1D:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
     '''
 
     def setEdit(self, vobj, mode=0):
@@ -125,20 +125,20 @@ class _TaskPanelFemElementRotation1D:
 
     def accept(self):
         self.obj.Rotation = self.rotation
-        self.obj.References = self.selectionWidget.references
-        FreeCAD.ActiveDocument.recompute()
-        self.set_back_all()
+        self.recompute_and_set_back_all()
         return True
 
     def reject(self):
-        self.set_back_all()
+        self.recompute_and_set_back_all()
         return True
 
-    def set_back_all(self):
+    def recompute_and_set_back_all(self):
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
         self.selectionWidget.setback_listobj_visibility()
         if self.selectionWidget.sel_server:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        FreeCADGui.ActiveDocument.resetEdit()
+        doc.resetEdit()
 
     def rotation_changed(self, base_quantity_value):
         self.rotation = base_quantity_value
