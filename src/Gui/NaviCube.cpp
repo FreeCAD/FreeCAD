@@ -75,8 +75,6 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
@@ -84,7 +82,6 @@
 # include <QStatusBar>
 # include <QBitmap>
 # include <QMimeData>
-# include <MainWindow.h>
 #endif
 
 #include <sstream>
@@ -98,6 +95,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
 #include "Application.h"
+#include "MainWindow.h"
 #include "MDIView.h"
 #include "Command.h"
 
@@ -110,13 +108,20 @@
 #include <QImage>
 #include <QPainterPath>
 #include <QApplication>
-#include <QOpenGLTexture>
+
+#if defined(HAVE_QT5_OPENGL)
+# include <QOpenGLTexture>
+#else
+# include <QGLFramebufferObject>
+#endif
+
 //#include <OpenGL/glu.h>
 #include <Eigen/Dense>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <iostream>
+
 
 using namespace Eigen;
 using namespace std;
@@ -250,7 +255,7 @@ public:
 	bool m_Dragging = false;
 	bool m_MightDrag = false;
 
-	QGLFramebufferObject* m_PickingFramebuffer;
+	QtGLFramebufferObject* m_PickingFramebuffer;
 
 	bool m_NaviCubeInitialised = false;
 
@@ -372,7 +377,7 @@ QOpenGLTexture* NaviCubeImplementation::createButtonTex(int button) {
 
 	QPainterPath path;
 
-	float as1 = 0.12; // arrow size
+	float as1 = 0.12f; // arrow size
 	float as3 = as1 / 3;
 
 	switch (button) {
@@ -614,11 +619,11 @@ void NaviCubeImplementation::initNaviCube() {
 			0, cs, -sn,
 			0, sn, cs;
 
-	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(0, 0.5, NULL);
-	m_Textures[TEX_BACK_FACE] = createCubeFaceTex(0.02, 0.3, NULL);
+    m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(0, 0.5f, NULL);
+    m_Textures[TEX_BACK_FACE] = createCubeFaceTex(0.02f, 0.3f, NULL);
 
-	float gap = 0.12;
-	float radius = 0.12;
+    float gap = 0.12f;
+    float radius = 0.12f;
 
 	m_Textures[TEX_FRONT] = createCubeFaceTex(gap, radius, "Front");
 	m_Textures[TEX_REAR] = createCubeFaceTex(gap, radius, "Rear");
@@ -659,8 +664,8 @@ void NaviCubeImplementation::initNaviCube() {
 	z = r45z * r45x * z;
 	x = r45z * r45x * x;
 
-	x *= 0.25; // corner face size
-	z *= 1.45; // corner face position
+    x *= 0.25f; // corner face size
+    z *= 1.45f; // corner face position
 
 	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 
@@ -699,7 +704,7 @@ void NaviCubeImplementation::initNaviCube() {
 	m_Buttons.push_back(TEX_ARROW_LEFT);
 	m_Buttons.push_back(TEX_ARROW_RIGHT);
 
-	m_PickingFramebuffer = new QGLFramebufferObject(2*m_CubeWidgetSize,2* m_CubeWidgetSize, QGLFramebufferObject::CombinedDepthStencil);
+	m_PickingFramebuffer = new QtGLFramebufferObject(2*m_CubeWidgetSize,2* m_CubeWidgetSize, QtGLFramebufferObject::CombinedDepthStencil);
 }
 
 void NaviCubeImplementation::drawNaviCube() {
@@ -825,7 +830,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	if (!pickMode) {
 		// Draw the axes
 		glDisable(GL_TEXTURE_2D);
-		float a=1.1;
+        float a=1.1f;
 
 		static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
 		glColor3f(1, 0, 0);
@@ -1053,7 +1058,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	m_MouseDown = false;
 	if (!m_Dragging) {
 		float rot = 45 ; //30;
-		float tilt = 90-54.7356 ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
+        float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
 		int pick = pickFace(x,y);
 		switch (pick) {
 		default:

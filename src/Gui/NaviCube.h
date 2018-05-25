@@ -23,6 +23,10 @@
 #ifndef SRC_GUI_NAVICUBE_H_
 #define SRC_GUI_NAVICUBE_H_
 
+#include <CXX/Extensions.hxx>
+
+class SoEvent;
+
 namespace Gui {
 class View3DInventorViewer;
 }
@@ -33,8 +37,8 @@ class NaviCube {
 public:
 	NaviCube(Gui::View3DInventorViewer* viewer) ;
 	virtual ~NaviCube();
-	void drawNaviCube() ;
-	bool processSoEvent(const SoEvent* ev) ;
+	void drawNaviCube();
+	bool processSoEvent(const SoEvent* ev);
 private:
 	NaviCubeImplementation* m_NaviCubeImplementation;
 };

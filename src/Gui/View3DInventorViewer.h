@@ -397,6 +397,7 @@ private:
     void setCursorRepresentation(int mode);
 
 private:
+    NaviCube* naviCube;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
