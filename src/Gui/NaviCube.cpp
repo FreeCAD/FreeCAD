@@ -1334,8 +1334,8 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
 	commands.push_back( new ViewPerspectiveCmd());
 	commands.push_back( 0);
 	commands.push_back( new ViewZoomToFitCmd());
-    commands.push_back( 0);
-    commands.push_back( new ViewNormalToSketchPlaneCmd());
+    //commands.push_back( 0);
+    //commands.push_back( new ViewNormalToSketchPlaneCmd());
 	for (vector<Command*>::iterator i=commands.begin(); i!=commands.end(); i++) {
 		if (*i) {
 			rcCmdMgr.addCommand(*i);
