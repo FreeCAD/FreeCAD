@@ -537,6 +537,7 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    delete naviCube;
     // cleanup
     this->backgroundroot->unref();
     this->backgroundroot = 0;
