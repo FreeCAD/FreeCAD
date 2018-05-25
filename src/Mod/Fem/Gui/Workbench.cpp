@@ -160,6 +160,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    Gui::MenuItem* material = new Gui::MenuItem;
+    material->setCommand("Materials");
+    *material << "FEM_MaterialSolid"
+              << "FEM_MaterialFluid"
+              << "FEM_MaterialMechanicalNonlinear";
+
     Gui::MenuItem* elec = new Gui::MenuItem;
     elec->setCommand("&Electrostatic Constraints");
     *elec << "FEM_ConstraintElectrostaticPotential";
@@ -200,9 +206,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     model->setCommand("M&odel");
     *model << "FEM_Analysis"
            << "Separator"
-           << "FEM_MaterialSolid"
-           << "FEM_MaterialFluid"
-           << "FEM_MaterialMechanicalNonlinear"
+           << material
+           << "Separator"
            << "FEM_ElementGeometry1D"
            << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
