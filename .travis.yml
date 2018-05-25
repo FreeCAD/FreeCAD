@@ -62,7 +62,7 @@ matrix:
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
-          - PYTHON_MAJOR_VERSION=2
+          - PYTHON_MAJOR_VERSION=3
 
 git:
   depth: 5000
