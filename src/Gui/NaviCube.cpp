@@ -144,22 +144,21 @@ using namespace Gui;
 // - improved graphics (text now black)
 // - first stab at supporting translations
 
-
 class Face {
 public:
 	int m_FirstVertex;
 	int m_VertexCount;
-	QOpenGLTexture* m_TextureId;
+	GLuint m_TextureId;
 	QColor m_Color;
 	int m_PickId;
-	QOpenGLTexture* m_PickTextureId;
+	GLuint m_PickTextureId;
 	int m_RenderPass;
 	Face(
 		 int firstVertex,
 		 int vertexCount,
-		 QOpenGLTexture* textureId,
+		 GLuint textureId,
 		 int pickId,
-		 QOpenGLTexture* pickTextureId,
+		 GLuint pickTextureId,
 		 const QColor& color,
 		 int  renderPass
 		)
@@ -193,12 +192,12 @@ private:
 
 	void setHilite(int);
 
-	void initNaviCube();
+	void initNaviCube(QtGLWidget*);
 	void addFace(const Vector3f&, const Vector3f&, int, int, int, int,bool flag=false);
 
-	QOpenGLTexture* createCubeFaceTex(float, float, char*);
-	QOpenGLTexture* createButtonTex(int);
-	QOpenGLTexture* createMenuTex(bool);
+	GLuint createCubeFaceTex(QtGLWidget*, float, float, const char*);
+	GLuint createButtonTex(QtGLWidget*, int);
+	GLuint createMenuTex(QtGLWidget*, bool);
 
 	void setView(float ,float );
 	void rotateView(int ,float );
@@ -240,7 +239,7 @@ public:
 	Gui::View3DInventorViewer* m_View3DInventorViewer;
 	void drawNaviCube(bool picking);
 
-    int m_OverSample = 4;
+	int m_OverSample = 4;
 	int m_CubeWidgetSize = 0;
 	int m_CubeWidgetPosX = 0;
 	int m_CubeWidgetPosY = 0;
@@ -262,9 +261,12 @@ public:
 	vector<GLubyte> m_IndexArray;
 	vector<Vector2f> m_TextureCoordArray;
 	vector<Vector3f> m_VertexArray;
-	map<int,QOpenGLTexture*> m_Textures;
+	map<int,GLuint> m_Textures;
 	vector<Face*> m_Faces;
 	vector<int> m_Buttons;
+#if defined(HAVE_QT5_OPENGL)
+	vector<QOpenGLTexture *> m_glTextures;
+#endif
 	QMenu* m_Menu;
 };
 
@@ -294,7 +296,8 @@ NaviCubeImplementation::NaviCubeImplementation(
 	m_HiliteColor = QColor(170,226,247);
 	m_ButtonColor = QColor(226,233,239);
 	m_PickingFramebuffer = NULL;
-	m_CubeWidgetSize = 300;
+	m_CubeWidgetSize = 150;
+
 	m_Menu = createNaviCubeMenu();
 }
 
@@ -304,6 +307,10 @@ NaviCubeImplementation::~NaviCubeImplementation() {
 		delete m_PickingFramebuffer;
 	for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++)
 		delete *f;
+#if defined(HAVE_QT5_OPENGL)
+	for (vector<QOpenGLTexture *>::iterator t = m_glTextures.begin(); t != m_glTextures.end(); t++)
+		delete *t;
+#endif
 }
 
 char* NaviCubeImplementation::enum2str(int e) {
@@ -337,7 +344,7 @@ char* NaviCubeImplementation::enum2str(int e) {
 	}
 }
 
-QOpenGLTexture* NaviCubeImplementation::createCubeFaceTex(float gap, float radius, char* text) {
+GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, float radius, const char* text) {
 	int texSize = m_CubeWidgetSize* m_OverSample;
 	int gapi = texSize * gap;
 	int radiusi = texSize * radius;
@@ -359,11 +366,17 @@ QOpenGLTexture* NaviCubeImplementation::createCubeFaceTex(float gap, float radiu
 	}
 
 	paint.end();
-	return new QOpenGLTexture(image.mirrored());
+#if !defined(HAVE_QT5_OPENGL)
+	return gl->bindTexture(image);
+#else
+    QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
+    m_glTextures.push_back(texture);
+    return texture->textureId();
+#endif
 }
 
 
-QOpenGLTexture* NaviCubeImplementation::createButtonTex(int button) {
+GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
@@ -454,10 +467,16 @@ QOpenGLTexture* NaviCubeImplementation::createButtonTex(int button) {
 	painter.end();
 	//image.save(str(enum2str(button))+str(".png"));
 
-	return new QOpenGLTexture(image.mirrored());
+#if !defined(HAVE_QT5_OPENGL)
+	return gl->bindTexture(image);
+#else
+    QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
+    m_glTextures.push_back(texture);
+    return texture->textureId();
+#endif
 }
 
-QOpenGLTexture* NaviCubeImplementation::createMenuTex( bool forPicking) {
+GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 	int texSize = m_CubeWidgetSize* m_OverSample;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(0, 0, 0, 0));
@@ -520,7 +539,13 @@ QOpenGLTexture* NaviCubeImplementation::createMenuTex( bool forPicking) {
 		painter.fillPath(path5, QColor(64,64,64));
 		}
 	painter.end();
-	return new QOpenGLTexture(image.mirrored());
+#if !defined(HAVE_QT5_OPENGL)
+	return gl->bindTexture(image);
+#else
+    QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
+    m_glTextures.push_back(texture);
+    return texture->textureId();
+#endif
 }
 
 
@@ -587,7 +612,7 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 		m_IndexArray.push_back(t + 4 - 1 - i);
 }
 
-void NaviCubeImplementation::initNaviCube() {
+void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	Vector3f x(1, 0, 0);
 	Vector3f y(0, 1, 0);
 	Vector3f z(0, 0, 1);
@@ -612,36 +637,36 @@ void NaviCubeImplementation::initNaviCube() {
 			-sn, cs, 0,
 			0, 0, 1;
 
-	cs = cos(atan(sqrt(2)));
-	sn = sin(atan(sqrt(2)));
+	cs = cos(atan(sqrt(2.0)));
+	sn = sin(atan(sqrt(2.0)));
 	Matrix3f r45x;
 	r45x << 1, 0, 0,
 			0, cs, -sn,
 			0, sn, cs;
 
-    m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(0, 0.5f, NULL);
-    m_Textures[TEX_BACK_FACE] = createCubeFaceTex(0.02f, 0.3f, NULL);
+	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, 0, 0.5f, NULL);
+	m_Textures[TEX_BACK_FACE] = createCubeFaceTex(gl, 0.02f, 0.3f, NULL);
 
-    float gap = 0.12f;
-    float radius = 0.12f;
+	float gap = 0.12f;
+	float radius = 0.12f;
 
-	m_Textures[TEX_FRONT] = createCubeFaceTex(gap, radius, "Front");
-	m_Textures[TEX_REAR] = createCubeFaceTex(gap, radius, "Rear");
-	m_Textures[TEX_TOP] = createCubeFaceTex(gap, radius, "Top");
-	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gap, radius, "Bottom");
-	m_Textures[TEX_RIGHT] = createCubeFaceTex(gap, radius, "Right");
-	m_Textures[TEX_LEFT] = createCubeFaceTex(gap, radius, "Left");
+	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, radius, "Front");
+	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, radius, "Rear");
+	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, radius, "Top");
+	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, radius, "Bottom");
+	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, radius, "Right");
+	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, radius, "Left");
 
-	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex( gap, radius, NULL);
+	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, radius, NULL);
 
-	m_Textures[TEX_ARROW_NORTH] = createButtonTex(TEX_ARROW_NORTH);
-	m_Textures[TEX_ARROW_SOUTH] = createButtonTex(TEX_ARROW_SOUTH);
-	m_Textures[TEX_ARROW_EAST] = createButtonTex(TEX_ARROW_EAST);
-	m_Textures[TEX_ARROW_WEST] = createButtonTex(TEX_ARROW_WEST);
-	m_Textures[TEX_ARROW_LEFT] = createButtonTex(TEX_ARROW_LEFT);
-	m_Textures[TEX_ARROW_RIGHT] = createButtonTex(TEX_ARROW_RIGHT);
-	m_Textures[TEX_VIEW_MENU_ICON] = createMenuTex(false);
-	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(true);
+	m_Textures[TEX_ARROW_NORTH] = createButtonTex(gl, TEX_ARROW_NORTH);
+	m_Textures[TEX_ARROW_SOUTH] = createButtonTex(gl, TEX_ARROW_SOUTH);
+	m_Textures[TEX_ARROW_EAST] = createButtonTex(gl, TEX_ARROW_EAST);
+	m_Textures[TEX_ARROW_WEST] = createButtonTex(gl, TEX_ARROW_WEST);
+	m_Textures[TEX_ARROW_LEFT] = createButtonTex(gl, TEX_ARROW_LEFT);
+	m_Textures[TEX_ARROW_RIGHT] = createButtonTex(gl, TEX_ARROW_RIGHT);
+	m_Textures[TEX_VIEW_MENU_ICON] = createMenuTex(gl, false);
+	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(gl, true);
 
 			// front,back,pick,pickid
 	addFace(x, z, TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP,true);
@@ -664,8 +689,8 @@ void NaviCubeImplementation::initNaviCube() {
 	z = r45z * r45x * z;
 	x = r45z * r45x * x;
 
-    x *= 0.25f; // corner face size
-    z *= 1.45f; // corner face position
+	x *= 0.25f; // corner face size
+	z *= 1.45f; // corner face position
 
 	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 
@@ -738,7 +763,10 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	// initilizes stuff here when we actually have a context
     // FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
 	if (!m_NaviCubeInitialised) {
-		initNaviCube();
+		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
+		if (gl == NULL)
+			return;
+		initNaviCube(gl);
 		m_NaviCubeInitialised = true;
 	}
 
@@ -830,7 +858,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	if (!pickMode) {
 		// Draw the axes
 		glDisable(GL_TEXTURE_2D);
-        float a=1.1f;
+		float a=1.1f;
 
 		static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
 		glColor3f(1, 0, 0);
@@ -866,7 +894,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	if (pickMode) {
 		for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
 			glColor3ub((*f)->m_PickId, 0, 0);
-            (*f)->m_PickTextureId->bind();
+			glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
 			glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
 		}
 	}
@@ -875,13 +903,13 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
 				if (pickMode) { // pick should not be drawn in tree passes
 					glColor3ub((*f)->m_PickId, 0, 0);
-                    (*f)->m_PickTextureId->bind();
+					glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
 				} else {
 					if (pass != (*f)->m_RenderPass)
 						continue;
 					QColor& c = (m_HiliteId == (*f)->m_PickId) && (pass < 2) ? m_HiliteColor : (*f)->m_Color;
 					glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
-                    (*f)->m_TextureId->bind();
+					glBindTexture(GL_TEXTURE_2D, (*f)->m_TextureId);
 				}
 				glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
 			}
@@ -910,7 +938,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			QColor& c = (m_HiliteId ==(*b)) ? m_HiliteColor : m_ButtonColor;
 			glColor3f(c.redF(), c.greenF(), c.blueF());
 		}
-        m_Textures[*b]->bind();
+		glBindTexture(GL_TEXTURE_2D, m_Textures[*b]);
 
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -927,13 +955,13 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	// Draw the view menu icon
 	if (pickMode) {
 		glColor3ub(TEX_VIEW_MENU_FACE, 0, 0);
-        m_Textures[TEX_VIEW_MENU_FACE]->bind();
+		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_FACE]);
 	}
 	else {
 		if (m_HiliteId == TEX_VIEW_MENU_FACE) {
 			QColor& c = m_HiliteColor;
 			glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
-            m_Textures[TEX_VIEW_MENU_FACE]->bind();
+			glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_FACE]);
 
 			glBegin(GL_QUADS); // DO THIS WITH VERTEX ARRAYS
 			glTexCoord2f(0, 0);
@@ -948,7 +976,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 		}
 
 		glColor3ub(255,255,255);
-        m_Textures[TEX_VIEW_MENU_ICON]->bind();
+		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_ICON]);
 	}
 
 	glBegin(GL_QUADS); // FIXME do this with vertex arrays
@@ -989,11 +1017,11 @@ int NaviCubeImplementation::pickFace(short x, short y) {
 
 		glFinish();
 
-        glReadPixels(2*(x - (m_CubeWidgetPosX-m_CubeWidgetSize/2)), 2*(y - (m_CubeWidgetPosY-m_CubeWidgetSize/2)), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
+		glReadPixels(2*(x - (m_CubeWidgetPosX-m_CubeWidgetSize/2)), 2*(y - (m_CubeWidgetPosY-m_CubeWidgetSize/2)), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
 		m_PickingFramebuffer->release();
 
-		QImage image = m_PickingFramebuffer->toImage();
-		image.save(QLatin1String("pickimage.png"));
+		//QImage image = m_PickingFramebuffer->toImage();
+		//image.save(QLatin1String("pickimage.png"));
 	}
 	return pixels[3] == 255 ? pixels[0] : 0;
 }
@@ -1058,7 +1086,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	m_MouseDown = false;
 	if (!m_Dragging) {
 		float rot = 45 ; //30;
-        float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
+		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
 		int pick = pickFace(x,y);
 		switch (pick) {
 		default:
