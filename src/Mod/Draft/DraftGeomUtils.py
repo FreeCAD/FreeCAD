@@ -1110,11 +1110,11 @@ def getNormal(shape):
         if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
                 n = shape.copy().normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
-                if geomType(shape.Edges[0]) == "Circle":
+                if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
                         n = shape.Edges[0].Curve.Axis
         else:
                 for e in shape.Edges:
-                        if geomType(e) == "Circle":
+                        if geomType(e) in ["Circle","Ellipse"]:
                                 n = e.Curve.Axis
                                 break
                         e1 = vec(shape.Edges[0])
