@@ -1410,7 +1410,7 @@ void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
             // solver behaviour
 
             // further, any constraint taking only one element, which is blocked is also unenforceable
-            if((*it)->Second==Constraint::GeoUndef && (*it)->Third==Constraint::GeoUndef) {
+            if((*it)->Second==Constraint::GeoUndef && (*it)->Third==Constraint::GeoUndef && (*it)->First>=0 ) {
                 if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
                     unenforceableConstraints[i]= true;
                 }
