@@ -35,10 +35,17 @@ class NaviCubeImplementation;
 
 class NaviCube {
 public:
+	enum Corner {
+		TopLeftCorner,
+		TopRightCorner,
+		BottomLeftCorner,
+		BottomRightCorner
+	};
 	NaviCube(Gui::View3DInventorViewer* viewer) ;
 	virtual ~NaviCube();
 	void drawNaviCube();
 	bool processSoEvent(const SoEvent* ev);
+	void setCorner(Corner);
 private:
 	NaviCubeImplementation* m_NaviCubeImplementation;
 };

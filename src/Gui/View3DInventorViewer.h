@@ -38,7 +38,6 @@
 #include <QImage>
 
 #include <Gui/Selection.h>
-#include <Gui/NaviCube.h>
 
 class SoTranslation;
 class SoTransform;
@@ -55,6 +54,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;
+class NaviCube;
 
 namespace Gui {
 
@@ -344,6 +344,8 @@ public:
     bool hasAxisCross(void);
     
     void setEnabledFPSCounter(bool b);
+    void setEnabledNaviCube(bool b);
+    bool isEnabledNaviCube(void) const;
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
 
@@ -395,6 +397,7 @@ private:
     void drawAxisCross(void);
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
+    void aboutToDestroyGLContext();
 
 private:
     NaviCube* naviCube;
@@ -428,6 +431,7 @@ private:
     //stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
+    SbBool naviCubeEnabled;
 
     SbBool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

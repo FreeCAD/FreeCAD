@@ -120,6 +120,7 @@
 #include <Quarter/eventhandlers/EventFilter.h>
 #include <Quarter/devices/InputDevice.h>
 #include "View3DViewerPy.h"
+#include <Gui/NaviCube.h>
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
@@ -533,11 +534,14 @@ void View3DInventorViewer::init()
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
     panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
     naviCube = new NaviCube(this);
+    naviCubeEnabled = true;
 }
 
 View3DInventorViewer::~View3DInventorViewer()
 {
-    delete naviCube;
+    // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
+    aboutToDestroyGLContext();
+
     // cleanup
     this->backgroundroot->unref();
     this->backgroundroot = 0;
@@ -568,6 +572,18 @@ View3DInventorViewer::~View3DInventorViewer()
     if (_viewerPy) {
         static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = 0;
         Py_DECREF(_viewerPy);
+    }
+}
+
+void View3DInventorViewer::aboutToDestroyGLContext()
+{
+    if (naviCube) {
+        QtGLWidget* gl = qobject_cast<QtGLWidget*>(this->viewport());
+        if (gl)
+            gl->makeCurrent();
+        delete naviCube;
+        naviCube = 0;
+        naviCubeEnabled = false;
     }
 }
 
@@ -821,6 +837,16 @@ void View3DInventorViewer::setEnabledVBO(bool on)
 bool View3DInventorViewer::isEnabledVBO() const
 {
     return vboEnabled;
+}
+
+void View3DInventorViewer::setEnabledNaviCube(bool on)
+{
+    naviCubeEnabled = on;
+}
+
+bool View3DInventorViewer::isEnabledNaviCube(void) const
+{
+    return naviCubeEnabled;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -1733,7 +1759,8 @@ void View3DInventorViewer::renderScene(void)
         draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1f,0.1f));
     }
 
-    naviCube->drawNaviCube();
+    if (naviCubeEnabled)
+        naviCube->drawNaviCube();
 
 #if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);
@@ -1816,7 +1843,7 @@ void View3DInventorViewer::selectAll()
 
 bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 {
-    if (naviCube->processSoEvent(ev))
+    if (naviCubeEnabled && naviCube->processSoEvent(ev))
         return true;
     if (isRedirectedToSceneGraph()) {
         SbBool processed = inherited::processSoEvent(ev);

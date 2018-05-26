@@ -168,6 +168,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"BackgroundColor4");
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
+    OnChange(*hGrp,"ShowNaviCube");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
@@ -360,6 +361,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+    }
+    else if (strcmp(Reason,"ShowNaviCube") == 0) {
+        _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));

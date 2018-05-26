@@ -253,6 +253,7 @@ public:
 	bool m_MouseDown = false;
 	bool m_Dragging = false;
 	bool m_MightDrag = false;
+    NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
 
 	QtGLFramebufferObject* m_PickingFramebuffer;
 
@@ -287,6 +288,9 @@ bool NaviCube::processSoEvent(const SoEvent* ev) {
 	return m_NaviCubeImplementation->processSoEvent(ev);
 }
 
+void NaviCube::setCorner(Corner c) {
+	m_NaviCubeImplementation->m_Corner = c;
+}
 
 NaviCubeImplementation::NaviCubeImplementation(
 		Gui::View3DInventorViewer* viewer) {
@@ -748,8 +752,24 @@ void NaviCubeImplementation::handleResize() {
 				m_CubeWidgetPosY = view[1] - (m_PrevHeight - m_CubeWidgetPosY);
 		}
 		else { // initial position
-			m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2;
-			m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2;
+			switch (m_Corner) {
+			case NaviCube::TopLeftCorner:
+				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2;
+				break;
+			case NaviCube::TopRightCorner:
+				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2;
+				break;
+			case NaviCube::BottomLeftCorner:
+				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2;
+				break;
+			case NaviCube::BottomRightCorner:
+				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2;
+				break;
+			}
 		}
 		m_PrevWidth = view[0];
 		m_PrevHeight = view[1];

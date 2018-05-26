@@ -191,6 +191,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
   void replaceViewport();
+  virtual void aboutToDestroyGLContext();
 
 protected:
   virtual void paintEvent(QPaintEvent*);
