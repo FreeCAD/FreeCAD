@@ -849,6 +849,12 @@ bool View3DInventorViewer::isEnabledNaviCube(void) const
     return naviCubeEnabled;
 }
 
+void View3DInventorViewer::setNaviCubeCorner(int c)
+{
+    if (naviCube)
+        naviCube->setCorner(static_cast<NaviCube::Corner>(c));
+}
+
 void View3DInventorViewer::setAxisCross(bool on)
 {
     SoNode* scene = getSceneGraph();

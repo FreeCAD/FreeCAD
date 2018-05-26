@@ -290,6 +290,8 @@ bool NaviCube::processSoEvent(const SoEvent* ev) {
 
 void NaviCube::setCorner(Corner c) {
 	m_NaviCubeImplementation->m_Corner = c;
+	m_NaviCubeImplementation->m_PrevWidth = 0;
+	m_NaviCubeImplementation->m_PrevHeight = 0;
 }
 
 NaviCubeImplementation::NaviCubeImplementation(

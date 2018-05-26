@@ -346,6 +346,7 @@ public:
     void setEnabledFPSCounter(bool b);
     void setEnabledNaviCube(bool b);
     bool isEnabledNaviCube(void) const;
+    void setNaviCubeCorner(int);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
 
