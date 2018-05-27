@@ -1420,7 +1420,54 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
 
 bool TopoShape::isClosed() const
 {
-    return BRep_Tool::IsClosed(this->_Shape) ? true : false;
+    if (this->_Shape.IsNull())
+        return false;
+    bool closed = false;
+    switch (this->_Shape.ShapeType()) {
+    case TopAbs_SHELL:
+    case TopAbs_WIRE:
+    case TopAbs_EDGE:
+        closed = BRep_Tool::IsClosed(this->_Shape) ? true : false;
+        break;
+    case TopAbs_COMPSOLID:
+    case TopAbs_SOLID:
+        {
+            closed = true;
+            TopExp_Explorer xp(this->_Shape, TopAbs_SHELL);
+            while (xp.More()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+                xp.Next();
+            }
+        }
+        break;
+    case TopAbs_COMPOUND:
+        {
+            closed = true;
+            TopExp_Explorer xp;
+            for (xp.Init(this->_Shape, TopAbs_SHELL); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+        }
+        break;
+    case TopAbs_FACE:
+    case TopAbs_VERTEX:
+    case TopAbs_SHAPE:
+        closed = BRep_Tool::IsClosed(this->_Shape) ? true : false;
+        break;
+    }
+    return closed;
 }
 
 TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const

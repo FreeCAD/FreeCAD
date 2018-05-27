@@ -443,7 +443,12 @@ As a result, this shape becomes null.</UserDocu>
     </Methode>
     <Methode Name="isClosed" Const="true">
       <Documentation>
-        <UserDocu>Checks if the shape is closed.</UserDocu>
+        <UserDocu>Checks if the shape is closed
+If the shape is a shell it returns True if it has no free boundaries (edges).
+If the shape is a wire it returns True if it has no free ends (vertices).
+(Internal and External sub-shepes are ignored in these checks)
+If the shape is an edge it returns True if its vertices are the same.
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isPartner" Const="true">
