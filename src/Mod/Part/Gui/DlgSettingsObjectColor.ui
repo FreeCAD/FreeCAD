@@ -227,10 +227,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefCheckBox" name="checkRandomColor">
           <property name="text">
-           <string>random shapecolor</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Random shape color</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>RandomColor</cstring>

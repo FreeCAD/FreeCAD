@@ -80,12 +80,16 @@ void DlgSettings3DViewImp::saveSettings()
     index = this->comboAliasing->currentIndex();
     hGrp->SetInt("AntiAliasing", index);
 
+    index = this->naviCubeCorner->currentIndex();
+    hGrp->SetInt("CornerNaviCube", index);
+
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
     spinBoxZoomStep->onSave();
     CheckBox_CornerCoordSystem->onSave();
     CheckBox_ShowFPS->onSave();
     CheckBox_useVBO->onSave();
+    CheckBox_NaviCube->onSave();
     CheckBox_UseAutoRotation->onSave();
     FloatSpinBox_EyeDistance->onSave();
     checkBoxBacklight->onSave();
@@ -103,6 +107,7 @@ void DlgSettings3DViewImp::loadSettings()
     CheckBox_CornerCoordSystem->onRestore();
     CheckBox_ShowFPS->onRestore();
     CheckBox_useVBO->onRestore();
+    CheckBox_NaviCube->onRestore();
     CheckBox_UseAutoRotation->onRestore();
     FloatSpinBox_EyeDistance->onRestore();
     checkBoxBacklight->onRestore();
@@ -127,6 +132,9 @@ void DlgSettings3DViewImp::loadSettings()
     // connect after setting current item of the combo box
     connect(comboAliasing, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onAliasingChanged(int)));
+
+    index = hGrp->GetInt("CornerNaviCube", 1);
+    naviCubeCorner->setCurrentIndex(index);
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()

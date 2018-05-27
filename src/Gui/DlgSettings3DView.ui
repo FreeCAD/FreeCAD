@@ -50,6 +50,73 @@
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="CheckBox_NaviCube">
+          <property name="text">
+           <string>Show navigation cube</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowNaviCube</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="cornerLabel">
+          <property name="text">
+           <string>Corner</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="naviCubeCorner">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Top left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Top right</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom right</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="text">
          <string>Use OpenGL Vertex Buffer Object (experimental)</string>
@@ -528,6 +595,7 @@
  <tabstops>
   <tabstop>CheckBox_CornerCoordSystem</tabstop>
   <tabstop>CheckBox_ShowFPS</tabstop>
+  <tabstop>CheckBox_NaviCube</tabstop>
   <tabstop>CheckBox_useVBO</tabstop>
   <tabstop>CheckBox_UseAutoRotation</tabstop>
   <tabstop>comboNavigationStyle</tabstop>
