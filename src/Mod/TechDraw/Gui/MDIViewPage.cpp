@@ -223,13 +223,19 @@ void MDIViewPage::setDocumentObject(const std::string& name)
     m_objectName = name;
 }
 
+void MDIViewPage::setDocumentName(const std::string& name)
+{
+    m_documentName = name;
+}
+
 
 void MDIViewPage::closeEvent(QCloseEvent* ev)
 {
     MDIView::closeEvent(ev);
     if (!ev->isAccepted())
         return;
-
+    detachSelection();
+    blockSelection(true);
     // when closing the view from GUI notify the view provider to mark it invisible
     if (_pcDocument && !m_objectName.empty()) {
         App::Document* doc = _pcDocument->getDocument();
