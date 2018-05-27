@@ -86,6 +86,7 @@ public:
     bool getFrameState(void) {return m_frameState;};
 
     void setDocumentObject(const std::string&);
+    void setDocumentName(const std::string&);
     PyObject* getPyObject();
 
     QGVPage* getQGVPage(void) {return m_view;};
@@ -97,7 +98,6 @@ public:
 
     void redrawAllViews(void);
     void redraw1View(TechDraw::DrawView* dv);
-
 
 public Q_SLOTS:
     void setRenderer(QAction *action);
@@ -135,6 +135,7 @@ private:
     QAction *m_highQualityAntialiasingAction;
 
     std::string m_objectName;
+    std::string m_documentName;
     bool isSelectionBlocked;
     QGVPage *m_view;
 
