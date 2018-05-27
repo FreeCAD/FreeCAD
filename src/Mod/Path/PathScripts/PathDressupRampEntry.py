@@ -69,10 +69,11 @@ class ObjectDressup:
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
-        if obj.UseStartDepth:
-            obj.setEditorMode('DressupStartDepth', 0)
-        else:
-            obj.setEditorMode('DressupStartDepth', 2)
+        if hasattr(obj, 'UseStartDepth'):
+            if obj.UseStartDepth:
+                obj.setEditorMode('DressupStartDepth', 0)
+            else:
+                obj.setEditorMode('DressupStartDepth', 2)
 
         if obj.RampFeedRate == 'Custom':
             obj.setEditorMode('CustomFeedRate', 0)
@@ -97,8 +98,12 @@ class ObjectDressup:
         elif obj.Angle <= 0:
             obj.Angle = 0.1
 
-        self.ignoreAboveEnabled = obj.UseStartDepth
-        self.ignoreAbove = obj.DressupStartDepth
+        if hasattr(obj, 'UseStartDepth'):
+            self.ignoreAboveEnabled = obj.UseStartDepth
+            self.ignoreAbove = obj.DressupStartDepth
+        else:
+            self.ignoreAboveEnabled = False
+            self.ignoreAbove = 0
 
         self.angle = obj.Angle
         self.method = obj.Method
