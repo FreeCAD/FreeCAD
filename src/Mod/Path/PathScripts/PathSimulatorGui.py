@@ -95,7 +95,7 @@ class PathSimulation:
                 self.firstDrill = True
                 self.activeOps.append(self.operations[i])
                 self.numCommands += len(self.operations[i].Path.Commands)
-        
+
         self.stock = self.job.Stock.Shape
         if (self.isVoxel):
             maxlen = self.stock.BoundBox.XLength
@@ -480,14 +480,14 @@ class PathSimulation:
         self.cutTool.ViewObject.hide()
         self.iprogress = 0
         self.EndSimulation()
-        
+
     def InvalidOperation(self):
         if len(self.activeOps) == 0:
           return True
         if (self.tool == None):
           TSError("No tool assigned for the operation")
           return True
-        return false
+        return False
 
     def SimFF(self):
         if self.InvalidOperation():
