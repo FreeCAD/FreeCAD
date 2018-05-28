@@ -53,6 +53,8 @@ class CommandManager(object):
         def IsActive(self):
             if not self.is_active:
                 active = False
+            elif self.is_active == 'allways':
+                active = True
             elif self.is_active == 'with_document':
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':
