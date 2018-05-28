@@ -57,7 +57,8 @@ class ObjectEngrave(PathOp.ObjectOp):
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
-        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the path from"))
+        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
+        obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process engraving operation'''
@@ -109,9 +110,16 @@ class ObjectEngrave(PathOp.ObjectOp):
                     wires.extend(TechDraw.edgeWalker(edges))
                 output += self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
-            else:
+            elif not obj.BaseShapes:
+                PathLog.info("base object: %s" % (obj.Base))
                 raise ValueError('Unknown baseobject type for engraving')
 
+            if obj.BaseShapes:
+                wires = []
+                for shape in obj.BaseShapes:
+                    output += self.buildpathocc(obj, shape.Shape.Wires, zValues)
+                    wires.extend(shape.Shape.Wires)
+                self.wires = wires
             output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
