@@ -24,6 +24,42 @@ CDxfWrite::CDxfWrite(const char* filepath)
     }
     m_ofs->imbue(std::locale("C"));
 
+    //header & version
+    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "SECTION"  << endl;
+    (*m_ofs) << 2          << endl;
+    (*m_ofs) << "HEADER"   << endl;
+    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "$ACADVER"  << endl;
+    (*m_ofs) << 1          << endl;
+    (*m_ofs) << "AC1009"   << endl;
+    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "$INSBASE"  << endl;
+    (*m_ofs) << 10          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 20          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 30          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "$EXTMIN"  << endl;
+    (*m_ofs) << 10          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 20          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 30          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "$EXTMAX"  << endl;
+    (*m_ofs) << 10          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 20          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 30          << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "ENDSEC"   << endl;
+
     // start
     (*m_ofs) << 0          << endl;
     (*m_ofs) << "SECTION"  << endl;
