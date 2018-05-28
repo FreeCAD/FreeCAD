@@ -77,7 +77,7 @@ notifications:
     on_start:   change
 
 before_install:
-- eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
+- source ./travis-helpers.sh
 - |
   case "${TRAVIS_OS_NAME}" in
 
