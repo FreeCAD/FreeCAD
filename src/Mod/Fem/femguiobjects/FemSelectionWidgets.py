@@ -437,7 +437,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'
-                    FreeCAD.Console.PrintMessage('selection variable adaped to hold the Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+                    FreeCAD.Console.PrintMessage('selection variable adaped to hold the Solid: ' + selection[0].Shape.ShapeType + '  ' + selection[0].Name + '  ' + selection[1] + ' \n')
                 else:
                     return
             if ele_ShapeType in self.sel_elem_types:
