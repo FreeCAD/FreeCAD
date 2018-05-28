@@ -2836,6 +2836,13 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
     const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
     std::vector< Constraint * > newconstrVals(constrvals);
+    
+    std::vector<int> newgeoIdList(geoIdList);
+    
+    if(newgeoIdList.size() == 0) {// default option to operate on all the geometry
+        for(int i = 0; i < int(geovals.size()); i++)
+            newgeoIdList.push_back(i);
+    }
 
     int cgeoid = getHighestCurveIndex()+1;
 
@@ -2861,8 +2868,8 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
         for (x=0;x<csize;x++) {
 
             if(x == 0 && y == 0) { // the reference for constraining array elements is the first valid point of the first element
-                const Part::Geometry *geo = getGeometry(*(geoIdList.begin()));
-                refgeoid=*(geoIdList.begin());
+                const Part::Geometry *geo = getGeometry(*(newgeoIdList.begin()));
+                refgeoid=*(newgeoIdList.begin());
                 currentrowfirstgeoid = refgeoid;
                 iterfirstgeoid = refgeoid;
                 if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
@@ -2885,7 +2892,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 }
             }
 
-            for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
+            for (std::vector<int>::const_iterator it = newgeoIdList.begin(); it != newgeoIdList.end(); ++it) {
                 const Part::Geometry *geo = getGeometry(*it);
                 Part::Geometry *geocopy = moveonly?const_cast<Part::Geometry *>(geo):geo->copy();
 
@@ -2898,7 +2905,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     geosymline->setPoints(  ssp,
                                             ep+double(x)*displacement+double(y)*perpendicularDisplacement);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = ssp;
                 }
                 else if(geocopy->getTypeId() == Part::GeomCircle::getClassTypeId()){
@@ -2908,7 +2915,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geosymcircle->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = scp;
                 }
                 else if(geocopy->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
@@ -2918,7 +2925,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geoaoc->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = geoaoc->getStartPoint(true);
                 }
                 else if(geocopy->getTypeId() == Part::GeomEllipse::getClassTypeId()){
@@ -2928,7 +2935,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geosymellipse->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = scp;
                 }
                 else if(geocopy->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
@@ -2938,7 +2945,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geoaoe->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
                 }
                 else if(geocopy->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
@@ -2948,7 +2955,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geoaoe->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
                 }
                 else if(geocopy->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
@@ -2958,7 +2965,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geoaoe->setCenter(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
                 }
                 else if(geocopy->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
@@ -2973,7 +2980,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     geobsp->setPoles(poles);
 
-                    if (it == geoIdList.begin())
+                    if (it == newgeoIdList.begin())
                         iterfirstpoint = geobsp->getStartPoint();
                 }
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
@@ -2982,7 +2989,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
                     geopoint->setPoint(scp);
 
-                    if(it == geoIdList.begin())
+                    if(it == newgeoIdList.begin())
                         iterfirstpoint = scp;
                 }
                 else {
@@ -3001,9 +3008,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 // handle geometry constraints
                 for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
 
-                    std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
+                    std::vector<int>::const_iterator fit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->First);
 
-                    if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
+                    if(fit != newgeoIdList.end()) { // if First of constraint is in geoIdList
 
                         if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
                             if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) || 
@@ -3034,9 +3041,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                         }
                         else { // other geoids intervene in this constraint
 
-                            std::vector<int>::const_iterator sit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Second);
+                            std::vector<int>::const_iterator sit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->Second);
 
-                            if(sit != geoIdList.end()) { // Second is also in the list
+                            if(sit != newgeoIdList.end()) { // Second is also in the list
                                 if( (*it)->Third == Constraint::GeoUndef ) {
                                     if (((*it)->Type == Sketcher::DistanceX || 
                                         (*it)->Type == Sketcher::DistanceY ||
@@ -3057,9 +3064,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                     }
                                 }
                                 else {
-                                    std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
+                                    std::vector<int>::const_iterator tit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->Third);
 
-                                    if(tit != geoIdList.end()) { // Third is also in the list
+                                    if(tit != newgeoIdList.end()) { // Third is also in the list
                                         Constraint *constNew = (*it)->copy();
                                         constNew->First = geoIdMap[(*it)->First];
                                         constNew->Second = geoIdMap[(*it)->Second];
