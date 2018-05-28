@@ -87,6 +87,7 @@ protected:
 private:
     QPointer<MDIViewPage> m_mdiView;
     bool m_docReady;
+    std::string m_pageName;
 };
 
 } // namespace TechDrawGui
