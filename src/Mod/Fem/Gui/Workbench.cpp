@@ -164,7 +164,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     material->setCommand("Materials");
     *material << "FEM_MaterialSolid"
               << "FEM_MaterialFluid"
-              << "FEM_MaterialMechanicalNonlinear";
+              << "FEM_MaterialMechanicalNonlinear"
+              << "FEM_MaterialEditor";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
     elec->setCommand("&Electrostatic Constraints");

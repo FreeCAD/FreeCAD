@@ -303,6 +303,21 @@ class _CommandFemEquationHeat(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
+class _CommandFemMaterialEditor(CommandManager):
+    "The FEM_MaterialEditor command definition"
+    def __init__(self):
+        super(_CommandFemMaterialEditor, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor")}
+        self.is_active = 'allways'
+
+    def Activated(self):
+        FreeCADGui.addModule("MaterialEditor")
+        FreeCADGui.doCommand("MaterialEditor.openEditor()")
+
+
 class _CommandFemMaterialFluid(CommandManager):
     "The FEM_MaterialFluid command definition"
     def __init__(self):
@@ -750,6 +765,7 @@ FreeCADGui.addCommand('FEM_EquationElasticity', _CommandFemEquationElasticity())
 FreeCADGui.addCommand('FEM_EquationFlow', _CommandFemEquationFlow())
 FreeCADGui.addCommand('FEM_EquationFluxsolver', _CommandFemEquationFluxsolver())
 FreeCADGui.addCommand('FEM_EquationHeat', _CommandFemEquationHeat())
+FreeCADGui.addCommand('FEM_MaterialEditor', _CommandFemMaterialEditor())
 FreeCADGui.addCommand('FEM_MaterialFluid', _CommandFemMaterialFluid())
 FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandFemMaterialMechanicalNonlinear())
 FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())
