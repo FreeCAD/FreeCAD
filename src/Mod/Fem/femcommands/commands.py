@@ -524,7 +524,7 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
 class _CommandFemMeshPrintInfo(CommandManager):
