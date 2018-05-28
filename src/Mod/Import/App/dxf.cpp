@@ -69,9 +69,21 @@ CDxfWrite::CDxfWrite(const char* filepath)
 
 CDxfWrite::~CDxfWrite()
 {
-    // end
     (*m_ofs) << 0          << endl;
-    (*m_ofs) << "ENDSEC"   << endl;
+    (*m_ofs) << "ENDSEC"   << endl;   //end of entities section
+
+    // write dimension blocks if exist
+    if (!m_ssBlock.str().empty()) {
+        (*m_ofs) << 0          << endl;
+        (*m_ofs) << "SECTION"  << endl;
+        (*m_ofs) << 2          << endl;
+        (*m_ofs) << "BLOCKS"   << endl;
+        (*m_ofs) << m_ssBlock.str();
+        (*m_ofs) << 0          << endl;
+        (*m_ofs) << "ENDSEC"   << endl;
+    }
+
+    // end
     (*m_ofs) << 0          << endl;
     (*m_ofs) << "EOF";
 
@@ -396,7 +408,7 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << 100            << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << 2              << endl;
-    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << layer_name         << endl;     // blockName *D1 ??
     (*m_ofs) << 10             << endl;     //dimension line definition point
     (*m_ofs) << lineDefPoint[0]    << endl;
     (*m_ofs) << 20             << endl; 
@@ -443,6 +455,8 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
 //    (*m_ofs) << arcPoint[2]    << endl;
 //    (*m_ofs) << 40             << endl;
 //    (*m_ofs) << lenLeader      << endl;
+
+    writeDimBlock(layer_name);
 }
 
 //***************************
@@ -463,7 +477,7 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << 100            << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << 2              << endl;
-    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << layer_name     << endl;     // blockName *D1 ??
 
     (*m_ofs) << 10             << endl;
     (*m_ofs) << endExt2[0]     << endl;
@@ -519,6 +533,8 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << lineDefPoint[1]    << endl;
     (*m_ofs) << 36                 << endl;
     (*m_ofs) << lineDefPoint[2]    << endl;
+
+    writeDimBlock(layer_name);
 }
 //***************************
 //WriteRadialDim
@@ -537,7 +553,7 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << 100            << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << 2              << endl;
-    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << layer_name          << endl;     // blockName *D1 ??
     (*m_ofs) << 10                << endl;     // arc center point
     (*m_ofs) << centerPoint[0]    << endl;
     (*m_ofs) << 20                << endl; 
@@ -569,6 +585,8 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << arcPoint[2]    << endl;
     (*m_ofs) << 40             << endl;   // leader length????
     (*m_ofs) << 0              << endl;
+
+    writeDimBlock(layer_name);
 }
 
 //***************************
@@ -588,7 +606,7 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << 100            << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << 2              << endl;
-    (*m_ofs) << "*D1"          << endl;     // blockName *D1 ??
+    (*m_ofs) << layer_name          << endl;     // blockName *D1 ??
     (*m_ofs) << 10             << endl;
     (*m_ofs) << arcPoint1[0]   << endl;
     (*m_ofs) << 20             << endl; 
@@ -620,6 +638,33 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << arcPoint2[2]    << endl;
     (*m_ofs) << 40             << endl;   // leader length????
     (*m_ofs) << 0              << endl;
+
+    writeDimBlock(layer_name);
+}
+
+//***************************
+//WriteDimBlock
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeDimBlock(const char* layer_name)
+{
+    m_ssBlock << 0              << endl;
+    m_ssBlock << "BLOCK"        << endl;
+    m_ssBlock << 8              << endl;
+    m_ssBlock << layer_name     << endl;
+    m_ssBlock << 2              << endl;
+    m_ssBlock << "*" << layer_name     << endl;     // blockName
+    m_ssBlock << 10             << endl;
+    m_ssBlock << 0.0            << endl;
+    m_ssBlock << 20             << endl; 
+    m_ssBlock << 0.0            << endl;
+    m_ssBlock << 30             << endl;
+    m_ssBlock << 0.0            << endl;
+    m_ssBlock << 3              << endl;
+    m_ssBlock << "*" << layer_name     << endl;     // blockName
+    m_ssBlock << 1              << endl;
+    m_ssBlock << ""             << endl;
+    m_ssBlock << 0              << endl;
+    m_ssBlock << "ENDBLK"       << endl;
 }
 
 

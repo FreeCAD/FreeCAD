@@ -120,6 +120,7 @@ class CDxfWrite{
 private:
     std::ofstream* m_ofs;
     bool m_fail;
+    std::stringstream m_ssBlock;
 
 public:
     CDxfWrite(const char* filepath);
@@ -154,6 +155,9 @@ public:
                          const double* arcPoint1, const double* arcPoint2,
                          const char* dimText,
                          const char* layer_name);
+    void writeDimBlock(const char* layer_name);
+    
+
 };
 
 // derive a class from this and implement it's virtual functions
