@@ -993,7 +993,7 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
 #endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, PyObject_IsTrue(clone) ? true : false) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
     
         if(ret == -1)
             throw Py::TypeError("Copy operation unsuccessful!");
@@ -1011,6 +1011,39 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
     std::string error = std::string("type must be list of GeoIds, not ");
     error += pcObj->ob_type->tp_name;
     throw Py::TypeError(error);    
+}
+
+PyObject* SketchObjectPy::addMove(PyObject *args)
+{
+    PyObject *pcObj, *pcVect;
+
+    if (!PyArg_ParseTuple(args, "OO!", &pcObj, &(Base::VectorPy::Type), &pcVect))
+        return 0;
+
+    Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+        PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+    Py::Sequence list(pcObj);
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+        #if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check((*it).ptr()))
+            geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        #else
+        if (PyInt_Check((*it).ptr()))
+            geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+        #endif
+    }
+
+    this->getSketchObjectPtr()->addCopy(geoIdList, vect, true);
+    
+    Py_Return;
+    }
+    
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
@@ -1041,7 +1074,7 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
 #endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, PyObject_IsTrue(clone) ? true : false, 
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false, 
                                                       rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
     
         if(ret == -1)
