@@ -944,7 +944,7 @@ class InstallWorker(QtCore.QThread):
                         os.makedirs(macro_dir)
                     for f in os.listdir(clonedir):
                         if f.lower().endswith(".fcmacro"):
-                            symlink(os.path.join(clonedir, f), os.path.joint(macro_dir, f))
+                            symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
                             FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                             answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
                             answer += f + "</b>"
