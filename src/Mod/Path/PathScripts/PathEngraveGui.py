@@ -61,8 +61,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             if sel.Object.isDerivedFrom('Part::Part2DObject'):
                 if sel.HasSubObjects:
                     for sub in sel.SubElementNames:
-                        self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                        if 'Vertex' in sub:
+                            PathLog.info(translate("Path", "Ignoring vertex"))
+                        else:
+                            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
                 else:
+                    self.obj.Base = [p for p,el in self.obj.Base if p != sel.Object]
                     shapes.append(sel.Object)
                     self.obj.BaseShapes = shapes
                 added = True

@@ -106,7 +106,9 @@ class ObjectEngrave(PathOp.ObjectOp):
             elif obj.Base:
                 wires = []
                 for base, subs in obj.Base:
-                    edges = [base.Shape.getElement(sub) for sub in subs]
+                    edges = []
+                    for sub in subs:
+                        edges.extend(base.Shape.getElement(sub).Edges)
                     wires.extend(TechDraw.edgeWalker(edges))
                 output += self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
@@ -124,8 +126,8 @@ class ObjectEngrave(PathOp.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         except Exception as e:
-            #PathLog.error("Exception: %s" % e)
-            #traceback.print_exc()
+            PathLog.error("Exception: %s" % e)
+            traceback.print_exc()
             PathLog.error(translate("Path", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
 
     def buildpathocc(self, obj, wires, zValues):
