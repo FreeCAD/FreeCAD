@@ -427,7 +427,7 @@ class ObjectOp(object):
         return result
 
     def addBase(self, obj, base, sub):
-        PathLog.track()
+        PathLog.track(obj, base, sub)
         base = PathUtil.getPublicObject(base)
 
         if self._setBaseAndStock(obj):
@@ -436,10 +436,11 @@ class ObjectOp(object):
             baselist = obj.Base
             if baselist is None:
                 baselist = []
-            item = (base, sub)
-            if item in baselist:
-                PathLog.notice(translate("Path", "This object already in the list")+"\n")
-            else:
-                baselist.append(item)
-                obj.Base = baselist
+            for p, el in baselist:
+                if p == base and sub in el:
+                    PathLog.notice((translate("Path", "Base object %s.%s already in the list")+"\n") % (base.Label, sub))
+                    return
+
+            baselist.append((base, sub))
+            obj.Base = baselist
 

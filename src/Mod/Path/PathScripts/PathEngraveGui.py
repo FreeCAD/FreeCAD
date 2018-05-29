@@ -52,17 +52,25 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         return super(TaskPanelBaseGeometryPage, self)
 
     def addBaseGeometry(self, selection):
-        if 1 == len(selection) and selection[0].Object.isDerivedFrom('Part::Part2DObject'):
-            sel = selection[0]
-            if sel.HasSubObjects:
-                for sub in sel.SubElementNames:
-                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+        added = False
+        shapes = self.obj.BaseShapes
+        for sel in selection:
+            if sel.Object in shapes:
+                PathLog.notice((translate("Path", "Base shape %s already in the list")+"\n") % (sel.Object.Label))
+                continue
+            if sel.Object.isDerivedFrom('Part::Part2DObject'):
+                if sel.HasSubObjects:
+                    for sub in sel.SubElementNames:
+                        self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                else:
+                    shapes.append(sel.Object)
+                    self.obj.BaseShapes = shapes
+                added = True
             else:
-                shapes = self.obj.BaseShapes
-                shapes.append(sel.Object)
-                self.obj.BaseShapes = shapes
-            return True
-        return self.super().addBaseGeometry(selection)
+                base = self.super().addBaseGeometry(selection)
+                added = added or base
+
+        return added
 
     def setFields(self, obj):
         self.super().setFields(obj)
