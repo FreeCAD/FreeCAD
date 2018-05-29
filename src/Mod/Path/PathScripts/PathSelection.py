@@ -50,7 +50,7 @@ class ENGRAVEGate:
         except:
             return False
 
-        if shape.BoundBox.ZLength == 0.0 and len(obj.Wires) > 0:
+        if shape.BoundBox.ZLength == 0.0 and len(shape.Wires) > 0:
             return True
 
         if shape.ShapeType == 'Edge':
