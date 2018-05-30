@@ -4,6 +4,7 @@
 // modified 2018 wandererfan
 
 #include "PreCompiled.h"
+#include <src/Build/Version.h>
 #include "dxf.h"
 
 using namespace std;
@@ -23,8 +24,14 @@ CDxfWrite::CDxfWrite(const char* filepath)
         return;
     }
     m_ofs->imbue(std::locale("C"));
+    
+    std::stringstream ss;
+    ss << "FreeCAD v" << FCVersionMajor << "." << FCVersionMinor << " " << FCRevision; 
 
     //header & version
+    (*m_ofs) << "999"      << endl;
+    (*m_ofs) << ss.str()   << endl;
+
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "SECTION"  << endl;
     (*m_ofs) << "  2"      << endl;
@@ -65,10 +72,10 @@ CDxfWrite::CDxfWrite(const char* filepath)
     (*m_ofs) << "$MEASUREMENT" << endl;
     (*m_ofs) << " 70"       << endl;
     (*m_ofs) << "1"         << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$MAXACTVP" << endl;
-    (*m_ofs) << " 70"       << endl;
-    (*m_ofs) << "1"         << endl;
+//    (*m_ofs) << "  9"       << endl;   //not valid in DraftSight
+//    (*m_ofs) << "$MAXACTVP" << endl;
+//    (*m_ofs) << " 70"       << endl;
+//    (*m_ofs) << "1"         << endl;
     (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$LIMMAX" << endl;
     (*m_ofs) << " 10"       << endl;
@@ -496,6 +503,10 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << extLine2[2]    << endl;
 
     writeDimBlock(layer_name);
+    //three Lines 
+    // extLine2 -> lineDefPoint
+    // extLine1 -> (extLine1 + (lineDefPoint - extLine2)))
+    //lineDefPoint -> (extLine1 + (lineDefPoint - extLine2)))
 }
 
 //***************************
@@ -704,6 +715,7 @@ void CDxfWrite::writeDimBlock(const char* layer_name)
     m_ssBlock << ""             << endl;
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
+    //TODO: add extension, dimension line endpoints
 }
 
 //***************************
