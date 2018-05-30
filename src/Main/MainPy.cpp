@@ -61,7 +61,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserv
         // This name is preliminary, we pass it to Application::init() in initFreeCAD()
         // which does the rest.
         char  szFileName [MAX_PATH];
-        GetModuleFileName((HMODULE)hModule, szFileName, MAX_PATH-1);
+        GetModuleFileNameA((HMODULE)hModule, szFileName, MAX_PATH-1);
         App::Application::Config()["AppHomePath"] = szFileName;
     }
     break;
@@ -98,7 +98,7 @@ PyMOD_INIT_FUNC(FreeCAD)
 #elif defined(FC_OS_CYGWIN)
     HMODULE hModule = GetModuleHandle("FreeCAD.dll");
     char szFileName [MAX_PATH];
-    GetModuleFileName(hModule, szFileName, MAX_PATH-1);
+    GetModuleFileNameA(hModule, szFileName, MAX_PATH-1);
     argv[0] = (char*)malloc(MAX_PATH);
     strncpy(argv[0],szFileName,MAX_PATH);
     argv[0][MAX_PATH-1] = '\0'; // ensure null termination
