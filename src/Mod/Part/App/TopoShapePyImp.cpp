@@ -40,6 +40,7 @@
 # include <BRepExtrema_ShapeProximity.hxx>
 #endif
 # include <BRepExtrema_SupportType.hxx>
+# include <BRepBndLib.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
@@ -2608,6 +2609,43 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         return 0;
     }
     return Py_BuildValue("dOO", minDist, solnPts,solnGeom);
+}
+
+PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
+{
+    PyObject* useT = Py_True;
+    PyObject* useS = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &PyBool_Type, &useT, &useS))
+        return 0;
+
+    try {
+#if OCC_VERSION_HEX >= 0x070200
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        Bnd_Box bounds;
+        BRepBndLib::AddOptimal(shape, bounds,
+                               PyObject_IsTrue(useT) ? Standard_True : Standard_False,
+                               PyObject_IsTrue(useS) ? Standard_True : Standard_False);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        Base::BoundBox3d box;
+        box.MinX = xMin;
+        box.MaxX = xMax;
+        box.MinY = yMin;
+        box.MaxY = yMax;
+        box.MinZ = zMin;
+        box.MaxZ = zMax;
+
+        Py::BoundingBox pybox(box);
+        return Py::new_reference_to(pybox);
+#else
+        throw Py::RuntimeError("Need OCCT 7.2.0 or higher");
+#endif
+    }
+    catch (const Standard_Failure& e) {
+        throw Py::RuntimeError(e.GetMessageString());
+    }
 }
 
 // End of Methods, Start of Attributes
