@@ -200,6 +200,7 @@ OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the 
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 OPTION(BUILD_WITH_CONDA "Set ON if you build freecad with conda" OFF)
+OPTION(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)
 if (WIN32 OR APPLE)
     OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
 else()
