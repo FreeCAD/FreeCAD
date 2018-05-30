@@ -156,8 +156,7 @@ public:
                          const char* dimText,
                          const char* layer_name);
     void writeDimBlock(const char* layer_name);
-    
-
+    void writeTablesSection(void);
 };
 
 // derive a class from this and implement it's virtual functions

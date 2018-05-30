@@ -25,66 +25,116 @@ CDxfWrite::CDxfWrite(const char* filepath)
     m_ofs->imbue(std::locale("C"));
 
     //header & version
-    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "SECTION"  << endl;
-    (*m_ofs) << 2          << endl;
+    (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "HEADER"   << endl;
-    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "  9"      << endl;
     (*m_ofs) << "$ACADVER"  << endl;
-    (*m_ofs) << 1          << endl;
+    (*m_ofs) << "  1"      << endl;
     (*m_ofs) << "AC1009"   << endl;
-    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "  9"      << endl;
     (*m_ofs) << "$INSBASE"  << endl;
-    (*m_ofs) << 10          << endl;
+    (*m_ofs) << " 10"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$EXTMIN"  << endl;
-    (*m_ofs) << 10          << endl;
+    (*m_ofs) << " 10"      << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 9          << endl;
+    (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$EXTMAX"  << endl;
-    (*m_ofs) << 10          << endl;
+    (*m_ofs) << " 10"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << 0          << endl;
-    (*m_ofs) << "ENDSEC"   << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMSTYLE" << endl;
+    (*m_ofs) << "  2"       << endl;
+    (*m_ofs) << "STANDARD"  << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$MEASUREMENT" << endl;
+    (*m_ofs) << " 70"       << endl;
+    (*m_ofs) << "1"         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$MAXACTVP" << endl;
+    (*m_ofs) << " 70"       << endl;
+    (*m_ofs) << "1"         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$LIMMAX" << endl;
+    (*m_ofs) << " 10"       << endl;
+    (*m_ofs) << "0"         << endl;
+    (*m_ofs) << " 20"       << endl;
+    (*m_ofs) << "0"         << endl;
+//    (*m_ofs) << "  9"       << endl;
+//    (*m_ofs) << "$LIMMIN"   << endl;
+//    (*m_ofs) << " 10"       << endl;
+//    (*m_ofs) << "297"       << endl;
+//    (*m_ofs) << " 20"       << endl;
+//    (*m_ofs) << "210"       << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$TEXTSIZE"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMTXT"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMTAD"   << endl;
+    (*m_ofs) << " 70"       << endl;
+    (*m_ofs) << "1"         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DWGCODEPAGE"   << endl;
+    (*m_ofs) << "  3"       << endl;
+    (*m_ofs) << "UTF-8"         << endl;
+    (*m_ofs) << "  0"       << endl;
+    (*m_ofs) << "ENDSEC"    << endl;
+
+    (*m_ofs) << "  0"       << endl;
+    (*m_ofs) << "SECTION"   << endl;
+    (*m_ofs) << "  2"       << endl;
+    (*m_ofs) << "CLASSES"   << endl;
+    (*m_ofs) << "  0"       << endl;
+    (*m_ofs) << "ENDSEC"    << endl;
+
+    writeTablesSection();
 
     // start
-    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "  0"         << endl;
     (*m_ofs) << "SECTION"  << endl;
-    (*m_ofs) << 2          << endl;
+    (*m_ofs) << "  2"         << endl;
     (*m_ofs) << "ENTITIES" << endl;
 }
 
 CDxfWrite::~CDxfWrite()
 {
-    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "  0"         << endl;
     (*m_ofs) << "ENDSEC"   << endl;   //end of entities section
 
     // write dimension blocks if exist
     if (!m_ssBlock.str().empty()) {
-        (*m_ofs) << 0          << endl;
+        (*m_ofs) << "  0"         << endl;
         (*m_ofs) << "SECTION"  << endl;
-        (*m_ofs) << 2          << endl;
+        (*m_ofs) << "  2"         << endl;
         (*m_ofs) << "BLOCKS"   << endl;
         (*m_ofs) << m_ssBlock.str();
-        (*m_ofs) << 0          << endl;
+        (*m_ofs) << "  0"         << endl;
         (*m_ofs) << "ENDSEC"   << endl;
     }
 
     // end
-    (*m_ofs) << 0          << endl;
+    (*m_ofs) << "  0"         << endl;
     (*m_ofs) << "EOF";
 
     delete m_ofs;
@@ -92,21 +142,21 @@ CDxfWrite::~CDxfWrite()
 
 void CDxfWrite::WriteLine(const double* s, const double* e, const char* layer_name)
 {
-    (*m_ofs) << 0           << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "LINE"      << endl;
-    (*m_ofs) << 8           << endl;    // Group code for layer name
+    (*m_ofs) << "  8"         << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << 10          << endl;    // Start point of line
+    (*m_ofs) << " 10"        << endl;    // Start point of line
     (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"          << endl;
     (*m_ofs) << s[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << s[2]        << endl;    // Z in WCS coordinates
-    (*m_ofs) << 11          << endl;    // End point of line
+    (*m_ofs) << " 11"        << endl;    // End point of line
     (*m_ofs) << e[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 21          << endl;
+    (*m_ofs) << " 21"        << endl;
     (*m_ofs) << e[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 31          << endl;
+    (*m_ofs) << " 31"        << endl;
     (*m_ofs) << e[2]        << endl;    // Z in WCS coordinates
 }
 
@@ -115,61 +165,61 @@ void CDxfWrite::WriteLine(const double* s, const double* e, const char* layer_na
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
 {
-    (*m_ofs) << 0                << endl;
+    (*m_ofs) << "  0"               << endl;
     (*m_ofs) << "LWPOLYLINE"     << endl;
-    (*m_ofs) << 8                << endl;    // Group code for layer name
+    (*m_ofs) << "  8"              << endl;    // Group code for layer name
     (*m_ofs) << layer_name       << endl;    // Layer name
-    (*m_ofs) << 100              << endl;
+    (*m_ofs) << "100"            << endl;
     (*m_ofs) << "AcDbPolyline"   << endl;
-    (*m_ofs) << 90               << endl;
+    (*m_ofs) << " 90"            << endl;
     (*m_ofs) << pd.nVert         << endl;    // number of vertices
-    (*m_ofs) << 70               << endl;
+    (*m_ofs) << " 70"            << endl;
     (*m_ofs) << pd.Flag          << endl;
-    (*m_ofs) << 43               << endl;
+    (*m_ofs) << " 43"            << endl;
     (*m_ofs) << pd.Width         << endl;    //Constant width opt
-    (*m_ofs) << 38               << endl;
+    (*m_ofs) << " 38"            << endl;
     (*m_ofs) << pd.Elev          << endl;    // Elevation
-    (*m_ofs) << 39               << endl;
+    (*m_ofs) << " 39"            << endl;
     (*m_ofs) << pd.Thick         << endl;    // Thickness
     for (auto& p: pd.Verts) {
-        (*m_ofs) << 10           << endl;    // Vertices
+        (*m_ofs) << " 10"         << endl;    // Vertices
         (*m_ofs) << p.x          << endl;
-        (*m_ofs) << 20           << endl;
+        (*m_ofs) << " 20"           << endl;
         (*m_ofs) << p.y          << endl;
     } 
     for (auto& s: pd.StartWidth) {
-        (*m_ofs) << 40               << endl;
+        (*m_ofs) << " 40"            << endl;
         (*m_ofs) << s                << endl;    // Start Width
     }
     for (auto& e: pd.EndWidth) {
-        (*m_ofs) << 41               << endl;
+        (*m_ofs) << " 41"            << endl;
         (*m_ofs) << e                << endl;    // End Width
     }
     for (auto& b: pd.Bulge) {                // Bulge
-        (*m_ofs) << 42           << endl;
+        (*m_ofs) << " 42"        << endl;
         (*m_ofs) << b            << endl;
     }
-    (*m_ofs) << 210              << endl;    //Extrusion dir
+    (*m_ofs) << "210"           << endl;    //Extrusion dir
     (*m_ofs) << pd.Extr.x        << endl;
-    (*m_ofs) << 220              << endl;
+    (*m_ofs) << "220"              << endl;
     (*m_ofs) << pd.Extr.y        << endl;
-    (*m_ofs) << 230              << endl;
+    (*m_ofs) << "230"              << endl;
     (*m_ofs) << pd.Extr.z        << endl;
 }
 
 void CDxfWrite::WritePoint(const double* s, const char* layer_name)
 {
-    (*m_ofs) << 0           << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "POINT"     << endl;
-    (*m_ofs) << 8           << endl;    // Group code for layer name
+    (*m_ofs) << "  8"         << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer name
-    (*m_ofs) << 100         << endl;
+    (*m_ofs) << "100"       << endl;
     (*m_ofs) << "AcDbPoint" << endl;
-    (*m_ofs) << 10          << endl;
+    (*m_ofs) << " 10"        << endl;
     (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"          << endl;
     (*m_ofs) << s[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << s[2]        << endl;    // Z in WCS coordinates
 }
 
@@ -188,37 +238,37 @@ void CDxfWrite::WriteArc(const double* s, const double* e, const double* c, bool
         start_angle = end_angle;
         end_angle = temp;
     }
-    (*m_ofs) << 0           << endl;
+    (*m_ofs) << "  0"       << endl;
     (*m_ofs) << "ARC"       << endl;
-    (*m_ofs) << 8           << endl;    // Group code for layer name
+    (*m_ofs) << "  8"       << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << 10          << endl;    // Centre X
+    (*m_ofs) << " 10"       << endl;    // Centre X
     (*m_ofs) << c[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << c[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << c[2]        << endl;    // Z in WCS coordinates
-    (*m_ofs) << 40          << endl;    //
+    (*m_ofs) << " 40"       << endl;    //
     (*m_ofs) << radius      << endl;    // Radius
-    (*m_ofs) << 50          << endl;
+    (*m_ofs) << " 50"       << endl;
     (*m_ofs) << start_angle << endl;    // Start angle
-    (*m_ofs) << 51          << endl;
+    (*m_ofs) << " 51"       << endl;
     (*m_ofs) << end_angle   << endl;    // End angle
 }
 
 void CDxfWrite::WriteCircle(const double* c, double radius, const char* layer_name)
 {
-    (*m_ofs) << 0           << endl;
-    (*m_ofs) << "CIRCLE"        << endl;
-    (*m_ofs) << 8           << endl;    // Group code for layer name
+    (*m_ofs) << "  0"       << endl;
+    (*m_ofs) << "CIRCLE"    << endl;
+    (*m_ofs) << "  8"       << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << 10          << endl;    // Centre X
+    (*m_ofs) << " 10"       << endl;    // Centre X
     (*m_ofs) << c[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << c[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << c[2]        << endl;    // Z in WCS coordinates
-    (*m_ofs) << 40          << endl;    //
+    (*m_ofs) << " 40"       << endl;    //
     (*m_ofs) << radius      << endl;    // Radius
 }
 
@@ -236,28 +286,28 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
         start_angle = end_angle;
         end_angle = temp;
     }
-    (*m_ofs) << 0           << endl;
+    (*m_ofs) << "  0"       << endl;
     (*m_ofs) << "ELLIPSE"   << endl;
-    (*m_ofs) << 8           << endl;    // Group code for layer name
+    (*m_ofs) << "  8"       << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << 10          << endl;    // Centre X
+    (*m_ofs) << " 10"       << endl;    // Centre X
     (*m_ofs) << c[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << 20          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << c[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << 30          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << c[2]        << endl;    // Z in WCS coordinates
-    (*m_ofs) << 40          << endl;    //
+    (*m_ofs) << " 40"       << endl;    //
     (*m_ofs) << ratio       << endl;    // Ratio
-    (*m_ofs) << 11          << endl;    //
+    (*m_ofs) << " 11"       << endl;    //
     (*m_ofs) << m[0]        << endl;    // Major X
-    (*m_ofs) << 21          << endl;
+    (*m_ofs) << " 21"       << endl;
     (*m_ofs) << m[1]        << endl;    // Major Y
-    (*m_ofs) << 31          << endl;
+    (*m_ofs) << " 31"       << endl;
     (*m_ofs) << m[2]        << endl;    // Major Z
     // 210,220,230 extrusion direction X,Y,Z
-    (*m_ofs) << 41          << endl;
+    (*m_ofs) << " 41"       << endl;
     (*m_ofs) << start_angle << endl;    // Start angle (radians [0..2pi])
-    (*m_ofs) << 42          << endl;
+    (*m_ofs) << " 42"       << endl;
     (*m_ofs) << end_angle   << endl;    // End angle
 }
 
@@ -266,64 +316,64 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::WriteSpline(SplineDataOut sd, const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "SPLINE"       << endl;
-    (*m_ofs) << 8              << endl;    // Group code for layer name
+    (*m_ofs) << "  8"          << endl;    // Group code for layer name
     (*m_ofs) << layer_name     << endl;    // Layer name
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbSpline"   << endl;
     //normal 210,220,230
-    (*m_ofs) << 70             << endl;
+    (*m_ofs) << " 70"          << endl;
     (*m_ofs) << sd.flag        << endl;      //flags
-    (*m_ofs) << 71             << endl; 
+    (*m_ofs) << " 71"          << endl; 
     (*m_ofs) << sd.degree      << endl;
-    (*m_ofs) << 72             << endl;
+    (*m_ofs) << " 72"          << endl;
     (*m_ofs) << sd.knots       << endl;
-    (*m_ofs) << 73             << endl;
+    (*m_ofs) << " 73"          << endl;
     (*m_ofs) << sd.control_points   << endl;
-    (*m_ofs) << 74             << endl; 
+    (*m_ofs) << " 74"          << endl; 
     (*m_ofs) << 0              << endl;
 
-    (*m_ofs) << 12             << endl;
+    (*m_ofs) << " 12"          << endl;
     (*m_ofs) << sd.starttan.x  << endl;
-    (*m_ofs) << 22             << endl;
+    (*m_ofs) << " 22"          << endl;
     (*m_ofs) << sd.starttan.y  << endl;
-    (*m_ofs) << 32             << endl;
+    (*m_ofs) << " 32"          << endl;
     (*m_ofs) << sd.starttan.z  << endl;
-    (*m_ofs) << 13             << endl;
+    (*m_ofs) << " 13"          << endl;
     (*m_ofs) << sd.endtan.x    << endl;
-    (*m_ofs) << 23             << endl;
+    (*m_ofs) << " 23"          << endl;
     (*m_ofs) << sd.endtan.y    << endl;
-    (*m_ofs) << 33             << endl;
+    (*m_ofs) << " 33"          << endl;
     (*m_ofs) << sd.endtan.z    << endl;
 
     for (auto& k: sd.knot) {
-        (*m_ofs) << 40             << endl;  
-        (*m_ofs) << k              << endl;  
+        (*m_ofs) << " 40"      << endl;  
+        (*m_ofs) << k          << endl;  
     }
 
     for (auto& w : sd.weight) {
-        (*m_ofs) << 41             << endl;  
-        (*m_ofs) << w              << endl;  
+        (*m_ofs) << " 41"      << endl;  
+        (*m_ofs) << w          << endl;  
     }
 
     for (auto& c: sd.control) {
-        (*m_ofs) << 10             << endl;
-        (*m_ofs) << c.x            << endl;    // X in WCS coordinates
-        (*m_ofs) << 20             << endl;
-        (*m_ofs) << c.y            << endl;    // Y in WCS coordinates
-        (*m_ofs) << 30             << endl;
-        (*m_ofs) << c.z            << endl;    // Z in WCS coordinates
+        (*m_ofs) << " 10"      << endl;
+        (*m_ofs) << c.x        << endl;    // X in WCS coordinates
+        (*m_ofs) << " 20"      << endl;
+        (*m_ofs) << c.y        << endl;    // Y in WCS coordinates
+        (*m_ofs) << " 30"      << endl;
+        (*m_ofs) << c.z        << endl;    // Z in WCS coordinates
     }
     for (auto& f: sd.fit) {
-        (*m_ofs) << 11             << endl;
-        (*m_ofs) << f.x            << endl;    // X in WCS coordinates
-        (*m_ofs) << 21             << endl;
-        (*m_ofs) << f.y            << endl;    // Y in WCS coordinates
-        (*m_ofs) << 31             << endl;
-        (*m_ofs) << f.z            << endl;    // Z in WCS coordinates
+        (*m_ofs) << " 11"      << endl;
+        (*m_ofs) << f.x        << endl;    // X in WCS coordinates
+        (*m_ofs) << " 21"      << endl;
+        (*m_ofs) << f.y        << endl;    // Y in WCS coordinates
+        (*m_ofs) << " 31"      << endl;
+        (*m_ofs) << f.z        << endl;    // Z in WCS coordinates
     }
 }
 
@@ -332,21 +382,21 @@ void CDxfWrite::WriteSpline(SplineDataOut sd, const char* layer_name)
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::WriteVertex(double x, double y, double z, const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "VERTEX"       << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbVertex"   << endl;
-    (*m_ofs) << 10             << endl;
+    (*m_ofs) << " 10"          << endl;
     (*m_ofs) << x              << endl;
-    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << " 20"          << endl; 
     (*m_ofs) << y              << endl;
-    (*m_ofs) << 30             << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << z              << endl;
-    (*m_ofs) << 70             << endl;      //flag
+    (*m_ofs) << " 70"          << endl;      //flag
     (*m_ofs) << 0              << endl;
 }
 
@@ -356,37 +406,37 @@ void CDxfWrite::WriteVertex(double x, double y, double z, const char* layer_name
 void CDxfWrite::WriteText(const char* text, const double* location1, const double* location2,
                           const double height, const int horizJust, const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "TEXT"         << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbText"     << endl;
-    (*m_ofs) << 39             << endl;
+    (*m_ofs) << " 39"          << endl;
     (*m_ofs) << 0              << endl;     //thickness
-    (*m_ofs) << 10             << endl;     //first alignment point
+    (*m_ofs) << " 10"          << endl;     //first alignment point
     (*m_ofs) << location1[0]   << endl;
-    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << " 20"          << endl; 
     (*m_ofs) << location1[1]   << endl;
-    (*m_ofs) << 30             << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << location1[2]   << endl;
-    (*m_ofs) << 40             << endl;
+    (*m_ofs) << " 40"          << endl;
     (*m_ofs) << height         << endl;
     (*m_ofs) << 1              << endl;
     (*m_ofs) << text           << endl;
-    (*m_ofs) << 50             << endl;
+    (*m_ofs) << " 50"          << endl;
     (*m_ofs) << 0              << endl;    //rotation
-    (*m_ofs) << 7              << endl;
+    (*m_ofs) << "  7"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
-    (*m_ofs) << 72             << endl;
+    (*m_ofs) << " 72"          << endl;
     (*m_ofs) << horizJust      << endl;
-    (*m_ofs) << 11             << endl;    //second alignment point
+    (*m_ofs) << " 11"          << endl;    //second alignment point
     (*m_ofs) << location2[0]   << endl;
-    (*m_ofs) << 21             << endl; 
+    (*m_ofs) << " 21"          << endl; 
     (*m_ofs) << location2[1]   << endl;
-    (*m_ofs) << 31             << endl;
+    (*m_ofs) << " 31"          << endl;
     (*m_ofs) << location2[2]   << endl;
 }
 
@@ -399,62 +449,51 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
                          const char* layer_name)
 //const char* blockName, const int dimType, const int attachPoint,
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "DIMENSION"    << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
-    (*m_ofs) << 2              << endl;
-    (*m_ofs) << layer_name         << endl;     // blockName *D1 ??
-    (*m_ofs) << 10             << endl;     //dimension line definition point
+    (*m_ofs) << "  2"          << endl;
+    (*m_ofs) << "*" << layer_name     << endl;     // blockName
+    (*m_ofs) << " 10"          << endl;     //dimension line definition point
     (*m_ofs) << lineDefPoint[0]    << endl;
-    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << " 20"          << endl; 
     (*m_ofs) << lineDefPoint[1]    << endl;
-    (*m_ofs) << 30             << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << lineDefPoint[2]    << endl;
-    (*m_ofs) << 11             << endl;     //text mid point
+    (*m_ofs) << " 11"          << endl;     //text mid point
     (*m_ofs) << textMidPoint[0]    << endl;
-    (*m_ofs) << 21             << endl; 
+    (*m_ofs) << " 21"          << endl; 
     (*m_ofs) << textMidPoint[1]    << endl;
-    (*m_ofs) << 31             << endl;
+    (*m_ofs) << " 31"          << endl;
     (*m_ofs) << textMidPoint[2]    << endl;
-    (*m_ofs) << 70             << endl;
+    (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 1              << endl;    // dimType1 = Aligned
-    (*m_ofs) << 71             << endl;
+    (*m_ofs) << " 71"          << endl;
     (*m_ofs) << 1              << endl;    // attachPoint ??1 = topleft
-    (*m_ofs) << 1              << endl;
+    (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
-    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //linear dims
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbAlignedDimension"     << endl;
-    (*m_ofs) << 13             << endl;
+    (*m_ofs) << " 13"          << endl;
     (*m_ofs) << extLine1[0]    << endl;
-    (*m_ofs) << 23             << endl; 
+    (*m_ofs) << " 23"          << endl; 
     (*m_ofs) << extLine1[1]    << endl;
-    (*m_ofs) << 33             << endl;
+    (*m_ofs) << " 33"          << endl;
     (*m_ofs) << extLine1[2]    << endl;
-    (*m_ofs) << 14             << endl;
+    (*m_ofs) << " 14"          << endl;
     (*m_ofs) << extLine2[0]    << endl;
-    (*m_ofs) << 24             << endl; 
+    (*m_ofs) << " 24"          << endl; 
     (*m_ofs) << extLine2[1]    << endl;
-    (*m_ofs) << 34             << endl;
+    (*m_ofs) << " 34"          << endl;
     (*m_ofs) << extLine2[2]    << endl;
-////diametric dims
-//    (*m_ofs) << 100            << endl;
-//    (*m_ofs) << "AcDbRadialDimension"     << endl;
-//    (*m_ofs) << 15             << endl;
-//    (*m_ofs) << arcPoint[0]    << endl;
-//    (*m_ofs) << 25             << endl; 
-//    (*m_ofs) << arcPoint[1]    << endl;
-//    (*m_ofs) << 35             << endl;
-//    (*m_ofs) << arcPoint[2]    << endl;
-//    (*m_ofs) << 40             << endl;
-//    (*m_ofs) << lenLeader      << endl;
 
     writeDimBlock(layer_name);
 }
@@ -468,71 +507,71 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
                          const char* dimText,
                          const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "DIMENSION"    << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
-    (*m_ofs) << 2              << endl;
-    (*m_ofs) << layer_name     << endl;     // blockName *D1 ??
+    (*m_ofs) << "  2"          << endl;
+    (*m_ofs) << "*" << layer_name     << endl;     // blockName
 
-    (*m_ofs) << 10             << endl;
+    (*m_ofs) << " 10"          << endl;
     (*m_ofs) << endExt2[0]     << endl;
-    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << " 20"          << endl; 
     (*m_ofs) << endExt2[1]     << endl;
-    (*m_ofs) << 30             << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << endExt2[2]     << endl;
 
-    (*m_ofs) << 11               << endl;
+    (*m_ofs) << " 11"          << endl;
     (*m_ofs) << textMidPoint[0]  << endl;
-    (*m_ofs) << 21               << endl; 
+    (*m_ofs) << " 21"          << endl; 
     (*m_ofs) << textMidPoint[1]  << endl;
-    (*m_ofs) << 31               << endl;
+    (*m_ofs) << " 31"          << endl;
     (*m_ofs) << textMidPoint[2]  << endl;
 
-    (*m_ofs) << 70             << endl;
+    (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 34             << endl;    // dimType 2 = Angular  5 = Angular 3 point
                                            // +32 for block??
-    (*m_ofs) << 71             << endl;
+    (*m_ofs) << " 71"          << endl;
     (*m_ofs) << 5              << endl;    // attachPoint 5 = middle
-    (*m_ofs) << 1              << endl;
+    (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
-    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //angular dims
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDb2LineAngularDimension"     << endl;
 
-    (*m_ofs) << 13              << endl;
+    (*m_ofs) << " 13"           << endl;
     (*m_ofs) << startExt1[0]    << endl;
-    (*m_ofs) << 23              << endl; 
+    (*m_ofs) << " 23"           << endl; 
     (*m_ofs) << startExt1[1]    << endl;
-    (*m_ofs) << 33              << endl;
+    (*m_ofs) << " 33"           << endl;
     (*m_ofs) << startExt1[2]    << endl;
 
-    (*m_ofs) << 14             << endl;
-    (*m_ofs) << endExt1[0]     << endl;
-    (*m_ofs) << 24             << endl; 
-    (*m_ofs) << endExt1[1]     << endl;
-    (*m_ofs) << 34             << endl;
-    (*m_ofs) << endExt1[2]     << endl;
+    (*m_ofs) << " 14"           << endl;
+    (*m_ofs) << endExt1[0]      << endl;
+    (*m_ofs) << " 24"           << endl; 
+    (*m_ofs) << endExt1[1]      << endl;
+    (*m_ofs) << " 34"           << endl;
+    (*m_ofs) << endExt1[2]      << endl;
 
-    (*m_ofs) << 15             << endl;
-    (*m_ofs) << startExt2[0]   << endl;
-    (*m_ofs) << 25             << endl; 
-    (*m_ofs) << startExt2[1]   << endl;
-    (*m_ofs) << 35             << endl;
-    (*m_ofs) << startExt2[2]   << endl;
+    (*m_ofs) << " 15"           << endl;
+    (*m_ofs) << startExt2[0]    << endl;
+    (*m_ofs) << " 25"           << endl; 
+    (*m_ofs) << startExt2[1]    << endl;
+    (*m_ofs) << " 35"           << endl;
+    (*m_ofs) << startExt2[2]    << endl;
 
-    (*m_ofs) << 16                 << endl;
-    (*m_ofs) << lineDefPoint[0]    << endl;
-    (*m_ofs) << 26                 << endl; 
-    (*m_ofs) << lineDefPoint[1]    << endl;
-    (*m_ofs) << 36                 << endl;
-    (*m_ofs) << lineDefPoint[2]    << endl;
+    (*m_ofs) << " 16"           << endl;
+    (*m_ofs) << lineDefPoint[0] << endl;
+    (*m_ofs) << " 26"           << endl; 
+    (*m_ofs) << lineDefPoint[1] << endl;
+    (*m_ofs) << " 36"           << endl;
+    (*m_ofs) << lineDefPoint[2] << endl;
 
     writeDimBlock(layer_name);
 }
@@ -544,46 +583,46 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
                          const char* dimText,
                          const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "DIMENSION"    << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
-    (*m_ofs) << 2              << endl;
-    (*m_ofs) << layer_name          << endl;     // blockName *D1 ??
-    (*m_ofs) << 10                << endl;     // arc center point
-    (*m_ofs) << centerPoint[0]    << endl;
-    (*m_ofs) << 20                << endl; 
-    (*m_ofs) << centerPoint[1]    << endl;
-    (*m_ofs) << 30                << endl;
-    (*m_ofs) << centerPoint[2]    << endl;
-    (*m_ofs) << 11                << endl;     //text mid point
+    (*m_ofs) << "  2"          << endl;
+    (*m_ofs) << "*" << layer_name     << endl;     // blockName
+    (*m_ofs) << " 10"          << endl;     // arc center point
+    (*m_ofs) << centerPoint[0] << endl;
+    (*m_ofs) << " 20"          << endl; 
+    (*m_ofs) << centerPoint[1] << endl;
+    (*m_ofs) << " 30"          << endl;
+    (*m_ofs) << centerPoint[2] << endl;
+    (*m_ofs) << " 11"          << endl;     //text mid point
     (*m_ofs) << textMidPoint[0]   << endl;
-    (*m_ofs) << 21                << endl; 
+    (*m_ofs) << " 21"          << endl; 
     (*m_ofs) << textMidPoint[1]   << endl;
-    (*m_ofs) << 31                << endl;
+    (*m_ofs) << " 31"          << endl;
     (*m_ofs) << textMidPoint[2]   << endl;
-    (*m_ofs) << 70             << endl;
+    (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 4              << endl;    // dimType 4 = Radius
-    (*m_ofs) << 71             << endl;
+    (*m_ofs) << " 71"          << endl;
     (*m_ofs) << 1              << endl;    // attachPoint 5 = middle center
-    (*m_ofs) << 1              << endl;
+    (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
-    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //radial dims
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbRadialDimension"     << endl;
-    (*m_ofs) << 15             << endl;
+    (*m_ofs) << " 15"          << endl;
     (*m_ofs) << arcPoint[0]    << endl;
-    (*m_ofs) << 25             << endl; 
+    (*m_ofs) << " 25"          << endl; 
     (*m_ofs) << arcPoint[1]    << endl;
-    (*m_ofs) << 35             << endl;
+    (*m_ofs) << " 35"          << endl;
     (*m_ofs) << arcPoint[2]    << endl;
-    (*m_ofs) << 40             << endl;   // leader length????
+    (*m_ofs) << " 40"          << endl;   // leader length????
     (*m_ofs) << 0              << endl;
 
     writeDimBlock(layer_name);
@@ -597,46 +636,46 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
                          const char* dimText,
                          const char* layer_name)
 {
-    (*m_ofs) << 0              << endl;
+    (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "DIMENSION"    << endl;
-    (*m_ofs) << 8              << endl;
+    (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbDimension"     << endl;
-    (*m_ofs) << 2              << endl;
-    (*m_ofs) << layer_name          << endl;     // blockName *D1 ??
-    (*m_ofs) << 10             << endl;
+    (*m_ofs) << "  2"          << endl;
+    (*m_ofs) << "*" << layer_name     << endl;     // blockName
+    (*m_ofs) << " 10"          << endl;
     (*m_ofs) << arcPoint1[0]   << endl;
-    (*m_ofs) << 20             << endl; 
+    (*m_ofs) << " 20"          << endl; 
     (*m_ofs) << arcPoint1[1]   << endl;
-    (*m_ofs) << 30             << endl;
+    (*m_ofs) << " 30"          << endl;
     (*m_ofs) << arcPoint1[2]   << endl;
-    (*m_ofs) << 11                << endl;     //text mid point
+    (*m_ofs) << " 11"          << endl;     //text mid point
     (*m_ofs) << textMidPoint[0]   << endl;
-    (*m_ofs) << 21                << endl; 
+    (*m_ofs) << " 21"          << endl; 
     (*m_ofs) << textMidPoint[1]   << endl;
-    (*m_ofs) << 31                << endl;
+    (*m_ofs) << " 31"          << endl;
     (*m_ofs) << textMidPoint[2]   << endl;
-    (*m_ofs) << 70             << endl;
+    (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 3              << endl;    // dimType 3 = Diameter
-    (*m_ofs) << 71             << endl;
+    (*m_ofs) << " 71"          << endl;
     (*m_ofs) << 5              << endl;    // attachPoint 5 = middle center
-    (*m_ofs) << 1              << endl;
+    (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
-    (*m_ofs) << 3              << endl;
+    (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //diametric dims
-    (*m_ofs) << 100            << endl;
+    (*m_ofs) << "100"          << endl;
     (*m_ofs) << "AcDbDiametricDimension"     << endl;
-    (*m_ofs) << 15             << endl;
-    (*m_ofs) << arcPoint2[0]    << endl;
-    (*m_ofs) << 25             << endl; 
-    (*m_ofs) << arcPoint2[1]    << endl;
-    (*m_ofs) << 35             << endl;
-    (*m_ofs) << arcPoint2[2]    << endl;
-    (*m_ofs) << 40             << endl;   // leader length????
+    (*m_ofs) << " 15"          << endl;
+    (*m_ofs) << arcPoint2[0]   << endl;
+    (*m_ofs) << " 25"          << endl; 
+    (*m_ofs) << arcPoint2[1]   << endl;
+    (*m_ofs) << " 35"          << endl;
+    (*m_ofs) << arcPoint2[2]   << endl;
+    (*m_ofs) << " 40"          << endl;   // leader length????
     (*m_ofs) << 0              << endl;
 
     writeDimBlock(layer_name);
@@ -647,24 +686,144 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeDimBlock(const char* layer_name)
 {
-    m_ssBlock << 0              << endl;
+    m_ssBlock << "  0"          << endl;
     m_ssBlock << "BLOCK"        << endl;
-    m_ssBlock << 8              << endl;
+    m_ssBlock << "  8"          << endl;
     m_ssBlock << layer_name     << endl;
-    m_ssBlock << 2              << endl;
+    m_ssBlock << "  2"          << endl;
     m_ssBlock << "*" << layer_name     << endl;     // blockName
-    m_ssBlock << 10             << endl;
+    m_ssBlock << " 10"          << endl;
     m_ssBlock << 0.0            << endl;
-    m_ssBlock << 20             << endl; 
+    m_ssBlock << " 20"          << endl; 
     m_ssBlock << 0.0            << endl;
-    m_ssBlock << 30             << endl;
+    m_ssBlock << " 30"          << endl;
     m_ssBlock << 0.0            << endl;
-    m_ssBlock << 3              << endl;
+    m_ssBlock << "  3"          << endl;
     m_ssBlock << "*" << layer_name     << endl;     // blockName
-    m_ssBlock << 1              << endl;
+    m_ssBlock << "  1"          << endl;
     m_ssBlock << ""             << endl;
-    m_ssBlock << 0              << endl;
+    m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
+}
+
+//***************************
+//WriteTablesSection
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeTablesSection(void)
+{
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "SECTION"  << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "TABLES"   << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "TABLE"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "VPORT"    << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    1"    << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "VPORT"    << endl;
+
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbViewportTableRecord"    << endl;
+
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "*ACTIVE"  << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << " 10"      << endl;
+    (*m_ofs) << 0          << endl;
+    (*m_ofs) << " 20"      << endl;
+    (*m_ofs) << 0          << endl;
+    (*m_ofs) << " 11"      << endl;
+    (*m_ofs) << 1          << endl;
+    (*m_ofs) << " 21"      << endl;
+    (*m_ofs) << 1          << endl;
+//    (*m_ofs) << " 12"      << endl;  //center of vport in WCS
+//    (*m_ofs) << 153.1      << endl;  //doesn't seem to work in LC
+//    (*m_ofs) << " 22"      << endl;  // 132.5x98.44
+//    (*m_ofs) << 104.9      << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDTAB"   << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "TABLE"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "STYLE"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbSymbolTable"    << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    3"    << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "STYLE"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbTextStyleTableRecord"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "STANDARD" << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << " 40"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 41"      << endl;
+    (*m_ofs) << "1"        << endl;
+    (*m_ofs) << " 50"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 71"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << " 42"      << endl;
+    (*m_ofs) << "1"        << endl;
+    (*m_ofs) << "  3"      << endl;
+    (*m_ofs) << "TXT"      << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDTAB"   << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "TABLE"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "DIMSTYLE" << endl;
+
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbSymbolTable"    << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    1"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbDimStyleTable"    << endl;
+    (*m_ofs) << " 71"      << endl;
+    (*m_ofs) << "    1"    << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "DIMSTYLE" << endl;
+
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+    (*m_ofs) << "100"      << endl;
+    (*m_ofs) << "AcDbDimStyleTableRecord"    << endl;
+
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "STANDARD" << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << "  3"      << endl;
+    (*m_ofs) << ""         << endl;
+    (*m_ofs) << "  4"      << endl;
+    (*m_ofs) << ""         << endl;
+    (*m_ofs) << "  5"      << endl;
+    (*m_ofs) << ""         << endl;
+    (*m_ofs) << "  6"      << endl;
+    (*m_ofs) << ""         << endl;
+    (*m_ofs) << "  7"      << endl;
+    (*m_ofs) << ""         << endl;
+    (*m_ofs) << " 40"      << endl;
+    (*m_ofs) << "1"        << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDTAB"   << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDSEC"   << endl;
 }
 
 
