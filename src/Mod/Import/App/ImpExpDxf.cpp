@@ -618,6 +618,7 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
     pd.Extr.x = 0.0;
     pd.Extr.y = 0.0;
     pd.Extr.z = 1.0;
+    pd.nVert = 0;
 
     GCPnts_UniformAbscissa discretizer;
     discretizer.Initialize (c, optionMaxLength);
@@ -628,6 +629,7 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
             gp_Pnt p = c.Value (discretizer.Parameter (i));
             pd.Verts.push_back(gPntTopoint3D(p));
         }
+        pd.nVert = discretizer.NbPoints ();
         WriteLWPolyLine(pd,getLayerName().c_str());
     }
 }
