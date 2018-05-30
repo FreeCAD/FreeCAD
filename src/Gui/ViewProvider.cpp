@@ -409,6 +409,10 @@ void ViewProvider::setOverrideMode(const std::string &mode)
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
+    else {
+        for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+            ext->extensionModeSwitchChange();
+    }
 }
 
 const string ViewProvider::getOverrideMode() {
@@ -422,11 +426,19 @@ void ViewProvider::setModeSwitch()
         pcModeSwitch->whichChild = _iActualMode;
     else if (viewOverrideMode < pcModeSwitch->getNumChildren())
         pcModeSwitch->whichChild = viewOverrideMode;
+    else
+        return;
+    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+        ext->extensionModeSwitchChange();
 }
 
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
+}
+
+int ViewProvider::getDefaultMode() const {
+    return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
 }
 
 void ViewProvider::onChanged(const App::Property* prop)

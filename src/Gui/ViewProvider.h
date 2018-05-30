@@ -410,7 +410,7 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
-    int getDefaultMode() const { return _iActualMode; }
+    int getDefaultMode() const;
     //@}
     
 protected:

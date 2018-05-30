@@ -70,8 +70,7 @@ public:
     void extensionFinishRestoring() override;
     bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
     bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
-    void extensionHide(void) override;
-    void extensionShow(void) override;
+    void extensionModeSwitchChange(void) override;
 
     LinkInfoPtr linkInfo;
 };
@@ -262,6 +261,8 @@ public:
 
     std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
     void setElementColors(const std::map<std::string, App::Color> &colors) override;
+
+    void setOverrideMode(const std::string &mode) override;
 
 protected:
     bool setEdit(int ModNum) override;

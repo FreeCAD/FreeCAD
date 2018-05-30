@@ -577,19 +577,11 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
     auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
     if(!owner || !linkInfo) return;
-    if(prop == &owner->Visibility || prop == &owner->DisplayMode)
-        linkInfo->updateSwitch();
-    else
+    if(prop != &owner->Visibility && prop != &owner->DisplayMode)
         linkInfo->update();
 }
 
-void ViewProviderLinkObserver::extensionShow() {
-    auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
-    if(owner && linkInfo)
-        linkInfo->updateSwitch();
-}
-
-void ViewProviderLinkObserver::extensionHide() {
+void ViewProviderLinkObserver::extensionModeSwitchChange() {
     auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
     if(owner && linkInfo)
         linkInfo->updateSwitch();
@@ -2616,6 +2608,16 @@ void ViewProviderLink::applyColors() {
         delete det;
     }
     path.unrefNoDelete();
+}
+
+void ViewProviderLink::setOverrideMode(const std::string &mode) {
+    auto ext = getLinkExtension();
+    if(!ext) return;
+    auto obj = ext->getTrueLinkedObject(false);
+    if(obj && obj!=getObject()) {
+        auto vp = Application::Instance->getViewProvider(obj);
+        vp->setOverrideMode(mode);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

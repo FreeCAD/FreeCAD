@@ -76,6 +76,8 @@ public:
     virtual void extensionHide(void) { }
     /// Shows the view provider
     virtual void extensionShow(void) { }
+
+    virtual void extensionModeSwitchChange(void) { }
     
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
