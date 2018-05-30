@@ -697,6 +697,13 @@ infos contains additional info on the solutions. It is a list of tuples:
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="optimalBoundingBox" Const="true">
+      <Documentation>
+        <UserDocu>
+        optimalBoundingBox(useTriangulation = True, useShapeTolerance = False) -> bound box
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>
