@@ -35,7 +35,9 @@ if(OCE_FOUND)
   #set(OCC_LIBRARY_DIR ${OCE_LIBRARY_DIR})
 else(OCE_FOUND) #look for OpenCASCADE
   # we first try to find opencascade directly:
-  find_package(OpenCASCADE CONFIG QUIET)
+  if(NOT OCCT_CMAKE_FALLBACK)
+    find_package(OpenCASCADE CONFIG QUIET)
+  endif(NOT OCCT_CMAKE_FALLBACK)
   if(OpenCASCADE_FOUND)
     set(OCC_FOUND ${OpenCASCADE_FOUND})
     set(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
