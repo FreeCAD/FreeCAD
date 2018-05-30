@@ -5799,7 +5799,6 @@ class _Array(_DraftObject):
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
         obj.IntervalZ = Vector(0,0,1)
-        obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
         obj.Fuse = False
