@@ -2013,13 +2013,11 @@ bool ViewProviderLink::getDetailPath(
         appendPath(pPath,pcModeSwitch);
     }
     std::string _subname;
-    if(subname && subname[0] && (isGroup(ext) || hasElements(ext))) {
+    if(subname && subname[0] && 
+       (isGroup(ext) || hasElements(ext) || ext->getElementCountValue())) {
         int index = ext->getElementIndex(subname,&subname);
         if(index>=0) {
-            char idx[40];
-            snprintf(idx,sizeof(idx),"%d.",index);
-            _subname = idx;
-            _subname += subname;
+            _subname = std::to_string(index)+'.'+subname;
             subname = _subname.c_str();
         }
     }
