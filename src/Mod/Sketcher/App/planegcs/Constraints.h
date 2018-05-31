@@ -112,7 +112,7 @@ namespace GCS
         int getTag() { return tag; }
         
         void setDriving(bool isdriving) { driving = isdriving; }
-        bool isDriving() { return driving; }
+        bool isDriving() const { return driving; }
 
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
