@@ -375,6 +375,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
 #if !defined(HAVE_QT5_OPENGL)
 	return gl->bindTexture(image);
 #else
+    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     return texture->textureId();
@@ -476,6 +477,7 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 #if !defined(HAVE_QT5_OPENGL)
 	return gl->bindTexture(image);
 #else
+    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     return texture->textureId();
@@ -548,6 +550,7 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 #if !defined(HAVE_QT5_OPENGL)
 	return gl->bindTexture(image);
 #else
+    Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     return texture->textureId();
