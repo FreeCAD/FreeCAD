@@ -456,7 +456,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                         FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
                         message = self.get_item_text(selection) + ' is in reference list already!\n'
                         FreeCAD.Console.PrintMessage(message)
-                        QtGui.QMessageBox.critical(None, "Geomety already in list", message)
+                        QtGui.QMessageBox.critical(None, "Geometry already in list", message)
             else:
                 FreeCADGui.Selection.clearSelection()  # selected shape will not added to the list
                 message = ele_ShapeType + ' is not allowed to add to the list!\n'
