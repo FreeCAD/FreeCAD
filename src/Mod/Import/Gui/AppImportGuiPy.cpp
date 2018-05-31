@@ -281,17 +281,25 @@ public:
     }
 
 private:
-    virtual void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override
-    {
+    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
-        if (vp) {
-            if(colors.size() == 1)
-                vp->ShapeColor.setValue(colors.front());
-            else if(colors.size())
-                vp->DiffuseColor.setValues(colors);
-            else
-                vp->updateColors(part,0,true);
+        if (!vp) return;
+        if(colors.empty()) {
+            vp->updateColors(part,0,true);
+            return;
         }
+        if(colors.size() == 1)
+            vp->ShapeColor.setValue(colors.front());
+        else
+            vp->DiffuseColor.setValues(colors);
+    }
+    virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+        auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
+        if (!vp) return;
+        if(colors.size() == 1)
+            vp->LineColor.setValue(colors.front());
+        else
+            vp->LineColorArray.setValues(colors);
     }
     virtual void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
         auto vp = dynamic_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(obj));
@@ -310,6 +318,14 @@ private:
             vp->MaterialList.setSize(index+1,mat);
         mat.diffuseColor = color;
         vp->MaterialList.set1Value(index,mat,true);
+    }
+    virtual void applyElementColors(App::DocumentObject *obj, 
+            const std::map<std::string,App::Color> &colors) override 
+    {
+        auto vp = Gui::Application::Instance->getViewProvider(obj);
+        if(!vp)
+            return;
+        vp->setElementColors(colors);
     }
 };
 
@@ -378,6 +394,7 @@ private:
                     aReader.SetColorMode(true);
                     aReader.SetNameMode(true);
                     aReader.SetLayerMode(true);
+                    aReader.SetSHUOMode(true);
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
@@ -455,6 +472,13 @@ private:
 
         return Py::None();
     }
+
+    static std::map<std::string, App::Color> getShapeColors(App::DocumentObject *obj, const char *subname) {
+        auto vp = Gui::Application::Instance->getViewProvider(obj);
+        if(vp)
+            return vp->getElementColors(subname);
+        return std::map<std::string,App::Color>();
+    }
     Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
     {
         PyObject* object;
@@ -475,7 +499,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            Import::ExportOCAF ocaf(hDoc, PartGui::ViewProviderPartExt::getShapeColors);
+            Import::ExportOCAF ocaf(hDoc, &getShapeColors);
             if(exportHidden!=Py_None)
                 ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
 
@@ -570,6 +594,7 @@ private:
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
+                    aReader.SetSHUOMode(true);
                 if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }

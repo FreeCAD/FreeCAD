@@ -54,6 +54,7 @@
 # include <XCAFDoc_ShapeTool.hxx>
 # include <XCAFDoc_ColorTool.hxx>
 # include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_GraphNode.hxx>
 # include <TDF_Label.hxx>
 # include <TDF_Tool.hxx>
 # include <TDF_LabelSequence.hxx>
@@ -188,8 +189,11 @@ ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    defaultColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
-    defaultColor.a = 0;
+    defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
+    defaultFaceColor.a = 0;
+
+    defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
+    defaultEdgeColor.a = 0;
 }
 
 ImportOCAF::~ImportOCAF()
@@ -200,61 +204,101 @@ static void setPlacement(App::PropertyPlacement *prop, const TopoDS_Shape &shape
     prop->setValue(Base::Placement(Part::TopoShape::convert(shape.Location().Transformation())));
 }
 
-bool ImportOCAF::getColor(const TopoDS_Shape &shape, App::Color &color, bool check, bool noDefault) {
+bool ImportOCAF::getColor(const TopoDS_Shape &shape, Info &info, bool check, bool noDefault) {
+    bool ret = false;
     Quantity_Color aColor;
-    if (aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor) || 
-        (!noDefault && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)))
-    {
-        App::Color c;
-        c.r = (float)aColor.Red();
-        c.g = (float)aColor.Green();
-        c.b = (float)aColor.Blue();
-        if(!check || color!=c) {
-            color = c;
-            return true;
+    if(aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
+        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        if(!check || info.faceColor!=c) {
+            info.faceColor = c;
+            info.hasFaceColor = true;
+            ret = true;
         }
     }
-    if(!check)
-        color = defaultColor;
-    return false;
+    if(aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
+        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        if(!check || info.edgeColor!=c) {
+            info.edgeColor = c;
+            info.hasEdgeColor = true;
+            ret = true;
+        }
+    }
+    if(!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
+        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        if(!check || info.faceColor!=c) {
+            info.faceColor = c;
+            info.hasFaceColor = true;
+            ret = true;
+        }
+    }
+    if(!check) {
+        if(!info.hasFaceColor)
+            info.faceColor = defaultFaceColor;
+        if(!info.hasEdgeColor)
+            info.edgeColor = defaultEdgeColor;
+    }
+    return ret;
 }
 
-bool ImportOCAF::createObject(const TopoDS_Shape &shape, Info &info) {
+bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info) {
 
     auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
     feature->Visibility.setValue(false);
     feature->Shape.setValue(shape);
 
     App::Color color;
-    info.hasColor = getColor(shape,color);
+    getColor(shape,info);
+    if(info.hasFaceColor)
+        applyFaceColors(feature,{info.faceColor});
+    if(info.hasEdgeColor)
+        applyEdgeColors(feature,{info.edgeColor});
 
-    bool haveColors = false;
-    // TODO: we don't support SHUO yet, so only check for original subshape color
-    Part::TopoShape tshape(shape);
-    std::vector<App::Color> colors(tshape.countSubShapes(TopAbs_FACE),color);
-    int i = 0;
-    for(auto &face : tshape.getSubShapes(TopAbs_FACE)) {
-        Quantity_Color aColor;
-        if (aColorTool->GetColor(face, XCAFDoc_ColorSurf, aColor) ||
-            aColorTool->GetColor(face, XCAFDoc_ColorGen, aColor)) 
-        {
-            color.r = (float)aColor.Red();
-            color.g = (float)aColor.Green();
-            color.b = (float)aColor.Blue();
-            colors[i] = color;
-            haveColors = true;
+    TDF_LabelSequence seq;
+    if(aShapeTool->GetSubShapes(label,seq)) {
+        bool hasFaceColors = false;
+        bool hasEdgeColors = false;
+        Part::TopoShape tshape(shape);
+        std::vector<App::Color> faceColors(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
+        std::vector<App::Color> edgeColors(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
+        for(int i=1;i<=seq.Length();++i) {
+            TDF_Label l = seq.Value(i);
+            TopoDS_Shape subShape = aShapeTool->GetShape(l);
+            if(subShape.IsNull())
+                continue;
+            Quantity_Color aColor;
+            int idx = tshape.findShape(subShape)-1;
+            if(idx<0)
+                continue;
+            switch(subShape.ShapeType()) {
+            case TopAbs_FACE:
+                if(!aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) && 
+                   !aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
+                    continue;
+                assert(idx < (int)faceColors.size());
+                faceColors[idx] = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                hasFaceColors = true;
+                info.hasFaceColor = true;
+                break;
+            case TopAbs_EDGE:
+                if(!aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) 
+                    continue;
+                assert(idx < (int)edgeColors.size());
+                edgeColors[idx] = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                hasEdgeColors = true;
+                info.hasEdgeColor = true;
+                break;
+            default:
+                continue;
+            }
         }
-        ++i;
+        if(hasFaceColors)
+            applyFaceColors(feature,faceColors);
+        if(hasEdgeColors)
+            applyFaceColors(feature,edgeColors);
     }
-    if(haveColors) {
-        info.hasColor = true;
-        applyColors(feature,colors);
-    } else
-        applyColors(feature,{color});
 
     info.propPlacement = &feature->Placement;
     info.obj = feature;
-    info.color = color;
     return true;
 }
 
@@ -274,8 +318,10 @@ bool ImportOCAF::createGroup(Info &info, const TopoDS_Shape &shape,
             child->Visibility.setValue(false);
         info.obj = group;
         info.propPlacement = &group->Placement;
-        if(getColor(shape,info.color,false,true))
-            applyLinkColor(group,-1,info.color);
+        if(getColor(shape,info,false,true)) {
+            if(info.hasFaceColor)
+                applyLinkColor(group,-1,info.faceColor);
+        }
         return true;
     }
     auto group = static_cast<App::Part*>(doc->addObject("App::Part","Part"));
@@ -286,7 +332,6 @@ bool ImportOCAF::createGroup(Info &info, const TopoDS_Shape &shape,
         child->Visibility.setValue(visibilities[i++]);
     info.obj = group;
     info.propPlacement = &group->Placement;
-    getColor(shape,info.color,false,true);
     return true;
 }
 
@@ -295,7 +340,9 @@ App::DocumentObject* ImportOCAF::loadShapes()
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
 
-    myObjects.clear();
+    myShapes.clear();
+    myNames.clear();
+
     std::vector<App::DocumentObject*> objs;
     TDF_LabelSequence labels;
     aShapeTool->GetFreeShapes (labels);
@@ -329,7 +376,7 @@ App::DocumentObject* ImportOCAF::loadShapes()
         auto name = labelName(pDoc->Main());
         feature->Label.setValue(name.empty()?default_name.c_str():name.c_str());
         feature->Shape.setValue(shape);
-        applyColors(feature,{});
+        applyFaceColors(feature,{});
 
         std::vector<std::pair<App::Document*,std::string> > objNames;
         for(auto obj : App::Document::getDependencyList(objs,false,true))
@@ -342,15 +389,71 @@ App::DocumentObject* ImportOCAF::loadShapes()
     return ret;
 }
 
-App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, 
-        const TopoDS_Shape &shape, bool isArrayElement) 
+void ImportOCAF::getSHUOColors(TDF_Label label, 
+        std::map<std::string,App::Color> &colors, bool appendFirst)
+{
+    TDF_AttributeSequence seq;
+    if(!aShapeTool->GetAllComponentSHUO(label,seq))
+        return;
+    std::ostringstream ss;
+    for(int i=1;i<=seq.Length();++i) {
+        Handle(XCAFDoc_GraphNode) shuo = Handle(XCAFDoc_GraphNode)::DownCast(seq.Value(i));
+        if(shuo.IsNull())
+            continue;
+
+        TDF_Label slabel = shuo->Label();
+
+        // We only want to process the main shuo, i.e. those without upper_usage
+        TDF_LabelSequence uppers;
+        aShapeTool->GetSHUOUpperUsage(slabel, uppers);
+        if(uppers.Length())
+            continue;
+
+        // appendFirst tells us whether we shall append the object name of the first label
+        bool skipFirst = !appendFirst;
+        ss.str("");
+        while(1) {
+            if(skipFirst)
+                skipFirst = false;
+            else {
+                TDF_Label l = shuo->Label().Father();
+                auto it = myNames.find(l);
+                if(it == myNames.end()) {
+                    FC_WARN("Failed to find object of label " << labelName(l));
+                    ss.str("");
+                    break;
+                }
+                ss << it->second << '.';
+            }
+            if(!shuo->NbChildren())
+                break;
+            shuo = shuo->GetChild(1);
+        }
+        std::string subname = ss.str();
+        if(subname.empty())
+            continue;
+        if(!aColorTool->IsVisible(slabel)) {
+            subname += App::DocumentObject::hiddenMarker();
+            colors.emplace(subname,App::Color());
+        } else {
+            Quantity_Color aColor;
+            if(aColorTool->GetColor(slabel, XCAFDoc_ColorSurf, aColor) ||
+               aColorTool->GetColor(slabel, XCAFDoc_ColorGen, aColor))
+            {
+                colors.emplace(subname,App::Color(aColor.Red(),aColor.Green(),aColor.Blue()));
+            }
+        }
+    }
+}
+
+App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &shape, bool isArrayElement) 
 {
     if(shape.IsNull())
         return 0;
 
     auto baseShape = shape.Located(TopLoc_Location());
-    auto it = myObjects.find(baseShape);
-    if(it == myObjects.end()) {
+    auto it = myShapes.find(baseShape);
+    if(it == myShapes.end()) {
         Info info;
         auto baseLabel = aShapeTool->FindShape(baseShape);
         bool res;
@@ -358,36 +461,47 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label,
            (merge && !aShapeTool->IsAssembly(baseLabel)) ||
            (!merge && shape.ShapeType()!=TopAbs_COMPOUND))
         {
-            res = createObject(baseShape,info);
+            res = createObject(baseLabel,baseShape,info);
         } else
-            res = createAssembly(baseShape,info);
+            res = createAssembly(baseLabel,baseShape,info);
         if(!res)
             return 0;
         setObjectName(info.obj,baseLabel);
-        it = myObjects.emplace(baseShape,info).first;
+        it = myShapes.emplace(baseShape,info).first;
     }
+    if(isArrayElement)
+        return it->second.obj;
 
-    auto &info = it->second;
-    App::Color color = info.color;
-    if(!isArrayElement && !getColor(shape,color,true) && info.free) {
+    std::map<std::string,App::Color> shuoColors;
+    if(!useLinkGroup)
+        getSHUOColors(label,shuoColors,false);
+
+    auto info = it->second;
+    if(!getColor(shape,info,true) && shuoColors.empty() && info.free) {
         info.free = false;
         setPlacement(info.propPlacement,shape);
         setObjectName(info.obj,label);
+        myNames.emplace(label,info.obj->getNameInDocument());
         return info.obj;
     }
+
     auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
     link->Visibility.setValue(false);
     link->setLink(-1,info.obj);
-    if(!isArrayElement) {
-        setPlacement(&link->Placement,shape);
-        setObjectName(link,label);
-        if(info.color!=color)
-            applyLinkColor(link,-1,color);
-    }
+    setPlacement(&link->Placement,shape);
+    setObjectName(link,label);
+    if(info.faceColor!=it->second.faceColor)
+        applyLinkColor(link,-1,info.faceColor);
+
+    myNames.emplace(label,link->getNameInDocument());
+    if(shuoColors.size())
+        applyElementColors(link,shuoColors);
     return link;
 }
 
-bool ImportOCAF::createAssembly(const TopoDS_Shape &shape, Info &info) {
+bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info) {
+    (void)label;
+
     std::vector<TDF_Label> childLabels;
     std::vector<TopoDS_Shape> childShapes;
     boost::dynamic_bitset<> visibilities;
@@ -425,8 +539,7 @@ bool ImportOCAF::createAssembly(const TopoDS_Shape &shape, Info &info) {
         placements.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
 
         Quantity_Color aColor;
-        if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor))
-        {
+        if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
             auto idx = placements.size()-1;
             auto &color = colors[idx];
             color.r = (float)aColor.Red();
@@ -435,16 +548,16 @@ bool ImportOCAF::createAssembly(const TopoDS_Shape &shape, Info &info) {
         }
     }
 
+    std::map<std::string,App::Color> shuoColors;
+
     if(placements.size()>1) {
         // Okay, we are creating a link array
         App::DocumentObject *obj = loadShape(childLabels.front(),childShapes.front(),true);
         if(!obj)
             return false;
-        auto link = dynamic_cast<App::Link*>(obj);
-        if(!link) {
-            link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-            link->setLink(-1,obj);
-        }
+        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
+        link->Visibility.setValue(false);
+        link->setLink(-1,obj);
         link->ShowElement.setValue(false);
         link->ElementCount.setValue(placements.size());
         link->PlacementList.setValue(placements);
@@ -455,11 +568,19 @@ bool ImportOCAF::createAssembly(const TopoDS_Shape &shape, Info &info) {
 
         info.obj = link;
         info.propPlacement = &link->Placement;
-        if(getColor(shape,info.color))
-            applyLinkColor(link,-1,info.color);
+        getColor(shape,info);
+        if(info.hasFaceColor)
+            applyLinkColor(link,-1,info.faceColor);
+        
+        int i=0;
+        for(auto childLabel : childLabels) {
+            myNames.emplace(childLabel,std::to_string(i++));
+            getSHUOColors(childLabel,shuoColors,true);
+        }
+        if(shuoColors.size())
+            applyElementColors(link,shuoColors);
         return true;
     }
-
     // Not a link array, create normal group
     std::vector<App::DocumentObject *> children;
     visibilities.clear();
@@ -473,8 +594,14 @@ bool ImportOCAF::createAssembly(const TopoDS_Shape &shape, Info &info) {
             visibilities.push_back(aColorTool->IsVisible(childLabel));
         else
             visibilities.push_back(true);
+        if(useLinkGroup)
+            getSHUOColors(childLabel,shuoColors,true);
     }
-    return createGroup(info,shape,children,visibilities);
+    if(!createGroup(info,shape,children,visibilities))
+        return false;
+    if(shuoColors.size())
+        applyElementColors(info.obj,shuoColors);
+    return true;
 }
 
 // ----------------------------------------------------------------------------
@@ -504,36 +631,183 @@ void ExportOCAF::setName(TDF_Label label, App::DocumentObject *obj, const char *
     TDataStd_Name::Set(label, TCollection_ExtendedString(name, 1));
 }
 
+// Similar to XCAFDoc_ShapeTool::FindSHUO but return only main SHUO, i.e. SHUO
+// with no upper_usage. It should not be necssary if we strictly export from
+// bottom up, but let's make sure of it.
+static Standard_Boolean FindSHUO (const TDF_LabelSequence& theLabels,
+                                  Handle(XCAFDoc_GraphNode)& theSHUOAttr)
+{
+    assert(theLabels.Length()>1);
+    theSHUOAttr.Nullify();
+    TDF_AttributeSequence SHUOAttrs;
+    TDF_Label aCompLabel = theLabels.Value(1);
+    if (! ::XCAFDoc_ShapeTool::GetAllComponentSHUO( aCompLabel, SHUOAttrs ) )
+        return Standard_False;
+    for (Standard_Integer i = 1; i <= SHUOAttrs.Length(); i++) {
+        Handle(XCAFDoc_GraphNode) anSHUO = Handle(XCAFDoc_GraphNode)::DownCast(SHUOAttrs.Value(i));
+        TDF_LabelSequence aUpLabels;
+        // check for any upper_usage
+        ::XCAFDoc_ShapeTool::GetSHUOUpperUsage( anSHUO->Label(), aUpLabels );
+        if ( aUpLabels.Length() > 0 )
+            continue; // reject if there is one
+        int j=2;
+        for ( ; anSHUO->NbChildren() ; ++j ) {
+            if ( j>theLabels.Length() ) {
+                j=0;
+                break;
+            }
+            anSHUO = anSHUO->GetChild( 1 );
+            if ( theLabels.Value(j)!=anSHUO->Label().Father() ) {
+                j=0;
+                break;
+            }
+        }
+        if( j!=theLabels.Length()+1 )
+            continue;
+
+        theSHUOAttr = Handle(XCAFDoc_GraphNode)::DownCast(SHUOAttrs.Value(i));
+        break;
+    }
+    return ( !theSHUOAttr.IsNull() );
+}
+
+TDF_Label ExportOCAF::findComponent(const char *subname, TDF_Label label, TDF_LabelSequence &labels) {
+    const char *dot = strchr(subname,'.');
+    if(!dot) {
+        if(labels.Length()==1)
+            return labels.Value(1);
+        Handle(XCAFDoc_GraphNode) ret;
+        if(labels.Length() && (FindSHUO(labels,ret) || aShapeTool->SetSHUO(labels,ret)))
+            return ret->Label();
+        return TDF_Label();
+    }
+    TDF_LabelSequence components;
+    TDF_Label ref;
+    if(!aShapeTool->GetReferredShape(label,ref))
+        ref = label;
+    if(aShapeTool->GetComponents(ref,components)) {
+        for(int i=1;i<=components.Length();++i) {
+            auto component = components.Value(i);
+            auto it = myNames.find(component);
+            if(it == myNames.end())
+                continue;
+            for(auto &n : it->second) {
+                if(boost::starts_with(subname,n)) {
+                    labels.Append(component);
+                    return findComponent(subname+n.size(),component,labels);
+                }
+            }
+        }
+    }
+    return TDF_Label();
+}
+
 void ExportOCAF::setupObject(TDF_Label label, App::DocumentObject *obj, 
-        const Part::TopoShape &shape, const char *name) 
+        const Part::TopoShape &shape, const std::string &prefix, const char *name)
 {
     setName(label,obj,name);
-    if(!getShapeColors || aShapeTool->IsAssembly(label))
+    if(aShapeTool->IsComponent(label)) {
+        auto &names = myNames[label];
+        // The subname reference may contain several possible namings.
+        if(!name) {
+            // simple object internal name
+            names.push_back(prefix+obj->getNameInDocument()+".");
+        } else {
+            // name is not NULL in case this is a collapsed link array element.
+            // Collapsed means that the element is not an actual object, and
+            // 'obj' here is actually the parent. The given 'name' is in fact
+            // the element index
+            names.push_back(prefix + name + ".");
+            // In case the subname reference is created when the link array is
+            // previously expanded, the element object will be named as the
+            // parent object internal name + '_i<index>'
+            names.push_back(prefix + obj->getNameInDocument() + "_i" + name + ".");
+        }
+        // Finally, the subname reference allows to use the label for naming
+        // with preceeding '$'
+        names.push_back(prefix + "$" + obj->Label.getValue() + ".");
+    }
+
+    if(!getShapeColors || !mySetups.emplace(obj,name?name:"").second)
         return;
 
-    App::Color color;
-    bool isRef = aShapeTool->IsReference(label);
-    auto colors = getShapeColors(shape,color,obj->getDocument(),isRef);
-    if (isRef) {
-        // We don't support per face color of links yet
-        if(colors.size()!=1)
-            return;
-        color = colors.front();
+    std::map<std::string, std::map<std::string,App::Color> > colors;
+    static std::string marker(App::DocumentObject::hiddenMarker()+"*");
+    static std::array<const char *,3> keys = {"Face*","Edge*",marker.c_str()};
+    std::string childName;
+    if(name) {
+        childName = name;
+        childName += '.';
     }
-    Quantity_Color col(color.r,color.g,color.b,Quantity_TOC_RGB);
-    aColorTool->SetColor(label, col, XCAFDoc_ColorSurf);
+    for(auto key : keys) {
+        for(auto &v : getShapeColors(obj,key)) {
+            const char *subname = v.first.c_str();
+            if(name) {
+                if(!boost::starts_with(v.first,childName))
+                    continue;
+                subname += childName.size();
+            }
+            const char *dot = strrchr(subname,'.');
+            if(!dot)
+                colors[""].insert(v);
+            else {
+                ++dot;
+                colors[std::string(subname,dot-subname)].emplace(dot,v.second);
+            }
+        }
+    }
 
-    if(colors.size()==1 && colors.front()==color)
-        colors.clear();
+    for(auto &v : colors) {
+        TDF_Label nodeLabel = label;
+        Handle(XCAFDoc_GraphNode) shuo;
+        if(v.first.size()) {
+            TDF_LabelSequence labels;
+            if(aShapeTool->IsComponent(label))
+                labels.Append(label);
+            nodeLabel = findComponent(v.first.c_str(),label,labels);
+            if(nodeLabel.IsNull()) {
+                FC_WARN("Failed to find component " << v.first);
+                continue;
+            }
+        }
+        for(auto &vv : v.second) {
+            if(vv.first == App::DocumentObject::hiddenMarker()) {
+                aColorTool->SetVisibility(nodeLabel,Standard_False);
+                continue;
+            }
 
-    if (colors.size() == shape.countSubShapes(TopAbs_FACE)) {
-        int i=0;
-        for(auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
-            TDF_Label faceLabel = aShapeTool->AddSubShape(label, face.getShape());
-            aShapeTool->SetShape(faceLabel, face.getShape());
-            const App::Color& c = colors[i++];
-            Quantity_Color col(c.r,c.g,c.b,Quantity_TOC_RGB);
-            aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
+            auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
+            const App::Color& c = vv.second;
+            Quantity_Color color(c.r,c.g,c.b,Quantity_TOC_RGB);
+
+            if(boost::ends_with(vv.first,"*")) {
+                aColorTool->SetColor(nodeLabel, color, colorType);
+                continue;
+            }
+
+            if(nodeLabel!=label || aShapeTool->IsComponent(label)) {
+                // OCCT 7 seems to only support "Recommended practices for
+                // model styling and organization" version 1.2
+                // (https://www.cax-if.org/documents/rec_prac_styling_org_v12.pdf).
+                // The SHUO described in section 5.3 does not mention the
+                // capability of overriding context-depdendent element color,
+                // only whole shape color. Newer version of the same document
+                // (https://www.cax-if.org/documents/rec_prac_styling_org_v15.pdf)
+                // does support this, in section 5.1. 
+                //
+                // The above observation is confirmed by further inspection of
+                // OCCT code, XCAFDoc_ShapeTool.cxx and STEPCAFControl_Writer.cxx.
+                FC_WARN("Current OCCT does not support element color override");
+                continue;
+            }
+
+            auto subShape = shape.getSubShape(vv.first.c_str(),true);
+            if(subShape.IsNull()) {
+                FC_WARN("Failed to get subshape " << vv.first);
+                continue;
+            }
+            TDF_Label subLabel = aShapeTool->AddSubShape(nodeLabel, subShape);
+            aColorTool->SetColor(subLabel, color, colorType);
         }
     }
 }
@@ -541,6 +815,9 @@ void ExportOCAF::setupObject(TDF_Label label, App::DocumentObject *obj,
 void ExportOCAF::exportObjects(std::vector<App::DocumentObject*> &objs, const char *name) {
     if(objs.empty())
         return;
+    myObjects.clear();
+    myNames.clear();
+    mySetups.clear();
     if(objs.size()==1)
         exportObject(objs.front(),0,TDF_Label());
     else {
@@ -574,40 +851,65 @@ TDF_Label ExportOCAF::exportObject(App::DocumentObject* parentObj,
         return TDF_Label();
     }
 
+    //sub may contain more than one hierarchy, e.g. Assembly container may use
+    //getSubObjects to skip some hierarchy containing constraints and stuff
+    //when exporting. We search for extra '.', and set it as prefix if found.
+    //When setting SHUO's, we'll need this prefix for matching.
+    std::string prefix;
+    if(sub) {
+        auto len = strlen(sub);
+        if(len>1) {
+            --len;
+            // The prefix ends with the second last '.', so search for it.
+            for(int i=0;len!=0;--len) {
+                if(sub[len]=='.' && ++i==2) {
+                    prefix = std::string(sub,len+1);
+                    break;
+                }
+            }
+        }
+    }
+
     TDF_Label label;
     std::vector<App::DocumentObject *> links;
 
     int depth = 0;
-    auto link = obj;
+    auto linked = obj;
     auto linkedShape = shape;
     while(1) {
-        auto s = Part::Feature::getTopoShape(link);
+        auto s = Part::Feature::getTopoShape(linked);
         if(s.isNull() || !s.getShape().IsPartner(shape.getShape()))
             break;
         linkedShape = s;
-        auto next = link->getLinkedObject(false,0,false,depth++);
-        if(!next || link==next)
-            break;
-        auto it = myObjects.find(next);
+        // Search using our own cache. We can't rely on ShapeTool::FindShape()
+        // in case this is an assembly. Because FindShape() search among its
+        // own computed shape, i.e. its own created compound, and thus will
+        // never match ours.
+        auto it = myObjects.find(linked);
         if(it != myObjects.end()) {
             for(auto l : links)
                 myObjects.emplace(l,it->second);
-            // TODO: OCAF probably supports reference of references. But don't
-            // know how to add it. Currently, we'll flaten all multi-level link
-            // without scales. In other word, all link will be referring to the
-            // same non-located shape
+            // Note: OCAF does not seem to support reference of references. We
+            // have to flaten all multi-level link without scales. In other
+            // word, all link will all be forced to refer to the same
+            // non-located shape
             
             // retrieve OCAF computed shape, in case the current object returns
             // a new shape every time Part::Feature::getTopoShape() is called.
             auto baseShape = aShapeTool->GetShape(it->second);
-            // replace the shape without reseting element map, in order to get color
             shape.setShape(baseShape.Located(shape.getShape().Location()),false);
-            label = aShapeTool->AddComponent(parent,shape.getShape(),Standard_False);
-            setupObject(label,name?parentObj:obj,shape,name);
+            if(!parent.IsNull())
+                label = aShapeTool->AddComponent(parent,shape.getShape(),Standard_False);
+            else
+                label = aShapeTool->AddShape(shape.getShape(),Standard_False,Standard_False);
+            setupObject(label,name?parentObj:obj,shape,prefix,name);
             return label;
         }
-        link = next;
-        links.push_back(link);
+        auto next = linked->getLinkedObject(false,0,false,depth++);
+        if(!next || linked==next)
+            break;
+        linked = next;
+        links.push_back(linked);
     }
 
     auto subs = obj->getSubObjects();
@@ -617,16 +919,16 @@ TDF_Label ExportOCAF::exportObject(App::DocumentObject* parentObj,
         // Search for non-located shape to see if we've stored the original shape before
         if(!aShapeTool->FindShape(shape.getShape(),label)) {
             auto baseShape = linkedShape;
-            auto link = links.empty()?obj:links.back();
+            auto linked = links.empty()?obj:links.back();
             baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
             label = aShapeTool->NewShape();
             aShapeTool->SetShape(label,baseShape.getShape());
-            setupObject(label,link,baseShape);
+            setupObject(label,linked,baseShape,prefix);
         }
 
         if(!parent.IsNull()) 
             label = aShapeTool->AddComponent(parent,shape.getShape(),Standard_False);
-        setupObject(label,obj,shape);
+        setupObject(label,name?parentObj:obj,shape,prefix,name);
 
         myObjects.emplace(obj, label);
         for(auto link : links)
@@ -687,18 +989,25 @@ TDF_Label ExportOCAF::exportObject(App::DocumentObject* parentObj,
         }
     }
 
+    // Finished adding components. Now retrieve the computed non-located shape
+    auto baseShape = shape;
+    baseShape.setShape(aShapeTool->GetShape(label),false);
+
     myObjects.emplace(obj, label);
     for(auto link : links)
         myObjects.emplace(link, label);
 
     if(!parent.IsNull() && links.size())
-        setName(label,links.back());
+        linked = links.back();
     else
-        setName(label,obj);
+        linked = obj;
+    setupObject(label,linked,baseShape,prefix);
 
     if(!parent.IsNull()) {
+        // If we are a component, swap in the base shape but keep our location.
+        shape.setShape(baseShape.getShape().Located(shape.getShape().Location()),false);
         label = aShapeTool->AddComponent(parent,label,shape.getShape().Location());
-        setName(label,obj,name);
+        setupObject(label,name?parentObj:obj,shape,prefix,name);
     }
     return label;
 }
