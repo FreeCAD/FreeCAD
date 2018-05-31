@@ -367,7 +367,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
     }
     else if (strcmp(Reason,"CornerNaviCube") == 0) {
-        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube",0));
+        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube",1));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
