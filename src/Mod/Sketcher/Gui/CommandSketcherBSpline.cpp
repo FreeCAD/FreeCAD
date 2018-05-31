@@ -452,6 +452,8 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     openCommand("Increase degree");
+    
+    bool ignored=false;
 
     for (unsigned int i=0; i<SubNames.size(); i++ ) {
         // only handle edges
@@ -459,16 +461,29 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.increaseBSplineDegree(%d) ",
-                                    selection[0].getFeatName(),GeoId);
-            
-            // add new control points
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                    selection[0].getFeatName(),
-                                    GeoId);
+            const Part::Geometry * geo = Obj->getGeometry(GeoId);
+
+            if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.increaseBSplineDegree(%d) ",
+                                        selection[0].getFeatName(),GeoId);
+
+                // add new control points
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
+                                        selection[0].getFeatName(),
+                                        GeoId);
+            }
+            else {
+                ignored=true;
+            }
         }
+    }
+
+    if(ignored) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("At least one of the selected objects was not a B-Spline and was ignored."));
     }
 
     commitCommand();
@@ -490,7 +505,7 @@ CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Increase degree");
+    sMenuText       = QT_TR_NOOP("Increase knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Increases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseKnotMultiplicity";
     sStatusTip      = sToolTipText;
