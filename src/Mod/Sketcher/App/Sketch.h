@@ -94,10 +94,10 @@ public:
     /// retrieves the index of a point
     int getPointId(int geoId, PointPos pos) const;
     /// retrieves a point
-    Base::Vector3d getPoint(int geoId, PointPos pos);
-    
+    Base::Vector3d getPoint(int geoId, PointPos pos) const;
+
     /// retrieves whether a geometry has dependent parameters or not
-    bool hasDependentParameters(int geoId, PointPos pos);
+    bool hasDependentParameters(int geoId, PointPos pos) const;
 
     // Inline methods
     inline bool hasConflicts(void) const { return !Conflicting.empty(); }
@@ -460,7 +460,7 @@ private:
     void calculateDependentParametersElements(void);
 
     /// checks if the index bounds and converts negative indices to positive
-    int checkGeoId(int geoId);
+    int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
 };
 

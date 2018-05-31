@@ -1093,7 +1093,7 @@ Py::Tuple Sketch::getPyGeometry(void) const
     return tuple;
 }
 
-int Sketch::checkGeoId(int geoId)
+int Sketch::checkGeoId(int geoId) const
 {
     if (geoId < 0)
         geoId += Geoms.size();//convert negative external-geometry index to index into Geoms
@@ -3608,7 +3608,7 @@ int Sketch::getPointId(int geoId, PointPos pos) const
     return -1;
 }
 
-Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
+Base::Vector3d Sketch::getPoint(int geoId, PointPos pos) const
 {
     geoId = checkGeoId(geoId);
     int pointId = getPointId(geoId, pos);
@@ -3618,12 +3618,12 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
     return Base::Vector3d();
 }
 
-bool Sketch::hasDependentParameters(int geoId, PointPos pos)
+bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
 {
     try {
         geoId = checkGeoId(geoId);
     }
-    catch (Base::Exception e) {
+    catch (Base::Exception) {
         return false;
     }
 
