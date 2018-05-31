@@ -107,7 +107,8 @@ namespace Import
         void exportBSpline(BRepAdaptor_Curve c);
         void exportBCurve(BRepAdaptor_Curve c);
         void exportLine(BRepAdaptor_Curve c);
-        void exportLWPoly(BRepAdaptor_Curve c);
+        void exportLWPoly(BRepAdaptor_Curve c);   //LWPolyline not supported in R12?
+        void exportPolyline(BRepAdaptor_Curve c);
 
         std::string m_layerName;
         std::string m_optionSource;

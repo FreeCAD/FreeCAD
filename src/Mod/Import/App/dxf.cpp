@@ -72,27 +72,23 @@ CDxfWrite::CDxfWrite(const char* filepath)
     (*m_ofs) << "$MEASUREMENT" << endl;
     (*m_ofs) << " 70"       << endl;
     (*m_ofs) << "1"         << endl;
-//    (*m_ofs) << "  9"       << endl;   //not valid in DraftSight
-//    (*m_ofs) << "$MAXACTVP" << endl;
-//    (*m_ofs) << " 70"       << endl;
-//    (*m_ofs) << "1"         << endl;
     (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$LIMMAX" << endl;
     (*m_ofs) << " 10"       << endl;
     (*m_ofs) << "0"         << endl;
     (*m_ofs) << " 20"       << endl;
     (*m_ofs) << "0"         << endl;
-//    (*m_ofs) << "  9"       << endl;
-//    (*m_ofs) << "$LIMMIN"   << endl;
-//    (*m_ofs) << " 10"       << endl;
-//    (*m_ofs) << "297"       << endl;
-//    (*m_ofs) << " 20"       << endl;
-//    (*m_ofs) << "210"       << endl;
 
     (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$TEXTSIZE"   << endl;
     (*m_ofs) << " 40"       << endl;
     (*m_ofs) << "3.5"       << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$TEXTSTYLE"   << endl;
+    (*m_ofs) << "  7"       << endl;
+    (*m_ofs) << "STANDARD"  << endl;
+
     (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$DIMTXT"   << endl;
     (*m_ofs) << " 40"       << endl;
@@ -101,6 +97,17 @@ CDxfWrite::CDxfWrite(const char* filepath)
     (*m_ofs) << "$DIMTAD"   << endl;
     (*m_ofs) << " 70"       << endl;
     (*m_ofs) << "1"         << endl;
+    
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMASZ"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$HANDLING"   << endl;
+    (*m_ofs) << " 70"         << endl;
+    (*m_ofs) << "0"           << endl;
+
     (*m_ofs) << "  9"       << endl;
     (*m_ofs) << "$DWGCODEPAGE"   << endl;
     (*m_ofs) << "  3"       << endl;
@@ -168,7 +175,7 @@ void CDxfWrite::WriteLine(const double* s, const double* e, const char* layer_na
 }
 
 //***************************
-//WriteLWPolyLine
+//WriteLWPolyLine  (Note: LWPolyline might not be supported in R12
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
 {
@@ -176,8 +183,8 @@ void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
     (*m_ofs) << "LWPOLYLINE"     << endl;
     (*m_ofs) << "  8"              << endl;    // Group code for layer name
     (*m_ofs) << layer_name       << endl;    // Layer name
-    (*m_ofs) << "100"            << endl;
-    (*m_ofs) << "AcDbPolyline"   << endl;
+//    (*m_ofs) << "100"            << endl;    //100 groups are not part of R12
+//    (*m_ofs) << "AcDbPolyline"   << endl;
     (*m_ofs) << " 90"            << endl;
     (*m_ofs) << pd.nVert         << endl;    // number of vertices
     (*m_ofs) << " 70"            << endl;
@@ -214,14 +221,54 @@ void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
     (*m_ofs) << pd.Extr.z        << endl;
 }
 
+//***************************
+//WritePolyline
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::WritePolyline(LWPolyDataOut pd, const char* layer_name)
+{
+    (*m_ofs) << "  0"              << endl;
+    (*m_ofs) << "POLYLINE"         << endl;
+    (*m_ofs) << "  8"              << endl;
+    (*m_ofs) << layer_name       << endl;    // Layer name
+    (*m_ofs) << " 66"            << endl;
+    (*m_ofs) << "     1"         << endl;    // vertices follow
+//    (*m_ofs) << "100"            << endl;    //100 groups are not part of R12
+//    (*m_ofs) << "AcDbPolyline"   << endl;
+
+    (*m_ofs) << " 10"            << endl;
+    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << " 20"            << endl;
+    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << " 30"            << endl;
+    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << " 70"            << endl;
+    (*m_ofs) << "0"              << endl;
+    for (auto& p: pd.Verts) {
+        (*m_ofs) << "  0"        << endl;
+        (*m_ofs) << "VERTEX"     << endl;
+        (*m_ofs) << "  8"        << endl;
+        (*m_ofs) << layer_name   << endl;    // Layer name
+        (*m_ofs) << " 10"        << endl;    // Vertices
+        (*m_ofs) << p.x          << endl;
+        (*m_ofs) << " 20"        << endl;
+        (*m_ofs) << p.y          << endl;
+        (*m_ofs) << " 30"        << endl;
+        (*m_ofs) << "0.0"          << endl;
+    } 
+    (*m_ofs) << "  0"        << endl;
+    (*m_ofs) << "SEQEND"     << endl;
+    (*m_ofs) << "  8"        << endl;
+    (*m_ofs) << layer_name   << endl;
+}
+
 void CDxfWrite::WritePoint(const double* s, const char* layer_name)
 {
     (*m_ofs) << "  0"          << endl;
     (*m_ofs) << "POINT"     << endl;
     (*m_ofs) << "  8"         << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer name
-    (*m_ofs) << "100"       << endl;
-    (*m_ofs) << "AcDbPoint" << endl;
+//    (*m_ofs) << "100"       << endl;
+//    (*m_ofs) << "AcDbPoint" << endl;
     (*m_ofs) << " 10"        << endl;
     (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
     (*m_ofs) << " 20"          << endl;
@@ -327,10 +374,10 @@ void CDxfWrite::WriteSpline(SplineDataOut sd, const char* layer_name)
     (*m_ofs) << "SPLINE"       << endl;
     (*m_ofs) << "  8"          << endl;    // Group code for layer name
     (*m_ofs) << layer_name     << endl;    // Layer name
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbSpline"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbSpline"   << endl;
     //normal 210,220,230
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << sd.flag        << endl;      //flags
@@ -393,10 +440,10 @@ void CDxfWrite::WriteVertex(double x, double y, double z, const char* layer_name
     (*m_ofs) << "VERTEX"       << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbVertex"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbVertex"   << endl;
     (*m_ofs) << " 10"          << endl;
     (*m_ofs) << x              << endl;
     (*m_ofs) << " 20"          << endl; 
@@ -417,10 +464,10 @@ void CDxfWrite::WriteText(const char* text, const double* location1, const doubl
     (*m_ofs) << "TEXT"         << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbText"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbText"     << endl;
     (*m_ofs) << " 39"          << endl;
     (*m_ofs) << 0              << endl;     //thickness
     (*m_ofs) << " 10"          << endl;     //first alignment point
@@ -437,8 +484,12 @@ void CDxfWrite::WriteText(const char* text, const double* location1, const doubl
     (*m_ofs) << 0              << endl;    //rotation
     (*m_ofs) << "  7"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
+    (*m_ofs) << " 71"          << endl;
+    (*m_ofs) << "0"            << endl;
     (*m_ofs) << " 72"          << endl;
     (*m_ofs) << horizJust      << endl;
+    (*m_ofs) << " 73"          << endl;
+    (*m_ofs) << "0"            << endl;
     (*m_ofs) << " 11"          << endl;    //second alignment point
     (*m_ofs) << location2[0]   << endl;
     (*m_ofs) << " 21"          << endl; 
@@ -460,10 +511,10 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << "DIMENSION"    << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << "  2"          << endl;
     (*m_ofs) << "*" << layer_name     << endl;     // blockName
     (*m_ofs) << " 10"          << endl;     //dimension line definition point
@@ -487,8 +538,8 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //linear dims
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbAlignedDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbAlignedDimension"     << endl;
     (*m_ofs) << " 13"          << endl;
     (*m_ofs) << extLine1[0]    << endl;
     (*m_ofs) << " 23"          << endl; 
@@ -522,10 +573,10 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << "DIMENSION"    << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << "  2"          << endl;
     (*m_ofs) << "*" << layer_name     << endl;     // blockName
 
@@ -553,8 +604,8 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //angular dims
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDb2LineAngularDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDb2LineAngularDimension"     << endl;
 
     (*m_ofs) << " 13"           << endl;
     (*m_ofs) << startExt1[0]    << endl;
@@ -598,10 +649,10 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << "DIMENSION"    << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << "  2"          << endl;
     (*m_ofs) << "*" << layer_name     << endl;     // blockName
     (*m_ofs) << " 10"          << endl;     // arc center point
@@ -625,8 +676,8 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //radial dims
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbRadialDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbRadialDimension"     << endl;
     (*m_ofs) << " 15"          << endl;
     (*m_ofs) << arcPoint[0]    << endl;
     (*m_ofs) << " 25"          << endl; 
@@ -651,10 +702,10 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << "DIMENSION"    << endl;
     (*m_ofs) << "  8"          << endl;
     (*m_ofs) << layer_name     << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbEntity"   << endl;
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbEntity"   << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbDimension"     << endl;
     (*m_ofs) << "  2"          << endl;
     (*m_ofs) << "*" << layer_name     << endl;     // blockName
     (*m_ofs) << " 10"          << endl;
@@ -678,8 +729,8 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << "  3"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
 //diametric dims
-    (*m_ofs) << "100"          << endl;
-    (*m_ofs) << "AcDbDiametricDimension"     << endl;
+//    (*m_ofs) << "100"          << endl;
+//    (*m_ofs) << "AcDbDiametricDimension"     << endl;
     (*m_ofs) << " 15"          << endl;
     (*m_ofs) << arcPoint2[0]   << endl;
     (*m_ofs) << " 25"          << endl; 
@@ -736,10 +787,10 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "VPORT"    << endl;
 
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbViewportTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbViewportTableRecord"    << endl;
 
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "*ACTIVE"  << endl;
@@ -764,16 +815,16 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "TABLE"    << endl;
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "STYLE"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbSymbolTable"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTable"    << endl;
     (*m_ofs) << " 70"      << endl;
     (*m_ofs) << "    3"    << endl;
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "STYLE"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbTextStyleTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbTextStyleTableRecord"    << endl;
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "STANDARD" << endl;
     (*m_ofs) << " 70"      << endl;
@@ -798,22 +849,22 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "DIMSTYLE" << endl;
 
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbSymbolTable"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTable"    << endl;
     (*m_ofs) << " 70"      << endl;
     (*m_ofs) << "    1"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbDimStyleTable"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbDimStyleTable"    << endl;
     (*m_ofs) << " 71"      << endl;
     (*m_ofs) << "    1"    << endl;
 
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "DIMSTYLE" << endl;
 
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
-    (*m_ofs) << "100"      << endl;
-    (*m_ofs) << "AcDbDimStyleTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbDimStyleTableRecord"    << endl;
 
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "STANDARD" << endl;

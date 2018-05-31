@@ -364,14 +364,22 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             gp_Pnt s = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
             if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-                exportEllipse(adapt);
+                if (optionPolyLine) {
+                    exportPolyline(adapt);
+                } else {
+                    exportEllipse(adapt);
+                }
             } else {
-                exportEllipseArc(adapt);
+                if (optionPolyLine) {
+                    exportPolyline(adapt);
+                } else {
+                    exportEllipseArc(adapt);
+                }
             }
 
         } else if (adapt.GetType() == GeomAbs_BSplineCurve) {
             if (optionPolyLine) {
-                exportLWPoly(adapt);
+                exportPolyline(adapt);
             } else {
                 exportBSpline(adapt);
             }
@@ -631,6 +639,31 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
         }
         pd.nVert = discretizer.NbPoints ();
         WriteLWPolyLine(pd,getLayerName().c_str());
+    }
+}
+
+void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve c)
+{
+    LWPolyDataOut pd;
+    pd.Flag = c.IsClosed();
+    pd.Elev = 0.0;
+    pd.Thick = 0.0;
+    pd.Extr.x = 0.0;
+    pd.Extr.y = 0.0;
+    pd.Extr.z = 1.0;
+    pd.nVert = 0;
+
+    GCPnts_UniformAbscissa discretizer;
+    discretizer.Initialize (c, optionMaxLength);
+    std::vector<point3D> points;
+    if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+        int nbPoints = discretizer.NbPoints ();
+        for (int i=1; i<=nbPoints; i++) {
+            gp_Pnt p = c.Value (discretizer.Parameter (i));
+            pd.Verts.push_back(gPntTopoint3D(p));
+        }
+        pd.nVert = discretizer.NbPoints ();
+        WritePolyline(pd,getLayerName().c_str());
     }
 }
 
