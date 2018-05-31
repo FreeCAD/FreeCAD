@@ -135,6 +135,7 @@ public:
     void WriteCircle(const double* c, double radius, const char* layer_name );
     void WriteSpline(SplineDataOut sd, const char* layer_name);
     void WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name);
+    void WritePolyline(LWPolyDataOut pd, const char* layer_name);
     void WriteVertex(double x, double y, double z, const char* layer_name);
     void WriteText(const char* text, const double* location1, const double* location2,
                    const double height, const int horizJust, const char* layer_name);
