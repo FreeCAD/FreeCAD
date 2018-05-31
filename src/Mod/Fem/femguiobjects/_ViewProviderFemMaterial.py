@@ -125,7 +125,7 @@ class _TaskPanelFemMaterial:
         QtCore.QObject.connect(self.parameterWidget.input_fd_kinematic_viscosity, QtCore.SIGNAL("valueChanged(double)"), self.kinematic_viscosity_changed)
         QtCore.QObject.connect(self.parameterWidget.input_fd_vol_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.vtec_changed)
 
-        # init all parameter input fiels with read only
+        # init all parameter input files with read only
         self.parameterWidget.chbu_allow_edit.setCheckState(QtCore.Qt.CheckState.Unchecked)
         self.toggleInputFieldsReadOnly()
 
