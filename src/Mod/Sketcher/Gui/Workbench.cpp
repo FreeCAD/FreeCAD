@@ -279,6 +279,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
                 << "Sketcher_Symmetry"
                 << "Sketcher_Clone"
                 << "Sketcher_Copy"
+                << "Sketcher_Move"
                 << "Sketcher_RectangularArray"
                 << "Sketcher_DeleteAllGeometry";
 }
