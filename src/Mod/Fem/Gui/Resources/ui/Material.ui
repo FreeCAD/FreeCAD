@@ -42,16 +42,37 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cb_materials">
-        <item>
-         <property name="text">
-          <string>choose...</string>
-         </property>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_materials">
+          <item>
+           <property name="text">
+            <string>choose...</string>
+           </property>
+          </item>
+         </widget>
         </item>
-       </widget>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Material card</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Materaial name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="l_mat_name">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QLabel" name="l_mat_description">
@@ -63,15 +84,50 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_basic_2">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Editing material</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_28">
       <item>
-       <widget class="QCheckBox" name="chbu_allow_edit">
-        <property name="text">
-         <string>allow edit material parameter</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton_editMat">
+          <property name="text">
+           <string>use FreeCAD material editor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="chbu_allow_edit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="text">
+           <string>use this task panel</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
