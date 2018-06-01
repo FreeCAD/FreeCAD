@@ -103,7 +103,15 @@ class _TaskPanelFemMaterial:
     def __init__(self, obj):
 
         self.obj = obj
-        self.material = self.obj.Material
+        self.material = self.obj.Material  # FreeCAD material dictionary of current material
+        self.card_path = ''
+        self.materials = {}  # { card_path : FreeCAD material dict }
+        # mat_card is the FCMat file
+        # card_name is the file name of the mat_card
+        # card_path is the whole file path of the mat_card
+        # material_name is the value of the key name in FreeCAD material dictionary
+        # they might not match because of special letters in the material_name which are changed in the card_name to english standard characters
+        self.has_transient_mat = False
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Material.ui")
@@ -112,6 +120,7 @@ class _TaskPanelFemMaterial:
         QtCore.QObject.connect(self.parameterWidget.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.parameterWidget.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.parameterWidget.chbu_allow_edit, QtCore.SIGNAL("clicked()"), self.toggleInputFieldsReadOnly)
+        QtCore.QObject.connect(self.parameterWidget.pushButton_editMat, QtCore.SIGNAL("clicked()"), self.edit_material)
         # basic properties must be provided
         QtCore.QObject.connect(self.parameterWidget.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         # mechanical properties
@@ -140,25 +149,27 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
 
+        # fill self.materials dict and fill the combobox with material cards
         self.import_materials()
-        previous_mat_path = self.get_material_path(self.material)
-        if not previous_mat_path:
-            material_name = self.get_material_name(self.material)
-            if material_name != 'None':
-                FreeCAD.Console.PrintMessage("Previously used material cannot be found in material directories. Using transient material.\n")
-                self.add_transient_material(self.material)
-                index = self.parameterWidget.cb_materials.findData(material_name)
-            else:
-                if not self.material:
-                    index = self.parameterWidget.cb_materials.findText(material_name)
-                else:
-                    FreeCAD.Console.PrintMessage("None material was previously used. Reload values.\n")
-                    self.add_transient_material(self.material)
-                    index = self.parameterWidget.cb_materials.findData(material_name)
-            self.choose_material(index)
+
+        # search for exact this mat_card in all known cards, choose the current material
+        self.card_path = self.get_material_card(self.material)
+        print('card_path: ' + self.card_path)
+        if not self.card_path:
+            # we have not found our material in self.materials dict :-(, we gone add a user defined temporary material, a document material
+            FreeCAD.Console.PrintMessage("Previously used material card cannot be found in material directories. Add document material.\n")
+            self.card_path = '_document_material'
+            self.materials[self.card_path] = self.material
+            self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
+            index = self.parameterWidget.cb_materials.findData(self.card_path)
+            # print(index)
+            self.choose_material(index)  # fill input fields and set the current material in the cb widget
         else:
-            index = self.parameterWidget.cb_materials.findData(previous_mat_path)
-            self.choose_material(index)
+            # we found our exact material in self.materials dict :-)
+            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We gone use this material.\n")
+            index = self.parameterWidget.cb_materials.findData(self.card_path)
+            # print(index)
+            self.choose_material(index)  # fill input fields and set the current material in the cb widget
 
         # geometry selection widget
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge'], False)  # start with Solid in list!
@@ -169,6 +180,7 @@ class _TaskPanelFemMaterial:
         # check references, has to be after initialisation of selectionWidget
         self.selectionWidget.has_equal_references_shape_types()
 
+    ################ leave task panel #########################
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
@@ -189,7 +201,60 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
-    ################ parameter widget methods #########################
+    ################ choose material #########################
+    def get_material_card(self, material):
+        for a_mat in self.materials:
+            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
+            # print(a_mat + '  -->  unmatched_items = ' + str(len(unmatched_items)))
+            if len(unmatched_items) == 0:
+                return a_mat
+        return ""
+
+    def choose_material(self, index):
+        if index < 0:
+            return
+        self.card_path = self.parameterWidget.cb_materials.itemData(index)  # returns the whole path !
+        # print('choose_material: ' + self.card_path)
+        self.material = self.materials[self.card_path]
+        self.check_material_keys()
+        self.set_mat_params_in_input_fields(self.material)
+        self.parameterWidget.cb_materials.setCurrentIndex(index)  # set after input fields
+        gen_mat_desc = ""
+        gen_mat_name = ""
+        if 'Description' in self.material:
+            gen_mat_desc = self.material['Description']
+        if 'Name' in self.material:
+            gen_mat_name = self.material['Name']
+        self.parameterWidget.l_mat_description.setText(gen_mat_desc)
+        self.parameterWidget.l_mat_name.setText(gen_mat_name)
+        # print('choose_material: done')
+
+    def set_transient_material(self):
+        self.card_path = '_transient_material'
+        self.materials[self.card_path] = self.material  # = the crurrent input fields data
+        index = self.parameterWidget.cb_materials.findData(self.card_path)
+        self.choose_material(index)
+
+    def add_transient_material(self):
+        self.has_transient_mat = True
+        self.card_path = '_transient_material'
+        self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
+        self.set_transient_material()
+
+    ################ how to edit a material #########################
+    def edit_material(self):
+        # self.print_material_params()
+        import MaterialEditor
+        self.material = MaterialEditor.editMaterial(self.material)
+        self.check_material_keys()
+        self.set_mat_params_in_input_fields(self.material)
+        if self.has_transient_mat is False:
+            self.add_transient_material()
+        else:
+            self.set_transient_material()
+        # self.print_material_params()
+        # material editor returns the mat_dict only not a card_path, if a standard FreeCAD mat_card was used
+
     def toggleInputFieldsReadOnly(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
             self.parameterWidget.input_fd_density.setReadOnly(False)
@@ -210,9 +275,13 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
-    def goto_MatWeb(self):
-        import webbrowser
-        webbrowser.open("http://matweb.com")
+    ################ material parameter input fields #########################
+    def print_material_params(self, material=None):
+        if not material:
+            material = self.material
+        for p in material:
+            print('   ' + p + ' --> ' + material[p])
+        print('\n')
 
     def check_material_keys(self):
         if not self.material:
@@ -276,6 +345,7 @@ class _TaskPanelFemMaterial:
             print('SpecificHeat not found in material data of: ' + self.material['Name'])
             self.material['SpecificHeat'] = '0 J/kg/K'
 
+    # mechanical input fields
     def ym_changed(self, value):
         # FreeCADs standard unit for stress is kPa
         old_ym = Units.Quantity(self.material['YoungsModulus']).getValueAs("kPa")
@@ -286,6 +356,10 @@ class _TaskPanelFemMaterial:
                 material = self.material
                 material['YoungsModulus'] = unicode(value) + " kPa"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
     def density_changed(self, value):
         # FreeCADs standard unit for density is kg/mm^3
@@ -298,6 +372,10 @@ class _TaskPanelFemMaterial:
                 value_in_kg_per_m3 = value * 1e9
                 material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"  # SvdW:Keep density in SI units for easier readability
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
     def pr_changed(self, value):
         old_pr = Units.Quantity(self.material['PoissonRatio'])
@@ -308,12 +386,21 @@ class _TaskPanelFemMaterial:
                 material = self.material
                 material['PoissonRatio'] = unicode(value)
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
             material = self.material
             material['PoissonRatio'] = unicode(value)
             self.material = material
+            if self.has_transient_mat is False:
+                self.add_transient_material()
+            else:
+                self.set_transient_material()
 
+    # thermal input fields
     def tc_changed(self, value):
         old_tc = Units.Quantity(self.material['ThermalConductivity']).getValueAs("W/m/K")
         variation = 0.001
@@ -324,6 +411,10 @@ class _TaskPanelFemMaterial:
                 value_in_W_per_mK = value * 1e-3  # To compensate for use of SI units
                 material['ThermalConductivity'] = unicode(value_in_W_per_mK) + " W/m/K"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
     def tec_changed(self, value):
         old_tec = Units.Quantity(self.material['ThermalExpansionCoefficient']).getValueAs("um/m/K")
@@ -335,6 +426,10 @@ class _TaskPanelFemMaterial:
                 value_in_um_per_mK = value * 1e6  # To compensate for use of SI units
                 material['ThermalExpansionCoefficient'] = unicode(value_in_um_per_mK) + " um/m/K"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
     def sh_changed(self, value):
         old_sh = Units.Quantity(self.material['SpecificHeat']).getValueAs("J/kg/K")
@@ -346,8 +441,12 @@ class _TaskPanelFemMaterial:
                 value_in_J_per_kgK = value * 1e-6  # To compensate for use of SI units
                 material['SpecificHeat'] = unicode(value_in_J_per_kgK) + " J/kg/K"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
-    ################ fluidic #########################
+    # fluidic input fields
     def vtec_changed(self, value):
         old_vtec = Units.Quantity(self.material['VolumetricThermalExpansionCoefficient']).getValueAs("m/m/K")
         variation = 0.001
@@ -358,6 +457,10 @@ class _TaskPanelFemMaterial:
                 value_in_one_per_K = value
                 material['VolumetricThermalExpansionCoefficient'] = unicode(value_in_one_per_K) + " m/m/K"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
     def kinematic_viscosity_changed(self, value):
         old_nu = Units.Quantity(self.material['KinematicViscosity']).getValueAs("m^2/s")
@@ -369,34 +472,12 @@ class _TaskPanelFemMaterial:
                 value_in_m2_per_second = value
                 material['KinematicViscosity'] = unicode(value_in_m2_per_second) + " m^2/s"
                 self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
 
-    def choose_material(self, index):
-        if index < 0:
-            return
-        mat_file_path = self.parameterWidget.cb_materials.itemData(index)
-        self.material = self.materials[mat_file_path]
-        self.parameterWidget.cb_materials.setCurrentIndex(index)
-        self.check_material_keys()
-        self.set_mat_params_in_combo_box(self.material)
-        gen_mat_desc = ""
-        if 'Description' in self.material:
-            gen_mat_desc = self.material['Description']
-        self.parameterWidget.l_mat_description.setText(gen_mat_desc)
-
-    def get_material_name(self, material):
-        if 'Name' in self.material:
-            return self.material['Name']
-        else:
-            return 'None'
-
-    def get_material_path(self, material):
-        for a_mat in self.materials:
-            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
-            if len(unmatched_items) == 0:
-                return a_mat
-        return ""
-
-    def set_mat_params_in_combo_box(self, matmap):
+    def set_mat_params_in_input_fields(self, matmap):
         if 'YoungsModulus' in matmap:
             ym_new_unit = "MPa"
             ym = FreeCAD.Units.Quantity(matmap['YoungsModulus'])
@@ -446,14 +527,15 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    def add_transient_material(self, material):
-        material_name = self.get_material_name(material)
-        self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
-        self.materials[material_name] = material
-
     ######################## material import and export ###################
+    def print_materialsdict(self):
+        print('\n\n')
+        for mat_card in self.materials:
+            print(mat_card)
+            self.print_material_params(self.materials[mat_card])
+        print('\n\n')
+
     def import_materials(self):
-        self.materials = {}
         self.pathList = []
         self.parameterWidget.cb_materials.clear()
 
@@ -462,40 +544,41 @@ class _TaskPanelFemMaterial:
             self.import_fluid_materials()
         else:
             self.import_solid_materials()
+        # self.print_materialsdict()
 
     def import_solid_materials(self):
         use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
         if use_built_in_materials:
             system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
-            self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+            self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
 
         use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
         if use_mat_from_config_dir:
             user_mat_dirname = FreeCAD.getUserAppDataDir() + "Material"
-            self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
 
         use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
         if use_mat_from_custom_dir:
             custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
 
     def import_fluid_materials(self):
         #use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
         #if use_built_in_materials:
         system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/FluidMaterial"
-        self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+        self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
 
         use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
         if use_mat_from_config_dir:
             user_mat_dirname = FreeCAD.getUserAppDataDir() + "FluidMaterial"
-            self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+            self.add_cards_from_a_dir(user_mat_dirname, ":/icons/preferences-general.svg")
 
         use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
         if use_mat_from_custom_dir:
             custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+            self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
 
-    def add_mat_dir(self, mat_dir, icon):
+    def add_cards_from_a_dir(self, mat_dir, icon):
         import glob
         import os
         import Material
@@ -503,13 +586,13 @@ class _TaskPanelFemMaterial:
         ext_len = len(mat_file_extension)
         dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
         self.pathList = self.pathList + dir_path_list
-        material_name_list = []
+        card_name_list = []
         for a_path in dir_path_list:
-            material_name = os.path.basename(a_path[:-ext_len])
+            card_name = os.path.basename(a_path[:-ext_len])
             self.materials[a_path] = Material.importFCMat(a_path)
-            material_name_list.append([material_name, a_path])
-        material_name_list.sort()
-        for mat in material_name_list:
+            card_name_list.append([card_name, a_path])
+        card_name_list.sort()
+        for mat in card_name_list:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
 
     def export_FCMat(self, fileName, matDict):
@@ -561,8 +644,8 @@ class _TaskPanelFemMaterial:
         if not saveName == "":
             print(saveName)
             knownMaterials = [self.parameterWidget.cb_materials.itemText(i) for i in range(self.parameterWidget.cb_materials.count())]
-            material_name = os.path.basename(saveName[:-len('.FCMat')])
-            if material_name not in knownMaterials:
+            card_name = os.path.basename(saveName[:-len('.FCMat')])
+            if card_name not in knownMaterials:
                 self.export_FCMat(saveName, self.material)
                 FreeCAD.Console.PrintMessage("Successfully save the Material property file: " + saveName + "\n")
             else:
@@ -579,3 +662,6 @@ class _TaskPanelFemMaterial:
                     self.export_FCMat(saveName, self.obj.Material)
                     FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: "+ saveName + "\n")
                 """
+    def goto_MatWeb(self):
+        import webbrowser
+        webbrowser.open("http://matweb.com")
