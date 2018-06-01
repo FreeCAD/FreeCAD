@@ -144,7 +144,8 @@ def write(filename,dictionary):
                 # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
                 for k,i in s.iteritems():
-                    if k != "keyname":
+                    if (k != "keyname" and i != '') or k == "Name":
+                        # use only keys which are not empty and the name even if empty
                         f.write(k + "=" + i.encode('utf-8') + "\n")
                 f.write("\n")
     f.close()

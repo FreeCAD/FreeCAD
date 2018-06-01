@@ -235,7 +235,11 @@ class MaterialEditor:
             for i2 in range(w.childCount()):
                 c = w.child(i2)
                 # TODO the following should be translated back to english,since text(0) could be translated
-                d[self.collapseKey(str(c.text(0)))] = unicode(c.text(1))
+                matkey = self.collapseKey(str(c.text(0)))
+                matvalue = unicode(c.text(1))
+                if matvalue or (matkey == 'Name'):  
+                    # use only keys which are not empty and the name even if empty
+                    d[matkey] = matvalue
         return d
 
 
