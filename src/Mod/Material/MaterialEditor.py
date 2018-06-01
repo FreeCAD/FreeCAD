@@ -261,11 +261,12 @@ class MaterialEditor:
 
     def openfile(self):
         "Opens a FCMat file"
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open FreeCAD Material file','*.FCMat')
+        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open FreeCAD Material file','*.FCMat')
+        filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             self.clearEditor()
             import importFCMat
-            d = importFCMat.read(filename[0])
+            d = importFCMat.read(filename)
             if d:
                 self.updateContents(d)
 
@@ -275,7 +276,8 @@ class MaterialEditor:
         name = str(self.widget.Editor.findItems(translate("Material","Name"),QtCore.Qt.MatchRecursive,0)[0].text(1))
         if not name:
             name = "Material"
-        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),'Save FreeCAD Material file',name+'.FCMat')
+        filetuple = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),'Save FreeCAD Material file',name+'.FCMat')
+        filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             d = self.getDict()
             if d:
