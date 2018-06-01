@@ -68,6 +68,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialSolid"
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_MaterialEditor"
+           << "Separator"
            << "FEM_ElementGeometry1D"
            << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
