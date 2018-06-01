@@ -37,7 +37,6 @@ from FreeCAD import Units
 from . import FemSelectionWidgets
 from PySide import QtCore
 from PySide import QtGui
-from PySide.QtGui import QFileDialog
 import sys
 if sys.version_info.major >= 3:
     unicode = str
@@ -116,8 +115,6 @@ class _TaskPanelFemMaterial:
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Material.ui")
         # globals
-        QtCore.QObject.connect(self.parameterWidget.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
-        QtCore.QObject.connect(self.parameterWidget.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.parameterWidget.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.parameterWidget.chbu_allow_edit, QtCore.SIGNAL("clicked()"), self.toggleInputFieldsReadOnly)
         QtCore.QObject.connect(self.parameterWidget.pushButton_editMat, QtCore.SIGNAL("clicked()"), self.edit_material)
@@ -594,74 +591,3 @@ class _TaskPanelFemMaterial:
         card_name_list.sort()
         for mat in card_name_list:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
-
-    def export_FCMat(self, fileName, matDict):
-        """
-        Write a material dictionary to a FCMat file, a version without group support, with Python3
-        <https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Material/Material.py>
-        """
-        try:
-            import ConfigParser as configparser
-        except:
-            import configparser  # Python 3
-        # himport string
-        Config = configparser.ConfigParser()
-        Config.optionxform = str  # disable conversion all uppercase leter in key into lower case
-
-        # ignore creating group, just fill all into group 'FCMat'
-        grp = 'FCMat'
-        if not Config.has_section(grp):
-            Config.add_section(grp)
-        for x in matDict.keys():
-            Config.set(grp, x, matDict[x])
-
-        Preamble = "# This is a FreeCAD material-card file\n\n"
-        # Writing our configuration file to 'example.cfg'
-        with open(fileName, 'wb') as configfile:
-            configfile.write(Preamble)
-            Config.write(configfile)
-
-        print(matDict)  # matDic ist nicht mit den aktuellen geaenderten werten im taskpanel upgedated
-
-    def export_material(self):
-        import os
-        if self.obj.Category == 'Fluid':
-            MaterialDir = 'FluidMaterial'
-        else:
-            MaterialDir = 'Material'
-        _UseMaterialsFromCustomDir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        _dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-        if _UseMaterialsFromCustomDir and _dir != "" and os.path.isdir(_dir):
-            TargetDir = self.fem_prefs.GetString("CustomMaterialsDir", "")
-        elif self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True):
-            TargetDir = FreeCAD.getUserAppDataDir() + os.path.sep + MaterialDir  # $HOME/.FreeCAD
-        else:
-            FreeCAD.Console.PrintMessage("Customed material saving directory is not setup in Fem preference")
-        if not os.path.exists(TargetDir):
-            os.mkdir(TargetDir)
-
-        saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir, "*.FCMat")
-        if not saveName == "":
-            print(saveName)
-            knownMaterials = [self.parameterWidget.cb_materials.itemText(i) for i in range(self.parameterWidget.cb_materials.count())]
-            card_name = os.path.basename(saveName[:-len('.FCMat')])
-            if card_name not in knownMaterials:
-                self.export_FCMat(saveName, self.material)
-                FreeCAD.Console.PrintMessage("Successfully save the Material property file: " + saveName + "\n")
-            else:
-                self.export_FCMat(saveName, self.obj.Material)
-                FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: " + saveName + "\n")
-                """
-                msgBox = QMessageBox()
-                msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
-                msgBox.addButton(QMessageBox.Yes)
-                msgBox.addButton(QMessageBox.No)
-                msgBox.setDefaultButton(QMessageBox.No)
-                ret = msgBox.exec_()
-                if ret == QMessageBox.Yes:
-                    self.export_FCMat(saveName, self.obj.Material)
-                    FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: "+ saveName + "\n")
-                """
-    def goto_MatWeb(self):
-        import webbrowser
-        webbrowser.open("http://matweb.com")
