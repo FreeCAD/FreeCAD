@@ -36,7 +36,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchWindow
 #  \ingroup ARCH
 #  \brief The Window object and tools
@@ -394,38 +394,38 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             p7 = Vector(width-(h1+h2),height-(h1+h2),0)
             p8 = Vector(width*3/4+h2,height-(h1+h2),0)
             addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
-            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',8,2,16,1,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',17,1,27,2,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',24,2,32,1,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',32,2,4,2,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',10,2,6,2,tol)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',17,2,26,2,0.0)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',25,2,34,2,0.0)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0)) 
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,2,16,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',17,1,27,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,2,32,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,2,4,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,2,6,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',17,2,26,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',25,2,34,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0))
             s.addConstraint(Sketcher.Constraint('DistanceY',9,2,18,2,0.0))
-            s.addConstraint(Sketcher.Constraint('DistanceY',16,2,24,1,0.0)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',24,2,32,1,0.0)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',13,2,9,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',13,2,9,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',16,1,20,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',24,1,28,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',24,1,28,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',29,2,25,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',29,2,25,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',32,1,36,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',32,1,36,1,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceX',37,2,33,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('DistanceY',37,2,33,2,h2)) 
-            s.addConstraint(Sketcher.Constraint('Equal',14,22)) 
-            s.addConstraint(Sketcher.Constraint('Equal',22,30)) 
-            s.addConstraint(Sketcher.Constraint('Equal',30,38)) 
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,2,24,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,2,32,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',13,2,9,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',13,2,9,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,1,28,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,1,28,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',29,2,25,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',29,2,25,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,1,36,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',32,1,36,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',37,2,33,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',37,2,33,2,h2))
+            s.addConstraint(Sketcher.Constraint('Equal',14,22))
+            s.addConstraint(Sketcher.Constraint('Equal',22,30))
+            s.addConstraint(Sketcher.Constraint('Equal',30,38))
             wp.extend(["LeftMostFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
             wp.extend(["LeftMostGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
             wp.extend(["LeftFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2+w2)])
@@ -474,7 +474,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Preset = WindowPresets.index(windowtype)+1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
-                obj.Role = "Door"
+                obj.IfcRole = "Door"
                 obj.Label = translate("Arch","Door")
             FreeCAD.ActiveDocument.recompute()
             return obj
@@ -507,7 +507,7 @@ class _CommandWindow:
         self.Include = True
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
-        
+
         # autobuild mode
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
@@ -528,7 +528,7 @@ class _CommandWindow:
                     elif Draft.isClone(obj,"Window"):
                         if obj.Objects[0].Inlist:
                             host = obj.Objects[0].Inlist[0]
-    
+
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
@@ -541,7 +541,7 @@ class _CommandWindow:
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
-        
+
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
@@ -580,7 +580,7 @@ class _CommandWindow:
                     FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Width = "+str(self.Width))
                     FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject('"+o.Name+"').Height = "+str(self.Height))
                     break
-            
+
         else:
             # preset
             FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
@@ -631,7 +631,7 @@ class _CommandWindow:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Window options", utf8_decode=True))
         grid = QtGui.QGridLayout(w)
-        
+
         # include box
         include = QtGui.QCheckBox(translate("Arch","Auto include in host object", utf8_decode=True))
         include.setChecked(True)
@@ -712,7 +712,7 @@ class _CommandWindow:
 
     def setSill(self,d):
         self.Sill = d
-        
+
     def setInclude(self,i):
         self.Include = bool(i)
 
@@ -854,7 +854,7 @@ class _Window(ArchComponent.Component):
 
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             clonedProxy = obj.CloneOf.Proxy
             if not (hasattr(clonedProxy, "sshapes") and hasattr(clonedProxy, "vshapes")):
@@ -864,7 +864,7 @@ class _Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
-        
+
         import Part,DraftGeomUtils,math
         pl = obj.Placement
         base = None
@@ -1009,7 +1009,7 @@ class _Window(ArchComponent.Component):
                                             pass
                                         elif omode == 10: # -sliding
                                             pass
-                                            
+
                                 thk = float(obj.WindowParts[(i*5)+3])
                                 if thk:
                                     exv = DraftVecUtils.scaleTo(norm,thk)
@@ -1094,7 +1094,7 @@ class _Window(ArchComponent.Component):
             if obj.Subvolume:
                 if obj.Subvolume.isDerivedFrom("Part::Feature"):
                     if not obj.Subvolume.Shape.isNull():
-                        sh = obj.Subvolume.Shape.copy()   
+                        sh = obj.Subvolume.Shape.copy()
                         if plac:
                             sh.Placement = plac
                         return sh
@@ -1130,9 +1130,9 @@ class _Window(ArchComponent.Component):
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
         if not base:
             return None
-            
+
         # finding which wire to use to drill the hole
-        
+
         f = None
         if hasattr(obj,"HoleWire"):
             if obj.HoleWire > 0:
@@ -1197,7 +1197,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         mat = obj.Material
-                if not mat: 
+                if not mat:
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
@@ -1306,14 +1306,14 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.title, 0, 0, 1, 7)
         self.basepanel = ArchComponent.ComponentTaskPanel()
         self.form = [self.baseform,self.basepanel.baseform]
-        
+
         # base object
         self.tree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.tree, 1, 0, 1, 7)
         self.tree.setColumnCount(1)
         self.tree.setMaximumSize(QtCore.QSize(500,24))
         self.tree.header().hide()
-        
+
         # hole
         self.holeLabel = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.holeLabel, 2, 0, 1, 1)
@@ -1514,7 +1514,7 @@ class _ArchWindowTaskPanel:
                     self.holeNumber.setText(str(self.obj.HoleWire))
                 else:
                     self.holeNumber.setText("0")
-                        
+
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
@@ -1586,7 +1586,7 @@ class _ArchWindowTaskPanel:
                                     self.field7.setCurrentIndex(int(l[-1]))
                             if wires:
                                 f.setText(",".join(wires))
-                            
+
                         elif i in [3,4]:
                             f.setProperty("text",FreeCAD.Units.Quantity(float(t),FreeCAD.Units.Length).UserString)
                         else:
@@ -1658,7 +1658,7 @@ class _ArchWindowTaskPanel:
         self.field7.setVisible(False)
         self.createButton.setVisible(False)
         self.addButton.setEnabled(True)
-        
+
     def addEdge(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
             for sub in sel.SubElementNames:
