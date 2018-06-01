@@ -78,8 +78,9 @@ class MaterialEditor:
         "updates the contents of the materials combo with existing material cards"
         # look for cards in both resources dir and a Materials sub-folder in the user folder.
         # User cards with same name will override system cards
-        paths = [FreeCAD.getResourceDir() + os.sep + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        ap = FreeCAD.ConfigGet("UserAppData") + os.sep + "Materials"
+        # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
+        paths = [FreeCAD.getResourceDir() + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
+        ap = FreeCAD.ConfigGet("UserAppData") + "Material"
         if os.path.exists(ap):
             paths.append(ap)
         self.cards = {}
