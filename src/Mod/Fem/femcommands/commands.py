@@ -88,6 +88,8 @@ class _CommandFemConstraintElectrostaticPotential(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemConstraintElectrostaticPotential")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -109,6 +111,8 @@ class _CommandFemConstraintFlowVelocity(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemConstraintFlowVelocity")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintFlowVelocity(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -130,6 +134,8 @@ class _CommandFemConstraintInitialFlowVelocity(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemConstraintInitialFlowVelocity")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -164,6 +170,8 @@ class _CommandFemElementFluid1D(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementFluid1D")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementFluid1D(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -181,6 +189,8 @@ class _CommandFemElementGeometry1D(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry1D")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry1D(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -198,6 +208,8 @@ class _CommandFemElementGeometry2D(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -215,6 +227,8 @@ class _CommandFemElementRotation1D(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementRotation1D")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementRotation1D(FreeCAD.ActiveDocument))")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -433,6 +447,7 @@ class _CommandFemMeshBoundaryLayer(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshBoundaryLayer")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -473,6 +488,7 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + self.selobj.Name)
+        # Gmsh mesh object could be added without an active analysis, but if there is an active analysis move it in there
         import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
@@ -496,6 +512,7 @@ class _CommandFemMeshGroup(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -518,6 +535,7 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument." + self.selobj.Name)
+        # Netgen mesh object could be added without an active analysis, but if there is an active analysis move it in there        import FemGui
         import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
@@ -561,6 +579,7 @@ class _CommandFemMeshRegion(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
