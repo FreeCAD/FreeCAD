@@ -41,7 +41,6 @@
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgo_Fuse.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
@@ -153,6 +152,9 @@
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
+#if OCC_VERSION_HEX < 0x070300
+# include <BRepAlgo_Fuse.hxx>
+#endif
 #endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
@@ -1627,8 +1629,12 @@ TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
+#if OCC_VERSION_HEX < 0x070300
     BRepAlgo_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
+#else
+    throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
+#endif
 }
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
