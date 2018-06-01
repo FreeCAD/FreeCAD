@@ -436,7 +436,7 @@ class SelectPlane(DraftTool):
                             self.finish()
                     except:
                         pass
-                        
+
     def getCenterPoint(self,x,y,z):
         if not self.ui.isCenterPlane:
             return "0,0,0"
@@ -503,7 +503,7 @@ class SelectPlane(DraftTool):
 def redraw3DView():
     """redraw3DView(): forces a redraw of 3d view."""
     try:
-        FreeCADGui.ActiveDocument.ActiveView.redraw()            
+        FreeCADGui.ActiveDocument.ActiveView.redraw()
     except AttributeError as err:
         pass
 
@@ -1811,6 +1811,7 @@ class Text(Creator):
         self.commit(translate("draft","Create Text"),
                     ['text = Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')',
                     'Draft.autogroup(text)'])
+        FreeCAD.ActiveDocument.recompute()
 
         self.finish(cont=True)
 
@@ -1889,7 +1890,7 @@ class Dimension(Creator):
                 self.setFromSelection()
                 msg(translate("draft", "Pick first point:")+"\n")
                 FreeCADGui.draftToolBar.show()
-                
+
     def setFromSelection(self):
         "If we already have selected geometry, fill the nodes accordingly"
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -2158,7 +2159,7 @@ class Dimension(Creator):
                     elif (len(self.node) == 2) and self.cont:
                         self.node.append(self.cont)
                         self.createObject()
-                        if not self.cont: 
+                        if not self.cont:
                             self.finish()
                     elif (len(self.node) == 3):
                         # for unlinked arc mode:
@@ -2168,7 +2169,7 @@ class Dimension(Creator):
                         #        cen = self.node[0].add(v)
                         #        self.node = [self.node[0],self.node[1],cen]
                         self.createObject()
-                        if not self.cont: 
+                        if not self.cont:
                             self.finish()
                     elif self.angledata:
                         self.node.append(self.point)
@@ -2184,7 +2185,7 @@ class Dimension(Creator):
             self.dimtrack.on()
         elif (len(self.node) == 3):
             self.createObject()
-            if not self.cont: 
+            if not self.cont:
                 self.finish()
 
 class ShapeString(Creator):
@@ -2837,7 +2838,7 @@ class Offset(Modifier):
                 d = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
-            if self.ui.isCopy.isChecked(): 
+            if self.ui.isCopy.isChecked():
                 copymode = True
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Offset"),
@@ -2864,9 +2865,9 @@ class Stretch(Modifier):
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
-                
+
     def proceed(self):
-        if self.call: 
+        if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
         if self.ui and self.sel:
@@ -3497,7 +3498,7 @@ class Trimex(Modifier):
             self.doc.commitTransaction()
         self.doc.recompute()
         for g in self.ghost: g.off()
-        
+
     def trimObjects(self,objectslist):
         "attempts to trim two objects together"
         import Part
@@ -3563,7 +3564,7 @@ class Trimex(Modifier):
                 else:
                     obj.FirstAngle = ang
         self.doc.recompute()
-                    
+
 
     def finish(self,closed=False):
         Modifier.finish(self)
@@ -3984,7 +3985,7 @@ class Edit(Modifier):
                         self.obj.ViewObject.NodeSize = 1
                         self.obj.ViewObject.ShowNodes = True
                         for p in self.obj.Nodes:
-                            if self.pl: 
+                            if self.pl:
                                 p = self.pl.multVec(p)
                             self.editpoints.append(p)
                 elif Draft.getType(self.obj) == "PanelCut":
@@ -4066,7 +4067,7 @@ class Edit(Modifier):
                 # commented out the following line to disable updating
                 # the object during edit, otherwise it confuses the snapper
                 #self.update(self.trackers[self.editing].get())
-            redraw3DView() 
+            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 self.ui.redraw()
@@ -4237,7 +4238,7 @@ class Edit(Modifier):
             else:
                 self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
         try:
-            FreeCADGui.ActiveDocument.ActiveView.redraw()            
+            FreeCADGui.ActiveDocument.ActiveView.redraw()
         except AttributeError as err:
             pass
 
@@ -5231,7 +5232,7 @@ class SetAutoGroup():
                 self.labels = ["None"]
                 for g in gn:
                     o = FreeCAD.ActiveDocument.getObject(g)
-                    if o: 
+                    if o:
                         self.labels.append(o.Label)
                 self.ui.sourceCmd = self
                 self.ui.popupMenu(self.labels)
@@ -5293,7 +5294,7 @@ class Draft_Label(Creator):
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick target point:")+"\n")
         self.ui.isCopy.hide()
-        
+
     def setmode(self,i):
         self.labeltype = ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"][i]
         Draft.setParam("labeltype",self.labeltype)
@@ -5302,7 +5303,7 @@ class Draft_Label(Creator):
         if self.ghost:
             self.ghost.finalize()
         Creator.finish(self)
-        
+
     def create(self):
         if len(self.node) == 3:
             targetpoint = self.node[0]
@@ -5350,7 +5351,7 @@ class Draft_Label(Creator):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.affinity = None # don't keep affinity 
+                FreeCADGui.Snapper.affinity = None # don't keep affinity
             if len(self.node) == 2:
                 setMod(arg,MODCONSTRAIN,True)
             self.point,ctrlPoint,info = getPoint(self,arg)
@@ -5422,13 +5423,13 @@ class Draft_AddConstruction():
             for obj in FreeCADGui.Selection.getSelection():
                 grp.addObject(obj)
                 obrep = obj.ViewObject
-                if "TextColor" in obrep.PropertiesList: 
+                if "TextColor" in obrep.PropertiesList:
                     obrep.TextColor = col
-                if "PointColor" in obrep.PropertiesList: 
+                if "PointColor" in obrep.PropertiesList:
                     obrep.PointColor = col
-                if "LineColor" in obrep.PropertiesList: 
+                if "LineColor" in obrep.PropertiesList:
                     obrep.LineColor = col
-                if "ShapeColor" in obrep.PropertiesList: 
+                if "ShapeColor" in obrep.PropertiesList:
                     obrep.ShapeColor = col
                 if hasattr(obrep,"Transparency"):
                     obrep.Transparency = 80
