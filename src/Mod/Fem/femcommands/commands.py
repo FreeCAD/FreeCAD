@@ -27,6 +27,9 @@ from .manager import CommandManager
 from PySide import QtCore
 
 
+# Python command definitions
+# for C++ comand definitions see src/Mod/Fem/Command.cpp
+
 class _CommandFemAnalysis(CommandManager):
     "The FEM_Analysis command definition"
     def __init__(self):
