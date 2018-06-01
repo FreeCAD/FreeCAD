@@ -307,7 +307,7 @@ class _CommandFemMaterialEditor(CommandManager):
     "The FEM_MaterialEditor command definition"
     def __init__(self):
         super(_CommandFemMaterialEditor, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
+        self.resources = {'Pixmap': 'Arch_Material_Group',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor"),
                           # 'Accel': "Z, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor")}

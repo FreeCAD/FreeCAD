@@ -1,5 +1,7 @@
 <RCC>
     <qresource>
+        <file>icons/Arch_Material_Group.svg</file>
+
         <file>icons/FemWorkbench.svg</file>
         <file>icons/preferences-fem.svg</file>
 
