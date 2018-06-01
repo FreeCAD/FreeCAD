@@ -319,7 +319,7 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyString","Country","Arch",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
         obj.addProperty("App::PropertyFloat","Latitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
         obj.addProperty("App::PropertyFloat","Longitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
-        obj.addProperty("App::PropertyAngle","NorthDeviation","Arch",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
+        obj.addProperty("App::PropertyAngle","Declination","Arch",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
         obj.addProperty("App::PropertyLength","Elevation","Arch",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
         obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","A url that shows this site in a mapping website"))
         obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
@@ -330,6 +330,7 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyVolume","SubtractionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
         obj.addProperty("App::PropertyVector","ExtrusionVector","Arch",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
         obj.addProperty("App::PropertyBool","RemoveSplitter","Arch",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
+        obj.addProperty("App::PropertyVector","OriginOffset","Arch",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         obj.addExtension("App::GroupExtensionPython", self)
         self.Type = "Site"
         obj.setEditorMode('Height',2)
