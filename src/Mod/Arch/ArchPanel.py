@@ -61,11 +61,15 @@ Presets = [None,
            ["OSB 18mm, 1220 x 2440",    1220,2440,18],
            ]
 
+
+
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
+
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
     panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
     length and width for a simple cubic object.'''
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -88,8 +92,10 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
 
 
 def makePanelView(panel,page=None,name="PanelView"):
+
     """makePanelView(panel,[page]) : Creates a Drawing view of the given panel
     in the given or active Page object (a new page will be created if none exists)."""
+
     if not page:
         for o in FreeCAD.ActiveDocument.Objects:
             if o.isDerivedFrom("Drawing::FeaturePage"):
@@ -107,8 +113,10 @@ def makePanelView(panel,page=None,name="PanelView"):
 
 
 def makePanelCut(panel,name="PanelView"):
+
     """makePanelCut(panel) : Creates a 2D view of the given panel
     in the 3D space, positioned at the origin."""
+
     view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     PanelCut(view)
     view.Source = panel
@@ -119,8 +127,10 @@ def makePanelCut(panel,name="PanelView"):
 
 
 def makePanelSheet(panels=[],name="PanelSheet"):
+
     """makePanelSheet([panels]) : Creates a sheet with the given panel cuts
     in the 3D space, positioned at the origin."""
+
     sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     PanelSheet(sheet)
     if panels:
@@ -131,17 +141,22 @@ def makePanelSheet(panels=[],name="PanelSheet"):
 
 
 class CommandPanel:
+
     "the Arch Panel command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Panel',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
                 'Accel': "P, A",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Length = p.GetFloat("PanelLength",1000)
         self.Width = p.GetFloat("PanelWidth",1000)
@@ -177,7 +192,9 @@ class CommandPanel:
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
 
     def getPoint(self,point=None,obj=None):
+
         "this function is called by the snapper when it has a 3D point"
+
         self.tracker.finalize()
         if point == None:
             return
@@ -199,7 +216,9 @@ class CommandPanel:
             self.Activated()
 
     def taskbox(self):
+
         "sets up a taskbox widget"
+
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Panel options", utf8_decode=True))
@@ -261,7 +280,9 @@ class CommandPanel:
         return w
 
     def update(self,point,info):
+
         "this function is called by the Snapper when the mouse is moved"
+
         if FreeCADGui.Control.activeDialog():
             self.tracker.pos(point)
             if self.rotated:
@@ -274,41 +295,52 @@ class CommandPanel:
                 self.tracker.length(self.Length)
 
     def setWidth(self,d):
+
         self.Width = d
 
     def setThickness(self,d):
+
         self.Thickness = d
 
     def setLength(self,d):
+
         self.Length = d
 
     def setContinue(self,i):
+
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
 
     def setPreset(self,i):
+
         if i > 0:
             self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[i][1]),FreeCAD.Units.Length).UserString)
             self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[i][2]),FreeCAD.Units.Length).UserString)
             self.vHeight.setText(FreeCAD.Units.Quantity(float(Presets[i][3]),FreeCAD.Units.Length).UserString)
 
     def rotate(self):
+
         self.rotated = not self.rotated
 
 
 class CommandPanelCut:
+
     "the Arch Panel Cut command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Panel_Cut',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Panel Cut"),
                 'Accel': "P, C",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates 2D views of selected panels")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         if FreeCADGui.Selection.getSelection():
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel Cut")))
             FreeCADGui.addModule("Arch")
@@ -320,17 +352,22 @@ class CommandPanelCut:
 
 
 class CommandPanelSheet:
+
     "the Arch Panel Sheet command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Panel_Sheet',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Panel Sheet"),
                 'Accel': "P, S",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates a 2D sheet which can contain panel cuts")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel Sheet")))
         FreeCADGui.addModule("Arch")
         if FreeCADGui.Selection.getSelection():
@@ -350,32 +387,60 @@ class CommandPanelSheet:
 
 
 class _Panel(ArchComponent.Component):
+
     "The Panel object"
+
     def __init__(self,obj):
+
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",   QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Width","Arch",    QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Thickness","Arch",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"))
-        obj.addProperty("App::PropertyInteger","Sheets","Arch",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"))
-        obj.addProperty("App::PropertyDistance","Offset","Arch",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
-        obj.addProperty("App::PropertyLength","WaveLength","Arch", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"))
-        obj.addProperty("App::PropertyLength","WaveHeight","Arch", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"))
-        obj.addProperty("App::PropertyDistance","WaveOffset","Arch", QT_TRANSLATE_NOOP("App::Property","The horizontal offset of waves for corrugated elements"))
-        obj.addProperty("App::PropertyAngle","WaveDirection","Arch", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
-        obj.addProperty("App::PropertyEnumeration","WaveType","Arch", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
-        obj.addProperty("App::PropertyBool","WaveBottom","Arch", QT_TRANSLATE_NOOP("App::Property","If the wave also affects the bottom side or not"))        
-        obj.addProperty("App::PropertyArea","Area","Arch",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
-        obj.addProperty("App::PropertyEnumeration","FaceMaker","Arch",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.Sheets = 1
-        self.Type = "Panel"
+        self.setProperties(obj)
         obj.IfcRole = "Plate"
-        obj.WaveType = ["Curved","Trapezoidal","Spikes"]
-        obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Length" in pl:
+            obj.addProperty("App::PropertyLength","Length","Panel",   QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
+        if not "Width" in pl:
+            obj.addProperty("App::PropertyLength","Width","Panel",    QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
+        if not "Thickness" in pl:
+            obj.addProperty("App::PropertyLength","Thickness","Panel",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"))
+        if not "Sheets" in pl:
+            obj.addProperty("App::PropertyInteger","Sheets","Panel",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"))
+            obj.Sheets = 1
+        if not "Offset" in pl:
+            obj.addProperty("App::PropertyDistance","Offset","Panel",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
+        if not "WaveLength" in pl:
+            obj.addProperty("App::PropertyLength","WaveLength","Panel", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"))
+        if not "WaveHeight" in pl:
+            obj.addProperty("App::PropertyLength","WaveHeight","Panel", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"))
+        if not "WaveOffset" in pl:
+            obj.addProperty("App::PropertyDistance","WaveOffset","Panel", QT_TRANSLATE_NOOP("App::Property","The horizontal offset of waves for corrugated elements"))
+        if not "WaveDirection" in pl:
+            obj.addProperty("App::PropertyAngle","WaveDirection","Panel", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
+        if not "WaveType" in pl:
+            obj.addProperty("App::PropertyEnumeration","WaveType","Panel", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
+            obj.WaveType = ["Curved","Trapezoidal","Spikes"]
+        if not "WaveBottom" in pl:
+            obj.addProperty("App::PropertyBool","WaveBottom","Panel", QT_TRANSLATE_NOOP("App::Property","If the wave also affects the bottom side or not"))
+        if not "Area" in pl:
+            obj.addProperty("App::PropertyArea","Area","Panel",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
+        if not "FaceMaker" in pl:
+            obj.addProperty("App::PropertyEnumeration","FaceMaker","Panel",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
+            obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
+        if not "Normal" in pl:
+            obj.addProperty("App::PropertyVector","Normal","Panel",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        self.Type = "Panel"
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
 
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
+
     def execute(self,obj):
+
         "creates the panel shape"
 
         if self.clone(obj):
@@ -608,7 +673,7 @@ class _Panel(ArchComponent.Component):
                     upsegment = Part.makePolygon([p1,p2,p3,p5])
                     if not downsegment:
                         downsegment = obj.Thickness.Value
-                    
+
                 upsegment.translate(Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z))
                 if isinstance(downsegment,Part.Shape):
                     downsegment.translate(Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z))
@@ -704,13 +769,16 @@ class _Panel(ArchComponent.Component):
 
 
 class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
+
     "A View Provider for the Panel object"
 
     def __init__(self,vobj):
+
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Panel")
 
     def getIcon(self):
+
         #import Arch_rc
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
@@ -719,6 +787,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Panel_Tree.svg"
 
     def updateData(self,obj,prop):
+
         if prop in ["Placement","Shape"]:
             if hasattr(obj,"Material"):
                 if obj.Material:
@@ -740,29 +809,49 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
 
 class PanelView:
+
     "A Drawing view for Arch Panels"
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
-        obj.addProperty("App::PropertyColor","LineColor","Drawing view",QT_TRANSLATE_NOOP("App::Property","The color of the panel outline"))
-        obj.addProperty("App::PropertyLength","FontSize","Tag view",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
-        obj.addProperty("App::PropertyColor","TextColor","Tag view",QT_TRANSLATE_NOOP("App::Property","The color of the tag text"))
-        obj.addProperty("App::PropertyFloat","TextX","Tag view",QT_TRANSLATE_NOOP("App::Property","The X offset of the tag text"))
-        obj.addProperty("App::PropertyFloat","TextY","Tag view",QT_TRANSLATE_NOOP("App::Property","The Y offset of the tag text"))
-        obj.addProperty("App::PropertyString","FontName","Tag view",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+
         obj.Proxy = self
-        self.Type = "PanelView"
-        obj.LineWidth = 0.35
-        obj.LineColor = (0.0,0.0,0.0)
-        obj.TextColor = (0.0,0.0,1.0)
+        self.setProperties(obj)
         obj.X = 10
         obj.Y = 10
-        obj.TextX = 10
-        obj.TextY = 10
-        obj.FontName = "sans"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Source" in pl:
+            obj.addProperty("App::PropertyLink","Source","PanelView",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        if not "LineWidth" in pl:
+            obj.addProperty("App::PropertyFloat","LineWidth","PanelView",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
+            obj.LineWidth = 0.35
+        if not "LineColor" in pl:
+            obj.addProperty("App::PropertyColor","LineColor","PanelView",QT_TRANSLATE_NOOP("App::Property","The color of the panel outline"))
+            obj.LineColor = (0.0,0.0,0.0)
+        if not "FontSize" in pl:
+            obj.addProperty("App::PropertyLength","FontSize","PanelView",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+        if not "TextColor" in pl:
+            obj.addProperty("App::PropertyColor","TextColor","PanelView",QT_TRANSLATE_NOOP("App::Property","The color of the tag text"))
+            obj.TextColor = (0.0,0.0,1.0)
+        if not "TextX" in pl:
+            obj.addProperty("App::PropertyFloat","TextX","PanelView",QT_TRANSLATE_NOOP("App::Property","The X offset of the tag text"))
+            obj.TextX = 10
+        if not "TextY" in pl:
+            obj.addProperty("App::PropertyFloat","TextY","PanelView",QT_TRANSLATE_NOOP("App::Property","The Y offset of the tag text"))
+            obj.TextY = 10
+        if not "FontName" in pl:
+            obj.addProperty("App::PropertyString","FontName","PanelView",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+            obj.FontName = "sans"
+        self.Type = "PanelView"
+
+    def onDocumentRestored(self,obj):
+
+        self.setProperties(obj)
 
     def execute(self, obj):
+
         if obj.Source:
             if hasattr(obj.Source.Proxy,"BaseProfile"):
                 p = obj.Source.Proxy.BaseProfile
@@ -797,44 +886,66 @@ class PanelView:
                 obj.ViewResult = result
 
     def onChanged(self, obj, prop):
+
         pass
 
     def __getstate__(self):
-        return self.Type
+
+        return None
 
     def __setstate__(self,state):
-        if state:
-            self.Type = state
+
+        return None
 
     def getDisplayModes(self,vobj):
+
         modes=["Default"]
         return modes
 
     def setDisplayMode(self,mode):
+
         return mode
 
 
 class PanelCut(Draft._DraftObject):
+
     "A flat, 2D view of an Arch Panel"
 
     def __init__(self, obj):
         Draft._DraftObject.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Source","Arch",QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        obj.addProperty("App::PropertyString","TagText","Arch",QT_TRANSLATE_NOOP("App::Property","The text to display. Can be %tag%, %label% or %description% to display the panel tag or label"))
-        obj.addProperty("App::PropertyLength","TagSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
-        obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
-        obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
-        obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
-        obj.addProperty("App::PropertyFloatList","AllowedAngles","Arch",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         obj.Proxy = self
+        self.setProperties(obj)
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Source" in pl:
+            obj.addProperty("App::PropertyLink","Source","PanelCut",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        if not "TagText" in pl:
+            obj.addProperty("App::PropertyString","TagText","PanelCut",QT_TRANSLATE_NOOP("App::Property","The text to display. Can be %tag%, %label% or %description% to display the panel tag or label"))
+            obj.TagText = "%tag%"
+        if not "TagSize" in pl:
+            obj.addProperty("App::PropertyLength","TagSize","PanelCut",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+            obj.TagSize = 10
+        if not "TagPosition" in pl:
+            obj.addProperty("App::PropertyVector","TagPosition","PanelCut",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
+        if not "TagRotation" in pl:
+            obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+        if not "FontFile" in pl:
+            obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile",QT_TRANSLATE_NOOP("App::Property","The font file"))
+        if not "MakeFace" in pl:
+            obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        if not "AllowedAngles" in pl:
+            obj.addProperty("App::PropertyFloatList","AllowedAngles","PanelCut",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         self.Type = "PanelCut"
-        obj.TagText = "%tag%"
-        obj.MakeFace = False
-        obj.TagSize = 10
-        obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
+
+    def onDocumentRestored(self,obj):
+
+        self.setProperties(obj)
 
     def execute(self, obj):
+
         pl = obj.Placement
         if obj.Source:
             base = None
@@ -918,6 +1029,7 @@ class PanelCut(Draft._DraftObject):
     def buildCut(self,obj,wires):
 
         """buildCut(obj,wires): builds the object shape"""
+
         import Part
         if hasattr(obj,"MakeFace"):
             if obj.MakeFace:
@@ -947,6 +1059,7 @@ class PanelCut(Draft._DraftObject):
         that define the panel outline, the panel holes, and
         tags (engravings): (outline,holes,tags). Any of these can
         be None if nonexistent"""
+
         tag = None
         outl = None
         inl = None
@@ -978,15 +1091,30 @@ class PanelCut(Draft._DraftObject):
             outl = Part.Compound([outl.Wires[0]])
         return (outl, inl, tag)
 
+
 class ViewProviderPanelCut(Draft._ViewProviderDraft):
+
     "a view provider for the panel cut object"
 
     def __init__(self,vobj):
+
         Draft._ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
-        vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+        self.setProperties(self,vobj)
+
+    def setProperties(self,vobj):
+
+        pl = vobj.PropertiesList
+        if not "Margin" in pl:
+            vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+        if not "ShowMargin" in pl:
+            vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+
+    def onDocumentRestored(self,vobj):
+
+        self.setProperties(vobj)
 
     def attach(self,vobj):
+
         Draft._ViewProviderDraft.attach(self,vobj)
         from pivy import coin
         self.coords = coin.SoCoordinate3()
@@ -1008,6 +1136,7 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
         self.onChanged(vobj,"LineColor")
 
     def onChanged(self,vobj,prop):
+
         if prop in ["Margin","ShowMargin"]:
             if hasattr(vobj,"Margin") and hasattr(vobj,"ShowMargin"):
                 if (vobj.Margin.Value > 0) and vobj.Object.Shape and vobj.ShowMargin:
@@ -1039,46 +1168,66 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
         Draft._ViewProviderDraft.onChanged(self,vobj,prop)
 
     def updateData(self,obj,prop):
+
         if prop in ["Shape"]:
             self.onChanged(obj.ViewObject,"Margin")
         Draft._ViewProviderDraft.updateData(self,obj,prop)
 
 
 class PanelSheet(Draft._DraftObject):
+
     "A collection of Panel cuts under a sheet"
 
     def __init__(self, obj):
+
         Draft._DraftObject.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkList","Group","Arch",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"))
-        obj.addProperty("App::PropertyString","TagText","Arch",QT_TRANSLATE_NOOP("App::Property","The tag text to display"))
-        obj.addProperty("App::PropertyLength","TagSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
-        obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
-        obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
-        obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
-        obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
-        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
-        obj.addProperty("App::PropertyAngle","GrainDirection","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
-        obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
-        obj.addProperty("App::PropertyFloatList","Rotations","Arch", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"))
         obj.Proxy = self
-        self.Type = "PanelSheet"
-        obj.TagSize = 10
+        self.setProperties(obj)
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        obj.Width = p.GetFloat("PanelLength",1000)
-        obj.Height = p.GetFloat("PanelWidth",1000)
-        obj.MakeFace = False
-        obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
-        obj.setEditorMode("FillRatio",2)
-        obj.Scale = 1.0
+        if not "Group" in pl:
+            obj.addProperty("App::PropertyLinkList","Group","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"))
+        if not "TagText" in pl:
+            obj.addProperty("App::PropertyString","TagText","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The tag text to display"))
+        if not "TagSize" in pl:
+            obj.addProperty("App::PropertyLength","TagSize","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+            obj.TagSize = 10
+        if not "TagPosition" in pl:
+            obj.addProperty("App::PropertyVector","TagPosition","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
+        if not "TagRotation" in pl:
+            obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+        if not "FontFile" in pl:
+            obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile",QT_TRANSLATE_NOOP("App::Property","The font file"))
+        if not "Width" in pl:
+            obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
+            obj.Width = p.GetFloat("PanelLength",1000)
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength","Height","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
+            obj.Height = p.GetFloat("PanelWidth",1000)
+        if not "FillRatio" in pl:
+            obj.addProperty("App::PropertyPercent","FillRatio","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
+            obj.setEditorMode("FillRatio",2)
+        if not "MakeFace" in pl:
+            obj.addProperty("App::PropertyBool","MakeFace","PanelSheet",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        if not "GrainDirection" in pl:
+            obj.addProperty("App::PropertyAngle","GrainDirection","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
+        if not "Scale" in pl:
+            obj.addProperty("App::PropertyFloat","Scale","PanelSheet", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+            obj.Scale = 1.0
+        if not "Rotations" in pl:
+            obj.addProperty("App::PropertyFloatList","Rotations","PanelSheet", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"))
+        self.Type = "PanelSheet"
 
     def onDocumentRestored(self, obj):
-        if not hasattr(obj, 'Scale'):
-            obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
-            obj.Scale = 1.0
+
+        self.setProperties(obj)
 
     def execute(self, obj):
+
         import Part
         self.sheettag = None
         self.sheetborder = None
@@ -1126,6 +1275,7 @@ class PanelSheet(Draft._DraftObject):
             obj.FillRatio = int((subarea/area)*100)
 
     def getOutlines(self,obj,transform=False):
+
         """getOutlines(obj,transform=False): returns a list of compounds whose wires define the
         outlines of the panels in this sheet. If transform is True, the placement of
         the sheet will be added to each wire"""
@@ -1153,6 +1303,7 @@ class PanelSheet(Draft._DraftObject):
         return outp
 
     def getHoles(self,obj,transform=False):
+
         """getHoles(obj,transform=False): returns a list of compound whose wires define the
         holes contained in the panels in this sheet. If transform is True, the placement of
         the sheet will be added to each wire"""
@@ -1171,6 +1322,7 @@ class PanelSheet(Draft._DraftObject):
         return outp
 
     def getTags(self,obj,transform=False):
+
         """getTags(obj,transform=False): returns a list of compounds whose wires define the
         tags (engravings) contained in the panels in this sheet and the sheet intself.
         If transform is True, the placement of the sheet will be added to each wire.
@@ -1199,19 +1351,35 @@ class PanelSheet(Draft._DraftObject):
 
 
 class ViewProviderPanelSheet(Draft._ViewProviderDraft):
+
     "a view provider for the panel sheet object"
 
     def __init__(self,vobj):
+
         Draft._ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
-        vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
-        vobj.addProperty("App::PropertyBool","ShowGrain","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"))
+        self.setProperties(self,vobj)
         vobj.PatternSize = 0.0035
 
+    def setProperties(self,vobj):
+
+        pl = vobj.PropertiesList
+        if not "Margin" in pl:
+            vobj.addProperty("App::PropertyLength","Margin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+        if not "ShowMargin" in pl:
+            vobj.addProperty("App::PropertyBool","ShowMargin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+        if not "ShowGrain" in pl:
+            vobj.addProperty("App::PropertyBool","ShowGrain","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"))
+
+    def onDocumentRestored(self,vobj):
+
+        self.setProperties(vobj)
+
     def getIcon(self):
+
         return ":/icons/Draft_Drawing.svg"
 
     def setEdit(self,vobj,mode):
+
         if mode == 0:
             taskd = SheetTaskPanel(vobj.Object)
             taskd.update()
@@ -1220,10 +1388,12 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
         return False
 
     def unsetEdit(self,vobj,mode):
+
         FreeCADGui.Control.closeDialog()
         return False
 
     def attach(self,vobj):
+
         Draft._ViewProviderDraft.attach(self,vobj)
         from pivy import coin
         self.coords = coin.SoCoordinate3()
@@ -1245,6 +1415,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
         self.onChanged(vobj,"LineColor")
 
     def onChanged(self,vobj,prop):
+
         if prop in ["Margin","ShowMargin"]:
             if hasattr(vobj,"Margin") and hasattr(vobj,"ShowMargin"):
                 if (vobj.Margin.Value > 0) and (vobj.Margin.Value < vobj.Object.Width.Value/2) and (vobj.Margin.Value < vobj.Object.Height.Value/2):
@@ -1275,6 +1446,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
 
 
     def updateData(self,obj,prop):
+
         if prop in ["Width","Height"]:
             self.onChanged(obj.ViewObject,"Margin")
         elif prop == "GrainDirection":
@@ -1291,6 +1463,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
 class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
 
     def __init__(self,obj):
+
         ArchComponent.ComponentTaskPanel.__init__(self)
         self.obj = obj
         self.optwid = QtGui.QWidget()
@@ -1304,6 +1477,7 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
         self.form = [self.form,self.optwid]
 
     def editNodes(self):
+
         FreeCADGui.Control.closeDialog()
         FreeCADGui.runCommand("Draft_Edit")
 
@@ -1312,16 +1486,20 @@ class CommandNest:
 
 
     "the Arch Panel command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Nest',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Nest","Nest"),
                 'Accel': "N, E",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Nest","Nests a series of selected shapes in a container")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(NestTaskPanel())
 
@@ -1332,6 +1510,7 @@ class NestTaskPanel:
     '''The TaskPanel for Arch Nest command'''
 
     def __init__(self,obj=None):
+
         import ArchNesting
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchNest.ui")
         self.form.progressBar.hide()
@@ -1349,11 +1528,13 @@ class NestTaskPanel:
         self.temps = []
 
     def reject(self):
+
         self.stop()
         self.clearTemps()
         return True
 
     def accept(self):
+
         self.stop()
         self.clearTemps()
         if self.nester:
@@ -1363,12 +1544,14 @@ class NestTaskPanel:
         return True
 
     def clearTemps(self):
+
         for t in self.temps:
             if FreeCAD.ActiveDocument.getObject(t.Name):
                 FreeCAD.ActiveDocument.removeObject(t.Name)
         self.temps = []
 
     def getContainer(self):
+
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
             if s[0].isDerivedFrom("Part::Feature"):
@@ -1385,6 +1568,7 @@ class NestTaskPanel:
                             self.form.Rotations.setText(str(s[0].Rotations))
 
     def getShapes(self):
+
         s = FreeCADGui.Selection.getSelection()
         for o in s:
             if o.isDerivedFrom("Part::Feature"):
@@ -1394,6 +1578,7 @@ class NestTaskPanel:
                         self.shapes.append(o)
 
     def addObject(self,obj,form):
+
         i = QtGui.QListWidgetItem()
         i.setText(obj.Label)
         i.setToolTip(obj.Name)
@@ -1405,6 +1590,7 @@ class NestTaskPanel:
         form.addItem(i)
 
     def removeShapes(self):
+
         for i in self.form.Shapes.selectedItems():
             o = FreeCAD.ActiveDocument.getObject(i.toolTip())
             if o:
@@ -1413,9 +1599,11 @@ class NestTaskPanel:
                     self.form.Shapes.takeItem(self.form.Shapes.row(i))
 
     def setCounter(self,value):
+
         self.form.progressBar.setValue(value)
 
     def start(self):
+
         self.clearTemps()
         self.form.progressBar.setFormat("pass 1: %p%")
         self.form.progressBar.setValue(0)
@@ -1443,6 +1631,7 @@ class NestTaskPanel:
             self.form.ButtonPreview.setEnabled(True)
 
     def stop(self):
+
         if self.nester:
             self.nester.stop()
         self.form.ButtonStart.setEnabled(True)
@@ -1451,11 +1640,14 @@ class NestTaskPanel:
         self.form.progressBar.hide()
 
     def preview(self):
+
         self.clearTemps()
         if self.nester:
             t = self.nester.show()
             if t:
                 self.temps.extend(t)
+
+
 
 if FreeCAD.GuiUp:
 

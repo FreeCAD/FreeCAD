@@ -35,7 +35,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchWall
 #  \ingroup ARCH
 #  \brief The Wall object and tools
@@ -49,11 +49,15 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+
+
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
+
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
     all, then you must provide length, width and height. Align can be "Center","Left" or "Right",
     face can be an index number of a face in the base object to base the wall on.'''
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -87,8 +91,10 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     return obj
 
 def joinWalls(walls,delete=False):
+
     """joins the given list of walls into one sketch-based wall. If delete
     is True, merged wall objects are deleted"""
+
     if not walls:
         return None
     if not isinstance(walls,list):
@@ -120,7 +126,9 @@ def joinWalls(walls,delete=False):
     return base
 
 def mergeShapes(w1,w2):
+
     "returns a Shape built on two walls that share same properties and have a coincident endpoint"
+
     if not areSameWallTypes([w1,w2]):
         return None
     if (not hasattr(w1.Base,"Shape")) or (not hasattr(w2.Base,"Shape")):
@@ -144,7 +152,9 @@ def mergeShapes(w1,w2):
     return None
 
 def areSameWallTypes(walls):
+
     "returns True is all the walls in the given list have same height, width, and alignment"
+
     for att in ["Width","Height","Align"]:
         value = None
         for w in walls:
@@ -161,18 +171,25 @@ def areSameWallTypes(walls):
                         return False
     return True
 
+
+
 class _CommandWall:
+
     "the Arch Wall command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Wall',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
                 'Accel': "W, A",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         self.Align = "Center"
         self.MultiMat = None
         self.Length = None
@@ -221,7 +238,9 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox())
 
     def getPoint(self,point=None,obj=None):
+
         "this function is called by the snapper when it has a 3D point"
+
         if obj:
             if Draft.getType(obj) == "Wall":
                 if not obj in self.existing:
@@ -271,6 +290,7 @@ class _CommandWall:
                 self.Activated()
 
     def addDefault(self,l):
+
         FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
         FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
         FreeCADGui.doCommand('base.addGeometry(trace)')
@@ -282,7 +302,9 @@ class _CommandWall:
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
     def update(self,point,info):
+
         "this function is called by the Snapper when the mouse is moved"
+
         if FreeCADGui.Control.activeDialog():
             b = self.points[0]
             n = FreeCAD.DraftWorkingPlane.axis
@@ -300,7 +322,9 @@ class _CommandWall:
                 self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
 
     def taskbox(self):
+
         "sets up a taskbox widget"
+
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options", utf8_decode=True))
@@ -370,35 +394,42 @@ class _CommandWall:
         QtCore.QObject.connect(value2,QtCore.SIGNAL("returnPressed()"),self.createFromGUI)
         QtCore.QObject.connect(matCombo,QtCore.SIGNAL("currentIndexChanged(int)"),self.setMat)
         return w
-        
+
     def setMat(self,d):
+
         if d == 0:
             self.MultiMat = None
             del FreeCAD.LastArchMultiMaterial
         elif d <= len(self.multimats):
             self.MultiMat = self.multimats[d-1]
             FreeCAD.LastArchMultiMaterial = self.MultiMat.Name
-        
+
     def setLength(self,d):
+
         self.lengthValue = d
 
     def setWidth(self,d):
+
         self.Width = d
         self.tracker.width(d)
 
     def setHeight(self,d):
+
         self.Height = d
         self.tracker.height(d)
 
     def setAlign(self,i):
+
         self.Align = ["Center","Left","Right"][i]
 
     def setContinue(self,i):
+
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
-            
+
     def createFromGUI(self):
+
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
@@ -409,17 +440,24 @@ class _CommandWall:
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.escape()
 
+
+
 class _CommandMergeWalls:
+
     "the Arch Merge Walls command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_MergeWalls',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
+
         return bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
+
         walls = FreeCADGui.Selection.getSelection()
         if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
@@ -451,36 +489,65 @@ class _CommandMergeWalls:
         FreeCAD.ActiveDocument.commitTransaction()
 
 
-class _Wall(ArchComponent.Component):
-    "The Wall object"
-    def __init__(self,obj):
-        ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
-        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
-        obj.addProperty("App::PropertyEnumeration","Align","Arch",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyInteger","Face","Arch",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
-        obj.addProperty("App::PropertyDistance","Offset","Arch",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
-        
-        obj.addProperty("App::PropertyBool","MakeBlocks","Wall",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
-        obj.addProperty("App::PropertyLength","BlockLength","Wall",QT_TRANSLATE_NOOP("App::Property","The length of each block"))
-        obj.addProperty("App::PropertyLength","BlockHeight","Wall",QT_TRANSLATE_NOOP("App::Property","The height of each block"))
-        obj.addProperty("App::PropertyLength","OffsetFirst","Wall",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the first line of blocks"))
-        obj.addProperty("App::PropertyLength","OffsetSecond","Wall",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the second line of blocks"))
-        obj.addProperty("App::PropertyLength","Joint","Wall",QT_TRANSLATE_NOOP("App::Property","The size of the joints between each block"))
-        obj.addProperty("App::PropertyInteger","CountEntire","Wall",QT_TRANSLATE_NOOP("App::Property","The number of entire blocks"))
-        obj.addProperty("App::PropertyInteger","CountBroken","Wall",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
-        obj.setEditorMode("CountEntire",1)
-        obj.setEditorMode("CountBroken",1)
 
-        obj.Align = ['Left','Right','Center']
-        self.Type = "Wall"
+class _Wall(ArchComponent.Component):
+
+    "The Wall object"
+
+    def __init__(self,obj):
+
+        ArchComponent.Component.__init__(self,obj)
+        self.setProperties(obj)
         obj.IfcRole = "Wall"
 
+    def setProperties(self,obj):
+
+        lp = obj.PropertiesList
+        if not "Length" in lp:
+            obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
+        if not "Width" in lp:
+            obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
+        if not "Height" in lp:
+            obj.addProperty("App::PropertyLength","Height","Wall",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        if not "Align" in lp:
+            obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
+            obj.Align = ['Left','Right','Center']
+        if not "Normal" in lp:
+            obj.addProperty("App::PropertyVector","Normal","Wall",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        if not "Face" in lp:
+            obj.addProperty("App::PropertyInteger","Face","Wall",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
+        if not "Offset" in lp:
+            obj.addProperty("App::PropertyDistance","Offset","Wall",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
+
+        if not "MakeBlocks" in lp:
+            obj.addProperty("App::PropertyBool","MakeBlocks","Blocks",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
+        if not "BlockLength" in lp:
+            obj.addProperty("App::PropertyLength","BlockLength","Blocks",QT_TRANSLATE_NOOP("App::Property","The length of each block"))
+        if not "BlockHeight" in lp:
+            obj.addProperty("App::PropertyLength","BlockHeight","Blocks",QT_TRANSLATE_NOOP("App::Property","The height of each block"))
+        if not "OffsetFirst" in lp:
+            obj.addProperty("App::PropertyLength","OffsetFirst","Blocks",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the first line of blocks"))
+        if not "OffsetSecond" in lp:
+            obj.addProperty("App::PropertyLength","OffsetSecond","Blocks",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the second line of blocks"))
+        if not "Joint" in lp:
+            obj.addProperty("App::PropertyLength","Joint","Blocks",QT_TRANSLATE_NOOP("App::Property","The size of the joints between each block"))
+        if not "CountEntire" in lp:
+            obj.addProperty("App::PropertyInteger","CountEntire","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of entire blocks"))
+            obj.setEditorMode("CountEntire",1)
+        if not "CountBroken" in lp:
+            obj.addProperty("App::PropertyInteger","CountBroken","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
+            obj.setEditorMode("CountBroken",1)
+        self.Type = "Wall"
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
+
     def execute(self,obj):
+
         "builds the wall shape"
-        
+
         if self.clone(obj):
             return
 
@@ -606,7 +673,7 @@ class _Wall(ArchComponent.Component):
 
         base = self.processSubShapes(obj,base,pl)
         self.applyShape(obj,base,pl)
-        
+
         # count blocks
         if hasattr(obj,"MakeBlocks"):
             if obj.MakeBlocks:
@@ -633,6 +700,7 @@ class _Wall(ArchComponent.Component):
                                 obj.Length = l
 
     def onChanged(self,obj,prop):
+
         if prop == "Length":
             if obj.Base and obj.Length.Value:
                 if obj.Base.isDerivedFrom("Part::Feature"):
@@ -653,8 +721,9 @@ class _Wall(ArchComponent.Component):
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
-        
+
     def getFootprint(self,obj):
+
         faces = []
         if obj.Shape:
             for f in obj.Shape.Faces:
@@ -662,8 +731,9 @@ class _Wall(ArchComponent.Component):
                     if abs(abs(f.CenterOfMass.z) - abs(obj.Shape.BoundBox.ZMin)) < 0.001:
                         faces.append(f)
         return faces
-        
+
     def getExtrusionData(self,obj):
+
         """returns (shape,extrusion vector,placement) or None"""
         import Part,DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
@@ -739,7 +809,7 @@ class _Wall(ArchComponent.Component):
                         for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
                             for c in Part.sortEdges(cluster):
                                 self.basewires.append(Part.Wire(c))
-                        
+
                     if self.basewires and width:
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
@@ -777,7 +847,7 @@ class _Wall(ArchComponent.Component):
                                     layeroffset += layers[i]
                                 else:
                                     dvec.multiply(width)
-                                if off:                                
+                                if off:
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
                                 w2 = DraftGeomUtils.offsetWire(wire,dvec)
@@ -847,13 +917,16 @@ class _Wall(ArchComponent.Component):
         return None
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
+
     "A View Provider for the Wall object"
 
     def __init__(self,vobj):
+
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
     def getIcon(self):
+
         import Arch_rc
         if hasattr(self,"Object"):
             if self.Object.CloneOf:
@@ -864,6 +937,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Wall_Tree.svg"
 
     def attach(self,vobj):
+
         self.Object = vobj.Object
         from pivy import coin
         tex = coin.SoTexture2()
@@ -883,6 +957,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         ArchComponent.ViewProviderComponent.attach(self,vobj)
 
     def updateData(self,obj,prop):
+
         if prop in ["Placement","Shape","Material"]:
             if obj.ViewObject.DisplayMode == "Footprint":
                 obj.ViewObject.Proxy.setDisplayMode("Footprint")
@@ -907,10 +982,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
     def getDisplayModes(self,vobj):
+
         modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
         return modes
 
     def setDisplayMode(self,mode):
+
         self.fset.coordIndex.deleteValues(0)
         self.fcoords.point.deleteValues(0)
         if mode == "Footprint":

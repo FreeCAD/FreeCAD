@@ -36,7 +36,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchFloor
 #  \ingroup ARCH
 #  \brief The Floor object and tools
@@ -49,9 +49,12 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+
     '''makeFloor(objectslist): creates a floor including the
     objects from the given list.'''
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -64,18 +67,24 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
         obj.Group = objectslist
     return obj
 
+
 class _CommandFloor:
+
     "the Arch Cell command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
                 'Accel': "F, L",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         link = p.GetBool("FreeLinking",False)
@@ -112,26 +121,48 @@ Floor creation aborted.") + "\n"
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
+
 class _Floor:
+
     "The Floor object"
+
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
-        obj.addProperty("App::PropertyArea","Area", "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        if not hasattr(obj,"Placement"):
-            # obj can be a Part Feature and already has a placement
-            obj.addProperty("App::PropertyPlacement","Placement","Arch",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        self.Type = "Floor"
+
         obj.Proxy = self
         self.Object = obj
+        _Floor.setProperties(self,obj)
+        self.IfcRole = "Building Storey"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        if not "Area" in pl:
+            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+        if not hasattr(obj,"Placement"):
+            # obj can be a Part Feature and already has a placement
+            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+        if not "IfcRole" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+            import ArchComponent
+            obj.IfcRole = ArchComponent.IfcRoles
+        self.Type = "Floor"
+
+    def onDocumentRestored(self,obj):
+
+        _Floor.setProperties(self,obj)
 
     def __getstate__(self):
-        return self.Type
+
+        return None
 
     def __setstate__(self,state):
-        if state:
-            self.Type = state
-            
+
+        return None
+
     def onChanged(self,obj,prop):
+
         if not hasattr(self,"Object"):
             # on restore, self.Object is not there anymore
             self.Object = obj
@@ -145,6 +176,7 @@ class _Floor:
                             obj.Area = a
 
     def execute(self,obj):
+
         # move children with this floor
         if hasattr(obj,"Placement"):
             if not hasattr(self,"OldPlacement"):
@@ -166,6 +198,7 @@ class _Floor:
                         o.Proxy.execute(o)
 
     def addObject(self,child):
+
         if hasattr(self,"Object"):
             g = self.Object.Group
             if not child in g:
@@ -173,36 +206,47 @@ class _Floor:
                 self.Object.Group = g
 
     def removeObject(self,child):
+
         if hasattr(self,"Object"):
             g = self.Object.Group
             if child in g:
                 g.remove(child)
                 self.Object.Group = g
 
+
 class _ViewProviderFloor:
+
     "A View Provider for the Floor object"
+
     def __init__(self,vobj):
+
         vobj.Proxy = self
 
     def getIcon(self):
+
         import Arch_rc
         return ":/icons/Arch_Floor_Tree.svg"
 
     def attach(self,vobj):
+
         self.Object = vobj.Object
         return
 
     def claimChildren(self):
+
         if hasattr(self,"Object"):
             if self.Object:
                 return self.Object.Group
         return []
 
     def __getstate__(self):
+
         return None
 
     def __setstate__(self,state):
+
         return None
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
