@@ -210,8 +210,8 @@ class MaterialEditor:
         "Edits an item if it is not in the first column"
         if column > 0:
             self.widget.Editor.editItem(item, column)
-            
-            
+
+
     def itemChanged(self, item, column):
         "Handles text changes"
         if item.text(0) == "Section Fill Pattern":
