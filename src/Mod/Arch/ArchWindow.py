@@ -59,7 +59,9 @@ WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 18
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 
 
+
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
+
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
@@ -106,11 +108,13 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     return obj
 
 def recolorize(obj):
+
     if obj.ViewObject:
         if obj.ViewObject.Proxy:
             obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
+
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
     window object based on the given data. windowtype must be one of the names
     defined in Arch.WindowPresets"""
@@ -138,7 +142,9 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         s = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
 
         def addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8):
+
             "adds two rectangles to the given sketch"
+
             idx = s.GeometryCount
             s.addGeometry(Part.LineSegment(p1,p2))
             s.addGeometry(Part.LineSegment(p2,p3))
@@ -166,6 +172,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
 
         def outerFrame(s,width,height,h1,w1,o1):
+
             p1 = Vector(0,0,0)
             p2 = Vector(width,0,0)
             p3 = Vector(width,height,0)
@@ -187,6 +194,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             return ["OuterFrame","Frame","Wire0,Wire1",str(w1),str(o1)]
 
         def doorFrame(s,width,height,h1,w1,o1):
+
             p1 = Vector(0,0,0)
             p2 = Vector(width,0,0)
             p3 = Vector(width,height,0)
@@ -208,10 +216,12 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             return ["OuterFrame","Frame","Wire0,Wire1",str(w1),str(o1)]
 
         if windowtype == "Fixed":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1+w1/2)])
 
         elif windowtype == "Open 1-pane":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector(width-(h1+tol),h1+tol,0)
@@ -234,6 +244,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
 
         elif windowtype == "Open 2-pane":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector((width/2)-tol,h1+tol,0)
@@ -275,6 +286,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2/2)])
 
         elif windowtype == "Sash 2-pane":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector(width-(h1+tol),h1+tol,0)
@@ -316,6 +328,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["UpperGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2/2)])
 
         elif windowtype == "Sliding 2-pane":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector((width/2)-tol,h1+tol,0)
@@ -357,6 +370,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2+w2/2)])
 
         elif windowtype == "Sliding 4-pane":
+
             wp = outerFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector(width/4-tol,h1+tol,0)
@@ -436,10 +450,12 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o1+o2+w2/2)])
 
         elif windowtype == "Simple door":
+
             wp = doorFrame(s,width,height,h1,w1,o1)
             wp.extend(["Door","Solid panel","Wire1",str(w2),str(o1+o2)])
 
         elif windowtype == "Glass door":
+
             wp = doorFrame(s,width,height,h1,w1,o1)
             p1 = Vector(h1+tol,h1+tol,0)
             p2 = Vector(width-(h1+tol),h1+tol,0)
@@ -482,19 +498,24 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
     print("Arch: Unknown window type")
 
 
+
 class _CommandWindow:
+
     "the Arch Window command definition"
 
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         self.sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Thickness = p.GetFloat("WindowThickness",50)
@@ -556,7 +577,9 @@ class _CommandWindow:
         #FreeCADGui.Snapper.setSelectMode(True)
 
     def getPoint(self,point=None,obj=None):
+
         "this function is called by the snapper when it has a 3D point"
+
         self.tracker.finalize()
         if point == None:
             return
@@ -606,7 +629,9 @@ class _CommandWindow:
         return
 
     def update(self,point,info):
+
         "this function is called by the Snapper when the mouse is moved"
+
         delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
         delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
         rot = FreeCAD.Rotation()
@@ -626,7 +651,9 @@ class _CommandWindow:
         #self.tracker.setRotation(rot)
 
     def taskbox(self):
+
         "sets up a taskbox widget"
+
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Window options", utf8_decode=True))
@@ -708,21 +735,26 @@ class _CommandWindow:
         return w
 
     def getValueChanged(self,p):
+
       return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
+
         self.Sill = d
 
     def setInclude(self,i):
+
         self.Include = bool(i)
 
     def setParams(self,param,d):
+
         setattr(self,param,d)
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
 
     def setPreset(self,i):
+
         self.Preset = i
         if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
@@ -780,36 +812,63 @@ class _CommandWindow:
 
 
 class _Window(ArchComponent.Component):
+
     "The Window object"
+
     def __init__(self,obj):
+
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkList","Hosts","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
-        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."))
-        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
-        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
-        obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
-        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"))
-        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"))
-        obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
-        obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"))
-        obj.addProperty("App::PropertyBool","SymbolPlan","Arch",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
-        obj.addProperty("App::PropertyBool","SymbolElevation","Arch",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
-        obj.setEditorMode("Preset",2)
-        obj.setEditorMode("WindowParts",2)
+        self.setProperties(obj)
+        obj.IfcRole = "Window"
+        obj.MoveWithHost = True
+
+    def setProperties(self,obj):
+
+        lp = obj.PropertiesList
+        if not "Hosts" in lp:
+            obj.addProperty("App::PropertyLinkList","Hosts","Window",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
+        if not "WindowParts" in lp:
+            obj.addProperty("App::PropertyStringList","WindowParts","Window",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
+            obj.setEditorMode("WindowParts",2)
+        if not "HoleDepth" in lp:
+            obj.addProperty("App::PropertyLength","HoleDepth","Window",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."))
+        if not "Subvolume" in lp:
+            obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
+        if not "Width" in lp:
+            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
+        if not "Height" in lp:
+            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
+        if not "Normal" in lp:
+            obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
+        if not "Preset" in lp:
+            obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"))
+            obj.setEditorMode("Preset",2)
+        if not "Area" in lp:
+            obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+        if not "LouvreWidth" in lp:
+            obj.addProperty("App::PropertyLength","LouvreWidth","Window",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"))
+        if not "LouvreSpacing" in lp:
+            obj.addProperty("App::PropertyLength","LouvreSpacing","Window",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"))
+        if not "Opening" in lp:
+            obj.addProperty("App::PropertyPercent","Opening","Window",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
+        if not "HoleWire" in lp:
+            obj.addProperty("App::PropertyInteger","HoleWire","Window",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"))
+        if not "SymbolPlan" in lp:
+            obj.addProperty("App::PropertyBool","SymbolPlan","Window",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
+        if not "SymbolElevation" in lp:
+            obj.addProperty("App::PropertyBool","SymbolElevation","Window",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
         self.Type = "Window"
-        obj.IfcRole = "Window"
-        obj.Proxy = self
-        obj.MoveWithHost = True
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def onChanged(self,obj,prop):
+
         self.hideSubobjects(obj,prop)
         if not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
@@ -1087,6 +1146,7 @@ class _Window(ArchComponent.Component):
             obj.Area = obj.Width.Value * obj.Height.Value
 
     def getSubVolume(self,obj,plac=None):
+
         "returns a subvolume for cutting in a base object"
 
         # check if we have a custom subvolume
@@ -1168,13 +1228,18 @@ class _Window(ArchComponent.Component):
     def computeAreas(self,obj):
         return
 
+
+
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
+
     "A View Provider for the Window object"
 
     def __init__(self,vobj):
+
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):
+
         import Arch_rc
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
@@ -1183,6 +1248,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Window_Tree.svg"
 
     def updateData(self,obj,prop):
+
         if prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -1204,11 +1270,13 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.update()
 
     def onDelete(self,vobj,subelements):
+
         for o in vobj.Object.Hosts:
             o.touch()
         return True
 
     def onChanged(self,vobj,prop):
+
         if (prop in ["DiffuseColor","Transparency"]) and vobj.Object:
             self.colorize(vobj.Object)
         elif prop == "ShapeColor":
@@ -1216,6 +1284,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
+
         taskd = _ArchWindowTaskPanel()
         taskd.obj = self.Object
         self.sets = [vobj.DisplayMode,vobj.Transparency]
@@ -1228,6 +1297,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def unsetEdit(self,vobj,mode):
+
         vobj.DisplayMode = self.sets[0]
         vobj.Transparency = self.sets[1]
         vobj.DiffuseColor = vobj.DiffuseColor # reset face colors
@@ -1237,6 +1307,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return
 
     def colorize(self,obj,force=False):
+
         "setting different part colors"
         if obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
@@ -1286,6 +1357,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             obj.ViewObject.DiffuseColor = colors
 
     def areDifferentColors(self,a,b):
+
         if len(a) != len(b):
             return True
         for i in range(len(a)):
@@ -1293,8 +1365,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 return True
         return False
 
+
 class _ArchWindowTaskPanel:
+
     '''The TaskPanel for Arch Windows'''
+
     def __init__(self):
 
         self.obj = None
@@ -1429,19 +1504,24 @@ class _ArchWindowTaskPanel:
         FreeCADGui.Selection.clearSelection()
 
     def isAllowedAlterSelection(self):
+
         return True
 
     def isAllowedAlterView(self):
+
         return True
 
     def getStandardButtons(self):
+
         return int(QtGui.QDialogButtonBox.Close)
 
     def check(self,wid,col):
+
         self.editButton.setEnabled(True)
         self.delButton.setEnabled(True)
 
     def select(self,wid,col):
+
         FreeCADGui.Selection.clearSelection()
         ws = ''
         for it in self.wiretree.selectedItems():
@@ -1458,7 +1538,9 @@ class _ArchWindowTaskPanel:
         self.field3.setText(ws)
 
     def selectHole(self):
+
         "takes a selected edge to determine current Hole Wire"
+
         s = FreeCADGui.Selection.getSelectionEx()
         if s and self.obj:
             if s[0].SubElementNames:
@@ -1471,7 +1553,9 @@ class _ArchWindowTaskPanel:
                                 break
 
     def setHoleNumber(self,val):
+
         "sets the HoleWire obj property"
+
         if val.isdigit():
             val = int(val)
             if self.obj:
@@ -1480,6 +1564,7 @@ class _ArchWindowTaskPanel:
                 self.obj.HoleWire = val
 
     def getIcon(self,obj):
+
         if hasattr(obj.ViewObject,"Proxy"):
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
@@ -1488,7 +1573,9 @@ class _ArchWindowTaskPanel:
             return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
+
         'fills the tree widgets'
+
         self.tree.clear()
         self.wiretree.clear()
         self.comptree.clear()
@@ -1520,7 +1607,9 @@ class _ArchWindowTaskPanel:
             self.basepanel.update()
 
     def addElement(self):
+
         'opens the component creation dialog'
+
         self.field1.setText('')
         self.field3.setText('')
         self.field4.setText('')
@@ -1546,6 +1635,7 @@ class _ArchWindowTaskPanel:
         self.delButton.setEnabled(False)
 
     def removeElement(self):
+
         for it in self.comptree.selectedItems():
             comp = str(it.text(0))
             if self.obj:
@@ -1560,6 +1650,7 @@ class _ArchWindowTaskPanel:
                     self.delButton.setEnabled(False)
 
     def editElement(self):
+
         for it in self.comptree.selectedItems():
             self.addElement()
             comp = str(it.text(0))
@@ -1593,7 +1684,9 @@ class _ArchWindowTaskPanel:
                             f.setText(t)
 
     def create(self):
+
         'adds a new component'
+
         # testing if fields are ok
         ok = True
         ar = []
@@ -1660,6 +1753,7 @@ class _ArchWindowTaskPanel:
         self.addButton.setEnabled(True)
 
     def addEdge(self):
+
         for sel in FreeCADGui.Selection.getSelectionEx():
             for sub in sel.SubElementNames:
                 if "Edge" in sub:
@@ -1667,11 +1761,13 @@ class _ArchWindowTaskPanel:
                     return
 
     def reject(self):
+
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def retranslateUi(self, TaskPanel):
+
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire", None))
@@ -1697,6 +1793,8 @@ class _ArchWindowTaskPanel:
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None))
         for i in range(len(WindowOpeningModes)):
             self.field7.setItemText(i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None))
+
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Window',_CommandWindow())
