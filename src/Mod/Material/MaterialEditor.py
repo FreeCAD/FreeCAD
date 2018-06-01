@@ -83,6 +83,10 @@ class MaterialEditor:
         ap = FreeCAD.ConfigGet("UserAppData") + "Material"
         if os.path.exists(ap):
             paths.append(ap)
+        # print('locations we gone look for material cards:')
+        # for path in paths:
+        #     print('  ' + path)
+        # print('\n')
         self.cards = {}
         for p in paths:
             for f in os.listdir(p):
@@ -103,6 +107,7 @@ class MaterialEditor:
             self.clearEditor()
             for k,i in data.items():
                 k = self.expandKey(k)
+                # most material dict keys are hard coded in ui file, not known keys are added to user defined group
                 slot = self.widget.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
                 if len(slot) == 1:
                     slot = slot[0]
@@ -241,12 +246,20 @@ class MaterialEditor:
                 if matvalue or (matkey == 'Name'):  
                     # use only keys which are not empty and the name even if empty
                     d[matkey] = matvalue
+        # self.outputDict(d)
         return d
 
 
+        # ??? after return ???
         if d:
             self.updateContents(d)
         self.widget.Editor.topLevelItem(6).child(4).setToolTip(1,self.getPatternsList())
+
+
+    def outputDict(self, d):
+        print('MaterialEditor dictionary')
+        for param in d:
+            print('  ' + param + ' : ' + d[param])
 
 
     def setTexture(self,pattern):
@@ -285,6 +298,7 @@ class MaterialEditor:
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             d = self.getDict()
+            # self.outputDict(d)
             if d:
                 import importFCMat
                 importFCMat.write(filename,d)
