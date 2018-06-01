@@ -122,7 +122,6 @@ def write(filename,dictionary):
             user[k] = i
     # write header
     rev = FreeCAD.ConfigGet("BuildVersionMajor")+"."+FreeCAD.ConfigGet("BuildVersionMinor")+" "+FreeCAD.ConfigGet("BuildRevision")
-    filename = filename[0]
     if isinstance(filename,unicode):
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
