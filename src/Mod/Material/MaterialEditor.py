@@ -309,7 +309,7 @@ def openEditor(obj = None, prop = None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
     editor = MaterialEditor(obj,prop)
-    editor.show()
+    editor.exec_()
 
 
 def editMaterial(material):
