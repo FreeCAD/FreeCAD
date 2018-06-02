@@ -1065,6 +1065,17 @@ class ViewProviderComponent:
         FreeCADGui.Control.closeDialog()
         return False
 
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.toggleSubcomponents)
+        menu.addAction(action1)
+
+    def toggleSubcomponents(self):
+        FreeCADGui.runCommand("Arch_ToggleSubs")
+
+
 
 class ArchSelectionObserver:
 
