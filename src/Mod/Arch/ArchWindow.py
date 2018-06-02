@@ -680,11 +680,13 @@ class _CommandWindow:
             if os.path.exists(librarypath):
                 for wtype in ["Windows","Doors"]:
                     wdir = os.path.join(librarypath,"Architectural Parts",wtype)
-                    for subtype in os.listdir(wdir):
-                        subdir = os.path.join(wdir,subtype)
-                        for subfile in os.listdir(subdir):
-                            if subfile.lower().endswith(".fcstd"):
-                                self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
+                    if os.path.exists(wdir):
+                        for subtype in os.listdir(wdir):
+                            subdir = os.path.join(wdir,subtype)
+                            if os.path.exists(subdir):
+                                for subfile in os.listdir(subdir):
+                                    if subfile.lower().endswith(".fcstd"):
+                                        self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
             else:
                 librarypath = None
 
