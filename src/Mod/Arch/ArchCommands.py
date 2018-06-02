@@ -1601,8 +1601,9 @@ class _ToggleSubs:
     "the ToggleSubs command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleSubs',
+                'Accel'   : 'Ctrl+Space',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())

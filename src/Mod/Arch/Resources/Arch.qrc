@@ -64,6 +64,7 @@
         <file>icons/Git.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_Subcomponent.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
