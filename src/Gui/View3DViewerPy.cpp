@@ -384,13 +384,13 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -405,12 +405,12 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }

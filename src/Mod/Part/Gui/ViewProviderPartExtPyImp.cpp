@@ -83,7 +83,7 @@ void ViewProviderPartExtPy::setElementColors(Py::Dict dict) {
         }catch(Base::Exception &e) {
             if(dynamic_cast<Base::TypeError*>(&e))
                 throw Py::TypeError(e.what());
-            throw Py::Exception(e.what());
+            throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
         }
         info.emplace(Py::String(value.first).as_string(),prop.getValue());
     }

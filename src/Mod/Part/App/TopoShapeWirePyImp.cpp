@@ -92,7 +92,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         TopoShape wire;
         wire.makEWires(getPyShapes(pcObj));
         if(wire.countSubShapes(TopAbs_WIRE)!=1)
-            throw Py::Exception("failed to form a single wire");
+            throw Py::ValueError("failed to form a single wire");
         *getTopoShapePtr() = wire;
         return 0;
     } catch (Standard_Failure& e) {

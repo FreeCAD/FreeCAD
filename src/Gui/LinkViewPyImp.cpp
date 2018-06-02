@@ -343,7 +343,7 @@ Py::Object LinkViewPy::getRootNode(void) const
         return Py::Object(Ptr, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -387,7 +387,7 @@ void LinkViewPy::setCount(Py::Int count) {
     try {
         getLinkViewPtr()->setSize((int)count);
     } catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 

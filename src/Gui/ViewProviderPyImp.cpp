@@ -592,7 +592,7 @@ Py::Object ViewProviderPy::getSwitchNode(void) const
         return Py::Object(Ptr, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
