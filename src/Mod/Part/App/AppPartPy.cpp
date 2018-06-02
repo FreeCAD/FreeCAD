@@ -487,6 +487,40 @@ public:
     virtual ~Module() {}
 
 private:
+    virtual Py::Object invoke_method_keyword( void *method_def, 
+            const Py::Tuple &args, const Py::Dict &keywords ) override
+    {
+        try {
+            return Py::ExtensionModule<Module>::invoke_method_keyword(method_def, args, keywords);
+        }
+        catch (const Standard_Failure &e) {
+            std::string str;
+            Standard_CString msg = e.GetMessageString();
+            str += typeid(e).name();
+            str += " ";
+            if (msg) {str += msg;}
+            else     {str += "No OCCT Exception Message";}
+            Base::Console().Error("%s\n", str.c_str());
+            throw Py::Exception(Part::PartExceptionOCCError, str);
+        }
+        catch (const Base::Exception &e) {
+            std::string str;
+            str += "FreeCAD exception thrown (";
+            str += e.what();
+            str += ")";
+            e.ReportException();
+            throw Py::RuntimeError(str);
+        }
+        catch (const std::exception &e) {
+            std::string str;
+            str += "C++ exception thrown (";
+            str += e.what();
+            str += ")";
+            Base::Console().Error("%s\n", str.c_str());
+            throw Py::RuntimeError(str);
+        }
+    }
+
     virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
     {
         try {
