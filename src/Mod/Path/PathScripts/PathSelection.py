@@ -27,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
+import math
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -50,7 +51,7 @@ class ENGRAVEGate:
         except:
             return False
 
-        if shape.BoundBox.ZLength == 0.0 and len(shape.Wires) > 0:
+        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
         if shape.ShapeType == 'Edge':
