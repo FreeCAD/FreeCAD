@@ -117,18 +117,31 @@ class ObjectEngrave(PathOp.ObjectOp):
                 raise ValueError('Unknown baseobject type for engraving')
 
             if obj.BaseShapes:
+                job = PathUtils.findParentJob(obj)
                 wires = []
                 for shape in obj.BaseShapes:
-                    output += self.buildpathocc(obj, shape.Shape.Wires, zValues)
-                    wires.extend(shape.Shape.Wires)
+                    shapeWires = shape.Shape.copy().Wires
+                    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
+                        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
+                            pmntShape   = shape.Placement
+                            pmntSupport = shape.Support[0][0].getGlobalPlacement()
+                            pmntBase    = job.Base.Placement
+                            for w in shapeWires:
+                                w.Placement = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
+                        else:
+                            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
+                    else:
+                        PathLog.info("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'hugo')) 
+                    output += self.buildpathocc(obj, shapeWires, zValues)
+                    wires.extend(shapeWires)
                 self.wires = wires
             output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         except Exception as e:
-            PathLog.error("Exception: %s" % e)
-            traceback.print_exc()
-            PathLog.error(translate("Path", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
+            #PathLog.error("Exception: %s" % e)
+            #traceback.print_exc()
+            PathLog.error(translate("PathEngrave", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
 
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
