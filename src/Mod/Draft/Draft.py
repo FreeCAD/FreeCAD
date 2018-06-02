@@ -7160,6 +7160,10 @@ class ViewProviderDraftText:
         vobj.addDisplayMode(self.node2d,"2D text")
         vobj.addDisplayMode(self.node3d,"3D text")
         self.onChanged(vobj,"TextColor")
+        self.onChanged(vobj,"FontSize")
+        self.onChanged(vobj,"FontName")
+        self.onChanged(vobj,"Justification")
+        self.onChanged(vobj,"LineSpacing")
 
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
