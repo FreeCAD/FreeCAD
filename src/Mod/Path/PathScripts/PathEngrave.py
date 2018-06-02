@@ -47,6 +47,32 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+def adjustWirePlacement(obj, shape, wires):
+    job = PathUtils.findParentJob(obj)
+    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
+        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
+            pmntShape   = shape.Placement
+            pmntSupport = shape.Support[0][0].getGlobalPlacement()
+            #pmntSupport = shape.Support[0][0].Placement
+            pmntBase    = job.Base.Placement
+            pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
+            PathLog.debug("pmnt = %s" % pmnt)
+            newWires = []
+            for w in wires:
+                edges = []
+                for e in w.Edges:
+                    e = e.copy()
+                    e.Placement = FreeCAD.Placement()
+                    edges.append(e)
+                w = Part.Wire(edges)
+                w.Placement = pmnt
+                newWires.append(w)
+            wires = newWires
+        else:
+            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
+    else:
+        PathLog.debug("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'None')) 
+    return wires
 
 class ObjectEngrave(PathOp.ObjectOp):
     '''Proxy class for Engrave operation.'''
@@ -109,29 +135,17 @@ class ObjectEngrave(PathOp.ObjectOp):
                     edges = []
                     for sub in subs:
                         edges.extend(base.Shape.getElement(sub).Edges)
-                    wires.extend(TechDraw.edgeWalker(edges))
+                    shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
+                    wires.extend(shapeWires)
                 output += self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
-                PathLog.info("base object: %s" % (obj.Base))
-                raise ValueError('Unknown baseobject type for engraving')
+                raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
 
             if obj.BaseShapes:
-                job = PathUtils.findParentJob(obj)
                 wires = []
                 for shape in obj.BaseShapes:
-                    shapeWires = shape.Shape.copy().Wires
-                    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
-                        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
-                            pmntShape   = shape.Placement
-                            pmntSupport = shape.Support[0][0].getGlobalPlacement()
-                            pmntBase    = job.Base.Placement
-                            for w in shapeWires:
-                                w.Placement = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
-                        else:
-                            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
-                    else:
-                        PathLog.info("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'hugo')) 
+                    shapeWires = adjustWirePlacement(obj, shape, shape.Shape.Wires)
                     output += self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires
@@ -139,9 +153,9 @@ class ObjectEngrave(PathOp.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         except Exception as e:
-            #PathLog.error("Exception: %s" % e)
-            #traceback.print_exc()
-            PathLog.error(translate("PathEngrave", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
+            PathLog.error(e)
+            traceback.print_exc()
+            PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
@@ -218,9 +232,13 @@ class ObjectEngrave(PathOp.ObjectOp):
         if job and job.Base:
             bb = job.Base.Shape.BoundBox
             obj.OpStartDepth = bb.ZMax
-            obj.OpFinalDepth = bb.ZMin
+            obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
         else:
             obj.OpFinalDepth = -0.1
+
+    def updateDepths(self, obj, ignoreErrors=False):
+        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
+        self.opSetDefaultValues(obj)
 
 def Create(name):
     '''Create(name) ... Creates and returns a Engrave operation.'''
