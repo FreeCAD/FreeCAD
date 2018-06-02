@@ -336,7 +336,7 @@ void ComplexGeoData::setElementMap(const std::map<std::string, std::string> &map
     else
         _ElementMap->clear();
     for(auto &v : map)
-        setElementName(v.first.c_str(),v.second.c_str());
+        setElementName(v.second.c_str(),v.first.c_str());
 }
 
 void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *postfix) {
