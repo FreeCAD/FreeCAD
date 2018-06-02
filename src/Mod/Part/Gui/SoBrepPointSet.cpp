@@ -314,6 +314,7 @@ void SoBrepPointSet::doAction(SoAction* action)
             int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
             if(selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                ctx->selectionColor = selaction->getColor();
                 if(ctx->isSelectAll()) 
                     ctx->selectionIndex.clear();
                 if(ctx->selectionIndex.insert(index).second)
