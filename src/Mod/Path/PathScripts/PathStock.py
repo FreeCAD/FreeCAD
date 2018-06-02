@@ -79,7 +79,7 @@ def shapeBoundBox(obj):
 
 class StockFromBase:
 
-    def __init__(self, obj, base, placement):
+    def __init__(self, obj, base):
         "Make stock"
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("PathStock", "The base object this stock is derived from"))
         obj.addProperty("App::PropertyLength", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
@@ -97,11 +97,6 @@ class StockFromBase:
         obj.ExtZneg= 1.0
         obj.ExtZpos= 1.0
 
-        dPos = placement.Base - base.Placement.Base
-        dRot = placement.Rotation.multiply(base.Placement.Rotation.inverted())
-        dPlacement = FreeCAD.Placement(dPos, dRot)
-        PathLog.debug("%s - %s: %s" % (placement, base.Placement, dPlacement))
-        obj.Placement = dPlacement
         obj.Proxy = self
 
     def __getstate__(self):
@@ -208,10 +203,9 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
+    base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    # don't want to use the resrouce clone - we want the real object so 
-    # Base and Stock can be placed independently
-    proxy = StockFromBase(obj, job.Proxy.baseObject(job), job.Base.Placement)
+    proxy = StockFromBase(obj, base)
     if neg:
         obj.ExtXneg = neg.x
         obj.ExtYneg = neg.y
