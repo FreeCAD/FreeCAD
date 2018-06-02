@@ -28,23 +28,23 @@ include_directories(
 
 
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 
 set(Fem_LIBS
     Part
     FreeCADApp
-    StdMeshers
-    SMESH
-    SMDS
-    SMESHDS
 )
 
-
-if(BUILD_FEM_NETGEN)
-    list(APPEND Fem_LIBS
-        NETGENPlugin
-    )
-endif(BUILD_FEM_NETGEN)
+if (FREECAD_USE_EXTERNAL_SMESH)
+   list(APPEND Fem_LIBS ${EXTERNAL_SMESH_LIBS})
+else()
+   if (BUILD_FEM_NETGEN)
+       list(APPEND Fem_LIBS StdMeshers SMESH SMDS SMESHDS NETGENPlugin)
+   else ()
+       list(APPEND Fem_LIBS StdMeshers SMESH SMDS SMESHDS)
+   endif()
+endif()
 
 
 generate_from_xml(FemMeshPy)

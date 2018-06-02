@@ -25,6 +25,7 @@ include_directories(
 )
 
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 
 set(FemGui_LIBS

@@ -438,7 +438,7 @@ class ObjectOp(object):
                 baselist = []
             item = (base, sub)
             if item in baselist:
-                PathLog.notice(translate("Path", "this object already in the list" + "\n"))
+                PathLog.notice(translate("Path", "This object already in the list")+"\n")
             else:
                 baselist.append(item)
                 obj.Base = baselist

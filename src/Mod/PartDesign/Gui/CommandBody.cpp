@@ -606,7 +606,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         FCMD_OBJ_SHOW(selFeature);
     }
 
-    // TOOD: Hide all datum features after the Tip feature? But the user might have already hidden some and wants to see
+    // TODO: Hide all datum features after the Tip feature? But the user might have already hidden some and wants to see
     // others, so we would have to remember their state somehow
     updateActive();
 }

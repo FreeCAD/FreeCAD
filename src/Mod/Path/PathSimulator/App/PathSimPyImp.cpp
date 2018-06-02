@@ -85,6 +85,11 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 	if (!PyArg_ParseTuple(args, ""))
 		return 0;
 	cStock *stock = getPathSimPtr()->m_stock;
+	if (stock == NULL)
+	{
+		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");
+		return 0;
+	}
 
 	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
 	Mesh::MeshPy *meshOuterpy = new Mesh::MeshPy(meshOuter);

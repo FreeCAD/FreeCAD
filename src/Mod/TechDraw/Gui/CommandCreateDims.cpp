@@ -97,6 +97,8 @@ char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
 
+//NOTE: this is not shown in toolbar and doesn't always work right in the menu. 
+//      should be removed. 
 //===========================================================================
 // TechDraw_NewDimension
 //===========================================================================
@@ -212,6 +214,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -299,6 +302,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -386,6 +390,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -494,6 +499,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -602,6 +608,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -709,6 +716,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -796,6 +804,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -996,11 +1005,11 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                     edgeType = isDiagonal;
                 }
             } else if (geom->geomType == TechDrawGeometry::CIRCLE ||
-                       geom->geomType == TechDrawGeometry::ELLIPSE ||
-                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ||
-                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ) {
+                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ) {
                 edgeType = isCircle;
-            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
+            } else if (geom->geomType == TechDrawGeometry::ELLIPSE ||
+                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ||
+                       geom->geomType == TechDrawGeometry::BSPLINE) {
                 edgeType = isCurve;
             } else {
                 edgeType = isInvalid;

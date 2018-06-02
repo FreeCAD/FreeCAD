@@ -68,6 +68,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialSolid"
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_MaterialEditor"
+           << "Separator"
            << "FEM_ElementGeometry1D"
            << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
@@ -160,6 +162,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    Gui::MenuItem* material = new Gui::MenuItem;
+    material->setCommand("Materials");
+    *material << "FEM_MaterialSolid"
+              << "FEM_MaterialFluid"
+              << "FEM_MaterialMechanicalNonlinear"
+              << "FEM_MaterialEditor";
+
+    Gui::MenuItem* elec = new Gui::MenuItem;
+    elec->setCommand("&Electrostatic Constraints");
+    *elec << "FEM_ConstraintElectrostaticPotential";
+
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical Constraints");
     *mech << "FEM_ConstraintFixed"
@@ -196,17 +209,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     model->setCommand("M&odel");
     *model << "FEM_Analysis"
            << "Separator"
-           << "FEM_MaterialSolid"
-           << "FEM_MaterialFluid"
-           << "FEM_MaterialMechanicalNonlinear"
+           << material
+           << "Separator"
            << "FEM_ElementGeometry1D"
            << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D"
            << "Separator"
+           << elec
+           << fluid
            << mech
-           << thermal
-           << fluid;
+           << thermal;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
@@ -215,13 +228,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
      *mesh << "FEM_MeshNetgenFromShape";
 #endif
      *mesh << "FEM_MeshGmshFromShape"
-          << "Separator"
-          << "FEM_MeshBoundaryLayer"
-          << "FEM_MeshRegion"
-          << "FEM_MeshGroup"
-          << "Separator"
-          << "FEM_CreateNodesSet"
-          << "FEM_FEMMesh2Mesh";
+           << "Separator"
+           << "FEM_MeshBoundaryLayer"
+           << "FEM_MeshRegion"
+           << "FEM_MeshGroup"
+           << "Separator"
+           << "FEM_CreateNodesSet"
+           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);

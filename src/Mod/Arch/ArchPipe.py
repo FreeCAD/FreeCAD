@@ -35,12 +35,12 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchPipe
 #  \ingroup ARCH
 #  \brief The Pipe object and tools
 #
-#  This module provides tools to build Pipe and Pipe conector objects.
+#  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
 __title__ = "Arch Pipe tools"
@@ -52,6 +52,9 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
 
     "makePipe([baseobj,diamerter,length,placement,name]): creates an pipe object from the given base object"
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = name
     _ArchPipe(obj)
@@ -80,6 +83,9 @@ def makePipeConnector(pipes,radius=0,name="Connector"):
 
     "makePipeConnector(pipes,[radius,name]): creates a connector between the given pipes"
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = name
     _ArchPipeConnector(obj)
@@ -178,13 +184,28 @@ class _ArchPipe(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.setProperties(obj)
+        obj.IfcRole = "Pipe Segment"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Diameter" in pl:
+            obj.addProperty("App::PropertyLength", "Diameter",    "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+        if not "Length" in pl:
+            obj.addProperty("App::PropertyLength", "Length",      "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+        if not "Profile" in pl:
+            obj.addProperty("App::PropertyLink",   "Profile",     "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+        if not "OffsetStart" in pl:
+            obj.addProperty("App::PropertyLength", "OffsetStart", "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+        if not "OffsetEnd" in pl:
+            obj.addProperty("App::PropertyLength", "OffsetEnd",   "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
         self.Type = "Pipe"
-        obj.Role = ["Pipe Segment"]
-        obj.addProperty("App::PropertyLength", "Diameter",    "Arch", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
-        obj.addProperty("App::PropertyLength", "Length",      "Arch", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
-        obj.addProperty("App::PropertyLink",   "Profile",     "Arch", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
-        obj.addProperty("App::PropertyLength", "OffsetStart", "Arch", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
-        obj.addProperty("App::PropertyLength", "OffsetEnd",   "Arch", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def execute(self,obj):
 
@@ -292,16 +313,29 @@ class _ArchPipeConnector(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.setProperties(obj)
+        obj.IfcRole = "Pipe Fitting"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Radius" in pl:
+            obj.addProperty("App::PropertyLength",      "Radius",        "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
+        if not "Pipes" in pl:
+            obj.addProperty("App::PropertyLinkList",    "Pipes",         "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
+        if not "ConnectorType" in pl:
+            obj.addProperty("App::PropertyEnumeration", "ConnectorType", "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))
+            obj.ConnectorType = ["Corner","Tee"]
+            obj.setEditorMode("ConnectorType",1)
         self.Type = "PipeConnector"
-        obj.Role = ["Pipe Fitting"]
-        obj.addProperty("App::PropertyLength",      "Radius",        "Arch", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
-        obj.addProperty("App::PropertyLinkList",    "Pipes",         "Arch", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
-        obj.addProperty("App::PropertyEnumeration", "ConnectorType", "Arch", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))
-        obj.ConnectorType = ["Corner","Tee"]
-        obj.setEditorMode("ConnectorType",1)
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def execute(self,obj):
-        
+
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001 # tolerance for coincident points
 

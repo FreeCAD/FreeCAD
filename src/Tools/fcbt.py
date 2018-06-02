@@ -55,7 +55,7 @@ elif Cmd == "createpymodule" or Cmd == "cp":
 elif Cmd == "?" or Cmd == "help" or Cmd == "/h" or Cmd == "/?" or Cmd == "-h" or Cmd == "-help":
 	sys.stdout.write(help1)
 else:
-	print CmdRaw + " is an unknown command!\n"
+	print(CmdRaw + " is an unknown command!\n")
 	sys.exit(1)
 
 	

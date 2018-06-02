@@ -45,7 +45,7 @@ class MainWindow;
 class MenuItem;
 class ViewProvider;
 
-/** The Applcation main class
+/** The Application main class
  * This is the central class of the GUI 
  * @author Jürgen Riegel, Werner Mayer
  */
@@ -80,7 +80,7 @@ public:
     void detachView(Gui::BaseView* pcView);
     /// get called if a view gets activated, this manage the whole activation scheme
     void viewActivated(Gui::MDIView* pcView);
-    /// call update to all docuemnts an all views (costly!)
+    /// call update to all documents and all views (costly!)
     void onUpdate(void);
     /// call update to all views of the active document
     void updateActive(void);

@@ -187,7 +187,7 @@ class XschemaElement:
         self.mixed = 0
         self.base = None
         self.mixedExtensionError = 0
-        # Attribute definitions for the currect element.
+        # Attribute definitions for the correct element.
         self.attributeDefs = {}
         # Attribute definitions for the current attributeGroup, if there is one.
         self.attributeGroup = None
@@ -3025,7 +3025,7 @@ def generateSubclasses(root, subclassFilename, behaviorFilename,
         baseUrl = None
         if behaviorFilename:
             try:
-                # Add the currect working directory to the path so that
+                # Add the correct working directory to the path so that
                 #   we use the user/developers local copy.
                 sys.path.insert(0, '.')
                 import xmlbehavior_sub as xmlbehavior

@@ -34,13 +34,13 @@ namespace PartDesign
 
 class PartDesignExport Point : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Point);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Point);
 
 public:
     Point();
     virtual ~Point();
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 
@@ -51,7 +51,7 @@ public:
     typedef Part::Datum Superclass;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
 
 private:

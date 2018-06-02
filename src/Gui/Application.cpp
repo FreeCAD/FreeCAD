@@ -1750,6 +1750,19 @@ void Application::runApplication(void)
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
 #endif
 
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
+    std::string searchpath = hTheme->GetASCII("SearchPath");
+    if (!searchpath.empty()) {
+        QStringList searchPaths = QIcon::themeSearchPaths();
+        searchPaths.prepend(QString::fromUtf8(searchpath.c_str()));
+        QIcon::setThemeSearchPaths(searchPaths);
+    }
+
+    std::string name = hTheme->GetASCII("Name");
+    if (!name.empty()) {
+        QIcon::setThemeName(QString::fromLatin1(name.c_str()));
+    }
+
 #if defined(FC_OS_LINUX)
     // See #0001588
     QString path = FileDialog::restoreLocation();

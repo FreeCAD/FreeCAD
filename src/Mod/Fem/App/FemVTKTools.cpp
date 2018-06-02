@@ -53,6 +53,7 @@
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
+#include <SMESHDS_Mesh.hxx>
 
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Solid.hxx>
@@ -450,7 +451,7 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
     while (aNodeIter->more()) {
         const SMDS_MeshNode* node = aNodeIter->next();  // why float, not double?
         double coords[3] = {double(node->X()*scale), double(node->Y()*scale), double(node->Z()*scale)};
-        points->InsertPoint(node->GetID()-1, coords);  // memory is allocated by VTK points size = max node id, points will be insterted in SMESH point gaps too
+        points->InsertPoint(node->GetID()-1, coords);  // memory is allocated by VTK points size = max node id, points will be inserted in SMESH point gaps too
     }
     grid->SetPoints(points);
     // nodes debugging
@@ -481,7 +482,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
     //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
-    Base::Console().Message("Start: writeing mesh data ======================\n");
+    Base::Console().Message("Start: writing mesh data ======================\n");
     if(f.hasExtension("vtu")){
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
     }

@@ -188,7 +188,7 @@ class TestPathGeom(PathTestBase):
         self.assertLine(PathGeom.edgeForCmd(Path.Command('G01', {'X': 1, 'Y': 3, 'Z': 5}), spt), spt, Vector(1, 3, 5))
 
     def test20(self):
-        """Verfiy proper geometry for arcs in the XY-plane are created."""
+        """Verify proper geometry for arcs in the XY-plane are created."""
         p1 = Vector(0, -1, 2)
         p2 = Vector(-1, 0, 2)
         self.assertArc(

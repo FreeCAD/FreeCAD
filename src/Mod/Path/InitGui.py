@@ -49,6 +49,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCustom
+        from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
@@ -84,7 +85,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
+        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -137,7 +138,9 @@ class PathWorkbench (Workbench):
 
         self.dressupcmds = dressupcmdlist
 
-        Path.Area.setDefaultParams(Accuracy = PathPreferences.defaultLibAreaCurveAccuracy())
+        curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
+        if curveAccuracy:
+            Path.Area.setDefaultParams(curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 

@@ -43,7 +43,7 @@ else:
 #  \brief Profile tools for ArchStructure
 #
 #  This module provides tools to build base profiles
-#  for Arch Strucutre elements
+#  for Arch Structure elements
 
 __title__="FreeCAD Profile"
 __author__ = "Yorik van Havre"
@@ -80,6 +80,9 @@ def readPresets():
 
 def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     '''makeProfile(profile): returns a shape  with the face defined by the profile data'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
     obj.Label = translate("Arch",profile[2])
     if profile[3]=="C":

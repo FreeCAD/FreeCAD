@@ -55,7 +55,6 @@ ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley()
 
 bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
 {
-    Base::Console().Error("ViewProviderFemConstraintPulley::setEdit()\n");
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing

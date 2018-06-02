@@ -61,7 +61,7 @@ def insert(filename,docname):
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
-    
+
 def export(exportList,filename):
     "called when freecad exports a file"
     return
@@ -98,7 +98,7 @@ def read(filename):
                     d[k[0].strip()] = k[1].strip().decode('utf-8')
         l += 1
     return d
-    
+
 def write(filename,dictionary):
     "writes the given dictionary to the given file"
     # sort the data into sections
@@ -122,8 +122,7 @@ def write(filename,dictionary):
             user[k] = i
     # write header
     rev = FreeCAD.ConfigGet("BuildVersionMajor")+"."+FreeCAD.ConfigGet("BuildVersionMinor")+" "+FreeCAD.ConfigGet("BuildRevision")
-    filename = filename[0]
-    if isinstance(filename,unicode): 
+    if isinstance(filename,unicode):
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
     print(filename)
@@ -145,7 +144,8 @@ def write(filename,dictionary):
                 # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
                 for k,i in s.iteritems():
-                    if k != "keyname":
+                    if (k != "keyname" and i != '') or k == "Name":
+                        # use only keys which are not empty and the name even if empty
                         f.write(k + "=" + i.encode('utf-8') + "\n")
                 f.write("\n")
     f.close()

@@ -39,6 +39,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -836,6 +837,7 @@ SET(View3D_CPP_SRCS
     CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
+    NaviCube.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -852,6 +854,7 @@ SET(View3D_SRCS
     View3DInventorRiftViewer.h
     CoinRiftWidget.h
     View3DViewerPy.h
+    NaviCube.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 

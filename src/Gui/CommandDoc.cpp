@@ -41,6 +41,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -1124,6 +1125,23 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
 
+            // The check below is not needed because we now only get selection
+            // from the active document
+#if 0
+            //check for inactive objects in selection  Mantis #3477
+            std::set<QString> inactiveLabels;
+            App::Application& app = App::GetApplication();
+            App::Document* actDoc = app.getActiveDocument();
+            for (std::vector<Gui::SelectionObject>::iterator ft = sels.begin(); ft != sels.end(); ++ft) {
+                App::DocumentObject* obj = ft->getObject();
+                App::Document* objDoc = obj->getDocument();
+                if (actDoc != objDoc) {
+                    inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
+                    autoDeletion = false;
+                }
+            }
+#endif
+
             if (!autoDeletion) {
                 QString bodyMessage;
                 QTextStream bodyMessageStream(&bodyMessage);
@@ -1132,6 +1150,20 @@ void StdCmdDelete::activated(int iMsg)
                                                      "Are you sure you want to continue?\n\n");
                 for (const auto &currentLabel : affectedLabels)
                     bodyMessageStream << currentLabel << '\n';
+
+#if 0
+                //message for inactive items
+                if (!inactiveLabels.empty()) {
+                    if (!affectedLabels.empty()) {
+                        bodyMessageStream << "\n";
+                    }
+                    std::string thisDoc = pGuiDoc->getDocument()->getName();
+                    bodyMessageStream << qApp->translate("Std_Delete", 
+                                            "These items are selected for deletion, but are not in the active document. \n\n"); 
+                    for (const auto &currentLabel : inactiveLabels)
+                        bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
+                }
+#endif
 
                 int ret = QMessageBox::question(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,

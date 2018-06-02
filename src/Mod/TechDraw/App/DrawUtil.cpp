@@ -433,6 +433,7 @@ double DrawUtil::getDefaultLineWeight(std::string lineType)
     auto lg = LineGroup::lineGroupFactory(lgName);
     
     double weight = lg->getWeight(lineType);
+    delete lg;                                    //Coverity CID 174671
     return weight;
 }
 

@@ -574,7 +574,7 @@ Py::Float BoundBoxPy::getZLength(void) const
 Py::Float BoundBoxPy::getDiagonalLength(void) const
 {
     if (!getBoundBoxPtr()->IsValid())
-        throw Py::FloatingPointError("Cannot deterine diagonal length of invalid bounding box");
+        throw Py::FloatingPointError("Cannot determine diagonal length of invalid bounding box");
     return Py::Float(getBoundBoxPtr()->CalcDiagonalLength());
 }
 

@@ -50,6 +50,7 @@
 
 
 #include "Rez.h"
+#include "ZVALUE.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -60,6 +61,8 @@
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 #include "ViewProviderDrawingView.h"
+#include "MDIViewPage.h"
+#include "QGICMark.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -263,19 +266,20 @@ void QGIView::updateView(bool update)
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
     }
-    if (update ||
-        getViewObject()->X.isTouched() ||
+
+    if (getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
         double featX = Rez::guiX(getViewObject()->X.getValue());
         double featY = Rez::guiX(getViewObject()->Y.getValue());
         setPosition(featX,featY);
     }
 
-    if (update ||
-        getViewObject()->Rotation.isTouched() ) {
+    if (getViewObject()->Rotation.isTouched() ) {
         rotateView();
     }
 
+    draw();
+    
     if (update)
         QGraphicsItem::update();
 }
@@ -296,6 +300,11 @@ const char * QGIView::getViewName() const
 {
     return viewName.c_str();
 }
+const std::string QGIView::getViewNameAsString() const
+{
+    return viewName;
+}
+
 
 TechDraw::DrawView * QGIView::getViewObject() const
 {
@@ -476,11 +485,30 @@ QGIView* QGIView::getQGIVByName(std::string name)
 /* static */
 Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 {
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
-    Gui::ViewProvider* result = guiDoc->getViewProvider(obj);
+    Gui::ViewProvider* result = nullptr;
+    if (obj != nullptr) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+        result = guiDoc->getViewProvider(obj);
+    }
     return result;
 }
 
+MDIViewPage* QGIView::getMDIViewPage(void) const
+{
+    MDIViewPage* result = nullptr;
+    QGraphicsScene* s = scene();
+    QObject* parent = nullptr;
+    if (s != nullptr) {
+        parent = s->parent();
+    }
+    if (parent != nullptr) {
+        MDIViewPage* mdi = dynamic_cast<MDIViewPage*>(parent);
+        if (mdi != nullptr) {
+            result = mdi;
+        }
+    }
+    return result;
+}
 
 QColor QGIView::getNormalColor()
 {
@@ -536,3 +564,14 @@ void QGIView::dumpRect(char* text, QRectF r) {
     Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }
+
+void QGIView::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+

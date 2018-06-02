@@ -38,10 +38,12 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
+#include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
@@ -97,9 +99,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     setScene(s);
 
-    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
-    //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
     //setTransformationAnchor(AnchorUnderMouse);
     //setTransformationAnchor(NoAnchor);
@@ -204,7 +204,8 @@ int QGVPage::addQView(QGIView *view)
     }
 
     view->setPos(viewPos);
-
+    view->updateView(true);
+    
     return 0;
 }
 

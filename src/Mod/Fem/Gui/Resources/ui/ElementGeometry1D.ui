@@ -308,47 +308,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_1">
-     <property name="title">
-      <string>References</string>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="l_label_text_1">
-        <property name="text">
-         <string>Leave blank to choose all remaining shapes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_Reference">
-        <property name="text">
-         <string>Add reference</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="list_References"/>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-     <zorder>l_label_text_1</zorder>
-     <zorder>pushButton_Reference</zorder>
-     <zorder>list_References</zorder>
-     <zorder>verticalSpacer</zorder>
-    </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

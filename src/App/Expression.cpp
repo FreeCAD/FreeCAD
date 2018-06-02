@@ -1020,7 +1020,7 @@ Expression * FunctionExpression::eval() const
         if (!v2->getUnit().isEmpty())
             throw ExpressionError("Exponent is not allowed to have a unit.");
 
-        // Compute new unit for exponentation
+        // Compute new unit for exponentiation
         double exponent = v2->getValue();
         if (!v1->getUnit().isEmpty()) {
             if (exponent - boost::math::round(exponent) < 1e-9)
@@ -1876,7 +1876,7 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
   * returned expression. If the parser fails for some reason, and exception is thrown.
   *
   * @param owner  The DocumentObject that will own the expression.
-  * @param buffer The sting buffer to parse.
+  * @param buffer The string buffer to parse.
   *
   * @returns A pointer to an expression.
   *

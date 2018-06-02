@@ -59,16 +59,16 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1));
     connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1));
-    
+
     ui->labelConstrainStatus->setOpenExternalLinks(false);
-    
+
     ui->autoUpdate->onRestore();
-    
+
     if(ui->autoUpdate->isChecked())
         sketchView->getSketchObject()->noRecomputes=false;
     else
         sketchView->getSketchObject()->noRecomputes=true;
-    
+
     /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
         this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
@@ -106,7 +106,11 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
     
     if( str == QString::fromLatin1("#redundant"))
-        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");            
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
+    
+    if( str == QString::fromLatin1("#dofs"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
+    
 }
 
 void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)

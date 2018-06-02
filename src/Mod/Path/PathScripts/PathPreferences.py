@@ -34,6 +34,7 @@ class PathPreferences:
     DefaultFilePath           = "DefaultFilePath"
     DefaultJobTemplate        = "DefaultJobTemplate"
     DefaultStockTemplate      = "DefaultStockTemplate"
+    DefaultTaskPanelLayout    = "DefaultTaskPanelLayout"
 
     PostProcessorDefault      = "PostProcessorDefault"
     PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
@@ -180,6 +181,12 @@ class PathPreferences:
     def setDefaultStockTemplate(cls, template):
         cls.preferences().SetString(cls.DefaultStockTemplate, template)
 
+    @classmethod
+    def defaultTaskPanelLayout(cls):
+        return cls.preferences().GetInt(cls.DefaultTaskPanelLayout, 0)
+    @classmethod
+    def setDefaultTaskPanelLayout(cls, style):
+        cls.preferences().SetInt(cls.DefaultTaskPanelLayout, style)
 
     @classmethod
     def experimentalFeaturesEnabled(cls):

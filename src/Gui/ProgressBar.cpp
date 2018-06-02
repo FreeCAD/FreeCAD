@@ -444,7 +444,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
                 if (ke->key() == Qt::Key_Escape) {
                     // eventFilter() was called from the application 50 times without performing a new step (app could hang)
                     if (d->observeEventFilter > 50) {
-                        // tries to unlock the application if it hangs (propably due to incorrect usage of Base::Sequencer)
+                        // tries to unlock the application if it hangs (probably due to incorrect usage of Base::Sequencer)
                         if (ke->modifiers() & (Qt::ControlModifier | Qt::AltModifier)) {
                             sequencer->resetData();
                             return true;

@@ -68,6 +68,7 @@ ViewProviderDimension::ViewProviderDimension()
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Thin");
+    delete lg;                                   //Coverity CID 174670
     ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
 
     hGrp = App::GetApplication().GetUserParameter()

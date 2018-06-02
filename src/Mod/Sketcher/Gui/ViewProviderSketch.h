@@ -395,7 +395,9 @@ protected:
 
     float zCross;
     //float zLines;
-    float zPoints;
+    //float zPoints;
+    float zLowPoints;
+    float zHighPoints;
     float zConstr;
     float zHighlight;
     float zText;

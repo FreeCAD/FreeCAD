@@ -268,7 +268,7 @@ public:
     bool isPerformingTransaction() const;
     //@}
 
-    /// handels the application close event
+    /// handles the application close event
     bool canClose();
     bool isLastView(void);
 

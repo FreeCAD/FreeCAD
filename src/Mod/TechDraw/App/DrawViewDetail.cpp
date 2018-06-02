@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-        Base::Console().Message("INFO - DVD::execute - testBox is void\n");
+        Base::Console().Message("DrawViewDetail - detail area contains no geometry\n");
     }
 
 //for debugging show compound instead of cut

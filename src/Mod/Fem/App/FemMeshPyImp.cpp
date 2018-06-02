@@ -37,6 +37,7 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMDS_MeshElement.hxx>
 #include <SMDS_VolumeTool.hxx>
+#include <SMESHDS_Mesh.hxx>
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Face.hxx>
@@ -993,7 +994,7 @@ Py::Dict FemMeshPy::getNodes(void) const
     //Py::Tuple tup(count);
     Py::Dict dict;
 
-    // get the actuall transform of the FemMesh
+    // get the actual transform of the FemMesh
     Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
     SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();

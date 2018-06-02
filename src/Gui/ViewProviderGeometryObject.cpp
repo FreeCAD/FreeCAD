@@ -77,9 +77,22 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0),pcBoundColor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
+    bool randomColor = hGrp->GetBool("RandomColor", false);
     float r,g,b;
-    r = ((shcol >> 24) & 0xff) / 255.0; g = ((shcol >> 16) & 0xff) / 255.0; b = ((shcol >> 8) & 0xff) / 255.0;
+
+    if(randomColor){
+        float fMax = (float)RAND_MAX;
+        r = (float)rand()/fMax;
+        g = (float)rand()/fMax;
+        b = (float)rand()/fMax;
+    }
+    else {
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
+        r = ((shcol >> 24) & 0xff) / 255.0; 
+        g = ((shcol >> 16) & 0xff) / 255.0; 
+        b = ((shcol >> 8) & 0xff) / 255.0;
+    }
+
     ADD_PROPERTY(ShapeColor,(r, g, b));
     ADD_PROPERTY(Transparency,(0));
     Transparency.setConstraints(&intPercent);

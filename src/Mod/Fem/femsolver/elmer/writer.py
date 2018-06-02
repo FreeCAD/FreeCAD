@@ -265,7 +265,9 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
-                heatSource = getFromUi(obj.HeatFlux, "W/kg", "L^2*T^-3")
+                heatSource = getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+                # according Elmer forum W/kg is correct, http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
+                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
                 self._bodyForce(name, "Heat Source", heatSource)
             self._handled(obj)
 

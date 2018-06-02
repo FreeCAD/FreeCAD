@@ -78,6 +78,16 @@
 using namespace TechDrawGui;
 using namespace std;
 
+bool isArchSection(App::DocumentObject* obj)
+{
+    bool result = true;
+    App::Property* prop1 = obj->getPropertyByName("Objects");
+    App::Property* prop2 = obj->getPropertyByName("OnlySolids");
+    if ( (!prop1) || (!prop2) ) {
+        result = false;
+    }
+    return result;
+}
 
 //===========================================================================
 // TechDraw_NewPageDef (default template)
@@ -869,6 +879,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     }
 
 //TODO: shouldn't this be checking for a Draft object only?
+//      there is no obvious way of check for a Draft object.  Could be App::FeaturePython, Part::Part2DObject, ???
     std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -894,7 +905,6 @@ bool CmdTechDrawDraftView::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
-//TODO: shouldn't this be checking for an Arch object only?
 //===========================================================================
 // TechDraw_ArchView
 //===========================================================================
@@ -922,23 +932,33 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
 
     std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (objects.size() != 1) {
+    if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Arch Section Plane object."));
+            QObject::tr("Select at least one object."));
         return;
     }
-    App::Property* prop1 = objects[0]->getPropertyByName("Objects");
-    App::Property* prop2 = objects[0]->getPropertyByName("OnlySolids");
-    if ( (!prop1) || (!prop2) ) {
+    int ifound = 0;
+    bool found = false;
+    for (auto& obj: objects) {
+        if (isArchSection(obj)) {
+            found = true;
+            break;
+        }
+        ifound++;
+    }
+    App::DocumentObject* archObj;
+    if (found) {
+        archObj = objects[ifound];
+    } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("The selected object is not an Arch Section Plane."));
+            QObject::tr("There is no Arch Section Plane in selection."));
         return;
     }
 
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("ArchView");
-    std::string SourceName = objects[0]->getNameInDocument();
+    std::string SourceName = archObj->getNameInDocument();
     openCommand("Create ArchView");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewArch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
@@ -1013,7 +1033,7 @@ bool CmdTechDrawSpreadsheet::isActive(void)
 
 
 //===========================================================================
-// TechDraw_ExportPage
+// TechDraw_ExportPage (Svg)
 //===========================================================================
 
 DEF_STD_CMD_A(CmdTechDrawExportPage);
@@ -1056,6 +1076,57 @@ bool CmdTechDrawExportPage::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//===========================================================================
+// TechDraw_ExportPage (Dxf)
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExportPageDxf);
+
+CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
+  : Command("TechDraw_ExportPageDxf")
+{
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("Export page as DXF");
+    sToolTipText  = QT_TR_NOOP("Export a page to a DXF file");
+    sWhatsThis    = "TechDraw_SaveDXF";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "actions/techdraw-saveDXF";
+}
+
+void CmdTechDrawExportPageDxf::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+//WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
+    QString defaultDir;
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   defaultDir,
+                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    std::string PageName = page->getNameInDocument();
+    openCommand("Save page to dxf");
+    doCommand(Doc,"import TechDraw");
+    doCommand(Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",PageName.c_str(),(const char*)fileName.toUtf8());
+    updateActive();
+    commitCommand();
+}
+
+
+bool CmdTechDrawExportPageDxf::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
+
 
 void CreateTechDrawCommands(void)
 {
@@ -1074,6 +1145,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawClipMinus());
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPage());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPageDxf());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());

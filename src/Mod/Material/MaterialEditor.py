@@ -78,10 +78,15 @@ class MaterialEditor:
         "updates the contents of the materials combo with existing material cards"
         # look for cards in both resources dir and a Materials sub-folder in the user folder.
         # User cards with same name will override system cards
-        paths = [FreeCAD.getResourceDir() + os.sep + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        ap = FreeCAD.ConfigGet("UserAppData") + os.sep + "Materials"
+        # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
+        paths = [FreeCAD.getResourceDir() + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
+        ap = FreeCAD.ConfigGet("UserAppData") + "Material"
         if os.path.exists(ap):
             paths.append(ap)
+        # print('locations we gone look for material cards:')
+        # for path in paths:
+        #     print('  ' + path)
+        # print('\n')
         self.cards = {}
         for p in paths:
             for f in os.listdir(p):
@@ -102,6 +107,7 @@ class MaterialEditor:
             self.clearEditor()
             for k,i in data.items():
                 k = self.expandKey(k)
+                # most material dict keys are hard coded in ui file, not known keys are added to user defined group
                 slot = self.widget.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
                 if len(slot) == 1:
                     slot = slot[0]
@@ -210,8 +216,8 @@ class MaterialEditor:
         "Edits an item if it is not in the first column"
         if column > 0:
             self.widget.Editor.editItem(item, column)
-            
-            
+
+
     def itemChanged(self, item, column):
         "Handles text changes"
         if item.text(0) == "Section Fill Pattern":
@@ -235,13 +241,25 @@ class MaterialEditor:
             for i2 in range(w.childCount()):
                 c = w.child(i2)
                 # TODO the following should be translated back to english,since text(0) could be translated
-                d[self.collapseKey(str(c.text(0)))] = unicode(c.text(1))
+                matkey = self.collapseKey(str(c.text(0)))
+                matvalue = unicode(c.text(1))
+                if matvalue or (matkey == 'Name'):  
+                    # use only keys which are not empty and the name even if empty
+                    d[matkey] = matvalue
+        # self.outputDict(d)
         return d
 
 
+        # ??? after return ???
         if d:
             self.updateContents(d)
         self.widget.Editor.topLevelItem(6).child(4).setToolTip(1,self.getPatternsList())
+
+
+    def outputDict(self, d):
+        print('MaterialEditor dictionary')
+        for param in d:
+            print('  ' + param + ' : ' + d[param])
 
 
     def setTexture(self,pattern):
@@ -261,11 +279,12 @@ class MaterialEditor:
 
     def openfile(self):
         "Opens a FCMat file"
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open FreeCAD Material file','*.FCMat')
+        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open FreeCAD Material file','*.FCMat')
+        filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             self.clearEditor()
             import importFCMat
-            d = importFCMat.read(filename[0])
+            d = importFCMat.read(filename)
             if d:
                 self.updateContents(d)
 
@@ -275,9 +294,11 @@ class MaterialEditor:
         name = str(self.widget.Editor.findItems(translate("Material","Name"),QtCore.Qt.MatchRecursive,0)[0].text(1))
         if not name:
             name = "Material"
-        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),'Save FreeCAD Material file',name+'.FCMat')
+        filetuple = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),'Save FreeCAD Material file',name+'.FCMat')
+        filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             d = self.getDict()
+            # self.outputDict(d)
             if d:
                 import importFCMat
                 importFCMat.write(filename,d)
@@ -302,7 +323,7 @@ def openEditor(obj = None, prop = None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
     editor = MaterialEditor(obj,prop)
-    editor.show()
+    editor.exec_()
 
 
 def editMaterial(material):

@@ -4219,10 +4219,10 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
 
 
 //PyDoc_STRVAR(open_doc,
-//"open(string) -- Not implemnted for this Module so far.");
+//"open(string) -- Not implemented for this Module so far.");
 //
 //PyDoc_STRVAR(inst_doc,
-//"insert(string, string) -- Not implemnted for this Module so far.");
+//"insert(string, string) -- Not implemented for this Module so far.");
 //
 //PyDoc_STRVAR(loft_doc,
 //"Creates a TopoShape with a test BSPLINE");

@@ -710,7 +710,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.analysis_type == 'static' or self.analysis_type == 'thermomech':
                 step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
             elif self.analysis_type == 'frequency':
-                FreeCAD.Console.PrintMessage('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!\n')
+                FreeCAD.Console.PrintMessage('Analysis type frequency and geometrical nonlinear analysis are not allowed together, linear is used instead!\n')
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == 'thermomech':
                 step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
@@ -719,7 +719,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # write step line
         f.write(step + '\n')
         # CONTROLS line
-        # all analyis types, ... really in frequency too?!?
+        # all analysis types, ... really in frequency too?!?
         if self.solver_obj.IterationsControlParameterTimeUse:
             f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
             f.write(self.solver_obj.IterationsControlParameterIter + '\n')

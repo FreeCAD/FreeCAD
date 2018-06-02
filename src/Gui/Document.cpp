@@ -418,6 +418,22 @@ void Document::_resetEdit(void)
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
         d->_editViewProvider = 0;
         d->_editViewProviderParent = 0;
+
+        // The logic below is not necessary anymore, because this method is
+        // changed into a private one,  _resetEdit(). And the exposed
+        // resetEdit() above calls into Application->setEditDocument(0) which
+        // will prevent recrusive calling.
+#if 0
+        // Nullify the member variable before calling finishEditing().
+        // This is to avoid a possible stack overflow when a view provider wrongly
+        // invokes the document's resetEdit() method.
+        ViewProvider* editViewProvider = d->_editViewProvider;
+        d->_editViewProvider = nullptr;
+
+        editViewProvider->finishEditing();
+        if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
+#endif
     }
     if(Application::Instance->editDocument() == this)
         Application::Instance->setEditDocument(0);
@@ -1768,7 +1784,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  This method opens a new UNDO transaction on the active document. This transaction
  *  will later appear in the UNDO/REDO dialog with the name of the command. If the user 
  *  recall the transaction everything changed on the document between OpenCommand() and 
- *  CommitCommand will be undone (or redone). You can use an alternetive name for the 
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the 
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */

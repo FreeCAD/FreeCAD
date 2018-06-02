@@ -888,7 +888,8 @@ def flattenWire(wire):
     verts = [o]
     for v in wire.Vertexes[1:]:
         verts.append(plane.projectPoint(v.Point))
-    verts.append(o)
+    if wire.isClosed():
+        verts.append(o)
     w = Part.makePolygon(verts)
     return w
 
@@ -1109,11 +1110,11 @@ def getNormal(shape):
         if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
                 n = shape.copy().normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
-                if geomType(shape.Edges[0]) == "Circle":
+                if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
                         n = shape.Edges[0].Curve.Axis
         else:
                 for e in shape.Edges:
-                        if geomType(e) == "Circle":
+                        if geomType(e) in ["Circle","Ellipse"]:
                                 n = e.Curve.Axis
                                 break
                         e1 = vec(shape.Edges[0])
@@ -2044,7 +2045,7 @@ def curvetowire(obj,steps):
 def cleanProjection(shape,tessellate=True,seglength=.05):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
-    # they dispay fine, but on loading the file the shape is invalid
+    # they display fine, but on loading the file the shape is invalid
     # Now with tanderson's fix to ProjectionAlgos, that isn't the case, but this
     # can be used for tessellating ellipses and splines for DXF output-DF
     oldedges = shape.Edges

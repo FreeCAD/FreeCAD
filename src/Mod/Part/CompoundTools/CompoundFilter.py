@@ -44,7 +44,8 @@ def makeCompoundFilter(name):
     '''makeCompoundFilter(name): makes a CompoundFilter object.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
     _CompoundFilter(obj)
-    _ViewProviderCompoundFilter(obj.ViewObject)
+    if obj.ViewObject:    
+        _ViewProviderCompoundFilter(obj.ViewObject)
     return obj
 
 
@@ -58,7 +59,7 @@ class _CompoundFilter:
         obj.FilterType = 'bypass'
 
         # properties controlling "specific items" mode
-        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1,4,8:10).")
+        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1;4;8:10).")
 
         obj.addProperty("App::PropertyLink", "Stencil", "CompoundFilter", "Object that defines filtering")
 

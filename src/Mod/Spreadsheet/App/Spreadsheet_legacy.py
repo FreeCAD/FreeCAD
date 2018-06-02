@@ -832,7 +832,7 @@ class SpreadsheetView(QtGui.QWidget):
                             self.table.item(r,c).setBackground(brush)
 
     def changeCell(self,r,c,value=None):
-        "changes the contens of a cell"
+        "changes the contents of a cell"
         if self.doNotChange:
             if DEBUG: print("DoNotChange flag is set")
             self.doNotChange = False

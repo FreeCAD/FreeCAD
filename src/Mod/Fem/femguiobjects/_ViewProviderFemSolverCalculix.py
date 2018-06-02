@@ -31,7 +31,6 @@ import FreeCAD
 import FreeCADGui
 import FemGui
 
-
 # for the panel
 from femtools import ccxtools
 from PySide import QtCore
@@ -72,7 +71,7 @@ class _ViewProviderFemSolverCalculix:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)
@@ -89,7 +88,10 @@ class _ViewProviderFemSolverCalculix:
             else:
                 FreeCAD.Console.PrintError('No active Analysis found!\n')
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def __getstate__(self):

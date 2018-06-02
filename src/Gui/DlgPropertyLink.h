@@ -27,6 +27,8 @@
 #include <QDialog>
 #include <QAbstractItemView>
 
+#define FC_XLINK_VALUE_INDEX 5
+
 namespace Gui { namespace Dialog {
 
 class Ui_DlgPropertyLink;
@@ -50,7 +52,7 @@ private Q_SLOTS:
     void onItemExpanded(QTreeWidgetItem * item);
 
 private:
-    void createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
+    QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
     void findObjects(bool on);
 
 private:

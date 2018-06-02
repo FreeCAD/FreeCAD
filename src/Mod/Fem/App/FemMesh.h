@@ -31,6 +31,7 @@
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
+#include <SMESH_Version.h>
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -160,6 +161,9 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
+#if SMESH_VERSION_MAJOR >= 7
+    static SMESH_Gen *_mesh_gen;
+#endif
 };
 
 } //namespace Part

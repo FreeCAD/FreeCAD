@@ -253,7 +253,7 @@ def ungroup(obj):
             g = grp.Group
             g.remove(obj)
             grp.Group = g
-            
+
 def autogroup(obj):
     "adds a given object to the autogroup, if applicable"
     if FreeCAD.GuiUp:
@@ -357,7 +357,7 @@ def shapify(obj):
 def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
     '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
     is a group, its content is appened to the list, which is returned. If walls is True,
-    walls and structures are also scanned for included windows or rebars. If addgroups 
+    walls and structures are also scanned for included windows or rebars. If addgroups
     is true, the group itself is also included in the list.'''
     def getWindows(obj):
         l = []
@@ -666,6 +666,9 @@ def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None
     wireframe, otherwise as a face. If startangle AND endangle are given
     (in degrees), they are used and the object appears as an arc. If an edge
     is passed, its Curve must be a Part.Circle'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import Part, DraftGeomUtils
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     if startangle != endangle:
@@ -711,6 +714,9 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
     object with length in X direction and height in Y direction.
     If a placement is given, it is used. If face is False, the
     rectangle is shown as a wireframe, otherwise as a face.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeRectangle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
     _Rectangle(obj)
@@ -741,6 +747,9 @@ def makeDimension(p1,p2,p3=None,p4=None):
     to the given object, i1 is the index of the (curved) edge to measure,
     and mode is either "radius" or "diameter".
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
     _Dimension(obj)
     if gui:
@@ -802,6 +811,9 @@ def makeAngularDimension(center,angles,p3,normal=None):
     '''makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
     from the given center, with the given list of angles, passing through p3.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
     _AngularDimension(obj)
     obj.Center = center
@@ -835,6 +847,9 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import DraftGeomUtils, Part
     if not isinstance(pointslist,list):
         e = pointslist.Wires[0].Edges
@@ -874,6 +889,9 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
     with the given radius, otherwise it is inscribed. If face is True,
     the resulting shape is displayed as a face, otherwise as a wireframe.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if nfaces < 3: return None
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
     _Polygon(obj)
@@ -905,6 +923,9 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
@@ -912,15 +933,15 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
-        msg(translate("draft","Draft.makeBSpline: not enough points\n"), 'error')
+        msg(translate("draft","Draft.makeBSpline: not enough points")+"\n", 'error')
         return
     if (pointslist[0] == pointslist[-1]):
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            msg(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed\n"), 'warning')
+            msg(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n", 'warning')
         else:                                                                            # len == 2 and first == last   GIGO
-            msg(translate("draft","Draft.makeBSpline: Invalid pointslist\n"), 'error')
+            msg(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n", 'error')
             return
     # should have sensible parms from here on
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeBSpline")
@@ -944,6 +965,9 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
 def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -982,26 +1006,34 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     can also be one single string). The current color and text height and font
     specified in preferences are used.
     If screen is True, the text always faces the view direction.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
-    obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
-    obj.LabelText=stringslist
-    obj.Position=point
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Text")
+    DraftText(obj)
+    obj.Text = stringslist
+    obj.Placement.Base = point
     if FreeCAD.GuiUp:
+        ViewProviderDraftText(obj.ViewObject)
         if not screen:
-            obj.ViewObject.DisplayMode="World"
+            obj.ViewObject.DisplayMode = "3D text"
         h = getParam("textheight",0.20)
         if screen:
             h = h*10
         obj.ViewObject.FontSize = h
         obj.ViewObject.FontName = getParam("textfont","")
-        obj.ViewObject.LineSpacing = 0.6
+        obj.ViewObject.LineSpacing = 1
         formatObject(obj)
         select(obj)
     return obj
 
 def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if (getType(obj) == "Rectangle") or (force == "Rectangle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
@@ -1108,6 +1140,9 @@ def makeCopy(obj,force=None,reparent=False):
 
 def makeBlock(objectslist):
     '''makeBlock(objectslist): Creates a Draft Block from the given objects'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
     _Block(obj)
     obj.Components = objectslist
@@ -1118,24 +1153,35 @@ def makeBlock(objectslist):
         select(obj)
     return obj
 
-def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array",useLink=False):
+def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",useLink=False):
     '''makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
+    makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
     makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
     of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
-    at xvector distance between iterations, and same for y direction with yvector
-    and ynum. In case of polar array, center is a vector, totalangle is the angle
-    to cover (in degrees) and totalnum is the number of objects, including the original.
-    The result is a parametric Draft Array.'''
+    at xvector distance between iterations, same for y direction with yvector and ynum,
+    same for z direction with zvector and znum. In case of polar array, center is a vector,
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects,
+    including the original. The result is a parametric Draft Array.'''
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if useLink:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name,_Array(None),None,True)
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
         _Array(obj)
-
     obj.Base = baseobject
-    if arg4:
+    if arg6:
+        obj.ArrayType = "ortho"
+        obj.IntervalX = arg1
+        obj.IntervalY = arg2
+        obj.IntervalZ = arg3
+        obj.NumberX = arg4
+        obj.NumberY = arg5
+        obj.NumberZ = arg6
+    elif arg4:
         obj.ArrayType = "ortho"
         obj.IntervalX = arg1
         obj.IntervalY = arg2
@@ -1165,6 +1211,9 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
     pathobject. Optionally translates each copy by FreeCAD.Vector xlate direction
     and distance to adjust for difference in shape centre vs shape reference point.
     Optionally aligns baseobject to tangent/normal/binormal of path.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if useLink:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray",_PathArray(None),None,True)
     else:
@@ -1199,6 +1248,9 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     '''makeEllipse(majradius,minradius,[placement],[face],[support]): makes
     an ellipse with the given major and minor radius, and optionally
     a placement.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
     _Ellipse(obj)
     if minradius > majradius:
@@ -1220,6 +1272,9 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
 def makeVisGroup(group=None,name="VisGroup"):
     '''makeVisGroup([group]): creates a VisGroup object in the given group, or in the
     active document if no group is given'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _VisGroup(obj)
     if FreeCAD.GuiUp:
@@ -1233,6 +1288,9 @@ def extrude(obj,vector,solid=False):
     '''makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
     gets hidden.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     newobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion","Extrusion")
     newobj.Base = obj
     newobj.Dir = vector
@@ -1249,6 +1307,9 @@ def fuse(object1,object2):
     the union of the 2 given objects. If the objects are
     coplanar, a special Draft Wire is used, otherwise we use
     a standard Part fuse.'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import DraftGeomUtils, Part
     # testing if we have holes:
     holes = False
@@ -1281,6 +1342,9 @@ def fuse(object1,object2):
     return obj
 
 def cut(object1,object2):
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     '''cut(oject1,object2): returns a cut object made from
     the difference of the 2 given objects.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Cut","Cut")
@@ -1349,7 +1413,7 @@ def move(objectslist,vector,copy=False):
             newobj.End = obj.End.add(vector)
             newobj.Dimline = obj.Dimline.add(vector)
         else:
-            if copy and obj.isDerivedFrom("Mesh::Feature"): 
+            if copy and obj.isDerivedFrom("Mesh::Feature"):
                 print("Mesh copy not supported at the moment") # TODO
             newobj = obj
             if "Placement" in obj.PropertiesList:
@@ -1365,18 +1429,20 @@ def move(objectslist,vector,copy=False):
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
-        select(newobjlist) 
+        select(newobjlist)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
-def array(objectslist,arg1,arg2,arg3,arg4=None):
-    '''array(objectslist,xvector,yvector,xnum,ynum) for rectangular array, or
-    array(objectslist,center,totalangle,totalnum) for polar array: Creates an array
+def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
+    '''array(objectslist,xvector,yvector,xnum,ynum) for rectangular array,
+    array(objectslist,xvector,yvector,zvector,xnum,ynum,znum) for rectangular array,
+    or array(objectslist,center,totalangle,totalnum) for polar array: Creates an array
     of the objects contained in list (that can be an object or a list of objects)
     with, in case of rectangular array, xnum of iterations in the x direction
-    at xvector distance between iterations, and same for y direction with yvector
-    and ynum. In case of polar array, center is a vector, totalangle is the angle
-    to cover (in degrees) and totalnum is the number of objects, including the original.
+    at xvector distance between iterations, and same for y and z directions with yvector
+    and ynum and zvector and znum. In case of polar array, center is a vector, totalangle
+    is the angle to cover (in degrees) and totalnum is the number of objects, including
+    the original.
 
     This function creates an array of independent objects. Use makeArray() to create a
     parametric array object.'''
@@ -1393,6 +1459,22 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
                 currentyvector=currentxvector.add(Vector(yvector).multiply(ycount))
                 if not ycount==0:
                     move(objectslist,currentyvector,True)
+    def rectArray2(objectslist,xvector,yvector,zvector,xnum,ynum,znum):
+        typecheck([(xvector,Vector), (yvector,Vector), (zvector,Vector),(xnum,int), (ynum,int),(znum,int)], "rectArray2")
+        if not isinstance(objectslist,list): objectslist = [objectslist]
+        for xcount in range(xnum):
+            currentxvector=Vector(xvector).multiply(xcount)
+            if not xcount==0:
+                move(objectslist,currentxvector,True)
+            for ycount in range(ynum):
+                currentxvector=FreeCAD.Base.Vector(currentxvector)
+                currentyvector=currentxvector.add(Vector(yvector).multiply(ycount))
+                if not ycount==0:
+                    move(objectslist,currentyvector,True)
+                for zcount in range(znum):
+                    currentzvector=currentyvector.add(Vector(zvector).multiply(zcount))
+                    if not zcount==0:
+                        move(objectslist,currentzvector,True)
     def polarArray(objectslist,center,angle,num):
         typecheck([(center,Vector), (num,int)], "polarArray")
         if not isinstance(objectslist,list): objectslist = [objectslist]
@@ -1400,8 +1482,9 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
         for i in range(num):
             currangle = fraction + (i*fraction)
             rotate(objectslist,currangle,center,copy=True)
-
-    if arg4:
+    if arg6:
+        rectArray2(objectslist,arg1,arg2,arg3,arg4,arg5,arg6)
+    elif arg4:
         rectArray(objectslist,arg1,arg2,arg3,arg4)
     else:
         polarArray(objectslist,arg1,arg2,arg3)
@@ -1539,7 +1622,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj.ViewObject.FontSize = factor
                 d = obj.Position.sub(center)
                 newobj.Position = center.add(Vector(d.x*delta.x,d.y*delta.y,d.z*delta.z))
-            if copy: 
+            if copy:
                 formatObject(newobj,obj)
             newobjlist.append(newobj)
         if copy and getParam("selectBaseObjects",False):
@@ -2204,6 +2287,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return svg
 
     def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
+        if isinstance(angle,FreeCAD.Rotation):
+            if not plane:
+                angle = angle.Angle
+            else:
+                if plane.axis.getAngle(angle.Axis) < 0.001:
+                    angle = angle.Angle
+                elif abs(plane.axis.getAngle(angle.Axis)-math.pi) < 0.001:
+                    return "" # text is perpendicular to view, so it shouldn't appear
+                else:
+                    angle = 0 #TODO maybe there is something better to do here?
         if not isinstance(text,list):
             text = text.split("\n")
         if align.lower() == "center":
@@ -2417,16 +2510,22 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     tbase = getProj(prx.tbase)
                 svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
-    elif getType(obj) == "Annotation":
+    elif getType(obj) in ["Annotation","DraftText"]:
         "returns an svg representation of a document annotation"
         if not obj.ViewObject:
             print ("export of texts to SVG is only available in GUI mode")
         else:
             n = obj.ViewObject.FontName
-            a = obj.ViewObject.Rotation.getValueAs("rad")
-            t = obj.LabelText
+            if getType(obj) == "Annotation":
+                p = getProj(obj.Position)
+                r = obj.ViewObject.Rotation.getValueAs("rad")
+                t = obj.LabelText
+            else: # DraftText
+                p = getProj(obj.Placement.Base)
+                r = obj.Placement.Rotation
+                t = obj.Text
             j = obj.ViewObject.Justification
-            svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
+            svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
@@ -2481,7 +2580,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if len(f.Edges) == 1:
                 if isinstance(f.Edges[0].Curve,Part.Circle):
                     svg += getCircle(f.Edges[0])
-                    
+
     elif getType(obj) == "Rebar":
         fill = "none"
         lstyle = getLineStyle()
@@ -2575,7 +2674,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
                     svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                    
+
     # techdraw expects bottom-to-top coordinates
     if techdraw:
         svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
@@ -2601,6 +2700,9 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     given page. lwmod modifies lineweights (in percent), tmod modifies text heights
     (in percent). The Hint scale, X and Y of the page are used.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if getType(obj) == "SectionPlane":
         import ArchSectionPlane
         viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
@@ -2653,6 +2755,9 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     2D projection of the given object. A specific projection vector can also be given. You can also
     specify a list of face numbers to be considered in individual faces mode.
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
     _Shape2DView(obj)
     if gui:
@@ -2668,29 +2773,33 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
 
 def makeSketch(objectslist,autoconstraints=False,addTo=None,
         delete=False,name="Sketch",radiusPrecision=-1):
-    '''makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name],[radiusPrecision]): 
+    '''makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name],[radiusPrecision]):
 
-    Makes a Sketch objectslist with the given Draft objects. 
+    Makes a Sketch objectslist with the given Draft objects.
 
     * objectlist: can be single or list of objects of Draft type objects,
         Part::Feature, Part.Shape, or mix of them.
 
     * autoconstraints(False): if True, constraints will be automatically added to
-        wire nodes, rectangles and circles. 
-    
+        wire nodes, rectangles and circles.
+
     * addTo(None) : if set to an existing sketch, geometry will be added to it
         instead of creating a new one.
-    
-    * delete(False): if True, the original object will be deleted. 
+
+    * delete(False): if True, the original object will be deleted.
         If set to a string 'all' the object and all its linked object will be
         deleted
-    
+
     * name('Sketch'): the name for the new sketch object
 
     * radiusPrecision(-1): If <0, disable radius constraint. If =0, add indiviaul
         radius constraint. If >0, the radius will be rounded according to this
         precision, and 'Equal' constraint will be added to curve with equal
         radius within precision.'''
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
 
     import Part, DraftGeomUtils
     from Sketcher import Constraint
@@ -2956,6 +3065,9 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         p1.X = 1 #move it in x
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     if isinstance(X,FreeCAD.Vector):
         Z = X.z
@@ -2979,6 +3091,9 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String
@@ -3168,6 +3283,9 @@ def heal(objlist=None,delete=True,reparent=True):
 def makeFacebinder(selectionset,name="Facebinder"):
     """makeFacebinder(selectionset,[name]): creates a Facebinder object from a selection set.
     Only faces will be added."""
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     if not isinstance(selectionset,list):
         selectionset = [selectionset]
     fb = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -3447,12 +3565,12 @@ def upgrade(objects,delete=False,force=None):
         # if we have a group: turn each closed wire inside into a face
         if groups:
             result = closeGroupWires(groups)
-            if result: msg(translate("draft", "Found groups: closing each open object inside\n"))
+            if result: msg(translate("draft", "Found groups: closing each open object inside")+"\n")
 
         # if we have meshes, we try to turn them into shapes
         elif meshes:
             result = turnToParts(meshes)
-            if result: msg(translate("draft", "Found mesh(es): turning into Part shapes\n"))
+            if result: msg(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
 
         # we have only faces here, no lone edges
         elif faces and (len(wires) + len(openwires) == len(facewires)):
@@ -3460,40 +3578,40 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it\n"))
+                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):
                 result = makeFusion(objects[0],objects[1])
-                if result: msg(translate("draft", "Found 2 objects: fusing them\n"))
+                if result: msg(translate("draft", "Found 2 objects: fusing them")+"\n")
 
             # we have many separate faces: we try to make a shell
             elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
                 result = makeShell(objects)
-                if result: msg(translate("draft", "Found several objects: creating a shell\n"))
+                if result: msg(translate("draft", "Found several objects: creating a shell")+"\n")
 
             # we have faces: we try to join them if they are coplanar
             elif len(faces) > 1:
                 result = joinFaces(objects)
-                if result: msg(translate("draft", "Found several coplanar objects or faces: creating one face\n"))
+                if result: msg(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
 
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = draftify(objects[0])
-                if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
+                if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
 
         # we have only one object that contains one edge
         elif (not faces) and (len(objects) == 1) and (len(edges) == 1):
             # we have a closed sketch: Extract a face
             if objects[0].isDerivedFrom("Sketcher::SketchObject") and (len(edges[0].Vertexes) == 1):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it\n"))
+                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
                 if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
-                    if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
+                    if result: msg(translate("draft", "Found 1 linear object: converting to line")+"\n")
 
         # we have only closed wires, no faces
         elif wires and (not faces) and (not openwires):
@@ -3501,36 +3619,36 @@ def upgrade(objects,delete=False,force=None):
             # we have a sketch: Extract a face
             if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it\n"))
+                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
 
             # only closed wires
             else:
                 result = makeFaces(objects)
-                if result: msg(translate("draft", "Found closed wires: creating faces\n"))
+                if result: msg(translate("draft", "Found closed wires: creating faces")+"\n")
 
         # special case, we have only one open wire. We close it, unless it has only 1 edge!"
         elif (len(openwires) == 1) and (not faces) and (not loneedges):
             result = closeWire(objects[0])
-            if result: msg(translate("draft", "Found 1 open wire: closing it\n"))
+            if result: msg(translate("draft", "Found 1 open wire: closing it")+"\n")
 
         # only open wires and edges: we try to join their edges
         elif openwires and (not wires) and (not faces):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several open wires: joining them\n"))
+            if result: msg(translate("draft", "Found several open wires: joining them")+"\n")
 
         # only loneedges: we try to join them
         elif loneedges and (not facewires):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several edges: wiring them\n"))
+            if result: msg(translate("draft", "Found several edges: wiring them")+"\n")
 
         # all other cases, if more than 1 object, make a compound
         elif (len(objects) > 1):
             result = makeCompound(objects)
-            if result: msg(translate("draft", "Found several non-treatable objects: creating compound\n"))
+            if result: msg(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "Unable to upgrade these objects.\n"))
+            msg(translate("draft", "Unable to upgrade these objects.")+"\n")
 
     if delete:
         names = []
@@ -3686,52 +3804,52 @@ def downgrade(objects,delete=False,force=None):
         # we have a block, we explode it
         if (len(objects) == 1) and (getType(objects[0]) == "Block"):
             result = explode(objects[0])
-            if result: msg(translate("draft", "Found 1 block: exploding it\n"))
+            if result: msg(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
         elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
-            if result: msg(translate("draft", "Found 1 multi-solids compound: exploding it\n"))
+            if result: msg(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
             result = shapify(objects[0])
             if result:
-                msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+                msg(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
                 addList.append(result)
                 #deleteList.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
             result = cut2(objects)
-            if result: msg(translate("draft", "Found 2 objects: subtracting them\n"))
+            if result: msg(translate("draft", "Found 2 objects: subtracting them")+"\n")
 
         elif (len(faces) > 1):
 
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
-                if result: msg(translate("draft", "Found several faces: splitting them\n"))
+                if result: msg(translate("draft", "Found several faces: splitting them")+"\n")
 
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
-                if result: msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
+                if result: msg(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
 
         # only one face: we extract its wires
         elif (len(faces) > 0):
             result = getWire(objects[0])
-            if result: msg(translate("draft", "Found 1 face: extracting its wires\n"))
+            if result: msg(translate("draft", "Found 1 face: extracting its wires")+"\n")
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
-            if result: msg(translate("draft", "Found only wires: extracting their edges\n"))
+            if result: msg(translate("draft", "Found only wires: extracting their edges")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "No more downgrade possible\n"))
+            msg(translate("draft", "No more downgrade possible")+"\n")
 
     if delete:
         names = []
@@ -3961,8 +4079,8 @@ class _Dimension(_DraftObject):
         _DraftObject.__init__(self,obj,"Dimension")
         obj.addProperty("App::PropertyVectorDistance","Start","Draft",QT_TRANSLATE_NOOP("App::Property","Startpoint of dimension"))
         obj.addProperty("App::PropertyVectorDistance","End","Draft",QT_TRANSLATE_NOOP("App::Property","Endpoint of dimension"))
-        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","the normal direction of this dimension"))
-        obj.addProperty("App::PropertyVector","Direction","Draft",QT_TRANSLATE_NOOP("App::Property","the normal direction of this dimension"))
+        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
+        obj.addProperty("App::PropertyVector","Direction","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
         obj.addProperty("App::PropertyVectorDistance","Dimline","Draft",QT_TRANSLATE_NOOP("App::Property","Point through which the dimension line passes"))
         obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
         obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
@@ -4232,12 +4350,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
             rot2 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v2,norm)).Rotation.Q
             self.trans1.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
             self.trans2.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
-            u3 = self.p1.sub(self.p2)
-            u3.normalize()
-            v3 = norm.cross(u3)
-            rot3 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
-            self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
-            self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
+            if self.p1 != self.p2:
+                u3 = self.p1.sub(self.p2)
+                u3.normalize()
+                v3 = norm.cross(u3)
+                rot3 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
+                self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
             if hasattr(obj.ViewObject,"TextSpacing"):
                 offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing.Value)
             else:
@@ -5160,6 +5279,7 @@ class _ViewProviderWire(_ViewProviderDraft):
         self.onChanged(obj,"EndArrow")
 
     def updateData(self, obj, prop):
+        from pivy import coin
         if prop == "Points":
             if obj.Points:
                 p = obj.Points[-1]
@@ -5169,16 +5289,13 @@ class _ViewProviderWire(_ViewProviderDraft):
                         v1 = obj.Points[-2].sub(obj.Points[-1])
                         if not DraftVecUtils.isNull(v1):
                             v1.normalize()
-                            import DraftGeomUtils
-                            v2 = DraftGeomUtils.getNormal(obj.Shape)
-                            if DraftVecUtils.isNull(v2):
-                                v2 = Vector(0,0,1)
-                            v3 = v1.cross(v2).negative()
-                            q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
-                            self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
+                            _rot = coin.SbRotation()
+                            _rot.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(v1[0], v1[1], v1[2]))
+                            self.coords.rotation.setValue(_rot)
         return
 
     def onChanged(self, vobj, prop):
+        from pivy import coin
         if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
             rn = vobj.RootNode
             if hasattr(self,"pt") and hasattr(vobj,"EndArrow"):
@@ -5200,6 +5317,9 @@ class _ViewProviderWire(_ViewProviderDraft):
                             self.pt.removeChild(self.symbol)
                         if rn.findChild(self.pt) != -1:
                             rn.removeChild(self.pt)
+        if prop in ["LineColor"]:
+            if hasattr(self, "pt"):
+                self.pt[0].rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
         _ViewProviderDraft.onChanged(self,vobj,prop)
         return
 
@@ -5207,6 +5327,28 @@ class _ViewProviderWire(_ViewProviderDraft):
         if hasattr(self.Object,"Base"):
             return [self.Object.Base,self.Object.Tool]
         return []
+
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Flatten this wire",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.flatten)
+        menu.addAction(action1)
+
+    def flatten(self):
+        if hasattr(self,"Object"):
+            if len(self.Object.Shape.Wires) == 1:
+                import DraftGeomUtils
+                fw = DraftGeomUtils.flattenWire(self.Object.Shape.Wires[0])
+                points = [v.Point for v in fw.Vertexes]
+                if len(points) == len(self.Object.Points):
+                    if points != self.Object.Points:
+                        FreeCAD.ActiveDocument.openTransaction("Flatten wire")
+                        FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Points="+str(points).replace("Vector","FreeCAD.Vector").replace(" ",""))
+                        FreeCAD.ActiveDocument.commitTransaction()
+                        FreeCAD.ActiveDocument.recompute()
+                    else:
+                        from DraftTools import translate
+                        FreeCAD.Console.PrintMessage(translate("Draft","This Wire is already flat")+"\n")
 
 class _Polygon(_DraftObject):
     "The Polygon object"
@@ -5369,7 +5511,7 @@ class _BSpline(_DraftObject):
             plm = obj.Placement
             if obj.Closed and (len(obj.Points) > 2):
                 if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
-                    msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.\n"), "error")
+                    msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n", "error")
                     return
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
@@ -5811,7 +5953,6 @@ class _Array(_DraftLink):
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
         obj.IntervalZ = Vector(0,0,1)
-        obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
 
@@ -6100,7 +6241,7 @@ class _Clone(_DraftObject):
         obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale factor of this clone"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","If this clones several objects, this specifies if the result is a fusion or a compound"))
         obj.Scale = Vector(1,1,1)
-        
+
     def join(self,obj,shapes):
         if len(shapes) < 2:
             return shapes[0]
@@ -6230,7 +6371,7 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
 
     def getIcon(self):
         return ":/icons/Draft_Array.svg"
-        
+
     def resetColors(self, vobj):
         colors = []
         if vobj.Object.Base:
@@ -6280,7 +6421,7 @@ class _ShapeString(_DraftObject):
             else:
                 CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
             if len(CharList) == 0:
-                msg(translate("draft","ShapeString: string has no wires\n"), 'warning')
+                msg(translate("draft","ShapeString: string has no wires")+"\n", 'warning')
                 return
             SSChars = []
 
@@ -6566,9 +6707,9 @@ class _ViewProviderVisGroup:
 
 
 class WorkingPlaneProxy:
-    
+
     "The Draft working plane proxy object"
-    
+
     def __init__(self,obj):
         obj.Proxy = self
         obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
@@ -6631,11 +6772,11 @@ class ViewProviderWorkingPlaneProxy:
 
     def claimChildren(self):
         return []
-        
+
     def doubleClicked(self,vobj):
         FreeCADGui.runCommand("Draft_SelectPlane")
         return True
-        
+
     def setupContextMenu(self,vobj,menu):
         from PySide import QtCore,QtGui
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
@@ -6644,7 +6785,7 @@ class ViewProviderWorkingPlaneProxy:
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write objects state",menu)
         QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
         menu.addAction(action2)
-        
+
     def writeCamera(self):
         if hasattr(self,"Object"):
             from pivy import coin
@@ -6663,7 +6804,7 @@ class ViewProviderWorkingPlaneProxy:
                 cdata.append(n.heightAngle.getValue())
                 cdata.append(1.0) # perspective camera
             self.Object.ViewObject.ViewData = cdata
-            
+
     def writeState(self):
         if hasattr(self,"Object"):
             FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing objects shown/hidden state")+"\n")
@@ -6672,8 +6813,6 @@ class ViewProviderWorkingPlaneProxy:
                 if o.ViewObject:
                     vis[o.Name] = str(o.ViewObject.Visibility)
             self.Object.ViewObject.VisibilityMap = vis
-
-
 
     def attach(self,vobj):
         from pivy import coin
@@ -6805,9 +6944,9 @@ def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltyp
 
 
 class DraftLabel:
-    
+
     "The Draft Label object"
-    
+
     def __init__(self,obj):
         obj.Proxy = self
         obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
@@ -7006,7 +7145,7 @@ class ViewProviderDraftLabel:
                 self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
                 self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
                 self.onChanged(obj.ViewObject,"TextAlignment")
-                
+
     def getTextSize(self,vobj):
         from pivy import coin
         if vobj.DisplayMode == "3D text":
@@ -7097,5 +7236,147 @@ class ViewProviderDraftLabel:
     def __setstate__(self,state):
         return None
 
+
+class DraftText:
+
+    "The Draft Text object"
+
+    def __init__(self,obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+        obj.addProperty("App::PropertyStringList","Text","Base",QT_TRANSLATE_NOOP("App::Property","The text displayed by this object"))
+        self.Type = "DraftText"
+
+    def execute(self,obj):
+        pass
+
+
+class ViewProviderDraftText:
+
+    "A View Provider for the Draft Label"
+
+    def __init__(self,vobj):
+        vobj.addProperty("App::PropertyLength","FontSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the text"))
+        vobj.addProperty("App::PropertyFont","FontName","Base",QT_TRANSLATE_NOOP("App::Property","The font of the text"))
+        vobj.addProperty("App::PropertyEnumeration","Justification","Base",QT_TRANSLATE_NOOP("App::Property","The vertical alignment of the text"))
+        vobj.addProperty("App::PropertyColor","TextColor","Base",QT_TRANSLATE_NOOP("App::Property","Text color"))
+        vobj.addProperty("App::PropertyFloat","LineSpacing","Base",QT_TRANSLATE_NOOP("App::Property","Line spacing (relative to font size)"))
+        vobj.Proxy = self
+        self.Object = vobj.Object
+        vobj.Justification = ["Left","Center","Right"]
+        vobj.FontName = getParam("textfont","sans")
+        vobj.FontSize = getParam("textheight",1)
+
+    def getIcon(self):
+        import Draft_rc
+        return ":/icons/Draft_Text.svg"
+
+    def claimChildren(self):
+        return []
+
+    def attach(self,vobj):
+        from pivy import coin
+        self.mattext = coin.SoMaterial()
+        textdrawstyle = coin.SoDrawStyle()
+        textdrawstyle.style = coin.SoDrawStyle.FILLED
+        self.trans = coin.SoTransform()
+        self.font = coin.SoFont()
+        self.text2d = coin.SoText2()
+        self.text3d = coin.SoAsciiText()
+        self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
+        self.text2d.justification = coin.SoText2.LEFT
+        self.text3d.justification = coin.SoAsciiText.LEFT
+        self.node2d = coin.SoGroup()
+        self.node2d.addChild(self.trans)
+        self.node2d.addChild(self.mattext)
+        self.node2d.addChild(textdrawstyle)
+        self.node2d.addChild(self.font)
+        self.node2d.addChild(self.text2d)
+        self.node3d = coin.SoGroup()
+        self.node3d.addChild(self.trans)
+        self.node3d.addChild(self.mattext)
+        self.node3d.addChild(textdrawstyle)
+        self.node3d.addChild(self.font)
+        self.node3d.addChild(self.text3d)
+        vobj.addDisplayMode(self.node2d,"2D text")
+        vobj.addDisplayMode(self.node3d,"3D text")
+        self.onChanged(vobj,"TextColor")
+
+    def getDisplayModes(self,vobj):
+        return ["2D text","3D text"]
+
+    def getDefaultDisplayMode(self):
+        return "3D text"
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def updateData(self,obj,prop):
+        if prop == "Text":
+            if obj.Text:
+                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+        elif prop == "Placement":
+            self.trans.translation.setValue(obj.Placement.Base)
+            self.trans.rotation.setValue(obj.Placement.Rotation.Q)
+
+    def onChanged(self,vobj,prop):
+        if prop == "TextColor":
+            if hasattr(vobj,"TextColor"):
+                l = vobj.TextColor
+                self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif (prop == "FontName"):
+            if hasattr(vobj,"FontName"):
+                self.font.name = vobj.FontName.encode("utf8")
+        elif prop  == "FontSize":
+            if hasattr(vobj,"FontSize"):
+                self.font.size = vobj.FontSize.Value
+        elif prop == "Justification":
+            if hasattr(vobj,"Justification"):
+                from pivy import coin
+                if vobj.Justification == "Left":
+                    self.text2d.justification = coin.SoText2.LEFT
+                    self.text3d.justification = coin.SoAsciiText.LEFT
+                elif vobj.Justification == "Right":
+                    self.text2d.justification = coin.SoText2.RIGHT
+                    self.text3d.justification = coin.SoAsciiText.RIGHT
+                else:
+                    self.text2d.justification = coin.SoText2.CENTER
+                    self.text3d.justification = coin.SoAsciiText.CENTER
+        elif prop == "LineSpacing":
+            if hasattr(vobj,"LineSpacing"):
+                self.text2d.spacing = vobj.LineSpacing
+                self.text3d.spacing = vobj.LineSpacing
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+
+def convertDraftTexts(textslist=[]):
+    "converts the given Draft texts (or all that are found in the active document) to the new object"
+    if not isinstance(textslist,list):
+        textslist = [textslist]
+    if not textslist:
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.TypeId == "App::Annotation":
+                textslist.append(o)
+    todelete = []
+    for o in textslist:
+        l = o.Label
+        o.Label = l+".old"
+        obj = makeText(o.LabelText,point=o.Position)
+        obj.Label = l
+        todelete.append(o.Name)
+        for p in o.InList:
+            if p.isDerivedFrom("App::DocumentObjectGroup"):
+                if o in p.Group:
+                    g = p.Group
+                    g.append(obj)
+                    p.Group = g
+    for n in todelete:
+        FreeCAD.ActiveDocument.removeObject(n)
 
 ## @}

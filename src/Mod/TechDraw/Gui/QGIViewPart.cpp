@@ -40,6 +40,7 @@
 #include <QSvgRenderer>
 #endif // #ifndef _PreComp_
 
+#include <chrono>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -72,6 +73,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderViewPart.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
@@ -99,20 +101,7 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            //Highlight the children if this is highlighted!?  seems to mess up Face selection?
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-            QGIFace *face = dynamic_cast<QGIFace *>(*it);
-            if(edge) {
-                //edge->setHighlighted(isSelected());
-            } else if(vert){
-                //vert->setHighlighted(isSelected());
-            } else if(face){
-                //face->setHighlighted(isSelected());
-            }
-        }
+        //There's nothing special for QGIVP to do when selection changes!
     } else if(change == ItemSceneChange && scene()) {
            tidy();
     }
@@ -305,6 +294,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
 
 void QGIViewPart::updateView(bool update)
 {
+    auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
@@ -316,37 +306,14 @@ void QGIViewPart::updateView(bool update)
 
     QGIView::updateView(update);
 
-    if (update ||
-        viewPart->isTouched() ||
-        viewPart->Source.isTouched() ||
-        viewPart->Direction.isTouched() ||
-        viewPart->Rotation.isTouched() ||
-        viewPart->Scale.isTouched() ||
-        viewPart->HardHidden.isTouched() ||
-        viewPart->SmoothVisible.isTouched() ||
-        viewPart->SeamVisible.isTouched()   ||
-        viewPart->IsoVisible.isTouched()    ||
-        viewPart->SmoothHidden.isTouched()    ||
-        viewPart->SeamHidden.isTouched()      ||
-        viewPart->IsoHidden.isTouched()       ||
-        viewPart->IsoCount.isTouched()  ) {
+    if (update ) {
         draw();
-    } else if (update ||
-              vp->LineWidth.isTouched() ||
-              vp->HiddenWidth.isTouched()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            if(edge && edge->getHiddenEdge()) {
-                edge->setWidth(vp->HiddenWidth.getValue() * lineScaleFactor);
-            } else if (edge){
-                edge->setWidth(vp->LineWidth.getValue() * lineScaleFactor);
-            }
-        }
-        draw();
-    } else {
-        QGIView::draw();
     }
+
+    auto end   = std::chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
+    Base::Console().Log("TIMING - QGIVP::updateView - total %.3f millisecs\n",diffOut);
 }
 
 void QGIViewPart::draw() {
@@ -557,9 +524,14 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
 }
 
 //! Remove all existing QGIPrimPath items(Vertex,Edge,Face)
+//note this triggers scene selectionChanged signal if vertex/edge/face is selected
 void QGIViewPart::removePrimitives()
 {
     QList<QGraphicsItem*> children = childItems();
+    MDIViewPage* mdi = getMDIViewPage();
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(true);
+    }
     for (auto& c:children) {
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
          if (prim) {
@@ -568,6 +540,9 @@ void QGIViewPart::removePrimitives()
             delete prim;
          }
      }
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(false);
+    }
 }
 
 //! Remove all existing QGIDecoration items(SectionLine,SectionMark,...)

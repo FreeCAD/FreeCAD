@@ -98,6 +98,7 @@
 #if QT_VERSION >= 0x050000
 #include <QWindow>
 #include <QGuiApplication>
+#include <QMetaObject>
 #endif
 
 
@@ -168,8 +169,8 @@ public:
     }
     void initializeGL()
     {
-#if defined (_DEBUG) && 0
         QOpenGLContext *context = QOpenGLContext::currentContext();
+#if defined (_DEBUG) && 0
         if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
             QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
             connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
@@ -178,7 +179,17 @@ public:
                 logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
         }
 #endif
+        if (context) {
+            connect(context, &QOpenGLContext::aboutToBeDestroyed,
+                this, &CustomGLWidget::aboutToDestroyGLContext, Qt::DirectConnection);
+        }
         connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
+    }
+    void aboutToDestroyGLContext()
+    {
+        QMetaObject::invokeMethod(parent(), "aboutToDestroyGLContext",
+            Qt::DirectConnection,
+            QGenericReturnArgument());
     }
     bool event(QEvent *e)
     {
@@ -313,6 +324,11 @@ QuarterWidget::replaceViewport()
   setAutoFillBackground(false);
   viewport()->setAutoFillBackground(false);
 #endif
+}
+
+void
+QuarterWidget::aboutToDestroyGLContext()
+{
 }
 
 /*! destructor */

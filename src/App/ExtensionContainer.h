@@ -40,7 +40,7 @@ namespace App {
  * In FreeCAD normally inheritance is a chain, it is not possible to use multiple inheritance. 
  * The reason for this is that all objects need to be exposed to python, and it is basically 
  * impossible to handle multiple inheritance in the C-API for python extensions. Also using multiple
- * parent classes in python is currently not possible with the default object aproach.
+ * parent classes in python is currently not possible with the default object approach.
  * 
  * The concept of extensions allow to circumvent those problems. Extensions are FreeCAD objects 
  * which work like normal objects in the sense that they use properties and class methods to define 
@@ -59,7 +59,7 @@ namespace App {
  * multiple inheritance. If added from python it is a runtime extension and not visible from type. 
  * Hence querying existing extensions of an object and accessing its methods works not by type 
  * casting but by the interface provided in ExtensionContainer. The default workflow is to query if 
- * an extension exists and then get the extension obejct. No matter if added from python or c++ this 
+ * an extension exists and then get the extension object. No matter if added from python or c++ this 
  * interface works always the same. 
  * @code
  * if (object->hasExtension(GroupExtension::getClassTypeId())) {

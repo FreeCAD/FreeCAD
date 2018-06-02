@@ -25,6 +25,7 @@ set(TechDrawLIBS
     Part
     Spreadsheet
     Drawing
+    Import
 )
 
 generate_from_xml(DrawPagePy)
@@ -42,6 +43,7 @@ generate_from_xml(DrawGeomHatchPy)
 generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
+generate_from_xml(DrawViewAnnotationPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -143,7 +145,9 @@ SET(Python_SRCS
     DrawProjGroupPy.xml
     DrawProjGroupPyImp.cpp
     DrawProjGroupItemPy.xml
-    DrawProjGroupItemPyImp.cpp)
+    DrawProjGroupItemPyImp.cpp
+    DrawViewAnnotationPy.xml
+    DrawViewAnnotationPyImp.cpp)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})

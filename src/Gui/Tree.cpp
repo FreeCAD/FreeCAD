@@ -126,7 +126,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onCreateGroup()));
 
     this->relabelObjectAction = new QAction(this);
+#ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
+#endif
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
 

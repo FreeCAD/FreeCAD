@@ -237,7 +237,7 @@ class Snapper:
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
             
-        if not self.snapInfo:
+        if not self.snapInfo or "Component" not in self.snapInfo:
             # nothing has been snapped
             
             # check for grid snap and ext crossings

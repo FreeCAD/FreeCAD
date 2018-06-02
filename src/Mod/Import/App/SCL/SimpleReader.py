@@ -73,21 +73,21 @@ class SimpleParser:
             elif  isinstance(i,str):
                 if not i == '' and i[0] == '#':
                     key = int(i[1:])
-                    file.write('  '+`num`+' -> '+`key`+'\n')
+                    file.write('  '+repr(num)+' -> '+repr(key)+'\n')
 
 
     def writeGraphViz(self,fileName):
-        print "Writing GraphViz file %s..."%fileName,
+        print("Writing GraphViz file %s..."%fileName)
         gvFile = open(fileName,'w')
 
         gvFile.write('digraph G {\n  node [fontname=Verdana,fontsize=12]\n  node [style=filled]\n  node [fillcolor="#EEEEEE"]\n  node [color="#EEEEEE"]\n  edge [color="#31CEF0"]\n')
-        for i in self._p21loader._instances_definition.keys():
-            entityStr = '#'+`i`
+        for i in list(self._p21loader._instances_definition.keys()):
+            entityStr = '#'+repr(i)
             nameStr   = self._p21loader._instances_definition[i][0].lower()
-            sttrStr   = `self._p21loader._instances_definition[i][1]`.replace('"','').replace("'",'').replace(" ",'')
+            sttrStr   = repr(self._p21loader._instances_definition[i][1]).replace('"','').replace("'",'').replace(" ",'')
             if len (sttrStr) > 40:
                 sttrStr = sttrStr[:39]+'....'
-            gvFile.write('  '+`i`+' [label="'+entityStr+'\n'+nameStr+'\n'+sttrStr+'"]\n')
+            gvFile.write('  '+repr(i)+' [label="'+entityStr+'\n'+nameStr+'\n'+sttrStr+'"]\n')
             self._writeGraphVizEdge( i,self._p21loader._instances_definition[i][1],gvFile)
         gvFile.write('}\n')
 
@@ -105,7 +105,7 @@ class SimpleParser:
         if self.schemaModule:
             self.schemaClasses = dict(inspect.getmembers(self.schemaModule))
 
-        for i in self._p21loader._instances_definition.keys():
+        for i in list(self._p21loader._instances_definition.keys()):
             #print i
             if i not in self.instanceMape:
                 self._create_entity_instance(i)
@@ -124,11 +124,11 @@ class SimpleParser:
                 #print object_.__doc__
             instance_attributes = instance_definition[1]
             self._transformAttributes(instance_attributes)
-            print 'Attribute list after transform: ',instance_attributes
+            print('Attribute list after transform: ',instance_attributes)
 
             self.instanceMape[instance_id] = str('dummy#:'+str(instance_id)) # dummy instance to test
         else:
-            print '############################# lost entity: ',instance_id
+            print('############################# lost entity: ',instance_id)
             self.instanceMape[instance_id] = int(41) # dummy
         #print "instance_attributes:",instance_attributes
         #a = object_(*instance_attributes)
@@ -140,7 +140,7 @@ class SimpleParser:
                 self._transformAttributes(i)
             elif  isinstance(i,str):
                 if i == '':
-                    print 'empty string'
+                    print('empty string')
                 elif i[0] == '#':
                     key = int(i[1:])
                     #print 'Item: ',int(i[1:])
@@ -156,9 +156,9 @@ class SimpleParser:
                     #print 'Dollar'
                     pass
                 elif i[0] == "'":
-                    print 'Dopelstring: ',i[1:-1]
+                    print('Dopelstring: ',i[1:-1])
                 else:
-                    print 'String: ',i
+                    print('String: ',i)
             else:
                 raise NameError("Unknown attribute type")
             n = n+1

@@ -27,6 +27,11 @@ __url__ = "http://www.freecadweb.org"
 ## @package ViewProviderFemConstraintSelfWeight
 #  \ingroup FEM
 
+import FreeCAD
+import FreeCADGui
+import FemGui  # needed to display the icons in TreeView
+False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
+
 
 class _ViewProviderFemConstraintSelfWeight:
     "A View Provider for the FemConstraintSelfWeight object"
@@ -45,6 +50,22 @@ class _ViewProviderFemConstraintSelfWeight:
 
     def onChanged(self, vobj, prop):
         return
+
+    def setEdit(self, vobj, mode=0):
+        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        return False
+
+    def doubleClicked(self, vobj):
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
+        else:
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
+        return True
 
     def __getstate__(self):
         return None

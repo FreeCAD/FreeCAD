@@ -3500,18 +3500,20 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
 
-    // The list has four mandatory elements: 
+    // The list has five mandatory elements: 
     //
     //      document name of the container, 
     //      internal name of the linked object, 
     //      label, 
     //      internal name of container,
+    //      property name
     //
     // and two additional elements if it is a PropertyXLink
     //
-    //      PropertyXLink and the subname inside is not empty
+    //      PropertyXLink and the subname inside if not empty
     //      (optional) document name of linked object if it is different from the container
     //
+
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
     if (obj) {
@@ -3556,6 +3558,9 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     else 
         list << QString::fromLatin1("Null");
 
+    list << QString::fromLatin1(prop->getName());
+    assert(list.size() == FC_XLINK_VALUE_INDEX+1);
+
     if(xlink) {
         list << QString::fromUtf8(xlink->getSubName());
         auto cobj = dynamic_cast<App::DocumentObject*>(c);
@@ -3577,14 +3582,14 @@ void PropertyLinkItem::setValue(const QVariant& value)
         QString data;
         if ( o.isEmpty() )
             data = QString::fromLatin1("None");
-        else if(isXLink && items.size()>5) {
+        else if(isXLink && items.size()>FC_XLINK_VALUE_INDEX+1) {
             QString doc;
-            if(items.size()>=6)
-                doc = items[5];
+            if(items.size()>=FC_XLINK_VALUE_INDEX+2)
+                doc = items[FC_XLINK_VALUE_INDEX+1];
             else
                 doc = d;
             data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
-                    arg(doc).arg(o).arg(items[4]);
+                    arg(doc).arg(o).arg(items[FC_XLINK_VALUE_INDEX]);
         }else
             data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
         setPropertyValue(data);

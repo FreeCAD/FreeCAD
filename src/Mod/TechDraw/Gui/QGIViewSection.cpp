@@ -148,8 +148,10 @@ void QGIViewSection::updateView(bool update)
        viewPart->SectionNormal.isTouched() ||
        viewPart->SectionOrigin.isTouched()) {
         QGIViewPart::updateView(true);
+        drawSectionFace();
     } else {
         QGIViewPart::updateView();
+        drawSectionFace();
     }
 }
 

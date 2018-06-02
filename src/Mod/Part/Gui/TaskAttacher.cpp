@@ -890,9 +890,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         try{
             QString code = QString::fromLatin1(
-                "import TempoVis\n"
+                "import Show\n"
                 "from Show.DepGraphTools import getAllDependent, isContainer\n"
-                "tv = TempoVis.TempoVis(App.ActiveDocument)\n"
+                "tv = Show.TempoVis(App.ActiveDocument)\n"
                 "dep_features = [o for o in getAllDependent(%1) if not isContainer(o)]\n"
                 "if %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in %1.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"

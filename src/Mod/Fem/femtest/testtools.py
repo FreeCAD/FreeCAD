@@ -96,7 +96,8 @@ def compare_files(file_name1, file_name2):
     file1 = open(file_name1, 'r')
     f1 = file1.readlines()
     file1.close()
-    # workaraound for compare geos of elmer test and temporary file path (not only names change, path changes with operating system)
+    # workaround to compare geos of elmer test and temporary file path
+    # (not only names change, path changes with operating system)
     lf1 = [l for l in f1 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, 'r')

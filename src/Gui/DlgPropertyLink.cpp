@@ -170,7 +170,6 @@ void DlgPropertyLink::findObjects(bool on)
     ui->treeWidget->clear();
 
     QString docName = link[0]; // document name of the owner object of this editing property
-    QString objName = link[1]; // linked object name
 
     bool isSingleSelection = (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
@@ -178,10 +177,11 @@ void DlgPropertyLink::findObjects(bool on)
         Base::Type baseType = App::DocumentObject::getClassTypeId();
         if (!on) {
             App::Document *linkedDoc = doc;
-            if (link.size()>=6) 
-                linkedDoc = App::GetApplication().getDocument(qPrintable(link[5]));
+            if (link.size()>FC_XLINK_VALUE_INDEX) 
+                linkedDoc = App::GetApplication().getDocument(qPrintable(link[FC_XLINK_VALUE_INDEX]));
             if(linkedDoc) {    
-                App::DocumentObject* obj = linkedDoc->getObject((const char*)objName.toLatin1());
+                QString objName = link[1]; // linked object name
+                auto obj = linkedDoc->getObject((const char*)objName.toLatin1());
                 if (obj && inList.find(obj)==inList.end()) {
                     Base::Type objType = obj->getTypeId();
                     // get only geometric types
@@ -202,34 +202,55 @@ void DlgPropertyLink::findObjects(bool on)
             }
         }
 
+        // build list of objects names already in property so we can mark them as selected later on
+        std::set<std::string> selectedNames;
+
         // Add a "None" entry on top
         if (isSingleSelection) {
             auto* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0,tr("None (Remove link)"));
             QByteArray ba("");
             item->setData(0,Qt::UserRole, ba);
+        }else {
+            QString ownerName = link[3];
+            QString proName = link[4];
+            auto owner = doc->getObject(ownerName.toLatin1());
+            if(owner) {
+                App::Property* prop = owner->getPropertyByName((const char*)proName.toLatin1());
+                // gather names of objects currently in property
+                if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+                    const App::PropertyLinkList* propll = static_cast<const App::PropertyLinkList*>(prop);
+                    std::vector<App::DocumentObject*> links = propll->getValues();
+                    for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
+                        selectedNames.insert((*it)->getNameInDocument());
+                    }
+                }
+            }
         }
 
-        for(auto obj : doc->getObjectsOfType(baseType))
-            createItem(obj,0);
+        for(auto obj : doc->getObjectsOfType(baseType)) {
+            auto item = createItem(obj,0);
+            if(item && selectedNames.count(obj->getNameInDocument())) 
+                item->setSelected(true);
+        }
     }
 }
 
-void DlgPropertyLink::createItem(App::DocumentObject *obj, QTreeWidgetItem *parent) {
+QTreeWidgetItem *DlgPropertyLink::createItem(App::DocumentObject *obj, QTreeWidgetItem *parent) {
     if(!obj || !obj->getNameInDocument())
-        return;
+        return 0;
 
     if(inList.find(obj)!=inList.end())
-        return;
+        return 0;
 
     auto vp = Gui::Application::Instance->getViewProvider(obj);
     if(!vp) 
-        return;
+        return 0;
     QString searchText = ui->searchBox->text();
     if (!searchText.isEmpty()) { 
         QString label = QString::fromUtf8((obj)->Label.getValue());
         if (!label.contains(searchText,Qt::CaseInsensitive))
-            return;
+            return 0;
     }
     QTreeWidgetItem* item;
     if(parent)
@@ -244,6 +265,7 @@ void DlgPropertyLink::createItem(App::DocumentObject *obj, QTreeWidgetItem *pare
         item->setChildIndicatorPolicy(obj->hasChildElement()||vp->getChildRoot()?
                 QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
     }
+    return item;
 }
 
 void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {

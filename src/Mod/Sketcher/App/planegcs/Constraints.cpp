@@ -37,7 +37,7 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true)
+: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true), driving(true)
 {
 }
 
@@ -1564,7 +1564,7 @@ void ConstraintCurveValue::errorgrad(double *err, double *grad, double *param)
         if (grad)
             *grad = err_vec.dy;
     } else {
-        assert(false/*this constraint is neighter X nor Y. Nothing to do..*/);
+        assert(false/*this constraint is neither X nor Y. Nothing to do..*/);
     }
 
 }

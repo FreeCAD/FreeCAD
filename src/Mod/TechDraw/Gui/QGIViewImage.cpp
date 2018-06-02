@@ -121,9 +121,8 @@ void QGIViewImage::draw()
     m_cliparea->setRect(newRect);
     drawImage();
     m_cliparea->centerAt(0.0,0.0);
-    if (borderVisible) {
-        drawBorder();
-    }
+
+    QGIView::draw();
 }
 
 void QGIViewImage::drawImage()

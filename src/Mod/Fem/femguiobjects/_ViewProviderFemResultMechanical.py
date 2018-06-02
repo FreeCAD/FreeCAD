@@ -30,7 +30,8 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-
+import FemGui  # needed to display the icons in TreeView
+False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 import FemGui
@@ -63,13 +64,15 @@ class _ViewProviderFemResultMechanical:
         return
 
     def doubleClicked(self, vobj):
-        if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-            FreeCADGui.activateWorkbench("FemWorkbench")
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def setEdit(self, vobj, mode=0):
@@ -91,7 +94,7 @@ class _ViewProviderFemResultMechanical:
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         self.Object.Mesh.ViewObject.hide()  # hide the mesh after result viewing is finished, but do not reset the coloring
-        return
+        return True
 
     def __getstate__(self):
         return None
@@ -478,7 +481,7 @@ class _TaskPanelFemResultShow:
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
+        FreeCADGui.Control.closeDialog()  # if the tasks panel is called from Command obj is not in edit mode thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.ActiveDocument.resetEdit()
 
 

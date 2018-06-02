@@ -259,7 +259,7 @@ void QGIViewDimension::updateView(bool update)
     draw();
 }
 
-void QGIViewDimension::updateDim()
+void QGIViewDimension::updateDim(bool obtuse)
 {
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
     if( dim == nullptr ) {
@@ -270,7 +270,7 @@ void QGIViewDimension::updateDim()
         return;
     }
 
-    QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
+    QString labelText = QString::fromUtf8(dim->getFormatedValue(obtuse).data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
     font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -340,152 +340,17 @@ void QGIViewDimension::draw()
     Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);    //already gui coords
 
     //const std::vector<App::DocumentObject*> &objects = dim->References2D.getValues();
-    const std::vector<std::string> &SubNames         = dim->References2D.getSubValues();
+    //const std::vector<std::string> &SubNames         = dim->References2D.getSubValues();
 
     const char *dimType = dim->Type.getValueAsString();
 
-    if(strcmp(dimType, "Distance") == 0 ||
-       strcmp(dimType, "DistanceX") == 0 ||
-       strcmp(dimType, "DistanceY") == 0) {
-        Base::Vector3d distStart, distEnd;                                      //start/end points of distance to dimension
-        if((dim->References2D.getValues().size() == 1) &&
-           (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")) {
-            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
-            if (!geom) {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
-                                    idx,refObj->getEdgeGeometry().size());
-                return;
-            }
-            if (geom->geomType == TechDrawGeometry::GENERIC) {
-                TechDrawGeometry::Generic *gen = static_cast<TechDrawGeometry::Generic *>(geom);
-                Base::Vector2d pnt1 = gen->points.at(0);
-                Base::Vector2d pnt2 = gen->points.at(1);
-                distStart = Base::Vector3d(pnt1.x, pnt1.y, 0.);
-                distStart = Rez::guiX(distStart);
-                distEnd = Base::Vector3d(pnt2.x, pnt2.y, 0.);
-                distEnd = Rez::guiX(distEnd);
-            } else {
-                Base::Console().Log("INFO - QGIVD::draw - Original edge not found or is invalid type (1)\n");
-                datumLabel->hide();
-                hide();
-                return;
-            }
-        } else if(dim->References2D.getValues().size() == 2 &&
-                  TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&
-                  TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
-            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDrawGeometry::Vertex *v0 = refObj->getProjVertexByIndex(idx0);
-            TechDrawGeometry::Vertex *v1 = refObj->getProjVertexByIndex(idx1);
-            if (!v0 || !v1) {
-                //Ugh. this is probably because the document is restoring. check log.
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
-                                    idx0,idx1,refObj->getEdgeGeometry().size());
-                return;
-            }
-            distStart = Base::Vector3d (v0->pnt.x, v0->pnt.y, 0.);
-            distStart = Rez::guiX(distStart);
-            distEnd = Base::Vector3d (v1->pnt.x, v1->pnt.y, 0.);
-            distEnd = Rez::guiX(distEnd);
-        } else if(dim->References2D.getValues().size() == 2 &&
-            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
-            TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
-            if (!geom0 || !geom1) {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
-                                    idx0,idx1,refObj->getEdgeGeometry().size());
-                return;
-            }
-            if (strcmp(dimType, "DistanceX") == 0 ||
-                strcmp(dimType, "DistanceY") == 0) {
-                Base::Vector2d p1,p2;
-                p1 = geom0->nearPoint(geom1);
-                p2 = geom1->nearPoint(geom0);
-                distStart = Base::Vector3d(p1.x,p1.y,0.0);
-                distStart = Rez::guiX(distStart);
-                distEnd   = Base::Vector3d(p2.x,p2.y,0.0);
-                distEnd   = Rez::guiX(distEnd);
-            } else if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
-                 (geom1->geomType == TechDrawGeometry::GENERIC) ){
-                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
-                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
-                Base::Vector2d pnt1, pnt2;
-                Base::Vector3d edge1Start, edge1End, edge2Start, edge2End;
-                pnt1 = gen0->points.at(0);
-                pnt2 = gen0->points.at(1);
-                edge1Start = Base::Vector3d(pnt1.x, pnt1.y, 0);
-                edge1Start = Rez::guiX(edge1Start);
-                edge1End = Base::Vector3d(pnt2.x, pnt2.y, 0);
-                edge1End = Rez::guiX(edge1End);
-                pnt1 = gen1->points.at(0);
-                pnt2 = gen1->points.at(1);
-                edge2Start = Base::Vector3d(pnt1.x, pnt1.y, 0);
-                edge2Start = Rez::guiX(edge2Start);
-                edge2End = Base::Vector3d(pnt2.x, pnt2.y, 0);
-                edge2End = Rez::guiX(edge2End);
-
-                // figure out which end of each edge to use for drawing
-                Base::Vector3d lin1 = edge1End - edge1Start;                    //vector from edge1Start to edge2End
-                Base::Vector3d lin2 = edge2End - edge2Start;
-
-                Base::Vector3d labelV1 = lblCenter - edge1Start;                //vector from edge1Start to lblCenter
-                Base::Vector3d labelV2 = lblCenter - edge2Start;
-
-                if(lin1.x * labelV1.x + lin1.y * labelV1.y > 0.)       //dotprod > 0 ==> angle(lin1,labelV1) < PI/2??
-                    distStart = edge1End;
-                else
-                    distStart = edge1Start;
-
-                if(lin2.x * labelV2.x + lin2.y * labelV2.y > 0.)
-                    distEnd = edge2End;
-                else
-                    distEnd = edge2Start;
-            } else {
-                Base::Console().Log("INFO - QGIVD::draw - Invalid reference for dimension type (1)\n");
-                datumLabel->hide();
-                hide();
-                return;
-            }
-        } else if(dim->References2D.getValues().size() == 2) {
-            int vx,ex;
-            TechDrawGeometry::BaseGeom* e;
-            TechDrawGeometry::Vertex* v;
-            if ((TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")  &&
-                (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex")) {
-                ex = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-                vx = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            } else if ((TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex")  &&
-                       (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge"))  {
-                ex = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-                vx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            } else {
-                Base::Console().Log("INFO - qgivd::draw - vertexEdge dim is not vertexEdge!\n");
-                return;
-            }
-            e = refObj->getProjEdgeByIndex(ex);
-            v = refObj->getProjVertexByIndex(vx);
-            if (!e || !v) {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
-                                    ex,vx,refObj->getEdgeGeometry().size());
-                return;
-            }
-            Base::Vector3d pnt(v->pnt.x,v->pnt.y, 0.0);
-            Base::Vector3d edgeStart(e->getStartPoint().x,e->getStartPoint().y,0.0);
-            Base::Vector3d edgeEnd(e->getEndPoint().x,e->getEndPoint().y,0.0);
-            Base::Vector3d displace;
-            displace.ProjectToLine(pnt - edgeStart, edgeEnd - edgeStart);
-            Base::Vector3d ptOnLine = pnt + displace;
-
-            distStart = Rez::guiX(pnt);
-            distEnd = Rez::guiX(ptOnLine);
-            //need to figure out Distance? from slope of distEnd-distStart?
-        } else {
-            Base::Console().Message("TARFU - invalid references for Dimension!!");
-        }
+    if (strcmp(dimType, "Distance") == 0 ||
+        strcmp(dimType, "DistanceX") == 0 ||
+        strcmp(dimType, "DistanceY") == 0) {
+        pointPair pts = dim->getLinearPoints();
+        Base::Vector3d distStart, distEnd;                                      //start/end points of distance to measure
+        distStart = Rez::guiX(pts.first);
+        distEnd   = Rez::guiX(pts.second);
 
         // +/- aligned method
         // dimension text legible from bottom or right
@@ -663,46 +528,13 @@ void QGIViewDimension::draw()
         Base::Vector3d arrow1Tip, arrow2Tip, dirDimLine; //was p1,p2,dir
         double radius;
         Base::Vector3d pointOnCurve,curveCenter;
-        TechDrawGeometry::AOC* geomArc = 0;
-        bool isArc = false;
 
-        if(dim->References2D.getValues().size() == 1 &&
-           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
-            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDrawGeometry::BaseGeom *geom = refObj->getProjEdgeByIndex(idx);
-            if(!geom)  {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
-                                        idx,refObj->getEdgeGeometry().size());
-                return;
-            }
-            if (geom->geomType == TechDrawGeometry::CIRCLE) {
-                TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
-                radius = Rez::guiX(circ->radius);
-                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
-                curveCenter = Rez::guiX(curveCenter);
-                pointOnCurve = Base::Vector3d(curveCenter.x + radius, curveCenter.y,0.0);
-                pointOnCurve = Rez::guiX(pointOnCurve);
-            } else if (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) {
-                isArc = true;
-                TechDrawGeometry::AOC *circ = static_cast<TechDrawGeometry::AOC *>(geom);
-                geomArc = circ;
-                radius = Rez::guiX(circ->radius);
-                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
-                curveCenter = Rez::guiX(curveCenter);
-                pointOnCurve = Base::Vector3d(circ->midPnt.x, circ->midPnt.y,0.0);
-                pointOnCurve = Rez::guiX(pointOnCurve);
-            } else {
-                Base::Console().Log("INFO - QGIVD::draw - Original edge not found or is invalid type (2)\n");
-                datumLabel->hide();
-                hide();
-                return;
-            }
-        } else {
-            Base::Console().Log("INFO - QGIVD::draw - Invalid reference for dimension type (2)\n");
-            datumLabel->hide();
-            hide();
-            return;
-        }
+        arcPoints pts = dim->getArcPoints();
+        bool isArc = pts.isArc;
+        radius = Rez::guiX(pts.radius);
+        curveCenter = Rez::guiX(pts.center);
+        pointOnCurve = Rez::guiX(pts.onCurve.first);
+
         // Note Bounding Box size is not the same width or height as text (only used for finding center)
         float bbX  = datumLabel->boundingRect().width();
         float bbY = datumLabel->boundingRect().height();
@@ -872,43 +704,39 @@ void QGIViewDimension::draw()
         margin = Rez::guiX(5.f);                                                    //space around label
         double kinkLength = Rez::guiX(5.0);                                                //sb % of horizontal dist(lblCenter,curveCenter)???
         if (isArc) {
+
             aHead2->hide();
             aHead1->flip(true);
             aHead1->draw();
-            Base::Vector3d midPt(geomArc->midPnt.x, geomArc->midPnt.y,0.0);
-            midPt = Rez::guiX(midPt);
-            Base::Vector3d startPt(geomArc->startPnt.x, geomArc->startPnt.y,0.0);
-            startPt = Rez::guiX(startPt);
-            Base::Vector3d endPt(geomArc->endPnt.x, geomArc->endPnt.y,0.0);
-            endPt = Rez::guiX(endPt);
+            Base::Vector3d startPt = Rez::guiX(pts.arcEnds.first);
+            Base::Vector3d endPt = Rez::guiX(pts.arcEnds.second);
             kinkLength = (lblCenter.x < curveCenter.x) ? kinkLength : -kinkLength;
             dirDimLine = lblCenter - curveCenter;
             dirDimLine.Normalize();
 
-              Base::Vector3d labelEndDir(1.0,0.0,0.0);   
-              if (lblCenter.x > pointOnCurve.x) {         //label is to right of point
-                  labelEndDir = -1.0 * labelEndDir;
-              }
-              dLineStart = lblCenter + labelEndDir * (margin + w / 2);
-              kinkPoint.y = dLineStart.y;
-              kinkPoint.x = dLineStart.x + kinkLength;
-
-                pointOnCurve = curveCenter + dirDimLine * radius;
-                if (!geomArc->intersectsArc(Rez::appX(dLineStart),Rez::appX(pointOnCurve))) {   //keep pathological case within arc
-                    if ((pointOnCurve - endPt).Length() < (pointOnCurve - startPt).Length()) {
-                        if (!geomArc->cw ) {
-                            pointOnCurve = endPt;
-                        } else {
-                            pointOnCurve = startPt;
-                        }
+            Base::Vector3d labelEndDir(1.0,0.0,0.0);   
+            if (lblCenter.x > pointOnCurve.x) {         //label is to right of point
+                labelEndDir = -1.0 * labelEndDir;
+            }
+            dLineStart = lblCenter + labelEndDir * (margin + w / 2);
+            kinkPoint.y = dLineStart.y;
+            kinkPoint.x = dLineStart.x + kinkLength;
+            pointOnCurve = curveCenter + dirDimLine * radius;
+            if (!dim->leaderIntersectsArc(Rez::appX(dLineStart),Rez::appX(pointOnCurve))) {   //keep pathological case within arc
+                if ((pointOnCurve - endPt).Length() < (pointOnCurve - startPt).Length()) {
+                    if (!pts.arcCW ) {
+                        pointOnCurve = endPt;
                     } else {
-                        if (!geomArc->cw) {
-                            pointOnCurve = startPt;
-                        } else {
-                            pointOnCurve = endPt;
-                        }
+                        pointOnCurve = startPt;
+                    }
+                } else {
+                    if (!pts.arcCW) {
+                        pointOnCurve = startPt;
+                    } else {
+                        pointOnCurve = endPt;
                     }
                 }
+            }
             Base::Vector3d arVector = (kinkPoint - pointOnCurve);
             arVector.Normalize();
             arAngle = atan2(arVector.y, arVector.x) * 180 / M_PI;
@@ -920,7 +748,7 @@ void QGIViewDimension::draw()
         }
 
         dimLines->setPath(path);
-        
+
         if (isArc) {
             aHead1->setPos(pointOnCurve.x, pointOnCurve.y);
             aHead1->setRotation(arAngle);
@@ -955,52 +783,18 @@ void QGIViewDimension::draw()
     } else if(strcmp(dimType, "Radius") == 0) {
         // preferred terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
         // radius gets 1 dimension line from the dimension text to a point on the curve
-//        Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(),0.0);
 
         Base::Vector3d pointOnCurve,curveCenter;
         double radius;
-        TechDrawGeometry::AOC* geomArc = 0;
-        bool isArc = false;
-        if(dim->References2D.getValues().size() == 1 &&
-           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
-            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
-            if(!geom)  {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
-                                        idx,refObj->getEdgeGeometry().size());
-                return;
-            }
-            if (geom->geomType == TechDrawGeometry::CIRCLE) {
-                TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
-                radius = Rez::guiX(circ->radius);
-                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
-                curveCenter = Rez::guiX(curveCenter);
-                pointOnCurve = Base::Vector3d(curveCenter.x + radius, curveCenter.y,0.0);
-                pointOnCurve = Rez::guiX(pointOnCurve);
-            } else if (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) {
-                isArc = true;
-                TechDrawGeometry::AOC *circ = static_cast<TechDrawGeometry::AOC *>(geom);
-                geomArc = circ;
-                radius = Rez::guiX(circ->radius);
-                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
-                curveCenter = Rez::guiX(curveCenter);
-                pointOnCurve = Base::Vector3d(circ->midPnt.x, circ->midPnt.y,0.0);
-                pointOnCurve = Rez::guiX(pointOnCurve);
-            } else {
-                Base::Console().Log("INFO - QGIVD::draw - Original edge not found or is invalid type (3)\n");
-                datumLabel->hide();
-                hide();
-                return;
-            }
-        } else {
-            Base::Console().Log("INFO - QGIVD::draw - Invalid reference for dimension type (3)\n");
-            datumLabel->hide();
-            hide();
-            return;
-        }
+        arcPoints pts = dim->getArcPoints();
+        bool isArc = pts.isArc;
+        radius = Rez::guiX(pts.radius);
+        curveCenter = Rez::guiX(pts.center);
+        pointOnCurve = Rez::guiX(pts.onCurve.first);
 
         QFontMetrics fm(datumLabel->font());
         int w = fm.width(labelText);
+
         // Note Bounding Box size is not the same width or height as text (only used for finding center)
         float bbX  = datumLabel->boundingRect().width();
         float bbY = datumLabel->boundingRect().height();
@@ -1045,14 +839,11 @@ void QGIViewDimension::draw()
 
         //handle partial arc weird cases
         if (isArc) {
-            Base::Vector3d midPt(geomArc->midPnt.x, geomArc->midPnt.y,0.0);
-            midPt = Rez::guiX(midPt);
-            Base::Vector3d startPt(geomArc->startPnt.x, geomArc->startPnt.y,0.0);
-            startPt = Rez::guiX(startPt);
-            Base::Vector3d endPt(geomArc->endPnt.x, geomArc->endPnt.y,0.0);
-            endPt = Rez::guiX(endPt);
+            Base::Vector3d midPt = Rez::guiX(pts.midArc);
+            Base::Vector3d startPt = Rez::guiX(pts.arcEnds.first);
+            Base::Vector3d endPt = Rez::guiX(pts.arcEnds.second);
             if (outerPlacement &&
-                !geomArc->intersectsArc(Rez::appX(curveCenter),Rez::appX(kinkPoint))) {
+                !dim->leaderIntersectsArc(Rez::appX(curveCenter),Rez::appX(kinkPoint))) {   //keep pathological case within arc
                 pointOnCurve = midPt;
             } else if (!outerPlacement) {
                 if ((midPt - lblCenter).Length() > (midPt - curveCenter).Length()) {     //label is farther than center
@@ -1061,15 +852,15 @@ void QGIViewDimension::draw()
                 dLineStart = curveCenter + dirDimLine * margin;
                 pointOnCurve = curveCenter + dirDimLine * radius;
                 kinkPoint = dLineStart;
-                if (!geomArc->intersectsArc(Rez::appX(dLineStart),Rez::appX(pointOnCurve))) {   //keep pathological case within arc
+                if (!dim->leaderIntersectsArc(Rez::appX(dLineStart),Rez::appX(pointOnCurve))) {   //keep pathological case within arc
                     if ((pointOnCurve - endPt).Length() < (pointOnCurve - startPt).Length()) {
-                        if (!geomArc->cw ) {
+                        if (!pts.arcCW ) {
                             pointOnCurve = endPt;
                         } else {
                             pointOnCurve = startPt;
                         }
                     } else {
-                        if (!geomArc->cw) {
+                        if (!pts.arcCW ) {
                             pointOnCurve = startPt;
                         } else {
                             pointOnCurve = endPt;
@@ -1107,237 +898,178 @@ void QGIViewDimension::draw()
 //        }
     } else if(strcmp(dimType, "Angle") == 0) {
         // Only use two straight line edeges for angle
-        if(dim->References2D.getValues().size() == 2 &&
-           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
-            TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
-            if (!geom0 || !geom1) {
-                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
-                                        idx0,idx1,refObj->getEdgeGeometry().size());
-                return;
-            }
-            if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
-                 (geom1->geomType == TechDrawGeometry::GENERIC) ) {
-                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
-                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
+        anglePoints pts = dim->getAnglePoints();
+        Base::Vector3d vertex = Rez::guiX(pts.vertex);
+        Base::Vector3d legEnd0 = Rez::guiX(pts.ends.first);
+        Base::Vector3d legEnd1 = Rez::guiX(pts.ends.second);
+        Base::Vector3d p0 = vertex;
+        Base::Vector3d dir1 = legEnd0 - vertex;
+        Base::Vector3d dir2 = legEnd1 - vertex;
+        // Qt y coordinates are flipped
+        dir1.y *= -1.;
+        dir2.y *= -1.;
 
-//                Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);
-                // Get Points for line
-                Base::Vector2d pnt1, pnt2;
-                Base::Vector3d p1S, p1E, p2S, p2E;
-                pnt1 = gen0->points.at(0);
-                pnt2 = gen0->points.at(1);
+        Base::Vector3d labelVec = (lblCenter - p0);
 
-                p1S = Base::Vector3d(pnt1.x, pnt1.y, 0);
-                p1S = Rez::guiX(p1S);
-                p1E = Base::Vector3d(pnt2.x, pnt2.y, 0);
-                p1E = Rez::guiX(p1E);
+        double labelangle = atan2(-labelVec.y, labelVec.x);    //angle with +X axis on [-PI,+PI]
 
-                pnt1 = gen1->points.at(0);
-                pnt2 = gen1->points.at(1);
+        double startangle = atan2(dir1.y,dir1.x);
+        double range      = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
+                                   dir1.x*dir2.x+dir1.y*dir2.y);
 
-                p2S = Base::Vector3d(pnt1.x, pnt1.y, 0);
-                p2S = Rez::guiX(p2S);
-                p2E = Base::Vector3d(pnt2.x, pnt2.y, 0);
-                p2E = Rez::guiX(p2E);
+        double endangle = startangle + range;
 
-                Base::Vector3d dir1 = p1E - p1S;
-                Base::Vector3d dir2 = p2E - p2S;
+        float bbX  = datumLabel->boundingRect().width();
+        float bbY  = datumLabel->boundingRect().height();
 
-                double det = dir1.x*dir2.y - dir1.y*dir2.x;
-                if ((det > 0 ? det : -det) < 1e-10)
-                    return;
-                double c1 = dir1.y*p1S.x - dir1.x*p1S.y;
-                double c2 = dir2.y*p2S.x - dir2.x*p2S.y;
-                double x = (dir1.x*c2 - dir2.x*c1)/det;
-                double y = (dir1.y*c2 - dir2.y*c1)/det;
+        // Get font height
+        QFontMetrics fm(datumLabel->font());
 
-                Base::Vector3d p0(x,y,0);
+        int h = fm.height();
+        double length = labelVec.Length();
+        length -= h * 0.6; // Adjust the length so the label isn't over the line
 
-                // Get directions with outwards orientation and check if coincident
-                dir1 = ((p1E - p0).Length() > (p1S - p0).Length()) ? p1E - p0 : p1S - p0;
-                dir2 = ((p2E - p0).Length() > (p2S - p0).Length()) ? p2E - p0 : p2S - p0;
+        Base::Vector3d p1 = legEnd0;
+        Base::Vector3d p2 = legEnd1;
 
-                // Qt y coordinates are flipped
-                dir1.y *= -1.;
-                dir2.y *= -1.;
+        // add an offset from the ends
+        p1 += (p1-p0).Normalize() * 5.;
+        p2 += (p2-p0).Normalize() * 5.;
 
-                Base::Vector3d labelVec = (lblCenter - p0);
+        Base::Vector3d ar1Pos = p0;
+        Base::Vector3d ar2Pos = p0;
 
-                double labelangle = atan2(-labelVec.y, labelVec.x);
+        ar1Pos += Base::Vector3d(cos(startangle) * length, -sin(startangle) * length, 0.);
+        ar2Pos += Base::Vector3d(cos(endangle) * length  , -sin(endangle) * length, 0.);
 
-                double startangle = atan2(dir1.y,dir1.x);
-                double range      = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
-                                           dir1.x*dir2.x+dir1.y*dir2.y);
+        // Draw the path
+        QPainterPath path;
 
-                double endangle = startangle + range;
+        // Only draw extension lines if outside arc
+        if(length > (p1-p0).Length()) {
+            path.moveTo(p1.x, p1.y);
+            p1 = ar1Pos + (p1-p0).Normalize() * Rez::guiX(5.);    //a bit past arrow head on leg 1
+            path.lineTo(p1.x, p1.y);
+        }
 
-                // Obtain the Label Position and measure the length between intersection
-//                Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);
-
-                float bbX  = datumLabel->boundingRect().width();
-                float bbY  = datumLabel->boundingRect().height();
-
-                // Get font height
-                QFontMetrics fm(datumLabel->font());
-
-                int h = fm.height();
-                double length = labelVec.Length();
-                length -= h * 0.6; // Adjust the length so the label isn't over the line
-
-                // Find the end points for dim lines
-                Base::Vector3d p1 = ((p1E - p0).Length() > (p1S - p0).Length()) ? p1E : p1S;
-                Base::Vector3d p2 = ((p2E - p0).Length() > (p2S - p0).Length()) ? p2E : p2S;
-
-                // add an offset from the ends (add 1mm from end)
-                p1 += (p1-p0).Normalize() * 5.;   //apply Rez here???  unitVector * 5 = 1/mm?
-                p2 += (p2-p0).Normalize() * 5.;
-
-                Base::Vector3d ar1Pos = p0;
-                Base::Vector3d ar2Pos = p0;
-
-                ar1Pos += Base::Vector3d(cos(startangle) * length, -sin(startangle) * length, 0.);
-                ar2Pos += Base::Vector3d(cos(endangle) * length  , -sin(endangle) * length, 0.);
-
-                // Draw the path
-                QPainterPath path;
-
-                // Only draw extension lines if outside arc
-                if(length > (p1-p0).Length()) {
-                    path.moveTo(p1.x, p1.y);
-                    p1 = ar1Pos + (p1-p0).Normalize() * Rez::guiX(5.);    //a bit past arrow head on leg 1
-                    path.lineTo(p1.x, p1.y);
-                }
-
-                if(length > (p2-p0).Length()) {
-                    path.moveTo(p2.x, p2.y);
-                    p2 = ar2Pos + (p2-p0).Normalize() * Rez::guiX(5.);    //a bit past leg 2 arrow head on leg 2
-                    path.lineTo(p2.x, p2.y);
-                }
+        if(length > (p2-p0).Length()) {
+            path.moveTo(p2.x, p2.y);
+            p2 = ar2Pos + (p2-p0).Normalize() * Rez::guiX(5.);    //a bit past leg 2 arrow head on leg 2
+            path.lineTo(p2.x, p2.y);
+        }
 
 
-                bool isOutside = true;
+        bool isOutside = true;        //label is outside angle end-vertex-end?
 
-                // TODO find a better solution for this. Addmitedely not tidy
-                // ###############
-                // Treat zero as positive to be consistent for horizontal lines
-                if(std::abs(startangle) < FLT_EPSILON)
-                    startangle = 0;
+        // TODO find a better solution for this. Addmitedely not tidy
+        // ###############
+        // Treat zero as positive to be consistent for horizontal lines
+        if(std::abs(startangle) < FLT_EPSILON)
+            startangle = 0;
 
-                 if(std::abs(endangle) < FLT_EPSILON)
-                    endangle = 0;
+         if(std::abs(endangle) < FLT_EPSILON)
+            endangle = 0;
 
-                if(startangle >= 0 && endangle >= 0) {   //Both are in positive side
-                  double langle = labelangle;
-                  if(labelangle < 0)
-                    langle += M_PI * 2;
-                  if(endangle - startangle > 0) {
-                      if(langle > startangle && langle < endangle)
-                          isOutside = false;
-                  } else {
-                      if(langle < startangle && langle > endangle)
-                          isOutside = false;
-                  }
-                } else if(startangle < 0 && endangle < 0) {  //both are in negative side
-                   double langle = labelangle;
-                    if(labelangle > 0)
-                        langle -= M_PI * 2;
-                    if(endangle - startangle < 0) {
-                        if(langle > endangle && langle < startangle)  //clockwise
-                            isOutside = false;
-                    } else {
-                        if(langle < endangle && langle > startangle)  //anticlockwise
-                            isOutside = false;
-                    }
-                } else if(startangle >= 0 && endangle < 0) {
-                    if(labelangle < startangle && labelangle > endangle)  //clockwise
-                        isOutside = false;
-
-                } else if(startangle < 0 && endangle >= 0) {
-                    //Both are in positive side
-
-                    if(labelangle > startangle && labelangle < endangle)  //clockwise
-                        isOutside = false;
-                }
-
-                QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
-                path.arcMoveTo(arcRect, endangle * 180 / M_PI);
-
-                if(isOutside) {
-                    if(labelangle > endangle)
-                    {
-                        path.arcTo(arcRect, endangle * 180 / M_PI, (labelangle  - endangle) * 180 / M_PI);  //CCW from endangle
-                        path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                        path.arcTo(arcRect, startangle * 180 / M_PI, -10);   //cw10 from start
-                    } else {
-                        path.arcTo(arcRect, endangle * 180 / M_PI, 10); // chosen a nominal value for 10 degrees
-                        path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                        path.arcTo(arcRect, startangle * 180 / M_PI, (labelangle - startangle) * 180 / M_PI);   //unknown dir
-                    }
-
-
-                } else {
-                    path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
-                }
-
-                dimLines->setPath(path);
-
-                aHead1->flip(true);
-                aHead1->setStyle(QGIArrow::getPrefArrowStyle());
-                aHead1->setSize(QGIArrow::getPrefArrowSize());
-                aHead1->draw();
-                aHead2->setStyle(QGIArrow::getPrefArrowStyle());
-                aHead2->setSize(QGIArrow::getPrefArrowSize());
-                aHead2->draw();
-
-                Base::Vector3d norm1 = p1-p0; //(-dir1.y, dir1.x, 0.);
-                Base::Vector3d norm2 = p2-p0; //(-dir2.y, dir2.x, 0.);
-
-                Base::Vector3d avg = (norm1 + norm2) / 2.;
-
-                norm1 = norm1.ProjectToLine(avg, norm1);
-                norm2 = norm2.ProjectToLine(avg, norm2);
-
-                aHead1->setPos(ar1Pos.x,ar1Pos.y );
-                aHead2->setPos(ar2Pos.x,ar2Pos.y );
-
-                float ar1angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;
-                float ar2angle = atan2(norm2.y, norm2.x) * 180 / M_PI;
-
-                if(isOutside) {
-                    aHead1->setRotation(ar1angle + 180.);
-                    aHead2->setRotation(ar2angle + 180.);
-                } else {
-                    aHead1->setRotation(ar1angle);
-                    aHead2->setRotation(ar2angle);
-                }
-
-                // Set the angle of the dimension text
-
-                Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
-                double lAngle = atan2(labelNorm.y, labelNorm.x);
-
-                //if label is more/less vertical, make it vertical
-                if (lAngle > M_PI_2+M_PI/12) {    // label norm angle > 90 + 15 = 105
-                    lAngle -= M_PI;               // lAngle - 180   Flip
-                } else if (lAngle <= -M_PI_2+M_PI/12) {  // <  -90 + 15 = - 85
-                    lAngle += M_PI;               // langle + 180   Flip
-                }
-
-                datumLabel->setTransformOriginPoint(bbX / 2., bbY /2.);
-
-                datumLabel->setRotation(lAngle * 180 / M_PI);
-
+        if(startangle >= 0 && endangle >= 0) {   //Both are in positive side
+          double langle = labelangle;
+          if(labelangle < 0)
+            langle += M_PI * 2;
+          if(endangle - startangle > 0) {
+              if(langle > startangle && langle < endangle)
+                  isOutside = false;
+          } else {
+              if(langle < startangle && langle > endangle)
+                  isOutside = false;
+          }
+        } else if(startangle < 0 && endangle < 0) {  //both are in negative side
+           double langle = labelangle;
+            if(labelangle > 0)
+                langle -= M_PI * 2;
+            if(endangle - startangle < 0) {
+                if(langle > endangle && langle < startangle)  //clockwise
+                    isOutside = false;
             } else {
-                Base::Console().Log("INFO - QGIVD::draw - Invalid reference for dimension type (4)\n");
-                datumLabel->hide();
-                hide();
-                return;
+                if(langle < endangle && langle > startangle)  //anticlockwise
+                    isOutside = false;
             }
-        } //endif 2 Edges
+        } else if(startangle >= 0 && endangle < 0) {
+            if(labelangle < startangle && labelangle > endangle)  //clockwise
+                isOutside = false;
+
+        } else if(startangle < 0 && endangle >= 0) {
+            //Both are in positive side
+
+            if(labelangle > startangle && labelangle < endangle)  //clockwise
+                isOutside = false;
+        }
+
+        QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
+        path.arcMoveTo(arcRect, endangle * 180 / M_PI);
+        double innerAngle = fabs(endangle - startangle) * 180.0/M_PI;
+        double outerAngle = 360.0 - innerAngle;
+        if(isOutside) {
+            updateDim(true);
+            if(labelangle > endangle)
+            {
+                path.arcMoveTo(arcRect, endangle * 180 / M_PI);
+                path.arcTo(arcRect, endangle * 180 / M_PI, - outerAngle);
+            } else {
+                path.arcMoveTo(arcRect, startangle * 180 / M_PI);
+                path.arcTo(arcRect, startangle * 180 / M_PI, outerAngle);  
+            }
+        } else {
+            updateDim(false);
+            path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
+        }
+
+        dimLines->setPath(path);
+
+        aHead1->flip(true);
+        aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead1->setSize(QGIArrow::getPrefArrowSize());
+        aHead1->draw();
+        aHead2->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead2->setSize(QGIArrow::getPrefArrowSize());
+        aHead2->draw();
+
+        Base::Vector3d norm1 = p1-p0; //(-dir1.y, dir1.x, 0.);
+        Base::Vector3d norm2 = p2-p0; //(-dir2.y, dir2.x, 0.);
+
+        Base::Vector3d avg = (norm1 + norm2) / 2.;
+
+        norm1 = norm1.ProjectToLine(avg, norm1);
+        norm2 = norm2.ProjectToLine(avg, norm2);
+
+        aHead1->setPos(ar1Pos.x,ar1Pos.y );
+        aHead2->setPos(ar2Pos.x,ar2Pos.y );
+
+        float ar1angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;
+        float ar2angle = atan2(norm2.y, norm2.x) * 180 / M_PI;
+
+        if(isOutside) {
+            aHead1->setRotation(ar1angle + 180.);
+            aHead2->setRotation(ar2angle + 180.);
+        } else {
+            aHead1->setRotation(ar1angle);
+            aHead2->setRotation(ar2angle);
+        }
+
+        // Set the angle of the dimension text
+
+        Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
+        double lAngle = atan2(labelNorm.y, labelNorm.x);
+
+        //if label is more/less vertical, make it vertical
+        if (lAngle > M_PI_2+M_PI/12) {    // label norm angle > 90 + 15 = 105
+            lAngle -= M_PI;               // lAngle - 180   Flip
+        } else if (lAngle <= -M_PI_2+M_PI/12) {  // <  -90 + 15 = - 85
+            lAngle += M_PI;               // langle + 180   Flip
+        }
+
+        datumLabel->setTransformOriginPoint(bbX / 2., bbY /2.);
+
+        datumLabel->setRotation(lAngle * 180 / M_PI);
+
     }  //endif Distance/Diameter/Radius/Angle
 
     // redraw the Dimension and the parent View
@@ -1433,10 +1165,8 @@ QColor QGIViewDimension::getNormalColor()
         return m_colNormal;
     }
 
-    // Identify what changed to prevent complete redraw
     m_colNormal = vp->Color.getValue().asValue<QColor>();
     return m_colNormal;
 }
-
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
