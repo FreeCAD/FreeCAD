@@ -515,9 +515,11 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             continue;
         DocumentObject *subObj = 0;
         TopoShape shape;
-        if(baseShape.isNull())
+        if(baseShape.isNull()) {
             shape = getTopoShape(owner,sub,false,0,&subObj,false,false);
-        else{
+            if(shape.isNull())
+                continue;
+        }else{
             Base::Matrix4D mat;
             subObj = owner->getSubObject(sub,0,&mat);
             if(link && !link->getShowElementValue())
