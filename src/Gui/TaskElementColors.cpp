@@ -61,7 +61,6 @@ public:
     ViewProviderDocumentObject *vp;
     ViewProviderDocumentObject *vpParent;
     std::map<std::string,QListWidgetItem*> elements;
-    std::map<std::string,App::Color> oldColors;
     std::vector<QListWidgetItem*> items;
     std::string hiddenSub;
     Connection connectDelDoc;
@@ -124,9 +123,8 @@ public:
     }
 
     void populate() {
-        oldColors = vp->getElementColors();
         int i=0;
-        for(auto &v : oldColors) 
+        for(auto &v : vp->getElementColors())
             addItem(i++,v.first.c_str());
         apply();
     }
@@ -182,14 +180,16 @@ public:
             info.emplace(qPrintable(item->data(Qt::UserRole+1).value<QString>()),
                     App::Color(color.redF(),color.greenF(),color.blueF(),1.0-color.alphaF()));
         }
+        if(!App::GetApplication().getActiveTransaction())
+            App::GetApplication().setActiveTransaction("Set colors");
         vp->setElementColors(info);
         touched = true;
         Selection().clearSelection();
     }
 
     void reset() {
-        vp->setElementColors(oldColors);
         touched = false;
+        App::GetApplication().closeActiveTransaction(true);
         Selection().clearSelection();
     }
 
@@ -200,6 +200,7 @@ public:
             obj->getDocument()->recompute(obj->getInListRecursive());
             touched = false;
         }
+        App::GetApplication().closeActiveTransaction();
     }
 
     void removeAll() {
