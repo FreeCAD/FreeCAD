@@ -3510,7 +3510,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     //
     // and two additional elements if it is a PropertyXLink
     //
-    //      PropertyXLink and the subname inside if not empty
+    //      subname 
     //      (optional) document name of linked object if it is different from the container
     //
 
@@ -3559,7 +3559,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         list << QString::fromLatin1("Null");
 
     list << QString::fromLatin1(prop->getName());
-    assert(list.size() == FC_XLINK_VALUE_INDEX+1);
+    assert(list.size() == FC_XLINK_VALUE_INDEX);
 
     if(xlink) {
         list << QString::fromUtf8(xlink->getSubName());

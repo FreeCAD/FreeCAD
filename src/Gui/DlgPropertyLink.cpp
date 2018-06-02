@@ -109,7 +109,7 @@ void DlgPropertyLink::accept()
 
 static QStringList getLinkFromItem(const QStringList &link, QTreeWidgetItem *selItem) {
     QStringList list = link;
-    if(link.size()>=5) {
+    if(link.size()>FC_XLINK_VALUE_INDEX) {
         QString subname;
         auto parent = selItem;
         for(auto item=parent;;item=parent) {
@@ -121,15 +121,15 @@ static QStringList getLinkFromItem(const QStringList &link, QTreeWidgetItem *sel
             subname = QString::fromLatin1("%1.%2").
                 arg(item->data(0,Qt::UserRole).toString()).arg(subname);
         }
-        list[4] = subname;
+        list[FC_XLINK_VALUE_INDEX] = subname;
         if(subname.size())
             list[2] = QString::fromLatin1("%1 (%2.%3)").
                 arg(selItem->text(0)).arg(list[1]).arg(subname);
         else
             list[2] = selItem->text(0);
         QString docName(selItem->data(0, Qt::UserRole+1).toString());
-        if(list.size()>5)
-            list[5] = docName;
+        if(list.size()>FC_XLINK_VALUE_INDEX+1)
+            list[FC_XLINK_VALUE_INDEX+1] = docName;
         else
             list << docName;
     }else{
