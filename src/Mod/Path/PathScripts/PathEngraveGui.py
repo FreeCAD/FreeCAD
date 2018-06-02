@@ -66,7 +66,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                         else:
                             self.obj.Proxy.addBase(self.obj, sel.Object, sub)
                 else:
-                    self.obj.Base = [p for p,el in self.obj.Base if p != sel.Object]
+                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != sel.Object]
                     shapes.append(sel.Object)
                     self.obj.BaseShapes = shapes
                 added = True
@@ -92,7 +92,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         for i in range(self.form.baseList.count()):
             item = self.form.baseList.item(i)
             obj = item.data(self.super().DataObject)
-            sub = itme.data(self.super().DataObjectSub)
+            sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
         PathLog.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
