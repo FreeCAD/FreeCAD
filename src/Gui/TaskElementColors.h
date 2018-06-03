@@ -32,7 +32,7 @@ class Document;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
-class ElementColors : public QWidget, public SelectionObserver
+class GuiExport ElementColors : public QWidget, public SelectionObserver
 {
     Q_OBJECT
 
@@ -64,7 +64,7 @@ private:
     Private *d;
 };
 
-class TaskElementColors : public TaskView::TaskDialog
+class GuiExport TaskElementColors : public TaskView::TaskDialog
 {
     Q_OBJECT
 
