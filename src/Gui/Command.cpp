@@ -305,8 +305,10 @@ void Command::invoke(int i)
     getGuiApplication()->macroManager()->setModule(sAppModule);
     try {
         // check if it really works NOW (could be a delay between click deactivation of the button)
-        if (isActive())
+        if (isActive()) {
             activated( i );
+            getMainWindow()->updateActions();
+        }
     }
     catch (const Base::SystemExitException&) {
         throw;
