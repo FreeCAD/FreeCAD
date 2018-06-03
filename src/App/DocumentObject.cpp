@@ -593,15 +593,14 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
             ret = it->second;
     }
 
-    // Normal object's placement does not transform its sub objects (think
-    // of the claimed children of a Fusion). But I do think we should change
-    // that.
-    //
-    // if(transform) {
-    //     auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
-    //     if(pla)
-    //         *mat *= pla->getValue().toMatrix();
-    // }
+    // TODO: By right, normal object's placement does not transform its sub
+    // objects (think of the claimed children of a Fusion). But I do think we
+    // should change that.
+    if(transform && mat) {
+        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        if(pla)
+            *mat *= pla->getValue().toMatrix();
+    }
 
     if(ret && dot)
         return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
