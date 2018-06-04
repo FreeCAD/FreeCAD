@@ -857,12 +857,12 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
     Base::Vector3d e1 = e1E - e1S;
     double startAngle = atan2(e2.y,e2.x);
     if (startAngle < 0) {
-         startAngle += 2.0 * M_PI;
+         startAngle += 2.0 * Pi;
     }
     startAngle = startAngle * 180.0 / Pi;
     double endAngle = atan2(e1.y,e1.x);
     if (endAngle < 0) {
-         endAngle += 2.0 * M_PI;
+         endAngle += 2.0 * Pi;
     }
     endAngle = endAngle * 180.0 / Pi;
     
@@ -1114,12 +1114,12 @@ void CDxfWrite::writeHeaderSection(void)
     (*m_ofs) << "  0"       << endl;
     (*m_ofs) << "ENDSEC"    << endl;
 
-    (*m_ofs) << "  0"       << endl;
-    (*m_ofs) << "SECTION"   << endl;
-    (*m_ofs) << "  2"       << endl;
-    (*m_ofs) << "CLASSES"   << endl;
-    (*m_ofs) << "  0"       << endl;
-    (*m_ofs) << "ENDSEC"    << endl;
+//    (*m_ofs) << "  0"       << endl;    //Classes are not R12
+//    (*m_ofs) << "SECTION"   << endl;
+//    (*m_ofs) << "  2"       << endl;
+//    (*m_ofs) << "CLASSES"   << endl;
+//    (*m_ofs) << "  0"       << endl;
+//    (*m_ofs) << "ENDSEC"    << endl;
 }
 
 //***************************
