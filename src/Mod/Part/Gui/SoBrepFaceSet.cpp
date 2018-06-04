@@ -790,7 +790,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
             SoOverrideElement::setMaterialBindingOverride(state, this, true);
             packedColors.push_back(diffuseColor);
-            SoLazyElement::setPacked(state, this,1, &packedColors[0],true);
+            SoLazyElement::setPacked(state, this,1, &packedColors[0], hasTransparency);
             SoTextureEnabledElement::set(state,this,false);
             return true;
         }
