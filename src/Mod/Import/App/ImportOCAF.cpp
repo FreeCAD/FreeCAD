@@ -478,7 +478,7 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &
 
     auto info = it->second;
     if(!getColor(shape,info,true) && shuoColors.empty() && info.free) {
-        info.free = false;
+        it->second.free = false;
         setPlacement(info.propPlacement,shape);
         setObjectName(info.obj,label);
         myNames.emplace(label,info.obj->getNameInDocument());
