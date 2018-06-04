@@ -581,9 +581,22 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape,
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op) {
     resetElementMap();
-    BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_False);
+    
+    // OCCT checks the ScaleFactor against gp::Resotion() which is DBL_MIN!!!
+    bool mod = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
+      Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
     TopoShape tmp(shape);
-    tmp._Shape = mkTrf.Shape();
+    if(mod) {
+        BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_False);
+        // TODO: calling Moved() is to make sure the shape has some Location,
+        // which is necessary for STEP export to work. However, if we reach
+        // here, it means BRepBuilderAPI_Transform has modified underlying
+        // shapes (because of scaleing), it will break compound child parent
+        // relationship anyway. In short, STEP import/export will most likely
+        // break badly if there is any scaling involved
+        tmp._Shape = mkTrf.Shape().Moved(gp_Trsf());
+    }else
+        tmp._Shape.Move(trsf);
     if(op || (shape.Tag && shape.Tag!=Tag)) {
         _Shape = tmp._Shape;
         mapSubElement(tmp,op);
