@@ -1753,6 +1753,16 @@ void PropertyStringList::setPyObject(PyObject *value)
         setValue(PyString_AsString(value));
     }
 #endif
+    else if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        setValue(PyUnicode_AsUTF8(value));
+    }
+#else
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
+        setValue(PyString_AsString(unicode));
+        Py_DECREF(unicode);
+    }
+#endif
     else if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
@@ -1781,16 +1791,6 @@ void PropertyStringList::setPyObject(PyObject *value)
         
         setValues(values);
     }
-    else if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
-        setValue(PyUnicode_AsUTF8(value));
-    }
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        setValue(PyString_AsString(unicode));
-        Py_DECREF(unicode);
-    }
-#endif
     else {
         std::string error = std::string("type must be str or unicode or list of str or list of unicodes, not ");
         error += value->ob_type->tp_name;
