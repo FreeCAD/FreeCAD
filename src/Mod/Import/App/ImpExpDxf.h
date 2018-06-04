@@ -114,6 +114,7 @@ namespace Import
         std::string m_optionSource;
         double optionMaxLength;
         bool   optionPolyLine;
+        bool   optionExpPoints;
     };
 
 }
