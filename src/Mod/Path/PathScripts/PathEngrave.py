@@ -30,6 +30,8 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import TechDraw
+import traceback
 
 from PySide import QtCore
 
@@ -45,6 +47,32 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+def adjustWirePlacement(obj, shape, wires):
+    job = PathUtils.findParentJob(obj)
+    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
+        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
+            pmntShape   = shape.Placement
+            pmntSupport = shape.Support[0][0].getGlobalPlacement()
+            #pmntSupport = shape.Support[0][0].Placement
+            pmntBase    = job.Base.Placement
+            pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
+            PathLog.debug("pmnt = %s" % pmnt)
+            newWires = []
+            for w in wires:
+                edges = []
+                for e in w.Edges:
+                    e = e.copy()
+                    e.Placement = FreeCAD.Placement()
+                    edges.append(e)
+                w = Part.Wire(edges)
+                w.Placement = pmnt
+                newWires.append(w)
+            wires = newWires
+        else:
+            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
+    else:
+        PathLog.debug("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'None')) 
+    return wires
 
 class ObjectEngrave(PathOp.ObjectOp):
     '''Proxy class for Engrave operation.'''
@@ -55,7 +83,8 @@ class ObjectEngrave(PathOp.ObjectOp):
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
-        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the path from"))
+        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
+        obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process engraving operation'''
@@ -100,15 +129,33 @@ class ObjectEngrave(PathOp.ObjectOp):
                     output += self.buildpathocc(obj, tagWires, zValues)
                     wires.extend(tagWires)
                 self.wires = wires
-            else:
-                raise ValueError('Unknown baseobject type for engraving')
+            elif obj.Base:
+                wires = []
+                for base, subs in obj.Base:
+                    edges = []
+                    for sub in subs:
+                        edges.extend(base.Shape.getElement(sub).Edges)
+                    shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
+                    wires.extend(shapeWires)
+                output += self.buildpathocc(obj, wires, zValues)
+                self.wires = wires
+            elif not obj.BaseShapes:
+                raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
 
+            if obj.BaseShapes:
+                wires = []
+                for shape in obj.BaseShapes:
+                    shapeWires = adjustWirePlacement(obj, shape, shape.Shape.Wires)
+                    output += self.buildpathocc(obj, shapeWires, zValues)
+                    wires.extend(shapeWires)
+                self.wires = wires
             output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         except Exception as e:
-            #PathLog.error("Exception: %s" % e)
-            PathLog.error(translate("Path", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
+            PathLog.error(e)
+            traceback.print_exc()
+            PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
@@ -185,9 +232,13 @@ class ObjectEngrave(PathOp.ObjectOp):
         if job and job.Base:
             bb = job.Base.Shape.BoundBox
             obj.OpStartDepth = bb.ZMax
-            obj.OpFinalDepth = bb.ZMin
+            obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
         else:
             obj.OpFinalDepth = -0.1
+
+    def updateDepths(self, obj, ignoreErrors=False):
+        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
+        self.opSetDefaultValues(obj)
 
 def Create(name):
     '''Create(name) ... Creates and returns a Engrave operation.'''

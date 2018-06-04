@@ -36,8 +36,68 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
+    '''Enhanced base geometry page to also allow special base objects.'''
+
+    def super(self):
+        return super(TaskPanelBaseGeometryPage, self)
+
+    def addBaseGeometry(self, selection):
+        added = False
+        shapes = self.obj.BaseShapes
+        for sel in selection:
+            if sel.Object in shapes:
+                PathLog.notice((translate("Path", "Base shape %s already in the list")+"\n") % (sel.Object.Label))
+                continue
+            if sel.Object.isDerivedFrom('Part::Part2DObject'):
+                if sel.HasSubObjects:
+                    for sub in sel.SubElementNames:
+                        if 'Vertex' in sub:
+                            PathLog.info(translate("Path", "Ignoring vertex"))
+                        else:
+                            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                else:
+                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != sel.Object]
+                    shapes.append(sel.Object)
+                    self.obj.BaseShapes = shapes
+                added = True
+            else:
+                base = self.super().addBaseGeometry(selection)
+                added = added or base
+
+        return added
+
+    def setFields(self, obj):
+        self.super().setFields(obj)
+        self.form.baseList.blockSignals(True)
+        for shape in self.obj.BaseShapes:
+            item = QtGui.QListWidgetItem(shape.Label)
+            item.setData(self.super().DataObject, shape)
+            item.setData(self.super().DataObjectSub, None)
+            self.form.baseList.addItem(item)
+        self.form.baseList.blockSignals(False)
+
+    def updateBase(self):
+        PathLog.track()
+        shapes = []
+        for i in range(self.form.baseList.count()):
+            item = self.form.baseList.item(i)
+            obj = item.data(self.super().DataObject)
+            sub = item.data(self.super().DataObjectSub)
+            if not sub:
+                shapes.append(obj)
+        PathLog.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
+        self.obj.BaseShapes = shapes
+        return self.super().updateBase()
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Engrave operation.'''
@@ -63,6 +123,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         return signals
+
+    def taskPanelBaseGeometryPage(self, obj, features):
+        '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
+        return TaskPanelBaseGeometryPage(obj, features)
 
 Command = PathOpGui.SetupOperation('Engrave',
         PathEngrave.Create,

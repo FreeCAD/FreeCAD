@@ -27,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
+import math
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -45,16 +46,23 @@ class MESHGate:
 
 class ENGRAVEGate:
     def allow(self, doc, obj, sub):
-        engraveable = False
-        if hasattr(obj, "Shape"):
-            if obj.Shape.BoundBox.ZLength == 0.0:
-                try:
-                    obj = obj.Shape
-                except:
-                    return False
-                if len(obj.Wires) > 0:
-                    engraveable = True
-        return engraveable
+        try:
+            shape = obj.Shape
+        except:
+            return False
+
+        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+            return True
+
+        if shape.ShapeType == 'Edge':
+            return True
+
+        if sub:
+            subShape = shape.getElement(sub)
+            if subShape.ShapeType == 'Edge':
+                return True
+
+        return False
 
 
 class DRILLGate:
