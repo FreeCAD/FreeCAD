@@ -240,11 +240,21 @@ bool ImportOCAF::getColor(const TopoDS_Shape &shape, Info &info, bool check, boo
     return ret;
 }
 
-bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info) {
+bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info, 
+        const std::vector<App::DocumentObject*> &children) 
+{
+    Part::Feature *feature;
+    if(children.size()) {
+        auto compound = static_cast<Part::Compound*>(doc->addObject("Part::Compound","Compound"));
+        compound->Links.setValues(children);
+        compound->recomputeFeature();
+        feature = compound;
+    }else{
+        feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
+        feature->Shape.setValue(shape);
+    }
 
-    auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
     feature->Visibility.setValue(false);
-    feature->Shape.setValue(shape);
 
     App::Color color;
     getColor(shape,info);
@@ -254,7 +264,7 @@ bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &
         applyEdgeColors(feature,{info.edgeColor});
 
     TDF_LabelSequence seq;
-    if(aShapeTool->GetSubShapes(label,seq)) {
+    if(!label.IsNull() && aShapeTool->GetSubShapes(label,seq)) {
         bool hasFaceColors = false;
         bool hasEdgeColors = false;
         Part::TopoShape tshape(shape);
@@ -294,7 +304,7 @@ bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &
         if(hasFaceColors)
             applyFaceColors(feature,faceColors);
         if(hasEdgeColors)
-            applyFaceColors(feature,edgeColors);
+            applyEdgeColors(feature,edgeColors);
     }
 
     info.propPlacement = &feature->Placement;
@@ -393,7 +403,7 @@ void ImportOCAF::getSHUOColors(TDF_Label label,
         std::map<std::string,App::Color> &colors, bool appendFirst)
 {
     TDF_AttributeSequence seq;
-    if(!aShapeTool->GetAllComponentSHUO(label,seq))
+    if(label.IsNull() || !aShapeTool->GetAllComponentSHUO(label,seq))
         return;
     std::ostringstream ss;
     for(int i=1;i<=seq.Length();++i) {
@@ -457,12 +467,9 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &
         Info info;
         auto baseLabel = aShapeTool->FindShape(baseShape);
         bool res;
-        if(baseLabel.IsNull() || 
-           (merge && !aShapeTool->IsAssembly(baseLabel)) ||
-           (!merge && shape.ShapeType()!=TopAbs_COMPOUND))
-        {
+        if(baseLabel.IsNull() || !aShapeTool->IsAssembly(baseLabel))
             res = createObject(baseLabel,baseShape,info);
-        } else
+        else
             res = createAssembly(baseLabel,baseShape,info);
         if(!res)
             return 0;
@@ -500,8 +507,6 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &
 }
 
 bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info) {
-    (void)label;
-
     std::vector<TDF_Label> childLabels;
     std::vector<TopoDS_Shape> childShapes;
     boost::dynamic_bitset<> visibilities;
@@ -512,7 +517,7 @@ bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info
             continue;
         TDF_Label childLabel;
         aShapeTool->Search(childShape,childLabel,Standard_True,Standard_True,Standard_False);
-        if(!childLabel.IsNull() && !importHidden && !aColorTool->IsVisible(childLabel))
+        if(childLabel.IsNull() && !importHidden && !aColorTool->IsVisible(childLabel))
             continue;
         childShapes.push_back(childShape);
         childLabels.push_back(childLabel);
@@ -590,13 +595,24 @@ bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info
         if(!child)
             continue;
         children.push_back(child);
-        if(aShapeTool->IsComponent(childLabel))
+        if(!childLabel.IsNull() && aShapeTool->IsComponent(childLabel))
             visibilities.push_back(aColorTool->IsVisible(childLabel));
         else
             visibilities.push_back(true);
         if(useLinkGroup)
             getSHUOColors(childLabel,shuoColors,true);
     }
+
+    if(children.empty())
+        return false;
+
+#if 1
+    (void)label;
+#else
+    if(label.IsNull() || !aShapeTool->IsAssembly(label))
+        return createObject(label,shape,info,children);
+#endif
+        
     if(!createGroup(info,shape,children,visibilities))
         return false;
     if(shuoColors.size())
@@ -845,7 +861,7 @@ TDF_Label ExportOCAF::exportObject(App::DocumentObject* parentObj,
         const char *sub, TDF_Label parent, const char *name) 
 {
     App::DocumentObject *obj;
-    auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,false);
+    auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,!sub);
     if(!obj || shape.isNull()) {
         FC_WARN(obj->getNameInDocument() << " has null shape");
         return TDF_Label();

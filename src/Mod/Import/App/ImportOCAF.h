@@ -89,7 +89,8 @@ private:
 
     App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool isArrayElement=false);
     bool createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info);
-    bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info);
+    bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info,
+            const std::vector<App::DocumentObject*> &children = {});
     bool createGroup(Info &info, const TopoDS_Shape &shape,
         const std::vector<App::DocumentObject*> &children, const boost::dynamic_bitset<> &visibilities);
     App::DocumentObject *createObject(TDF_Label label, const TopoDS_Shape &shape);
