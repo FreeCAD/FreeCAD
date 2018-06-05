@@ -339,6 +339,7 @@ void ImpExpDxfWrite::setOptions(void)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionMaxLength = hGrp->GetFloat("maxsegmentlength",5.0);
     optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",true);
+    optionExpPoints  = hGrp->GetBool("ExportPoints",false);
 }
 
 void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
@@ -392,23 +393,23 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         }
     }
 
-    //export Vertice
-    //wf: this is a lot of work. Not sure that Points are worth that much in dxf??
-    TopExp_Explorer verts(input, TopAbs_VERTEX);
-    std::vector<gp_Pnt> duplicates;
-    for (int i = 1 ; verts.More(); verts.Next(),i++) {
-        const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
-        gp_Pnt p = BRep_Tool::Pnt(v);
-        duplicates.push_back(p);
-    }
-    
-    std::sort(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntCompare);
-    auto newEnd = std::unique(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntEqual);
-    std::vector<gp_Pnt> uniquePts(duplicates.begin(),newEnd);
-    for (auto& p: uniquePts) {
-        double point[3] = {0,0,0};
-        gPntToTuple(point, p);
-        WritePoint(point, getLayerName().c_str());
+    if (optionExpPoints) {
+        TopExp_Explorer verts(input, TopAbs_VERTEX);
+        std::vector<gp_Pnt> duplicates;
+        for (int i = 1 ; verts.More(); verts.Next(),i++) {
+            const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
+            gp_Pnt p = BRep_Tool::Pnt(v);
+            duplicates.push_back(p);
+        }
+        
+        std::sort(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntCompare);
+        auto newEnd = std::unique(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntEqual);
+        std::vector<gp_Pnt> uniquePts(duplicates.begin(),newEnd);
+        for (auto& p: uniquePts) {
+            double point[3] = {0,0,0};
+            gPntToTuple(point, p);
+            WritePoint(point, getLayerName().c_str());
+        }
     }
 }
 

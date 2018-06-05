@@ -131,7 +131,9 @@ public:
     void WriteLine(const double* s, const double* e, const char* layer_name );
     void WritePoint(const double*, const char*);
     void WriteArc(const double* s, const double* e, const double* c, bool dir, const char* layer_name );
-    void WriteEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool endIsCW, const char* layer_name);
+    void WriteEllipse(const double* c, double major_radius, double minor_radius, 
+                      double rotation, double start_angle, double end_angle, bool endIsCW, 
+                      const char* layer_name);
     void WriteCircle(const double* c, double radius, const char* layer_name );
     void WriteSpline(SplineDataOut sd, const char* layer_name);
     void WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name);
@@ -143,21 +145,36 @@ public:
                   const double* extLine1, const double* extLine2,
                   const char* dimText,
                   const char* layer_name);
+    void writeLinearDimBlock(const double* textMidPoint, const double* lineDefPoint,
+                  const double* extLine1, const double* extLine2,
+                  const char* dimText);
     void WriteAngularDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* startExt1, const double* endExt1,
                   const double* startExt2, const double* endExt2,
                   const char* dimText,
                   const char* layer_name);
-    void WriteRadialDim(const double* centerPoint, const double* textMidPoint, 
+    void writeAngularDimBlock(const double* textMidPoint, const double* lineDefPoint,
+                         const double* startExt1, const double* endExt1,
+                         const double* startExt2, const double* endExt2,
+                         const char* dimText);
+   void WriteRadialDim(const double* centerPoint, const double* textMidPoint, 
                          const double* arcPoint,
                          const char* dimText,
                          const char* layer_name);
+    void writeRadialDimBlock(const double* centerPoint, const double* textMidPoint, 
+                         const double* arcPoint, const char* dimText);
     void WriteDiametricDim(const double* textMidPoint, 
                          const double* arcPoint1, const double* arcPoint2,
                          const char* dimText,
                          const char* layer_name);
-    void writeDimBlock(const char* layer_name);
+    void writeDiametricDimBlock(const double* textMidPoint, 
+                         const double* arcPoint1, const double* arcPoint2,
+                         const char* dimText);
+
+    void writeDimBlockPreamble(const char* layer_name);
+    void writeHeaderSection(void);
     void writeTablesSection(void);
+    void writeBlocksSection(void);
 };
 
 // derive a class from this and implement it's virtual functions

@@ -5,6 +5,7 @@
 
 #include "PreCompiled.h"
 #include <src/Build/Version.h>
+#include <Base/Vector3D.h>
 #include "dxf.h"
 
 using namespace std;
@@ -25,103 +26,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     }
     m_ofs->imbue(std::locale("C"));
     
-    std::stringstream ss;
-    ss << "FreeCAD v" << FCVersionMajor << "." << FCVersionMinor << " " << FCRevision; 
-
-    //header & version
-    (*m_ofs) << "999"      << endl;
-    (*m_ofs) << ss.str()   << endl;
-
-    (*m_ofs) << "  0"      << endl;
-    (*m_ofs) << "SECTION"  << endl;
-    (*m_ofs) << "  2"      << endl;
-    (*m_ofs) << "HEADER"   << endl;
-    (*m_ofs) << "  9"      << endl;
-    (*m_ofs) << "$ACADVER"  << endl;
-    (*m_ofs) << "  1"      << endl;
-    (*m_ofs) << "AC1009"   << endl;
-    (*m_ofs) << "  9"      << endl;
-    (*m_ofs) << "$INSBASE"  << endl;
-    (*m_ofs) << " 10"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 20"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 30"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$EXTMIN"  << endl;
-    (*m_ofs) << " 10"      << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 20"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 30"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$EXTMAX"  << endl;
-    (*m_ofs) << " 10"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 20"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << " 30"       << endl;
-    (*m_ofs) << 0.0         << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DIMSTYLE" << endl;
-    (*m_ofs) << "  2"       << endl;
-    (*m_ofs) << "STANDARD"  << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$MEASUREMENT" << endl;
-    (*m_ofs) << " 70"       << endl;
-    (*m_ofs) << "1"         << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$LIMMAX" << endl;
-    (*m_ofs) << " 10"       << endl;
-    (*m_ofs) << "0"         << endl;
-    (*m_ofs) << " 20"       << endl;
-    (*m_ofs) << "0"         << endl;
-
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$TEXTSIZE"   << endl;
-    (*m_ofs) << " 40"       << endl;
-    (*m_ofs) << "3.5"       << endl;
-
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$TEXTSTYLE"   << endl;
-    (*m_ofs) << "  7"       << endl;
-    (*m_ofs) << "STANDARD"  << endl;
-
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DIMTXT"   << endl;
-    (*m_ofs) << " 40"       << endl;
-    (*m_ofs) << "3.5"       << endl;
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DIMTAD"   << endl;
-    (*m_ofs) << " 70"       << endl;
-    (*m_ofs) << "1"         << endl;
-    
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DIMASZ"   << endl;
-    (*m_ofs) << " 40"       << endl;
-    (*m_ofs) << "3.5"       << endl;
-
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$HANDLING"   << endl;
-    (*m_ofs) << " 70"         << endl;
-    (*m_ofs) << "0"           << endl;
-
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DWGCODEPAGE"   << endl;
-    (*m_ofs) << "  3"       << endl;
-    (*m_ofs) << "UTF-8"         << endl;
-    (*m_ofs) << "  0"       << endl;
-    (*m_ofs) << "ENDSEC"    << endl;
-
-    (*m_ofs) << "  0"       << endl;
-    (*m_ofs) << "SECTION"   << endl;
-    (*m_ofs) << "  2"       << endl;
-    (*m_ofs) << "CLASSES"   << endl;
-    (*m_ofs) << "  0"       << endl;
-    (*m_ofs) << "ENDSEC"    << endl;
-
+    writeHeaderSection();
     writeTablesSection();
 
     // start
@@ -136,16 +41,17 @@ CDxfWrite::~CDxfWrite()
     (*m_ofs) << "  0"         << endl;
     (*m_ofs) << "ENDSEC"   << endl;   //end of entities section
 
-    // write dimension blocks if exist
+    // write Blocks if exist
+    writeBlocksSection();
     if (!m_ssBlock.str().empty()) {
-        (*m_ofs) << "  0"         << endl;
-        (*m_ofs) << "SECTION"  << endl;
-        (*m_ofs) << "  2"         << endl;
-        (*m_ofs) << "BLOCKS"   << endl;
+//        (*m_ofs) << "  0"         << endl;
+//        (*m_ofs) << "SECTION"  << endl;
+//        (*m_ofs) << "  2"         << endl;
+//        (*m_ofs) << "BLOCKS"   << endl;
         (*m_ofs) << m_ssBlock.str();
-        (*m_ofs) << "  0"         << endl;
-        (*m_ofs) << "ENDSEC"   << endl;
     }
+    (*m_ofs) << "  0"      << endl;   //end blocks section
+    (*m_ofs) << "ENDSEC"    << endl;
 
     // end
     (*m_ofs) << "  0"         << endl;
@@ -156,21 +62,21 @@ CDxfWrite::~CDxfWrite()
 
 void CDxfWrite::WriteLine(const double* s, const double* e, const char* layer_name)
 {
-    (*m_ofs) << "  0"          << endl;
+    (*m_ofs) << "  0"       << endl;
     (*m_ofs) << "LINE"      << endl;
-    (*m_ofs) << "  8"         << endl;    // Group code for layer name
+    (*m_ofs) << "  8"       << endl;    // Group code for layer name
     (*m_ofs) << layer_name  << endl;    // Layer number
-    (*m_ofs) << " 10"        << endl;    // Start point of line
+    (*m_ofs) << " 10"       << endl;    // Start point of line
     (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << " 20"          << endl;
+    (*m_ofs) << " 20"       << endl;
     (*m_ofs) << s[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << " 30"          << endl;
+    (*m_ofs) << " 30"       << endl;
     (*m_ofs) << s[2]        << endl;    // Z in WCS coordinates
-    (*m_ofs) << " 11"        << endl;    // End point of line
+    (*m_ofs) << " 11"       << endl;    // End point of line
     (*m_ofs) << e[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << " 21"        << endl;
+    (*m_ofs) << " 21"       << endl;
     (*m_ofs) << e[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << " 31"        << endl;
+    (*m_ofs) << " 31"       << endl;
     (*m_ofs) << e[2]        << endl;    // Z in WCS coordinates
 }
 
@@ -196,28 +102,28 @@ void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
     (*m_ofs) << " 39"            << endl;
     (*m_ofs) << pd.Thick         << endl;    // Thickness
     for (auto& p: pd.Verts) {
-        (*m_ofs) << " 10"         << endl;    // Vertices
+        (*m_ofs) << " 10"        << endl;    // Vertices
         (*m_ofs) << p.x          << endl;
-        (*m_ofs) << " 20"           << endl;
+        (*m_ofs) << " 20"        << endl;
         (*m_ofs) << p.y          << endl;
     } 
     for (auto& s: pd.StartWidth) {
-        (*m_ofs) << " 40"            << endl;
-        (*m_ofs) << s                << endl;    // Start Width
+        (*m_ofs) << " 40"        << endl;
+        (*m_ofs) << s            << endl;    // Start Width
     }
     for (auto& e: pd.EndWidth) {
-        (*m_ofs) << " 41"            << endl;
-        (*m_ofs) << e                << endl;    // End Width
+        (*m_ofs) << " 41"        << endl;
+        (*m_ofs) << e            << endl;    // End Width
     }
     for (auto& b: pd.Bulge) {                // Bulge
         (*m_ofs) << " 42"        << endl;
         (*m_ofs) << b            << endl;
     }
-    (*m_ofs) << "210"           << endl;    //Extrusion dir
+    (*m_ofs) << "210"            << endl;    //Extrusion dir
     (*m_ofs) << pd.Extr.x        << endl;
-    (*m_ofs) << "220"              << endl;
+    (*m_ofs) << "220"            << endl;
     (*m_ofs) << pd.Extr.y        << endl;
-    (*m_ofs) << "230"              << endl;
+    (*m_ofs) << "230"            << endl;
     (*m_ofs) << pd.Extr.z        << endl;
 }
 
@@ -226,9 +132,9 @@ void CDxfWrite::WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name)
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::WritePolyline(LWPolyDataOut pd, const char* layer_name)
 {
-    (*m_ofs) << "  0"              << endl;
-    (*m_ofs) << "POLYLINE"         << endl;
-    (*m_ofs) << "  8"              << endl;
+    (*m_ofs) << "  0"            << endl;
+    (*m_ofs) << "POLYLINE"       << endl;
+    (*m_ofs) << "  8"            << endl;
     (*m_ofs) << layer_name       << endl;    // Layer name
     (*m_ofs) << " 66"            << endl;
     (*m_ofs) << "     1"         << endl;    // vertices follow
@@ -236,11 +142,11 @@ void CDxfWrite::WritePolyline(LWPolyDataOut pd, const char* layer_name)
 //    (*m_ofs) << "AcDbPolyline"   << endl;
 
     (*m_ofs) << " 10"            << endl;
-    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << "0.0"            << endl;
     (*m_ofs) << " 20"            << endl;
-    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << "0.0"            << endl;
     (*m_ofs) << " 30"            << endl;
-    (*m_ofs) << "0.0"              << endl;
+    (*m_ofs) << "0.0"            << endl;
     (*m_ofs) << " 70"            << endl;
     (*m_ofs) << "0"              << endl;
     for (auto& p: pd.Verts) {
@@ -253,28 +159,28 @@ void CDxfWrite::WritePolyline(LWPolyDataOut pd, const char* layer_name)
         (*m_ofs) << " 20"        << endl;
         (*m_ofs) << p.y          << endl;
         (*m_ofs) << " 30"        << endl;
-        (*m_ofs) << "0.0"          << endl;
+        (*m_ofs) << "0.0"        << endl;
     } 
-    (*m_ofs) << "  0"        << endl;
-    (*m_ofs) << "SEQEND"     << endl;
-    (*m_ofs) << "  8"        << endl;
-    (*m_ofs) << layer_name   << endl;
+    (*m_ofs) << "  0"            << endl;
+    (*m_ofs) << "SEQEND"         << endl;
+    (*m_ofs) << "  8"            << endl;
+    (*m_ofs) << layer_name       << endl;
 }
 
 void CDxfWrite::WritePoint(const double* s, const char* layer_name)
 {
-    (*m_ofs) << "  0"          << endl;
-    (*m_ofs) << "POINT"     << endl;
-    (*m_ofs) << "  8"         << endl;    // Group code for layer name
-    (*m_ofs) << layer_name  << endl;    // Layer name
+    (*m_ofs) << "  0"            << endl;
+    (*m_ofs) << "POINT"          << endl;
+    (*m_ofs) << "  8"            << endl;    // Group code for layer name
+    (*m_ofs) << layer_name       << endl;    // Layer name
 //    (*m_ofs) << "100"       << endl;
 //    (*m_ofs) << "AcDbPoint" << endl;
-    (*m_ofs) << " 10"        << endl;
-    (*m_ofs) << s[0]        << endl;    // X in WCS coordinates
-    (*m_ofs) << " 20"          << endl;
-    (*m_ofs) << s[1]        << endl;    // Y in WCS coordinates
-    (*m_ofs) << " 30"          << endl;
-    (*m_ofs) << s[2]        << endl;    // Z in WCS coordinates
+    (*m_ofs) << " 10"            << endl;
+    (*m_ofs) << s[0]             << endl;    // X in WCS coordinates
+    (*m_ofs) << " 20"            << endl;
+    (*m_ofs) << s[1]             << endl;    // Y in WCS coordinates
+    (*m_ofs) << " 30"            << endl;
+    (*m_ofs) << s[2]             << endl;    // Z in WCS coordinates
 }
 
 void CDxfWrite::WriteArc(const double* s, const double* e, const double* c, bool dir, const char* layer_name)
@@ -553,11 +459,10 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << " 34"          << endl;
     (*m_ofs) << extLine2[2]    << endl;
 
-    writeDimBlock(layer_name);
-    //three Lines 
-    // extLine2 -> lineDefPoint
-    // extLine1 -> (extLine1 + (lineDefPoint - extLine2)))
-    //lineDefPoint -> (extLine1 + (lineDefPoint - extLine2)))
+    writeDimBlockPreamble(layer_name);
+    writeLinearDimBlock(textMidPoint,lineDefPoint,
+                                        extLine1, extLine2,
+                                        dimText);
 }
 
 //***************************
@@ -595,8 +500,8 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << textMidPoint[2]  << endl;
 
     (*m_ofs) << " 70"          << endl;
-    (*m_ofs) << 34             << endl;    // dimType 2 = Angular  5 = Angular 3 point
-                                           // +32 for block??
+    (*m_ofs) << 2             << endl;    // dimType 2 = Angular  5 = Angular 3 point
+                                           // +32 for block?? (not R12)
     (*m_ofs) << " 71"          << endl;
     (*m_ofs) << 5              << endl;    // attachPoint 5 = middle
     (*m_ofs) << "  1"          << endl;
@@ -634,9 +539,13 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << lineDefPoint[1] << endl;
     (*m_ofs) << " 36"           << endl;
     (*m_ofs) << lineDefPoint[2] << endl;
-
-    writeDimBlock(layer_name);
+    writeDimBlockPreamble(layer_name);
+    writeAngularDimBlock(textMidPoint, lineDefPoint,
+                         startExt1, endExt1,
+                         startExt2, endExt2,
+                         dimText);
 }
+
 //***************************
 //WriteRadialDim
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
@@ -687,7 +596,8 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << " 40"          << endl;   // leader length????
     (*m_ofs) << 0              << endl;
 
-    writeDimBlock(layer_name);
+    writeDimBlockPreamble(layer_name);
+    writeRadialDimBlock(centerPoint, textMidPoint, arcPoint, dimText);
 }
 
 //***************************
@@ -740,13 +650,14 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << " 40"          << endl;   // leader length????
     (*m_ofs) << 0              << endl;
 
-    writeDimBlock(layer_name);
+    writeDimBlockPreamble(layer_name);
+    writeDiametricDimBlock(textMidPoint, arcPoint1, arcPoint2, dimText);
 }
 
 //***************************
-//WriteDimBlock
+//WriteDimBlockPreamble
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeDimBlock(const char* layer_name)
+void CDxfWrite::writeDimBlockPreamble(const char* layer_name)
 {
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "BLOCK"        << endl;
@@ -764,9 +675,451 @@ void CDxfWrite::writeDimBlock(const char* layer_name)
     m_ssBlock << "*" << layer_name     << endl;     // blockName
     m_ssBlock << "  1"          << endl;
     m_ssBlock << ""             << endl;
+}
+
+//***************************
+//writeLinearDimBlock
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* dimLine,
+                         const double* e1Start, const double* e2Start,
+                         const char* dimText)
+{
+    Base::Vector3d e1S(e1Start[0],e1Start[1],e1Start[2]);
+    Base::Vector3d e2S(e2Start[0],e2Start[1],e2Start[2]);
+    Base::Vector3d dl(dimLine[0],dimLine[1],dimLine[2]);      //point on DimLine (somewhere!)
+    Base::Vector3d perp = dl.DistanceToLineSegment(e2S,e1S);
+    Base::Vector3d e1E = e1S - perp;
+    Base::Vector3d e2E = e2S - perp;
+    Base::Vector3d para = e1E - e2E;
+    Base::Vector3d X(1.0,0.0,0.0);
+    double angle = para.GetAngle(X);
+    angle = angle * 180.0 / Pi;
+    double arrowLen = 5.0;             //magic number
+    double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "LINE"         << endl;       //extension line 2
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << e2Start[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << e2Start[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << e2Start[2]     << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << e2E.x          << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << e2E.y          << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << e2E.z          << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "LINE"         << endl;       //extension line 1
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << e1Start[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << e1Start[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << e1Start[2]     << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << e1E.x          << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << e1E.y          << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << e1E.z          << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "LINE"         << endl;       //dimension line
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << e1E.x          << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << e1E.y          << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << e2E.x          << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << e2E.y          << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << e2E.z          << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "TEXT"         << endl;    //dim text
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << "  6"          << endl;
+    m_ssBlock << "CONTINUOUS"   << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << textMidPoint[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << textMidPoint[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << textMidPoint[2]     << endl;
+    m_ssBlock << " 40"          << endl;
+    m_ssBlock << "3.5"          << endl;
+    m_ssBlock << "  1"          << endl;
+    m_ssBlock << dimText        << endl;
+    m_ssBlock << " 50"          << endl;
+    m_ssBlock << angle          << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 1
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << (e1E.x + arrowWidth) << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << (e1E.y + arrowLen)  << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << (e1E.x - arrowWidth) << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << (e1E.y + arrowLen) << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << e1E.x          << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << e1E.y          << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << e1E.x          << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << e1E.y          << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << e1E.z          << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 2
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << (e2E.x + arrowWidth) << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << (e2E.y - arrowLen)  << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << e2E.z          << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << (e2E.x - arrowWidth) << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << (e2E.y - arrowLen) << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << e2E.z          << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << e2E.x          << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << e2E.y          << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << e2E.z          << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << e2E.x          << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << e2E.y          << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << e2E.z          << endl;
+
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
-    //TODO: add extension, dimension line endpoints
+}
+
+//***************************
+//writeAngularDimBlock
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* lineDefPoint,
+                         const double* startExt1, const double* endExt1,
+                         const double* startExt2, const double* endExt2,
+                         const char* dimText)
+{
+    Base::Vector3d e1S(startExt1[0],startExt1[1],startExt1[2]);   //apex
+    Base::Vector3d e2S(startExt2[0],startExt2[1],startExt2[2]);
+    Base::Vector3d e1E(endExt1[0],endExt1[1],endExt1[2]);
+    Base::Vector3d e2E(endExt2[0],endExt2[1],endExt2[2]);
+    Base::Vector3d e2 = e2E - e2S;
+    Base::Vector3d e1 = e1E - e1S;
+    double startAngle = atan2(e2.y,e2.x);
+    if (startAngle < 0) {
+         startAngle += 2.0 * Pi;
+    }
+    startAngle = startAngle * 180.0 / Pi;
+    double endAngle = atan2(e1.y,e1.x);
+    if (endAngle < 0) {
+         endAngle += 2.0 * Pi;
+    }
+    endAngle = endAngle * 180.0 / Pi;
+    
+    Base::Vector3d linePt(lineDefPoint[0],lineDefPoint[1],lineDefPoint[2]);
+    double radius = (e2S - linePt).Length();
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "ARC"          << endl;       //dimline arc
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << startExt2[0]   << endl;      //arc center
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << startExt2[1]   << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << startExt2[2]   << endl;
+    m_ssBlock << " 40"          << endl;
+    m_ssBlock << radius         << endl;      //radius
+    m_ssBlock << " 50"          << endl;
+    m_ssBlock << startAngle     << endl;            //start angle
+    m_ssBlock << " 51"          << endl;
+    m_ssBlock << endAngle       << endl;            //end angle
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "TEXT"         << endl;           //dim text
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << "  6"          << endl;
+    m_ssBlock << "CONTINUOUS"   << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << textMidPoint[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << textMidPoint[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << textMidPoint[2]     << endl;
+    m_ssBlock << " 40"          << endl;
+    m_ssBlock << "3.5"          << endl;
+    m_ssBlock << "  1"          << endl;
+    m_ssBlock << dimText        << endl;
+    m_ssBlock << " 50"          << endl;
+    m_ssBlock << 0              << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "ENDBLK"       << endl;
+}
+
+//***************************
+//writeRadialDimBlock
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* textMidPoint, 
+                         const double* arcPoint, const char* dimText)
+{
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "LINE"         << endl;
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << centerPoint[0] << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << centerPoint[1] << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << centerPoint[2] << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << arcPoint[0]    << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << arcPoint[1]    << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << arcPoint[2]    << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "TEXT"         << endl;           //dim text
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << "  6"          << endl;
+    m_ssBlock << "CONTINUOUS"   << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << textMidPoint[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << textMidPoint[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << textMidPoint[2]     << endl;
+    m_ssBlock << " 40"          << endl;
+    m_ssBlock << "3.5"          << endl;
+    m_ssBlock << "  1"          << endl;
+    m_ssBlock << dimText        << endl;
+    m_ssBlock << " 50"          << endl;
+    m_ssBlock << 0              << endl;
+    m_ssBlock << " 72"          << endl;
+    m_ssBlock << "1"            << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "ENDBLK"       << endl;
+}
+
+//***************************
+//writeDiametricDimBlock
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint, 
+                         const double* arcPoint1, const double* arcPoint2,
+                         const char* dimText)
+{
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "LINE"         << endl;
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << arcPoint1[0]   << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << arcPoint1[1]   << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << arcPoint1[2]   << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << arcPoint2[0]   << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << arcPoint2[1]   << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << arcPoint2[2]   << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "TEXT"         << endl;           //dim text
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << "  6"          << endl;
+    m_ssBlock << "CONTINUOUS"   << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << textMidPoint[0]     << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << textMidPoint[1]     << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << textMidPoint[2]     << endl;
+    m_ssBlock << " 40"          << endl;
+    m_ssBlock << "3.5"          << endl;
+    m_ssBlock << "  1"          << endl;
+    m_ssBlock << dimText        << endl;
+    m_ssBlock << " 50"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 72"          << endl;
+    m_ssBlock << "1"            << endl;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "ENDBLK"       << endl;
+}
+
+//TODO: how much of this header do we really need???
+//***************************
+//WriteHeaderSection
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeHeaderSection(void)
+{
+    std::stringstream ss;
+    ss << "FreeCAD v" << FCVersionMajor << "." << FCVersionMinor << " " << FCRevision; 
+
+    //header & version
+    (*m_ofs) << "999"      << endl;
+    (*m_ofs) << ss.str()   << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "SECTION"  << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "HEADER"   << endl;
+    (*m_ofs) << "  9"      << endl;
+    (*m_ofs) << "$ACADVER"  << endl;
+    (*m_ofs) << "  1"      << endl;
+    (*m_ofs) << "AC1009"   << endl;
+    (*m_ofs) << "  9"      << endl;
+    (*m_ofs) << "$INSBASE"  << endl;
+    (*m_ofs) << " 10"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 20"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 30"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$EXTMIN"  << endl;
+    (*m_ofs) << " 10"      << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 20"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 30"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$EXTMAX"  << endl;
+    (*m_ofs) << " 10"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 20"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << " 30"       << endl;
+    (*m_ofs) << 0.0         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMSTYLE" << endl;
+    (*m_ofs) << "  2"       << endl;
+    (*m_ofs) << "STANDARD"  << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$MEASUREMENT" << endl;
+    (*m_ofs) << " 70"       << endl;
+    (*m_ofs) << "1"         << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$LIMMAX" << endl;
+    (*m_ofs) << " 10"       << endl;
+    (*m_ofs) << "0"         << endl;
+    (*m_ofs) << " 20"       << endl;
+    (*m_ofs) << "0"         << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$TEXTSIZE"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$TEXTSTYLE"   << endl;
+    (*m_ofs) << "  7"       << endl;
+    (*m_ofs) << "STANDARD"  << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMTXT"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMTAD"   << endl;
+    (*m_ofs) << " 70"       << endl;
+    (*m_ofs) << "1"         << endl;
+    
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DIMASZ"   << endl;
+    (*m_ofs) << " 40"       << endl;
+    (*m_ofs) << "3.5"       << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$HANDLING"   << endl;
+    (*m_ofs) << " 70"         << endl;
+    (*m_ofs) << "0"           << endl;
+
+    (*m_ofs) << "  9"       << endl;
+    (*m_ofs) << "$DWGCODEPAGE"   << endl;
+    (*m_ofs) << "  3"       << endl;
+    (*m_ofs) << "65001"     << endl; //Microsoft for UTF-8?
+    (*m_ofs) << "  0"       << endl;
+    (*m_ofs) << "ENDSEC"    << endl;
+
+//    (*m_ofs) << "  0"       << endl;    //Classes are not R12
+//    (*m_ofs) << "SECTION"   << endl;
+//    (*m_ofs) << "  2"       << endl;
+//    (*m_ofs) << "CLASSES"   << endl;
+//    (*m_ofs) << "  0"       << endl;
+//    (*m_ofs) << "ENDSEC"    << endl;
 }
 
 //***************************
@@ -804,10 +1157,43 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << 1          << endl;
     (*m_ofs) << " 21"      << endl;
     (*m_ofs) << 1          << endl;
+    (*m_ofs) << " 12"      << endl;
+    (*m_ofs) << "   50"    << endl;
+    (*m_ofs) << " 22"      << endl;
+    (*m_ofs) << "   50"    << endl;
 //    (*m_ofs) << " 12"      << endl;  //center of vport in WCS
 //    (*m_ofs) << 153.1      << endl;  //doesn't seem to work in LC
-//    (*m_ofs) << " 22"      << endl;  // 132.5x98.44
+//    (*m_ofs) << " 22"      << endl;  // 132.5x98.44 mid page A4
 //    (*m_ofs) << 104.9      << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDTAB"   << endl;
+
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "TABLE"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "LTYPE"    << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    1"    << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "LTYPE"    << endl;
+
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
+//    (*m_ofs) << "100"      << endl;
+//    (*m_ofs) << "AcDb??????TableRecord"    << endl;
+
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "CONTINUOUS"  << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << "  3"      << endl;
+    (*m_ofs) << "Solid line"      << endl;
+    (*m_ofs) << " 72"      << endl;
+    (*m_ofs) << "   65"    << endl;
+    (*m_ofs) << " 73"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << " 40"      << endl;
+    (*m_ofs) << "0.0"      << endl;
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "ENDTAB"   << endl;
 
@@ -889,6 +1275,35 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "ENDSEC"   << endl;
 }
 
+//***************************
+//writeBlocksSection
+//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+void CDxfWrite::writeBlocksSection(void)
+{
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "SECTION"  << endl;
+
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "BLOCKS"   << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "BLOCK"    << endl;
+    (*m_ofs) << "  2"      << endl;
+    (*m_ofs) << "$MODEL_SPACE"    << endl;
+    (*m_ofs) << " 70"      << endl;
+    (*m_ofs) << "    0"    << endl;
+    (*m_ofs) << " 10"      << endl;
+    (*m_ofs) << 0.0        << endl;
+    (*m_ofs) << " 20"      << endl;
+    (*m_ofs) << 0.0        << endl;
+    (*m_ofs) << " 30"      << endl;
+    (*m_ofs) << 0.0        << endl;
+    (*m_ofs) << "  3"      << endl;
+    (*m_ofs) << "$MODEL_SPACE" << endl;
+    (*m_ofs) << "  1"      << endl;
+    (*m_ofs) << ""    << endl;
+    (*m_ofs) << "  0"      << endl;
+    (*m_ofs) << "ENDBLK"    << endl;
+}
 
 CDxfRead::CDxfRead(const char* filepath)
 {
