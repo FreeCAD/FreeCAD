@@ -39,4 +39,19 @@ FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
 
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
 if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
-    paramGetV.SetBool("ReadShapeCompoundMode", True)
+    paramGetV.SetBool("ReadShapeCompoundMode", False)
+
+paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import")
+
+if  paramGetV.GetBool("UseLinkGroup", False) != \
+        paramGetV.GetBool("UseLinkGroup",True):
+    paramGetV.SetBool("UserLinkGroup", True)
+
+if  paramGetV.GetBool("ImportHiddenObject", False) != \
+        paramGetV.GetBool("ImportHiddenObject", True):
+    paramGetV.SetBool("ImportHiddenObject", True)
+
+if  paramGetV.GetBool("ExportHiddenObject", False) != \
+        paramGetV.GetBool("ExportHiddenObject", True):
+    paramGetV.SetBool("ExportHiddenObject", True)
+

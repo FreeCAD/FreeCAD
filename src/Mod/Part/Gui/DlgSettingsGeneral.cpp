@@ -244,6 +244,9 @@ void DlgImportExportStep::saveSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onSave();
+    ui->checkBoxExportHiddenObj->onSave();
+    ui->checkBoxImportHiddenObj->onSave();
+    ui->checkBoxUseLinkGroup->onSave();
 }
 
 void DlgImportExportStep::loadSettings()
@@ -278,6 +281,9 @@ void DlgImportExportStep::loadSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onRestore();
+    ui->checkBoxExportHiddenObj->onRestore();
+    ui->checkBoxImportHiddenObj->onRestore();
+    ui->checkBoxUseLinkGroup->onRestore();
 }
 
 /**
