@@ -74,21 +74,39 @@ class MaterialEditor:
             self.updateContents(d)
 
 
+    def getMaterialResources(self):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
+        use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
+        use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
+        use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
+        if use_mat_from_custom_dir:
+            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        # later found cards with same name will override cards
+        # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
+        self.resources = []
+        if use_built_in_materials:
+            self.resources.append(FreeCAD.getResourceDir() + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial")
+        if use_mat_from_config_dir:
+            self.resources.append(FreeCAD.ConfigGet("UserAppData") + "Material")
+        if use_mat_from_custom_dir:
+            custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+            if os.path.exists(custom_mat_dir):
+                self.resources.append(custom_mat_dir)
+        self.outputResources()
+
+
+    def outputResources(self):
+        print('locations we gone look for material cards:')
+        for path in self.resources:
+            print('  ' + path)
+        print('\n')
+
+
     def updateCards(self):
         "updates the contents of the materials combo with existing material cards"
-        # look for cards in both resources dir and a Materials sub-folder in the user folder.
-        # User cards with same name will override system cards
-        # FreeCAD returns paths with / at the end, thus not os.sep is needed on first +
-        paths = [FreeCAD.getResourceDir() + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        ap = FreeCAD.ConfigGet("UserAppData") + "Material"
-        if os.path.exists(ap):
-            paths.append(ap)
-        # print('locations we gone look for material cards:')
-        # for path in paths:
-        #     print('  ' + path)
-        # print('\n')
+        self.getMaterialResources()
         self.cards = {}
-        for p in paths:
+        for p in self.resources:
             for f in os.listdir(p):
                 b,e = os.path.splitext(f)
                 if e.upper() == ".FCMAT":
