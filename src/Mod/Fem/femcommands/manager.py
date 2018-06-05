@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 
 class CommandManager(object):
         def __init__(self):
-            self.resources = {'Pixmap': 'fem-frequency-analysis',
+            self.resources = {'Pixmap': 'FemWorkbench',
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
                               'Accel': "",
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}

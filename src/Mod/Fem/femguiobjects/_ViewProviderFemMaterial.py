@@ -536,7 +536,7 @@ class _TaskPanelFemMaterial:
         self.pathList = []
         self.parameterWidget.cb_materials.clear()
 
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
         if self.obj.Category == 'Fluid':
             self.import_fluid_materials()
         else:
