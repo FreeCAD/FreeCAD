@@ -242,6 +242,11 @@ bool ImportOCAF::getColor(const TopoDS_Shape &shape, Info &info, bool check, boo
 
 bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info)
 {
+    if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More()) {
+        FC_WARN(labelName(label) << " has empty shape");
+        return false;
+    }
+
     auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
     feature->Shape.setValue(shape);
 
