@@ -59,6 +59,7 @@ short Compound::mustExecute() const
 App::DocumentObjectExecReturn *Compound::execute(void)
 {
     try {
+#ifdef FC_NO_ELEMENT_MAP
         std::vector<ShapeHistory> history;
         int countFaces = 0;
 
@@ -86,6 +87,15 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         prop.setValues(history);
         prop.setContainer(this);
         prop.touch();
+#else
+        std::vector<TopoShape> shapes;
+        for(auto obj : Links.getValues()) {
+            auto sh = Feature::getTopoShape(obj);
+            if(!sh.isNull())
+                shapes.push_back(sh);
+        }
+        this->Shape.setValue(TopoShape().makECompound(shapes));
+#endif
 
         return App::DocumentObject::StdReturn;
     }
