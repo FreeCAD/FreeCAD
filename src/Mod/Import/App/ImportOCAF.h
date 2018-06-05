@@ -84,16 +84,14 @@ private:
         App::Color edgeColor;
         bool hasFaceColor = false;
         bool hasEdgeColor = false;
-        bool free = true;
+        int free = true;
     };
 
     App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool isArrayElement=false);
     bool createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info);
-    bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info,
-            const std::vector<App::DocumentObject*> &children = {});
+    bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info);
     bool createGroup(Info &info, const TopoDS_Shape &shape,
         const std::vector<App::DocumentObject*> &children, const boost::dynamic_bitset<> &visibilities);
-    App::DocumentObject *createObject(TDF_Label label, const TopoDS_Shape &shape);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
 

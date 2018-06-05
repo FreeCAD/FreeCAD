@@ -240,28 +240,17 @@ bool ImportOCAF::getColor(const TopoDS_Shape &shape, Info &info, bool check, boo
     return ret;
 }
 
-bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info, 
-        const std::vector<App::DocumentObject*> &children) 
+bool ImportOCAF::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info)
 {
-    Part::Feature *feature;
-    if(children.size()) {
-        auto compound = static_cast<Part::Compound*>(doc->addObject("Part::Compound","Compound"));
-        compound->Links.setValues(children);
-        compound->recomputeFeature();
-        feature = compound;
-    }else{
-        feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
-        feature->Shape.setValue(shape);
-    }
+    auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
+    feature->Shape.setValue(shape);
 
     feature->Visibility.setValue(false);
 
     App::Color color;
     getColor(shape,info);
-    if(info.hasFaceColor)
-        applyFaceColors(feature,{info.faceColor});
-    if(info.hasEdgeColor)
-        applyEdgeColors(feature,{info.edgeColor});
+    applyFaceColors(feature,{info.faceColor});
+    applyEdgeColors(feature,{info.edgeColor});
 
     TDF_LabelSequence seq;
     if(!label.IsNull() && aShapeTool->GetSubShapes(label,seq)) {
@@ -485,7 +474,7 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &
 
     auto info = it->second;
     if(!getColor(shape,info,true) && shuoColors.empty() && info.free) {
-        it->second.free = false;
+        it->second.free = 0;
         setPlacement(info.propPlacement,shape);
         setObjectName(info.obj,label);
         myNames.emplace(label,info.obj->getNameInDocument());
@@ -506,7 +495,10 @@ App::DocumentObject *ImportOCAF::loadShape(TDF_Label label, const TopoDS_Shape &
     return link;
 }
 
-bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info) {
+bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info)
+{
+    (void)label;
+
     std::vector<TDF_Label> childLabels;
     std::vector<TopoDS_Shape> childShapes;
     boost::dynamic_bitset<> visibilities;
@@ -606,13 +598,6 @@ bool ImportOCAF::createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info
     if(children.empty())
         return false;
 
-#if 1
-    (void)label;
-#else
-    if(label.IsNull() || !aShapeTool->IsAssembly(label))
-        return createObject(label,shape,info,children);
-#endif
-        
     if(!createGroup(info,shape,children,visibilities))
         return false;
     if(shuoColors.size())
