@@ -66,6 +66,7 @@
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
+        <file>panels/DlgToolEdit.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
@@ -83,7 +84,7 @@
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
-        <file>panels/ToolEdit.ui</file>
+        <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>

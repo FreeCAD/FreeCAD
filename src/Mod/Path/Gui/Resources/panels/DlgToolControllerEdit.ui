@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>386</width>
-    <height>554</height>
+    <width>561</width>
+    <height>739</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>368</width>
-        <height>445</height>
+        <width>543</width>
+        <height>593</height>
        </rect>
       </property>
       <attribute name="label">
@@ -75,14 +75,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -104,14 +104,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -133,14 +133,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -162,14 +162,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -232,8 +232,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>368</width>
-        <height>445</height>
+        <width>543</width>
+        <height>593</height>
        </rect>
       </property>
       <attribute name="label">
@@ -241,354 +241,35 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Tool Properties</string>
+        <widget class="QWidget" name="toolEditor" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <layout class="QFormLayout" name="formLayout_3">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="toolName">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maxLength">
-             <number>50</number>
-            </property>
-            <property name="placeholderText">
-             <string>Display Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Type</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="toolType">
-            <property name="currentIndex">
-             <number>6</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>Drill</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CenterDrill</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CounterSink</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CounterBore</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Reamer</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Tap</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>EndMill</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>SlotCutter</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BallEndMill</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>ChamferMill</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CornerRound</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Engraver</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Material</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="toolMaterial">
-            <item>
-             <property name="text">
-              <string>HighSpeedSteel</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>HighCarbonSteel</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CastAlloy</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Carbide</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Ceramics</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Diamond</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Sialon</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Diameter</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Length Offset</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Flat Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Corner Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Point/Tip Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Cutting Edge Height</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolDiameter">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="text" stdset="0">
-             <string>0 mm</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>100.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.125000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolLengthOffset">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="text" stdset="0">
-             <string>0 mm</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolFlatRadius">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="text" stdset="0">
-             <string>0 mm</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolCornerRadius">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="text" stdset="0">
-             <string>0 mm</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeHeight">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="text" stdset="0">
-             <string>0 mm</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
-           <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeAngle">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">°</string>
-            </property>
-            <property name="text">
-             <string>180 °</string>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>180.000000000000000</double>
-            </property>
-           </widget>
-          </item>
+          <property name="margin">
+           <number>0</number>
+          </property>
          </layout>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <widget class="QLabel" name="label_14">
@@ -625,7 +306,7 @@
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
@@ -639,15 +320,6 @@
   <tabstop>spindleSpeed</tabstop>
   <tabstop>spindleDirection</tabstop>
   <tabstop>buttonBox</tabstop>
-  <tabstop>toolName</tabstop>
-  <tabstop>toolType</tabstop>
-  <tabstop>toolMaterial</tabstop>
-  <tabstop>toolDiameter</tabstop>
-  <tabstop>toolLengthOffset</tabstop>
-  <tabstop>toolFlatRadius</tabstop>
-  <tabstop>toolCornerRadius</tabstop>
-  <tabstop>toolCuttingEdgeAngle</tabstop>
-  <tabstop>toolCuttingEdgeHeight</tabstop>
  </tabstops>
  <resources/>
  <connections>

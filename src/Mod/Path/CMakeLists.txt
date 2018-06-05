@@ -85,6 +85,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathToolController.py
+    PathScripts/PathToolEdit.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
@@ -131,9 +132,16 @@ SET(PathTests_SRCS
     PathTests/TestPathUtil.py
 )
 
+SET(Path_Images
+    Images/Tools/drill.svg
+    Images/Tools/endmill.svg
+    Images/Tools/v-bit.svg
+)
+
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Path_Images}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
@@ -172,3 +180,11 @@ INSTALL(
     DESTINATION
         Mod/Path/PathScripts/post
 )
+
+INSTALL(
+    FILES
+        ${Path_Images}
+    DESTINATION
+        Mod/Path/Images
+)
+

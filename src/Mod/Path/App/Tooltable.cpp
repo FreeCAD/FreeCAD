@@ -65,7 +65,7 @@ Tool::Tool()
     LengthOffset = 0;
     FlatRadius = 0;
     CornerRadius = 0;
-    CuttingEdgeAngle = 0;
+    CuttingEdgeAngle = 180;
     CuttingEdgeHeight = 0;
 }
 
@@ -103,7 +103,7 @@ void Tool::Restore(XMLReader &reader)
     LengthOffset      = reader.hasAttribute("length")   ? (double) reader.getAttributeAsFloat("length")   : 0.0;
     FlatRadius        = reader.hasAttribute("flat")     ? (double) reader.getAttributeAsFloat("flat")     : 0.0;
     CornerRadius      = reader.hasAttribute("corner")   ? (double) reader.getAttributeAsFloat("corner")   : 0.0;
-    CuttingEdgeAngle  = reader.hasAttribute("angle")    ? (double) reader.getAttributeAsFloat("angle")    : 0.0;
+    CuttingEdgeAngle  = reader.hasAttribute("angle")    ? (double) reader.getAttributeAsFloat("angle")    : 180.0;
     CuttingEdgeHeight = reader.hasAttribute("height")   ? (double) reader.getAttributeAsFloat("height")   : 0.0;
     std::string type  = reader.hasAttribute("type")     ? reader.getAttribute("type") : "";
     std::string mat   = reader.hasAttribute("mat")      ? reader.getAttribute("mat")  : "";
