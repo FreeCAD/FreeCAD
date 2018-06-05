@@ -137,7 +137,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      results->setCommand("Results");
      *results << "FEM_ResultsPurge"
               << "FEM_ResultShow";
-
 #ifdef FC_USE_VTK
      *results << "Separator"
               << "FEM_PostApplyChanges"
@@ -153,6 +152,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "Separator"
               << "FEM_PostCreateFunctions";
 #endif
+
+     Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
+     utils->setCommand("Results");
+     *utils << "FEM_ClippingPlaneAdd"
+            << "FEM_ClippingPlaneRemoveAll";
 
     return root;
 }
@@ -258,7 +262,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     results->setCommand("&Results");
     *results << "FEM_ResultsPurge"
              << "FEM_ResultShow";
-
 #ifdef FC_USE_VTK
     *results << "Separator"
              << "FEM_PostApplyChanges"
@@ -274,6 +277,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
+
+    Gui::MenuItem* utils = new Gui::MenuItem;
+    root->insertItem(item, utils);
+    utils->setCommand("Utilities");
+    *utils << "FEM_ClippingPlaneAdd"
+           << "FEM_ClippingPlaneRemoveAll";
 
     return root;
 }
