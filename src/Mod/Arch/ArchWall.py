@@ -291,14 +291,17 @@ class _CommandWall:
 
     def addDefault(self,l):
 
-        FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
-        FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
-        FreeCADGui.doCommand('base.addGeometry(trace)')
+        FreeCADGui.addModule("Draft")
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
+            FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
+            FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
+            FreeCADGui.doCommand('base.addGeometry(trace)')
+        else:
+            FreeCADGui.doCommand('base=Draft.makeLine(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
-        FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
     def update(self,point,info):
@@ -714,6 +717,7 @@ class _Wall(ArchComponent.Component):
                                 v.multiply(obj.Length.Value)
                                 p2 = e.Vertexes[0].Point.add(v)
                                 if Draft.getType(obj.Base) == "Wire":
+                                    #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) == "Sketch":
                                     obj.Base.movePoint(0,2,p2,0)
