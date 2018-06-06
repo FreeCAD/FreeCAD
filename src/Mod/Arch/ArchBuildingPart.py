@@ -48,17 +48,15 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-# possible roles for BuildingPart objects
-Roles = ["Undefined","Storey","Zone","SpatialZone","Component","Group"]
 
-
-def makeBuildingPart(objectslist=None,name="BuildingPart"):
+def makeBuildingPart(objectslist=None):
 
     '''makeBuildingPart(objectslist): creates a buildingPart including the
     objects from the given list.'''
 
-    obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython",name)
-    obj.Label = translate("Arch",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython","BuildingPart")
+    #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
+    obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
@@ -68,9 +66,9 @@ def makeBuildingPart(objectslist=None,name="BuildingPart"):
 
 
 def convertFloors(floor=None):
-    
+
     """convert the given Floor (or all Arch Floors from the active document if none is given) into BuildingParts"""
-    
+
     todel = []
     if floor:
         objset = [floor]
@@ -137,26 +135,46 @@ class BuildingPart:
 
     def __init__(self,obj):
 
-        obj.addExtension('App::OriginGroupExtensionPython', self)
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
-        obj.addProperty("App::PropertyLength","LevelOffset","Arch",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
-        obj.addProperty("App::PropertyArea","Area", "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        obj.addProperty("App::PropertyEnumeration","Role","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-        obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
-        obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.Role = Roles
-        self.Type = "BuildingPart"
         obj.Proxy = self
+        obj.addExtension('App::GroupExtensionPython', self)
+        #obj.addExtension('App::OriginGroupExtensionPython', self)
+        self.setProperties(obj)
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        if not "LevelOffset" in pl:
+            obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
+        if not "Area" in pl:
+            obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+        if not "IfcRole" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+            import ArchComponent
+            obj.IfcRole = ArchComponent.IfcRoles
+        if not "CloneOf" in pl:
+            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        if not "Description" in pl:
+            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        if not "Tag" in pl:
+            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        if not "IfcAttributes" in pl:
+            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        self.Type = "BuildingPart"
+
+    def onDocumentRestored(self,obj):
+
+        self.setProperties(obj)
 
     def __getstate__(self):
-        return self.Type
+
+        return None
 
     def __setstate__(self,state):
-        if state:
-            self.Type = state
-            
+
+        return None
+
     def onChanged(self,obj,prop):
         if (prop == "Height"):
             for o in obj.Group:
@@ -166,7 +184,7 @@ class BuildingPart:
 
     def execute(self,obj):
         pass
-    
+
     def getSpaces(self,obj):
         "gets the list of Spaces that have this object as their Zone property"
         g = []
@@ -184,33 +202,58 @@ class ViewProviderBuildingPart:
     "A View Provider for the BuildingPart object"
 
     def __init__(self,vobj):
-        vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
-        vobj.addProperty("App::PropertyString","OverrideUnit","Base",QT_TRANSLATE_NOOP("App::Property","An optional unit to express levels"))
-        vobj.addProperty("App::PropertyFont","FontName","Base","")
-        vobj.addProperty("App::PropertyLength","FontSize","Base","")
-        vobj.addProperty("App::PropertyPlacement","DisplayOffset","Base",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to the level mark"))
-        vobj.addProperty("App::PropertyBool","ShowLevel","Base",QT_TRANSLATE_NOOP("App::Property","If true, show the level"))
-        vobj.addProperty("App::PropertyBool","ShowUnit","Base",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"))
-        vobj.addProperty("App::PropertyBool","SetWorkingPlane","Base",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
-        vobj.addProperty("App::PropertyBool","OriginOffset","Base",QT_TRANSLATE_NOOP("App::Property","If true, when activated, Display offset will affect the origin mark too"))
-        vobj.addProperty("App::PropertyBool","ShowLabel","Base",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the object's label is displayed"))
-        vobj.FontName = Draft.getParam("textfont","Arial")
-        vobj.FontSize = Draft.getParam("textheight",2.0)
-        vobj.ShapeColor = (0.13,0.15,0.37)
-        vobj.LineWidth = 1
-        vobj.SetWorkingPlane = True
-        vobj.ShowLevel = True
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
         vobj.Proxy = self
+        self.setProperties(vobj)
+        vobj.ShapeColor = (0.13,0.15,0.37)
+
+    def setProperties(self,vobj):
+
+        pl = vobj.PropertiesList
+        if not "LineWidth" in pl:
+            vobj.addProperty("App::PropertyFloat","LineWidth","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The line width of this object"))
+            vobj.LineWidth = 1
+        if not "OverrideUnit" in pl:
+            vobj.addProperty("App::PropertyString","OverrideUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","An optional unit to express levels"))
+        if not "DisplayOffset" in pl:
+            vobj.addProperty("App::PropertyPlacement","DisplayOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to the level mark"))
+        if not "ShowLevel" in pl:
+            vobj.addProperty("App::PropertyBool","ShowLevel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the level"))
+            vobj.ShowLevel = True
+        if not "ShowUnit" in pl:
+            vobj.addProperty("App::PropertyBool","ShowUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"))
+        if not "SetWorkingPlane" in pl:
+            vobj.addProperty("App::PropertyBool","SetWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
+            vobj.SetWorkingPlane = True
+        if not "OriginOffset" in pl:
+            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, Display offset will affect the origin mark too"))
+        if not "ShowLabel" in pl:
+            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the object's label is displayed"))
+            vobj.ShowLabel = True
+        if not "FontName" in pl:
+            vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"))
+            vobj.FontName = Draft.getParam("textfont","Arial")
+        if not "FontSize" in pl:
+            vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
+            vobj.FontSize = Draft.getParam("textheight",2.0)
+
+    def onDocumentRestored(self,vobj):
+
+        selt.setProperties(vobj)
 
     def getIcon(self):
+
         import Arch_rc
         if hasattr(self,"Object"):
-            if self.Object.Role == "Storey":
+            if self.Object.IfcRole == "Building Storey":
                 return ":/icons/Arch_Floor_Tree.svg"
+            elif self.Object.IfcRole == "Building":
+                return ":/icons/Arch_Building_Tree.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
     def attach(self,vobj):
+
         self.Object = vobj.Object
         from pivy import coin
         self.sep = coin.SoSeparator()
@@ -234,76 +277,102 @@ class ViewProviderBuildingPart:
         self.sep.addChild(self.txt)
         self.onChanged(vobj,"ShapeColor")
         self.onChanged(vobj,"FontName")
-        self.onChanged(vobj,"FontSize")
         self.onChanged(vobj,"ShowLevel")
+        self.onChanged(vobj,"FontSize")
         return
+
+    def getDisplayModes(self,vobj):
+
+        return ["Default"]
+
+    def getDefaultDisplayMode(self):
+
+        return "Default"
+
+    def setDisplayMode(self,mode):
+
+        return mode
+
+    def isShow(self):
         
+        return True
+
     def updateData(self,obj,prop):
+
         if prop in ["Placement","LevelOffset"]:
             self.onChanged(obj.ViewObject,"OverrideUnit")
-    
+
     def onChanged(self,vobj,prop):
+
         if prop == "ShapeColor":
-            l = vobj.ShapeColor
-            self.mat.diffuseColor.setValue([l[0],l[1],l[2]])
+            if hasattr(vobj,"ShapeColor"):
+                l = vobj.ShapeColor
+                self.mat.diffuseColor.setValue([l[0],l[1],l[2]])
         elif prop == "LineWidth":
-            self.dst.lineWidth = vobj.LineWidth
+            if hasattr(vobj,"LineWidth"):
+                self.dst.lineWidth = vobj.LineWidth
         elif prop == "FontName":
-            if vobj.FontName:
-                if sys.version_info.major < 3:
-                    self.fon.name = vobj.FontName.encode("utf8")
-                else:
-                    self.fon.name = vobj.FontName 
+            if hasattr(vobj,"FontName"):
+                if vobj.FontName:
+                    if sys.version_info.major < 3:
+                        self.fon.name = vobj.FontName.encode("utf8")
+                    else:
+                        self.fon.name = vobj.FontName
         elif prop in ["FontSize","DisplayOffset","OriginOffset"]:
-            fs = vobj.FontSize.Value
-            if fs:
-                self.fon.size = fs
-                b = vobj.DisplayOffset.Base
-                self.tra.translation.setValue([b.x+fs/8,b.y,b.z+fs/8])
-                if vobj.OriginOffset:
-                    self.lco.point.setValues([[b.x-fs,b.y,b.z],[b.x+fs,b.y,b.z],[b.x,b.y-fs,b.z],[b.x,b.y+fs,b.z],[b.x,b.y,b.z-fs],[b.x,b.y,b.z+fs]])
-                else:
-                    self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
+            if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset"):
+                fs = vobj.FontSize.Value
+                if fs:
+                    self.fon.size = fs
+                    b = vobj.DisplayOffset.Base
+                    self.tra.translation.setValue([b.x+fs/8,b.y,b.z+fs/8])
+                    if vobj.OriginOffset:
+                        self.lco.point.setValues([[b.x-fs,b.y,b.z],[b.x+fs,b.y,b.z],[b.x,b.y-fs,b.z],[b.x,b.y+fs,b.z],[b.x,b.y,b.z-fs],[b.x,b.y,b.z+fs]])
+                    else:
+                        self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
         elif prop in ["ShowLevel","ShowLabel"]:
-            rn = vobj.RootNode
-            if vobj.ShowLevel or vobj.ShowLabel:
-                if rn.findChild(self.sep) == -1:
-                    rn.addChild(self.sep)
-                self.onChanged(vobj,"ShowUnit")
-            else:
-                if rn.findChild(self.sep) != -1:
-                    rn.removeChild(self.sep)
-        elif prop in ["OverrideUnit","ShowUnit"]:
-            z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
-            q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
-            txt = ""
-            if vobj.ShowLabel:
-                txt += vobj.Object.Label
-            if vobj.ShowLevel:
-                if txt:
-                    txt += " "
-                if z >= 0:
-                    txt = "+"
-                if vobj.OverrideUnit:
-                    u = vobj.OverrideUnit
+            if hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel"):
+                rn = vobj.RootNode
+                if vobj.ShowLevel or vobj.ShowLabel:
+                    if rn.findChild(self.sep) == -1:
+                        rn.addChild(self.sep)
+                    self.onChanged(vobj,"ShowUnit")
                 else:
-                    u = q.getUserPreferred()[2]
-                q = q.getValueAs(u)
-                d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
-                fmt = "{0:."+ str(d) + "f}"
-                if not vobj.ShowUnit:
-                    u = ""
-                txt += fmt.format(float(q)) + str(u)
-            if isinstance(txt,unicode):
-                txt = txt.encode("utf8")
-            self.txt.string.setValue(txt)
+                    if rn.findChild(self.sep) != -1:
+                        rn.removeChild(self.sep)
+        elif prop in ["OverrideUnit","ShowUnit"]:
+            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit"):
+                z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
+                q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
+                txt = ""
+                if vobj.ShowLabel:
+                    txt += vobj.Object.Label
+                if vobj.ShowLevel:
+                    if txt:
+                        txt += " "
+                    if z >= 0:
+                        txt = "+"
+                    if vobj.OverrideUnit:
+                        u = vobj.OverrideUnit
+                    else:
+                        u = q.getUserPreferred()[2]
+                    q = q.getValueAs(u)
+                    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
+                    fmt = "{0:."+ str(d) + "f}"
+                    if not vobj.ShowUnit:
+                        u = ""
+                    txt += fmt.format(float(q)) + str(u)
+                if isinstance(txt,unicode):
+                    txt = txt.encode("utf8")
+                self.txt.string.setValue(txt)
 
     def doubleClicked(self,vobj):
+
         self.activate(vobj)
         FreeCADGui.Selection.clearSelection()
         return True
-        
+
     def activate(self,vobj):
+
         if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == vobj.Object:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",None)
         else:
@@ -312,12 +381,14 @@ class ViewProviderBuildingPart:
                 self.setWorkingPlane()
 
     def setupContextMenu(self,vobj,menu):
+
         from PySide import QtCore,QtGui
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Set working plane",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.setWorkingPlane)
         menu.addAction(action1)
 
     def setWorkingPlane(self):
+
         if hasattr(self,"Object") and hasattr(FreeCAD,"DraftWorkingPlane"):
             import FreeCADGui
             FreeCAD.DraftWorkingPlane.setFromPlacement(self.Object.Placement,rebase=True)
