@@ -64,6 +64,12 @@ class MaterialEditor:
         QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)"), self.checkDeletable)
         QtCore.QObject.connect(self.widget.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
         QtCore.QObject.connect(self.widget.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
+
+        # add material properies (the keys) to the editor
+        for group in material_properties:
+            # print(group)
+            self.addPropertiesToGroup(group)
+
         # update the editor with the contents of the property, if we have one
         d = None
         if self.prop and self.obj:
@@ -72,6 +78,28 @@ class MaterialEditor:
             d = self.material
         if d:
             self.updateContents(d)
+
+
+    def addPropertiesToGroup(self, propertygroup=None):
+        "Adds property to a known group in Tree widges"
+        if propertygroup:
+            groupname = propertygroup[0]
+            groupproperties = propertygroup[1]
+        else:
+            return
+ 
+        # parent
+        self.widget.Editor.addTopLevelItem(QtGui.QTreeWidgetItem([groupname, ]))
+        # how to expand it ?
+
+        # childs
+        for key in groupproperties:
+            if not self.widget.Editor.findItems(key,QtCore.Qt.MatchRecursive,0):
+                top = self.widget.Editor.findItems(translate("Material", groupname),QtCore.Qt.MatchExactly,0)
+                if top:
+                    i = QtGui.QTreeWidgetItem(top[0])
+                    i.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEditable|QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
+                    i.setText(0,key)
 
 
     def getMaterialResources(self):
@@ -125,7 +153,7 @@ class MaterialEditor:
             self.clearEditor()
             for k,i in data.items():
                 k = self.expandKey(k)
-                # most material dict keys are hard coded in ui file, not known keys are added to user defined group
+                # most material dict keys are added with addPropertiesToGroup, see tuple with all these properties at module end
                 slot = self.widget.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
                 if len(slot) == 1:
                     slot = slot[0]
@@ -354,3 +382,16 @@ def editMaterial(material):
     else:
         return material
 
+
+# material properties
+# are there any more resources in FreeCAD source code where known material properties are defined exept the material cards itself?
+material_properties = (
+    ('Meta information', ['Card Name', 'Author And License', 'Source']),
+    ('General', ['Name', 'Father', 'Description', 'Denisty', 'Vendor', 'ProductURL', 'SpecificPrice']),
+    ('Mechanical', ['Youngs Modulus', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness']),
+    ('FEM', ['Poisson Ratio']),
+    ('Architectural', ['Execution Instructions', 'Fire Resistance Class', 'Standard Code', 'Thermal Conductivity', 'Sound Transmission Class', 'Color', 'Finish', 'Units Per Quantity', 'Environmental Efficiency Class']),
+    ('Rendering', ['Diffuse Color', 'Ambient Color', 'Specular Color', 'Shininess', 'Emissive Color', 'Transparency', 'Vertex Shader', 'Fragment Shader', 'Texture Path', 'Texture Scaling']),
+    ('Vector rendering', ['View Color', 'Father', 'View Linewidth', 'Section Color', 'Section Fill Pattern', 'Section Linewidth']),
+    ('User defined', [])
+    )
