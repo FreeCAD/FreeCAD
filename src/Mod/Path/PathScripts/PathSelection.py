@@ -170,6 +170,7 @@ def surfaceselect():
 
 def select(op):
     opsel = {}
+    opsel['Chamfer'] = engraveselect
     opsel['Contour'] = contourselect
     opsel['Drilling'] = drillselect
     opsel['Engrave'] = engraveselect

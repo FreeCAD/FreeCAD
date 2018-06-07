@@ -23,6 +23,8 @@ SET(PathScripts_SRCS
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
+    PathScripts/PathChamfer.py
+    PathScripts/PathChamferGui.py
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
@@ -133,6 +135,7 @@ SET(PathTests_SRCS
 )
 
 SET(Path_Images
+    Images/Ops/chamfer.svg
     Images/Tools/drill.svg
     Images/Tools/endmill.svg
     Images/Tools/v-bit.svg
