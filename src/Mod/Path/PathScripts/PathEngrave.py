@@ -251,7 +251,7 @@ class ObjectEngrave(PathOp.ObjectOp):
         self.opSetDefaultValues(obj)
 
 def Create(name):
-    '''Create(name) ... Creates and returns a Engrave operation.'''
+    '''Create(name) ... Creates and returns an Engrave operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectEngrave(obj)
     return obj
