@@ -195,9 +195,6 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
     );
 #endif
 
-    if(part_name == "903")
-        Base::Console().Message("found\n");    
-
 #if defined(OCAF_KEEP_PLACEMENT)
     std::string asm_name = part_name;
     (void)assembly;

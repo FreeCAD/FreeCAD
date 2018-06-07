@@ -73,10 +73,12 @@ public:
     App::DocumentObject* loadShapes();
     void setMerge(bool enable) { merge=enable;};
     void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
+    void setBaseName(bool enable) { useBaseName=enable; }
     void setImportHiddenObject(bool enable) {importHidden=enable;}
 
 private:
     struct Info {
+        std::string baseName;
         App::DocumentObject *obj = 0;
         App::PropertyPlacement *propPlacement = 0;
         App::Color faceColor;
@@ -93,6 +95,9 @@ private:
         const std::vector<App::DocumentObject*> &children, const boost::dynamic_bitset<> &visibilities);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
+    void setObjectName(Info &info, TDF_Label label);
+    std::string getLabelName(TDF_Label label);
+    App::DocumentObject *expandShape(const TopoDS_Shape &shape);
 
     virtual void applyEdgeColors(Part::Feature*, const std::vector<App::Color>&) {}
     virtual void applyFaceColors(Part::Feature*, const std::vector<App::Color>&) {}
@@ -122,6 +127,7 @@ private:
     bool merge;
     std::string default_name;
     bool useLinkGroup;
+    bool useBaseName;
     bool importHidden;
 
     std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myShapes;

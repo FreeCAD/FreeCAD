@@ -290,6 +290,7 @@ private:
             vp->updateColors(part,0,true);
             return;
         }
+        vp->MapFaceColor.setValue(false);
         if(colors.size() == 1)
             vp->ShapeColor.setValue(colors.front());
         else 
@@ -298,6 +299,7 @@ private:
     virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp) return;
+        vp->MapLineColor.setValue(false);
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
         else
@@ -389,6 +391,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
             optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
+            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -455,7 +458,6 @@ private:
                 throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
             }
 
-            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             if(merge!=Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
             if(importHidden!=Py_None)

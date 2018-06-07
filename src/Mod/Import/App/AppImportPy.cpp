@@ -137,6 +137,7 @@ private:
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
+            Import::ImportOCAF2 ocaf(hDoc, pcDoc, file.fileNamePure());
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -203,7 +204,6 @@ private:
             }
 
 #if 1
-            Import::ImportOCAF2 ocaf(hDoc, pcDoc, file.fileNamePure());
             if(merge!=Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
             if(importHidden!=Py_None)

@@ -83,14 +83,6 @@ static std::string labelName(TDF_Label label) {
     return txt;
 }
 
-static void setObjectName(App::DocumentObject *obj, TDF_Label label) {
-    if(!obj)
-        return;
-    auto name = labelName(label);
-    if(name.size())
-        obj->Label.setValue(name.c_str());
-}
-
 static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
     Handle(XCAFDoc_ColorTool) aColorTool, const char *msg = 0) 
 {
@@ -148,6 +140,7 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
     useLinkGroup = hGrp->GetBool("UseLinkGroup",true);
+    useBaseName = hGrp->GetBool("UseBaseName",true);
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -156,6 +149,11 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
+
+    if(!useLinkGroup) {
+        Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
+        aShapeTool->SetAutoNaming(Standard_False);
+    }
 }
 
 ImportOCAF2::~ImportOCAF2()
@@ -165,6 +163,35 @@ ImportOCAF2::~ImportOCAF2()
 static void setPlacement(App::PropertyPlacement *prop, const TopoDS_Shape &shape) {
     prop->setValue(Base::Placement(Part::TopoShape::convert(shape.Location().Transformation())));
 }
+
+std::string ImportOCAF2::getLabelName(TDF_Label label) {
+    std::string name;
+    if(label.IsNull())
+        return name;
+    if(!XCAFDoc_ShapeTool::IsReference(label))
+        return labelName(label);
+    if(!useBaseName)
+        name = labelName(label);
+    TDF_Label ref;
+    if(name.empty() && XCAFDoc_ShapeTool::GetReferredShape(label,ref))
+        name = labelName(ref);
+    return name;
+}
+
+void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
+    if(!info.obj)
+        return;
+    info.baseName = getLabelName(label);
+    if(info.baseName.size())
+        info.obj->Label.setValue(info.baseName.c_str());
+    else{
+        auto linked = info.obj->getLinkedObject(false);
+        if(!linked || linked==info.obj)
+            return;
+        info.obj->Label.setValue(linked->Label.getValue());
+    }
+}
+
 
 bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bool noDefault) {
     bool ret = false;
@@ -202,6 +229,54 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
     return ret;
 }
 
+App::DocumentObject *ImportOCAF2::expandShape(const TopoDS_Shape &shape) {
+    if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
+        return 0;
+
+    // When saved as compound, STEP file does not support instance sharing,
+    // meaning that even if the source compound may contain child shapes of
+    // shared instances, or multiple hierarchies, those information are lost
+    // when saved to STEP, everything become flat and duplicated. So the code
+    // below is not necessary.
+#if 0
+    auto baseShape = shape.Located(TopLoc_Location());
+    auto it = myShapes.find(baseShape);
+    if(it!=myShapes.end()) {
+        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
+        link->Visibility.setValue(false);
+        link->setLink(-1,it->second.obj);
+        setPlacement(&link->Placement,shape);
+        return link;
+    }
+#endif
+    std::vector<App::DocumentObject*> objs;
+
+    if(shape.ShapeType() == TopAbs_COMPOUND) {
+        for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
+            auto child = expandShape(it.Value());
+            if(child) {
+                objs.push_back(child);
+                Info info;
+                info.free = false;
+                info.obj = child;
+                myShapes.emplace(it.Value().Located(TopLoc_Location()),info);
+            }
+        }
+        if(objs.empty())
+            return 0;
+        auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
+        compound->Links.setValues(objs);
+        compound->Visibility.setValue(false);
+        setPlacement(&compound->Placement,shape);
+        return compound;
+    }
+    auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",
+                Part::TopoShape::shapeName(shape.ShapeType()).c_str()));
+    feature->Shape.setValue(shape);
+    feature->Visibility.setValue(false);
+    return feature;
+}
+
 bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info)
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More()) {
@@ -209,23 +284,18 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
         return false;
     }
 
-    auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
-    feature->Shape.setValue(shape);
-
-    feature->Visibility.setValue(false);
-
-    App::Color color;
     getColor(shape,info);
-    applyFaceColors(feature,{info.faceColor});
-    applyEdgeColors(feature,{info.edgeColor});
+    bool hasFaceColors = false;
+    bool hasEdgeColors = false;
+
+    Part::TopoShape tshape(shape);
+    std::vector<App::Color> faceColors;
+    std::vector<App::Color> edgeColors;
 
     TDF_LabelSequence seq;
     if(!label.IsNull() && aShapeTool->GetSubShapes(label,seq)) {
-        bool hasFaceColors = false;
-        bool hasEdgeColors = false;
-        Part::TopoShape tshape(shape);
-        std::vector<App::Color> faceColors(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
-        std::vector<App::Color> edgeColors(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
+        faceColors.assign(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
+        edgeColors.assign(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
         for(int i=1;i<=seq.Length();++i) {
             TDF_Label l = seq.Value(i);
             TopoDS_Shape subShape = aShapeTool->GetShape(l);
@@ -257,11 +327,26 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
                 continue;
             }
         }
-        if(hasFaceColors)
-            applyFaceColors(feature,faceColors);
-        if(hasEdgeColors)
-            applyEdgeColors(feature,edgeColors);
     }
+
+    Part::Feature *feature;
+
+    if(tshape.countSubShapes(TopAbs_SOLID)>1 || 
+       (tshape.countSubShapes(TopAbs_SOLID)<=1 && tshape.countSubShapes(TopAbs_SHELL)>1))
+    {
+        feature = dynamic_cast<Part::Feature*>(expandShape(shape));
+        assert(feature);
+    } else {
+        feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
+        feature->Shape.setValue(shape);
+        feature->Visibility.setValue(false);
+    }
+    applyFaceColors(feature,{info.faceColor});
+    applyEdgeColors(feature,{info.edgeColor});
+    if(hasFaceColors)
+        applyFaceColors(feature,faceColors);
+    if(hasEdgeColors)
+        applyEdgeColors(feature,edgeColors);
 
     info.propPlacement = &feature->Placement;
     info.obj = feature;
@@ -305,6 +390,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
 {
     if(!useLinkGroup) {
         ImportLegacy legacy(*this);
+        legacy.setMerge(merge);
         legacy.loadShapes();
         return 0;
     }
@@ -435,7 +521,7 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
             res = createAssembly(baseLabel,baseShape,info);
         if(!res)
             return 0;
-        setObjectName(info.obj,baseLabel);
+        setObjectName(info,baseLabel);
         it = myShapes.emplace(baseShape,info).first;
     }
     if(isArrayElement)
@@ -446,10 +532,27 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
         getSHUOColors(label,shuoColors,false);
 
     auto info = it->second;
-    if(!getColor(shape,info,true) && shuoColors.empty() && info.free) {
-        it->second.free = 0;
+    getColor(shape,info,true);
+
+    if(shuoColors.empty() && info.free) {
+        it->second.free = false;
+        auto name = getLabelName(label);
+        if(info.faceColor!=it->second.faceColor ||
+           info.edgeColor!=it->second.edgeColor ||
+           (name.size() && info.baseName.size() && name!=info.baseName)) 
+        {
+            auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
+            compound->Links.setValue(info.obj);
+            compound->Visibility.setValue(false);
+            info.propPlacement = &compound->Placement;
+            if(info.faceColor!=it->second.faceColor)
+                applyFaceColors(compound,{info.faceColor});
+            if(info.edgeColor!=it->second.edgeColor)
+                applyEdgeColors(compound,{info.edgeColor});
+            info.obj = compound;
+            setObjectName(info,label);
+        }
         setPlacement(info.propPlacement,shape);
-        setObjectName(info.obj,label);
         myNames.emplace(label,info.obj->getNameInDocument());
         return info.obj;
     }
@@ -458,7 +561,8 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
     link->Visibility.setValue(false);
     link->setLink(-1,info.obj);
     setPlacement(&link->Placement,shape);
-    setObjectName(link,label);
+    info.obj = link;
+    setObjectName(info,label);
     if(info.faceColor!=it->second.faceColor)
         applyLinkColor(link,-1,info.faceColor);
 
