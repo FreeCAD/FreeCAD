@@ -104,3 +104,24 @@ App::DocumentObjectExecReturn *Compound::execute(void)
     }
 }
 
+////////////////////////////////////////////////////////////////////////
+
+PROPERTY_SOURCE(Part::Compound2, Part::Compound)
+
+Compound2::Compound2() {
+    Shape.setStatus(App::Property::Transient,true);
+}
+
+void Compound2::onDocumentRestored() {
+    std::vector<TopoShape> shapes;
+    for(auto obj : Links.getValues()) {
+        auto sh = Feature::getTopoShape(obj);
+        if(!sh.isNull())
+            shapes.push_back(sh);
+    }
+    if(shapes.size()) {
+        auto shape = TopoShape().makECompound(shapes);
+        shape.setPlacement(Placement.getValue());
+        Shape.setValue(shape);
+    }
+}
