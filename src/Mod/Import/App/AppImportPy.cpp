@@ -54,7 +54,7 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-#include "ImportOCAF.h"
+#include "ImportOCAF2.h"
 //#include "ImportOCAFAssembly.h"
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
@@ -203,7 +203,7 @@ private:
             }
 
 #if 1
-            Import::ImportOCAF ocaf(hDoc, pcDoc, file.fileNamePure());
+            Import::ImportOCAF2 ocaf(hDoc, pcDoc, file.fileNamePure());
             if(merge!=Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
             if(importHidden!=Py_None)
@@ -247,7 +247,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            Import::ExportOCAF ocaf(hDoc);
+            Import::ExportOCAF2 ocaf(hDoc);
             if(exportHidden!=Py_None)
                 ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
 
