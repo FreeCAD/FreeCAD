@@ -388,8 +388,7 @@ def editMaterial(material):
 material_properties = (
     ('Meta information', ['Card Name', 'Author And License', 'Source']),
     ('General', ['Name', 'Father', 'Description', 'Denisty', 'Vendor', 'ProductURL', 'SpecificPrice']),
-    ('Mechanical', ['Youngs Modulus', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness']),
-    ('FEM', ['Poisson Ratio']),
+    ('Mechanical', ['Youngs Modulus', 'Poisson Ratio', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness']),
     ('Architectural', ['Execution Instructions', 'Fire Resistance Class', 'Standard Code', 'Thermal Conductivity', 'Sound Transmission Class', 'Color', 'Finish', 'Units Per Quantity', 'Environmental Efficiency Class']),
     ('Rendering', ['Diffuse Color', 'Ambient Color', 'Specular Color', 'Shininess', 'Emissive Color', 'Transparency', 'Vertex Shader', 'Fragment Shader', 'Texture Path', 'Texture Scaling']),
     ('Vector rendering', ['View Color', 'Father', 'View Linewidth', 'Section Color', 'Section Fill Pattern', 'Section Linewidth']),
