@@ -1274,6 +1274,26 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
     Py_Return;
 }
 
+
+PyObject* SketchObjectPy::getGeometryWithDependentParameters(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    std::vector<std::pair<int,PointPos>> geometrymap;
+
+    this->getSketchObjectPtr()->getGeometryWithDependentParameters(geometrymap);
+
+    Py::List list;
+    for (auto pair : geometrymap) {
+        Py::Tuple t(2);
+        t.setItem(0, Py::Long(pair.first));
+        t.setItem(1, Py::Long(((pair.second == Sketcher::none)?0:(pair.second == Sketcher::start)?1:(pair.second == Sketcher::end)?2:3)));
+        list.append(t);
+    }
+    return Py::new_reference_to(list);
+}
+
 Py::Long SketchObjectPy::getConstraintCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->Constraints.getSize());
