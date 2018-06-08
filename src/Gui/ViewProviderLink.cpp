@@ -2470,8 +2470,8 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
                 color.a = ShapeMaterial.getValue().transparency;
                 colors.emplace(subname,color);
             }
-            auto link = getObject()->getLinkedObject(false);
-            if(!link || link==getObject())
+            auto link = vp->getObject()->getLinkedObject(false);
+            if(!link || link==vp->getObject())
                 break;
             auto next = dynamic_cast<ViewProviderLink*>(Application::Instance->getViewProvider(link));
             if(!next)
