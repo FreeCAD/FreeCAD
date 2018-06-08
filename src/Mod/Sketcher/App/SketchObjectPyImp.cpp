@@ -293,8 +293,10 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         // if the geometry moved during the solve, then the initial solution is invalid
         // at this point, so a point movement may not work in cases where redundant constraints exist.
         // this forces recalculation of the initial solution (not a full solve)
-        if(this->getSketchObjectPtr()->noRecomputes)
-            this->getSketchObjectPtr()->setUpSketch(); 
+        if(this->getSketchObjectPtr()->noRecomputes) {
+            this->getSketchObjectPtr()->setUpSketch();
+            this->getSketchObjectPtr()->Constraints.touch(); // update solver information
+        }
         return Py::new_reference_to(Py::Long(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
