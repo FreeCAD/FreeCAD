@@ -835,6 +835,8 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
         }
     }
 
+    bool warned = false;
+
     for(auto &v : colors) {
         TDF_Label nodeLabel = label;
         Handle(XCAFDoc_GraphNode) shuo;
@@ -875,7 +877,11 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 //
                 // The above observation is confirmed by further inspection of
                 // OCCT code, XCAFDoc_ShapeTool.cxx and STEPCAFControl_Writer.cxx.
-                FC_WARN("Current OCCT does not support element color override");
+                if(!warned) {
+                    warned = true;
+                    FC_WARN("Current OCCT does not support element color override, for object "
+                            << obj->getNameInDocument());
+                }
                 continue;
             }
 
