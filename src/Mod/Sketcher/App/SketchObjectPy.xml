@@ -263,7 +263,16 @@
         </UserDocu>
       </Documentation>
     </Methode>
-
+    <Methode Name="getGeometryWithDependentParameters">
+        <Documentation>
+            <UserDocu>
+                getGeometryWithDependentParameters - returns a list of geoid posid pairs
+                with all the geometry element edges and vertices which the solver regards
+                as being dependent on other parameters.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>
