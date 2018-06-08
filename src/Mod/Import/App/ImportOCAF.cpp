@@ -101,6 +101,12 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
+#ifdef HAVE_TBB
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+#include <tbb/task_group.h>
+#endif
+
 using namespace Import;
 
 #define OCAF_KEEP_PLACEMENT
