@@ -247,6 +247,7 @@ void DlgImportExportStep::saveSettings()
     ui->checkBoxExportHiddenObj->onSave();
     ui->checkBoxImportHiddenObj->onSave();
     ui->checkBoxUseLinkGroup->onSave();
+    ui->checkBoxUseBaseName->onSave();
 }
 
 void DlgImportExportStep::loadSettings()
@@ -284,6 +285,7 @@ void DlgImportExportStep::loadSettings()
     ui->checkBoxExportHiddenObj->onRestore();
     ui->checkBoxImportHiddenObj->onRestore();
     ui->checkBoxUseLinkGroup->onRestore();
+    ui->checkBoxUseBaseName->onRestore();
 }
 
 /**

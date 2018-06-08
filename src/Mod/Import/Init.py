@@ -45,7 +45,11 @@ paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import")
 
 if  paramGetV.GetBool("UseLinkGroup", False) != \
         paramGetV.GetBool("UseLinkGroup",True):
-    paramGetV.SetBool("UserLinkGroup", True)
+    paramGetV.SetBool("UseLinkGroup", True)
+
+if  paramGetV.GetBool("UseBaseName", False) != \
+        paramGetV.GetBool("UseBaseName",True):
+    paramGetV.SetBool("UseBaseName", True)
 
 if  paramGetV.GetBool("ImportHiddenObject", False) != \
         paramGetV.GetBool("ImportHiddenObject", True):

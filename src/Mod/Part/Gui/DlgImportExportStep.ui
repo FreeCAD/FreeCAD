@@ -119,7 +119,14 @@
       <string>Export</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="4" column="0" colspan="3">
+      <item row="2" column="0" colspan="3">
+       <widget class="QCheckBox" name="checkBoxPcurves">
+        <property name="text">
+         <string>Write out curves in parametric space of surface</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
          <string>Scheme</string>
@@ -184,13 +191,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
-       <widget class="QCheckBox" name="checkBoxPcurves">
-        <property name="text">
-         <string>Write out curves in parametric space of surface</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
         <property name="toolTip">
@@ -201,6 +201,22 @@
         </property>
         <property name="prefEntry" stdset="0">
          <string>ExportHiddenObject</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseBaseName">
+        <property name="toolTip">
+         <string>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</string>
+        </property>
+        <property name="text">
+         <string>Ignore instance names</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>UseBaseName</string>
         </property>
         <property name="prefPath" stdset="0">
          <string>Mod/Import</string>
