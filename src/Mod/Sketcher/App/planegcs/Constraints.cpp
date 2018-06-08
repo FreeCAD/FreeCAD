@@ -527,37 +527,44 @@ void ConstraintPointOnPerpBisector::rescale(double coef)
     scale = coef;
 }
 
+void ConstraintPointOnPerpBisector::errorgrad(double *err, double *grad, double *param)
+{
+    DeriVector2 p0(Point(p0x(),p0y()), param);
+    DeriVector2 p1(Point(p1x(),p1y()), param);
+    DeriVector2 p2(Point(p2x(),p2y()), param);
+    
+    DeriVector2 d1 = p0.subtr(p1);
+    DeriVector2 d2 = p0.subtr(p2);
+    DeriVector2 D = p2.subtr(p1).getNormalized();
+    
+    double projd1, dprojd1;
+    projd1 = d1.scalarProd(D, &dprojd1);
+    
+    double projd2, dprojd2;
+    projd2 = d2.scalarProd(D, &dprojd2);
+    
+    if (err) 
+        *err = projd1+projd2;
+    if (grad)
+        *grad = dprojd1+dprojd2;
+}
+
 double ConstraintPointOnPerpBisector::error()
 {
-    double dx1 = *p1x() - *p0x();
-    double dy1 = *p1y() - *p0y();
-    double dx2 = *p2x() - *p0x();
-    double dy2 = *p2y() - *p0y();
-    return scale * (sqrt(dx1*dx1+dy1*dy1) - sqrt(dx2*dx2+dy2*dy2));
+    double err;
+    errorgrad(&err,0,0);
+    return scale * err;
 }
 
 double ConstraintPointOnPerpBisector::grad(double *param)
 {
-    double deriv=0.;
-    if (param == p0x() || param == p0y() ||
-        param == p1x() || param == p1y()) {
-        double dx1 = *p1x() - *p0x();
-        double dy1 = *p1y() - *p0y();
-        if (param == p0x()) deriv -= dx1/sqrt(dx1*dx1+dy1*dy1);
-        if (param == p0y()) deriv -= dy1/sqrt(dx1*dx1+dy1*dy1);
-        if (param == p1x()) deriv += dx1/sqrt(dx1*dx1+dy1*dy1);
-        if (param == p1y()) deriv += dy1/sqrt(dx1*dx1+dy1*dy1);
-    }
-    if (param == p0x() || param == p0y() ||
-        param == p2x() || param == p2y()) {
-        double dx2 = *p2x() - *p0x();
-        double dy2 = *p2y() - *p0y();
-        if (param == p0x()) deriv += dx2/sqrt(dx2*dx2+dy2*dy2);
-        if (param == p0y()) deriv += dy2/sqrt(dx2*dx2+dy2*dy2);
-        if (param == p2x()) deriv -= dx2/sqrt(dx2*dx2+dy2*dy2);
-        if (param == p2y()) deriv -= dy2/sqrt(dx2*dx2+dy2*dy2);
-    }
-    return scale * deriv;
+    //first of all, check that we need to compute anything.
+    if ( findParamInPvec(param) == -1  ) return 0.0;
+
+    double deriv;
+    errorgrad(0, &deriv, param);
+
+    return deriv*scale;
 }
 
 // Parallel
