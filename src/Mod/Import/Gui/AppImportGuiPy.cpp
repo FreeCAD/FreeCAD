@@ -120,6 +120,9 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderLink.h>
 
+
+FC_LOG_LEVEL_INIT("Import", true, true)
+
 class OCAFBrowser
 {
 public:
@@ -392,6 +395,8 @@ private:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
             optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            FC_TIME_INIT(t);
+            FC_DURATION_DECL_INIT2(d1,d2);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -403,7 +408,6 @@ private:
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
-
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
@@ -458,6 +462,7 @@ private:
                 throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
             }
 
+            FC_DURATION_PLUS(d1,t);
             if(merge!=Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
             if(importHidden!=Py_None)
@@ -468,6 +473,10 @@ private:
             pcDoc->purgeTouched();
             pcDoc->recompute();
             hApp->Close(hDoc);
+            FC_DURATION_PLUS(d2,t);
+            FC_DURATION_MSG(d1,"file read");
+            FC_DURATION_MSG(d2,"import");
+            FC_DURATION_MSG((d1+d2),"total");
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());

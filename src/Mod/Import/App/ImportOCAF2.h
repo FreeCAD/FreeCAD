@@ -147,7 +147,7 @@ public:
 
     void setExportHiddenObject(bool enable) {exportHidden=enable;}
     void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=0);
-    bool canFallback(std::vector<App::DocumentObject*> &objs);
+    bool canFallback(std::vector<App::DocumentObject*> objs);
 
 private:
     TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=0);

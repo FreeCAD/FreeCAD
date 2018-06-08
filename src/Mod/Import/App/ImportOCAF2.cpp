@@ -1090,10 +1090,18 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     return label;
 }
 
-bool ExportOCAF2::canFallback(std::vector<App::DocumentObject*> &objs) {
-    for(auto obj : objs) {
+bool ExportOCAF2::canFallback(std::vector<App::DocumentObject*> objs) {
+    bool hasPartGroup = false;
+    for(size_t i=0;i<objs.size();++i) {
+        auto obj = objs[i];
+        if(!obj || obj->getNameInDocument())
+            continue;
         if(obj->getExtensionByType<App::LinkBaseExtension>(true))
             return false;
+        if(!hasPartGroup && dynamic_cast<App::Part*>(obj))
+            hasPartGroup = true;
+        for(auto &sub : obj->getSubObjects()) 
+            objs.push_back(obj->getSubObject(sub.c_str()));
     }
-    return true;
+    return hasPartGroup;
 }
