@@ -716,7 +716,7 @@ PyObject *DocumentObjectPy::resolve(PyObject *args)
         auto obj = getDocumentObjectPtr()->resolve(subname,&parent,&elementName,&subElement);
 
         Py::Tuple ret(4);
-        ret.setItem(0,Py::Object(obj->getPyObject(),true));
+        ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
         ret.setItem(2,Py::String(elementName.c_str()));
         ret.setItem(3,Py::String(subElement?subElement:""));
