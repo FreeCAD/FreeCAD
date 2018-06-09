@@ -437,8 +437,8 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << textMidPoint[2]    << endl;
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 1              << endl;    // dimType1 = Aligned
-    (*m_ofs) << " 71"          << endl;
-    (*m_ofs) << 1              << endl;    // attachPoint ??1 = topleft
+//    (*m_ofs) << " 71"          << endl;
+//    (*m_ofs) << 1              << endl;    // attachPoint ??1 = topleft
     (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
     (*m_ofs) << "  3"          << endl;
@@ -673,8 +673,8 @@ void CDxfWrite::writeDimBlockPreamble(const char* layer_name)
     m_ssBlock << 0.0            << endl;
     m_ssBlock << "  3"          << endl;
     m_ssBlock << "*" << layer_name     << endl;     // blockName
-    m_ssBlock << "  1"          << endl;
-    m_ssBlock << ""             << endl;
+    m_ssBlock << " 70"          << endl;
+    m_ssBlock << "1"            << endl;
 }
 
 //***************************
@@ -762,6 +762,7 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     m_ssBlock << "CONTINUOUS"   << endl;
     m_ssBlock << " 62"          << endl;
     m_ssBlock << "     0"       << endl;
+    
     m_ssBlock << " 10"          << endl;
     m_ssBlock << textMidPoint[0]     << endl;
     m_ssBlock << " 20"          << endl;
@@ -772,9 +773,14 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     m_ssBlock << "3.5"          << endl;
     m_ssBlock << "  1"          << endl;
     m_ssBlock << dimText        << endl;
-    m_ssBlock << " 50"          << endl;
-    m_ssBlock << angle          << endl;
+//    m_ssBlock << " 50"          << endl;
+//    m_ssBlock << angle          << endl;
 
+    perp.Normalize();
+    para.Normalize();
+    Base::Vector3d arrowStart = e1E;
+    Base::Vector3d barb1 = arrowStart + perp*arrowWidth - para*arrowLen;
+    Base::Vector3d barb2 = arrowStart - perp*arrowWidth - para*arrowLen;
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "SOLID"        << endl;       //arrowhead 1
     m_ssBlock << "  8"          << endl;
@@ -782,17 +788,17 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     m_ssBlock << " 62"          << endl;
     m_ssBlock << "     0"       << endl;
     m_ssBlock << " 10"          << endl;
-    m_ssBlock << (e1E.x + arrowWidth) << endl;
+    m_ssBlock << barb1.x        << endl;
     m_ssBlock << " 20"          << endl;
-    m_ssBlock << (e1E.y + arrowLen)  << endl;
+    m_ssBlock << barb1.y        << endl;
     m_ssBlock << " 30"          << endl;
-    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << barb1.z        << endl;
     m_ssBlock << " 11"          << endl;
-    m_ssBlock << (e1E.x - arrowWidth) << endl;
+    m_ssBlock << barb2.x        << endl;
     m_ssBlock << " 21"          << endl;
-    m_ssBlock << (e1E.y + arrowLen) << endl;
+    m_ssBlock << barb2.y        << endl;
     m_ssBlock << " 31"          << endl;
-    m_ssBlock << e1E.z          << endl;
+    m_ssBlock << barb2.z        << endl;
     m_ssBlock << " 12"          << endl;
     m_ssBlock << e1E.x          << endl;
     m_ssBlock << " 22"          << endl;
@@ -806,6 +812,9 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     m_ssBlock << " 33"          << endl;
     m_ssBlock << e1E.z          << endl;
 
+    arrowStart = e2E;
+    barb1 = arrowStart + perp*arrowWidth + para*arrowLen;
+    barb2 = arrowStart - perp*arrowWidth + para*arrowLen;
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "SOLID"        << endl;       //arrowhead 2
     m_ssBlock << "  8"          << endl;
@@ -813,17 +822,17 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     m_ssBlock << " 62"          << endl;
     m_ssBlock << "     0"       << endl;
     m_ssBlock << " 10"          << endl;
-    m_ssBlock << (e2E.x + arrowWidth) << endl;
+    m_ssBlock << barb1.x        << endl;
     m_ssBlock << " 20"          << endl;
-    m_ssBlock << (e2E.y - arrowLen)  << endl;
+    m_ssBlock << barb1.y        << endl;
     m_ssBlock << " 30"          << endl;
-    m_ssBlock << e2E.z          << endl;
+    m_ssBlock << barb1.z        << endl;
     m_ssBlock << " 11"          << endl;
-    m_ssBlock << (e2E.x - arrowWidth) << endl;
+    m_ssBlock << barb2.x        << endl;
     m_ssBlock << " 21"          << endl;
-    m_ssBlock << (e2E.y - arrowLen) << endl;
+    m_ssBlock << barb2.y        << endl;
     m_ssBlock << " 31"          << endl;
-    m_ssBlock << e2E.z          << endl;
+    m_ssBlock << barb2.z        << endl;
     m_ssBlock << " 12"          << endl;
     m_ssBlock << e2E.x          << endl;
     m_ssBlock << " 22"          << endl;
@@ -923,6 +932,8 @@ void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* tex
     m_ssBlock << "LINE"         << endl;
     m_ssBlock << "  8"          << endl;
     m_ssBlock << "0"            << endl;
+    m_ssBlock << "  6"          << endl;
+    m_ssBlock << "CONTINUOUS"   << endl;
     m_ssBlock << " 62"          << endl;
     m_ssBlock << "     0"       << endl;
     m_ssBlock << " 10"          << endl;
@@ -960,6 +971,47 @@ void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* tex
     m_ssBlock << 0              << endl;
     m_ssBlock << " 72"          << endl;
     m_ssBlock << "1"            << endl;
+
+    Base::Vector3d c(centerPoint[0],centerPoint[1],centerPoint[2]);
+    Base::Vector3d a(arcPoint[0],arcPoint[1],arcPoint[2]);
+    Base::Vector3d para = a - c;
+    double arrowLen = 5.0;                  //magic number
+    double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
+    para.Normalize();
+    Base::Vector3d perp(-para.y,para.x,para.z);
+    Base::Vector3d arrowStart = a;
+    Base::Vector3d barb1 = arrowStart + perp*arrowWidth - para*arrowLen;
+    Base::Vector3d barb2 = arrowStart - perp*arrowWidth - para*arrowLen;
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 1
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << barb1.x        << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << barb1.y        << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << barb1.z        << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << barb2.x        << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << barb2.y        << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << barb2.z        << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << a.x            << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << a.y            << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << a.z            << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << a.x            << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << a.y            << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << a.z            << endl;
 
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
@@ -1013,6 +1065,81 @@ void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint,
     m_ssBlock << "0"            << endl;
     m_ssBlock << " 72"          << endl;
     m_ssBlock << "1"            << endl;
+
+    Base::Vector3d a1(arcPoint1[0],arcPoint1[1],arcPoint1[2]);
+    Base::Vector3d a2(arcPoint2[0],arcPoint2[1],arcPoint2[2]);
+    Base::Vector3d para = a2 - a1;
+    double arrowLen = 5.0;                  //magic number
+    double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
+    para.Normalize();
+    Base::Vector3d perp(-para.y,para.x,para.z);
+    Base::Vector3d arrowStart = a1;
+    Base::Vector3d barb1 = arrowStart + perp*arrowWidth + para*arrowLen;
+    Base::Vector3d barb2 = arrowStart - perp*arrowWidth + para*arrowLen;
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 1
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << barb1.x        << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << barb1.y        << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << barb1.z        << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << barb2.x        << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << barb2.y        << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << barb2.z        << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << a1.x           << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << a1.y           << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << a1.z           << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << a1.x           << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << a1.y           << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << a1.z           << endl;
+
+    arrowStart = a2;
+    barb1 = arrowStart + perp*arrowWidth - para*arrowLen;
+    barb2 = arrowStart - perp*arrowWidth - para*arrowLen;
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 2
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << barb1.x        << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << barb1.y        << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << barb1.z        << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << barb2.x        << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << barb2.y        << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << barb2.z        << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << a2.x           << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << a2.y           << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << a2.z           << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << a2.x           << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << a2.y           << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << a2.z           << endl;
 
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
