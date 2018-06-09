@@ -331,10 +331,7 @@ std::map<std::string, std::string> ComplexGeoData::getElementMap() const {
 }
 
 void ComplexGeoData::setElementMap(const std::map<std::string, std::string> &map) {
-    if(!_ElementMap)
-        _ElementMap = std::make_shared<ElementMap>();
-    else
-        _ElementMap->clear();
+    resetElementMap();
     for(auto &v : map)
         setElementName(v.second.c_str(),v.first.c_str());
 }
@@ -436,7 +433,8 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
     if(!element || !element[0])
         throw Base::ValueError("Invalid input");
     if(!name || !name[0])  {
-        _ElementMap->right.erase(element);
+        if(_ElementMap)
+            _ElementMap->right.erase(element);
         return element;
     }
     std::vector<App::StringIDRef> _sid;
