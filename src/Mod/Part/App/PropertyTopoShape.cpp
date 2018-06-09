@@ -173,9 +173,16 @@ void PropertyPartShape::setPyObject(PyObject *value)
         auto shape = *static_cast<TopoShapePy*>(value)->getTopoShapePtr();
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
         if(owner && owner->getDocument()) {
-            TopoShape res(owner->getID(),owner->getDocument()->getStringHasher(),shape.getShape());
-            res.mapSubElement(shape);
-            shape = res;
+            if(shape.Tag || shape.getElementMapSize()) {
+                // We can't trust the meaning of the input shape tag, so we
+                // remap anyway
+                TopoShape res(owner->getID(),owner->getDocument()->getStringHasher(),shape.getShape());
+                res.mapSubElement(shape);
+                shape = res;
+            }else{
+                shape.Tag = owner->getID();
+                shape.Hasher.reset();
+            }
         }
         setValue(shape);
     }
