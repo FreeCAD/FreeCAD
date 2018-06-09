@@ -639,6 +639,7 @@ PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args,PyObject *
 
     std::string cname(name);
     TStringMap map = Translator::instance()->supportedLocales();
+    map["English"] = "en";
     for (const auto& it : map) {
         if (it.first == cname || it.second == cname) {
             Translator::instance()->activateLanguage(it.first.c_str());
@@ -657,6 +658,7 @@ PyObject* Application::sSupportedLocales(PyObject * /*self*/, PyObject *args,PyO
 
     TStringMap map = Translator::instance()->supportedLocales();
     Py::Dict dict;
+    dict.setItem(Py::String("English"), Py::String("en"));
     for (const auto& it : map) {
         Py::String key(it.first);
         Py::String val(it.second);
