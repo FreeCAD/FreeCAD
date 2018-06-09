@@ -5579,7 +5579,7 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
         solve(false);
     }
 
-    auto addelement = [this,&geometrymap](int geoId, PointPos pos = Sketcher::none){
+    auto addelement = [this,&geometrymap](int geoId, PointPos pos){
         if(getSolvedSketch().hasDependentParameters(geoId, pos))
             geometrymap.emplace_back(geoId,pos);
     };
@@ -5596,13 +5596,13 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
 
             addelement(geoid, Sketcher::start);
             addelement(geoid, Sketcher::end);
-            addelement(geoid);
+            addelement(geoid, Sketcher::none);
         }
         else if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                 geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ) {
 
             addelement(geoid, Sketcher::mid);
-            addelement(geoid);
+            addelement(geoid, Sketcher::none);
         }
         else if(geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
@@ -5612,7 +5612,7 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
             addelement(geoid, Sketcher::start);
             addelement(geoid, Sketcher::end);
             addelement(geoid, Sketcher::mid);
-            addelement(geoid);
+            addelement(geoid, Sketcher::none);
         }
 
         geoid++;
