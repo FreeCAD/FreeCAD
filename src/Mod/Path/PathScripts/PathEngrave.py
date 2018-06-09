@@ -33,6 +33,9 @@ import PathScripts.PathUtils as PathUtils
 import TechDraw
 import traceback
 
+from DraftGeomUtils import geomType
+from PathScripts.PathGeom import PathGeom
+from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
@@ -56,7 +59,7 @@ def adjustWirePlacement(obj, shape, wires):
             #pmntSupport = shape.Support[0][0].Placement
             pmntBase    = job.Base.Placement
             pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
-            PathLog.debug("pmnt = %s" % pmnt)
+            #PathLog.debug("pmnt = %s" % pmnt)
             newWires = []
             for w in wires:
                 edges = []
@@ -81,14 +84,31 @@ class ObjectEngrave(PathOp.ObjectOp):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges;
 
+    def setupAdditionalProperties(self, obj):
+        if not hasattr(obj, 'BaseShapes'):
+            obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
+            obj.setEditorMode('BaseShapes', 2) # hide
+        if not hasattr(obj, 'BaseObject'):
+            obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
+            obj.setEditorMode('BaseObject', 2) # hide
+
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
-        obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
+        self.setupAdditionalProperties(obj)
+
+    def onDocumentRestored(self, obj):
+        # upgrade ...
+        super(self.__class__, self).onDocumentRestored(obj)
+        self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
+
+        job = PathUtils.findParentJob(obj)
+        if job and job.Base:
+            obj.BaseObject = job.Base
 
         zValues = []
         if obj.StepDown.Value != 0:
@@ -100,57 +120,62 @@ class ObjectEngrave(PathOp.ObjectOp):
         zValues.append(obj.FinalDepth.Value)
         self.zValues = zValues
 
-        output = ''
         try:
             if self.baseobject.isDerivedFrom('Sketcher::SketchObject') or \
                     self.baseobject.isDerivedFrom('Part::Part2DObject') or \
                     hasattr(self.baseobject, 'ArrayType'):
+                PathLog.track()
 
-                output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
                 # we only consider the outer wire if this is a Face
                 wires = []
                 for w in self.baseobject.Shape.Wires:
-                    tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                    wires.append(Part.Wire(tempedges))
-                output += self.buildpathocc(obj, wires, zValues)
+                    wires.append(Part.Wire(w.Edges))
+                self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
 
             elif isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+                PathLog.track()
                 wires = []
                 for tag in self.baseobject.Proxy.getTags(self.baseobject, transform=True):
-                    output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                     self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                     tagWires = []
                     for w in tag.Wires:
-                        tempedges = PathUtils.cleanedges(w.Edges, 0.5)
-                        tagWires.append(Part.Wire(tempedges))
-                    output += self.buildpathocc(obj, tagWires, zValues)
+                        tagWires.append(Part.Wire(w.Edges))
+                    self.buildpathocc(obj, tagWires, zValues)
                     wires.extend(tagWires)
                 self.wires = wires
             elif obj.Base:
+                PathLog.track()
                 wires = []
                 for base, subs in obj.Base:
-                    edges = []
-                    for sub in subs:
-                        edges.extend(base.Shape.getElement(sub).Edges)
-                    shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
-                    wires.extend(shapeWires)
-                output += self.buildpathocc(obj, wires, zValues)
+                    #edges = []
+                    #for sub in subs:
+                    #    edges.extend(base.Shape.getElement(sub).Edges)
+                    #shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
+                    #wires.extend(shapeWires)
+                    for feature in subs:
+                        sub = base.Shape.getElement(feature)
+                        if sub.Wires:
+                            shapeWires = sub.Wires
+                        else:
+                            shapeWires = [Part.Wire(sub.Edges)]
+                    wires.extend(adjustWirePlacement(obj, base, shapeWires))
+                self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
+                PathLog.track()
                 raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
 
             if obj.BaseShapes:
+                PathLog.track()
                 wires = []
                 for shape in obj.BaseShapes:
                     shapeWires = adjustWirePlacement(obj, shape, shape.Shape.Wires)
-                    output += self.buildpathocc(obj, shapeWires, zValues)
+                    self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires
-            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-            self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         except Exception as e:
             PathLog.error(e)
@@ -160,8 +185,6 @@ class ObjectEngrave(PathOp.ObjectOp):
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
         PathLog.track()
-
-        output = ""
 
         for wire in wires:
             offset = wire
@@ -178,53 +201,35 @@ class ObjectEngrave(PathOp.ObjectOp):
                     if not last:
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
-                        output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to starting position
+                        if len(offset.Edges) > 1:
+                            e2 = offset.Edges[1]
+                            if not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[0].Point) and not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[-1].Point):
+                                PathLog.debug("flip first edge")
+                                last = edge.Vertexes[-1].Point
+                            else:
+                                PathLog.debug("original first edge")
+                        else:
+                            PathLog.debug("not enough edges to flip")
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.ClearanceHeight.Value, 'F': self.horizRapid}))
-                        output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value) + "F " + PathUtils.fmt(self.horizRapid)  # Rapid to safe height
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(z) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
 
-                    if isinstance(edge.Curve, Part.Circle):
-                        point = edge.Vertexes[-1].Point
-                        if point == last:  # edges can come flipped
-                            point = edge.Vertexes[0].Point
-                        center = edge.Curve.Center
-                        relcenter = center.sub(last)
-                        v1 = last.sub(center)
-                        v2 = point.sub(center)
-                        if v1.cross(v2).z < 0:
-                            output += "G2"
-                        else:
-                            output += "G3"
-                        output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(z)
-                        output += " I" + PathUtils.fmt(relcenter.x) + " J" + PathUtils.fmt(relcenter.y) + " K" + PathUtils.fmt(relcenter.z)
-                        output += " F " + PathUtils.fmt(self.horizFeed)
-                        output += "\n"
-
-                        cmd = 'G2' if v1.cross(v2).z < 0 else 'G3'
-                        args = {}
-                        args['X'] = point.x
-                        args['Y'] = point.y
-                        args['Z'] = z
-                        args['I'] = relcenter.x
-                        args['J'] = relcenter.y
-                        args['K'] = relcenter.z
-                        args['F'] = self.horizFeed
-                        self.commandlist.append(Path.Command(cmd, args))
-                        last = point
+                    if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
+                        for cmd in PathGeom.cmdsForEdge(edge):
+                            params = cmd.Parameters
+                            params.update({'Z': z, 'F': self.horizFeed})
+                            self.commandlist.append(Path.Command(cmd.Name, params))
+                        last = edge.Vertexes[-1].Point
                     else:
-                        point = edge.Vertexes[-1].Point
-                        if point == last:  # edges can come flipped
-                            point = edge.Vertexes[0].Point
-                        output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(z)
-                        output += " F " + PathUtils.fmt(self.horizFeed)
-                        output += "\n"
-                        self.commandlist.append(Path.Command('G1', {'X': point.x, 'Y': point.y, 'Z': z, 'F': self.horizFeed}))
-                        last = point
-            output += "G0 Z " + PathUtils.fmt(obj.ClearanceHeight.Value)
+                        for cmd in PathGeom.cmdsForEdge(edge, True):
+                            params = cmd.Parameters
+                            params.update({'Z': z, 'F': self.horizFeed})
+                            self.commandlist.append(Path.Command(cmd.Name, params))
+                        last = edge.Vertexes[0].Point
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        return output
+        if self.commandlist:
+            self.commandlist.pop()
+
 
     def opSetDefaultValues(self, obj):
         '''opSetDefaultValues(obj) ... set depths for engraving'''
