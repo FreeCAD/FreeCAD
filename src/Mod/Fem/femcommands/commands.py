@@ -28,7 +28,7 @@ from PySide import QtCore
 
 
 # Python command definitions
-# for C++ comand definitions see src/Mod/Fem/Command.cpp
+# for C++ command definitions see src/Mod/Fem/Command.cpp
 
 class _CommandFemAnalysis(CommandManager):
     "The FEM_Analysis command definition"
@@ -425,7 +425,7 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
         FreeCADGui.doCommand(command_to_run)
         # set some property of the solver to nonlinear (only if one solver is available and if this solver is a CalculiX solver):
         # nonlinear material
-        # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+        # nonlinear geometry --> it is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
         for m in self.active_analysis.Group:
             if m.isDerivedFrom('Fem::FemSolverObjectPython'):
@@ -592,7 +592,7 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument." + self.selobj.Name)
-        # Netgen mesh object could be added without an active analysis, but if there is an active analysis move it in there        import FemGui
+        # Netgen mesh object could be added without an active analysis, but if there is an active analysis move it in there
         import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
