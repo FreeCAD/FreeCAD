@@ -202,7 +202,7 @@ void DrawViewDraft::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

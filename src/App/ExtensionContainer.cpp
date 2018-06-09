@@ -408,7 +408,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 
