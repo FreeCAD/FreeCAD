@@ -1107,10 +1107,6 @@ void CDxfWrite::writeHeaderSection(void)
     (*m_ofs) << " 70"         << endl;
     (*m_ofs) << "0"           << endl;
 
-    (*m_ofs) << "  9"       << endl;
-    (*m_ofs) << "$DWGCODEPAGE"   << endl;
-    (*m_ofs) << "  3"       << endl;
-    (*m_ofs) << "65001"     << endl; //Microsoft for UTF-8?
     (*m_ofs) << "  0"       << endl;
     (*m_ofs) << "ENDSEC"    << endl;
 
@@ -1136,35 +1132,13 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "  2"      << endl;
     (*m_ofs) << "VPORT"    << endl;
     (*m_ofs) << " 70"      << endl;
-    (*m_ofs) << "    1"    << endl;
-    (*m_ofs) << "  0"      << endl;
-    (*m_ofs) << "VPORT"    << endl;
-
+    (*m_ofs) << "    0"    << endl;
+    
 //    (*m_ofs) << "100"      << endl;
 //    (*m_ofs) << "AcDbSymbolTableRecord"    << endl;
 //    (*m_ofs) << "100"      << endl;
 //    (*m_ofs) << "AcDbViewportTableRecord"    << endl;
 
-    (*m_ofs) << "  2"      << endl;
-    (*m_ofs) << "*ACTIVE"  << endl;
-    (*m_ofs) << " 70"      << endl;
-    (*m_ofs) << "    0"    << endl;
-    (*m_ofs) << " 10"      << endl;
-    (*m_ofs) << 0          << endl;
-    (*m_ofs) << " 20"      << endl;
-    (*m_ofs) << 0          << endl;
-    (*m_ofs) << " 11"      << endl;
-    (*m_ofs) << 1          << endl;
-    (*m_ofs) << " 21"      << endl;
-    (*m_ofs) << 1          << endl;
-    (*m_ofs) << " 12"      << endl;
-    (*m_ofs) << "   50"    << endl;
-    (*m_ofs) << " 22"      << endl;
-    (*m_ofs) << "   50"    << endl;
-//    (*m_ofs) << " 12"      << endl;  //center of vport in WCS
-//    (*m_ofs) << 153.1      << endl;  //doesn't seem to work in LC
-//    (*m_ofs) << " 22"      << endl;  // 132.5x98.44 mid page A4
-//    (*m_ofs) << 104.9      << endl;
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "ENDTAB"   << endl;
 
@@ -1241,8 +1215,8 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << "    1"    << endl;
 //    (*m_ofs) << "100"      << endl;
 //    (*m_ofs) << "AcDbDimStyleTable"    << endl;
-    (*m_ofs) << " 71"      << endl;
-    (*m_ofs) << "    1"    << endl;
+//    (*m_ofs) << " 71"      << endl;
+//    (*m_ofs) << "    1"    << endl;
 
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "DIMSTYLE" << endl;
@@ -1268,6 +1242,75 @@ void CDxfWrite::writeTablesSection(void)
     (*m_ofs) << ""         << endl;
     (*m_ofs) << " 40"      << endl;
     (*m_ofs) << "1"        << endl;
+
+//wf: don't know what these do, but seem to be neccessary for import to ACAD
+    (*m_ofs) << " 41"      << endl;
+    (*m_ofs) << "2.5"      << endl;
+    (*m_ofs) << " 42"      << endl;
+    (*m_ofs) << "0.625"    << endl;
+    (*m_ofs) << " 43"      << endl;
+    (*m_ofs) << "0.38"     << endl;
+    (*m_ofs) << " 44"      << endl;
+    (*m_ofs) << "1.25"     << endl;
+    (*m_ofs) << " 45"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << " 46"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << " 47"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << " 48"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << "140"      << endl;
+    (*m_ofs) << "2.5"      << endl;
+    (*m_ofs) << "141"      << endl;
+    (*m_ofs) << "0.09"     << endl;
+    (*m_ofs) << "142"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << "143"      << endl;
+    (*m_ofs) << "25.4"     << endl;
+    (*m_ofs) << "144"      << endl;
+    (*m_ofs) << "1.0"      << endl;
+    (*m_ofs) << "145"      << endl;
+    (*m_ofs) << "0.0"      << endl;
+    (*m_ofs) << "146"      << endl;
+    (*m_ofs) << "1.0"      << endl;
+    (*m_ofs) << "147"      << endl;
+    (*m_ofs) << "0.625"    << endl;
+    (*m_ofs) << " 71"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 72"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 73"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 74"      << endl;
+    (*m_ofs) << "1"        << endl;
+    (*m_ofs) << " 75"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 76"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 77"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << " 78"      << endl;
+    (*m_ofs) << "1"        << endl;
+    (*m_ofs) << "170"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "171"      << endl;
+    (*m_ofs) << "2"        << endl;
+    (*m_ofs) << "172"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "173"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "174"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "175"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "176"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "177"      << endl;
+    (*m_ofs) << "0"        << endl;
+    (*m_ofs) << "178"      << endl;
+    (*m_ofs) << "0"        << endl;
+
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "ENDTAB"   << endl;
 
