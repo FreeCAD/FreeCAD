@@ -75,6 +75,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>
+#include <random>
 
 #include <QMap>
 #include <QCoreApplication>
@@ -174,7 +175,13 @@ struct DocumentP
 #endif //USE_OLD_DAG
 
     DocumentP() {
-        lastObjectId = 0;
+        static std::random_device _RD;
+        static std::mt19937 _RGEN(_RD());
+        static std::uniform_int_distribution<> _RDIST(0,5000);
+        // Set some random offset to reduce likelyhood of ID collison when
+        // copying shape from other document. It is probably better to randomize
+        // on each object ID.
+        lastObjectId = _RDIST(_RGEN); 
         activeObject = 0;
         activeUndoTransaction = 0;
         iTransactionMode = 0;
