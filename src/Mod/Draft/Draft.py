@@ -6241,7 +6241,9 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
         _ViewProviderDraft.__init__(self,vobj)
 
     def getIcon(self):
-        return ":/icons/Draft_Array.svg"
+        if hasattr(self.vobj.Object,"ArrayType"):
+            return ":/icons/Draft_Array.svg"
+        return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
         colors = []
@@ -6419,6 +6421,8 @@ class _Facebinder(_DraftObject):
         obj.addProperty("App::PropertyLinkSubList","Faces","Draft",QT_TRANSLATE_NOOP("App::Property","Linked faces"))
         obj.addProperty("App::PropertyBool","RemoveSplitter","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed"))
         obj.addProperty("App::PropertyDistance","Extrusion","Draft",QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces"))
+        obj.addProperty("App::PropertyBool","Sew","Draft",QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew"))
+        
 
     def execute(self,obj):
         import Part
@@ -6451,6 +6455,10 @@ class _Facebinder(_DraftObject):
                 if not sh:
                     sh = faces.pop()
                     sh = sh.multiFuse(faces)
+                if hasattr(obj,"Sew"):
+                    if obj.Sew:
+                        sh = sh.copy()
+                        sh.sewShape()
                 if hasattr(obj,"RemoveSplitter"):
                     if obj.RemoveSplitter:
                         sh = sh.removeSplitter()
@@ -6487,6 +6495,9 @@ class _Facebinder(_DraftObject):
 class _ViewProviderFacebinder(_ViewProviderDraft):
     def __init__(self,vobj):
         _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Facebinder_Provider.svg"
 
     def setEdit(self,vobj,mode):
         import DraftGui
