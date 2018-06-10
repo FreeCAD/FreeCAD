@@ -695,6 +695,9 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& colors)
 {
+    Gui::SoUpdateVBOAction action;
+    action.apply(this->faceset);
+
     int size = static_cast<int>(colors.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
