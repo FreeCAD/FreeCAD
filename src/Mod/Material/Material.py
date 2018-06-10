@@ -97,7 +97,7 @@ def exportFCMat(fileName, matDict):
 
 def getMaterialAttributeStructure(withSpaces=None):
     # material properties
-    # are there any more resources in FreeCAD source code where known material properties are defined exept the material cards itself?
+    # are there any more resources in FreeCAD source code where known material properties are defined except the material cards itself?
     # we should not have two of these list ...
     # withSpaces is used by the material editor ui, without spaces is used to save a material file
     if withSpaces:
