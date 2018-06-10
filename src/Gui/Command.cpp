@@ -597,8 +597,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
         return;
     static std::map<std::string,std::string> attrMap = {
         {"ShapeColor","ShapeMaterial.DiffuseColor"},
-        {"LineColor","ShapeMaterial.DiffuseColor"},
-        {"PointColor","ShapeMaterial.DiffuseColor"},
+        // {"LineColor","ShapeMaterial.DiffuseColor"},
+        // {"PointColor","ShapeMaterial.DiffuseColor"},
         {"Transparency","Transparency"},
     };
     auto it = attrMap.find(attr_to);

@@ -663,7 +663,6 @@ public:
     LinkView &handle;
     CoinPtr<SoSwitch> pcSwitch;
     CoinPtr<SoFCSelectionRoot> pcRoot;
-    CoinPtr<SoMaterial> pcMaterial;
     CoinPtr<SoTransform> pcTransform;
 
     friend LinkView;
@@ -693,10 +692,6 @@ public:
             linkInfo.reset();
         }
         pcRoot->removeAllChildren();
-        if(pcMaterial) {
-            pcRoot->addChild(handle.pcMaterialBind);
-            pcRoot->addChild(pcMaterial);
-        }
     }
 
     void link(App::DocumentObject *obj) {
@@ -722,9 +717,6 @@ LinkView::LinkView()
     ,childType((SnapshotType)-1),autoSubLink(true)
 {
     pcLinkRoot = new SoFCSelectionRoot;
-    pcMaterialBind = new SoMaterialBinding;
-    pcMaterialBind->value = SoMaterialBinding::OVERALL;
-    pcMaterialBind->setOverride(true);
 }
 
 LinkView::~LinkView() {
@@ -834,53 +826,28 @@ void LinkView::renderDoubleSide(bool enable) {
 }
 
 void LinkView::setMaterial(int index, const App::Material *material) {
-    auto pcMat = pcMaterial;
     if(index < 0) {
         if(!material) {
-            if(pcMaterial) {
-                pcLinkRoot->removeChild(pcMaterial);
-                pcLinkRoot->removeChild(pcMaterialBind);
-                pcMaterial.reset();
-            }
+            pcLinkRoot->removeColorOverride();
             return;
         }
-        if(!pcMaterial) {
-            pcMat = pcMaterial = new SoMaterial;
-            pcMaterial->setOverride(true);
-            pcLinkRoot->insertChild(pcMaterial,0);
-            pcLinkRoot->insertChild(pcMaterialBind,0);
-        }
+        App::Color c = material->diffuseColor;
+        c.a = material->transparency;
+        pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
             setMaterial(i,0);
     }else if(index >= (int)nodeArray.size())
         LINK_THROW(Base::ValueError,"LinkView: material index out of range");
     else {
         auto &info = *nodeArray[index];
-        if(!info.pcMaterial) {
-            if(!material) 
-                return;
-            pcMat = info.pcMaterial = new SoMaterial;
-            pcMat->setOverride(true);
-            info.pcRoot->insertChild(pcMat,0);
-            info.pcRoot->insertChild(pcMaterialBind,0);
-        }else if (!material) {
-            if(info.pcMaterial) {
-                info.pcRoot->removeChild(pcMaterialBind);
-                info.pcRoot->removeChild(info.pcMaterial);
-                info.pcMaterial.reset();
-            }
+        if(!material) {
+            info.pcRoot->removeColorOverride();
             return;
-        }else
-            pcMat = info.pcMaterial;
+        }
+        App::Color c = material->diffuseColor;
+        c.a = material->transparency;
+        info.pcRoot->setColorOverride(c);
     }
-
-    const App::Material &Mat = *material;
-    pcMat->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
-    pcMat->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
-    pcMat->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
-    pcMat->shininess.setValue(Mat.shininess);
-    pcMat->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
-    pcMat->transparency.setValue(Mat.transparency);
 }
 
 void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> &subs) {
@@ -1007,10 +974,6 @@ void LinkView::setSize(int _size) {
 
 void LinkView::resetRoot() {
     pcLinkRoot->removeAllChildren();
-    if(pcMaterial) {
-        pcLinkRoot->addChild(pcMaterialBind);
-        pcLinkRoot->addChild(pcMaterial);
-    }
     if(pcTransform)
         pcLinkRoot->addChild(pcTransform);
     if(pcShapeHints)

@@ -237,23 +237,17 @@ void SoBrepFaceSet::doAction(SoAction* action)
             ctx->selectionColor = selaction->getColor();
             ctx->selectionIndex.clear();
             ctx->selectionIndex.insert(-1);
-
-            //TODO: check if this need to be context aware
-            PRIVATE(this)->updateVbo = true;
             touch();
             return;
         } case Gui::SoSelectionElementAction::None:
             if(selaction->isSecondary()) {
-                if(Gui::SoFCSelectionRoot::removeActionContext(action,this)) {
-                    PRIVATE(this)->updateVbo = true;
+                if(Gui::SoFCSelectionRoot::removeActionContext(action,this))
                     touch();
-                }
             }else {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
                 if(ctx) {
                     ctx->selectionIndex.clear();
                     ctx->colors.clear();
-                    PRIVATE(this)->updateVbo = true;
                     touch();
                 }
             }
@@ -267,7 +261,6 @@ void SoBrepFaceSet::doAction(SoAction* action)
                         ctx->colors.clear();
                         if(ctx->isSelectAll())
                             Gui::SoFCSelectionRoot::removeActionContext(action,this);
-                        PRIVATE(this)->updateVbo = true;
                         touch();
                     }
                     return;
@@ -278,10 +271,8 @@ void SoBrepFaceSet::doAction(SoAction* action)
                         ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
                         ctx->selectAll();
                     }
-                    if(ctx->setColors(selaction->getColors(),element)) {
-                        PRIVATE(this)->updateVbo = true;
+                    if(ctx->setColors(selaction->getColors(),element))
                         touch();
-                    }
                 }
             }
             return;
@@ -307,16 +298,12 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 ctx->selectionColor = selaction->getColor();
                 if(ctx->isSelectAll())
                     ctx->selectionIndex.clear();
-                if(ctx->selectionIndex.insert(index).second) {
-                    PRIVATE(this)->updateVbo = true;
+                if(ctx->selectionIndex.insert(index).second)
                     touch();
-                }
             }else{
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx && ctx->removeIndex(index)) {
-                    PRIVATE(this)->updateVbo = true;
+                if(ctx && ctx->removeIndex(index))
                     touch();
-                }
             }
             break;
         } default:
@@ -526,6 +513,22 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 #else
+
+struct ColorOverrideChecker {
+    bool overrideColor;
+    SoState *state;
+    ColorOverrideChecker(SoState *state) : state(state) {
+        overrideColor = Gui::SoFCSelectionRoot::checkColorOverride(state);
+    }
+    ~ColorOverrideChecker() {
+        if(overrideColor)
+            state->pop();
+    }
+    operator bool() const {
+        return overrideColor;
+    }
+};
+
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     //SoBase::staticDataLock();
@@ -551,6 +554,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         ctx.reset();
 
     auto state = action->getState();
+    ColorOverrideChecker checker(state);
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
@@ -635,7 +639,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // Therefore generatePrimitives() needs to be re-implemented to handle the materials
     // correctly.
     if(this->shouldGLRender(action)) {
-        SbBool hasVBO = PRIVATE(this)->vboAvailable;
+        SbBool hasVBO = !ctx2 && PRIVATE(this)->vboAvailable;
         if (hasVBO) {
             // get the VBO status of the viewer
             Gui::SoGLVBOActivatedElement::get(state, hasVBO);

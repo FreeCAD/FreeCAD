@@ -258,6 +258,22 @@ public:
 
     void resetContext();
 
+    static bool checkColorOverride(SoState *state);
+
+    bool hasColorOverride() const {
+        return overrideColor;
+    }
+
+    void setColorOverride(App::Color c) {
+        overrideColor = true;
+        colorOverride = SbColor(c.r,c.g,c.b);
+        transOverride = c.a;
+    }
+
+    void removeColorOverride() {
+        overrideColor = false;
+    }
+
 protected:
     virtual ~SoFCSelectionRoot();
 
@@ -305,6 +321,11 @@ protected:
     typedef std::vector<SbColor> ColorStack;
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
+    static SoFCSelectionRoot *ShapeColorNode;
+    bool overrideColor = false;
+    SbColor colorOverride;
+    float transOverride;
+    SoColorPacker shapeColorPacker;
 
     bool doActionPrivate(Stack &stack, SoAction *);
 

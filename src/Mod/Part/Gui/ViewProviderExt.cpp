@@ -1074,7 +1074,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
             return color;
         shape = Part::Feature::getTopoShape(obj);
         ViewProviderPartExt *vp=0;
-        if(shape.isNull() || getLinkColor(original,obj,color,vp))
+        if(shape.isNull() || (type==TopAbs_FACE && getLinkColor(original,obj,color,vp)))
             return color;
         if(!vp)
             vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));

@@ -57,8 +57,8 @@ bool SoFCSelectionContext::removeIndex(int index) {
     return false;
 }
 
-int SoFCSelectionContext::merge(int status, 
-        SoFCSelectionContextBasePtr &output, SoFCSelectionContextBasePtr input)
+int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output, 
+        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContext>(input);
     if(!ctx)
@@ -152,17 +152,40 @@ bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparenc
     return false;
 }
 
-int SoFCSelectionContextEx::merge(int status, 
-        SoFCSelectionContextBasePtr &output, SoFCSelectionContextBasePtr input)
+int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &output, 
+        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContextEx>(input);
-    if(!ctx)
+    if(!ctx) {
+        if(node && node->hasColorOverride()) {
+            if(!status)
+                status = 2;
+            else if(status == 1)
+                status = 3;
+        }
         return status;
+    }
 
-    status = SoFCSelectionContext::merge(status,output,input);
-    if(status < 0)
+    int status_copy = status;
+    if(status==2)
+        status_copy = 0;
+    else if(status==3)
+        status_copy = 1;
+    status_copy = SoFCSelectionContext::merge(status_copy,output,input,node);
+    if(status_copy < 0)
+        return status_copy;
+
+    if(status>1) {
+        // When status>1 it means there is color override before us, all
+        // subsequent color override will be bypassed
+        if(status_copy==1)
+            status = 3;
+        else
+            status = 2;
         return status;
+    }
 
+    status = status_copy;
     auto ret = std::dynamic_pointer_cast<SoFCSelectionContextEx>(output);
     assert(ret);
     for(auto &v : ctx->colors) {
@@ -175,6 +198,13 @@ int SoFCSelectionContextEx::merge(int status,
             assert(ret);
         }
         ret->colors.insert(v);
+    }
+
+    if(node && node->hasColorOverride()) {
+        if(!status)
+            status = 2;
+        else if(status == 1)
+            status = 3;
     }
     return status;
 }

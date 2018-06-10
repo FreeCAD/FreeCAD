@@ -981,6 +981,7 @@ SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
 std::map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
+SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot);
 
@@ -1043,7 +1044,9 @@ SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionCont
     stack.back() = static_cast<SoFCSelectionRoot*>(node);
     for(stack.offset=0;stack.offset<stack.size();++stack.offset) {
         auto it = map.find(stack);
-        if(it!=map.end() && (status = merge(status,ret,it->second))<0)
+        auto ctx = it!=map.end()?it->second:SoFCSelectionContextBasePtr();
+        status = merge(status,ret,ctx,stack.offset==stack.size()-1?0:stack[stack.offset]);
+        if(status<0)
             break;
     }
     stack.offset = 0;
@@ -1107,6 +1110,11 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc rend
         auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
         if(!ctx2 || !ctx2->hideAll) {
             auto ctx = getRenderContext<SelContext>(this);
+            bool colorPushed = false;
+            if(!ShapeColorNode && overrideColor) {
+                ShapeColorNode = this;
+                colorPushed = true;
+            }
             if(!ctx) 
                 (this->*render)(action);
             else {
@@ -1122,6 +1130,8 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc rend
                 if(hlPushed)
                     HlColorStack.pop_back();
             }
+            if(colorPushed)
+                ShapeColorNode = 0;
         }
         SelStack.pop_back();
         pushed = false;
@@ -1140,6 +1150,29 @@ DEFINE_RENDER(GLRender)
 DEFINE_RENDER(GLRenderBelowPath)
 DEFINE_RENDER(GLRenderInPath)
 DEFINE_RENDER(GLRenderOffPath)
+
+bool SoFCSelectionRoot::checkColorOverride(SoState *state) {
+    if(ShapeColorNode) {
+        if(!SoOverrideElement::getDiffuseColorOverride(state)) {
+            state->push();
+            auto &packer = ShapeColorNode->shapeColorPacker;
+            auto &trans = ShapeColorNode->transOverride;
+            auto &color = ShapeColorNode->colorOverride;
+            if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+                SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
+                SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
+            }
+            SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
+            SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
+            SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
+            SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+
+            SoTextureEnabledElement::set(state,ShapeColorNode,false);
+            return true;
+        }
+    }
+    return false;
+}
 
 void SoFCSelectionRoot::checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor) {
     sel = false;
@@ -1303,8 +1336,8 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     return true;
 }
 
-int SoFCSelectionRoot::SelContext::merge(int status, 
-        SoFCSelectionContextBasePtr &output, SoFCSelectionContextBasePtr input)
+int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr &output, 
+        SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
 {
     auto ctx = std::dynamic_pointer_cast<SelContext>(input);
     if(ctx && ctx->hideAll) {

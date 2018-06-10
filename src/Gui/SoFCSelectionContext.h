@@ -32,12 +32,14 @@
 
 namespace Gui {
 
+class SoFCSelectionRoot;
 struct SoFCSelectionContextBase;
 typedef std::shared_ptr<SoFCSelectionContextBase> SoFCSelectionContextBasePtr;
 
 struct GuiExport SoFCSelectionContextBase {
     virtual ~SoFCSelectionContextBase() {}
-    typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, SoFCSelectionContextBasePtr input);
+    typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, 
+            SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node);
 };
 
 struct SoFCSelectionContext;
