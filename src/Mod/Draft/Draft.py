@@ -6241,7 +6241,7 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
         _ViewProviderDraft.__init__(self,vobj)
 
     def getIcon(self):
-        if hasattr(self.vobj.Object,"ArrayType"):
+        if hasattr(self.Object,"ArrayType"):
             return ":/icons/Draft_Array.svg"
         return ":/icons/Draft_PathArray.svg"
 
