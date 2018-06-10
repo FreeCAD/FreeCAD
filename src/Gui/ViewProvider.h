@@ -196,7 +196,7 @@ public:
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
     /** Replace an object to the view provider by drag and drop */
-    virtual void dropReplaceObject(App::DocumentObject*, App::DocumentObject*);
+    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
     //@}
 
     /** @name Signals of the view provider */

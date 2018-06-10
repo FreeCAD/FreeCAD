@@ -111,7 +111,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
-void ViewProviderGroupExtension::extensionDropReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) {
+void ViewProviderGroupExtension::extensionReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) {
 
     App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
     App::Document* doc = grp->getDocument();

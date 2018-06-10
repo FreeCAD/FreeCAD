@@ -381,7 +381,36 @@ void TreeWidget::onMarkRecompute()
     }
 }
 
-//PGA adds an intermediate Compound this allows for example to set attributes 
+// PGA this function can be moved to somewhere else. To be defined
+void viewInsertIntermediateCompound(
+		Gui::ViewProviderDocumentObject* parentViewProvider, 
+		App::DocumentObject* selectedObj) {
+            
+    App::Document* doc = selectedObj->getDocument();
+    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+            
+    gui->openCommand("Compound");
+    
+    std::string FeatName = doc->getUniqueObjectName("Compound");
+    std::stringstream str;
+    str << "App.activeDocument()." << FeatName << ".Links = [" << "App.activeDocument()." 
+        << selectedObj->getNameInDocument() << ",]";
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+
+    if (parentViewProvider) {
+        App::DocumentObject* newObj = doc->getObject(FeatName.c_str());
+        // now add the object to the target object
+        parentViewProvider->replaceObject(selectedObj, newObj);
+    }
+
+    Gui::Command::updateActive();
+    Gui::Command::commitCommand();
+}
+
+
+// adds an intermediate Compound this allows for example to set attributes 
 // to a part in the operation without changing the attributes of the part everywhere in the model
 // for example the position orientation and colors, or colors
 void TreeWidget::onInsertIntermediateCompound()
@@ -391,38 +420,22 @@ void TreeWidget::onInsertIntermediateCompound()
     
     DocumentObjectItem* itemObj = static_cast<DocumentObjectItem*>(this->contextItem);
     Gui::ViewProviderDocumentObject* vp = itemObj->object();
+    App::DocumentObject* selectedObj = vp->getObject();
     
-    if (vp->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) return;
+    if (selectedObj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) return;
     
-    App::Document* doc = vp->getObject()->getDocument();
+    App::Document* doc = selectedObj->getDocument();
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc != doc) return;
     
-    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
     // does this have a parent object
     QTreeWidgetItem* parent = this->contextItem->parent();
-    
-    gui->openCommand("Compound");
-    
-    std::string FeatName = doc->getUniqueObjectName("Compound");
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Links = [" << "App.activeDocument()." 
-        << vp->getObject()->getNameInDocument() << ",]";
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
-    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-
+    Gui::ViewProviderDocumentObject* parentViewProvider = NULL;
     if (parent && parent->type() == TreeWidget::ObjectType) {
-        Gui::ViewProviderDocumentObject* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-        
-        App::DocumentObject* obj = doc->getObject(FeatName.c_str());
-        // now add the object to the target object
-        vpp->dropReplaceObject(vp->getObject(), obj);
+        parentViewProvider = 
+           static_cast<DocumentObjectItem *>(parent)->object();
     }
-
-    Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    viewInsertIntermediateCompound(parentViewProvider, selectedObj);
 }
 
 
@@ -542,23 +555,6 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
         // If this object is *not* selected and *not* a group we are not allowed to remove
         // its child (e.g. the sketch of a pad).
 		
-		
-		/*  PGA this control is removed as it disables all drag operation even coying
-		This control has been added in dragMoveEvent and in supportedDropActions
-        QTreeWidgetItem* parent = (*it)->parent();
-        if (parent && parent->type() == TreeWidget::ObjectType) {
-            // fix issue #0001456
-            if (!items.contains(parent)) {
-                Gui::ViewProvider* vp = static_cast<DocumentObjectItem *>(parent)->object();
-                if (!vp->canDragObjects()) {
-                    return 0;
-                }
-                else if (!vp->canDragObject(obj)) {
-                    return 0;
-                }
-            }
-        }
-		*/
     }
     return QTreeWidget::mimeData(items);
 }
@@ -792,7 +788,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 				if (parent && parent->type() == TreeWidget::ObjectType) {
 					Gui::ViewProvider* vpParent = static_cast<DocumentObjectItem *>(parent)->object();
 					// now add the object to the target object
-					vpParent->dropReplaceObject(vpTarget->getObject(), objDropped);
+					vpParent->replaceObject(vpTarget->getObject(), objDropped);
 				}
 
 			}

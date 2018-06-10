@@ -49,7 +49,7 @@ public:
     bool canDropObject(App::DocumentObject*) const;
     void dropObject(App::DocumentObject*);
     /** Replace an object to the view provider by drag and drop */
-    virtual void dropReplaceObject(App::DocumentObject*, App::DocumentObject*);
+    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
 
 protected:
     void updateData(const App::Property*);
