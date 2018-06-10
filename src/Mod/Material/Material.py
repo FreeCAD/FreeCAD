@@ -68,7 +68,7 @@ def importFCMat(fileName):
     return dict1
 
 
-def exportFCMat(fileName,matDict):
+def exportFCMat(fileName, matDict):
     "Write a material dictionary to a FCMat file"
     try:
         import ConfigParser as configparser
@@ -79,20 +79,48 @@ def exportFCMat(fileName,matDict):
 
     # create groups
     for x in matDict.keys():
-        grp,key = string.split(x,sep='_')
+        grp, key = string.split(x, sep='_')
         if not Config.has_section(grp):
             Config.add_section(grp)
 
     # fill groups
     for x in matDict.keys():
-        grp,key = string.split(x,sep='_')
-        Config.set(grp,key,matDict[x])
+        grp, key = string.split(x, sep='_')
+        Config.set(grp, key, matDict[x])
 
     Preamble = "# This is a FreeCAD material-card file\n\n"
     # Writing our configuration file to 'example.cfg'
     with open(fileName, 'wb') as configfile:
         configfile.write(Preamble)
         Config.write(configfile)
+
+
+def getMaterialAttributeStructure(withSpaces=None):
+    # material properties
+    # are there any more resources in FreeCAD source code where known material properties are defined exept the material cards itself?
+    # we should not have two of these list ...
+    # withSpaces is used by the material editor ui, without spaces is used to save a material file
+    if withSpaces:
+        material_property_groups = (
+            ('Meta', ('Card Name', 'Author And License', 'Source')),
+            ('General', ('Name', 'Father', 'Description', 'Denisty', 'Vendor', 'ProductURL', 'SpecificPrice')),
+            ('Mechanical', ('Youngs Modulus', 'Poisson Ratio', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness')),
+            ('Architectural', ('Execution Instructions', 'Fire Resistance Class', 'Standard Code', 'Thermal Conductivity', 'Sound Transmission Class', 'Color', 'Finish', 'Units Per Quantity', 'Environmental Efficiency Class')),
+            ('Rendering', ('Diffuse Color', 'Ambient Color', 'Specular Color', 'Shininess', 'Emissive Color', 'Transparency', 'Vertex Shader', 'Fragment Shader', 'Texture Path', 'Texture Scaling')),
+            ('Vector rendering', ('View Color', 'Father', 'View Linewidth', 'Section Color', 'Section Fill Pattern', 'Section Linewidth')),
+            ('User defined', ())
+        )
+    else:
+        material_property_groups = (
+            ("Meta", ("CardName", "AuthorAndLicense", "Source")),
+            ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
+            ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "Elasticity", "FractureToughness")),
+            ("Architectural", ("Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass")),
+            ("Rendering", ("DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling")),
+            ("Vector rendering", ("ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth")),
+            ("User defined", ())
+        )
+    return material_property_groups
 
 
 if __name__ == '__main__':
