@@ -24,6 +24,7 @@
 from __future__ import print_function
 import FreeCAD
 import FreeCADGui
+from Material import getMaterialAttributeStructure
 import os
 from PySide import QtCore, QtGui
 # from PySide import QtUiTools, QtSvg
@@ -70,7 +71,7 @@ class MaterialEditor:
         QtCore.QObject.connect(self.widget.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
 
         # add material properies (the keys) to the editor
-        for group in material_properties:
+        for group in getMaterialAttributeStructure(True):  # get the mat file structure from material module, use Spaces for better ui
             # print(group)
             self.addPropertiesToGroup(group)
 
@@ -359,16 +360,3 @@ def editMaterial(material):
         return editor.getDict()
     else:
         return material
-
-
-# material properties
-# are there any more resources in FreeCAD source code where known material properties are defined exept the material cards itself?
-material_properties = (
-    ('Meta information', ['Card Name', 'Author And License', 'Source']),
-    ('General', ['Name', 'Father', 'Description', 'Denisty', 'Vendor', 'ProductURL', 'SpecificPrice']),
-    ('Mechanical', ['Youngs Modulus', 'Poisson Ratio', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness']),
-    ('Architectural', ['Execution Instructions', 'Fire Resistance Class', 'Standard Code', 'Thermal Conductivity', 'Sound Transmission Class', 'Color', 'Finish', 'Units Per Quantity', 'Environmental Efficiency Class']),
-    ('Rendering', ['Diffuse Color', 'Ambient Color', 'Specular Color', 'Shininess', 'Emissive Color', 'Transparency', 'Vertex Shader', 'Fragment Shader', 'Texture Path', 'Texture Scaling']),
-    ('Vector rendering', ['View Color', 'Father', 'View Linewidth', 'Section Color', 'Section Fill Pattern', 'Section Linewidth']),
-    ('User defined', [])
-)
