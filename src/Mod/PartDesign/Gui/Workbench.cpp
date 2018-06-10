@@ -224,6 +224,11 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
                 Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
                 *item << "PartDesign_MultiTransform";
+
+            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+                *item << "Std_SetAppearance"
+                      << "Std_RandomColor";
+            }
         }
     }
 }
