@@ -23,25 +23,13 @@
 
 import FreeCAD
 # import Material
+from Material import getMaterialAttributeStructure
 import os
 
 
 __title__ = "FreeCAD material card importer"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
-
-
-# file structure - this affects how files are saved
-FileStructure = [
-    ["Meta", ["CardName", "AuthorAndLicense", "Source"]],
-    ["General", ["Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice"]],
-    ["Mechanical", ["YoungsModulus", "UltimateTensileStrength", "CompressiveStrength", "Elasticity", "FractureToughness"]],
-    ["FEM", ["PoissonRatio"]],
-    ["Architectural", ["Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass"]],
-    ["Rendering", ["DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling"]],
-    ["Vector rendering", ["ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth"]],
-    ["User defined", []]
-]
 
 
 # to distinguish python built-in open function from the one declared below
@@ -114,7 +102,7 @@ def write(filename, dictionary):
     "writes the given dictionary to the given file"
     # sort the data into sections
     contents = []
-    for key in FileStructure:
+    for key in getMaterialAttributeStructure():  # get the mat file structure from material module
         contents.append({"keyname": key[0]})
         if key[0] == "Meta":
             header = contents[-1]
