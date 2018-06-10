@@ -667,7 +667,7 @@ private:
                             arcPoints pts = dvd->getArcPoints();
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
-                            Base::Vector3d arcPoint = pts.midArc;
+                            Base::Vector3d arcPoint = pts.onCurve.first;
                             arcPoint.y = -arcPoint.y;
                             center = center + parentPos;
                             arcPoint = arcPoint + parentPos;
