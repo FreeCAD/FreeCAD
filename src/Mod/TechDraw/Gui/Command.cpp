@@ -208,7 +208,7 @@ void CmdTechDrawNewPage::activated(int iMsg)
 
         //why is "Template" property set twice? -wf
         // once to set DrawSVGTemplate.Template to OS template file name
-        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",TemplateName.c_str(), templateFileName.toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().%s.Template = \"%s\"",TemplateName.c_str(), templateFileName.toUtf8().constData());
         // once to set Page.Template to DrawSVGTemplate.Name
         doCommand(Doc,"App.activeDocument().%s.Template = App.activeDocument().%s",PageName.c_str(),TemplateName.c_str());
         // consider renaming DrawSVGTemplate.Template property?
@@ -334,6 +334,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
     std::string BaseName = dvp->getNameInDocument();
     std::string PageName = page->getNameInDocument();
+    double baseScale = dvp->getScale();
 
     Gui::WaitCursor wc;
     openCommand("Create view");
@@ -344,13 +345,13 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
     if (!dsv) {
-        throw Base::Exception("CmdTechDrawNewViewSection DSV not found\n");
+        throw Base::Exception("CmdTechDrawNewViewSection DVS not found\n");
     }
     dsv->Source.setValues(dvp->Source.getValues());
     doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
     Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
 
     updateActive();
