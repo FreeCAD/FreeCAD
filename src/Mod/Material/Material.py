@@ -98,29 +98,27 @@ def exportFCMat(fileName, matDict):
 def getMaterialAttributeStructure(withSpaces=None):
     # material properties
     # are there any more resources in FreeCAD source code where known material properties are defined except the material cards itself?
-    # we should not have two of these list ...
-    # withSpaces is used by the material editor ui, without spaces is used to save a material file
+    materialPropertyGroups = (
+        ("Meta", ("CardName", "AuthorAndLicense", "Source")),
+        ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
+        ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "Elasticity", "FractureToughness")),
+        ("Architectural", ("Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass")),
+        ("Rendering", ("DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling")),
+        ("Vector rendering", ("ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth")),
+        ("User defined", ())
+    )
     if withSpaces:
-        material_property_groups = (
-            ('Meta', ('Card Name', 'Author And License', 'Source')),
-            ('General', ('Name', 'Father', 'Description', 'Denisty', 'Vendor', 'ProductURL', 'SpecificPrice')),
-            ('Mechanical', ('Youngs Modulus', 'Poisson Ratio', 'Ultimate Tensile Strength', 'Compressive Strength', 'Elasticity', 'Fracture Toughness')),
-            ('Architectural', ('Execution Instructions', 'Fire Resistance Class', 'Standard Code', 'Thermal Conductivity', 'Sound Transmission Class', 'Color', 'Finish', 'Units Per Quantity', 'Environmental Efficiency Class')),
-            ('Rendering', ('Diffuse Color', 'Ambient Color', 'Specular Color', 'Shininess', 'Emissive Color', 'Transparency', 'Vertex Shader', 'Fragment Shader', 'Texture Path', 'Texture Scaling')),
-            ('Vector rendering', ('View Color', 'Father', 'View Linewidth', 'Section Color', 'Section Fill Pattern', 'Section Linewidth')),
-            ('User defined', ())
-        )
-    else:
-        material_property_groups = (
-            ("Meta", ("CardName", "AuthorAndLicense", "Source")),
-            ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
-            ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "Elasticity", "FractureToughness")),
-            ("Architectural", ("Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass")),
-            ("Rendering", ("DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling")),
-            ("Vector rendering", ("ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth")),
-            ("User defined", ())
-        )
-    return material_property_groups
+        # on attributes, add a space before a capital letter, will be used for better display in the ui
+        import re
+        newMatProp = []
+        for group in materialPropertyGroups:
+            newAttr = []
+            for attr in group[1]:
+                newAttr.append(re.sub(r"(\w)([A-Z])", r"\1 \2", attr))
+            newMatProp.append([group[0], newAttr])
+        materialPropertyGroups = newMatProp
+    # print(materialPropertyGroups)
+    return materialPropertyGroups
 
 
 if __name__ == '__main__':
