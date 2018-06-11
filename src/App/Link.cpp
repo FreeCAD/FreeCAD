@@ -905,8 +905,9 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
                 auto linked = link->getTrueLinkedObject(true);
                 if(linked)
                     link->Label.setValue(linked->Label.getValue());
-                if(getLinkModeValue()<LinkModeAutoLink)
-                    link->LinkTransform.setValue(true);
+                auto pla = dynamic_cast<PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                if(pla)
+                    link->Placement.setValue(pla->getValue());
                 link->Visibility.setValue(false);
                 obj = link;
             }
