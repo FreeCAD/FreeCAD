@@ -64,6 +64,14 @@ def makeBuildingPart(objectslist=None):
         obj.addObjects(objectslist)
     return obj
 
+def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+    
+    """overwrites ArchFloor.makeFloor"""
+    
+    obj = makeBuildingPart(objectslist)
+    obj.Label = name
+    obj.IfcRole = "Building Storey"
+    return obj
 
 def convertFloors(floor=None):
 
@@ -104,15 +112,18 @@ class CommandBuildingPart:
     "the Arch BuildingPart command definition"
 
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_BuildingPart',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_BuildingPart","BuildingPart"),
                 'Accel': "B, P",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_BuildingPart","Creates a BuildingPart object including selected objects")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         ss = "[ "
         for o in sel:
@@ -175,17 +186,42 @@ class BuildingPart:
 
         return None
 
+    def onBeforeChange(self,obj,prop):
+
+        if prop == "Placement":
+            self.oldPlacement = FreeCAD.Placement(obj.Placement)
+
     def onChanged(self,obj,prop):
-        if (prop == "Height"):
-            for o in obj.Group:
-                if Draft.getType(o) in ["Wall","Structure"]:
-                    if not o.Height.Value:
-                        o.Proxy.execute(o)
+
+        if prop == "Height":
+            for child in obj.Group:
+                if Draft.getType(child) in ["Wall","Structure"]:
+                    if not child.Height.Value:
+                        child.Proxy.execute(child)
+        elif prop == "Placement":
+            if hasattr(self,"oldPlacement"):
+                if self.oldPlacement:
+                    v = FreeCAD.Vector(0,0,1)
+                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
+                    if deltap.Length == 0:
+                        deltap = None
+                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
+                    if deltar.Angle < 0.001:
+                        deltar = None
+                    for child in obj.Group:
+                        if ((not hasattr(child,"MoveWithHost")) or child.MoveWithHost) and hasattr(child,"Placement"):
+                            print "moving ",child.Label
+                            if deltap:
+                                child.Placement.move(deltap)
+                            if deltar:
+                                child.Placement.Rotation = child.Placement.Rotation.multiply(deltar)
 
     def execute(self,obj):
+
         pass
 
     def getSpaces(self,obj):
+
         "gets the list of Spaces that have this object as their Zone property"
         g = []
         for o in obj.OutList:
@@ -202,6 +238,7 @@ class ViewProviderBuildingPart:
     "A View Provider for the BuildingPart object"
 
     def __init__(self,vobj):
+
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
         vobj.Proxy = self
@@ -237,6 +274,10 @@ class ViewProviderBuildingPart:
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
             vobj.FontSize = Draft.getParam("textheight",2.0)
+        if not "ViewData" in pl:
+            vobj.addProperty("App::PropertyFloatList","ViewData","BuildingPart",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
+        if not "RestoreView" in pl:
+            vobj.addProperty("App::PropertyBool","RestoreView","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
 
     def onDocumentRestored(self,vobj):
 
@@ -294,7 +335,7 @@ class ViewProviderBuildingPart:
         return mode
 
     def isShow(self):
-        
+
         return True
 
     def updateData(self,obj,prop):
@@ -375,6 +416,8 @@ class ViewProviderBuildingPart:
 
         if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == vobj.Object:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",None)
+            if vobj.SetWorkingPlane:
+                self.setWorkingPlane(restore=True)
         else:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
             if vobj.SetWorkingPlane:
@@ -383,20 +426,52 @@ class ViewProviderBuildingPart:
     def setupContextMenu(self,vobj,menu):
 
         from PySide import QtCore,QtGui
+        import Draft_rc
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Set working plane",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.setWorkingPlane)
         menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
+        menu.addAction(action2)
 
-    def setWorkingPlane(self):
+    def setWorkingPlane(self,restore=False):
 
         if hasattr(self,"Object") and hasattr(FreeCAD,"DraftWorkingPlane"):
             import FreeCADGui
-            FreeCAD.DraftWorkingPlane.setFromPlacement(self.Object.Placement,rebase=True)
-            FreeCAD.DraftWorkingPlane.weak = False
+            if restore:
+                FreeCAD.DraftWorkingPlane.restore()
+            else:
+                FreeCAD.DraftWorkingPlane.save()
+                FreeCAD.DraftWorkingPlane.setFromPlacement(self.Object.Placement,rebase=True)
+                FreeCAD.DraftWorkingPlane.weak = False
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
             if hasattr(FreeCADGui,"draftToolBar"):
-                FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
+                if restore and hasattr(self,"wptext"):
+                    FreeCADGui.draftToolBar.wplabel.setText(self.wptext)
+                else:
+                    self.wptext = FreeCADGui.draftToolBar.wplabel.text()
+                    FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
+
+    def writeCamera(self):
+
+        if hasattr(self,"Object"):
+            from pivy import coin
+            n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            cdata = list(n.position.getValue().getValue())
+            cdata.extend(list(n.orientation.getValue().getValue()))
+            cdata.append(n.nearDistance.getValue())
+            cdata.append(n.farDistance.getValue())
+            cdata.append(n.aspectRatio.getValue())
+            cdata.append(n.focalDistance.getValue())
+            if isinstance(n,coin.SoOrthographicCamera):
+                cdata.append(n.height.getValue())
+                cdata.append(0.0) # orthograhic camera
+            elif isinstance(n,coin.SoPerspectiveCamera):
+                cdata.append(n.heightAngle.getValue())
+                cdata.append(1.0) # perspective camera
+            self.Object.ViewObject.ViewData = cdata
 
     def __getstate__(self):
         return None

@@ -333,7 +333,7 @@ class SelectPlane(DraftTool):
                     self.display(plane.axis)
                     self.finish()
                     return
-                elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
+                elif Draft.getType(sel.Object) in ["WorkingPlaneProxy","BuildingPart"]:
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
                     plane.weak = False
                     if hasattr(sel.Object.ViewObject,"RestoreView"):

@@ -326,22 +326,22 @@ class plane:
                 self.u.z,self.v.z,self.axis.z,self.position.z,
                 0.0,0.0,0.0,1.0)
         p = FreeCAD.Placement(m)
-        # Arch active container
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-            if a:
-                p = a.Placement.inverse().multiply(p)
+        # Arch active container if based on App Part
+        #if FreeCAD.GuiUp:
+        #    import FreeCADGui
+        #    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        #    if a:
+        #        p = a.Placement.inverse().multiply(p)
         return p
 
     def getNormal(self):
         n = self.axis
-        # Arch active container
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-            if a:
-                n = a.Placement.inverse().Rotation.multVec(n)
+        # Arch active container if based on App Part
+        #if FreeCAD.GuiUp:
+        #    import FreeCADGui
+        #    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        #    if a:
+        #        n = a.Placement.inverse().Rotation.multVec(n)
         return n
 
     def setFromPlacement(self,pl,rebase=False):
