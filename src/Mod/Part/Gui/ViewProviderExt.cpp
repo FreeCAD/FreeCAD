@@ -790,12 +790,18 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
 
     if(boost::starts_with(element,"Face")) {
         auto size = DiffuseColor.getSize();
-        if(element[4]=='*' && size>1 && size==faceset->partIndex.getNum()) {
+        if(element[4]=='*') {
             auto color = ShapeColor.getValue();
             color.a = Transparency.getValue()/100.0f;
+            bool singleColor = true;
             for(int i=0;i<size;++i) {
                 if(DiffuseColor[i]!=color)
                     ret[std::string(element,4)+std::to_string(i+1)] = DiffuseColor[i];
+                singleColor = singleColor && DiffuseColor[0]==DiffuseColor[i];
+            }
+            if(size && singleColor) {
+                color = DiffuseColor[0];
+                ret.clear();
             }
             ret["Face"] = color;
         }else{
@@ -809,12 +815,17 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
         }
     } else if (boost::starts_with(element,"Edge")) {
         auto size = LineColorArray.getSize();
-        if(element[4]=='*' && size>1 && size==lineset->coordIndex.getNum()) {
+        if(element[4]=='*') {
             auto color = LineColor.getValue();
-            color.a = Transparency.getValue()/100.0f;
+            bool singleColor = true;
             for(int i=0;i<size;++i) {
                 if(LineColorArray[i]!=color)
                     ret[std::string(element,4)+std::to_string(i+1)] = LineColorArray[i];
+                singleColor = singleColor && LineColorArray[0]==LineColorArray[i];
+            }
+            if(singleColor && size) {
+                color = LineColorArray[0];
+                ret.clear();
             }
             ret["Edge"] = color;
         }else{
@@ -826,12 +837,17 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
         }
     } else if (boost::starts_with(element,"Vertex")) {
         auto size = PointColorArray.getSize();
-        if(element[5]=='*' && size>1 && size==coords->point.getNum()-nodeset->startIndex.getValue()) {
+        if(element[5]=='*') {
             auto color = PointColor.getValue();
-            color.a = Transparency.getValue()/100.0f;
+            bool singleColor = true;
             for(int i=0;i<size;++i) {
                 if(PointColorArray[i]!=color)
                     ret[std::string(element,5)+std::to_string(i+1)] = PointColorArray[i];
+                singleColor = singleColor && PointColorArray[0]==PointColorArray[i];
+            }
+            if(singleColor && size) {
+                color = PointColorArray[0];
+                ret.clear();
             }
             ret["Vertex"] = color;
         }else{
