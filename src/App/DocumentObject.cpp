@@ -628,6 +628,11 @@ DocumentObject *DocumentObject::getLinkedObject(
         if(ext->extensionGetLinkedObject(ret,recursive,mat,transform,depth))
             return ret;
     }
+    if(transform && mat) {
+        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        if(pla)
+            *mat *= pla->getValue().toMatrix();
+    }
     return const_cast<DocumentObject*>(this);
 }
 
