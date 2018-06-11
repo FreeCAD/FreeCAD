@@ -150,8 +150,8 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
 
-    if(!useLinkGroup) {
-        Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
+    if(useLinkGroup) {
+        // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
         aShapeTool->SetAutoNaming(Standard_False);
     }
 }
@@ -306,6 +306,20 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
             TopoDS_Shape subShape = aShapeTool->GetShape(l);
             if(subShape.IsNull())
                 continue;
+            if(subShape.ShapeType()==TopAbs_COMPOUND) {
+                // It's strange that OCCT expand compound of multiples edges as
+                // a sub-compound of single edge?
+                TopExp_Explorer exp(subShape,TopAbs_FACE);
+                if(exp.More())
+                    subShape = exp.Current();
+                else {
+                    exp.Init(subShape,TopAbs_EDGE);
+                    if(exp.More())
+                        subShape = exp.Current();
+                    else
+                        continue;
+                }
+            }
             Quantity_Color aColor;
             int idx = tshape.findShape(subShape)-1;
             if(idx<0)
@@ -860,12 +874,10 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 aColorTool->SetVisibility(nodeLabel,Standard_False);
                 continue;
             }
-
-            auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
             const App::Color& c = vv.second;
             Quantity_Color color(c.r,c.g,c.b,Quantity_TOC_RGB);
-
-            if(boost::ends_with(vv.first,"*")) {
+            auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
+            if(vv.first=="Face" || vv.first=="Edge") {
                 aColorTool->SetColor(nodeLabel, color, colorType);
                 continue;
             }
