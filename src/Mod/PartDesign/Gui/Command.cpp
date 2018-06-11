@@ -331,8 +331,12 @@ void CmdPartDesignClone::activated(int iMsg)
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.Placement = App.ActiveDocument.%s.Placement",
                   objs.front()->getNameInDocument());
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
-        commitCommand();
         updateActive();
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.DiffuseColor = App.ActiveDocument.%s.ViewObject.DiffuseColor",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.Transparency = App.ActiveDocument.%s.ViewObject.Transparency",
+                  objs.front()->getNameInDocument());
+        commitCommand();
     }
 }
 
