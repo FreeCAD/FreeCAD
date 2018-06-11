@@ -1413,6 +1413,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         buf.vertex_array_size = 0;
         buf.index_array_size = 0;
         this->vbomap[contextId] = buf;
+        this->vboLoaded = false;
     }
     else {
         buf = it->second;
