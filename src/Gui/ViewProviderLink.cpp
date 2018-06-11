@@ -2398,7 +2398,17 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     int size = OverrideColorList.getSize();
 
     std::string wildcard(subname);
-    if(wildcard == "Face*" || wildcard == "Edge*")
+    if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
+        if(wildcard.size()==4 || OverrideMaterial.getValue()) {
+            App::Color c = ShapeMaterial.getValue().diffuseColor;
+            c.a = ShapeMaterial.getValue().transparency;
+            colors["Face"] = c;
+            if(wildcard.size()==4)
+                return colors;
+        }
+        if(wildcard.size())
+            wildcard.resize(4);
+    }else if(wildcard == "Edge*")
         wildcard.resize(4);
     else if(wildcard == "Vertex*")
         wildcard.resize(5);
@@ -2509,9 +2519,16 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
 
     std::vector<std::string> subs;
     std::vector<App::Color> colors;
+    App::Color faceColor;
+    bool hasFaceColor = false;
     for(auto &v : colorMap) {
-        subs.push_back(v.first);
-        colors.push_back(v.second);
+        if(!hasFaceColor && v.first == "Face") {
+            hasFaceColor = true;
+            faceColor = v.second;
+        }else{
+            subs.push_back(v.first);
+            colors.push_back(v.second);
+        }
     }
     auto prop = ext->getColoredElementsProperty();
     if(subs!=prop->getSubValues() || colors!=OverrideColorList.getValues()) {
@@ -2520,6 +2537,15 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
         prop->setStatus(App::Property::User3,false);
         OverrideColorList.setValues(colors);
     }
+    if(hasFaceColor) {
+        auto mat = ShapeMaterial.getValue();
+        mat.diffuseColor = faceColor;
+        mat.transparency = faceColor.a;
+        ShapeMaterial.setStatus(App::Property::User3,true);
+        ShapeMaterial.setValue(mat);
+        ShapeMaterial.setStatus(App::Property::User3,false);
+    }
+    OverrideMaterial.setValue(hasFaceColor);
 }
 
 void ViewProviderLink::applyColors() {

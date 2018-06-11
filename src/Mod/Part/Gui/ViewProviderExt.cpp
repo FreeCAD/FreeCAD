@@ -768,6 +768,11 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             return ret;
         for(size_t i=0;i<subs.size();++i)
             ret.emplace(subs[i],colors[i]);
+        auto color = ShapeColor.getValue();
+        color.a = Transparency.getValue()/100.0f;
+        ret["Face"] = color;
+        ret["Edge"] = LineColor.getValue();
+        ret["Vertex"] = PointColor.getValue();
         return ret;
     }
 
@@ -792,7 +797,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
                 if(DiffuseColor[i]!=color)
                     ret[std::string(element,4)+std::to_string(i+1)] = DiffuseColor[i];
             }
-            ret["Face*"] = color;
+            ret["Face"] = color;
         }else{
             int idx = atoi(element+4);
             if(idx>0 && idx<=size)
@@ -811,7 +816,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
                 if(LineColorArray[i]!=color)
                     ret[std::string(element,4)+std::to_string(i+1)] = LineColorArray[i];
             }
-            ret["Edge*"] = color;
+            ret["Edge"] = color;
         }else{
             int idx = atoi(element+4);
             if(idx>0 && idx<=size)
@@ -828,7 +833,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
                 if(PointColorArray[i]!=color)
                     ret[std::string(element,5)+std::to_string(i+1)] = PointColorArray[i];
             }
-            ret["Vertex*"] = color;
+            ret["Vertex"] = color;
         }else{
             int idx = atoi(element+5);
             if(idx>0 && idx<=size)
@@ -849,11 +854,32 @@ void ViewProviderPartExt::setElementColors(const std::map<std::string,App::Color
     std::vector<std::string> subs;
     colors.reserve(info.size());
     subs.reserve(info.size());
-    for(auto &v : info) {
-        subs.push_back(v.first);
-        colors.push_back(v.second);
-    }
     bool touched = false;
+    for(auto &v : info) {
+        if(v.first == "Face") {
+            if(ShapeColor.getValue()!=v.second) {
+                touched = true;
+                ShapeColor.setValue(v.second);
+            }
+            if(v.second.a*100 != Transparency.getValue()) {
+                Transparency.setValue(v.second.a*100);
+                touched = true;
+            }
+        } else if(v.first == "Edge") {
+            if(LineColor.getValue()!=v.second) {
+                LineColor.setValue(v.second);
+                touched = true;
+            }
+        } else if(v.first == "Vertex"){
+            if(PointColor.getValue()!=v.second) {
+                PointColor.setValue(v.second);
+                touched = true;
+            }
+        } else {
+            subs.push_back(v.first);
+            colors.push_back(v.second);
+        }
+    }
     if(colors!=MappedColors.getValues()) {
         touched = true;
         MappedColors.setStatus(App::Property::User3,true);

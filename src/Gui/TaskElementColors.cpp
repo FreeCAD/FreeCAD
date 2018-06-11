@@ -379,32 +379,38 @@ void ElementColors::on_hideSelection_clicked() {
 void ElementColors::on_addSelection_clicked()
 {
     auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
-    for(auto &sel : sels) {
-        if(d->editObj!=sel.getFeatName())
-            continue;
-        const auto &subs = sel.getSubNames();
-        if(subs.size()) {
-            d->items.clear();
+    d->items.clear();
+    if(sels.empty())
+        d->addItem(-1,"Face",true);
+    else {
+        for(auto &sel : sels) {
+            if(d->editObj!=sel.getFeatName())
+                continue;
+            const auto &subs = sel.getSubNames();
+            if(subs.empty()) {
+                d->addItem(-1,"Face",true);
+                break;
+            }
             for(auto &sub : subs) {
                 if(boost::starts_with(sub,d->editSub))
                     d->addItem(-1,sub.c_str()+d->editSub.size(),true);
             }
-            if(d->items.size()) {
-                auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
-                QColorDialog cd(color, this);
-                cd.setOption(QColorDialog::ShowAlphaChannel);
-                if (cd.exec()!=QDialog::Accepted)
-                    return;
-                color = cd.selectedColor();
-                for(auto item : d->items) {
-                    item->setData(Qt::UserRole,color);
-                    d->px.fill(color);
-                    item->setIcon(QIcon(d->px));
-                }
-                d->apply();
-            }
+            break;
         }
-        return;
+    }
+    if(d->items.size()) {
+        auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
+        QColorDialog cd(color, this);
+        cd.setOption(QColorDialog::ShowAlphaChannel);
+        if (cd.exec()!=QDialog::Accepted)
+            return;
+        color = cd.selectedColor();
+        for(auto item : d->items) {
+            item->setData(Qt::UserRole,color);
+            d->px.fill(color);
+            item->setIcon(QIcon(d->px));
+        }
+        d->apply();
     }
 }
 
