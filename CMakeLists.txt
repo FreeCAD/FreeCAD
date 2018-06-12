@@ -708,6 +708,8 @@ endif()
         endif()
         # on openSUSE 13.1 VTK_LIBRARIES ends with "optimized" keyword
         list(REMOVE_ITEM VTK_LIBRARIES "optimized" "debug")
+        # the FEM module on Arch needs some more libs
+        list(APPEND VTK_LIBRARIES "vtkFiltersParallelDIY2" "vtkRenderingCore" "vtkInteractionStyle" "vtkRenderingFreeType" "vtkRenderingOpenGL2")
 
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
