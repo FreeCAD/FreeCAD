@@ -210,6 +210,7 @@ class ObjectOp(object):
     def opUpdateDepths(self, obj):
         '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass.'''
+        pass
      
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
@@ -354,6 +355,7 @@ class ObjectOp(object):
             # update start depth if requested and required
             if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
                 obj.OpStartDepth = zmax
+        self.opUpdateDepths(obj)
 
     @waiting_effects
     def execute(self, obj):

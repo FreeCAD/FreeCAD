@@ -79,15 +79,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         if job and job.Base:
             obj.BaseObject = job.Base
 
-        zValues = []
-        if obj.StepDown.Value != 0:
-            z = obj.StartDepth.Value - obj.StepDown.Value
-
-            while z > obj.FinalDepth.Value:
-                zValues.append(z)
-                z -= obj.StepDown.Value
-        zValues.append(obj.FinalDepth.Value)
-        self.zValues = zValues
+        zValues = self.getZValues(obj)
 
         try:
             if self.baseobject.isDerivedFrom('Sketcher::SketchObject') or \

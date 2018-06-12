@@ -48,6 +48,18 @@ def translate(context, text, disambig=None):
 class ObjectOp(PathOp.ObjectOp):
     '''Proxy base class for engrave operations.'''
 
+    def getZValues(self, obj):
+        zValues = []
+        if obj.StepDown.Value != 0:
+            z = obj.StartDepth.Value - obj.StepDown.Value
+
+            while z > obj.FinalDepth.Value:
+                zValues.append(z)
+                z -= obj.StepDown.Value
+        zValues.append(obj.FinalDepth.Value)
+        self.zValues = zValues
+        return zValues
+
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
         PathLog.track(obj.Label, len(wires), zValues)
@@ -56,7 +68,8 @@ class ObjectOp(PathOp.ObjectOp):
             offset = wire
 
             # reorder the wire
-            offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
+            if hasattr(obj, 'StartVertex'):
+                offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
 
             last = None
             for z in zValues:
