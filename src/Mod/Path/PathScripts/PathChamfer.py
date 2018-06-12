@@ -25,12 +25,14 @@
 import FreeCAD
 import Part
 import Path
+import PathScripts.PathEngrave as PathEngrave
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
+import math
 
 from PySide import QtCore
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -51,7 +53,58 @@ class ObjectChamfer(PathOp.ObjectOp):
         obj.addProperty("App::PropertyDistance", "ExtraDepth", "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The additional depth of the tool path"))
 
     def opExecute(self, obj):
-        pass
+        angle = self.tool.CuttingEdgeAngle
+        if 0 == angle:
+            angle = 180
+        tan = math.tan(math.radians(angle/2))
+        toolDepth = 0 if 0 == tan else obj.Width.Value / tan
+        extraDepth = obj.ExtraDepth.Value
+        depth = toolDepth + extraDepth
+        toolOffset = self.tool.FlatRadius
+        extraOffset = self.tool.Diameter/2 - obj.Width.Value if 180 == angle else obj.ExtraDepth.Value / tan
+        offset = toolOffset + extraOffset
+        PathLog.debug("%s  depth(%.2f, %.2f)  offset(%.2f, %.2f)" % (obj.Label, toolDepth, extraDepth, toolOffset, extraOffset))
+
+        wires = []
+        for base, subs in obj.Base:
+            edges = []
+            basewires = []
+            for f in subs:
+                sub = base.Shape.getElement(f)
+                if type(sub) == Part.Edge:
+                    edges.append(sub)
+                elif sub.Wires:
+                    basewires.extend(sub.Wires)
+                else:
+                    basewires.append(Part.Wire(sub.Edges))
+            for edgelist in Part.sortEdges(edges):
+                basewires.append(Part.Wire(edgelist))
+
+            for w in PathEngrave.adjustWirePlacement(obj, base, basewires):
+                wires.append(self.offsetWire(w, base, offset))
+        self.wires = wires
+
+    def offsetWire(self, wire, base, offset):
+        def removeInsideEdges(edges):
+            def isInside(edge):
+                for v in edge.Vertexes:
+                    if base.Shape.isInside(v.Point, offset/2, True):
+                        return True
+                return False
+            result = []
+            return [e for e in edges if not isInside(e)]
+
+        w = wire.makeOffset2D(offset)
+        if wire.isClosed():
+            if not base.Shape.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
+                return w
+            return wire.makeOffset2D(-offset)
+        edges = removeInsideEdges(w.Edges)
+        if edges:
+            return Part.Wire(edges)
+        w = wire.makeOffset2D(-offset)
+        edges = removeInsideEdges(w.Edges)
+        return Part.Wire(edges)
 
     def opSetDefaultValues(self, obj):
         obj.Width = '1 mm'
