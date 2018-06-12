@@ -174,14 +174,6 @@ void ViewProviderMirror::unsetEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
-{
-    // Make the input object a child (see also #0001482)
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
-    return temp;
-}
-
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
@@ -220,7 +212,7 @@ void ViewProviderMirror::dragMotionCallback(void *data, SoDragger *drag)
 
 // ----------------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderFillet, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderFillet, PartGui::ViewProviderDerivedPart)
 
 ViewProviderFillet::ViewProviderFillet()
 {
@@ -229,45 +221,6 @@ ViewProviderFillet::ViewProviderFillet()
 
 ViewProviderFillet::~ViewProviderFillet()
 {
-}
-
-void ViewProviderFillet::updateData(const App::Property* prop)
-{
-    PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
-        if (hist.size() != 1)
-            return;
-        Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
-        if (!objFill)
-            return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objFill->Base.getValue());
-        if (objBase) {
-            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
-            const TopoDS_Shape& fillShape = objFill->Shape.getValue();
-
-            TopTools_IndexedMapOfShape baseMap, fillMap;
-            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
-            TopExp::MapShapes(fillShape, TopAbs_FACE, fillMap);
-
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            std::vector<App::Color> colFill;
-            colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
-
-            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                applyColor(hist[0], colBase, colFill);
-            }
-            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
-                colBase.resize(baseMap.Extent(), colBase[0]);
-                applyColor(hist[0], colBase, colFill);
-            }
-
-            this->DiffuseColor.setValues(colFill);
-        }
-    }
 }
 
 void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -303,13 +256,6 @@ void ViewProviderFillet::unsetEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
-{
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Fillet*>(getObject())->Base.getValue());
-    return temp;
-}
-
 bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
@@ -323,7 +269,7 @@ bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 
 // ---------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderChamfer, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderChamfer, PartGui::ViewProviderDerivedPart)
 
 ViewProviderChamfer::ViewProviderChamfer()
 {
@@ -332,45 +278,6 @@ ViewProviderChamfer::ViewProviderChamfer()
 
 ViewProviderChamfer::~ViewProviderChamfer()
 {
-}
-
-void ViewProviderChamfer::updateData(const App::Property* prop)
-{
-    PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
-        if (hist.size() != 1)
-            return;
-        Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
-        if (!objCham)
-            return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objCham->Base.getValue());
-        if (objBase) {
-            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
-            const TopoDS_Shape& chamShape = objCham->Shape.getValue();
-
-            TopTools_IndexedMapOfShape baseMap, chamMap;
-            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
-            TopExp::MapShapes(chamShape, TopAbs_FACE, chamMap);
-
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            std::vector<App::Color> colCham;
-            colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
-
-            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                applyColor(hist[0], colBase, colCham);
-            }
-            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
-                colBase.resize(baseMap.Extent(), colBase[0]);
-                applyColor(hist[0], colBase, colCham);
-            }
-
-            this->DiffuseColor.setValues(colCham);
-        }
-    }
 }
 
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -406,13 +313,6 @@ void ViewProviderChamfer::unsetEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
-{
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Chamfer*>(getObject())->Base.getValue());
-    return temp;
-}
-
 bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
@@ -435,13 +335,6 @@ ViewProviderRevolution::ViewProviderRevolution()
 
 ViewProviderRevolution::~ViewProviderRevolution()
 {
-}
-
-std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
-{
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
-    return temp;
 }
 
 bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
@@ -468,11 +361,6 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
-{
-    return static_cast<Part::Loft*>(getObject())->Sections.getValues();
-}
-
 bool ViewProviderLoft::onDelete(const std::vector<std::string> &)
 {
     return true;
@@ -489,11 +377,6 @@ ViewProviderSweep::ViewProviderSweep()
 
 ViewProviderSweep::~ViewProviderSweep()
 {
-}
-
-std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
-{
-    return static_cast<Part::Sweep*>(getObject())->Sections.getValues();
 }
 
 bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
@@ -561,13 +444,6 @@ void ViewProviderOffset::unsetEdit(int ModNum)
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
-}
-
-std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
-{
-    std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Offset*>(getObject())->Source.getValue());
-    return child;
 }
 
 bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
@@ -647,13 +523,6 @@ void ViewProviderThickness::unsetEdit(int ModNum)
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
-}
-
-std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
-{
-    std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Thickness*>(getObject())->Faces.getValue());
-    return child;
 }
 
 bool ViewProviderThickness::onDelete(const std::vector<std::string> &)

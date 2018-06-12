@@ -255,6 +255,18 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
     }
 }
 
+
+std::vector<App::DocumentObject*> RuledSurface::getChildren(void) const{
+	    // in a set each element is unique
+    std::set<App::DocumentObject*> temp;
+    temp.insert(Curve1.getValue());
+    temp.insert(Curve2.getValue());
+
+    std::vector<App::DocumentObject*> array;
+    array.insert(array.begin(), temp.begin(), temp.end());
+    return array;
+
+}
 // ----------------------------------------------------------------------------
 
 App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2,Geom_BSplineSurface::MaxDegree(),1};
@@ -351,6 +363,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
+}
+
+std::vector<App::DocumentObject*> Loft::getChildren(void) const {
+	return Sections.getValues();
 }
 
 // ----------------------------------------------------------------------------
@@ -535,6 +551,9 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
     }
 }
+std::vector<App::DocumentObject*> Sweep::getChildren(void) const{
+    return Sections.getValues();
+}
 
 // ----------------------------------------------------------------------------
 
@@ -624,3 +643,10 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;
 }
+
+std::vector<App::DocumentObject*> Thickness::getChildren(void) const{
+    std::vector<App::DocumentObject*> child;
+    child.push_back(Faces.getValue());
+    return child;
+}
+

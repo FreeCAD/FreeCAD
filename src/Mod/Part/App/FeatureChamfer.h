@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include "PartFeature.h"
+#include "FeatureFillet.h"
 
 namespace Part
 {

@@ -37,7 +37,8 @@
 using namespace Part;
 
 
-PROPERTY_SOURCE(Part::Compound, Part::Feature)
+PROPERTY_SOURCE(Part::Compound, Part::FeatureDerivedPart)
+// PROPERTY_SOURCE(Part::Compound, Part::Feature)
 
 Compound::Compound()
 {
@@ -88,11 +89,12 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         this->Shape.setValue(comp);
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
+		this->History.setValues(history);
         PropertyShapeHistory prop;
         prop.setValues(history);
         prop.setContainer(this);
         prop.touch();
-
+		
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -100,3 +102,6 @@ App::DocumentObjectExecReturn *Compound::execute(void)
     }
 }
 
+std::vector<App::DocumentObject*> Compound::getChildren(void) const {
+	return Links.getValues();
+}

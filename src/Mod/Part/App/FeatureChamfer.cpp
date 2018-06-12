@@ -77,7 +77,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         ShapeHistory history = buildHistory(mkChamfer, TopAbs_FACE, shape, base->Shape.getValue());
         this->Shape.setValue(shape);
-
+		this->History.setValue(history);
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
         PropertyShapeHistory prop;
         prop.setValue(history);

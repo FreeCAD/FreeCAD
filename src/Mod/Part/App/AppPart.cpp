@@ -29,6 +29,7 @@
 #include "OCCError.h"
 #include "TopoShape.h"
 #include "FeaturePartBox.h"
+#include "FeatureDerivedPart.h"
 #include "FeaturePartBoolean.h"
 #include "FeaturePartCommon.h"
 #include "FeaturePartCut.h"
@@ -424,6 +425,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Primitive             ::init();
     Part::Box                   ::init();
     Part::Spline                ::init();
+    Part::FeatureDerivedPart    ::init();
     Part::Boolean               ::init();
     Part::Common                ::init();
     Part::MultiCommon           ::init();

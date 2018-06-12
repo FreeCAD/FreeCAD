@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,41 +21,33 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATURECOMPOUND_H
-#define PART_FEATURECOMPOUND_H
+#include "PreCompiled.h"
 
-#include <App/PropertyLinks.h>
-#include "PartFeature.h"
-#include "FeatureDerivedPart.h"
+#ifndef _PreComp_
+# include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+#endif
 
-namespace Part
+#include "ViewProviderDerivedPart.h"
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+// #include <Mod/Part/App/FeaturePartBoolean.h>
+// #include <Mod/Part/App/FeaturePartFuse.h>
+// #include <Mod/Part/App/FeaturePartCommon.h>
+#include <Mod/Part/App/FeatureDerivedPart.h>
+
+using namespace PartGui;
+PROPERTY_SOURCE(PartGui::ViewProviderDerivedPart,PartGui::ViewProviderPart)
+
+ViewProviderDerivedPart::ViewProviderDerivedPart()
 {
+}
 
-class Compound : public Part::FeatureDerivedPart
+
+ViewProviderDerivedPart::~ViewProviderDerivedPart()
 {
-    PROPERTY_HEADER(Part::Compound);
-
-public:
-    Compound();
-    virtual ~Compound();
-
-    App::PropertyLinkList Links;
-
-    /** @name methods override feature */
-    //@{
-    short mustExecute() const;
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderCompound";
-    }
-	virtual std::vector<App::DocumentObject*> getChildren(void) const;
-    //@}
-};
-
-} //namespace Part
-
-
-#endif // PART_FEATURECOMPOUND_H
+}
 

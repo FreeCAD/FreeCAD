@@ -94,6 +94,11 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
+std::vector<App::DocumentObject*> Offset::getChildren(void){
+    std::vector<App::DocumentObject*> child;
+    child.push_back(Source.getValue());
+    return child;
+}
 
 //-------------------------------------------------------------------------------------------------------
 

@@ -182,6 +182,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
             this->Shape.setValue(getSolid(prism));
+			//TODO History
         } else {
             TopoDS_Shape prism;
             generatePrism(prism, profileshape, method, dir, L, L2,
@@ -206,6 +207,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
             this->Shape.setValue(getSolid(solRes));
+			//TODO History
         }
 
         return App::DocumentObject::StdReturn;

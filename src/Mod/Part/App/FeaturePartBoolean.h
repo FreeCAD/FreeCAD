@@ -26,13 +26,14 @@
 
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
+#include "FeatureDerivedPart.h"
 
 class BRepAlgoAPI_BooleanOperation;
 
 namespace Part
 {
 
-class Boolean : public Part::Feature
+class Boolean : public Part::FeatureDerivedPart
 {
     PROPERTY_HEADER(Part::Boolean);
 
@@ -41,13 +42,14 @@ public:
 
     App::PropertyLink Base;
     App::PropertyLink Tool;
-    PropertyShapeHistory History;
+
     App::PropertyBool Refine;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void);
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
     short mustExecute() const;
     //@}
 

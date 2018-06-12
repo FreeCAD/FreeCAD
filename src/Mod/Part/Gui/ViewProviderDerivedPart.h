@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,41 +21,36 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATURECOMPOUND_H
-#define PART_FEATURECOMPOUND_H
+#ifndef PARTGUI_ViewProviderDerivedPart_H
+#define PARTGUI_ViewProviderDerivedPart_H
 
-#include <App/PropertyLinks.h>
-#include "PartFeature.h"
-#include "FeatureDerivedPart.h"
+#include "ViewProvider.h"
 
-namespace Part
+
+namespace PartGui {
+
+
+/// ViewProvider for the derived feature
+class  PartGuiExport ViewProviderDerivedPart : public ViewProviderPart
 {
-
-class Compound : public Part::FeatureDerivedPart
-{
-    PROPERTY_HEADER(Part::Compound);
-
+    PROPERTY_HEADER(Part::ViewProviderDerivedPart);
+	
 public:
-    Compound();
-    virtual ~Compound();
-
-    App::PropertyLinkList Links;
-
-    /** @name methods override feature */
-    //@{
-    short mustExecute() const;
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderCompound";
-    }
-	virtual std::vector<App::DocumentObject*> getChildren(void) const;
-    //@}
+    /// constructor
+    ViewProviderDerivedPart();
+    /// destructor
+    virtual ~ViewProviderDerivedPart();
+	
+    // void updateData(const App::Property*);
+	
 };
+	
+	
 
-} //namespace Part
+
+} // namespace PartGui
 
 
-#endif // PART_FEATURECOMPOUND_H
+#endif // PARTGUI_ViewProviderDerivedPart_H
+
 

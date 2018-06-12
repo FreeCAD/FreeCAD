@@ -35,7 +35,7 @@
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderDerivedPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
@@ -43,11 +43,6 @@ ViewProviderCompound::ViewProviderCompound()
 
 ViewProviderCompound::~ViewProviderCompound()
 {
-}
-
-std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren(void) const
-{
-    return static_cast<Part::Compound*>(getObject())->Links.getValues();
 }
 
 bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
@@ -61,57 +56,6 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
     }
 
     return true;
-}
-
-void ViewProviderCompound::updateData(const App::Property* prop)
-{
-    PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
-        Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
-        std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
-        if (hist.size() != sources.size())
-            return;
-
-        const TopoDS_Shape& compShape = objComp->Shape.getValue();
-        TopTools_IndexedMapOfShape compMap;
-        TopExp::MapShapes(compShape, TopAbs_FACE, compMap);
-
-        std::vector<App::Color> compCol;
-        compCol.resize(compMap.Extent(), this->ShapeColor.getValue());
-
-        int index=0;
-        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
-            if (!objBase)
-                continue;
-
-            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
-
-            TopTools_IndexedMapOfShape baseMap;
-            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
-
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> baseCol = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),baseCol);
-            if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
-                applyColor(hist[index], baseCol, compCol);
-            }
-            else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
-                baseCol.resize(baseMap.Extent(), baseCol[0]);
-                applyColor(hist[index], baseCol, compCol);
-            }
-        }
-
-        this->DiffuseColor.setValues(compCol);
-    }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
-        const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
-            if (*it) Gui::Application::Instance->hideViewProvider(*it);
-        }
-    }
 }
 
 bool ViewProviderCompound::canDragObjects() const

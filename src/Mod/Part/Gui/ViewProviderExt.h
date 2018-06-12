@@ -94,6 +94,7 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+	virtual void updateViewColorAndTransparency();
     /// Update the view representation
     void reload();
 

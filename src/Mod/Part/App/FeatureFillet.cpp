@@ -38,6 +38,31 @@
 
 using namespace Part;
 
+// ---------------------------------------------------------
+
+PROPERTY_SOURCE_ABSTRACT(Part::FilletBase, Part::FeatureDerivedPart)
+
+FilletBase::FilletBase()
+{
+    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(Edges,(0,0,0));
+    Edges.setSize(0);
+}
+
+short FilletBase::mustExecute() const
+{
+    if (Base.isTouched() || Edges.isTouched())
+        return 1;
+    return 0;
+}
+std::vector<App::DocumentObject*> FilletBase::getChildren(void) const {
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(Base.getValue());
+    return temp;
+
+}
+// ---------------------------------------------------------
+
 
 PROPERTY_SOURCE(Part::Fillet, Part::FilletBase)
 
@@ -79,6 +104,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
         PropertyShapeHistory prop;
+		this->History.setValue(history);
         prop.setValue(history);
         prop.setContainer(this);
         prop.touch();

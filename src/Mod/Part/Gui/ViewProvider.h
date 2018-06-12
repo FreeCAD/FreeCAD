@@ -52,13 +52,23 @@ public:
     /// destructor
     virtual ~ViewProviderPart();
     virtual bool doubleClicked(void);
+	virtual bool usePartColors(void);
+	virtual bool needHistory(void) ;
+	virtual void updateViewColorAndTransparency();
 
 protected:
+    void applyColorAndTransparency(const Part::ShapeHistory& hist,
+                   const std::vector<App::Color>& colBase,
+				   const float& transparency,
+                   std::vector<App::Color>& colBool);
     void applyColor(const Part::ShapeHistory& hist,
-                    const std::vector<App::Color>& colBase,
-                    std::vector<App::Color>& colBool);
+                   const std::vector<App::Color>& colBase,
+                   std::vector<App::Color>& colBool);
     void applyTransparency(const float& transparency,
-                    std::vector<App::Color>& colors);
+                   std::vector<App::Color>& colors);
+	virtual std::vector<App::DocumentObject*> claimChildren(void)const;	
+
+	virtual void updateData(const App::Property*);	
 };
 
 } // namespace PartGui

@@ -148,6 +148,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints              ::initClass();
     PartGui::ViewProviderPartExt            ::init();
     PartGui::ViewProviderPart               ::init();
+    PartGui::ViewProviderDerivedPart        ::init();
     PartGui::ViewProviderEllipsoid          ::init();
     PartGui::ViewProviderPython             ::init();
     PartGui::ViewProviderBox                ::init();

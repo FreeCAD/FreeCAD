@@ -25,6 +25,7 @@
 #define PARTGUI_VIEWPROVIDERMIRROR_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include "ViewProviderDerivedPart.h"
 
 namespace PartGui {
 
@@ -39,7 +40,6 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren() const;
     bool onDelete(const std::vector<std::string> &);
     
 protected:
@@ -56,7 +56,7 @@ private:
     SoSeparator* pcEditNode;
 };
 
-class PartGuiExport ViewProviderFillet : public ViewProviderPart
+class PartGuiExport ViewProviderFillet : public ViewProviderDerivedPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderFillet);
 
@@ -66,17 +66,15 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren() const;
     bool onDelete(const std::vector<std::string> &);
 
 protected:
-    void updateData(const App::Property*);
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     //@}
 };
 
-class ViewProviderChamfer : public ViewProviderPart
+class ViewProviderChamfer : public ViewProviderDerivedPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderChamfer);
 
@@ -88,11 +86,9 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren() const;
     bool onDelete(const std::vector<std::string> &);
 
 protected:
-    void updateData(const App::Property*);
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     //@}
@@ -109,7 +105,6 @@ public:
     virtual ~ViewProviderRevolution();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -124,7 +119,6 @@ public:
     virtual ~ViewProviderLoft();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -139,7 +133,6 @@ public:
     virtual ~ViewProviderSweep();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -154,7 +147,6 @@ public:
     virtual ~ViewProviderOffset();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     bool onDelete(const std::vector<std::string> &);
 
@@ -184,7 +176,6 @@ public:
     virtual ~ViewProviderThickness();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     bool onDelete(const std::vector<std::string> &);
 

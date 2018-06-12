@@ -496,6 +496,13 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
         }
     }
 }
+std::vector<App::DocumentObject*> Extrusion::getChildren(void) {
+	std::vector<App::DocumentObject*> temp;
+    temp.push_back(Base.getValue());
+
+    return temp;
+
+}
 
 //----------------------------------------------------------------
 

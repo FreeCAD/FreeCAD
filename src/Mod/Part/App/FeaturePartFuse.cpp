@@ -55,16 +55,14 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
 
 // ----------------------------------------------------
 
-PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
+PROPERTY_SOURCE(Part::MultiFuse, Part::FeatureDerivedPart)
+// PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
 
 
 MultiFuse::MultiFuse(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
-    History.setSize(0);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
@@ -82,8 +80,7 @@ short MultiFuse::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiFuse::execute(void)
-{
+App::DocumentObjectExecReturn *MultiFuse::build (TopoDS_Shape& resShape, std::vector<ShapeHistory>& history ) {
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
@@ -113,9 +110,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
     if (s.size() >= 2) {
         try {
-            std::vector<ShapeHistory> history;
 #if OCC_VERSION_HEX <= 0x060800
-            TopoDS_Shape resShape = s.front();
+            resShape = s.front();
             if (resShape.IsNull())
                 throw Base::Exception("Input shape is null");
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
@@ -161,7 +157,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
             if (!mkFuse.IsDone())
                 throw Base::RuntimeError("MultiFusion failed");
 
-            TopoDS_Shape resShape = mkFuse.Shape();
+            resShape = mkFuse.Shape();
             for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
                 history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, *it));
             }
@@ -191,8 +187,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 }
             }
 
-            this->Shape.setValue(resShape);
-
+			// this->Shape.setValue(resShape);
 
             if (argumentsAreInCompound){
                 //combine histories of every child of source compound into one
@@ -215,7 +210,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 history.clear();
                 history.push_back(overallHist);
             }
-            this->History.setValues(history);
+            // this->History.setValues(history);
         }
         catch (Standard_Failure& e) {
             return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -224,6 +219,25 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     else {
         throw Base::Exception("Not enough shape objects linked");
     }
-
     return App::DocumentObject::StdReturn;
+	
 }
+
+
+App::DocumentObjectExecReturn *MultiFuse::execute(void)
+{
+	std::vector<ShapeHistory> history;
+	TopoDS_Shape resShape;
+	
+	App::DocumentObjectExecReturn *ret = build (resShape, history );
+	if (ret == App::DocumentObject::StdReturn) {
+		this->Shape.setValue(resShape);
+		this->History.setValues(history);
+	}
+	return ret;
+}
+
+std::vector<App::DocumentObject*> MultiFuse::getChildren(void) const {
+	return Shapes.getValues();
+}
+

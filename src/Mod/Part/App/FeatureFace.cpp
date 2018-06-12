@@ -116,3 +116,7 @@ App::DocumentObjectExecReturn *Face::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
+std::vector<App::DocumentObject*> Face::getChildren(void){
+    return std::vector<App::DocumentObject*>(Sources.getValues());
+	
+}

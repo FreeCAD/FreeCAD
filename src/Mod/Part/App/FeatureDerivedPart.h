@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,41 +21,30 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATURECOMPOUND_H
-#define PART_FEATURECOMPOUND_H
+#ifndef PART_FEATUREDERIVEDPART_H
+#define PART_FEATUREDERIVEDPART_H
 
-#include <App/PropertyLinks.h>
+
 #include "PartFeature.h"
-#include "FeatureDerivedPart.h"
+#include <App/PropertyLinks.h>
 
 namespace Part
 {
 
-class Compound : public Part::FeatureDerivedPart
+// "derived part" is an abstract part witch derive any part such as 
+// boolean or fusions result of operations between one of many children objects
+class FeatureDerivedPart : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Compound);
-
+	PROPERTY_HEADER(Part::FeatureDerivedPart);
 public:
-    Compound();
-    virtual ~Compound();
+    FeatureDerivedPart();
 
-    App::PropertyLinkList Links;
+	virtual std::vector<App::DocumentObject*> getChildren(void) const = 0;
+	virtual App::DocumentObjectExecReturn *execute(void) =0;
+	virtual bool isDerivedPart(void);
 
-    /** @name methods override feature */
-    //@{
-    short mustExecute() const;
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderCompound";
-    }
-	virtual std::vector<App::DocumentObject*> getChildren(void) const;
-    //@}
 };
 
-} //namespace Part
+}
 
-
-#endif // PART_FEATURECOMPOUND_H
-
+#endif // PART_FeatureDerivedPart_H

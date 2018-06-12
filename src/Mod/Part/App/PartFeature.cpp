@@ -56,6 +56,8 @@
 
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
+// #include <Gui/Application.h>
+// #include <Mod/Part/Gui/ViewProvider.h>
 
 using namespace Part;
 
@@ -66,11 +68,28 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature(void) 
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+	ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Feature", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 Feature::~Feature()
 {
 }
+
+bool Feature::isDerivedPart(void) { 
+	return false; 
+}
+
+// extern void printBacktrace(size_t skip=0);
+
+
+std::vector<App::DocumentObject*> Feature::getChildren(void) const{
+	// returns an empty list for most parts
+    std::vector<App::DocumentObject*> temp;
+    return temp;
+}
+
 
 short Feature::mustExecute(void) const
 {
@@ -162,6 +181,7 @@ TopLoc_Location Feature::getLocation() const
     return TopLoc_Location(trf);
 }
 
+
 ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
                                    const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
 {
@@ -249,23 +269,21 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
     return &Shape;
 }
 
-// ---------------------------------------------------------
 
-PROPERTY_SOURCE(Part::FilletBase, Part::Feature)
+void Feature::tellChangesToParentParts(ObjectChanges what) {
+#ifndef  USE_OLD_DAG
+    for (auto obj : getInList()){
+		if (obj->isDerivedFrom(Feature::getClassTypeId())) {
+			((Feature *)obj)->childrenPartChanged(this,what);
+		}	
+    }
+//#else
+	// TODO
+#endif
 
-FilletBase::FilletBase()
-{
-    ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Edges,(0,0,0));
-    Edges.setSize(0);
+
 }
 
-short FilletBase::mustExecute() const
-{
-    if (Base.isTouched() || Edges.isTouched())
-        return 1;
-    return 0;
-}
 
 // ---------------------------------------------------------
 
@@ -423,3 +441,25 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
     }
     
 }
+
+// -------------------------------------
+
+void Feature::childrenPartChanged(const Feature * child, ObjectChanges what) {
+	// report the change to the parents
+	// does not report if a calculation is already planned (ie they are already told)
+	//TODO
+	//if (rebuild()) return; // everything is already planned
+	
+	ObjectChanges w = what;
+	if (what == PositionChange) w = GeometryChange; 
+	// in general change the position of one component changes the geometry.
+	if (w == GeometryChange) {
+		touch();
+	//} else {
+	//	if (!needChildrenColors()) return;
+	//	// TODO set rebuild colors
+	}
+	
+	tellChangesToParentParts(w);
+}
+

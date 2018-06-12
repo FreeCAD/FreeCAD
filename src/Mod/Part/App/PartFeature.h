@@ -37,8 +37,13 @@ class BRepBuilderAPI_MakeShape;
 
 namespace Part
 {
-
 class PartFeaturePy;
+
+enum ObjectChanges {
+    ColorChange = 0,
+    GeometryChange = 1,
+    PositionChange = 2
+};
 
 /** Base class of all shape feature classes in FreeCAD
  */
@@ -52,11 +57,16 @@ public:
     virtual ~Feature();
 
     PropertyPartShape Shape;
+	PropertyShapeHistory History;
 
     /** @name methods override feature */
     //@{
     virtual short mustExecute(void) const;
     //@}
+	
+	virtual bool isDerivedPart(void);
+	virtual std::vector<App::DocumentObject*> getChildren(void)const;
+	
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const;
@@ -66,6 +76,11 @@ public:
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
     TopLoc_Location getLocation() const;
+	
+	virtual void tellChangesToParentParts(ObjectChanges what); //
+	
+	virtual void childrenPartChanged(const Feature * child, ObjectChanges what);
+
     
 protected:
     /// recompute only this object
@@ -85,18 +100,6 @@ protected:
     ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
 };
 
-class FilletBase : public Part::Feature
-{
-    PROPERTY_HEADER(Part::FilletBase);
-
-public:
-    FilletBase();
-
-    App::PropertyLink   Base;
-    PropertyFilletEdges Edges;
-
-    short mustExecute() const;
-};
 
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
@@ -146,6 +149,7 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
                        const bool quick, const bool touch_is_intersection);
 
 } //namespace Part
+
 
 
 #endif // PART_FEATURE_H
