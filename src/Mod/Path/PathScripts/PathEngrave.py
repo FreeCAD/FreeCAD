@@ -150,18 +150,23 @@ class ObjectEngrave(PathOp.ObjectOp):
                 PathLog.track()
                 wires = []
                 for base, subs in obj.Base:
-                    #edges = []
+                    edges = []
                     #for sub in subs:
                     #    edges.extend(base.Shape.getElement(sub).Edges)
                     #shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
                     #wires.extend(shapeWires)
                     for feature in subs:
                         sub = base.Shape.getElement(feature)
-                        if sub.Wires:
-                            shapeWires = sub.Wires
+                        if type(sub) == Part.Edge:
+                            edges.append(sub)
+                        elif sub.Wires:
+                            wires.extend(sub.Wires)
                         else:
-                            shapeWires = [Part.Wire(sub.Edges)]
-                    wires.extend(adjustWirePlacement(obj, base, shapeWires))
+                            wires.append(Part.Wire(sub.Edges))
+
+                    for edgelist in Part.sortEdges(edges):
+                        wires.append(Part.Wire(edgelist))
+                wires = adjustWirePlacement(obj, base, wires)
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
@@ -184,7 +189,7 @@ class ObjectEngrave(PathOp.ObjectOp):
 
     def buildpathocc(self, obj, wires, zValues):
         '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
-        PathLog.track()
+        PathLog.track(obj.Label, len(wires), zValues)
 
         for wire in wires:
             offset = wire
