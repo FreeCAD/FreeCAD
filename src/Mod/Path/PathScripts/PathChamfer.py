@@ -25,14 +25,14 @@
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathEngrave as PathEngrave
+import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import math
 
 from PySide import QtCore
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -42,7 +42,7 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class ObjectChamfer(PathOp.ObjectOp):
+class ObjectChamfer(PathEngraveBase.ObjectOp):
     '''Proxy class for Chamfer operation.'''
 
     def opFeatures(self, obj):
@@ -52,18 +52,28 @@ class ObjectChamfer(PathOp.ObjectOp):
         obj.addProperty("App::PropertyDistance", "Width",      "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The desired width of the chamfer"))
         obj.addProperty("App::PropertyDistance", "ExtraDepth", "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The additional depth of the tool path"))
 
-    def opExecute(self, obj):
-        angle = self.tool.CuttingEdgeAngle
+    def opUpdateDepths(self, obj, ignoreErrors=False):
+        angle = obj.ToolController.Tool.CuttingEdgeAngle
         if 0 == angle:
             angle = 180
         tan = math.tan(math.radians(angle/2))
         toolDepth = 0 if 0 == tan else obj.Width.Value / tan
         extraDepth = obj.ExtraDepth.Value
         depth = toolDepth + extraDepth
+        obj.OpFinalDepth = depth
+        if obj.OpStartDepth < obj.OpFinalDepth:
+            obj.OpStartDepth = obj.OpFinalDepth + 1
+
+    def opExecute(self, obj):
+        angle = self.tool.CuttingEdgeAngle
+        if 0 == angle:
+            angle = 180
+        tan = math.tan(math.radians(angle/2))
         toolOffset = self.tool.FlatRadius
         extraOffset = self.tool.Diameter/2 - obj.Width.Value if 180 == angle else obj.ExtraDepth.Value / tan
         offset = toolOffset + extraOffset
-        PathLog.debug("%s  depth(%.2f, %.2f)  offset(%.2f, %.2f)" % (obj.Label, toolDepth, extraDepth, toolOffset, extraOffset))
+
+        zValues = self.getZValues(obj)
 
         wires = []
         for base, subs in obj.Base:
@@ -80,9 +90,10 @@ class ObjectChamfer(PathOp.ObjectOp):
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
-            for w in PathEngrave.adjustWirePlacement(obj, base, basewires):
+            for w in self.adjustWirePlacement(obj, base, basewires):
                 wires.append(self.offsetWire(w, base, offset))
         self.wires = wires
+        self.buildpathocc(obj, wires, zValues)
 
     def offsetWire(self, wire, base, offset):
         def removeInsideEdges(edges):
