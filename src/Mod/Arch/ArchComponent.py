@@ -629,23 +629,26 @@ class Component:
     def hideSubobjects(self,obj,prop):
 
         "Hides subobjects when a subobject lists change"
-        if prop in ["Additions","Subtractions"]:
-            if hasattr(obj,prop):
-                for o in getattr(obj,prop):
-                    if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
-                        if (Draft.getType(obj) == "Wall"):
-                            if (Draft.getType(o) == "Roof"):
-                                continue
+
+        if FreeCAD.GuiUp:
+            if prop in ["Additions","Subtractions"]:
+                if hasattr(obj,prop):
+                    for o in getattr(obj,prop):
+                        if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
+                            if (Draft.getType(obj) == "Wall"):
+                                if (Draft.getType(o) == "Roof"):
+                                    continue
+                            o.ViewObject.hide()
+            elif prop in ["Mesh"]:
+                if hasattr(obj,prop):
+                    o = getattr(obj,prop)
+                    if o:
                         o.ViewObject.hide()
-        elif prop in ["Mesh"]:
-            if hasattr(obj,prop):
-                o = getattr(obj,prop)
-                if o:
-                    o.ViewObject.hide()
 
     def processSubShapes(self,obj,base,placement=None):
 
         "Adds additions and subtractions to a base shape"
+
         import Draft,Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
