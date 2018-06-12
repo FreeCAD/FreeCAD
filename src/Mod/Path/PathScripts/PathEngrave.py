@@ -155,18 +155,20 @@ class ObjectEngrave(PathOp.ObjectOp):
                     #    edges.extend(base.Shape.getElement(sub).Edges)
                     #shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
                     #wires.extend(shapeWires)
+                    basewires = []
                     for feature in subs:
                         sub = base.Shape.getElement(feature)
                         if type(sub) == Part.Edge:
                             edges.append(sub)
                         elif sub.Wires:
-                            wires.extend(sub.Wires)
+                            basewires.extend(sub.Wires)
                         else:
-                            wires.append(Part.Wire(sub.Edges))
+                            basewires.append(Part.Wire(sub.Edges))
 
                     for edgelist in Part.sortEdges(edges):
-                        wires.append(Part.Wire(edgelist))
-                wires = adjustWirePlacement(obj, base, wires)
+                        basewires.append(Part.Wire(edgelist))
+
+                    wires.extend(adjustWirePlacement(obj, base, basewires))
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
