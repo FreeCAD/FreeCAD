@@ -33,7 +33,11 @@ from PySide import QtCore
 
 PathGeomTolerance = 0.000001
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -229,17 +233,22 @@ class PathGeom:
                     cmd = 'G2' if not flip else 'G3'
                 else:
                     cmd = 'G3' if not flip else 'G2'
-                pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
-                PathLog.debug("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
 
-                # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
-                pa = PathGeom.xy(p1)
-                pb = PathGeom.xy(p2)
-                pc = PathGeom.xy(p3)
-                offset = Part.Circle(pa, pb, pc).Center - pa
+                if cls.pointsCoincide(p1, p3):
+                    # A full circle
+                    offset = edge.Curve.Center - pt
+                else:
+                    pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+                    PathLog.debug("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
 
-                PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
-                PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
+                    # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
+                    pa = PathGeom.xy(p1)
+                    pb = PathGeom.xy(p2)
+                    pc = PathGeom.xy(p3)
+                    offset = Part.Circle(pa, pb, pc).Center - pa
+
+                    PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
+                    PathLog.debug("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
                 PathLog.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
 
                 params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
