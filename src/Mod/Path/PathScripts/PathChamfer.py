@@ -46,34 +46,24 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
     '''Proxy class for Chamfer operation.'''
 
     def opFeatures(self, obj):
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces;
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
         obj.addProperty("App::PropertyDistance", "Width",      "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The desired width of the chamfer"))
         obj.addProperty("App::PropertyDistance", "ExtraDepth", "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The additional depth of the tool path"))
-
-    def opUpdateDepths(self, obj, ignoreErrors=False):
-        angle = obj.ToolController.Tool.CuttingEdgeAngle
-        if 0 == angle:
-            angle = 180
-        tan = math.tan(math.radians(angle/2))
-        toolDepth = 0 if 0 == tan else obj.Width.Value / tan
-        extraDepth = obj.ExtraDepth.Value
-        depth = toolDepth + extraDepth
-        obj.OpFinalDepth = depth
-        if obj.OpStartDepth < obj.OpFinalDepth:
-            obj.OpStartDepth = obj.OpFinalDepth + 1
 
     def opExecute(self, obj):
         angle = self.tool.CuttingEdgeAngle
         if 0 == angle:
             angle = 180
         tan = math.tan(math.radians(angle/2))
+
+        toolDepth = 0 if 0 == tan else obj.Width.Value / tan
+        extraDepth = obj.ExtraDepth.Value
+        depth = toolDepth + extraDepth
         toolOffset = self.tool.FlatRadius
         extraOffset = self.tool.Diameter/2 - obj.Width.Value if 180 == angle else obj.ExtraDepth.Value / tan
         offset = toolOffset + extraOffset
-
-        zValues = self.getZValues(obj)
 
         wires = []
         for base, subs in obj.Base:
@@ -93,7 +83,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
             for w in self.adjustWirePlacement(obj, base, basewires):
                 wires.append(self.offsetWire(w, base, offset))
         self.wires = wires
-        self.buildpathocc(obj, wires, zValues)
+        self.buildpathocc(obj, wires, [depth], True)
 
     def offsetWire(self, wire, base, offset):
         def removeInsideEdges(edges):
