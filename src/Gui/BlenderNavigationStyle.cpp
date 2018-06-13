@@ -285,11 +285,13 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoLocation2Event * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
