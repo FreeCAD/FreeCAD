@@ -1109,29 +1109,63 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc rend
         SelStack.push_back(this);
         auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
         if(!ctx2 || !ctx2->hideAll) {
+            auto state = action->getState();
             auto ctx = getRenderContext<SelContext>(this);
             bool colorPushed = false;
-            if(!ShapeColorNode && overrideColor) {
+            if(!ShapeColorNode && overrideColor && 
+               !SoOverrideElement::getDiffuseColorOverride(state) &&
+               (!ctx || (!ctx->selAll && !ctx->hideAll))) 
+            {
                 ShapeColorNode = this;
                 colorPushed = true;
+                state->push();
+                auto &packer = ShapeColorNode->shapeColorPacker;
+                auto &trans = ShapeColorNode->transOverride;
+                auto &color = ShapeColorNode->colorOverride;
+                if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+                    SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
+                    SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
+                }
+                SoLazyElement::setDiffuse(state, ShapeColorNode, 1, &color, &packer);
+                SoOverrideElement::setDiffuseColorOverride(state,ShapeColorNode,true);
+                SoMaterialBindingElement::set(state, ShapeColorNode, SoMaterialBindingElement::OVERALL);
+                SoOverrideElement::setMaterialBindingOverride(state,ShapeColorNode,true);
+
+                SoTextureEnabledElement::set(state,ShapeColorNode,false);
             }
             if(!ctx) 
                 (this->*render)(action);
             else {
                 bool selPushed;
                 bool hlPushed;
-                if((selPushed = ctx->selAll)) 
+                if((selPushed = ctx->selAll)) {
                     SelColorStack.push_back(ctx->selColor);
+                    state->push();
+                    auto &color = SelColorStack.back();
+                    SoLazyElement::setEmissive(state, &color);
+                    SoOverrideElement::setEmissiveColorOverride(state,this,true);
+                    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+                        auto &packer = shapeColorPacker;
+                        SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
+                        SoOverrideElement::setDiffuseColorOverride(state,this,true);
+                        SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
+                        SoOverrideElement::setMaterialBindingOverride(state,this,true);
+                    }
+                }
                 if((hlPushed = ctx->hlAll)) 
                     HlColorStack.push_back(ctx->hlColor);
                 (this->*render)(action);
-                if(selPushed)
+                if(selPushed) {
                     SelColorStack.pop_back();
+                    state->pop();
+                }
                 if(hlPushed)
                     HlColorStack.pop_back();
             }
-            if(colorPushed)
+            if(colorPushed) {
                 ShapeColorNode = 0;
+                state->pop();
+            }
         }
         SelStack.pop_back();
         pushed = false;
@@ -1283,6 +1317,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                 touch();
                 return false;
             }
+
             auto ctx = getActionContext(action,this,SelContextPtr(),false);
             if(ctx && ctx->selAll) {
                 ctx->selAll = false;

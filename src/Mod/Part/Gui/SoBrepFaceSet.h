@@ -152,6 +152,7 @@ private:
     std::vector<int32_t> matIndex;
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;
+    Gui::SoFCSelectionCounter selCounter;
 
     // Define some VBO pointer for the current mesh
     class VBO;

@@ -65,6 +65,7 @@ private:
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
+    Gui::SoFCSelectionCounter selCounter;
     uint32_t packedColor;
 };
 

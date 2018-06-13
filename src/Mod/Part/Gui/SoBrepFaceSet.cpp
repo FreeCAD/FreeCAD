@@ -87,7 +87,6 @@
 
 using namespace PartGui;
 
-
 SO_NODE_SOURCE(SoBrepFaceSet);
 
 #define PRIVATE(p) ((p)->pimpl)
@@ -196,6 +195,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
 {
     if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
         Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+        selCounter.checkAction(hlaction);
         if (!hlaction->isHighlighted()) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
             if(ctx) {
@@ -230,10 +230,10 @@ void SoBrepFaceSet::doAction(SoAction* action)
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
-
         switch(selaction->getType()) {
         case Gui::SoSelectionElementAction::All: {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
+            selCounter.checkAction(selaction,ctx);
             ctx->selectionColor = selaction->getColor();
             ctx->selectionIndex.clear();
             ctx->selectionIndex.insert(-1);
@@ -269,6 +269,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 if(colors.begin()->first.empty() || colors.lower_bound(element)!=colors.end()) {
                     if(!ctx) {
                         ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
+                        selCounter.checkAction(selaction,ctx);
                         ctx->selectAll();
                     }
                     if(ctx->setColors(selaction->getColors(),element))
@@ -287,7 +288,8 @@ void SoBrepFaceSet::doAction(SoAction* action)
                     // If no secondary context exist, it will create an empty
                     // one, and an empty secondary context inhibites drawing
                     // here.
-                    Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
+                    auto ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
+                    selCounter.checkAction(selaction,ctx);
                     touch();
                 }
                 return;
@@ -295,6 +297,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
             int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
             if (selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                selCounter.checkAction(selaction,ctx);
                 ctx->selectionColor = selaction->getColor();
                 if(ctx->isSelectAll())
                     ctx->selectionIndex.clear();
@@ -514,21 +517,6 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 }
 #else
 
-struct ColorOverrideChecker {
-    bool overrideColor;
-    SoState *state;
-    ColorOverrideChecker(SoState *state) : state(state) {
-        overrideColor = Gui::SoFCSelectionRoot::checkColorOverride(state);
-    }
-    ~ColorOverrideChecker() {
-        if(overrideColor)
-            state->pop();
-    }
-    operator bool() const {
-        return overrideColor;
-    }
-};
-
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     //SoBase::staticDataLock();
@@ -554,7 +542,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         ctx.reset();
 
     auto state = action->getState();
-    ColorOverrideChecker checker(state);
+    selCounter.checkRenderCache(state);
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
@@ -639,12 +627,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // Therefore generatePrimitives() needs to be re-implemented to handle the materials
     // correctly.
     if(this->shouldGLRender(action)) {
-        SbBool hasVBO = !ctx2 && PRIVATE(this)->vboAvailable;
-        if (hasVBO) {
-            // get the VBO status of the viewer
-            Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-        }
-
         Binding mbind = this->findMaterialBinding(state);
         Binding nbind = this->findNormalBinding(state);
 
@@ -674,6 +656,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         pindices = this->partIndex.getValues(0);
         numparts = this->partIndex.getNum();
 
+        SbBool hasVBO = !ctx2 && PRIVATE(this)->vboAvailable;
         if (hasVBO) {
             // get the VBO status of the viewer
             Gui::SoGLVBOActivatedElement::get(state, hasVBO);
@@ -685,10 +668,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderShape(action, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
             pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
-        if (!hasVBO) {
-            // Disable caching for this node
-            SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-        }
+        // if (!hasVBO) {
+        //     // Disable caching for this node
+        //     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+        // }else
+        //     SoGLCacheContextElement::setAutoCacheBits(state, SoGLCacheContextElement::DO_AUTO_CACHE);
 
         if (normalCacheUsed)
             this->readUnlockNormalCache();

@@ -21,11 +21,20 @@
  ****************************************************************************/
 #include "PreCompiled.h"
 #include <boost/algorithm/string/predicate.hpp>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include "SoFCUnifiedSelection.h"
+#include "Selection.h"
 
 using namespace Gui;
 
 /////////////////////////////////////////////////////////////////////////////
+
+SoFCSelectionContext::~SoFCSelectionContext() {
+    if(counter)
+        *counter -= 1;
+}
 
 bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx) {
     bool sel = false;
@@ -207,4 +216,57 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
             status = 3;
     }
     return status;
+}
+
+///////////////////////////////////////////////////////////////////////
+
+SoFCSelectionCounter::SoFCSelectionCounter()
+    :counter(std::make_shared<int>(0))
+    ,hasSelection(false)
+    ,hasPreselection(false)
+{}
+
+
+SoFCSelectionCounter::~SoFCSelectionCounter()
+{}
+
+bool SoFCSelectionCounter::checkRenderCache(SoState *state) {
+    if(*counter || 
+       (hasSelection && Selection().hasSelection()) ||
+       (hasPreselection && Selection().hasPreselection()))
+    {
+        // SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+        SoCacheElement::invalidate(state);
+        return false;
+    }
+    if(!Selection().hasPreselection())
+        hasPreselection = false;
+    if(!Selection().hasSelection())
+        hasSelection = false;
+    // SoGLCacheContextElement::setAutoCacheBits(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    return true;
+}
+
+void SoFCSelectionCounter::checkAction(SoHighlightElementAction *hlaction) {
+    if(hlaction->isHighlighted())
+        hasPreselection = true;
+}
+
+void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx) {
+    switch(selaction->getType()) {
+    case SoSelectionElementAction::None:
+        return;
+    case SoSelectionElementAction::All:
+    case SoSelectionElementAction::Append:
+        hasSelection = true;
+        break;
+    default:
+        break;
+    }
+    if(selaction->isSecondary()) {
+        if(ctx && !ctx->counter) {
+            *counter += 1;
+            ctx->counter = counter;
+        }
+    }
 }

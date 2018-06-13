@@ -51,6 +51,9 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
+    std::shared_ptr<int> counter;
+
+    virtual ~SoFCSelectionContext();
 
     bool isSelected() const {
         return !selectionIndex.empty();
@@ -109,6 +112,22 @@ struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
     }
 
     static MergeFunc merge;
+};
+
+class SoHighlightElementAction;
+class SoSelectionElementAction;
+
+class GuiExport SoFCSelectionCounter {
+public:
+    SoFCSelectionCounter();
+    virtual ~SoFCSelectionCounter();
+    bool checkRenderCache(SoState *state);
+    void checkAction(SoHighlightElementAction *hlaction);
+    void checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx);
+protected:
+    std::shared_ptr<int> counter;
+    bool hasSelection;
+    bool hasPreselection;
 };
 
 }

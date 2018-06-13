@@ -81,7 +81,7 @@ SoBrepPointSet::SoBrepPointSet()
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
     auto state = action->getState();
-    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+    selCounter.checkRenderCache(state);
 
     const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
     int num = coords->getNum() - this->startIndex.getValue();
@@ -244,6 +244,7 @@ void SoBrepPointSet::doAction(SoAction* action)
 {
     if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
         Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+        selCounter.checkAction(hlaction);
         if (!hlaction->isHighlighted()) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
             if(ctx) {
@@ -278,6 +279,7 @@ void SoBrepPointSet::doAction(SoAction* action)
         switch(selaction->getType()) {
         case Gui::SoSelectionElementAction::All: {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+            selCounter.checkAction(selaction,ctx);
             ctx->selectionColor = selaction->getColor();
             ctx->selectionIndex.clear();
             ctx->selectionIndex.insert(-1);
@@ -307,6 +309,7 @@ void SoBrepPointSet::doAction(SoAction* action)
                     // one, and an empty secondary context inhibites drawing
                     // here.
                     auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                    selCounter.checkAction(selaction,ctx);
                     touch();
                 }
                 return;
@@ -314,6 +317,7 @@ void SoBrepPointSet::doAction(SoAction* action)
             int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
             if(selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                selCounter.checkAction(selaction,ctx);
                 ctx->selectionColor = selaction->getColor();
                 if(ctx->isSelectAll()) 
                     ctx->selectionIndex.clear();

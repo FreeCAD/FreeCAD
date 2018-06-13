@@ -56,6 +56,7 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/misc/SoState.h>
+# include <Inventor/elements/SoCacheElement.h>
 #endif
 
 #include "SoBrepEdgeSet.h"
@@ -85,7 +86,7 @@ SoBrepEdgeSet::SoBrepEdgeSet()
 void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 {
     auto state = action->getState();
-    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+    selCounter.checkRenderCache(state);
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
@@ -292,6 +293,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
 {
     if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
         Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+        selCounter.checkAction(hlaction);
         if (!hlaction->isHighlighted()) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
             if(ctx) {
@@ -362,6 +364,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             return;
         } case Gui::SoSelectionElementAction::All: {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+            selCounter.checkAction(selaction,ctx);
             ctx->selectionColor = selaction->getColor();
             ctx->selectionIndex.clear();
             ctx->selectionIndex.insert(-1); // all
@@ -381,6 +384,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                     // one, and an empty secondary context inhibites drawing
                     // here.
                     auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                    selCounter.checkAction(selaction,ctx);
                     touch();
                 }
                 return;
@@ -389,6 +393,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             SelContextPtr ctx;
             if(selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                selCounter.checkAction(selaction,ctx);
                 ctx->selectionColor = selaction->getColor();
                 if(ctx->isSelectAll()) 
                     ctx->selectionIndex.clear();
