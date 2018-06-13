@@ -313,6 +313,10 @@ bool SelectionSingleton::hasSelection() const
     return !_SelList.empty();
 }
 
+bool SelectionSingleton::hasPreselection() const {
+    return !CurrentPreselection.ObjName.empty();
+}
+
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(int resolve) const
 {
     return getSelection("*",resolve);
@@ -702,6 +706,9 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     // set up the change object
     SelectionChanges Chng(signal==1?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
+
+    if(!signal)
+        CurrentPreselection = Chng;
 
     Notify(Chng);
     signalSelectionChanged(Chng);

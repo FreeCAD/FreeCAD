@@ -422,6 +422,7 @@ public:
     std::vector<SelObj> getCompleteSelection(int resolve=1) const;
     bool hasSelection() const;
     bool hasSelection(const char* doc, bool resolve=true) const;
+    bool hasPreselection() const;
 
     /// Size of selcted entities for all documents
     unsigned int size(void) const {
