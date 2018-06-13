@@ -361,6 +361,7 @@ public:
     void setNaviCubeCorner(int);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
+    void setRenderCache(int);
 
     NavigationStyle* navigationStyle() const;
 

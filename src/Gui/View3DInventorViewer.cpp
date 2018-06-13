@@ -1240,6 +1240,12 @@ bool View3DInventorViewer::isEnabledVBO() const
     return vboEnabled;
 }
 
+void View3DInventorViewer::setRenderCache(int mode)
+{
+    for(auto vp : _ViewProviderSet)
+        vp->setRenderCacheMode(mode);
+}
+
 void View3DInventorViewer::setEnabledNaviCube(bool on)
 {
     naviCubeEnabled = on;

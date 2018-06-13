@@ -233,6 +233,8 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
+    pcNormalRoot = 0;
+    pcFlatRoot = 0;
     VisualTouched = true;
     forceUpdateCount = 0;
     NormalsFromUV = true;
@@ -334,6 +336,8 @@ ViewProviderPartExt::ViewProviderPartExt()
 
 ViewProviderPartExt::~ViewProviderPartExt()
 {
+    if(pcNormalRoot) pcNormalRoot->unref();
+    if(pcFlatRoot) pcFlatRoot->unref();
     pcFaceBind->unref();
     pcLineBind->unref();
     pcPointBind->unref();
@@ -496,10 +500,22 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     ViewProviderGeometryObject::attach(pcFeat);
 
     // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
-    SoGroup* pcNormalRoot = new SoSeparator();
-    SoGroup* pcFlatRoot = new SoSeparator();
-    SoGroup* pcWireframeRoot = new SoSeparator();
-    SoGroup* pcPointsRoot = new SoSeparator();
+    if(pcNormalRoot) pcNormalRoot->unref();
+    pcNormalRoot = new SoSeparator();
+    pcNormalRoot->ref();
+    if(pcFlatRoot) pcFlatRoot->unref();
+    pcFlatRoot = new SoSeparator();
+    pcFlatRoot->ref();
+    auto* pcWireframeRoot = new SoSeparator();
+    auto* pcPointsRoot = new SoSeparator();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    int mode = hGrp->GetInt("RenderCache",0);
+    pcNormalRoot->renderCaching =
+        mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
+    pcFlatRoot->renderCaching =
+        mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -551,6 +567,15 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcFlatRoot, "Shaded");
     addDisplayMaskMode(pcWireframeRoot, "Wireframe");
     addDisplayMaskMode(pcPointsRoot, "Point");
+}
+
+void ViewProviderPartExt::setRenderCacheMode(int mode) {
+    if(pcNormalRoot) 
+        pcNormalRoot->renderCaching = 
+            mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
+    if(pcFlatRoot) 
+        pcFlatRoot->renderCaching = 
+            mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
 void ViewProviderPartExt::setDisplayMode(const char* ModeName)

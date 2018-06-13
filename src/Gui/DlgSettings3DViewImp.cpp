@@ -83,6 +83,9 @@ void DlgSettings3DViewImp::saveSettings()
     index = this->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
+    index = this->renderCache->currentIndex();
+    hGrp->SetInt("RenderCache", index);
+
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
     spinBoxZoomStep->onSave();
@@ -135,6 +138,9 @@ void DlgSettings3DViewImp::loadSettings()
 
     index = hGrp->GetInt("CornerNaviCube", 1);
     naviCubeCorner->setCurrentIndex(index);
+
+    index = hGrp->GetInt("RenderCache", 0);
+    renderCache->setCurrentIndex(index);
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
