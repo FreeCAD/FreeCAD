@@ -29,6 +29,7 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import copy
 
 from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
@@ -60,8 +61,8 @@ class ObjectOp(PathOp.ObjectOp):
         self.zValues = zValues
         return zValues
 
-    def buildpathocc(self, obj, wires, zValues):
-        '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
+    def buildpathocc(self, obj, wires, zValues, rel=False):
+        '''buildpathocc(obj, wires, zValues, rel=False) ... internal helper function to generate engraving commands.'''
         PathLog.track(obj.Label, len(wires), zValues)
 
         for wire in wires:
@@ -71,54 +72,67 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, 'StartVertex'):
                 offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
 
+            edges = copy.copy(offset.Edges)
             last = None
+
             for z in zValues:
                 if last:
-                    self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
+                    if rel:
+                        self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z - z, 'F': self.vertFeed}))
+                    else:
+                        self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
 
-                for edge in offset.Edges:
+                for edge in edges:
                     if not last:
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
                         if len(offset.Edges) > 1:
+                            ve = edge.Vertexes[-1]
                             e2 = offset.Edges[1]
-                            if not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[0].Point) and not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[-1].Point):
+                            if not PathGeom.pointsCoincide(ve.Point, e2.Vertexes[0].Point) and not PathGeom.pointsCoincide(ve.Point, e2.Vertexes[-1].Point):
                                 PathLog.debug("flip first edge")
                                 last = edge.Vertexes[-1].Point
                             else:
                                 PathLog.debug("original first edge")
                         else:
                             PathLog.debug("not enough edges to flip")
+
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.ClearanceHeight.Value, 'F': self.horizRapid}))
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
+                        if rel:
+                            self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z - z, 'F': self.vertFeed}))
+                        else:
+                            self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
 
                     if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in PathGeom.cmdsForEdge(edge):
-                            params = cmd.Parameters
-                            params.update({'Z': z, 'F': self.horizFeed})
-                            self.commandlist.append(Path.Command(cmd.Name, params))
+                            self.appendCommand(cmd, z, rel)
                         last = edge.Vertexes[-1].Point
                     else:
                         for cmd in PathGeom.cmdsForEdge(edge, True):
-                            params = cmd.Parameters
-                            params.update({'Z': z, 'F': self.horizFeed})
-                            self.commandlist.append(Path.Command(cmd.Name, params))
+                            self.appendCommand(cmd, z, rel)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if self.commandlist:
             self.commandlist.pop()
 
+    def appendCommand(self, cmd, z, rel):
+        params = cmd.Parameters
+        if rel:
+            z = params['Z'] - z
+        params.update({'Z': z, 'F': self.horizFeed})
+        self.commandlist.append(Path.Command(cmd.Name, params))
 
     def opSetDefaultValues(self, obj):
         '''opSetDefaultValues(obj) ... set depths for engraving'''
-        job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            bb = job.Base.Shape.BoundBox
-            obj.OpStartDepth = bb.ZMax
-            obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
-        else:
-            obj.OpFinalDepth = -0.1
+        if PathOp.FeatureDepths & self.opFeatures(obj):
+            job = PathUtils.findParentJob(obj)
+            if job and job.Base:
+                bb = job.Base.Shape.BoundBox
+                obj.OpStartDepth = bb.ZMax
+                obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
+            else:
+                obj.OpFinalDepth = -0.1
 
     def adjustWirePlacement(self, obj, shape, wires):
         job = PathUtils.findParentJob(obj)

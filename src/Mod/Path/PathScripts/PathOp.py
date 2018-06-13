@@ -132,6 +132,10 @@ class ObjectOp(object):
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('FinalDepth', 2) # hide
             self.addOpValues(obj, ['start', 'final'])
+        else:
+            # StartDepth has become necessary for expressions on other properties
+            obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth internal use only for derived values"))
+            obj.setEditorMode('StartDepth', 1) # read-only
 
         if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"))
@@ -258,6 +262,8 @@ class ObjectOp(object):
                 obj.OpFinalDepth =  0.0
             else:
                 obj.FinalDepth   =  0.0
+        else:
+            obj.StartDepth = 1.0
 
         if FeatureStepDown & features:
             if not self.applyExpression(obj, 'StepDown', job.SetupSheet.StepDownExpression):
@@ -355,6 +361,11 @@ class ObjectOp(object):
             # update start depth if requested and required
             if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
                 obj.OpStartDepth = zmax
+        else:
+            # every obj has a StartDepth
+            if obj.StartDepth.Value != zmax:
+                obj.StartDepth = zmax
+
         self.opUpdateDepths(obj)
 
     @waiting_effects
