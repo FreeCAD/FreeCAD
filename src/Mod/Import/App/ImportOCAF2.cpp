@@ -102,6 +102,8 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
        << (aShapeTool->IsReference(label)?", reference":"")
        << (aShapeTool->IsComponent(label)?", component":"")
        << (aShapeTool->IsSubShape(label)?", subshape":"");
+    if(aShapeTool->IsSubShape(label))
+        ss << ", " << Part::TopoShape::shapeName(aShapeTool->GetShape(label).ShapeType(),true);
     if(aShapeTool->IsShape(label)) {
         Quantity_Color c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorGen,c))
@@ -234,7 +236,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
     return ret;
 }
 
-App::DocumentObject *ImportOCAF2::expandShape(const TopoDS_Shape &shape) {
+App::DocumentObject *ImportOCAF2::expandShape(TDF_Label label, const TopoDS_Shape &shape) {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return 0;
 
@@ -258,7 +260,10 @@ App::DocumentObject *ImportOCAF2::expandShape(const TopoDS_Shape &shape) {
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
         for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
-            auto child = expandShape(it.Value());
+            TDF_Label childLabel;
+            if(!label.IsNull())
+                aShapeTool->FindSubShape(label,it.Value(),childLabel);
+            auto child = expandShape(childLabel,it.Value());
             if(child) {
                 objs.push_back(child);
                 Info info;
@@ -275,11 +280,10 @@ App::DocumentObject *ImportOCAF2::expandShape(const TopoDS_Shape &shape) {
         setPlacement(&compound->Placement,shape);
         return compound;
     }
-    auto feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",
-                Part::TopoShape::shapeName(shape.ShapeType()).c_str()));
-    feature->Shape.setValue(shape);
-    feature->Visibility.setValue(false);
-    return feature;
+    Info info;
+    info.obj = 0;
+    createObject(label,shape,info);
+    return info.obj;
 }
 
 bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info)
@@ -301,49 +305,59 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
     if(!label.IsNull() && aShapeTool->GetSubShapes(label,seq)) {
         faceColors.assign(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
         edgeColors.assign(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
-        for(int i=1;i<=seq.Length();++i) {
-            TDF_Label l = seq.Value(i);
-            TopoDS_Shape subShape = aShapeTool->GetShape(l);
-            if(subShape.IsNull())
-                continue;
-            if(subShape.ShapeType()==TopAbs_COMPOUND) {
-                // It's strange that OCCT expand compound of multiples edges as
-                // a sub-compound of single edge?
-                TopExp_Explorer exp(subShape,TopAbs_FACE);
-                if(exp.More())
-                    subShape = exp.Current();
-                else {
-                    exp.Init(subShape,TopAbs_EDGE);
-                    if(exp.More())
-                        subShape = exp.Current();
-                    else
-                        continue;
+        // Two passes to get sub shape colors. First pass, look for solid, and
+        // second pass look for face or edges
+        for(int j=0;j<2;++j) {
+            for(int i=1;i<=seq.Length();++i) {
+                TDF_Label l = seq.Value(i);
+                TopoDS_Shape subShape = aShapeTool->GetShape(l);
+                if(subShape.IsNull())
+                    continue;
+                bool foundFaceColor=false,foundEdgeColor=false;
+                App::Color faceColor,edgeColor;
+                Quantity_Color aColor;
+                if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
+                   aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
+                {
+                    faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    foundFaceColor = true;
                 }
-            }
-            Quantity_Color aColor;
-            int idx = tshape.findShape(subShape)-1;
-            if(idx<0)
-                continue;
-            switch(subShape.ShapeType()) {
-            case TopAbs_FACE:
-                if(!aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) && 
-                   !aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
+                if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
+                    edgeColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    foundEdgeColor = true;
+                }
+
+                if(subShape.ShapeType()==TopAbs_FACE || subShape.ShapeType()==TopAbs_EDGE) {
+                    if(j==0)
+                        continue;
+                }else if(j!=0)
                     continue;
-                assert(idx < (int)faceColors.size());
-                faceColors[idx] = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
-                hasFaceColors = true;
-                info.hasFaceColor = true;
-                break;
-            case TopAbs_EDGE:
-                if(!aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) 
-                    continue;
-                assert(idx < (int)edgeColors.size());
-                edgeColors[idx] = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
-                hasEdgeColors = true;
-                info.hasEdgeColor = true;
-                break;
-            default:
-                continue;
+                else if(foundEdgeColor && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
+                    // Do not set edge the same color as face
+                    foundEdgeColor = false;
+                }
+
+                if(foundFaceColor) {
+                    for(TopExp_Explorer exp(subShape,TopAbs_FACE);exp.More();exp.Next()) {
+                        int idx = tshape.findShape(exp.Current())-1;
+                        if(idx>=0 && idx<(int)faceColors.size()) {
+                            faceColors[idx] = faceColor;
+                            hasFaceColors = true;
+                            info.hasFaceColor = true;
+                        }else
+                            assert(0);
+                    }
+                }
+                if(foundEdgeColor) {
+                    for(TopExp_Explorer exp(subShape,TopAbs_EDGE);exp.More();exp.Next()) {
+                        int idx = tshape.findShape(exp.Current())-1;
+                        if(idx>=0 && idx<(int)edgeColors.size()) {
+                            edgeColors[idx] = edgeColor;
+                            hasEdgeColors = true;
+                            info.hasEdgeColor = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -351,12 +365,12 @@ bool ImportOCAF2::createObject(TDF_Label label, const TopoDS_Shape &shape, Info 
     Part::Feature *feature;
 
     if(tshape.countSubShapes(TopAbs_SOLID)>1 || 
-       (tshape.countSubShapes(TopAbs_SOLID)<=1 && tshape.countSubShapes(TopAbs_SHELL)>1))
+       (!tshape.countSubShapes(TopAbs_SOLID) && tshape.countSubShapes(TopAbs_SHELL)>1))
     {
-        feature = dynamic_cast<Part::Feature*>(expandShape(shape));
+        feature = dynamic_cast<Part::Feature*>(expandShape(label,shape));
         assert(feature);
     } else {
-        feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature","Feature"));
+        feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",tshape.shapeName().c_str()));
         feature->Shape.setValue(shape);
         feature->Visibility.setValue(false);
     }

@@ -97,7 +97,7 @@ private:
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
     void setObjectName(Info &info, TDF_Label label);
     std::string getLabelName(TDF_Label label);
-    App::DocumentObject *expandShape(const TopoDS_Shape &shape);
+    App::DocumentObject *expandShape(TDF_Label label, const TopoDS_Shape &shape);
 
     virtual void applyEdgeColors(Part::Feature*, const std::vector<App::Color>&) {}
     virtual void applyFaceColors(Part::Feature*, const std::vector<App::Color>&) {}
