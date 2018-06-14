@@ -135,11 +135,19 @@ SET(PathTests_SRCS
     PathTests/TestPathUtil.py
 )
 
-SET(Path_Images
+SET(PathImages_Ops
     Images/Ops/chamfer.svg
+)
+
+SET(PathImages_Tools
     Images/Tools/drill.svg
     Images/Tools/endmill.svg
     Images/Tools/v-bit.svg
+)
+
+SET(Path_Images
+    ${PathImages_Ops}
+    ${PathImages_Tools}
 )
 
 SET(all_files
@@ -187,8 +195,15 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${Path_Images}
+        ${PathImages_Ops}
     DESTINATION
-        Mod/Path/Images
+        Mod/Path/Images/Ops
+)
+
+INSTALL(
+    FILES
+        ${PathImages_Tools}
+    DESTINATION
+        Mod/Path/Images/Tools
 )
 
