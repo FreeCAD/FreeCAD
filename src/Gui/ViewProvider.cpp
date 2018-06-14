@@ -91,6 +91,10 @@ ViewProvider::ViewProvider()
     pcRoot->addChild(pcModeSwitch);
     sPixmap = "px";
     pcModeSwitch->whichChild = _iActualMode;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    setRenderCacheMode(hGrp->GetInt("RenderCache",0));
 }
 
 ViewProvider::~ViewProvider()
@@ -861,5 +865,10 @@ void ViewProvider::beforeDelete() {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         ext->extensionBeforeDelete();
+}
+
+void ViewProvider::setRenderCacheMode(int mode) {
+    pcRoot->renderCaching =
+        mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 

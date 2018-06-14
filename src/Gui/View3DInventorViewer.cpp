@@ -360,6 +360,13 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 
 void View3DInventorViewer::init()
 {
+    static bool _cacheModeInited;
+    if(!_cacheModeInited) {
+        _cacheModeInited = true;
+        pcViewProviderRoot = 0;
+        setRenderCache(-1);
+    }
+
     shading = true;
     fpsEnabled = false;
     vboEnabled = false;
@@ -1242,6 +1249,22 @@ bool View3DInventorViewer::isEnabledVBO() const
 
 void View3DInventorViewer::setRenderCache(int mode)
 {
+    if(mode<0) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        int setting = hGrp->GetInt("RenderCache",0);
+        if(mode==-2) {
+            if(pcViewProviderRoot && setting!=1)
+                pcViewProviderRoot->renderCaching = SoSeparator::ON;
+            mode = 2;
+        }else{
+            if(pcViewProviderRoot)
+                pcViewProviderRoot->renderCaching = SoSeparator::AUTO;
+            mode = setting;
+        }
+    }
+    SoFCSelectionRoot::setCacheMode(
+            mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF));
     for(auto vp : _ViewProviderSet)
         vp->setRenderCacheMode(mode);
 }

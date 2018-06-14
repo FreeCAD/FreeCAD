@@ -1289,27 +1289,33 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
+        viewer->setRenderCache(-2);
         break;
 
     case SPINNING:
         this->interactiveCountInc();
         viewer->getSoRenderManager()->scheduleRedraw();
+        viewer->setRenderCache(-2);
         break;
 
     case PANNING:
         pan(viewer->getSoRenderManager()->getCamera());
         this->interactiveCountInc();
+        viewer->setRenderCache(-2);
         break;
 
     case ZOOMING:
         this->interactiveCountInc();
+        viewer->setRenderCache(-2);
         break;
 
     case BOXZOOM:
         this->interactiveCountInc();
+        viewer->setRenderCache(-2);
         break;
 
     default: // include default to avoid compiler warnings.
+        viewer->setRenderCache(-1);
         break;
     }
 

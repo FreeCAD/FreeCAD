@@ -230,20 +230,20 @@ SoFCSelectionCounter::SoFCSelectionCounter()
 SoFCSelectionCounter::~SoFCSelectionCounter()
 {}
 
+
 bool SoFCSelectionCounter::checkRenderCache(SoState *state) {
     if(*counter || 
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))
     {
-        // SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-        SoCacheElement::invalidate(state);
+        if(SoFCSelectionRoot::getCacheMode()!=SoSeparator::OFF)
+            SoCacheElement::invalidate(state);
         return false;
     }
     if(!Selection().hasPreselection())
         hasPreselection = false;
     if(!Selection().hasSelection())
         hasSelection = false;
-    // SoGLCacheContextElement::setAutoCacheBits(state, SoGLCacheContextElement::DO_AUTO_CACHE);
     return true;
 }
 

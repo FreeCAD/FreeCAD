@@ -150,12 +150,12 @@
           </item>
           <item>
            <property name="text">
-            <string>On</string>
+            <string>Distributed</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Off</string>
+            <string>Centralized</string>
            </property>
           </item>
          </widget>

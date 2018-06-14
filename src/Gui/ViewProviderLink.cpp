@@ -285,6 +285,7 @@ public:
             if(!update) return pcSnapshot;
         }else{
             pcSnapshot = new SoSeparator;
+            pcSnapshot->renderCaching = SoSeparator::OFF;
             pcModeSwitch = new SoSwitch;
         }
 
@@ -611,7 +612,7 @@ public:
     friend LinkView;
 
     SubInfo(LinkView &handle):handle(handle) {
-        pcNode = new SoFCSelectionRoot;
+        pcNode = new SoFCSelectionRoot(true);
         pcTransform = new SoTransform;
         pcNode->addChild(pcTransform);
     }
@@ -669,7 +670,7 @@ public:
 
     Element(LinkView &handle):handle(handle) {
         pcTransform = new SoTransform;
-        pcRoot = new SoFCSelectionRoot;
+        pcRoot = new SoFCSelectionRoot(true);
         pcSwitch = new SoSwitch;
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
@@ -716,7 +717,7 @@ LinkView::LinkView()
     :nodeType(SnapshotTransform)
     ,childType((SnapshotType)-1),autoSubLink(true)
 {
-    pcLinkRoot = new SoFCSelectionRoot;
+    pcLinkRoot = new SoFCSelectionRoot(true);
 }
 
 LinkView::~LinkView() {

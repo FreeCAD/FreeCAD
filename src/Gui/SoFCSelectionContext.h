@@ -128,6 +128,7 @@ protected:
     std::shared_ptr<int> counter;
     bool hasSelection;
     bool hasPreselection;
+    static int cachingMode;
 };
 
 }

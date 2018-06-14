@@ -982,13 +982,17 @@ std::map<SoAction*,SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
+SoSeparator::CacheEnabled SoFCSelectionRoot::CacheMode = SoSeparator::AUTO;
 
 SO_NODE_SOURCE(SoFCSelectionRoot);
 
-SoFCSelectionRoot::SoFCSelectionRoot()
-    :pushed(false)
+SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
+    :trackCacheMode(trackCacheMode)
+    ,pushed(false)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
+    if(!trackCacheMode)
+        renderCaching = SoSeparator::OFF;
 }
 
 SoFCSelectionRoot::~SoFCSelectionRoot()
@@ -1105,6 +1109,8 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc rend
     if(pushed)
         (this->*render)(action);
     else {
+        if(trackCacheMode && renderCaching.getValue()!=CacheMode)
+            renderCaching = CacheMode;
         pushed = true;
         SelStack.push_back(this);
         auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));

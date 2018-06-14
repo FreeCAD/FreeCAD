@@ -161,7 +161,7 @@ class GuiExport SoFCSelectionRoot : public SoSeparator {
 public:
     static void initClass(void);
     static void finish(void);
-    SoFCSelectionRoot();
+    SoFCSelectionRoot(bool trackCacheMode=false);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -256,6 +256,13 @@ public:
 
     static SoNode *getCurrentRoot(bool front, SoNode *def);
 
+    static void setCacheMode(CacheEnabled mode) {
+        CacheMode = mode;
+    }
+    static CacheEnabled getCacheMode() {
+        return CacheMode;
+    }
+
     void resetContext();
 
     static bool checkColorOverride(SoState *state);
@@ -322,6 +329,8 @@ protected:
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
     static SoFCSelectionRoot *ShapeColorNode;
+    static CacheEnabled CacheMode;
+    bool trackCacheMode;
     bool overrideColor = false;
     SbColor colorOverride;
     float transOverride;

@@ -162,8 +162,6 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
 
-    virtual void setRenderCacheMode(int) override;
-
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
@@ -195,9 +193,6 @@ protected:
     SoNormalBinding   * normb;
     SoBrepEdgeSet     * lineset;
     SoBrepPointSet    * nodeset;
-
-    SoSeparator       * pcNormalRoot;
-    SoSeparator       * pcFlatRoot;
 
     bool VisualTouched;
     bool NormalsFromUV;
