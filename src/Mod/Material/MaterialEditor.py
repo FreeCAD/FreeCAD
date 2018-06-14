@@ -70,7 +70,7 @@ class MaterialEditor:
         QtCore.QObject.connect(self.widget.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
         QtCore.QObject.connect(self.widget.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
 
-        # add material properies (the keys) to the editor
+        # add material properties (the keys) to the editor
         for group in getMaterialAttributeStructure(True):  # get the mat file structure from material module, use Spaces for better ui
             # print(group)
             self.addPropertiesToGroup(group)
