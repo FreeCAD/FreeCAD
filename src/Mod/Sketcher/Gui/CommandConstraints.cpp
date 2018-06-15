@@ -5499,7 +5499,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             continue;
         
         const Part::Geometry *geom = Obj->getGeometry(GeoId);
-        
+
         if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
             double radius = arc->getRadius();
@@ -5940,6 +5940,8 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     pcAction->setIcon(arc1->icon());
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
+    
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     return pcAction;
 }
