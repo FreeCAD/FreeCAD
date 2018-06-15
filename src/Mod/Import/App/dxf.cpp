@@ -390,8 +390,8 @@ void CDxfWrite::WriteText(const char* text, const double* location1, const doubl
     (*m_ofs) << 0              << endl;    //rotation
     (*m_ofs) << "  7"          << endl;
     (*m_ofs) << "STANDARD"     << endl;    //style
-    (*m_ofs) << " 71"          << endl;
-    (*m_ofs) << "0"            << endl;
+//    (*m_ofs) << " 71"          << endl;  //default
+//    (*m_ofs) << "0"            << endl;
     (*m_ofs) << " 72"          << endl;
     (*m_ofs) << horizJust      << endl;
     (*m_ofs) << " 73"          << endl;
@@ -437,7 +437,7 @@ void CDxfWrite::WriteLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ofs) << textMidPoint[2]    << endl;
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 1              << endl;    // dimType1 = Aligned
-//    (*m_ofs) << " 71"          << endl;
+//    (*m_ofs) << " 71"          << endl;    // not R12
 //    (*m_ofs) << 1              << endl;    // attachPoint ??1 = topleft
     (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
@@ -502,8 +502,8 @@ void CDxfWrite::WriteAngularDim(const double* textMidPoint, const double* lineDe
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 2             << endl;    // dimType 2 = Angular  5 = Angular 3 point
                                            // +32 for block?? (not R12)
-    (*m_ofs) << " 71"          << endl;
-    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle
+//    (*m_ofs) << " 71"          << endl;    // not R12
+//    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle
     (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
     (*m_ofs) << "  3"          << endl;
@@ -578,8 +578,8 @@ void CDxfWrite::WriteRadialDim(const double* centerPoint, const double* textMidP
     (*m_ofs) << textMidPoint[2]   << endl;
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 4              << endl;    // dimType 4 = Radius
-    (*m_ofs) << " 71"          << endl;
-    (*m_ofs) << 1              << endl;    // attachPoint 5 = middle center
+//    (*m_ofs) << " 71"          << endl;    // not R12
+//    (*m_ofs) << 1              << endl;    // attachPoint 5 = middle center
     (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
     (*m_ofs) << "  3"          << endl;
@@ -632,8 +632,8 @@ void CDxfWrite::WriteDiametricDim(const double* textMidPoint,
     (*m_ofs) << textMidPoint[2]   << endl;
     (*m_ofs) << " 70"          << endl;
     (*m_ofs) << 3              << endl;    // dimType 3 = Diameter
-    (*m_ofs) << " 71"          << endl;
-    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle center
+//    (*m_ofs) << " 71"          << endl;    // not R12
+//    (*m_ofs) << 5              << endl;    // attachPoint 5 = middle center
     (*m_ofs) << "  1"          << endl;
     (*m_ofs) << dimText        << endl;    
     (*m_ofs) << "  3"          << endl;
@@ -862,17 +862,22 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
     Base::Vector3d e2S(startExt2[0],startExt2[1],startExt2[2]);
     Base::Vector3d e1E(endExt1[0],endExt1[1],endExt1[2]);
     Base::Vector3d e2E(endExt2[0],endExt2[1],endExt2[2]);
-    Base::Vector3d e2 = e2E - e2S;
     Base::Vector3d e1 = e1E - e1S;
+    Base::Vector3d e2 = e2E - e2S;
+
     double startAngle = atan2(e2.y,e2.x);
+    double endAngle = atan2(e1.y,e1.x);
+    double span = fabs(endAngle - startAngle);
+    double offset = span * 0.10;
     if (startAngle < 0) {
          startAngle += 2.0 * Pi;
     }
-    startAngle = startAngle * 180.0 / Pi;
-    double endAngle = atan2(e1.y,e1.x);
     if (endAngle < 0) {
          endAngle += 2.0 * Pi;
     }
+    Base::Vector3d startOff(cos(startAngle + offset),sin(startAngle + offset),0.0);
+    Base::Vector3d endOff(cos(endAngle - offset),sin(endAngle - offset),0.0);
+    startAngle = startAngle * 180.0 / Pi;
     endAngle = endAngle * 180.0 / Pi;
     
     Base::Vector3d linePt(lineDefPoint[0],lineDefPoint[1],lineDefPoint[2]);
@@ -915,8 +920,91 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
     m_ssBlock << "3.5"          << endl;
     m_ssBlock << "  1"          << endl;
     m_ssBlock << dimText        << endl;
-    m_ssBlock << " 50"          << endl;
-    m_ssBlock << 0              << endl;
+//    m_ssBlock << " 50"          << endl;
+//    m_ssBlock << 0              << endl;
+
+    e1.Normalize();
+    e2.Normalize();
+    Base::Vector3d arrow1Start = e1S + e1 * radius;
+    Base::Vector3d arrow2Start = e2S + e2 * radius;
+
+    //wf: idk why the Tan pts have to be reversed.  something to do with CW angles in Dxf?
+    Base::Vector3d endTan = e1S + (startOff * radius);
+    Base::Vector3d startTan = e2S + (endOff * radius);
+    Base::Vector3d tanP1 = (arrow1Start - startTan).Normalize();
+    Base::Vector3d perp1(-tanP1.y,tanP1.x,tanP1.z); 
+    Base::Vector3d tanP2 = (arrow2Start - endTan).Normalize();
+    Base::Vector3d perp2(-tanP2.y,tanP2.x,tanP2.z); 
+    double arrowLen = 5.0;                  //magic number
+    double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
+
+    Base::Vector3d barb1 = arrow1Start + perp1*arrowWidth - tanP1*arrowLen;
+    Base::Vector3d barb2 = arrow1Start - perp1*arrowWidth - tanP1*arrowLen;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 1
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << barb1.x        << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << barb1.y        << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << barb1.z        << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << barb2.x        << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << barb2.y        << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << barb2.z        << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << arrow1Start.x  << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << arrow1Start.y  << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << arrow1Start.z  << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << arrow1Start.x  << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << arrow1Start.y  << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << arrow1Start.z  << endl;
+
+    barb1 = arrow2Start + perp2*arrowWidth - tanP2*arrowLen;
+    barb2 = arrow2Start - perp2*arrowWidth - tanP2*arrowLen;
+
+    m_ssBlock << "  0"          << endl;
+    m_ssBlock << "SOLID"        << endl;       //arrowhead 2
+    m_ssBlock << "  8"          << endl;
+    m_ssBlock << "0"            << endl;
+    m_ssBlock << " 62"          << endl;
+    m_ssBlock << "     0"       << endl;
+    m_ssBlock << " 10"          << endl;
+    m_ssBlock << barb1.x        << endl;
+    m_ssBlock << " 20"          << endl;
+    m_ssBlock << barb1.y        << endl;
+    m_ssBlock << " 30"          << endl;
+    m_ssBlock << barb1.z        << endl;
+    m_ssBlock << " 11"          << endl;
+    m_ssBlock << barb2.x        << endl;
+    m_ssBlock << " 21"          << endl;
+    m_ssBlock << barb2.y        << endl;
+    m_ssBlock << " 31"          << endl;
+    m_ssBlock << barb2.z        << endl;
+    m_ssBlock << " 12"          << endl;
+    m_ssBlock << arrow2Start.x  << endl;
+    m_ssBlock << " 22"          << endl;
+    m_ssBlock << arrow2Start.y  << endl;
+    m_ssBlock << " 32"          << endl;
+    m_ssBlock << arrow2Start.z  << endl;
+    m_ssBlock << " 13"          << endl;
+    m_ssBlock << arrow2Start.x  << endl;
+    m_ssBlock << " 23"          << endl;
+    m_ssBlock << arrow2Start.y  << endl;
+    m_ssBlock << " 33"          << endl;
+    m_ssBlock << arrow2Start.z  << endl;
 
     m_ssBlock << "  0"          << endl;
     m_ssBlock << "ENDBLK"       << endl;
@@ -967,10 +1055,10 @@ void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* tex
     m_ssBlock << "3.5"          << endl;
     m_ssBlock << "  1"          << endl;
     m_ssBlock << dimText        << endl;
-    m_ssBlock << " 50"          << endl;
-    m_ssBlock << 0              << endl;
-    m_ssBlock << " 72"          << endl;
-    m_ssBlock << "1"            << endl;
+//    m_ssBlock << " 50"          << endl;
+//    m_ssBlock << 0              << endl;
+//    m_ssBlock << " 72"          << endl;
+//    m_ssBlock << "1"            << endl;
 
     Base::Vector3d c(centerPoint[0],centerPoint[1],centerPoint[2]);
     Base::Vector3d a(arcPoint[0],arcPoint[1],arcPoint[2]);
@@ -1061,10 +1149,10 @@ void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint,
     m_ssBlock << "3.5"          << endl;
     m_ssBlock << "  1"          << endl;
     m_ssBlock << dimText        << endl;
-    m_ssBlock << " 50"          << endl;
-    m_ssBlock << "0"            << endl;
-    m_ssBlock << " 72"          << endl;
-    m_ssBlock << "1"            << endl;
+//    m_ssBlock << " 50"          << endl;
+//    m_ssBlock << "0"            << endl;
+//    m_ssBlock << " 72"          << endl;
+//    m_ssBlock << "1"            << endl;
 
     Base::Vector3d a1(arcPoint1[0],arcPoint1[1],arcPoint1[2]);
     Base::Vector3d a2(arcPoint2[0],arcPoint2[1],arcPoint2[2]);
