@@ -690,6 +690,7 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
         type != DistanceX &&
         type != DistanceY &&
         type != Radius &&
+        type != Diameter &&
         type != Angle) {
         PyErr_SetString(PyExc_TypeError, "Constraint is not a datum");
         return 0;
