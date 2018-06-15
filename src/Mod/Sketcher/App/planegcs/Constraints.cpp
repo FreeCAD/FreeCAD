@@ -97,8 +97,9 @@ int Constraint::findParamInPvec(double *param)
 }
 
 // Equal
-ConstraintEqual::ConstraintEqual(double *p1, double *p2)
+ConstraintEqual::ConstraintEqual(double *p1, double *p2, double p1p2ratio)
 {
+    ratio = p1p2ratio;
     pvec.push_back(p1);
     pvec.push_back(p2);
     origpvec = pvec;
@@ -117,7 +118,7 @@ void ConstraintEqual::rescale(double coef)
 
 double ConstraintEqual::error()
 {
-    return scale * (*param1() - *param2());
+    return scale * (*param1() - ratio *(*param2()));
 }
 
 double ConstraintEqual::grad(double *param)
