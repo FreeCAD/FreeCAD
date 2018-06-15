@@ -42,16 +42,14 @@ ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 
 MACRO (fc_copy_sources target_name outpath)
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
 		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile ${outfile} ABSOLUTE)
-		add_file_dependencies(${infile} ${outfile})
+		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    ${infile}
-			COMMAND   ${CMAKE_COMMAND}
-			ARGS      -E copy ${infile} ${outfile}
+			SOURCE    "${infile}"
+			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
-			OUTPUTS   ${outfile}
+			OUTPUTS   "${outfile}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
@@ -63,17 +61,14 @@ ENDMACRO(fc_copy_sources)
 
 MACRO (fc_target_copy_resource target_name inpath outpath)
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${inpath}/${it}" infile)
-		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
-		get_filename_component(infile ${infile} ABSOLUTE)
-		get_filename_component(outfile ${outfile} ABSOLUTE)
-		add_file_dependencies(${infile} ${outfile})
+		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    ${infile}
-			COMMAND   ${CMAKE_COMMAND}
-			ARGS      -E copy ${infile} ${outfile}
+			SOURCE    "${infile}"
+			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
-			OUTPUTS   ${outfile}
+			OUTPUTS   "${outfile}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
