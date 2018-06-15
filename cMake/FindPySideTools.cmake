@@ -45,7 +45,7 @@ MACRO(PYSIDE_WRAP_UI outfiles)
           OUTPUT_FILE ${outfile}
         )
     endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_UI)
 
@@ -53,7 +53,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
   FOREACH(it ${ARGN})
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py)
+    SET(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
@@ -76,7 +76,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
           OUTPUT_FILE ${outfile}
        )
     endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_RC)
 
