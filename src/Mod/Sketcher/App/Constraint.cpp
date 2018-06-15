@@ -136,6 +136,7 @@ Quantity Constraint::getPresentationValue() const
     switch (Type) {
     case Distance:
     case Radius:
+    case Diameter:
     case DistanceX:
     case DistanceY:
         quantity.setValue(Value);

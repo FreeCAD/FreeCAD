@@ -56,6 +56,7 @@ enum ConstraintType {
     InternalAlignment = 15,
     SnellsLaw = 16,
     Block = 17,
+    Diameter = 18,
     NumConstraintTypes // must be the last item!
 };
 
