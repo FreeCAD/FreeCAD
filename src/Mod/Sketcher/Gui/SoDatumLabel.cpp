@@ -89,6 +89,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_DEFINE_ENUM_VALUE(Type, DISTANCEY);
     SO_NODE_DEFINE_ENUM_VALUE(Type, ANGLE);
     SO_NODE_DEFINE_ENUM_VALUE(Type, RADIUS);
+    SO_NODE_DEFINE_ENUM_VALUE(Type, DIAMETER);
     SO_NODE_SET_SF_ENUM_TYPE(datumtype, Type);
 
     SO_NODE_ADD_FIELD(param1, (0.f));
@@ -231,7 +232,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
 
         this->endShape();
 
-    } else if (this->datumtype.getValue() == RADIUS) {
+    } else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
 
         SbVec3f dir = (p2-p1);
         dir.normalize();
@@ -284,7 +285,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         shapeVertex(&pv);
 
         this->endShape();
-      } else if (this->datumtype.getValue() == ANGLE) {
+    } else if (this->datumtype.getValue() == ANGLE) {
 
         // Only the angle intersection point is needed
         SbVec3f p0 = pnts[0];
@@ -643,7 +644,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
 
-    } else if (this->datumtype.getValue() == RADIUS) {
+        } else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
         // Get the Points
         SbVec3f p1 = pnts[0];
         SbVec3f p2 = pnts[1];
@@ -695,6 +696,22 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
           glVertex2f(ar1[0], ar1[1]);
           glVertex2f(ar2[0], ar2[1]);
         glEnd();
+        
+        if (this->datumtype.getValue() == DIAMETER) {
+            // create second arrowhead
+            SbVec3f ar0_1  = p1;
+            SbVec3f ar1_1  = p1 + dir * 0.866f * 2 * margin;
+            SbVec3f ar2_1  = ar1_1 + norm * margin;
+            ar1_1 -= norm * margin;
+
+            glBegin(GL_TRIANGLES);
+            glVertex2f(ar0_1[0], ar0_1[1]);
+            glVertex2f(ar1_1[0], ar1_1[1]);
+            glVertex2f(ar2_1[0], ar2_1[1]);
+            glEnd();
+
+        }
+
         // BOUNDING BOX CALCULATION - IMPORTANT
         // Finds the mins and maxes
         std::vector<SbVec3f> corners;
