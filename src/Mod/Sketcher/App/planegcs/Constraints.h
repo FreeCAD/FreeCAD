@@ -131,10 +131,11 @@ namespace GCS
     class ConstraintEqual : public Constraint
     {
     private:
+        double ratio;
         inline double* param1() { return pvec[0]; }
         inline double* param2() { return pvec[1]; }
     public:
-        ConstraintEqual(double *p1, double *p2);
+        ConstraintEqual(double *p1, double *p2, double p1p2ratio=1.0);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
