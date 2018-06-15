@@ -79,6 +79,7 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
+            (*it)->Type == Sketcher::Diameter ||
             (*it)->Type == Sketcher::Angle ) {
 
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
@@ -171,6 +172,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
+            (*it)->Type == Sketcher::Diameter ||
             (*it)->Type == Sketcher::Angle ) {
 
             PropertyUnitItem* child = nullptr;
@@ -247,6 +249,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
+            (*it)->Type == Sketcher::Diameter ||
             (*it)->Type == Sketcher::Angle ) {
 
             Base::Quantity quant;
@@ -325,6 +328,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                     (*it)->Type == Sketcher::DistanceX ||
                     (*it)->Type == Sketcher::DistanceY ||
                     (*it)->Type == Sketcher::Radius ||
+                    (*it)->Type == Sketcher::Diameter ||
                     (*it)->Type == Sketcher::Angle ) {
 
                     // Get the internal name
