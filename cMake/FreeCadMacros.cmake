@@ -14,7 +14,7 @@ MACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 #   TAGS     - Since only the file name is used
 #              to generate rules, pre-pend a user 
 #              supplied tag to prevent duplicate rule errors. 
-SET(AddTargets "")
+SET(AddTargets)
 FOREACH(SRC ${FILES})
     GET_FILENAME_COMPONENT(SRCFILE ${SRC} NAME) 
     # Command to copy the files to ${STEP1}/src, if changed.
@@ -31,11 +31,11 @@ FOREACH(SRC ${FILES})
     ENDIF("${TO_DIR}" STREQUAL "")
     ADD_CUSTOM_COMMAND(
         OUTPUT  ${TARGET}
-        COMMAND ${CMAKE_COMMAND}
-        ARGS    -E copy_if_different ${FROM} ${TO}
+        COMMAND "${CMAKE_COMMAND}"
+        ARGS    -E copy_if_different "${FROM}" "${TO}"
         COMMENT "Copying ${SRCFILE} ${TO_DIR}"
         )
-    SET(AddTargets ${AddTargets} ${TARGET})
+    list(APPEND AddTargets ${TARGET})
 ENDFOREACH(SRC ${FILES})
 SET(${TARGETS} ${AddTargets})
 ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
