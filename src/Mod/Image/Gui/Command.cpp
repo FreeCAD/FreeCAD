@@ -103,7 +103,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
     sWhatsThis      = "Image_CreateImagePlane";
     sStatusTip      = sToolTipText;
-    sPixmap         = "image-import";
+    sPixmap         = "image-import-to-plane";
 }
 
 void CmdCreateImagePlane::activated(int iMsg)
