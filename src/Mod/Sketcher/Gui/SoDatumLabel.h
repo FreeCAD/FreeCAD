@@ -53,6 +53,7 @@ public:
   DISTANCEX,
   DISTANCEY,
   RADIUS,
+  DIAMETER,
   SYMMETRIC
   };
 
