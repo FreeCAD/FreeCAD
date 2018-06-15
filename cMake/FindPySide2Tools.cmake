@@ -38,14 +38,15 @@ MACRO(PYSIDE_WRAP_UI outfiles)
         )
     else(WIN32)
         # Especially on Open Build Service we don't want changing date like
-        # pyside2-uic generates in comments at beginning.
-        EXECUTE_PROCESS(
-          COMMAND ${PYSIDE2UICBINARY} ${infile}
-          COMMAND sed "/^# /d"
-          OUTPUT_FILE ${outfile}
+        # pyside2-uic generates in comments at beginning., which is why
+        # we follow the tool command with in-place sed.
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND "${PYSIDE2UICBINARY}" "${infile}" -o "${outfile}"
+          COMMAND sed -i "/^# /d" "${outfile}"
+          MAIN_DEPENDENCY "${infile}"
         )
     endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_UI)
 
@@ -53,7 +54,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
   FOREACH(it ${ARGN})
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py)
+    SET(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
@@ -64,14 +65,15 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         )
     else(WIN32)
         # Especially on Open Build Service we don't want changing date like
-        # pyside2-rcc generates in comments at beginning.
-        EXECUTE_PROCESS(
-          COMMAND ${PYSIDE2RCCBINARY} ${infile}
-          COMMAND sed "/^# /d"
-          OUTPUT_FILE ${outfile}
-       )
+        # pyside-rcc generates in comments at beginning, which is why
+        # we follow the tool command with in-place sed.
+        ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
+          COMMAND "${PYSIDE2RCCBINARY}" "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
+          COMMAND sed -i "/^# /d" "${outfile}"
+          MAIN_DEPENDENCY "${infile}"
+        )
     endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_RC)
 
