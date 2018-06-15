@@ -41,6 +41,11 @@ SET(${TARGETS} ${AddTargets})
 ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 
 MACRO (fc_copy_sources target_name outpath)
+	if(BUILD_VERBOSE_GENERATION)
+		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
+	else()
+		set(fc_details "")
+	endif()
 	foreach(it ${ARGN})
 		get_filename_component(infile ${it} ABSOLUTE)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
@@ -50,6 +55,7 @@ MACRO (fc_copy_sources target_name outpath)
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
 			OUTPUTS   "${outfile}"
+			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
@@ -60,6 +66,11 @@ MACRO (fc_copy_sources target_name outpath)
 ENDMACRO(fc_copy_sources)
 
 MACRO (fc_target_copy_resource target_name inpath outpath)
+	if(BUILD_VERBOSE_GENERATION)
+		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
+	else()
+		set(fc_details "")
+	endif()
 	foreach(it ${ARGN})
 		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
@@ -69,6 +80,7 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
 			OUTPUTS   "${outfile}"
+			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
@@ -156,7 +168,7 @@ macro(generate_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
 		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
 		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py" SOURCE_NATIVE_PATH)
-		 add_custom_command(
+		add_custom_command(
 		 		OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}"
 		 		COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}" "${OUTPUT_FILE}"
 				MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py"
