@@ -5535,7 +5535,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     
     if(!externalGeoIdDiameterMap.empty()) {
         // Create the non-driving radius constraints now
-        openCommand("Add radius constraint");
+        openCommand("Add diameter constraint");
         commandopened=true;
         unsigned int constrSize = 0;
         
@@ -5579,7 +5579,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         bool constrainEqual = false;
         if (geoIdDiameterMap.size() > 1 && constraintCreationMode==Driving) {
             int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
-                                            QObject::tr("Do you want to share the same radius for all selected elements?"),
+                                            QObject::tr("Do you want to share the same diameter for all selected elements?"),
                                             QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
             // use an equality constraint
             if (ret == QMessageBox::Yes) {
@@ -5597,7 +5597,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             double diameter = geoIdDiameterMap.front().second;
             
             if(!commandopened)
-                openCommand("Add radius constraint");
+                openCommand("Add diameter constraint");
             
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
@@ -5611,9 +5611,9 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             }
         }
         else {
-            // Create the radius constraints now
+            // Create the diameter constraints now
             if(!commandopened)
-                openCommand("Add radius constraint");
+                openCommand("Add diameter constraint");
             for (std::vector< std::pair<int, double> >::iterator it = geoIdDiameterMap.begin(); it != geoIdDiameterMap.end(); ++it) {
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
@@ -5650,12 +5650,12 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
-        // Ask for the value of the radius immediately
+        // Ask for the value of the diameter immediately
         if (show && constraintCreationMode==Driving) {
             QDialog dlg(Gui::getMainWindow());
             Ui::InsertDatum ui_Datum;
             ui_Datum.setupUi(&dlg);
-            dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
+            dlg.setWindowTitle(EditDatumDialog::tr("Change diameter"));
             ui_Datum.label->setText(EditDatumDialog::tr("Diameter:"));
             Base::Quantity init_val;
             init_val.setUnit(Base::Unit::Length);
@@ -5767,8 +5767,8 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                 return;
             }
             
-            // Create the radius constraint now
-            openCommand("Add radius constraint");
+            // Create the diameter constraint now
+            openCommand("Add diameter constraint");
             Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
                                     Obj->getNameInDocument(), GeoId, diameter);
             
@@ -5795,12 +5795,12 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
-            // Ask for the value of the radius immediately
+            // Ask for the value of the diameter immediately
             if (show && constraintCreationMode==Driving && !fixed) {
                 QDialog dlg(Gui::getMainWindow());
                 Ui::InsertDatum ui_Datum;
                 ui_Datum.setupUi(&dlg);
-                dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
+                dlg.setWindowTitle(EditDatumDialog::tr("Change diameter"));
                 ui_Datum.label->setText(EditDatumDialog::tr("Diameter:"));
                 Base::Quantity init_val;
                 init_val.setUnit(Base::Unit::Length);
