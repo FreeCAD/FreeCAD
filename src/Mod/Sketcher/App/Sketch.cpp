@@ -1390,6 +1390,19 @@ int Sketch::addConstraint(const Constraint *constraint)
         rtn = addRadiusConstraint(constraint->First, c.value,c.driving);
         break;
     }
+    case Diameter:
+    {
+        c.value = new double(constraint->getValue());
+        if(c.driving)
+            FixParameters.push_back(c.value);
+        else {
+            Parameters.push_back(c.value);
+            DrivenParameters.push_back(c.value);
+        }
+        
+        rtn = addDiameterConstraint(constraint->First, c.value,c.driving);
+        break;
+    }
     case Equal:
         rtn = addEqualConstraint(constraint->First,constraint->Second);
         break;
@@ -2115,6 +2128,25 @@ int Sketch::addRadiusConstraint(int geoId, double * value, bool driving)
         GCS::Arc &a = Arcs[Geoms[geoId].index];
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintArcRadius(a, value, tag, driving);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+int Sketch::addDiameterConstraint(int geoId, double * value, bool driving)
+{
+    geoId = checkGeoId(geoId);
+    
+    if (Geoms[geoId].type == Circle) {
+        GCS::Circle &c = Circles[Geoms[geoId].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintCircleDiameter(c, value, tag, driving);
+        return ConstraintsCounter;
+    }
+    else if (Geoms[geoId].type == Arc) {
+        GCS::Arc &a = Arcs[Geoms[geoId].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintArcDiameter(a, value, tag, driving);
         return ConstraintsCounter;
     }
     return -1;
@@ -3038,6 +3070,10 @@ bool Sketch::updateNonDrivingConstraints()
             else if((*it).constr->Type==Angle) {
                 
                 (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
+            }
+            else if((*it).constr->Type==Diameter) {
+                
+                (*it).constr->setValue(2.0**((*it).value));
             }
             else {
                 (*it).constr->setValue(*((*it).value));

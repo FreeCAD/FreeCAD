@@ -262,6 +262,14 @@ public:
     */    
     int addRadiusConstraint(int geoId, double *  value, bool driving = true);
     /** 
+     *   add a radius constraint on a circle or an arc
+     * 
+     *   double * value is a pointer to double allocated in the heap, containing the
+     *   constraint value and already inserted into either the FixParameters or 
+     *   Parameters array, as the case may be.
+     */    
+    int addDiameterConstraint(int geoId, double *  value, bool driving = true);
+    /** 
     *   add an angle constraint on a line or between two lines
     * 
     *   double * value is a pointer to double allocated in the heap, containing the
