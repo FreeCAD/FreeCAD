@@ -501,6 +501,14 @@ int System::addConstraintEqual(double *param1, double *param2, int tagId, bool d
     return addConstraint(constr);
 }
 
+int System::addConstraintProportional(double *param1, double *param2, double ratio, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintEqual(param1, param2, ratio);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintDifference(double *param1, double *param2,
                                     double *difference, int tagId, bool driving)
 {
@@ -870,6 +878,16 @@ int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId, bool
 int System::addConstraintArcRadius(Arc &a, double *radius, int tagId, bool driving)
 {
     return addConstraintEqual(a.rad, radius, tagId, driving);
+}
+
+int System::addConstraintCircleDiameter(Circle &c, double *radius, int tagId, bool driving)
+{
+    return addConstraintProportional(c.rad, radius, 0.5, tagId, driving);
+}
+
+int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool driving)
+{
+    return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
 }
 
 int System::addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId, bool driving)
