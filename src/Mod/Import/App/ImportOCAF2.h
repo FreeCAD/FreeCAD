@@ -37,6 +37,7 @@
 #include <App/Material.h>
 #include <App/Part.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include <Base/Sequencer.h>
 #include "ImportOCAF.h"
 
 
@@ -136,6 +137,9 @@ private:
 
     App::Color defaultFaceColor;
     App::Color defaultEdgeColor;
+
+    Base::SequencerLauncher *sequencer;
+    size_t seqCounter;
 };
 
 class ImportExport ExportOCAF2

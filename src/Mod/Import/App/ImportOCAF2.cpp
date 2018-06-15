@@ -102,8 +102,11 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
        << (aShapeTool->IsReference(label)?", reference":"")
        << (aShapeTool->IsComponent(label)?", component":"")
        << (aShapeTool->IsSubShape(label)?", subshape":"");
-    if(aShapeTool->IsSubShape(label))
-        ss << ", " << Part::TopoShape::shapeName(aShapeTool->GetShape(label).ShapeType(),true);
+    if(aShapeTool->IsSubShape(label)) {
+        auto shape = aShapeTool->GetShape(label);
+        if(!shape.IsNull())
+            ss << ", " << Part::TopoShape::shapeName(shape.ShapeType(),true);
+    }
     if(aShapeTool->IsShape(label)) {
         Quantity_Color c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorGen,c))
@@ -131,7 +134,7 @@ static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
 /////////////////////////////////////////////////////////////////////
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), doc(d), default_name(name)
+    : pDoc(h), doc(d), default_name(name), sequencer(0)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -431,11 +434,17 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
 
+    TDF_LabelSequence labels;
+    aShapeTool->GetShapes(labels);
+    Base::SequencerLauncher seq("Importing...",labels.Length());
+    seqCounter = 0;
+    sequencer = &seq;
+
+    labels.Clear();
     myShapes.clear();
     myNames.clear();
 
     std::vector<App::DocumentObject*> objs;
-    TDF_LabelSequence labels;
     aShapeTool->GetFreeShapes (labels);
     boost::dynamic_bitset<> vis;
     for (Standard_Integer i=1; i <= labels.Length(); i++ ) {
@@ -477,6 +486,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret = feature;
         ret->recomputeFeature(true);
     }
+    sequencer = 0;
     return ret;
 }
 
@@ -547,6 +557,8 @@ App::DocumentObject *ImportOCAF2::loadShape(TDF_Label label, const TopoDS_Shape 
     if(it == myShapes.end()) {
         Info info;
         auto baseLabel = aShapeTool->FindShape(baseShape);
+        if(!baseLabel.IsNull() && aShapeTool->IsTopLevel(baseLabel) && sequencer)
+            sequencer->setProgress(++seqCounter);
         bool res;
         if(baseLabel.IsNull() || !aShapeTool->IsAssembly(baseLabel))
             res = createObject(baseLabel,baseShape,info);
