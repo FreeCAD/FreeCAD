@@ -717,7 +717,7 @@ LinkView::LinkView()
     :nodeType(SnapshotTransform)
     ,childType((SnapshotType)-1),autoSubLink(true)
 {
-    pcLinkRoot = new SoFCSelectionRoot(true);
+    pcLinkRoot = new SoFCSelectionRoot;
 }
 
 LinkView::~LinkView() {

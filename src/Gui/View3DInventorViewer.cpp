@@ -1263,10 +1263,8 @@ void View3DInventorViewer::setRenderCache(int mode)
             mode = setting;
         }
     }
-    SoFCSelectionRoot::setCacheMode(
+    SoFCSeparator::setCacheMode(
             mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF));
-    for(auto vp : _ViewProviderSet)
-        vp->setRenderCacheMode(mode);
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)

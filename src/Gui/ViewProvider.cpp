@@ -81,7 +81,7 @@ ViewProvider::ViewProvider()
 {
     setStatus(UpdateData, true);
 
-    pcRoot = new SoSeparator();
+    pcRoot = new SoFCSeparator();
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();

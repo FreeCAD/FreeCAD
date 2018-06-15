@@ -153,8 +153,32 @@ protected:
     SoDetail *det;
 };
 
-class GuiExport SoFCSelectionRoot : public SoSeparator {
+class GuiExport SoFCSeparator : public SoSeparator {
     typedef SoSeparator inherited;
+
+    SO_NODE_HEADER(Gui::SoFCSeparator);
+
+public:
+    static void initClass(void);
+    static void finish(void);
+    SoFCSeparator(bool trackCacheMode=true);
+
+    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+
+    static void setCacheMode(CacheEnabled mode) {
+        CacheMode = mode;
+    }
+    static CacheEnabled getCacheMode() {
+        return CacheMode;
+    }
+
+private:
+    bool trackCacheMode;
+    static CacheEnabled CacheMode;
+};
+
+class GuiExport SoFCSelectionRoot : public SoFCSeparator {
+    typedef SoFCSeparator inherited;
 
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
   
@@ -256,13 +280,6 @@ public:
 
     static SoNode *getCurrentRoot(bool front, SoNode *def);
 
-    static void setCacheMode(CacheEnabled mode) {
-        CacheMode = mode;
-    }
-    static CacheEnabled getCacheMode() {
-        return CacheMode;
-    }
-
     void resetContext();
 
     static bool checkColorOverride(SoState *state);
@@ -329,8 +346,6 @@ protected:
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
     static SoFCSelectionRoot *ShapeColorNode;
-    static CacheEnabled CacheMode;
-    bool trackCacheMode;
     bool overrideColor = false;
     SbColor colorOverride;
     float transOverride;

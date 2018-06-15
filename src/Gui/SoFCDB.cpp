@@ -121,6 +121,7 @@ void Gui::SoFCDB::init()
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();
     SmSwitchboard                   ::initClass();
+    SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
 
@@ -204,6 +205,7 @@ void Gui::SoFCDB::finish()
     SoFCSelectionColorAction        ::finish();
     SoUpdateVBOAction               ::finish();
     SoFCHighlightColorAction        ::finish();
+    SoFCSeparator                   ::finish();
     SoFCSelectionRoot               ::finish();
     SoFCPathAnnotation              ::finish();
     
