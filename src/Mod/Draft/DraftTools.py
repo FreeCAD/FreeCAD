@@ -4788,6 +4788,37 @@ class PathArray(Modifier):
             FreeCAD.ActiveDocument.recompute()                                  # feature won't appear until recompute.
         self.finish()
 
+class PointArray(Modifier):
+    "The PointArray FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_PointArray',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PointArray", "PointArray"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of a selected object on the position of points.")}
+
+    def Activated(self):
+        Modifier.Activated(self)
+        if not FreeCADGui.Selection.getSelectionEx():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Please select base and pointlist objects\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if sel:
+            base  = sel[0].Object
+            ptlst = sel[1].Object
+            FreeCAD.ActiveDocument.openTransaction("PointArray")
+            Draft.makePointArray(base, ptlst)
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+        self.finish()
+
 class Point(Creator):
     "this class will create a vertex after the user clicks a point on the screen"
 
@@ -5657,6 +5688,7 @@ FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
+FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
 FreeCADGui.addCommand('Draft_VisGroup',VisGroup())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
