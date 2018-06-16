@@ -6102,6 +6102,8 @@ class _PointArray(_DraftObject):
             pls = opl.Geometry
         elif hasattr(opl, 'Links'):
             pls = opl.Links
+        elif hasattr(opl, 'Components'):
+            pls = opl.Components
         
         base = []
         i = 0
