@@ -1243,6 +1243,22 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         select(obj)
     return obj
 
+def makePointArray(base, ptlst):
+    '''makePointArray(base,pointlist):'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PointArray")
+    _PointArray(obj, base, ptlst)
+    obj.Base = base
+    obj.PointList = ptlst
+    if gui:
+        _ViewProviderDraftArray(obj.ViewObject)
+        base.ViewObject.hide()
+        formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
+        select(obj)
+    return obj
+
 def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     '''makeEllipse(majradius,minradius,[placement],[face],[support]): makes
     an ellipse with the given major and minor radius, and optionally
@@ -6066,6 +6082,44 @@ class _PathArray(_DraftObject):
             travel += step
         return(Part.makeCompound(base))
 
+class _PointArray(_DraftObject):
+    "The Draft Point Array object"
+    def __init__(self, obj, bobj, ptlst):
+        _DraftObject.__init__(self,obj,"PointArray")
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","Base")).Base = bobj
+        obj.addProperty("App::PropertyLink","PointList","Draft",QT_TRANSLATE_NOOP("App::Property","PointList")).PointList = ptlst
+        obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Count")).Count = 0
+        obj.setEditorMode("Count", 1) 
+
+    def execute(self, obj):
+        import Part
+        from FreeCAD import Base, Vector
+        pls = []
+        opl = obj.PointList
+        while getType(opl) == 'Clone':
+            opl = opl.Objects[0]
+        if hasattr(opl, 'Geometry'):
+            pls = opl.Geometry
+        elif hasattr(opl, 'Links'):
+            pls = opl.Links
+        
+        base = []
+        i = 0
+        if hasattr(obj.Base, 'Shape'):
+            for pts in pls:
+                #print pts # inspect the objects 
+                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Y'):
+        	        nshape = obj.Base.Shape.copy()
+        	        if hasattr(pts, 'Placement'):
+        	            place = pts.Placement
+        	            nshape.translate(place.Base)
+        	            nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )   
+        	        nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
+        	        i += 1
+        	        base.append(nshape)
+        obj.Count = i
+        obj.Shape = Part.makeCompound(base)
+
 class _Point(_DraftObject):
     "The Draft Point object"
     def __init__(self, obj,x=0,y=0,z=0):
@@ -6243,6 +6297,8 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
     def getIcon(self):
         if hasattr(self.Object,"ArrayType"):
             return ":/icons/Draft_Array.svg"
+        elif hasattr(self.Object,"PointList"):
+            return ":/icons/Draft_PointArray.svg" 
         return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
