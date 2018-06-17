@@ -76,6 +76,9 @@ public:
     void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
     void setBaseName(bool enable) { useBaseName=enable; }
     void setImportHiddenObject(bool enable) {importHidden=enable;}
+    void setReduceObjects(bool enable) {reduceObjects=enable;}
+    void setShowProgress(bool enable) {showProgress=enable;}
+    void setExpandCompound(bool enable) {expandCompound=enable;}
 
 private:
     struct Info {
@@ -89,11 +92,11 @@ private:
         int free = true;
     };
 
-    App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool isArrayElement=false);
+    App::DocumentObject *loadShape(TDF_Label label, const TopoDS_Shape &shape, bool baseOnly=false);
     bool createAssembly(TDF_Label label, const TopoDS_Shape &shape, Info &info);
     bool createObject(TDF_Label label, const TopoDS_Shape &shape, Info &info);
-    bool createGroup(Info &info, const TopoDS_Shape &shape,
-        const std::vector<App::DocumentObject*> &children, const boost::dynamic_bitset<> &visibilities);
+    bool createGroup(Info &info, const TopoDS_Shape &shape, const std::vector<App::DocumentObject*> &children, 
+            const boost::dynamic_bitset<> &visibilities, bool canReduce=false);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
     void setObjectName(Info &info, TDF_Label label);
@@ -130,16 +133,18 @@ private:
     bool useLinkGroup;
     bool useBaseName;
     bool importHidden;
+    bool reduceObjects;
+    bool showProgress;
+    bool expandCompound;
 
     std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myShapes;
-
     std::unordered_map<TDF_Label, std::string, LabelHasher> myNames;
+    std::map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
 
     App::Color defaultFaceColor;
     App::Color defaultEdgeColor;
 
     Base::SequencerLauncher *sequencer;
-    size_t seqCounter;
 };
 
 class ImportExport ExportOCAF2

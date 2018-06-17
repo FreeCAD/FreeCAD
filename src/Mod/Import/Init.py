@@ -37,25 +37,20 @@ FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
 
 # Add initial parameters value if they are not set
 
+def _checkParamBool(paramGet, param, default):
+    if paramGet.GetBool(param, False) != paramGet.GetBool(param, True):
+        paramGet.SetBool(param, default)
+
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
-if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
-    paramGetV.SetBool("ReadShapeCompoundMode", False)
+_checkParamBool(paramGetV,"ReadShapeCompoundMode",False)
 
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import")
-
-if  paramGetV.GetBool("UseLinkGroup", False) != \
-        paramGetV.GetBool("UseLinkGroup",True):
-    paramGetV.SetBool("UseLinkGroup", True)
-
-if  paramGetV.GetBool("UseBaseName", False) != \
-        paramGetV.GetBool("UseBaseName",True):
-    paramGetV.SetBool("UseBaseName", True)
-
-if  paramGetV.GetBool("ImportHiddenObject", False) != \
-        paramGetV.GetBool("ImportHiddenObject", True):
-    paramGetV.SetBool("ImportHiddenObject", True)
-
-if  paramGetV.GetBool("ExportHiddenObject", False) != \
-        paramGetV.GetBool("ExportHiddenObject", True):
-    paramGetV.SetBool("ExportHiddenObject", True)
+for p in (("UseLinkGroup",True),
+          ("UseBaseName",True),
+          ("ImportHiddenObject",True),
+          ("ExportHiddenObject",True),
+          ("ReduceObjects", False),
+          ("ShowProgress", True),
+          ("ExpandCompound",True)):
+    _checkParamBool(paramGetV,*p)
 

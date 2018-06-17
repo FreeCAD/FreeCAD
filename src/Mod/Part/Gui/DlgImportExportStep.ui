@@ -71,6 +71,54 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxReduceObjects">
+        <property name="toolTip">
+         <string>Reduce number of objects using Link array</string>
+        </property>
+        <property name="text">
+         <string>Reduce number of objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ReduceObjects</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxExpandCompound">
+        <property name="toolTip">
+         <string>Expand compound shape with multiple solids</string>
+        </property>
+        <property name="text">
+         <string>Expand compound shape</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ExpandCompound</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowProgress">
+        <property name="toolTip">
+         <string>Show progress bar when importing</string>
+        </property>
+        <property name="text">
+         <string>Show progress bar when importing</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ShowProgress</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -181,7 +229,7 @@
           <width>40</width>
           <height>20</height>
          </size>
-        </property>
+     r  </property>
        </spacer>
       </item>
       <item row="0" column="0">
