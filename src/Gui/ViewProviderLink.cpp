@@ -2432,7 +2432,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             if(boost::starts_with(element,wildcard))
                 colors[sub.second] = OverrideColorList[i];
             else if(!element[0] && wildcard=="Face")
-                colors[sub.second.substr(0,element-sub.second.c_str())+subname] = OverrideColorList[i];
+                colors[sub.second.substr(0,element-sub.second.c_str())+wildcard] = OverrideColorList[i];
         }
 
         // In case of multi-level linking, we recursively call into each level,
@@ -2442,7 +2442,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
                 color.a = ShapeMaterial.getValue().transparency;
-                colors.emplace(subname,color);
+                colors.emplace(wildcard,color);
             }
             auto link = vp->getObject()->getLinkedObject(false);
             if(!link || link==vp->getObject())
@@ -2467,7 +2467,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
                         continue;
                     auto color = mat.diffuseColor;
                     color.a = mat.transparency;
-                    colors.emplace(std::to_string(i)+"."+subname,color);
+                    colors.emplace(std::to_string(i)+"."+wildcard,color);
                 }
             }
         }
