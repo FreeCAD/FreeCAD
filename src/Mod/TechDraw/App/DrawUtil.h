@@ -77,7 +77,11 @@ class TechDrawExport DrawUtil {
         static double getDefaultLineWeight(std::string s);
         static Base::Vector3d vector23(const Base::Vector2d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }
         static Base::Vector2d vector32(const Base::Vector3d& v3) { return Base::Vector2d(v3.x,v3.y); }
-
+        //! is pt between end1 and end2?
+        static bool isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2);
+        //! find intersection in 2d for 2 lines in point+direction form
+        static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
+                                   Base::Vector3d p2, Base::Vector3d d2);
 
 
         //debugging routines

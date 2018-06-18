@@ -116,6 +116,8 @@ protected:
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
     virtual void setPens(void);
+    Base::Vector3d findIsoDir(Base::Vector3d ortho);
+    Base::Vector3d findIsoExt(Base::Vector3d isoDir);
 
 protected:
     bool hasHover;

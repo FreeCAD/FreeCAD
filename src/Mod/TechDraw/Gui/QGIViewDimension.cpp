@@ -339,39 +339,57 @@ void QGIViewDimension::draw()
     QString labelText = datumLabel->toPlainText();
     Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);    //already gui coords
 
-    //const std::vector<App::DocumentObject*> &objects = dim->References2D.getValues();
-    //const std::vector<std::string> &SubNames         = dim->References2D.getSubValues();
-
     const char *dimType = dim->Type.getValueAsString();
 
-    if (strcmp(dimType, "Distance") == 0 ||
+   if (strcmp(dimType, "Distance") == 0 ||
         strcmp(dimType, "DistanceX") == 0 ||
         strcmp(dimType, "DistanceY") == 0) {
         pointPair pts = dim->getLinearPoints();
-        Base::Vector3d distStart, distEnd;                                      //start/end points of distance to measure
-        distStart = Rez::guiX(pts.first);
-        distEnd   = Rez::guiX(pts.second);
+        Base::Vector3d startDist, endDist, midDist;                     //start/end/mid points of distance line
+        startDist = Rez::guiX(pts.first);
+        endDist   = Rez::guiX(pts.second);
+        Base::Vector3d vecDist = (endDist - startDist);
 
         // +/- aligned method
         // dimension text legible from bottom or right
         // text outside arrows (not between)
         // text to left of vertical dims
         // text above horizontal dims
-        double offsetFudge = 2.0;
-        double textOffset = 1.0 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
-        Base::Vector3d dir, norm;               //direction/normal vectors of distance line (not dimension Line)
+        Base::Vector3d dirDist, normDist;               //direction/normal vectors of distance line
+        Base::Vector3d dirExt, normExt;                 
+        Base::Vector3d dirDim, normDim;
+        Base::Vector3d dirIso;
+        dirDist = vecDist; 
+        dirDist.Normalize();                
+        normDist = Base::Vector3d (-dirDist.y,dirDist.x, 0);         //normal to distance direction
+                                                                     //toward dimension line?
         if (strcmp(dimType, "Distance") == 0 ) {
-            dir = (distEnd-distStart);
+            //distance and dimension lines parallel
+            dirDim = dirDist;
+            normDim = Base::Vector3d (-dirDist.y,dirDist.x, 0);
         } else if (strcmp(dimType, "DistanceX") == 0 ) {
-            dir = Base::Vector3d ( ((distEnd.x - distStart.x >= FLT_EPSILON) ? 1 : -1) , 0, 0);
+            //distance and dimension lines not (neccessarily) parallel
+            dirDim = Base::Vector3d ( ((endDist.x - startDist.x >= FLT_EPSILON) ? 1 : -1) , 0, 0);
+            normDim = Base::Vector3d (-dirDim.y,dirDim.x, 0);
         } else if (strcmp(dimType, "DistanceY") == 0 ) {
-            dir = Base::Vector3d (0, ((distEnd.y - distStart.y >= FLT_EPSILON) ? 1 : -1) , 0);
+            //distance and dimension lines not (neccessarily) parallel
+            dirDim = Base::Vector3d (0, ((endDist.y - startDist.y >= FLT_EPSILON) ? 1 : -1) , 0);
+            normDim = Base::Vector3d (-dirDim.y, dirDim.x, 0);
         }
-        dir.Normalize();
-        norm = Base::Vector3d (-dir.y,dir.x, 0);         //normal to dimension direction
 
-        // Get magnitude of angle between dir and horizontal
-        double angle = atan2f(dir.y,dir.x);
+        //for ortho drawing extension lines are para to normDim, perp to dirDist
+        dirExt = normDim;
+        dirIso = normDim;
+        if (refObj->isIso()) {
+            //is this dimension an iso dimension? ie points +/-isoX,+/-isoY,+/-isoZ
+            dirIso = findIsoDir(dirDist);
+            dirExt = findIsoExt(dirIso);
+        } 
+        dirExt.Normalize();
+        normExt = Base::Vector3d (-dirExt.y,dirExt.x, 0);         //normal to extension lines (req'd?)
+
+        // Get magnitude of angle between dimension line and horizontal
+        double angle = atan2f(dirDim.y,dirDim.x);
         if (angle < 0.0) {
             angle = 2 * M_PI + angle;          //map to +ve angle
         }
@@ -389,103 +407,98 @@ void QGIViewDimension::draw()
             isFlipped = true;
         }
 
-        Base::Vector3d textNorm = norm;
-        if (std::abs(dir.x) < FLT_EPSILON) {
+        Base::Vector3d textNorm = normDim;
+        if (std::abs(dirDist.x) < FLT_EPSILON) {                       //this is DistanceY?
             textNorm = Base::Vector3d(1.0,0.0,0.0);                    //force text to left of dim line
-        } else if (std::abs(dir.y) < FLT_EPSILON) {
+        } else if (std::abs(dirDist.y) < FLT_EPSILON) {                //this is DistanceX?
             textNorm = Base::Vector3d(0.0,1.0,0.0);                    //force text above dim line
         } else {
             if (isFlipped) {
-                textNorm = -norm;
+                textNorm = -textNorm;
             }
         }
 
-        // when the dimension line is not parallel to (distStart-distEnd) (ie DistanceY on side of a Cone) the projection of
-        // (distStart-distEnd) on dimLine.norm is not zero, distEnd is considered as reference and distStart
-        // is replaced by its projection distStart_
-        // wf: in this case we can't use one of the Distance? end points as a reference for dim/ext lines. So we use the projection of
-        // startpoint(distStart) onto dimLine
-        // m = |proj(A on B)| = dot(A,unit(B)
-        // m = |proj(dimLine on normal)| = dot(dimLine,normal)
-        // newstartpt = oldstart + m*normal
-        float normproj12 = (distEnd-distStart).x * norm.x + (distEnd-distStart).y * norm.y;   //dot(dirDimline, normal)
-        Base::Vector3d distStart_ = distStart + norm * normproj12;
-        Base::Vector3d distMid = (distStart_ + distEnd) / 2.0;
+        // +/- pos of startDist vs endDist for vert/horiz Dims
+        // distStartDelta sb zero for normal dims 
+        float distStartDelta = vecDist.Dot(normDim);        // component of distance vector in dim line direction
+        Base::Vector3d startDistAdj = startDist + normDim * distStartDelta;
+        midDist = (startDistAdj + endDist) / 2.0;
 
-//        QFont font = datumLabel->font();                         //font metrics gives answers in pixels, not mm
-//        QFontMetrics fm(font);
-//        int w = fm.width(labelText);                             //why is this different than diameter/radius?
-//        int h = fm.height();
-        double lblWidth = datumLabel->boundingRect().width();
+        //offset of dimLine from dimText
+        double offsetFudge = 2.0;
+        double textOffset = 1.0 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
 
-        Base::Vector3d fauxCenter = lblCenter + textOffset * textNorm;
-        Base::Vector3d vec = fauxCenter - distEnd;              //endof dist line to center of dimline
-        float perpDistance = vec.x * norm.x + vec.y * norm.y;   //dot(vec,norm) the perp distance between distance & dimension lines.
+        //fauxCenter is where the dimText would be if it was on the dimLine
+        Base::Vector3d fauxCenter = lblCenter + textOffset * dirExt;
+        Base::Vector3d vec = fauxCenter - midDist;
+        float sepDistDir = vec.x * dirExt.x + vec.y * dirExt.y;   //dist between distance & dimension along extension
+
         margin = Rez::guiX(2.f);
         float scaler = 1.;
 
-        float offset1 = (perpDistance + normproj12 < 0) ? -margin : margin;
-        float offset2 = (perpDistance < 0) ? -margin : margin;
+        float extStartOffset = (sepDistDir + distStartDelta < 0) ? -margin : margin;
+        float extEndOffset = (sepDistDir < 0) ? -margin : margin;
 
-        Base::Vector3d ext1End = distStart_ + norm * (perpDistance + offset1 * scaler);   //extension line 1 end
-        Base::Vector3d ext2End = distEnd  + norm * (perpDistance + offset2 * scaler);
+        Base::Vector3d startIntercept = DrawUtil::Intersect2d(startDist, dirExt,
+                                                           fauxCenter,dirDim);
+        Base::Vector3d endIntercept = DrawUtil::Intersect2d(endDist, dirExt,
+                                                         fauxCenter,dirDim);
 
-        // Calculate the start/end for the Dimension lines
+
+        Base::Vector3d extStartEnd = startIntercept + dirExt * (extStartOffset * scaler);     //the little bit past the dimline
+        Base::Vector3d extEndEnd   = endIntercept + dirExt * (extEndOffset * scaler);
+
         //dim1Tip is the position of 1 arrow point (lhs on a horizontal)
         //dim2Tail is the position of the other arrow point (rhs)
-        //case 1: inner placement: text between extensions & fits. arros point out from inside
+        //case 1: inner placement: text between extensions & fits. arros point out from inside (default)
         //case 2: inner placement2: text too big to fit. arrows point in from outside
         //case 3: outer placement: text is outside extensions.  arrows point in, 1 arrow tracks dimText
 
-        //case1 - inner placement, text fits within extension lines
-        Base::Vector3d  dim1Tip = distStart_ + norm * perpDistance;
-        Base::Vector3d  dim1Tail = distMid + norm * perpDistance;
-        Base::Vector3d  dim2Tip = distMid + norm * perpDistance;
-        Base::Vector3d  dim2Tail = distEnd  + norm * perpDistance;
+        Base::Vector3d  dim1Tip = startIntercept;
+        Base::Vector3d  dim1Tail = fauxCenter;
+        Base::Vector3d  dim2Tip =  endIntercept;
+        Base::Vector3d  dim2Tail = fauxCenter;
+        Base::Vector3d  a1Dir = -dirDim;
+        Base::Vector3d  a2Dir = dirDim;
 
-        bool flipTriang = false;
-
-        double dimSpan = (dim2Tail - dim1Tip).Length();
-        double fauxToDim1 = (fauxCenter - dim1Tip).Length();     //label to end #1
-        double fauxToDim2 = (fauxCenter - dim2Tail).Length();
+        double dimSpan    = (extEndEnd - extStartEnd).Length();     //distance between extension lines
+        double fauxToDim1 = (fauxCenter - dim1Tip).Length();        //label to arrow #1
+        double fauxToDim2 = (fauxCenter - dim2Tip).Length();        //label to end #2
         double tailLength = Rez::guiX(10.f) * scaler;
 
-        //case2 - innerPlacement * text > span
-        if ((lblWidth > dimSpan)  &&
-            (fauxToDim1 < dimSpan) &&
-            (fauxToDim2 < dimSpan)) {   //fauxcenter is between extensions
-            dim1Tail = dim1Tip - tailLength * dir;
-            dim2Tip = dim2Tail + tailLength * dir;
-            flipTriang = true;
+        //case2 - innerPlacement && text > span
+        double lblWidth = datumLabel->boundingRect().width();
+        if ((DrawUtil::isBetween(fauxCenter, dim1Tip, dim2Tip)) &&
+            (lblWidth > dimSpan) ) {
+            dim1Tail = dim1Tip - tailLength * dirDim;
+            a1Dir = dirDim;
+            a2Dir = -dirDim;
+            dim2Tail = dim2Tip + tailLength * dirDim;
         }
 
-        //case3 - outerPlacement
-        if ((fauxToDim1 < fauxToDim2) &&
-            (dimSpan < fauxToDim2) ) {
-            dim1Tail = fauxCenter;
-            dim2Tip = dim2Tail + tailLength * dir;
-            flipTriang = true;
-        } else if ((fauxToDim2 < fauxToDim1) &&
-            (dimSpan < fauxToDim1) ) {
-            dim1Tail = dim1Tip - tailLength * dir;
-            dim2Tip = fauxCenter;
-            flipTriang = true;
-        } else {
-            //a different case
+        if (!DrawUtil::isBetween(fauxCenter, dim1Tip, dim2Tip)) {
+            //case3 - outerPlacement
+            a1Dir = dirDim;
+            a2Dir = -dirDim;
+            if (fauxToDim1 < fauxToDim2)  {
+                dim1Tail = fauxCenter;
+                dim2Tail = dim2Tip + tailLength * dirDim;
+            } else {
+                dim1Tail = dim1Tip - tailLength * dirDim;
+                dim2Tail = fauxCenter;
+            } 
         }
 
         // Extension lines
         QPainterPath path;
-        path.moveTo(distStart.x, distStart.y);
-        path.lineTo(ext1End.x, ext1End.y);
+        path.moveTo(startDist.x, startDist.y);
+        path.lineTo(extStartEnd.x, extStartEnd.y);
 
-        path.moveTo(distEnd.x, distEnd.y);
-        path.lineTo(ext2End.x, ext2End.y);
+        path.moveTo(endDist.x, endDist.y);
+        path.lineTo(extEndEnd.x, extEndEnd.y);
 
-        //Dimension lines
+        //Dimension lines (arrow shafts) 
         //TODO: line tip goes just a bit too far. overlaps the arrowhead's point
-        //default arrow perpDistance is 5.0
-
         path.moveTo(dim1Tip.x, dim1Tip.y);
         path.lineTo(dim1Tail.x, dim1Tail.y);
 
@@ -501,26 +514,23 @@ void QGIViewDimension::draw()
         double angleOption = 0.0;                                      //put lblText angle adjustments here
         datumLabel->setRotation((angle * 180 / M_PI) + angleOption);
 
+        aHead1->setDirMode(true);
+        aHead2->setDirMode(true);
+        aHead1->setDirection(a1Dir);
+        aHead2->setDirection(a2Dir);
+
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
         aHead1->setSize(QGIArrow::getPrefArrowSize());
         aHead1->draw();
-        aHead2->flip(true);
         aHead2->setStyle(QGIArrow::getPrefArrowStyle());
         aHead2->setSize(QGIArrow::getPrefArrowSize());
         aHead2->draw();
-        angle = atan2f(dir.y,dir.x);
-        float arrowAngle = angle * 180 / M_PI;
-        arrowAngle -= 180.;
-        if(flipTriang){
-            aHead1->setRotation(arrowAngle + 180.);
-            aHead2->setRotation(arrowAngle + 180.);
-        } else {
-            aHead1->setRotation(arrowAngle);
-            aHead2->setRotation(arrowAngle);
-        }
 
         aHead1->setPos(dim1Tip.x, dim1Tip.y);
-        aHead2->setPos(dim2Tail.x, dim2Tail.y);
+        aHead2->setPos(dim2Tip.x, dim2Tip.y);
+        
+        aHead1->setDirMode(false);
+        aHead2->setDirMode(false);
 
     } else if(strcmp(dimType, "Diameter") == 0) {
         // terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
@@ -1167,6 +1177,59 @@ QColor QGIViewDimension::getNormalColor()
 
     m_colNormal = vp->Color.getValue().asValue<QColor>();
     return m_colNormal;
+}
+
+//! find the closest isometric axis given an ortho vector
+Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho)
+{
+    std::vector<Base::Vector3d> isoDirs = { Base::Vector3d(0.866,0.5,0.0),     //iso X
+                                            Base::Vector3d(-0.866,-0.5,0.0),   //iso -X
+                                            Base::Vector3d(-0.866,0.5,0.0),    //iso -Y?
+                                            Base::Vector3d(0.866,-0.5,0.0),    //iso +Y?
+                                            Base::Vector3d(0.0,-1.0,0.0),      //iso -Z
+                                            Base::Vector3d(0.0,1.0,0.0) };     //iso Z
+    std::vector<double> angles;
+    for (auto& iso: isoDirs) {
+        angles.push_back(ortho.GetAngle(iso));
+    }
+    int idx = 0;
+    double min = angles[0];
+    for (int i = 1; i < 6; i++) {
+        if (angles[i] < min) {
+            idx = i;
+            min = angles[i];
+        }
+    }
+    return isoDirs[idx];
+}
+
+//! find the iso extension direction corresponding to an iso dist direction
+Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir)
+{
+    Base::Vector3d dirExt(1,0,0);
+    Base::Vector3d isoX(0.866,0.5,0.0);     //iso X
+    Base::Vector3d isoXr(-0.866,-0.5,0.0);  //iso -X
+    Base::Vector3d isoY(-0.866,0.5,0.0);    //iso -Y?
+    Base::Vector3d isoYr(0.866,-0.5,0.0);   //iso +Y?
+    Base::Vector3d isoZ(0.0,1.0,0.0);       //iso Z
+    Base::Vector3d isoZr(0.0,-1.0,0.0);     //iso -Z
+    if (dir.IsEqual(isoX, FLT_EPSILON)) {
+        dirExt = isoY;
+    } else if (dir.IsEqual(-isoX, FLT_EPSILON)) {
+        dirExt = -isoY;
+    } else if (dir.IsEqual(isoY, FLT_EPSILON)) {
+        dirExt = isoZ;
+    } else if (dir.IsEqual(-isoY, FLT_EPSILON)) {
+        dirExt = -isoZ;
+    } else if (dir.IsEqual(isoZ, FLT_EPSILON)) {
+        dirExt = isoX;
+    } else if (dir.IsEqual(-isoZ, FLT_EPSILON)) {
+        dirExt = -isoX;
+    } else { //tarfu
+        Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n", getViewObject()->getNameInDocument());
+    }
+
+    return dirExt;
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
