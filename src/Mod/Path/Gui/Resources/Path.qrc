@@ -60,6 +60,10 @@
         <file>icons/Path-BPlay.svg</file>
         <file>icons/Path-BStep.svg</file>
         <file>icons/Path-BStop.svg</file>
+        <file>icons/edge-join-miter.svg</file>
+        <file>icons/edge-join-miter-not.svg</file>
+        <file>icons/edge-join-round.svg</file>
+        <file>icons/edge-join-round-not.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
