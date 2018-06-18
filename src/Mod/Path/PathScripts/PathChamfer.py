@@ -51,6 +51,8 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
     def initOperation(self, obj):
         obj.addProperty("App::PropertyDistance", "Width",      "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The desired width of the chamfer"))
         obj.addProperty("App::PropertyDistance", "ExtraDepth", "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The additional depth of the tool path"))
+        obj.addProperty("App::PropertyEnumeration", "Join",    "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "How to join chamfer segments"))
+        obj.Join = ['Round', 'Miter']
 
     def opExecute(self, obj):
         angle = self.tool.CuttingEdgeAngle
@@ -110,6 +112,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
     def opSetDefaultValues(self, obj):
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
+        obj.Join = 'Round'
 
 def Create(name):
     '''Create(name) ... Creates and returns a Chamfer operation.'''

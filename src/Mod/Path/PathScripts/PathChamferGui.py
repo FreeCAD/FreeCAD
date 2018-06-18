@@ -57,10 +57,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')
         self.opImage = QtGui.QPixmap(self.opImagePath)
         self.form.opImage.setPixmap(self.opImage)
+        iconMiter = QtGui.QIcon(':/icons/edge-join-miter-not.svg')
+        iconMiter.addFile(':/icons/edge-join-miter.svg', state=QtGui.QIcon.On)
+        iconRound = QtGui.QIcon(':/icons/edge-join-round-not.svg')
+        iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
+        self.form.joinMiter.setIcon(iconMiter)
+        self.form.joinRound.setIcon(iconRound)
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Width', self.form.value_W)
         PathGui.updateInputField(obj, 'ExtraDepth', self.form.value_h)
+        if self.form.joinRound.isChecked():
+            obj.Join = 'Round'
+        elif self.form.joinMiter.isChecked():
+            obj.Join = 'Miter'
 
         self.updateToolController(obj, self.form.toolController)
 
@@ -68,12 +78,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.value_W.setText(FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString)
         self.form.value_h.setText(FreeCAD.Units.Quantity(obj.ExtraDepth.Value, FreeCAD.Units.Length).UserString)
         self.setupToolController(obj, self.form.toolController)
+        self.form.joinRound.setChecked('Round' == obj.Join)
+        self.form.joinMiter.setChecked('Miter' == obj.Join)
 
     def updateWidth(self):
         PathGui.updateInputField(self.obj, 'Width', self.form.value_W)
 
     def updateExtraDepth(self):
         PathGui.updateInputField(self.obj, 'ExtraDepth', self.form.value_h)
+
+    def getSignalsForUpdate(self, obj):
+        signals = []
+        signals.append(self.form.joinMiter.clicked)
+        signals.append(self.form.joinRound.clicked)
+        return signals
 
     def registerSignalHandlers(self, obj):
         self.form.value_W.editingFinished.connect(self.updateWidth)
