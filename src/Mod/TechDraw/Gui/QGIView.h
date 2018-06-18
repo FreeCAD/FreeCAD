@@ -77,6 +77,7 @@ public:
     virtual void drawCaption(void);
     virtual void rotateView(void);
     void makeMark(double x, double y);
+    void makeMark(Base::Vector3d v);
 
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
