@@ -1,6 +1,7 @@
 <RCC>
     <qresource> 
         <file>icons/image-import.svg</file>
+        <file>icons/image-import-to-plane.svg</file>
         <file>icons/ImageWorkbench.svg</file>
         <file>translations/Image_af.qm</file>
         <file>translations/Image_de.qm</file>
