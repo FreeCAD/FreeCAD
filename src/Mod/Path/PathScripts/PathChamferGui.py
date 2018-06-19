@@ -80,6 +80,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setupToolController(obj, self.form.toolController)
         self.form.joinRound.setChecked('Round' == obj.Join)
         self.form.joinMiter.setChecked('Miter' == obj.Join)
+        self.form.joinFrame.hide()
 
     def updateWidth(self):
         PathGui.updateInputField(self.obj, 'Width', self.form.value_W)
