@@ -83,11 +83,13 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
                 basewires.append(Part.Wire(edgelist))
 
             for w in self.adjustWirePlacement(obj, base, basewires):
-                wires.append(self.offsetWire(w, base, offset))
+                wires.append(self.offsetWire(obj, w, base, offset))
         self.wires = wires
         self.buildpathocc(obj, wires, [depth], True)
 
-    def offsetWire(self, wire, base, offset):
+    def offsetWire(self, obj, wire, base, offset):
+        PathLog.track(obj.Label)
+
         def removeInsideEdges(edges):
             def isInside(edge):
                 for v in edge.Vertexes:
@@ -97,11 +99,24 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
             result = []
             return [e for e in edges if not isInside(e)]
 
+        def orientWireForClimbMilling(w):
+            face = Part.Face(w)
+            cw  = 'Forward' == obj.ToolController.SpindleDir 
+            wcw = 0 < face.Surface.Axis.z
+            if cw != wcw:
+                PathLog.track('flip wire')
+                # This works because Path creation will flip the edges accordingly
+                return Part.Wire([e for e in reversed(w.Edges)])
+            PathLog.track('no flip', cw, wcw)
+            return w
+
         w = wire.makeOffset2D(offset)
         if wire.isClosed():
             if not base.Shape.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
-                return w
-            return wire.makeOffset2D(-offset)
+                return orientWireForClimbMilling(w)
+            w = wire.makeOffset2D(-offset)
+            return orientWireForClimbMilling(w)
+
         edges = removeInsideEdges(w.Edges)
         if edges:
             return Part.Wire(edges)
