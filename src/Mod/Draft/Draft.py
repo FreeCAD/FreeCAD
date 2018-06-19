@@ -356,6 +356,15 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         if getType(obj) in ["Wall","Structure"]:
             for o in obj.OutList:
                 l.extend(getWindows(o))
+            for i in obj.InList:
+                if (getType(i) in ["Window"]) or isClone(obj,"Window"):
+                    if hasattr(i,"Hosts"):
+                        if obj in i.Hosts:
+                            l.append(i)
+                elif (getType(i) in ["Rebar"]) or isClone(obj,"Rebar"):
+                    if hasattr(i,"Host"):
+                        if obj == i.Host:
+                            l.append(i)
         elif (getType(obj) in ["Window","Rebar"]) or isClone(obj,["Window","Rebar"]):
             l.append(obj)
         return l
