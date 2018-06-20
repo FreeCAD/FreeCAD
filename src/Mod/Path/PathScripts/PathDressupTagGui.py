@@ -27,12 +27,12 @@ import FreeCADGui
 # import Path
 # import PathScripts
 # import PathScripts.PathDressupTag as PathDressupTag
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
