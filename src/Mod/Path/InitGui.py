@@ -36,7 +36,7 @@ class PathWorkbench (Workbench):
         FreeCADGui.addPreferencePage(PathPreferencesPathDressup.DressupPreferencesPage, "Path")
 
         # Check enablement of experimental features
-        from PathScripts.PathPreferences import PathPreferences
+        from PathScripts import PathPreferences
 
         # load the builtin modules
         import Path

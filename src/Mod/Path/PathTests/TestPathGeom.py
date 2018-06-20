@@ -26,12 +26,12 @@ import FreeCAD
 import Part
 import Path
 import PathScripts
+import PathScripts.PathGeom as PathGeom
 import math
 import unittest
 
 from FreeCAD import Vector
 #from PathScripts.PathDressupHoldingTags import *
-from PathScripts.PathGeom import PathGeom
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathGeom(PathTestBase):

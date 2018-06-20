@@ -24,10 +24,10 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PySide
 
-from PathScripts.PathGeom import PathGeom
 
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
