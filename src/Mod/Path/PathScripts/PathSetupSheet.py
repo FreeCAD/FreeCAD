@@ -24,12 +24,10 @@
 
 import FreeCAD
 import Path
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PySide
-
-from PathScripts.PathGeom import PathGeom
-
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
