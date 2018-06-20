@@ -26,12 +26,12 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui
-from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
 
 

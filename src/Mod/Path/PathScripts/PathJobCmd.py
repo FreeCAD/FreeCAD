@@ -26,13 +26,13 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
 import glob
 import json
 import os
 
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
