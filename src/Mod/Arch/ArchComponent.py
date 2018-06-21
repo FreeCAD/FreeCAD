@@ -418,6 +418,10 @@ class Component:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        if "BaseMaterial" in pl:
+                obj.Material = obj.BaseMaterial
+                obj.removeProperty("BaseMaterial")
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "IfcRole" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
             obj.IfcRole = IfcRoles
@@ -426,7 +430,7 @@ class Component:
             obj.removeProperty("Role")
             if r in IfcRoles:
                 obj.IfcRole = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+"  Role property to IfcRole\n")
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
         if not "IfcProperties" in pl:
@@ -469,15 +473,6 @@ class Component:
     def __setstate__(self,state):
 
         return None
-
-    def onDocumentRestored(self,obj):
-
-        if hasattr(obj,"BaseMaterial"):
-            if not hasattr(obj,"Material"):
-                obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-                obj.Material = obj.BaseMaterial
-                obj.removeProperty("BaseMaterial")
-                print("Migrated old BaseMaterial property -> Material in ",obj.Label)
 
     def onBeforeChange(self,obj,prop):
 
