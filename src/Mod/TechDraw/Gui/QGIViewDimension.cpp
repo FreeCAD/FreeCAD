@@ -429,9 +429,9 @@ void QGIViewDimension::draw()
         double textOffset = 1.0 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
 
         //fauxCenter is where the dimText would be if it was on the dimLine
-        Base::Vector3d fauxCenter = lblCenter + textOffset * dirExt;
+        Base::Vector3d fauxCenter = lblCenter + textOffset * textNorm;
         Base::Vector3d vec = fauxCenter - midDist;
-        float sepDistDir = vec.x * dirExt.x + vec.y * dirExt.y;   //dist between distance & dimension along extension
+        float sepDistDir = vec.x * textNorm.x + vec.y * textNorm.y;   //dist between distance & dimension lines
 
         margin = Rez::guiX(2.f);
         float scaler = 1.;
@@ -491,14 +491,20 @@ void QGIViewDimension::draw()
 
         // Extension lines
         QPainterPath path;
-        path.moveTo(startDist.x, startDist.y);
+        Base::Vector3d dirExtActual = (extStartEnd - startDist);   //TODO: dirExt is sometimes backwards.
+        dirExtActual.Normalize();
+        Base::Vector3d gap = startDist + dirExtActual * (margin * scaler);  //space ext line a bt
+        path.moveTo(gap.x, gap.y);
         path.lineTo(extStartEnd.x, extStartEnd.y);
 
-        path.moveTo(endDist.x, endDist.y);
+        dirExtActual = (extEndEnd - endDist);                      //TODO: dirExt is sometimes backwards.
+        dirExtActual.Normalize();
+        gap = endDist + dirExtActual * (margin * scaler);
+        path.moveTo(gap.x, gap.y);
         path.lineTo(extEndEnd.x, extEndEnd.y);
 
         //Dimension lines (arrow shafts) 
-        //TODO: line tip goes just a bit too far. overlaps the arrowhead's point
+        //TODO: line tip goes just a bit too far. overlaps the arrowhead's point.
         path.moveTo(dim1Tip.x, dim1Tip.y);
         path.lineTo(dim1Tail.x, dim1Tail.y);
 
