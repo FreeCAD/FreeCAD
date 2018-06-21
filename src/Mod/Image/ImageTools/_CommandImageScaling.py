@@ -86,6 +86,15 @@ def cmdCreateImageScaling(name):
         dz=p2[2]-p1[2]
         return math.sqrt(dx*dx+dy*dy+dz*dz)
         
+    sizeX = 300; sizeY = 102
+    def centerOnScreen (widg):
+        '''centerOnScreen()
+        Centers the window on the screen.'''
+        resolution = QtGui.QDesktopWidget().screenGeometry()
+        xp=(resolution.width() / 2) - sizeX/2
+        yp=(resolution.height() / 2) - sizeY/2
+        widg.setGeometry(xp, yp, sizeX, sizeY)
+    
     class Ui_Dialog(object):
         def setupUi(self, Dialog):
             self.view = FreeCADGui.ActiveDocument.ActiveView
@@ -96,7 +105,7 @@ def cmdCreateImageScaling(name):
             self.dialog=Dialog
             Dialog.setObjectName(_fromUtf8("Dialog"))
             Dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-            Dialog.resize(300, 102)
+            Dialog.resize(sizeX, sizeY)
             self.buttonBox = QtGui.QDialogButtonBox(Dialog)
             self.buttonBox.setGeometry(QtCore.QRect(50, 70, 191, 32))
             self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -184,6 +193,7 @@ def cmdCreateImageScaling(name):
         d = QtGui.QWidget()
         ui = Ui_Dialog()
         ui.setupUi(d)
+        centerOnScreen (d)
     else:
         FreeCAD.Console.PrintWarning("no document to work with\n")
 
