@@ -30,6 +30,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import math
 
+from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 if False:
@@ -41,6 +42,59 @@ else:
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+def removeInsideEdges(edges, shape, offset):
+    # An edge is considered to be inside of shape if the mid point is inside
+    # Of the remaining edges we take the longest wire to be the engraving side
+    # Looking for a circle with the start vertex as center marks and end
+    #  starting from there follow the edges until a circle with the end vertex as center is found
+    #  if the traversed edges include any oof the remainig from above, all those edges are remaining
+    #  this is to also include edges which might partially be inside shape
+    #  if they need to be discarded, split, that should happen in a post process
+    # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
+    def isInside(edge):
+        if shape.Shape.isInside(edge.Vertexes[0].Point, offset/2, True) and shape.Shape.isInside(edge.Vertexes[-1].Point, offset/2, True):
+            return True
+        return False
+    remaining = [e for e in edges if not isInside(e)]
+    # of the ones remaining, the first and the last are the end offsets
+    allFirst = [e.firstVertex().Point for e in remaining]
+    allLast  = [e.lastVertex().Point for e in remaining]
+    first = [f for f in allFirst if not f in allLast][0]
+    last = [l for l in allLast if not l in allFirst][0]
+    #return [e for e in remaining if not PathGeom.pointsCoincide(e.firstVertex().Point, first) and not PathGeom.pointsCoincide(e.lastVertex().Point, last)]
+    return remaining
+
+def orientWireForClimbMilling(w):
+    face = Part.Face(w)
+    cw  = 'Forward' == obj.ToolController.SpindleDir 
+    wcw = 0 < face.Surface.Axis.z
+    if cw != wcw:
+        PathLog.track('flip wire')
+        # This works because Path creation will flip the edges accordingly
+        return Part.Wire([e for e in reversed(w.Edges)])
+    PathLog.track('no flip', cw, wcw)
+    return w
+
+def offsetWire(obj, wire, base, offset):
+    PathLog.track(obj.Label)
+
+    w = wire.makeOffset2D(offset)
+    if wire.isClosed():
+        if not base.Shape.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
+            return orientWireForClimbMilling(w)
+        w = wire.makeOffset2D(-offset)
+        return orientWireForClimbMilling(w)
+
+    edges = removeInsideEdges(w.Edges, base, offset)
+    if not edges:
+        w = wire.makeOffset2D(-offset)
+        edges = removeInsideEdges(w.Edges, base, offset)
+    points = []
+    for e in edges:
+        points
+    # determine the start point
+    return Part.Wire(edges)
 
 class ObjectChamfer(PathEngraveBase.ObjectOp):
     '''Proxy class for Chamfer operation.'''
@@ -79,50 +133,14 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
                     basewires.extend(sub.Wires)
                 else:
                     basewires.append(Part.Wire(sub.Edges))
+            self.edges = edges
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
             for w in self.adjustWirePlacement(obj, base, basewires):
-                wires.append(self.offsetWire(obj, w, base, offset))
+                wires.append(offsetWire(obj, w, base, offset))
         self.wires = wires
         self.buildpathocc(obj, wires, [depth], True)
-
-    def offsetWire(self, obj, wire, base, offset):
-        PathLog.track(obj.Label)
-
-        def removeInsideEdges(edges):
-            def isInside(edge):
-                for v in edge.Vertexes:
-                    if base.Shape.isInside(v.Point, offset/2, True):
-                        return True
-                return False
-            result = []
-            return [e for e in edges if not isInside(e)]
-
-        def orientWireForClimbMilling(w):
-            face = Part.Face(w)
-            cw  = 'Forward' == obj.ToolController.SpindleDir 
-            wcw = 0 < face.Surface.Axis.z
-            if cw != wcw:
-                PathLog.track('flip wire')
-                # This works because Path creation will flip the edges accordingly
-                return Part.Wire([e for e in reversed(w.Edges)])
-            PathLog.track('no flip', cw, wcw)
-            return w
-
-        w = wire.makeOffset2D(offset)
-        if wire.isClosed():
-            if not base.Shape.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
-                return orientWireForClimbMilling(w)
-            w = wire.makeOffset2D(-offset)
-            return orientWireForClimbMilling(w)
-
-        edges = removeInsideEdges(w.Edges)
-        if edges:
-            return Part.Wire(edges)
-        w = wire.makeOffset2D(-offset)
-        edges = removeInsideEdges(w.Edges)
-        return Part.Wire(edges)
 
     def opSetDefaultValues(self, obj):
         obj.Width = '1 mm'
