@@ -11,3 +11,11 @@ INSTALL(
     DESTINATION
         Mod/Image
 )
+
+INSTALL(
+    FILES
+        ImageTools/__init__.py
+        ImageTools/_CommandImageScaling.py
+    DESTINATION
+        Mod/Image/ImageTools
+       )
