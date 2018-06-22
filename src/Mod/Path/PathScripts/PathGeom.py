@@ -468,8 +468,26 @@ def flipEdge(edge):
         return Part.makeCircle(edge.Curve.Radius, edge.Curve.Center, -edge.Curve.Axis, -math.degrees(edge.LastParameter), -math.degrees(edge.FirstParameter))
     elif Part.BSplineCurve == type(edge.Curve):
         spline = edge.Curve
-        poles = [p for p in reversed(spline.getPoles())]
-        weights = [w for w in reversed(spline.getWeights())]
+
+        mults = spline.getMultiplicities()
+        weights = spline.getWeights()
+        knots = spline.getKnots()
+        poles = spline.getPoles()
+        perio = spline.isPeriodic()
+        ratio = spline.isRational()
         degree = spline.Degree
-        return Part.Edge(Part.BSplineCurve(poles, degree=degree, weights=weights))
+
+        ma = max(knots)
+        mi = min(knots)
+        knots = [ma+mi-k for k in knots]
+
+        mults.reverse()
+        weights.reverse()
+        poles.reverse()
+        knots.reverse()
+
+        flipped = Part.BSplineCurve()
+        flipped.buildFromPolesMultsKnots(poles, mults , knots, perio, degree, weights, ratio)
+
+        return Part.Edge(flipped)
 
