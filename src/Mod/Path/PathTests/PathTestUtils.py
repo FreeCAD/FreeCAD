@@ -135,3 +135,27 @@ class PathTestBase(unittest.TestCase):
         q2=FreeCAD.Units.Quantity(s2)
         self.assertEqual(q1.UserString, q2.UserString)
 
+    def assertEdgeShapesMatch(self,e1,e2):
+        """Verify that 2 edges have the same start/end points and the mid point matches too."""
+        self.assertEqual(type(e1.Curve), type(e2.Curve))
+        self.assertEqual(len(e1.Vertexes), len(e2.Vertexes))
+        if not e1.Vertexes:
+            self.assertEqual(Part.Line, type(e1.Curve))
+            k1 = e1.valueAt(e1.LastParameter) - e1.valueAt(e1.FirstParameter)
+            k2 = e2.valueAt(e2.LastParameter) - e2.valueAt(e2.FirstParameter)
+            self.assertCoincide(k1, -k2)
+        elif 1 == len(e1.Vertexes):
+            self.assertEqual(Part.Circle, type(e1.Curve))
+            self.assertRoughly(e1.Curve.Radius, e2.Curve.Radius)
+            self.assertCoincide(e1.Curve.Center, e2.Curve.Center)
+            self.assertCoincide(e1.Curve.Axis, -e2.Curve.Axis)
+        else:
+            if PathGeom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
+                self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)
+            else:
+                self.assertCoincide(e1.Vertexes[0].Point, e2.Vertexes[-1].Point)
+                self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point)
+            pm1 = e1.valueAt((e1.FirstParameter + e1.LastParameter)/2)
+            pm2 = e2.valueAt((e2.FirstParameter + e2.LastParameter)/2)
+            self.assertCoincide(pm1, pm2)
+

@@ -23,10 +23,10 @@
 # ***************************************************************************
 
 import FreeCAD
-import math
 import Part
 import Path
 import PathScripts.PathLog as PathLog
+import math
 
 from FreeCAD import Vector
 from PySide import QtCore
@@ -454,4 +454,22 @@ def removeDuplicateEdges(wire):
         if not any(edgesMatch(e, u) for u in unique):
             unique.append(e)
     return Part.Wire(unique)
+
+def flipEdge(edge):
+    '''flipEdge(edge)
+    Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
+    Currently only lines, line segments, circles and arcs are supported.'''
+
+    if Part.Line == type(edge.Curve) and not edge.Vertexes:
+        return Part.Edge(Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter)))
+    elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
+        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
+    elif Part.Circle == type(edge.Curve):
+        return Part.makeCircle(edge.Curve.Radius, edge.Curve.Center, -edge.Curve.Axis, -math.degrees(edge.LastParameter), -math.degrees(edge.FirstParameter))
+    elif Part.BSplineCurve == type(edge.Curve):
+        spline = edge.Curve
+        poles = [p for p in reversed(spline.getPoles())]
+        weights = [w for w in reversed(spline.getWeights())]
+        degree = spline.Degree
+        return Part.Edge(Part.BSplineCurve(poles, degree=degree, weights=weights))
 
