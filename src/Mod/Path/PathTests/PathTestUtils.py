@@ -136,7 +136,7 @@ class PathTestBase(unittest.TestCase):
         self.assertEqual(q1.UserString, q2.UserString)
 
     def assertEdgeShapesMatch(self,e1,e2):
-        """Verify that 2 edges have the same start/end points and the mid point matches too."""
+        """Verify that 2 edges have the same shape, regardless of orientation."""
         self.assertEqual(type(e1.Curve), type(e2.Curve))
         self.assertEqual(len(e1.Vertexes), len(e2.Vertexes))
         if not e1.Vertexes:
@@ -150,12 +150,34 @@ class PathTestBase(unittest.TestCase):
             self.assertCoincide(e1.Curve.Center, e2.Curve.Center)
             self.assertCoincide(e1.Curve.Axis, -e2.Curve.Axis)
         else:
+            def valueAt(e, fraction):
+                return e.valueAt(e.FirstParameter + (e.LastParameter - e.FirstParameter)*fraction)
+
             if PathGeom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
                 self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)
+                self.assertCoincide(valueAt(e1, 0.10), valueAt(e2, 0.10))
+                self.assertCoincide(valueAt(e1, 0.20), valueAt(e2, 0.20))
+                self.assertCoincide(valueAt(e1, 0.25), valueAt(e2, 0.25))
+                self.assertCoincide(valueAt(e1, 0.30), valueAt(e2, 0.30))
+                self.assertCoincide(valueAt(e1, 0.40), valueAt(e2, 0.40))
+                self.assertCoincide(valueAt(e1, 0.50), valueAt(e2, 0.50))
+                self.assertCoincide(valueAt(e1, 0.60), valueAt(e2, 0.60))
+                self.assertCoincide(valueAt(e1, 0.70), valueAt(e2, 0.70))
+                self.assertCoincide(valueAt(e1, 0.75), valueAt(e2, 0.75))
+                self.assertCoincide(valueAt(e1, 0.80), valueAt(e2, 0.80))
+                self.assertCoincide(valueAt(e1, 0.90), valueAt(e2, 0.90))
             else:
                 self.assertCoincide(e1.Vertexes[0].Point, e2.Vertexes[-1].Point)
                 self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point)
-            pm1 = e1.valueAt((e1.FirstParameter + e1.LastParameter)/2)
-            pm2 = e2.valueAt((e2.FirstParameter + e2.LastParameter)/2)
-            self.assertCoincide(pm1, pm2)
+                self.assertCoincide(valueAt(e1, 0.10), valueAt(e2, 0.90))
+                self.assertCoincide(valueAt(e1, 0.20), valueAt(e2, 0.80))
+                self.assertCoincide(valueAt(e1, 0.25), valueAt(e2, 0.75))
+                self.assertCoincide(valueAt(e1, 0.30), valueAt(e2, 0.70))
+                self.assertCoincide(valueAt(e1, 0.40), valueAt(e2, 0.60))
+                self.assertCoincide(valueAt(e1, 0.50), valueAt(e2, 0.50))
+                self.assertCoincide(valueAt(e1, 0.60), valueAt(e2, 0.40))
+                self.assertCoincide(valueAt(e1, 0.70), valueAt(e2, 0.30))
+                self.assertCoincide(valueAt(e1, 0.75), valueAt(e2, 0.25))
+                self.assertCoincide(valueAt(e1, 0.80), valueAt(e2, 0.20))
+                self.assertCoincide(valueAt(e1, 0.90), valueAt(e2, 0.10))
 
