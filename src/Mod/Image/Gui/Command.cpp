@@ -165,6 +165,28 @@ bool CmdCreateImagePlane::isActive()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+DEF_STD_CMD(CmdImageScaling);
+
+CmdImageScaling::CmdImageScaling()
+  : Command("Image_Scaling")
+{
+    sAppModule      = "Image";
+    sGroup          = QT_TR_NOOP("Image");
+    sMenuText       = QT_TR_NOOP("Scale...");
+    sToolTipText    = QT_TR_NOOP("Image Scaling");
+    sWhatsThis      = "Image_Scaling";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "image-scale";
+}
+
+void CmdImageScaling::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // To Be Defined
+
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #if HAVE_OPENCV2
 DEF_STD_CMD(CmdImageCapturerTest);
 
