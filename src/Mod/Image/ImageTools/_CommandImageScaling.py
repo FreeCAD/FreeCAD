@@ -43,14 +43,14 @@ if FreeCAD.GuiUp:
 #http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
-    except Exception:
+    except (Exception):
         def _fromUtf8(s):
             return s
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
         def _translate(context, text, disambig):
             return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
+    except (AttributeError):
         def _translate(context, text, disambig):
             return QtGui.QApplication.translate(context, text, disambig)
 
@@ -149,10 +149,10 @@ def cmdCreateImageScaling(name):
                 self.tracker.off()
                 self.tracker.finalize()
                 self.dialog.hide()
-            except ValueError, ZeroDivisionError:
+            except (ValueError, ZeroDivisionError):
                 self.label1.setText(_translate("Dialog", "<font color='red'>Enter distance</font>", None))
                 return
-            except IndexError, AttributeError:
+            except (IndexError, AttributeError):
                 self.label1.setText(_translate("Dialog", "<font color='red'>Select ImagePlane</font>", None))
                 return
             
