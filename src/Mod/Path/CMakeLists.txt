@@ -116,10 +116,8 @@ SET(PathScripts_post_SRCS
 
 SET(PathTests_SRCS
     PathTests/__init__.py
-    PathTests/boxtest.fcstd
     PathTests/PathTestUtils.py
-    PathTests/test_centroid_00.ngc
-    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathChamfer.py
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
@@ -133,6 +131,10 @@ SET(PathTests_SRCS
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
+    PathTests/boxtest.fcstd
+    PathTests/test_centroid_00.ngc
+    PathTests/test_chamfer.fcstd
+    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(PathImages_Ops

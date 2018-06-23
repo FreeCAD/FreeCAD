@@ -427,6 +427,12 @@ class TestPathGeom(PathTestBase):
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1), 300, 340)
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
+    def test74(self):
+        '''Flip a rotated arc'''
+        # oh yes ...
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 45, 90)
+        edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -90)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
     def test75(self):
         '''Flip a b-spline'''
@@ -437,6 +443,7 @@ class TestPathGeom(PathTestBase):
 
         edge = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
 
 
 

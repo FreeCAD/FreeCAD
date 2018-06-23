@@ -465,7 +465,17 @@ def flipEdge(edge):
     elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
         return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
     elif Part.Circle == type(edge.Curve):
-        return Part.makeCircle(edge.Curve.Radius, edge.Curve.Center, -edge.Curve.Axis, -math.degrees(edge.LastParameter), -math.degrees(edge.FirstParameter))
+        r = edge.Curve.Radius
+        c = edge.Curve.Center
+        d = edge.Curve.Axis
+        a = math.degrees(edge.Curve.AngleXU)
+        f = math.degrees(edge.FirstParameter)
+        l = math.degrees(edge.LastParameter)
+        if 0 > d.z:
+            a = a + 180
+        PathLog.track(r, c, d, a, f, l)
+        arc = Part.makeCircle(r, c, -d, -l-a, -f-a)
+        return arc
     elif Part.BSplineCurve == type(edge.Curve):
         spline = edge.Curve
 
@@ -491,3 +501,8 @@ def flipEdge(edge):
 
         return Part.Edge(flipped)
 
+def flipWire(wire):
+    '''Flip the entire wire and all its edges so it is being processed the other way around.'''
+    edges = [flipEdge(e) for e in wire.Edges]
+    edges.reverse()
+    return Part.Wire(edges)
