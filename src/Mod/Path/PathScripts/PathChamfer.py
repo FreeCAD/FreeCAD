@@ -26,11 +26,11 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import math
 
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 if False:
@@ -43,7 +43,32 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-def removeInsideEdges(edges, shape, offset):
+def orientWire(w, forward=True):
+    face = Part.Face(w)
+    cw = 0 < face.Surface.Axis.z
+    if forward != cw:
+        PathLog.track('orientWire - needs flipping')
+        return PathGeom.flipWire(w)
+    PathLog.track('orientWire - ok')
+    return w
+
+def isCircleAt(edge, center):
+    if Circel == type(edge.Curve) or ArcOfCircle == type(edge.Curve):
+        return PathGeom.pointsCoincide(edge.Curve.Center, center)
+    return False
+
+def offsetWire(wire, base, offset, forward):
+    PathLog.track('offsetWire')
+
+    w = wire.makeOffset2D(offset)
+    if wire.isClosed():
+        if not base.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
+            PathLog.track('closed - outside')
+            return orientWire(w, forward)
+        PathLog.track('closed - inside')
+        w = wire.makeOffset2D(-offset)
+        return orientWire(w, forward)
+
     # An edge is considered to be inside of shape if the mid point is inside
     # Of the remaining edges we take the longest wire to be the engraving side
     # Looking for a circle with the start vertex as center marks and end
@@ -52,48 +77,66 @@ def removeInsideEdges(edges, shape, offset):
     #  this is to also include edges which might partially be inside shape
     #  if they need to be discarded, split, that should happen in a post process
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
+
+    # find edges that are not inside the shape
     def isInside(edge):
         if shape.Shape.isInside(edge.Vertexes[0].Point, offset/2, True) and shape.Shape.isInside(edge.Vertexes[-1].Point, offset/2, True):
             return True
         return False
-    remaining = [e for e in edges if not isInside(e)]
-    # of the ones remaining, the first and the last are the end offsets
-    allFirst = [e.firstVertex().Point for e in remaining]
-    allLast  = [e.lastVertex().Point for e in remaining]
-    first = [f for f in allFirst if not f in allLast][0]
-    last = [l for l in allLast if not l in allFirst][0]
-    #return [e for e in remaining if not PathGeom.pointsCoincide(e.firstVertex().Point, first) and not PathGeom.pointsCoincide(e.lastVertex().Point, last)]
-    return remaining
+    outside = [e for e in edges if not isInside(e)]
+    # discard all edges that are not part of the longest wire
+    longestWire = None
+    for w in [Part.Wire(el) for el in Part.sortEdges(outside)]:
+        if not longestWire or longestWire.Length < w.Length:
+            longestWire = w
 
-def orientWireForClimbMilling(w):
-    face = Part.Face(w)
-    cw  = 'Forward' == obj.ToolController.SpindleDir 
-    wcw = 0 < face.Surface.Axis.z
-    if cw != wcw:
-        PathLog.track('flip wire')
-        # This works because Path creation will flip the edges accordingly
-        return Part.Wire([e for e in reversed(w.Edges)])
-    PathLog.track('no flip', cw, wcw)
-    return w
+    # find the start and end point
+    start = wire.Vertexes[0].Point
+    end = wire.Vertexes[-1].Point
 
-def offsetWire(obj, wire, base, offset):
-    PathLog.track(obj.Label)
+    collectLeft = False
+    collectRight = False
+    leftSideEdges = []
+    rightSideEdges = []
 
-    w = wire.makeOffset2D(offset)
-    if wire.isClosed():
-        if not base.Shape.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
-            return orientWireForClimbMilling(w)
-        w = wire.makeOffset2D(-offset)
-        return orientWireForClimbMilling(w)
+    for e in (w.Edges + w.Edges):
+        if isCircleAt(e, start):
+            if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+                if not collectLeft and leftSideEdges:
+                    break
+                collectLeft = True
+                collectRight = False
+            else:
+                if not collectRight and rightSideEdges:
+                    break
+                collectLeft = False
+                collectRight = True
+        elif isCircleAt(e, end):
+            if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+                if not collectRight and rightSideEdges:
+                    break
+                collectLeft = False
+                collectRight = True
+            else:
+                if not collectLeft and leftSideEdges:
+                    break
+                collectLeft = True
+                collectRight = False
+        elif collectLeft:
+            leftSideEdges.append(e)
+        elif collectRight:
+            rightSideEdges.append(e)
 
-    edges = removeInsideEdges(w.Edges, base, offset)
-    if not edges:
-        w = wire.makeOffset2D(-offset)
-        edges = removeInsideEdges(w.Edges, base, offset)
-    points = []
-    for e in edges:
-        points
-    # determine the start point
+    edges = leftSideEdges
+    for e in longestWire.Edges:
+        for e0 in rightSideEdges:
+            if PathGeom.edgesMatch(e, e0):
+                if forward:
+                    edges = [PathGeom.flipEdge(edge) for edge in rightSideEdges]
+                return Part.Wire(edges)
+
+    if not forward:
+        edges = [PathGeom.flipEdge(edge) for edge in rightSideEdges]
     return Part.Wire(edges)
 
 class ObjectChamfer(PathEngraveBase.ObjectOp):
@@ -138,7 +181,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
                 basewires.append(Part.Wire(edgelist))
 
             for w in self.adjustWirePlacement(obj, base, basewires):
-                wires.append(offsetWire(obj, w, base, offset))
+                wires.append(offsetWire(obj, w, base.Shape, offset))
         self.wires = wires
         self.buildpathocc(obj, wires, [depth], True)
 
