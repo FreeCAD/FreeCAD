@@ -102,6 +102,8 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         return params
 
     def updateDepths(self, obj, ignoreErrors=False):
+        if not hasattr(self, 'stock'):
+            self.stock = self.getJob(obj).Stock
         stockBB = self.stock.Shape.BoundBox
         obj.OpFinalDepth = stockBB.ZMin
         obj.OpStartDepth = stockBB.ZMax
