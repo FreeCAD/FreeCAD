@@ -33,7 +33,7 @@ import math
 
 from PySide import QtCore
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -61,6 +61,12 @@ def offsetWire(wire, base, offset, forward):
     PathLog.track('offsetWire')
 
     w = wire.makeOffset2D(offset)
+    if 1 == len(w.Edges):
+        e = w.Edges[0]
+        e.Placement = FreeCAD.Placement()
+        w = Part.Wire(e)
+    
+
     if wire.isClosed():
         if not base.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
@@ -164,6 +170,8 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         extraOffset = self.tool.Diameter/2 - obj.Width.Value if 180 == angle else obj.ExtraDepth.Value / tan
         offset = toolOffset + extraOffset
 
+        self.basewires = []
+        self.adjusted_basewires = []
         wires = []
         for base, subs in obj.Base:
             edges = []
@@ -180,8 +188,12 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
+            self.basewires.extend(basewires)
+
             for w in self.adjustWirePlacement(obj, base, basewires):
-                wires.append(offsetWire(obj, w, base.Shape, offset))
+                self.adjusted_basewires.append(w)
+                wires.append(offsetWire(w, base.Shape, offset, True))
+
         self.wires = wires
         self.buildpathocc(obj, wires, [depth], True)
 
