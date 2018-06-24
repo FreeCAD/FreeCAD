@@ -33,7 +33,7 @@ from PySide import QtCore, QtGui
 
 __doc__ = "Helix operation page controller and command implementation."
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
