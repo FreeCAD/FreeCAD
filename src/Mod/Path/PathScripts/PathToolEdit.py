@@ -139,8 +139,8 @@ class ToolEditorImage(object):
 
     def quantityCuttingEdgeAngle(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle) / 2
-        return FreeCAD.Units.parseQuantity(self.form.value_a.text()) * 2
+            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle)
+        return FreeCAD.Units.parseQuantity(self.form.value_a.text())
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         if propertyToDisplay:
