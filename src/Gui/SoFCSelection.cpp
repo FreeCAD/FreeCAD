@@ -59,9 +59,14 @@
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
 // least it works.
-#if defined(_OCC64) // is set by configure or cmake
+//
+// Disable front buffer in all cases, in order to spare the repeating logic of
+// handling selection contextn. SoFCSelection is not really used that much
+// anyway. 
+//
+// #if defined(_OCC64) // is set by configure or cmake
 # define NO_FRONTBUFFER
-#endif
+// #endif
 
 using namespace Gui;
 
@@ -666,6 +671,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
 void
 SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
+    SoState * state = action->getState();
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
     if(selContext2->checkGlobal(ctx))
         ctx = selContext2;
@@ -681,13 +687,8 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
-    SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->isSelected())) {
-        this->setOverride(action,ctx);
-    }
+    this->setOverride(action,ctx);
     inherited::GLRenderBelowPath(action);
     state->pop();
 #else
@@ -731,13 +732,9 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
     }
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     SoState * state = action->getState();
     state->push();
-    if (preselected || this->highlightMode.getValue() == ON || (ctx && ctx->isSelected())) {
-        this->setOverride(action,ctx);
-    }
+    this->setOverride(action,ctx);
     inherited::GLRenderInPath(action);
     state->pop();
 #else
@@ -920,9 +917,21 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 void
 SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
+    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
+    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
+        return;
+
+    // uniqueId is returned by SoNode::getNodeId(). It is used to node change
+    // and for render cache update. In order to update cache on selection state
+    // change, We manually change the id here by using a combined hash of the
+    // original id and context pointer.
+    auto oldId = this->uniqueId;
+    this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
+    
     //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
     SoState * state = action->getState();
-    if(ctx->isSelected())
+    if(!preselected)
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
     else
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
@@ -930,12 +939,14 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     Styles mystyle = (Styles) this->style.getValue();
     if (mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
-        if(ctx->isSelected())
+        if(!preselected)
             SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
         else
             SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
+
+    this->uniqueId = oldId;
 }
 
 // private convenience method
