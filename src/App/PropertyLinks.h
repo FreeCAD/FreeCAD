@@ -92,37 +92,88 @@ protected:
     LinkScope _pcScope = LinkScope::Local;
 };
 
+/// Parent class of all link type properties
 class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 public:
 
+    /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
+
+
+    /** Helper function for update individual element reference
+     *
+     * @param owner: the top parent object of the geometry feature object
+     * @param feature: if given, than only update element reference belonging
+     *                 to this feature. If not, then update geometry element
+     *                 references.
+     * @param sub: the subname reference to be updated.
+     * @param shadow: a pair of new and old style element references to be updated.
+     * @param reverse: if true, then use the old style, i.e. non-mapped element
+     *                 reference to query for the new style, i.e. mapped
+     *                 element reference when update. If false, then the other
+     *                 way around.
+     *
+     * This helper function is to be called by each link property in the event of
+     * geometry element reference change due to geometry model changes.
+     */
     static bool _updateElementReference(DocumentObject *owner, DocumentObject *feature,
         App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
 
+    /** Called to update the element reference of this link property
+     *
+     * @sa _updateElementReference()
+     */
     virtual void updateElementReference(DocumentObject *feature,bool reverse=false) {
         (void)feature;
         (void)reverse;
     }
 
+    /// Test if the element reference has changed after restore
     virtual bool referenceChanged() const {
         return false;
     }
 
+    /** Obtain the linked objects
+     *
+     * @param objs: hold the returned linked objects on output
+     * @param all: if true, then return all the linked object regardless of
+     *             this LinkScope. If false, then return only if the LinkScope
+     *             is not hidden.
+     * @param sub: if given, then return subname references.
+     * @param newStyle: whether to return new or old style subname reference 
+     */
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const = 0;
-
+    
+    /** Helper function for breaking link properties
+     *
+     * @param link: reset link property if it is linked to this object
+     * @param objs: the objects to check for the link properties
+     * @param clear: if ture, then also reset property if the owner of the link property is \a link
+     *
+     * App::Document::breakDependency() calls this function to break the link property
+     */
     static void breakLinks(App::DocumentObject *link, const std::vector<App::DocumentObject*> &objs, bool clear);
 
+    /** Called to reset this link property
+     *
+     * @param obj: reset link property if it is linked to this object
+     * @param clear: if true, then also reset property if the owner of this proeprty is \a obj
+     *
+     * @sa breakLinks()
+     */
     virtual void breakLink(App::DocumentObject *obj, bool clear) = 0;
 
+    /// Helper function to return all linked objects of this property
     std::vector<App::DocumentObject *> linkedObjects(bool all=false) const {
         std::vector<App::DocumentObject*> ret;
         getLinks(ret,all);
         return ret;
     }
 
+    /// Helper function to return linked objects using an std::inserter
     template<class T>
     void getLinkedObjects(T &inserter, bool all=false) const {
         std::vector<App::DocumentObject*> ret;
@@ -130,6 +181,7 @@ public:
         std::copy(ret.begin(),ret.end(),inserter);
     }
 
+    /// Helper function to return a map of linked object and its subname references
     void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements, 
             bool newStyle=true, bool all=true) const 
     {
@@ -142,6 +194,7 @@ public:
             elements[obj].push_back(subs[i++]);
     }
 
+    /// Helper function to return a map of linked object and its subname references
     std::map<App::DocumentObject*, std::vector<std::string> > 
         linkedElements(bool newStyle=true, bool all=true) const 
     {

@@ -137,7 +137,7 @@ public:
 
     /** return the coin node detail and path to the node of the subelement
      *
-     * @param subelement: dot separated string reference to the sub element
+     * @param subname: dot separated string reference to the sub element
      * @param pPath: output coin path leading to the returned element detail
      * @param append: If true, pPath will be first appended with the root node and
      * the mode switch node of this view provider. 
@@ -149,7 +149,7 @@ public:
      * nodes starting just after the mode switch node up till the mode switch of
      * the linked view provider.
      */
-    virtual bool getDetailPath(const char *subelement, SoFullPath *pPath, bool append, SoDetail *&det) const;
+    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const;
 
     /** partial rendering setup
      *
@@ -159,7 +159,7 @@ public:
      *
      * @return Return the number of subelement found
      *
-     * Partial rendering only works if there is at least on SoFCSelectRoot node
+     * Partial rendering only works if there is at least one SoFCSelectRoot node
      * in this view provider
      */
     int partialRender(const std::vector<std::string> &subelements, bool clear);

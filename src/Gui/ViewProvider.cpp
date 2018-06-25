@@ -783,10 +783,10 @@ bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subnam
     return true;
 }
 
-bool ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool append, SoDetail *&det) const {
+bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const {
     if(pcRoot->findChild(pcModeSwitch) < 0) {
         // this is possible in case of editing, where the switch node
-        // of the linked view object is temparaly removed from its root
+        // of the linked view object is temporarily removed from its root
         // if(append)
         //     pPath->append(pcRoot);
         return false;
@@ -797,9 +797,9 @@ bool ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool
     }
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionGetDetailPath(subelement,pPath,det))
+        if(ext->extensionGetDetailPath(subname,pPath,det))
             return true;
-    det = getDetail(subelement);
+    det = getDetail(subname);
     return true;
 }
 

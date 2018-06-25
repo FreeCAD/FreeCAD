@@ -262,7 +262,7 @@ public:
     void redo(int iSteps) ;
     /** Check if the document is performing undo/redo transaction
      *
-     * Unlink App::Document::isPerformingTransaction(), Gui::Document will
+     * Unlike App::Document::isPerformingTransaction(), Gui::Document will
      * report transacting when triggering grouped undo/redo in other documents
      */
     bool isPerformingTransaction() const;

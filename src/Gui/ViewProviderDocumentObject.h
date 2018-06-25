@@ -95,8 +95,8 @@ public:
 
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
-    /// return the coin node detail and path to the node of the subelement
-    virtual bool getDetailPath(const char *subelement, SoFullPath *pPath, bool append, SoDetail *&det) const override;
+    /// return the coin node detail and path to the node of the subname
+    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
 
     /* Force update visual
      *
