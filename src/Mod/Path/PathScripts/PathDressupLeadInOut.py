@@ -28,12 +28,12 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
 from PySide import QtCore
-from PathScripts.PathGeom import PathGeom
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 

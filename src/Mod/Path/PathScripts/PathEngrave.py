@@ -28,14 +28,14 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathOp as PathOp
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 import TechDraw
 import traceback
 
 from DraftGeomUtils import geomType
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"

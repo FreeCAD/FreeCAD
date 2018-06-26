@@ -25,8 +25,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import math
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGeom
+
 from PySide import QtCore, QtGui
 
 """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
@@ -70,7 +71,7 @@ class ObjectDressup:
         for p in path:
             if p.Name in arccommands:
                 curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
-                arcwire = PathScripts.PathGeom.PathGeom.edgeForCmd(p, curVec)
+                arcwire = PathGeom.edgeForCmd(p, curVec)
                 pointlist =  arcwire.discretize(Deflection=d)
                 for point in pointlist:
                     newcommand = Path.Command("G1", {'X':point.x, 'Y':point.y, 'Z':point.z})

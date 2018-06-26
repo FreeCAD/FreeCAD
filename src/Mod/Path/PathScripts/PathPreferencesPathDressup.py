@@ -24,8 +24,9 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathPreferences as PathPreferences
+
 from PySide import QtCore, QtGui
-from PathScripts.PathPreferences import PathPreferences
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):

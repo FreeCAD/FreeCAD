@@ -24,12 +24,12 @@
 
 import FreeCAD
 import Path
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 

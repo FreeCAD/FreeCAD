@@ -26,11 +26,11 @@ import FreeCADGui
 import Path
 import Part
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
 
 from PathScripts import PathUtils
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 

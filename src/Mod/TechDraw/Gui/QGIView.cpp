@@ -575,3 +575,8 @@ void QGIView::makeMark(double x, double y)
     cmItem->setZValue(ZVALUE::VERTEX);
 }
 
+void QGIView::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+

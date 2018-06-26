@@ -107,7 +107,7 @@ class ObjectSurface(PathOp.ObjectOp):
             try:
                 deflection = parentJob.GeometryTolerance
             except AttributeError:
-                from PathScripts.PathPreferences import PathPreferences
+                import PathScripts.PathPreferences as PathPreferences
                 deflection = PathPreferences.defaultGeometryTolerance()
             self.baseobject.Shape.tessellate(0.5)
             mesh = MeshPart.meshFromShape(self.baseobject.Shape, Deflection=deflection)

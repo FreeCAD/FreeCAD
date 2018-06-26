@@ -24,18 +24,18 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 
 from PySide import QtCore, QtGui
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"

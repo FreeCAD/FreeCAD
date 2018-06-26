@@ -27,15 +27,15 @@ from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
+import PathScripts.PathUtils as PathUtils
 import os
 
-from PathScripts import PathJob
-from PathScripts import PathToolController
-from PathScripts import PathUtils
 from PathScripts.PathPostProcessor import PostProcessor
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 
 
