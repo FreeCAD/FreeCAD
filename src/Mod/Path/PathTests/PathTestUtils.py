@@ -33,9 +33,9 @@ from FreeCAD import Vector
 class PathTestBase(unittest.TestCase):
     """Base test class with some additional asserts."""
 
-    def assertRoughly(self, f1, f2):
+    def assertRoughly(self, f1, f2, error=0.00001):
         """Verify that two float values are approximately the same."""
-        self.assertTrue(math.fabs(f1 - f2) < 0.00001, "%f != %f" % (f1, f2))
+        self.assertTrue(math.fabs(f1 - f2) < error, "%f != %f" % (f1, f2))
 
     def assertCoincide(self, pt1, pt2):
         """Verify that two points coincide - roughly speaking."""
@@ -53,8 +53,8 @@ class PathTestBase(unittest.TestCase):
         """Verify that edge is a line from pt1 to pt2."""
         # Depending on the setting of LineOld ....
         self.assertTrue(type(edge.Curve) is Part.Line or type(edge.Curve) is Part.LineSegment)
-        self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
-        self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
+        self.assertCoincide(pt1, edge.valueAt(edge.FirstParameter))
+        self.assertCoincide(pt2, edge.valueAt(edge.LastParameter))
 
     def assertLines(self, edgs, tail, points):
         """Verify that the edges match the polygon resulting from points."""
