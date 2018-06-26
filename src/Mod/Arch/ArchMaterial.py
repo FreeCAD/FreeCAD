@@ -262,7 +262,8 @@ class _ArchMaterial:
                     d["Description"] = val
         if d:
             obj.Material = d
-            if FreeCADGui:
+            if FreeCAD.GuiUp:
+                import FreeCADGui
                 # not sure why this is needed, but it is...
                 FreeCADGui.ActiveDocument.resetEdit()
 
