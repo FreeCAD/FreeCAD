@@ -1195,8 +1195,15 @@ def export(exportList,filename):
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
 
         # subtractions
+        guests = []
+        for o in obj.InList:
+            if hasattr(o,"Hosts"):
+                for co in o.Hosts:
+                    if co == obj:
+                        if not o in guests:
+                            guests.append(o)
         if hasattr(obj,"Subtractions") and (shapetype == "extrusion"):
-            for o in obj.Subtractions:
+            for o in obj.Subtractions + guests:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o,forcebrep=True,subtraction=True)
                 if DEBUG: print("      subtracting ",c2," : ",o.Label)
                 prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None)
