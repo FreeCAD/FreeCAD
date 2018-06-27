@@ -466,3 +466,65 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
                 self.assertRoughly(radius, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
+
+    def test50(self):
+        '''Verify chamfer depth and offset for an end mill.'''
+        tool = Path.Tool()
+        tool.Diameter = 20
+        tool.FlatRadius = 0
+        tool.CuttingEdgeAngle = 180
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.01, tool)
+        self.assertRoughly(0.01, depth)
+        self.assertRoughly(9, offset)
+
+        # legacy tools - no problem, same result
+        tool.CuttingEdgeAngle = 0
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.01, tool)
+        self.assertRoughly(0.01, depth)
+        self.assertRoughly(9, offset)
+
+    def test51(self):
+        '''Verify chamfer depth and offset for a 90° v-bit.'''
+        tool = Path.Tool()
+        tool.FlatRadius = 0
+        tool.CuttingEdgeAngle = 90
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        self.assertRoughly(1, depth)
+        self.assertRoughly(0, offset)
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.2, tool)
+        self.assertRoughly(1.2, depth)
+        self.assertRoughly(0.2, offset)
+
+    def test52(self):
+        '''Verify chamfer depth and offset for a 90° v-bit with non 0 flat radius.'''
+        tool = Path.Tool()
+        tool.FlatRadius = 0.3
+        tool.CuttingEdgeAngle = 90
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        self.assertRoughly(1, depth)
+        self.assertRoughly(0.3, offset)
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(2, 0.2, tool)
+        self.assertRoughly(2.2, depth)
+        self.assertRoughly(0.5, offset)
+
+    def test53(self):
+        '''Verify chamfer depth and offset for a 60° v-bit with non 0 flat radius.'''
+        tool = Path.Tool()
+        tool.FlatRadius = 10
+        tool.CuttingEdgeAngle = 60
+
+        td = 1.73205
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        self.assertRoughly(td, depth)
+        self.assertRoughly(10, offset)
+
+        (depth, offset) = PathChamfer.toolDepthAndOffset(3, 1, tool)
+        self.assertRoughly(td * 3 + 1, depth)
+        self.assertRoughly(10 + td, offset)

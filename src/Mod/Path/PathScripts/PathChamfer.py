@@ -33,7 +33,7 @@ import math
 
 from PySide import QtCore
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -80,6 +80,7 @@ def orientWire(w, forward=True):
     return wire
 
 def isCircleAt(edge, center):
+    '''isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center.'''
     if Circel == type(edge.Curve) or ArcOfCircle == type(edge.Curve):
         return PathGeom.pointsCoincide(edge.Curve.Center, center)
     return False
@@ -206,6 +207,21 @@ def offsetWire(wire, base, offset, forward):
         edges = [PathGeom.flipEdge(edge) for edge in rightSideEdges]
     return Part.Wire(edges)
 
+def toolDepthAndOffset(width, extraDepth, tool):
+    '''toolDepthAndOffset(width, extraDepth, tool) ... return tuple for given parameters.'''
+    angle = tool.CuttingEdgeAngle
+    if 0 == angle:
+        angle = 180
+    tan = math.tan(math.radians(angle/2))
+
+    toolDepth = 0 if 0 == tan else width / tan
+    extraDepth = extraDepth
+    depth = toolDepth + extraDepth
+    toolOffset = tool.FlatRadius
+    extraOffset = tool.Diameter/2 - width if 180 == angle else extraDepth / tan
+    offset = toolOffset + extraOffset
+    return (depth, offset)
+
 class ObjectChamfer(PathEngraveBase.ObjectOp):
     '''Proxy class for Chamfer operation.'''
 
@@ -213,23 +229,14 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
-        obj.addProperty("App::PropertyDistance", "Width",      "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The desired width of the chamfer"))
-        obj.addProperty("App::PropertyDistance", "ExtraDepth", "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "The additional depth of the tool path"))
-        obj.addProperty("App::PropertyEnumeration", "Join",    "Chamfer", QtCore.QT_TRANSLATE_NOOP("PathChamfer", "How to join chamfer segments"))
+        obj.addProperty('App::PropertyDistance',    'Width',      'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The desired width of the chamfer'))
+        obj.addProperty('App::PropertyDistance',    'ExtraDepth', 'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The additional depth of the tool path'))
+        obj.addProperty('App::PropertyEnumeration', 'Join',       'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'How to join chamfer segments'))
         obj.Join = ['Round', 'Miter']
+        obj.setEditorMode('Join', 2) # hide for now
 
     def opExecute(self, obj):
-        angle = self.tool.CuttingEdgeAngle
-        if 0 == angle:
-            angle = 180
-        tan = math.tan(math.radians(angle/2))
-
-        toolDepth = 0 if 0 == tan else obj.Width.Value / tan
-        extraDepth = obj.ExtraDepth.Value
-        depth = toolDepth + extraDepth
-        toolOffset = self.tool.FlatRadius
-        extraOffset = self.tool.Diameter/2 - obj.Width.Value if 180 == angle else obj.ExtraDepth.Value / tan
-        offset = toolOffset + extraOffset
+        (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
 
         self.basewires = []
         self.adjusted_basewires = []
