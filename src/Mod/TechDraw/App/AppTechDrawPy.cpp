@@ -544,7 +544,7 @@ private:
 
         try {
             ImpExpDxfWrite writer(filePath);
-            writer.setLayerName(layerName);
+            writer.init();
             App::DocumentObject* obj = 0;
             TechDraw::DrawViewPart* dvp = 0;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
@@ -555,6 +555,7 @@ private:
                 writer.setLayerName(layerName);
                 write1ViewDxf(writer,dvp,align);
             }
+            writer.endRun();
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -577,8 +578,7 @@ private:
 
         try {
             ImpExpDxfWrite writer(filePath);
-            writer.setLayerName(layerName);
-
+            writer.init();
             App::DocumentObject* obj = 0;
             TechDraw::DrawPage* dp = 0;
             if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
@@ -686,6 +686,7 @@ private:
                    }
                 }
             }
+            writer.endRun();
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
