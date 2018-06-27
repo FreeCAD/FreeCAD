@@ -313,3 +313,156 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
                 self.assertRoughly(3, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
 
+
+    def test23(self):
+        '''Check offsetting a triangle.'''
+        obj = doc.getObjectsByLabel('triangle-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        length = 60 * math.sin(math.radians(60))
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(3, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
+
+        # change offset orientation
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(3, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+
+    def test24(self):
+        '''Check offsetting a shape.'''
+        obj = doc.getObjectsByLabel('shape-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        length = 40
+        radius = 20 + 3
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(radius, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
+
+        # change offset orientation
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(radius, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+
+    def test25(self):
+        '''Check offsetting a cylindrical hole.'''
+        obj = doc.getObjectsByLabel('circle-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
+        self.assertEqual(1, len(wire.Edges))
+        edge = wire.Edges[0]
+        self.assertCoincide(Vector(), edge.Curve.Center)
+        self.assertCoincide(Vector(0, 0, +1), edge.Curve.Axis)
+        self.assertRoughly(27, edge.Curve.Radius)
+
+        # the other way around everything's the same except the axis is negative
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
+        self.assertEqual(1, len(wire.Edges))
+        edge = wire.Edges[0]
+        self.assertCoincide(Vector(), edge.Curve.Center)
+        self.assertCoincide(Vector(0, 0, -1), edge.Curve.Axis)
+        self.assertRoughly(27, edge.Curve.Radius)
+
+
+    def test26(self):
+        '''Check offsetting a square hole.'''
+        obj = doc.getObjectsByLabel('square-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
+        self.assertEqual(4, len(wire.Edges))
+        self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        for e in wire.Edges:
+            if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+                self.assertRoughly(34, e.Length)
+            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+                self.assertRoughly(54, e.Length)
+
+        # change offset orientation
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
+        self.assertEqual(4, len(wire.Edges))
+        self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        for e in wire.Edges:
+            if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+                self.assertRoughly(34, e.Length)
+            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+                self.assertRoughly(54, e.Length)
+
+
+    def test27(self):
+        '''Check offsetting a triangular holee.'''
+        obj = doc.getObjectsByLabel('triangle-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
+        self.assertEqual(3, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        length = 48 * math.sin(math.radians(60))
+        for e in wire.Edges:
+            self.assertRoughly(length, e.Length)
+        f = Part.Face(wire)
+        self.assertCoincide(Vector(0, 0, +1), f.Surface.Axis)
+
+        # change offset orientation
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
+        self.assertEqual(3, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        for e in wire.Edges:
+            self.assertRoughly(length, e.Length)
+        f = Part.Face(wire)
+        self.assertCoincide(Vector(0, 0, -1), f.Surface.Axis)
+
+    def test28(self):
+        '''Check offsetting a shape hole.'''
+        obj = doc.getObjectsByLabel('shape-cut')[0]
+
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        length = 40
+        radius = 20 - 3
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(radius, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+
+        # change offset orientation
+        wire = PathChamfer.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
+        self.assertEqual(6, len(wire.Edges))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
+        self.assertEqual(3, len([e for e in wire.Edges if Part.Circle == type(e.Curve)]))
+        for e in wire.Edges:
+            if Part.Line == type(e.Curve):
+                self.assertRoughly(length, e.Length)
+            if Part.Circle == type(e.Curve):
+                self.assertRoughly(radius, e.Curve.Radius)
+                self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
+
