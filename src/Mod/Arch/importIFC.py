@@ -215,6 +215,7 @@ def explore(filename=None):
     entities =  ifc.by_type("IfcRoot")
     entities += ifc.by_type("IfcRepresentation")
     entities += ifc.by_type("IfcRepresentationItem")
+    entities += ifc.by_type("IfcRepresentationMap")
     entities += ifc.by_type("IfcPlacement")
     entities += ifc.by_type("IfcProperty")
     entities += ifc.by_type("IfcPhysicalSimpleQuantity")
