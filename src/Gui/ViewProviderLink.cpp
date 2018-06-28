@@ -2560,7 +2560,9 @@ void ViewProviderLink::applyColors() {
 
     std::map<std::string, std::map<std::string,App::Color> > colorMap;
     std::set<std::string> hideList;
-    for(auto &v : getElementColors()) {
+    auto colors = getElementColors();
+    colors.erase("Face");
+    for(auto &v : colors) {
         const char *subname = v.first.c_str();
         const char *element = 0;
         auto sobj = getObject()->resolve(subname,0,0,&element);
