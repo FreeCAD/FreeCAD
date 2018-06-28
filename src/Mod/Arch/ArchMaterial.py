@@ -176,6 +176,42 @@ class _ViewProviderArchMaterialContainer:
     def getIcon(self):
         return ":/icons/Arch_Material_Group.svg"
 
+    def attach(self,vobj):
+        self.Object = vobj.Object
+
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),"Merge duplicates",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.mergeByName)
+        menu.addAction(action1)
+
+    def mergeByName(self):
+        if hasattr(self,"Object"):
+            mats = [o for o in self.Object.Group if o.isDerivedFrom("App::MaterialObject")]
+            todelete = []
+            for mat in mats:
+                if mat.Label[-1].isdigit() and mat.Label[-2].isdigit() and mat.Label[-3].isdigit():
+                    orig = None
+                    for om in mats:
+                        if om.Label == mat.Label[:-3].strip():
+                            orig = om
+                            break
+                    if orig:
+                        for par in mat.InList:
+                            for prop in par.PropertiesList:
+                                if getattr(par,prop) == mat:
+                                    FreeCAD.Console.PrintMessage("Changed property '"+prop+"' of object "+par.Label+" from "+mat.Label+" to "+orig.Label+"\n")
+                                    setattr(par,prop,orig)
+                        todelete.append(mat)
+            for tod in todelete:
+                if not tod.InList:
+                    FreeCAD.Console.PrintMessage("Merging duplicate material "+tod.Label+"\n")
+                    FreeCAD.ActiveDocument.removeObject(tod.Name)
+                elif (len(tod.InList) == 1) and (tod.InList[0].isDerivedFrom("App::DocumentObjectGroup")):
+                    FreeCAD.Console.PrintMessage("Merging duplicate material "+tod.Label+"\n")
+                    FreeCAD.ActiveDocument.removeObject(tod.Name)
+                else:
+                    FreeCAD.Console.PrintMessage("Unable to delete material "+tod.Label+": InList not empty\n")
 
 class _ArchMaterial:
 
