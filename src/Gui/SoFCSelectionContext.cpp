@@ -87,19 +87,30 @@ int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
     if(ctx->isSelectAll())
         return status;
 
-    for(auto &idx : ctx->selectionIndex) {
-        auto it = ret->selectionIndex.find(idx);
-        if(it == ret->selectionIndex.end())
-            continue;
-        if(status)
-            ret->selectionIndex.erase(it);
-        else {
+    if(ret->isSelectAll()) {
+        if(!status) {
+            output = ret->copy();
+            ret = std::dynamic_pointer_cast<SoFCSelectionContext>(ret);
+            assert(ret);
+        }
+        ret->selectionIndex = ctx->selectionIndex;
+        return status;
+    }
+
+    std::vector<int> remove;
+    for(auto idx : ret->selectionIndex) {
+        if(!ctx->selectionIndex.count(idx))
+            remove.push_back(idx);
+    }
+
+    for(auto idx : remove) {
+        if(!status) {
             status = 1;
             output = ret->copy();
             ret = std::dynamic_pointer_cast<SoFCSelectionContext>(ret);
             assert(ret);
-            ret->selectionIndex.erase(idx);
         }
+        ret->selectionIndex.erase(idx);
         if(ret->selectionIndex.empty())
             return -1;
     }
