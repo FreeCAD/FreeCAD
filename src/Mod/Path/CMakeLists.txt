@@ -45,6 +45,7 @@ SET(PathScripts_SRCS
     PathScripts/PathEngraveGui.py
     PathScripts/PathFixture.py
     PathScripts/PathGeom.py
+    PathScripts/PathGeomOp.py
     PathScripts/PathGetPoint.py
     PathScripts/PathGui.py
     PathScripts/PathHelix.py
@@ -123,6 +124,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
+    PathTests/TestPathGeomOp.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
     PathTests/TestPathSetupSheet.py
@@ -133,7 +135,7 @@ SET(PathTests_SRCS
     PathTests/TestPathUtil.py
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
-    PathTests/test_chamfer.fcstd
+    PathTests/test_geomop.fcstd
     PathTests/test_linuxcnc_00.ngc
 )
 
