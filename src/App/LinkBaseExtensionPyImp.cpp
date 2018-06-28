@@ -140,7 +140,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)
         Py::Tuple ret(infos.size());
         int i=0;
         for(const auto &info : infos) {
-            ret.setItem(i,Py::TupleN(Py::String(info.name), 
+            ret.setItem(i++,Py::TupleN(Py::String(info.name), 
                     Py::String(info.type.getName()),Py::String(info.doc)));
         }
         return Py::new_reference_to(ret);

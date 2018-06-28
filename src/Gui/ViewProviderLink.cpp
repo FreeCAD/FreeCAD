@@ -1602,6 +1602,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         if(!ext->getShowElementValue()) {
             linkView->setSize(ext->getElementCountValue());
             updateDataPrivate(ext,ext->getVisibilityListProperty());
+            updateDataPrivate(ext,ext->getPlacementListProperty());
         }
         checkIcon(ext);
     }else if(prop == ext->getShowElementProperty()) {

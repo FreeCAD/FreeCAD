@@ -629,7 +629,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             if(getScaleListProperty()) {
                 auto scales = getScaleListValue();
                 scales.resize(elementCount,Base::Vector3d(1,1,1));
-                getScaleListProperty()->setStatus(Property::User3,getPlacementListProperty()!=0);
+                getScaleListProperty()->setStatus(Property::User3,true);
                 getScaleListProperty()->setValue(scales);
                 getScaleListProperty()->setStatus(Property::User3,false);
             }
@@ -640,7 +640,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         placements.emplace_back(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
                 }else
                     placements.resize(elementCount);
+                getPlacementListProperty()->setStatus(Property::User3,true);
                 getPlacementListProperty()->setValue(placements);
+                getPlacementListProperty()->setStatus(Property::User3,false);
             }
         }else if(getElementListProperty()) {
             auto objs = getElementListValue();
