@@ -1451,15 +1451,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
 
-    def areDifferentColors(self,a,b):
-
-        if len(a) != len(b):
-            return True
-        for i in range(len(a)):
-            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
-                return True
-        return False
-
 
 class _ArchWindowTaskPanel:
 

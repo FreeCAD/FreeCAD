@@ -164,14 +164,14 @@ class BuildingPart:
             obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
             import ArchComponent
             obj.IfcRole = ArchComponent.IfcRoles
-        if not "CloneOf" in pl:
-            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
         if not "Description" in pl:
             obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "IfcAttributes" in pl:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        if not "Shape" in pl:
+            obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
@@ -197,28 +197,42 @@ class BuildingPart:
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
                     if not child.Height.Value:
+                        #print("Executing ",child.Label)
                         child.Proxy.execute(child)
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
-                    v = FreeCAD.Vector(0,0,1)
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
-                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
-                    if deltar.Angle < 0.001:
+                    deltar = self.oldPlacement.Rotation.multiply(obj.Placement.Rotation)
+                    #print "Rotation",deltar.Axis,deltar.Angle
+                    if deltar.Angle < 0.0001:
                         deltar = None
                     for child in obj.Group:
                         if ((not hasattr(child,"MoveWithHost")) or child.MoveWithHost) and hasattr(child,"Placement"):
-                            print "moving ",child.Label
+                            #print "moving ",child.Label
                             if deltap:
                                 child.Placement.move(deltap)
                             if deltar:
-                                child.Placement.Rotation = child.Placement.Rotation.multiply(deltar)
+                                #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
+                                # use shape methods to obtain a correct placement
+                                import Part,math
+                                shape = Part.Shape()
+                                shape.Placement = child.Placement
+                                shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                                child.Placement = shape.Placement
 
     def execute(self,obj):
 
-        pass
+        # gather all the child shapes into a compound
+        shapes = []
+        for o in obj.Group:
+            if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
+                shapes.append(o.Shape)
+        if shapes:
+            import Part
+            obj.Shape = Part.makeCompound(shapes)
 
     def getSpaces(self,obj):
 
@@ -278,6 +292,9 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyFloatList","ViewData","BuildingPart",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
         if not "RestoreView" in pl:
             vobj.addProperty("App::PropertyBool","RestoreView","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
+        if not "DiffuseColor" in pl:
+            vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
+
 
     def onDocumentRestored(self,vobj):
 
@@ -342,6 +359,18 @@ class ViewProviderBuildingPart:
 
         if prop in ["Placement","LevelOffset"]:
             self.onChanged(obj.ViewObject,"OverrideUnit")
+        elif prop == "Shape":
+            # gather all the child shapes
+            cols = []
+            for o in obj.Group:
+                if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
+                    if len(o.ViewObject.DiffuseColor) == len(o.Shape.Faces):
+                        cols.extend(o.ViewObject.DiffuseColor)
+                    else:
+                        c = o.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
+                        for i in range(len(o.Shape.Faces)):
+                            cols.append(c)
+            obj.ViewObject.DiffuseColor = cols
 
     def onChanged(self,vobj,prop):
 
