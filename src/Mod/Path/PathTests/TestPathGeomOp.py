@@ -467,4 +467,284 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
 
+    def test30(self):
+        '''Check offsetting a single outside edge forward.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireOutside(obj)
+        length = 40 * math.cos(math.pi/6)
+        for e in w.Edges:
+            self.assertRoughly(length, e.Length)
+
+        # let's offset the horizontal edge for starters
+        hEdges = [e for e in w.Edges if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+
+        x = length / 2
+        y = -10
+        self.assertEqual(1, len(hEdges))
+        edge = hEdges[0]
+
+        self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
+
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 5, True)
+        self.assertEqual(1, len(wire.Edges))
+
+        y = y - 5
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+        # make sure we get the same result even if the edge is oriented the other way
+        edge = PathGeom.flipEdge(edge)
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 5, True)
+        self.assertEqual(1, len(wire.Edges))
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+    def test31(self):
+        '''Check offsetting a single outside edge not forward.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireOutside(obj)
+        length = 40 * math.cos(math.pi/6)
+        for e in w.Edges:
+            self.assertRoughly(length, e.Length)
+
+        # let's offset the horizontal edge for starters
+        hEdges = [e for e in w.Edges if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+
+        x = length / 2
+        y = -10
+        self.assertEqual(1, len(hEdges))
+        edge = hEdges[0]
+        self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
+
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 5, False)
+        self.assertEqual(1, len(wire.Edges))
+
+        y = y - 5
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+        # make sure we get the same result on a reversed edge
+        edge = PathGeom.flipEdge(edge)
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 5, False)
+        self.assertEqual(1, len(wire.Edges))
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+    def test32(self):
+        '''Check offsetting multiple outside edges.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireOutside(obj)
+        length = 40 * math.cos(math.pi/6)
+
+        # let's offset the other two legs
+        lEdges = [e for e in w.Edges if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+        self.assertEqual(2, len(lEdges))
+
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True)
+
+        x = length/2 + 2 * math.cos(math.pi/6)
+        y = -10 + 2 * math.sin(math.pi/6)
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+
+        self.assertEqual(1, len(rEdges))
+        self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
+        self.assertCoincide(Vector(0, 0, -1), rEdges[0].Curve.Axis)
+
+        #offset the other way
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+
+        self.assertEqual(1, len(rEdges))
+        self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
+        self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
+
+    def test33(self):
+        '''Check offsetting multiple backwards outside edges.'''
+        # This is exactly the same as test32, except that the wire is flipped to make
+        # sure the input orientation doesn't matter
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireOutside(obj)
+        length = 40 * math.cos(math.pi/6)
+
+        # let's offset the other two legs
+        lEdges = [e for e in w.Edges if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+        self.assertEqual(2, len(lEdges))
+
+        w = PathGeom.flipWire(Part.Wire(lEdges))
+        wire = PathGeomOp.offsetWire(w, obj.Shape, 2, True)
+
+        x = length/2 + 2 * math.cos(math.pi/6)
+        y = -10 + 2 * math.sin(math.pi/6)
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+
+        self.assertEqual(1, len(rEdges))
+        self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
+        self.assertCoincide(Vector(0, 0, -1), rEdges[0].Curve.Axis)
+
+        #offset the other way
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+
+        self.assertEqual(1, len(rEdges))
+        self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
+        self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
+
+    def test34(self):
+        '''Check offsetting a single inside edge forward.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireInside(obj)
+        length = 20 * math.cos(math.pi/6)
+        for e in w.Edges:
+            self.assertRoughly(length, e.Length)
+
+        # let's offset the horizontal edge for starters
+        hEdges = [e for e in w.Edges if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+
+        x = length / 2
+        y = -5
+        self.assertEqual(1, len(hEdges))
+        edge = hEdges[0]
+
+        self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
+
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 2, True)
+        self.assertEqual(1, len(wire.Edges))
+
+        y = y + 2
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+        # make sure we get the same result even if the edge is oriented the other way
+        edge = PathGeom.flipEdge(edge)
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 2, True)
+        self.assertEqual(1, len(wire.Edges))
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+    def test35(self):
+        '''Check offsetting a single inside edge not forward.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireInside(obj)
+        length = 20 * math.cos(math.pi/6)
+        for e in w.Edges:
+            self.assertRoughly(length, e.Length)
+
+        # let's offset the horizontal edge for starters
+        hEdges = [e for e in w.Edges if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+
+        x = length / 2
+        y = -5
+        self.assertEqual(1, len(hEdges))
+        edge = hEdges[0]
+
+        self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
+
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 2, False)
+        self.assertEqual(1, len(wire.Edges))
+
+        y = y + 2
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+        # make sure we get the same result even if the edge is oriented the other way
+        edge = PathGeom.flipEdge(edge)
+        wire = PathGeomOp.offsetWire(Part.Wire([edge]), obj.Shape, 2, False)
+        self.assertEqual(1, len(wire.Edges))
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+
+    def test36(self):
+        '''Check offsetting multiple inside edges.'''
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireInside(obj)
+        length = 20 * math.cos(math.pi/6)
+
+        # let's offset the other two legs
+        lEdges = [e for e in w.Edges if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+        self.assertEqual(2, len(lEdges))
+
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True)
+
+        x = length/2 - 2 * math.cos(math.pi/6)
+        y = -5 - 2 * math.sin(math.pi/6)
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+        self.assertEqual(0, len(rEdges))
+
+        #offset the other way
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+        self.assertEqual(0, len(rEdges))
+
+    def test37(self):
+        '''Check offsetting multiple backwards inside edges.'''
+        # This is exactly the same as test36 except that the wire is flipped to make
+        # sure it's orientation doesn't matter
+        obj = doc.getObjectsByLabel('offset-edge')[0]
+
+        w = getWireInside(obj)
+        length = 20 * math.cos(math.pi/6)
+
+        # let's offset the other two legs
+        lEdges = [e for e in w.Edges if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
+        self.assertEqual(2, len(lEdges))
+
+        w = PathGeom.flipWire(Part.Wire(lEdges))
+        wire = PathGeomOp.offsetWire(w, obj.Shape, 2, True)
+
+        x = length/2 - 2 * math.cos(math.pi/6)
+        y = -5 - 2 * math.sin(math.pi/6)
+
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+        self.assertEqual(0, len(rEdges))
+
+        #offset the other way
+        wire = PathGeomOp.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+        self.assertEqual(0, len(rEdges))
 
