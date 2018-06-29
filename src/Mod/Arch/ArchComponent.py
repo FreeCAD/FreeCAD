@@ -468,7 +468,10 @@ class Component:
 
     def __getstate__(self):
 
-        return None
+        # for compatibility with 0.17
+        if hasattr(self,"Type"):
+            return self.Type
+        return "Component"
 
     def __setstate__(self,state):
 
