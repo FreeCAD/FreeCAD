@@ -508,7 +508,7 @@ class Component:
         "if this object is a clone, sets the shape. Returns True if this is the case"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) == "Component"):
+                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
@@ -1071,8 +1071,23 @@ class ViewProviderComponent:
         menu.addAction(action1)
 
     def toggleSubcomponents(self):
+
         FreeCADGui.runCommand("Arch_ToggleSubs")
 
+    def areDifferentColors(self,a,b):
+
+        if len(a) != len(b):
+            return True
+        for i in range(len(a)):
+            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
+                return True
+        return False
+
+    def colorize(self,obj,force=False):
+
+        if obj.CloneOf:
+            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
 
 
 class ArchSelectionObserver:
