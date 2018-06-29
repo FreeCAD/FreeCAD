@@ -566,6 +566,8 @@ def orientEdge(edge, normal=None, make_arc=False):
     if axis == Vector (0.0, 0.0, 0.0):
         axis = Vector (0.0, 0.0, 1.0)
     if angle:
+        if axis == Vector (0.0, 0.0, 0.0):
+            axis = Vector (0.0, 0.0, 1.0)
         edge.rotate(base, axis, angle)
     if isinstance(edge.Curve,Part.Line):
         return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
