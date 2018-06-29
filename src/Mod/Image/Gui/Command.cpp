@@ -155,6 +155,7 @@ void CmdCreateImagePlane::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),nHeight);
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
                      ,FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        doCommand(Doc,"Gui.SendMsgToActiveView('ViewFit')");
         commitCommand();
     }
 }

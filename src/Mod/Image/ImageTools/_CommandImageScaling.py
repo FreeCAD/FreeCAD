@@ -149,6 +149,7 @@ def cmdCreateImageScaling(name):
                 self.tracker.off()
                 self.tracker.finalize()
                 self.dialog.hide()
+                FreeCADGui.SendMsgToActiveView("ViewFit")
             except (ValueError, ZeroDivisionError):
                 self.label1.setText(_translate("Dialog", "<font color='red'>Enter distance</font>", None))
                 return
@@ -157,9 +158,10 @@ def cmdCreateImageScaling(name):
                 return
             
         def reject(self):
+            if len(self.stack) != 2:
+                self.view.removeEventCallbackPivy(pvy.SoMouseButtonEvent.getClassTypeId(),self.callback)
+                self.view.removeEventCallbackPivy(pvy.SoLocation2Event.getClassTypeId(),self.callmouse)
             self.stack=[]
-            self.view.removeEventCallbackPivy(pvy.SoMouseButtonEvent.getClassTypeId(),self.callback)
-            self.view.removeEventCallbackPivy(pvy.SoLocation2Event.getClassTypeId(),self.callmouse)
             self.tracker.off()
             self.tracker.finalize()
             self.dialog.hide()
