@@ -103,30 +103,41 @@ def offsetWire(wire, base, offset, forward):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset
             # luckily, the plane here must be the XY-plane ...
-            n = (edge.Vertexes[1].Point - edge.Vertexes[0].Point).cross(FreeCAD.Vector(0, 0, 1))
+            p0 = edge.Vertexes[0].Point
+            v0 = edge.Vertexes[1].Point - p0
+            n = v0.cross(FreeCAD.Vector(0, 0, 1))
             o = n.normalize() * offset
             edge.translate(o)
-            if base.isInside(edge.valueAt((edge.FirstParameter + edge.LastParameter)/2), offset/2, True):
+
+            # offset edde the other way if the result is inside
+            if base.isInside(edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2), offset / 2, True):
                 edge.translate(-2 * o)
-            w = Part.Wire([edge])
-            return orientWire(w, forward)
+
+            # flip the edge if it's not on the right side of the original edge
+            if forward is not None:
+                v1 = edge.Vertexes[1].Point - p0
+                left = PathGeom.Side.Left == PathGeom.Side.of(v0, v1)
+                if left != forward:
+                    edge = PathGeom.flipEdge(edge)
+            return Part.Wire([edge])
+
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
         pass
 
-    w = wire.makeOffset2D(offset)
+    offsetWire = wire.makeOffset2D(offset)
 
     if wire.isClosed():
-        if not base.isInside(w.Edges[0].Vertexes[0].Point, offset/2, True):
+        if not base.isInside(offsetWire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            return orientWire(w, forward)
+            return orientWire(offsetWire, forward)
         PathLog.track('closed - inside')
         try:
-            w = wire.makeOffset2D(-offset)
+            offsetWire = wire.makeOffset2D(-offset)
         except:
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None
-        return orientWire(w, forward)
+        return orientWire(offsetWire, forward)
 
     # An edge is considered to be inside of shape if the mid point is inside
     # Of the remaining edges we take the longest wire to be the engraving side
@@ -137,12 +148,15 @@ def offsetWire(wire, base, offset, forward):
     #  if they need to be discarded, split, that should happen in a post process
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
 
+    # first, let's make sure all edges are oriented the proper way
+    wire = orientWire(wire, None)
+
     # find edges that are not inside the shape
     def isInside(edge):
         if base.isInside(edge.Vertexes[0].Point, offset/2, True) and base.isInside(edge.Vertexes[-1].Point, offset/2, True):
             return True
         return False
-    outside = [e for e in w.Edges if not isInside(e)]
+    outside = [e for e in offsetWire.Edges if not isInside(e)]
     # discard all edges that are not part of the longest wire
     longestWire = None
     for w in [Part.Wire(el) for el in Part.sortEdges(outside)]:
@@ -155,17 +169,22 @@ def offsetWire(wire, base, offset, forward):
 
     def isCircleAt(edge, center):
         '''isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center.'''
-        if Part.Circel == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
+        if Part.Circle == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
             return PathGeom.pointsCoincide(edge.Curve.Center, center)
         return False
 
 
+    # split offset wire into edges to the left side and edges to the right side
     collectLeft = False
     collectRight = False
     leftSideEdges = []
     rightSideEdges = []
 
-    for e in (w.Edges + w.Edges):
+    # traverse through all edges in order and start collecting them when we encounter
+    # an end point (circle centered at one of the end points of the original wire).
+    # should we come to an end point and determine that we've already collected the
+    # next side, we're done
+    for e in (offsetWire.Edges + offsetWire.Edges):
         if isCircleAt(e, start):
             if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
                 if not collectLeft and leftSideEdges:
@@ -193,15 +212,22 @@ def offsetWire(wire, base, offset, forward):
         elif collectRight:
             rightSideEdges.append(e)
 
+    # figure out if all the left sided edges or the right sided edges are the ones
+    # that are 'outside'. However, we return the full side.
     edges = leftSideEdges
     for e in longestWire.Edges:
         for e0 in rightSideEdges:
             if PathGeom.edgesMatch(e, e0):
-                if forward:
-                    edges = [PathGeom.flipEdge(edge) for edge in rightSideEdges]
-                return Part.Wire(edges)
+                edges = rightSideEdges
+                if not forward:
+                    edges.reverse()
+                return orientWire(Part.Wire(edges), None)
 
+    # at this point we have the correct edges and they are in the order for forward
+    # traversal (climb milling). If that's not what we want just reverse the order,
+    # orientWire takes care of orienting the edges appropriately.
     if not forward:
-        edges = [PathGeom.flipEdge(edge) for edge in rightSideEdges]
-    return Part.Wire(edges)
+        edges.reverse()
+
+    return orientWire(Part.Wire(edges), None)
 
