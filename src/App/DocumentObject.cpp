@@ -826,16 +826,15 @@ bool DocumentObject::hasChildElement() const {
 }
 
 DocumentObject *DocumentObject::resolve(const char *subname, 
-        App::DocumentObject **parent, std::string *childName, const char **subElement) const
+        App::DocumentObject **parent, std::string *childName, const char **subElement, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     auto self = const_cast<DocumentObject*>(this);
     if(parent) *parent = 0;
     if(subElement) *subElement = 0;
-    if(!subname || *subname==0)
-        return self;
 
-    auto obj = getSubObject(subname);
-    if(!obj)
+    auto obj = getSubObject(subname,pyObj,pmat,transform,depth);
+    if(!obj || !subname || *subname==0)
         return self;
 
     if(!parent && !subElement)

@@ -366,11 +366,13 @@ public:
      * @param subElement: return non-object sub-element name if found. The
      * pointer is guaranteed to be within the buffer pointed to by 'subname'
      *
+     * @sa getSubObject()
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      */
     App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0, 
-        std::string *childName=0, const char **subElement=0) const;
+        std::string *childName=0, const char **subElement=0,
+        PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
     /** Resolve a link reference that is relative to this object reference
      *
