@@ -285,11 +285,13 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoLocation2Event * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
@@ -375,7 +377,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // If for dragging the buttons 1 and 3 are pressed
-    // but then button 3 is relaesed we shouldn't switch
+    // but then button 3 is released we shouldn't switch
     // into selection mode.
     if (this->button1down && this->button3down)
         this->lockButton1 = true;

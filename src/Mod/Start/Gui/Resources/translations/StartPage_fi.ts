@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>FreeCAD Start Center</source>
-      <translation>FreeCAD aloituskeskus</translation>
+      <translation>Trevetuloa FreeCAD -ohjelmaan</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
       <source>Tutorials</source>
-      <translation>Oppitunnit</translation>
+      <translation>Käyttöoppaat</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Example projects</source>
-      <translation>Esimerkki projektit</translation>
+      <translation>Projektiesimerkit</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -41,17 +41,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>Lataa Osan valmistus-esimerkki</translation>
+      <translation>Osan valmistus</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>Lataa piirustuksen syntyperä</translation>
+      <translation>Mittapiirros</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>Lataa Robotti simulointi-esimerkki</translation>
+      <translation>Robotti-simulointi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>Close this window after opening or creating a file</source>
-      <translation>Sulje tämä ikkuna avatessani tai luodessani tiedoston</translation>
+      <translation>Sulje tämä ikkuna avatessasi tai luodessasi tiedostoja</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Don't show me this window again next time</source>
-      <translation>Älä näytä tätä ikkunaa uudelleen seuraavalla kerralla</translation>
+      <translation>Älä näytä tätä ikkunaa uudelleen</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>&lt;b&gt;Osa suunnittelu&lt;/b&gt;-Työpöydän tarkoituksena on luoda monimutkaisia kappaleita rajoitettujen 2D luonnosten perusteella. Sen avulla voit piirtää 2D muotoja, rajoittaa joitakin niiden osia ja pursottaa niistä muodostuvia 3D kappaleita.</translation>
+      <translation>&lt;b&gt;Osien suunnittelu&lt;/b&gt; -työpöydän avulla voi luoda monimutkaisia kappaleita. Sen avulla voit piirtää 2D-linjoja, rajoittaa joitakin niiden osia ja pursottaa niistä muodostuvia 3D kappaleita.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>Example workflow</source>
-      <translation>Esimerkki työnkulku</translation>
+      <translation>Esimerkki työnkulusta</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Designing architectural elements</source>
-      <translation>Arkkitehtonisten elementtien suunnittelu</translation>
+      <translation>Arkkitehtuurielementtien suunnittelu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>&lt;b&gt;Verkko Työpöytää&lt;/b&gt; käytetään työskennellessä verkko objektien kanssa. Verkot ovat Yksinkertaisempia kolmiulotteisia objekteja kuin osa objektit, mutta ne ovat usein helpommin tuotavissa ja vietävissä muihin sovelluksiin tai siitä pois.</translation>
+      <translation>&lt;b&gt;Verkkopinta&lt;/b&gt; -työpöydän avulla voit työskennellä verkko-objektien kanssa. Verkot ovat yksinkertaisempia kolmiulotteisia kappaleita kuin osat ja ne ovat useimmiten yhteensopivia muiden 3D Cad -ohjelmien kanssa.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>Work with Meshes</source>
-      <translation>Työ Verkkojen kanssa</translation>
+      <translation>Verkkopintojen avulla työskentely</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>The complete workbench</source>
-      <translation>Valmistuksen työpöytä</translation>
+      <translation>Kaikki työpöydät</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
@@ -136,12 +136,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
       <source>file size:</source>
-      <translation>tiedostokoko:</translation>
+      <translation>tiedoston koko:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
       <source>creation time:</source>
-      <translation>Luontiaika:</translation>
+      <translation>luontiaika:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
       <source>populated with some of the most commonly used tools.</source>
-      <translation>täytetty yleisimmin käytetyistä työkaluista.</translation>
+      <translation>yleisimmin käytetyt työkalut näkyvät tässä.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
       <source>User manual</source>
-      <translation>Käyttäjän käsikirja</translation>
+      <translation>Käyttöopas</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
@@ -196,22 +196,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>FreeCAD-opetusohjelma-blogi</translation>
+      <translation>Tutoriaaliblogi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
       <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>&lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt; FreeCADNews kanava&lt;/a&gt;-</translation>
+      <translation>&lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews&lt;/a&gt; YouTubessa</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Tämä on FreeCAD:n virallinen käyttöohje, rakenne ja ylläpito perustuu FreeCAD yhteisön käännökseen.</translation>
+      <translation>Tämä on FreeCADin virallinen käyttöohje jonka sisältö ja ylläpito perustuvat FreeCAD -yhteisön työhön.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
       <source>The tutorials section on the FreeCAD website</source>
-      <translation>Tutoriaalit osio FreeCAD-sivustolla</translation>
+      <translation>Tutoriaalit FreeCAD-kotivisulla</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
@@ -221,27 +221,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
       <source>Getting started</source>
-      <translation>Käytön aloittaminen</translation>
+      <translation>Ohjesivusto (wiki)</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>FreeCAD käyttöliittymä on jaetty erilaisiin työpöytiin jotka sisältävät tiettyyn tehtävään sopivat työkalut. Voit aloittaa käyttämällä yhtä tällä listalla olevaa työpöytää tai täydellisellä työpöydällä jolle on asennettu useimmin käytetyt työkalut muilta työpöydiltä. Napsauta lukeaksesi lisää työpöydistä FreeCAD sivustolta (englanniksi).</translation>
+      <translation>FreeCADin käyttöliittymä on jaetty työpöytiin joista kukin sisältää erilaisiin tehtäviin sopivia työkaluja. Voit valita joko yksittäisen työpöydän tai näyttää kaikkien eri työpöytien työkalut samalla kertaa. Voit lukea lisää työpöytien käytöstä FreeCAD -sivustolta (englanniksi).</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
       <source>Ship Design</source>
-      <translation>Laivan suunnittelu</translation>
+      <translation>Suunnittele laiva</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
       <source>Designing and calculating ships</source>
-      <translation>Laivojen suunnittelu ja laskelmat</translation>
+      <translation>Laivojen suunnittelu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
       <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>&lt;b&gt;Laivan suunnittelumoduuli&lt;/b&gt;tarjoaa useita työkaluja jotka auttavat laivojen suunnittelijaa katsomaan, mallintamaan ja laskemaan profiileja ja muita laivan runkoon liittyviä ominaisuuksia.</translation>
+      <translation>&lt;b&gt;Laivan suunnittelumoduuli&lt;/b&gt; tarjoaa työkaluja joiden avulla on mahdollista tarkastella, mallintaa ja laskea laivan runkoprofiileja muita laivan runkoon liittyviä ominaisuuksia.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
@@ -256,12 +256,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>FreeCAD verkkosivujen osio on  omistettu python skripteille, mukana esimerkkejä, selityksiä ja API-komentoja.</translation>
+      <translation>FreeCAD-kotisivulta löydät yksityiskohtaisia esimerkkejä Python-kielellä kirjoitetuista skripteistä sekä API-komentojen listan.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Your version of FreeCAD is up to date.</source>
-      <translation>Sinun FreeCAD versio on ajan tasalla.</translation>
+      <translation>FreeCAD -versiosi on ajan tasalla</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
@@ -271,52 +271,52 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Viimeisimmät koodilisäykset</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Lataa kehitysversio</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>Ohjelman &lt;b&gt;kehitysversio&lt;/b&gt; sisältää kaikki uusimmat muutokset, mutta se sisältää myös virheitä.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Kaikki koodilisäykset</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
       <source>Load an FEM 3D example analysis</source>
-      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+      <translation>Lataa FEM 3D-esimerkkianalyysi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
       <source>Load an FEM 2D example analysis</source>
-      <translation type="unfinished">Load an FEM 2D example analysis</translation>
+      <translation>Lataa FEM 2D-esimerkkianalyysi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
       <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
       <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Tutorials</translation>
+      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
       <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
       <source>FreeCAD Standard File</source>
-      <translation type="unfinished">FreeCAD Standard File</translation>
+      <translation>FreeCAD -standarditiedosto</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
@@ -336,12 +336,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <translation>&lt;b&gt;Arkkitehtuuri&lt;/b&gt; -työpöytä on suunniteltu erityisesti rakennusten, seinien ja ikkunoiden työstämiseen. Voit aloittaa piirtämällä 2D-muotoja ja käyttää niitä arkkitehtuurielementtien rakentamiseen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Lataa uusi FEM 3D -esimerkkianalyysi</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

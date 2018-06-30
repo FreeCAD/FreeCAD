@@ -47,7 +47,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence);
 //**************************************************************************
 // Construction/Destruction
 
-// here the implemataion! description should take place in the header file!
+// Here is the implementation! Description should take place in the header file!
 Property::Property()
   :father(0)
 {

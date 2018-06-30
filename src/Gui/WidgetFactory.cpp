@@ -77,7 +77,6 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # include <basewrapper.h>
 # include <sbkconverter.h>
 # include <sbkmodule.h>
-# include <typeresolver.h>
 # include <shiboken.h>
 # ifdef HAVE_PYSIDE2
 # define HAVE_PYSIDE
@@ -114,40 +113,24 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
 using namespace Gui;
 
 #if defined (HAVE_SHIBOKEN)
-namespace Shiboken {
-template<> struct Converter<Base::Quantity>
-{
-    static inline bool checkType(PyObject* pyObj) {
-        return PyObject_TypeCheck(pyObj, &(Base::QuantityPy::Type));
-    }
-    static inline bool isConvertible(PyObject* pyObj) {
-        return PyObject_TypeCheck(pyObj, &(Base::QuantityPy::Type));
-    }
-    static inline PyObject* toPython(void* cppobj) {
-        return toPython(*reinterpret_cast<Base::Quantity*>(cppobj));
-    }
-    static inline PyObject* toPython(Base::Quantity cpx) {
-        return new Base::QuantityPy(new Base::Quantity(cpx));
-    }
-    static inline Base::Quantity toCpp(PyObject* pyobj) {
-        Base::Quantity q = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
-        return q;
-    }
-};
+
+PyObject* toPythonFuncQuantityTyped(Base::Quantity cpx) {
+    return new Base::QuantityPy(new Base::Quantity(cpx));
 }
 
 PyObject* toPythonFuncQuantity(const void* cpp)
 {
-    return Shiboken::Converter<Base::Quantity>::toPython(const_cast<void*>(cpp));
+    return toPythonFuncQuantityTyped(*reinterpret_cast<const Base::Quantity*>(cpp));
 }
 
-void toCppPointerConvFuncQuantity(PyObject*,void*)
+void toCppPointerConvFuncQuantity(PyObject* pyobj,void* cpp)
 {
+   *((Base::Quantity*)cpp) = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
 }
 
 PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
 {
-    if (Shiboken::Converter<Base::Quantity>::isConvertible(obj))
+    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
         return toCppPointerConvFuncQuantity;
     else
         return 0;
@@ -297,7 +280,9 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyObject* pyobj = Shiboken::createWrapper<QIcon>(icon, true);
+    const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
+    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QIcon>()),
+                              const_cast<QIcon*>(icon), true, false, typeName);
     if (pyobj)
         return Py::asObject(pyobj);
 #else
@@ -885,7 +870,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             }
         }
         else {
-            throw Py::Exception("string or QIODevice expected");
+            throw Py::TypeError("string or QIODevice expected");
         }
     }
     return Py::None();
@@ -1175,7 +1160,7 @@ PyResource::PyResource() : myDlg(0)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySingals.begin(); it != mySingals.end(); ++it) {
+    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
         SignalConnect* sc = *it;
         delete sc;
     }
@@ -1279,7 +1264,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 
     if (objS) {
         SignalConnect* sc = new SignalConnect(this, cb);
-        mySingals.push_back(sc);
+        mySignals.push_back(sc);
         return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
     else

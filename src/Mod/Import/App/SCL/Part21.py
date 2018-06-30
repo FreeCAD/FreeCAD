@@ -30,7 +30,7 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import re
-import Utils
+from . import Utils
 import time
 
 
@@ -68,8 +68,8 @@ class Model:
         '''
         for idx in range(self._number_of_instances):
             "=========="
-            print "Instance #%i"%(idx+1)
-            print self._instances[idx]
+            print("Instance #%i"%(idx+1))
+            print(self._instances[idx])
 
 class Part21EntityInstance:
     """
@@ -86,15 +86,15 @@ class Part21EntityInstance:
     def __init__(self,entity_name,attributes):
         self._entity
         self._attributes_definition = attributes
-        print self._entity_name
-        print self._attributes_definition
+        print(self._entity_name)
+        print(self._attributes_definition)
 
 
 class Part21Parser:
     """
     Loads all instances definition of a Part21 file into memory.
     Two dicts are created:
-    self._instance_definition : stores attibutes, key is the instance integer id
+    self._instance_definition : stores attributes, key is the instance integer id
     self._number_of_ancestors : stores the number of ancestors of entity id. This enables
     to define the order of instances creation.
     """
@@ -117,22 +117,22 @@ class Part21Parser:
 
     def get_schema_name(self):
         return self._schema_name
-        print schema_name
+        print(schema_name)
 
     def get_number_of_instances(self):
-        return len(self._instances_definition.keys())
+        return len(list(self._instances_definition.keys()))
 
     def parse_file(self):
         init_time = time.time()
-        print "Parsing file %s..."%self._filename,
+        print("Parsing file %s..."%self._filename)
         fp = open(self._filename)
         while True:
             line = fp.readline()
             if not line:
                 break
-            # there may be a multline definition. In this case, we read lines until we found
+            # there may be a multiline definition. In this case, we read lines until we found
             # a ;
-            while (line.find(';') == -1): #its a multiline
+            while (line.find(';') == -1): #it's a multiline
                 line = line.replace("\n","").replace("\r","") + fp.readline()
             # parse line
             match_instance_definition = INSTANCE_DEFINITION_RE.search(line)  # id,name,attrs
@@ -152,8 +152,8 @@ class Part21Parser:
                     #identify the schema name
                     self._schema_name = line.split("'")[1].split("'")[0].split(" ")[0].lower()
         fp.close()
-        print 'done in %fs.'%(time.time()-init_time)
-        print 'schema: - %s entities %i'%(self._schema_name,len(self._instances_definition.keys()))
+        print('done in %fs.'%(time.time()-init_time))
+        print('schema: - %s entities %i'%(self._schema_name,len(list(self._instances_definition.keys()))))
 
 class EntityInstancesFactory(object):
     '''
@@ -183,21 +183,21 @@ class Part21Population(object):
     def create_entity_instances(self):
         """ Starts entity instances creation
         """
-        for number_of_ancestor in self._part21_loader._number_of_ancestors.keys():
+        for number_of_ancestor in list(self._part21_loader._number_of_ancestors.keys()):
             for entity_definition_id in self._part21_loader._number_of_ancestors[number_of_ancestor]:
                 self.create_entity_instance(entity_definition_id)
 
     def create_entity_instance(self, instance_id):
         instance_definition = self._part21_loader._instances_definition[instance_id]
-        print "Instance definition to process",instance_definition
+        print("Instance definition to process",instance_definition)
         # first find class name
         class_name = instance_definition[0].lower()
-        print "Class name:%s"%class_name
+        print("Class name:%s"%class_name)
         object_ = globals()[class_name]
         # then attributes
         #print object_.__doc__
         instance_attributes = instance_definition[1]
-        print "instance_attributes:",instance_attributes
+        print("instance_attributes:",instance_attributes)
         a = object_(*instance_attributes)
 
 if __name__ == "__main__":
@@ -205,5 +205,5 @@ if __name__ == "__main__":
     import sys
     from config_control_design import *
     p21loader = Part21Parser("gasket1.p21")
-    print "Creating instances"
+    print("Creating instances")
     p21population = Part21Population(p21loader)

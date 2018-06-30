@@ -22,7 +22,7 @@
         <x>0</x>
         <y>0</y>
         <width>368</width>
-        <height>441</height>
+        <height>445</height>
        </rect>
       </property>
       <attribute name="label">
@@ -75,14 +75,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -104,14 +104,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -133,14 +133,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -162,14 +162,14 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -233,7 +233,7 @@
         <x>0</x>
         <y>0</y>
         <width>368</width>
-        <height>441</height>
+        <height>445</height>
        </rect>
       </property>
       <attribute name="label">
@@ -423,7 +423,7 @@
           <item row="16" column="0">
            <widget class="QLabel" name="label_12">
             <property name="text">
-             <string>Cutting Edge Angle</string>
+             <string>Point/Tip Angle</string>
             </property>
            </widget>
           </item>
@@ -446,7 +446,10 @@
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
@@ -456,9 +459,6 @@
             </property>
             <property name="singleStep">
              <double>0.125000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -474,16 +474,16 @@
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -499,16 +499,16 @@
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -524,16 +524,16 @@
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -549,16 +549,16 @@
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -575,6 +575,15 @@
             </property>
             <property name="unit" stdset="0">
              <string notr="true">°</string>
+            </property>
+            <property name="text">
+             <string>180 °</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>180.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -616,7 +625,7 @@
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>

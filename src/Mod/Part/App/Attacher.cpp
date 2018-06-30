@@ -1205,7 +1205,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
     case mmFrenetTN:
     case mmFrenetTB:
     case mmRevolutionSection:
-    case mmConcentric: {//all alignments to poing on curve
+    case mmConcentric: {//all alignments to point on curve
         if (shapes.size() < 1)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subshapes specified (need one edge, and an optional vertex).");
 
@@ -1302,7 +1302,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             case mmFrenetTB:
                 if (N.Magnitude() == 0.0)
                     throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: Frenet-Serret normal is undefined. Can't align to TB plane.");
-                SketchNormal = N.Reversed();//it is more convenient to sketch on something looking it it so it is convex.
+                SketchNormal = N.Reversed();//it is more convenient to sketch on something looking at it so it is convex.
                 SketchXAxis = T;
                 break;
             default:

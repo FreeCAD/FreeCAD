@@ -27,6 +27,7 @@
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
+# include <Python.h>
 # include <Standard_math.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>

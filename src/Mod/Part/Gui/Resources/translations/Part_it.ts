@@ -396,13 +396,13 @@
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normale alla superficie</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Linea perpendicolare alla superficie nel punto impostato dal vertice.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -536,7 +536,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>L'associazione è disabilitata. L'oggetto può essere spostato modificando le sue proprietà Placement.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -743,7 +743,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>L'associazione è disabilitata. L'oggetto può essere spostato modificando le sue proprietà Placement.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -931,135 +931,135 @@
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Allinea O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi Z' e X' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Allinea O-Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi Z' e Y' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Allinea O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi X' e Y' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Allinea O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi X' e Z' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Allinea O-Y-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi Y' e Z' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Allinea O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Fa combaciare l'origine con il primo vertice. Allinea gli assi Y' e X' verso il vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Allinea O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea l'asse del piano normale e orizzontale al vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Allinea O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea l'asse del piano normale e verticale al vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea gli assi del piano orizzontale e verticale al vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Allinea O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea l'asse del piano orizzontale e normale al vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Allinea O-Y-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea l'asse del piano verticale e normale al vertice, lungo la linea.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Abbina l'origine con il primo vertice. Allinea gli assi del piano verticale e orizzontale al vertice, lungo la linea.</translation>
     </message>
   </context>
   <context>
@@ -1090,7 +1090,7 @@
       <location line="-144"/>
       <location line="+200"/>
       <source>Length:</source>
-      <translation>Larghezza:</translation>
+      <translation>Lunghezza:</translation>
     </message>
     <message>
       <location line="-192"/>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1737,6 +1737,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Crea una faccia da un gruppo di polilinee (per esempio, da uno schizzo)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
       <translation>Part_MakeFace: Crea una faccia da un gruppo di polilinee (per esempio, da uno schizzo).</translation>
     </message>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -2131,7 +2135,7 @@
     </message>
     <message>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation>L'impostazione di una deviazione troppo piccola provoca la richiesta di più tempo per la tassellazione e quindi blocca o rallenta la GUI.</translation>
+      <translation>L'impostazione di una deviazione troppo piccola provoca la richiesta di più tempo per la tessellatura e quindi blocca o rallenta la GUI.</translation>
     </message>
   </context>
   <context>
@@ -2173,11 +2177,19 @@
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Proprietà AttachmentOffset. Il posizionamento è espresso nello spazio locale dell'oggetto associato.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Offset di associazione:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation>Specchio della proprietà superPlacement. Il posizionamento extra è espresso nello spazio locale dell'oggetto associato.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>Extra placement:</source>
       <translation>Posizionamento extra:</translation>
     </message>
@@ -2214,7 +2226,7 @@
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation>Gira le facce</translation>
+      <translation>Capovolgi le facce</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Smussa spigoli</translation>
     </message>
@@ -2410,7 +2422,7 @@
     <message>
       <location line="+3"/>
       <source>Reversed</source>
-      <translation>Invertito</translation>
+      <translation>Invertita</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2434,7 +2446,7 @@
     </message>
     <message>
       <source>Length:</source>
-      <translation>Larghezza:</translation>
+      <translation>Lunghezza:</translation>
     </message>
     <message>
       <source>3D view</source>
@@ -2678,9 +2690,9 @@
       <translation>Nessuna selezione</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
-      <translation>Larghezza:</translation>
+      <translation>Lunghezza:</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2699,12 +2711,12 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Valore iniziale</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Valore finale</translation>
     </message>
@@ -2715,17 +2727,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Raggio iniziale</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Raggio finale</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Lunghezza</translation>
     </message>
@@ -2757,13 +2769,13 @@ Selezionare prima uno o più spigoli.</translation>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Spigolo %1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Nessuna forma selezionata</translation>
     </message>
@@ -2865,7 +2877,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Esporta</translation>
     </message>
@@ -2900,7 +2912,22 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
       <translation>Scrivi curve rispetto al sistema di riferimento della superficie</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Importa</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>Selezionando questa opzione, durante la lettura del file non viene eseguita nessuna unione di composti (importazione più lenta, ma con maggiori dettagli).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>Attiva l'unione di composti STEP</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Intestazione</translation>
     </message>
@@ -2968,7 +2995,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="+7"/>
       <source>Length:</source>
-      <translation>Larghezza:</translation>
+      <translation>Lunghezza:</translation>
     </message>
     <message>
       <location line="-154"/>
@@ -3344,7 +3371,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
       <location line="-100"/>
       <location line="+93"/>
       <source>Length:</source>
-      <translation>Larghezza:</translation>
+      <translation>Lunghezza:</translation>
     </message>
     <message>
       <location line="-7"/>
@@ -3745,7 +3772,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="+25"/>
       <source>Tessellation</source>
-      <translation>Tassellazione</translation>
+      <translation>Tessellazione</translation>
     </message>
     <message>
       <location line="+61"/>
@@ -3768,12 +3795,12 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="-20"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Definisce la deviazione della tassellazione della superficie attuale</translation>
+      <translation>Definisce la deviazione di tessellatura della superficie attuale</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tassellazione&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definisce la massima deviazione della mesh tassellata della superficie. Più piccolo è il valore più lenta sarà la velocità di render e migliore sarà l'estetica.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellazione&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definisce la massima deviazione della mesh di tessellatura della superficie. Più piccolo è il valore più lenta sarà la velocità di render e migliore sarà l'estetica.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3801,7 +3828,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="+1"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation>L'impostazione di una deviazione troppo piccola provoca la richiesta di più tempo per la tassellazione e quindi blocca o rallenta la GUI.</translation>
+      <translation>L'impostazione di una deviazione troppo piccola provoca la richiesta di più tempo per la tessellatura e quindi blocca o rallenta la GUI.</translation>
     </message>
   </context>
   <context>
@@ -3998,12 +4025,12 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Profili disponibili</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Profili selezionati</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -4215,12 +4242,12 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Profili disponibili</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Profili selezionati</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4308,12 +4335,20 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Proprietà AttachmentOffset. Il posizionamento è espresso nello spazio locale dell'oggetto associato.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Offset di associazione:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation>Specchio della proprietà superPlacement. Il posizionamento extra è espresso nello spazio locale dell'oggetto associato.</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
       <source>Extra placement:</source>
       <translation>Posizionamento extra:</translation>
     </message>
@@ -4350,7 +4385,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation>Gira le facce</translation>
+      <translation>Capovolgi le facce</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="-17"/>
@@ -4379,11 +4414,20 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Offset di associazione (inattivo - non associato):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>Non modificabile perché la parte di rotazione di AttachmentOffset è vincolata da espressioni.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation>Posizionamento extra (inattivo - non associato):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -4408,19 +4452,18 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
       <translation>Riferimento%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation>Non è modificabile perché la rotazione di superplacement della parte è vincolata da espressioni.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Combinazioni di riferimenti:
 </translation>
     </message>
     <message>
@@ -4443,7 +4486,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Contenuto della forma</translation>
     </message>
@@ -4451,7 +4494,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Controlla geometria</translation>
     </message>
@@ -4781,7 +4824,7 @@ Reference combinations:
     <message>
       <location line="+27"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
   </context>
   <context>
@@ -4907,7 +4950,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Facemaker occhio di bue</translation>
+      <translation>Crea facce tipo occhio di bue</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4917,7 +4960,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation>Facemaker formaggio</translation>
+      <translation>Crea facce tipo formaggio</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4927,7 +4970,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation>Facemaker estrusione parte</translation>
+      <translation>Part estrudi facce</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4938,23 +4981,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Selezionare due forme.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4979,7 +5022,7 @@ Do you want to continue?</source>
       <translation>Selezionare due o più forme. In alternativa, è possibile selezionare un composto contenente due o più forme da fondere.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Selezionare una o più forme, per favore.</translation>
     </message>
@@ -5079,7 +5122,7 @@ Do you want to continue?</source>
       <translation>Modifica gli spigoli raccordati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Imposta colori...</translation>
     </message>
@@ -5104,7 +5147,7 @@ Do you want to continue?</source>
       <translation>Shell</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Faccia</translation>

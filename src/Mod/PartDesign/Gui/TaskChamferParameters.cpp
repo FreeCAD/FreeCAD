@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 #endif
 
 #include "ui_TaskChamferParameters.h"

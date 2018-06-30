@@ -40,12 +40,19 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
 #endif
+
 #include <SMESH_Gen.hxx>
 #include <StdMeshers_MaxLength.hxx>
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+
+#if SMESH_VERSION_MAJOR < 7
+#include <StdMeshers_TrianglePreference.hxx>
+#endif
+
 #include <StdMeshers_LocalLength.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_TrianglePreference.hxx>
 #include <StdMeshers_MEFISTO_2D.hxx>
 #include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_Arithmetic1D.hxx>
@@ -67,6 +74,11 @@
 #endif // HAVE_SMESH
 
 using namespace MeshPart;
+
+#if SMESH_VERSION_MAJOR >= 7
+    SMESH_Gen* Mesher::_mesh_gen = 0;
+#endif
+
 
 MeshingOutput::MeshingOutput() 
 {
@@ -311,8 +323,17 @@ Mesh::MeshObject* Mesher::createMesh() const
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
+#if SMESH_VERSION_MAJOR < 7
     SMESH_Gen* meshgen = SMESH_Gen::get();
+#else
+    if (! Mesher::_mesh_gen)
+        Mesher::_mesh_gen = new SMESH_Gen();
+    SMESH_Gen* meshgen = Mesher::_mesh_gen;
+#endif
+
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
+
+
     int hyp=0;
 
     switch (method) {
@@ -385,9 +406,10 @@ Mesh::MeshObject* Mesher::createMesh() const
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,0,meshgen);
             hypoth.push_back(hyp1d);
         }
-
+#if SMESH_VERSION_MAJOR < 7
         StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
         hypoth.push_back(hyp2d_1);
+#endif
         StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,0,meshgen);
         hypoth.push_back(alg2d);
     } break;

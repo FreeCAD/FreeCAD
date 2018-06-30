@@ -72,15 +72,6 @@ bool QGCustomSvg::load(QByteArray *svgBytes)
     return(success);
 }
 
-QRectF QGCustomSvg::boundingRect() const
-{
-    QRectF box = m_svgRender->viewBoxF();
-    double w = box.width();
-    double h = box.height();
-    QRectF newRect(0,0,w,h);
-    return newRect;
-}
-
 void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;

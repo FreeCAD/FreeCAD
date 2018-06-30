@@ -24,24 +24,24 @@
 import FreeCAD
 import DraftGeomUtils
 import Part
-import Path
-import PathScripts
+import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
-import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 import PathScripts.PathUtils as PathUtils
 import math
 import sys
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule()
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class TagSolid:
     def __init__(self, proxy, z, R):
@@ -94,7 +94,7 @@ class TagSolid:
             PathLog.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
-        #lastly determine the center of the model, we want to make sure the seam of
+        # lastly determine the center of the model, we want to make sure the seam of
         # the tag solid points away (in the hopes it doesn't coincide with a path)
         self.baseCenter = FreeCAD.Vector((proxy.ptMin.x+proxy.ptMax.x)/2, (proxy.ptMin.y+proxy.ptMax.y)/2, 0)
 
@@ -102,7 +102,7 @@ class TagSolid:
         clone = self.solid.copy()
         pos.z = 0
         angle = -PathGeom.getAngle(pos - self.baseCenter) * 180 / math.pi
-        clone.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
+        clone.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), angle)
         pos.z = self.z - self.actualHeight * 0.01
         clone.translate(pos)
         return clone
@@ -112,14 +112,14 @@ class ObjectDressup:
 
     def __init__(self, obj, base):
 
-        obj.addProperty('App::PropertyLink', 'Base','Base', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'The base path to modify'))
-        obj.addProperty('App::PropertyLength', 'Width', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Width of tags.'))
-        obj.addProperty('App::PropertyLength', 'Height', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Height of tags.'))
-        obj.addProperty('App::PropertyAngle', 'Angle', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Angle of tag plunge and ascent.'))
-        obj.addProperty('App::PropertyLength', 'Radius', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Radius of the fillet for the tag.'))
-        obj.addProperty('App::PropertyVectorList', 'Positions', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Locations of inserted holding tags'))
-        obj.addProperty('App::PropertyIntegerList', 'Disabled', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'IDs of disabled holding tags'))
-        obj.addProperty('App::PropertyInteger', 'SegmentationFactor', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Factor determining the # of segments used to approximate rounded tags.'))
+        obj.addProperty('App::PropertyLink', 'Base', 'Base', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'The base path to modify'))
+        obj.addProperty('App::PropertyLength', 'Width', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Width of tags.'))
+        obj.addProperty('App::PropertyLength', 'Height', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Height of tags.'))
+        obj.addProperty('App::PropertyAngle', 'Angle', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Angle of tag plunge and ascent.'))
+        obj.addProperty('App::PropertyLength', 'Radius', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Radius of the fillet for the tag.'))
+        obj.addProperty('App::PropertyVectorList', 'Positions', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Locations of inserted holding tags'))
+        obj.addProperty('App::PropertyIntegerList', 'Disabled', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'IDs of disabled holding tags'))
+        obj.addProperty('App::PropertyInteger', 'SegmentationFactor', 'Tag', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Factor determining the # of segments used to approximate rounded tags.'))
 
         obj.Proxy = self
         obj.Base = base
@@ -129,31 +129,32 @@ class ObjectDressup:
 
     def __getstate__(self):
         return None
+
     def __setstate__(self, state):
         return None
 
     def assignDefaultValues(self):
-        self.obj.Width  = HoldingTagPreferences.defaultWidth(self.toolRadius() * 2)
+        self.obj.Width = HoldingTagPreferences.defaultWidth(self.toolRadius() * 2)
         self.obj.Height = HoldingTagPreferences.defaultHeight(self.toolRadius())
-        self.obj.Angle  = HoldingTagPreferences.defaultAngle()
+        self.obj.Angle = HoldingTagPreferences.defaultAngle()
         self.obj.Radius = HoldingTagPreferences.defaultRadius()
 
     def execute(self, obj):
         PathLog.track()
         if not obj.Base:
-            PathLog.error(translate('PathDressup_Tag', 'No Base object found.'))
+            PathLog.error(translate('Path_DressupTag', 'No Base object found.'))
             return
         if not obj.Base.isDerivedFrom('Path::Feature'):
-            PathLog.error(translate('PathDressup_Tag', 'Base is not a Path::Feature object.'))
+            PathLog.error(translate('Path_DressupTag', 'Base is not a Path::Feature object.'))
             return
         if not obj.Base.Path:
-            PathLog.error(translate('PathDressup_Tag', 'Base doesn\'t have a Path to dress-up.'))
+            PathLog.error(translate('Path_DressupTag', 'Base doesn\'t have a Path to dress-up.'))
             return
         if not obj.Base.Path.Commands:
-            PathLog.error(translate('PathDressup_Tag', 'Base Path is empty.'))
+            PathLog.error(translate('Path_DressupTag', 'Base Path is empty.'))
             return
 
-        self.obj = obj;
+        self.obj = obj
 
         minZ = +sys.maxint
         minX = minZ
@@ -191,8 +192,8 @@ class ObjectDressup:
 
         maxTagZ = minZ + obj.Height.Value
 
-        lastX = 0
-        lastY = 0
+        # lastX = 0
+        # lastY = 0
         lastZ = 0
 
         commands = []
@@ -211,7 +212,7 @@ class ObjectDressup:
         PathLog.track()
 
     def toolRadius(self):
-        return self.obj.Base.ToolController.Tool.Diameter / 2.0
+        return PathDressup.toolController(self.obj.Base).Tool.Diameter / 2.0
 
     def addTagsToDocuemnt(self):
         for i, solid in enumerate(self.solids):
@@ -227,16 +228,17 @@ class ObjectDressup:
                 return True
         return False
 
-def Create(baseObject, name = 'DressupTag'):
+
+def Create(baseObject, name='DressupTag'):
     '''
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     '''
     if not baseObject.isDerivedFrom('Path::Feature'):
-        PathLog.error(translate('PathDressup_Tag', 'The selected object is not a path\n'))
+        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path')+'\n')
         return None
 
     if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
-        PathLog.error(translate('PathDressup_Tag', 'Please select a Profile object'))
+        PathLog.error(translate('Path_DressupTag', 'Please select a Profile object'))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")
@@ -246,4 +248,4 @@ def Create(baseObject, name = 'DressupTag'):
     dbo.assignDefaultValues()
     return obj
 
-PathLog.notice('Loading PathDressupTag... done\n')
+PathLog.notice('Loading Path_DressupTag... done\n')

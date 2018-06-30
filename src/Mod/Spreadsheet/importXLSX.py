@@ -167,7 +167,7 @@ class exprNode(object):
 
 
 class FormulaTranslator(object):
-  ''' This class tranlates a cell-formula from Excel to FreeCAD.'''
+  ''' This class translates a cell-formula from Excel to FreeCAD.'''
   def __init__(self):
     self.tokenList = ['=']
 

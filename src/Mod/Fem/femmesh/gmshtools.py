@@ -34,6 +34,7 @@ from FreeCAD import Units
 import subprocess
 import tempfile
 from platform import system
+import sys
 
 
 class GmshTools():
@@ -41,10 +42,8 @@ class GmshTools():
         self.mesh_obj = gmsh_mesh_obj
         if analysis:
             self.analysis = analysis
-            # group meshing turned on
         else:
             self.analysis = None
-            # group meshing turned off
 
         # part to mesh
         self.part_obj = self.mesh_obj.Part
@@ -95,7 +94,7 @@ class GmshTools():
 
         # Algorithm3D
         # known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
-        algo3D = self.mesh_obj.Algorithm2D
+        algo3D = self.mesh_obj.Algorithm3D
         if algo3D == 'Automatic':
             self.algorithm3D = '1'
         elif algo3D == 'Delaunay':
@@ -222,7 +221,10 @@ class GmshTools():
             elif system() == "Linux":
                 p1 = subprocess.Popen(['which', 'gmsh'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
-                    gmsh_path = p1.stdout.read().split('\n')[0]
+                    output = p1.stdout.read()
+                    if sys.version_info.major >= 3:
+                        output = output.decode('utf-8')
+                    gmsh_path = output.split('\n')[0]
                 elif p1.wait() == 1:
                     error_message = "Gmsh binary gmsh not found in standard system binary path. Please install Gmsh or set path to binary in FEM preferences tab Gmsh.\n"
                     FreeCAD.Console.PrintError(error_message)
@@ -253,7 +255,7 @@ class GmshTools():
             # print ('  No mesh group objects.')
             pass
         else:
-            print ('  Mesh group objects, we need to get the elements.')
+            print('  Mesh group objects, we need to get the elements.')
             for mg in self.mesh_obj.MeshGroupList:
                 new_group_elements = FemMeshTools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
@@ -285,7 +287,7 @@ class GmshTools():
             # print ('  No mesh regions.')
             pass
         else:
-            print ('  Mesh regions, we need to get the elements.')
+            print('  Mesh regions, we need to get the elements.')
             # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
@@ -346,7 +348,7 @@ class GmshTools():
             # print ('  No mesh boundary layer setting document object.')
             pass
         else:
-            print ('  Mesh boundary layers, we need to get the elements.')
+            print('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 err = "Gmsh could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
@@ -563,7 +565,7 @@ class GmshTools():
         geo.write("//\n")
         geo.write("// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:\n")
         geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
-        geo.close
+        geo.close()
 
     def run_gmsh_with_geo(self):
         comandlist = [self.gmsh_bin, '-', self.temp_file_geo]

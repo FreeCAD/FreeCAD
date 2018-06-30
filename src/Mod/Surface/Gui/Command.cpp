@@ -39,6 +39,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <Python.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -76,7 +77,7 @@ CmdSurfaceCut::CmdSurfaceCut()
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Surface Cut function");
     sToolTipText  = QT_TR_NOOP("Cuts a Shape with another Shape.\nReturns a modified version of the first shape");
-    sWhatsThis    = QT_TR_NOOP("Surface Cut function");
+    sWhatsThis    = "Surface_Cut";
     sStatusTip    = QT_TR_NOOP("Surface Cut function");
     sPixmap       = "Cut.svg";
     sAccel        = "CTRL+H";
@@ -135,7 +136,7 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sMenuText     = QT_TR_NOOP("Filling...");
     sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
     sStatusTip    = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
-    sWhatsThis    = QT_TR_NOOP("Surface_Filling");
+    sWhatsThis    = "Surface_Filling";
     sPixmap       = "Filling.svg";
 }
 
@@ -237,8 +238,6 @@ void CmdSurfaceExtendFace::activated(int)
 {
     Gui::SelectionFilter faceFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     if (faceFilter.match()) {
-        App::DocumentObject* obj;
-        obj = faceFilter.Result[0][0].getObject();
         const std::vector<std::string> &sub = faceFilter.Result[0][0].getSubNames();
         if (sub.size() == 1) {
             openCommand("Extend surface");

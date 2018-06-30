@@ -306,6 +306,8 @@ private:
     static PyObject* sGetExportType     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetHelpDir        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args,PyObject *kwd);
@@ -377,7 +379,7 @@ private:
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
 
-/// Singleton getter of the Applicaton
+/// Singleton getter of the Application
 inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }

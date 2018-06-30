@@ -102,7 +102,7 @@ namespace geoff_geometry {
 		rotate.e[8] = rotAxis->getx() * rotAxis->getz() * oneminusc - rotAxis->gety() * sinang;
 		rotate.e[9] = rotAxis->gety() * rotAxis->getz() * oneminusc + rotAxis->getx() * sinang;
 		rotate.e[10] = rotAxis->getz() * rotAxis->getz() * oneminusc  + cosang;
-		Multiply(rotate); // concatinate rotation with this matrix
+		Multiply(rotate); // concatenate rotation with this matrix
 		m_unit = false;
 		m_mirrored = -1;	// don't know
 	}
@@ -139,7 +139,7 @@ namespace geoff_geometry {
 			rotate.e[4] = sinang;
 			break;
 		}
-		Multiply(rotate); // concatinate rotation with this matrix
+		Multiply(rotate); // concatenate rotation with this matrix
 		m_unit = false;
 		m_mirrored = -1;	// don't know
 	}
@@ -165,7 +165,7 @@ namespace geoff_geometry {
 	}
 	void	Matrix::Multiply(Matrix& m)
 	{
-		// multiply this by give matrix - concatinate
+		// multiply this by give matrix - concatenate
 		int i, k, l;
 		Matrix ret;
 

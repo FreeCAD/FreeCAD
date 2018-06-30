@@ -685,7 +685,7 @@ void Cell::visit(App::ExpressionVisitor &v)
 }
 
 /**
-  * Decode aligment into its internal value.
+  * Decode alignment into its internal value.
   *
   * @param itemStr   Alignment as a string
   * @param alignment Current alignment. This is or'ed with the one in \a itemStr.

@@ -26,6 +26,8 @@
 
 #include <QSplashScreen>
 #include <QDialog>
+#include <QTextBrowser>
+#include <Gui/MDIView.h>
 
 namespace Gui {
 
@@ -68,6 +70,23 @@ private:
     static AboutDialogFactory* factory;
 };
 
+class GuiExport LicenseView : public Gui::MDIView
+{
+    Q_OBJECT
+
+public:
+    LicenseView(QWidget* parent=0);
+    virtual ~LicenseView();
+
+    void setSource(const QUrl & url);
+    const char *getName(void) const {
+        return "LicenseView";
+    }
+
+private:
+    QTextBrowser* browser;
+};
+
 /** This widget provides the "About dialog" of an application. 
  * This shows the current version, the build number and date. 
  * \author Werner Mayer
@@ -82,12 +101,15 @@ public:
 
 protected:
     void setupLabels();
+    void showLicenseInformation();
 
 protected Q_SLOTS:
     virtual void on_copyButton_clicked();
+    void linkActivated(const QUrl& link);
 
 private:
     Ui_AboutApplication* ui;
+    class LibraryInfo;
 };
 
 } // namespace Dialog

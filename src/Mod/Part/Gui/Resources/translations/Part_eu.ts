@@ -13,7 +13,7 @@
       <location line="+1"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Erpina</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -236,7 +236,7 @@
       <location line="+2"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Erpina</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -396,13 +396,13 @@
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normaletik azalerara</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Erpinaren arabera ezarritako puntuan azalerarekiko perpendikularra den lerroa.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -536,7 +536,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Eranskina desgaituta dago. Objektua mugitu egin daiteke posizio-propietatea editatuz.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -743,7 +743,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Eranskina desgaituta dago. Objektua mugitu egin daiteke posizio-propietatea editatuz.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -931,135 +931,135 @@
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Lerrokatu O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu Z' eta X' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Lerrokatu O-Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu Z' eta Y' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Lerrokatu O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu X' eta Y' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Lerrokatu O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu X' eta Z' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Lerrokatu O-Y-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu Y' eta Z' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Lerrokatu O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu Y' eta X' ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Lerrokatu O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu normala eta plano horizontalaren ardatza erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Lerrokatu O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu normala eta plano bertikalaren ardatza erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu plano horizontalaren eta bertikalaren ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Lerrokatu O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu plano horizontalaren ardatza eta normala erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Lerrokatu O-Y-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu plano bertikalaren ardatza eta normala erpinerantz/lerroan zehar.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Parekatu jatorria lehen erpinarekin. Lerrokatu plano bertikalaren eta horizontalaren ardatzak erpinerantz/lerroan zehar.</translation>
     </message>
   </context>
   <context>
@@ -1090,7 +1090,7 @@
       <location line="-144"/>
       <location line="+200"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <location line="-192"/>
@@ -1178,7 +1178,7 @@
     </message>
     <message>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Aplikatu</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1348,17 +1348,17 @@
     </message>
     <message>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kutxa</translation>
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation type="unfinished">Create a box solid</translation>
+      <translation>Sortu kutxa solido bat</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1419,7 +1419,7 @@
     <message>
       <location line="+1"/>
       <source>Chamfer...</source>
-      <translation type="unfinished">Chamfer...</translation>
+      <translation>Alaka...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1466,14 +1466,14 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Desplazamendua:</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1737,16 +1737,20 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Sortu aurpegia alanbreen multzo batetik (adib. krokis batetik)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
       <translation>Part_MakeFace: Sortu aurpegia alanbreen multzo batetik (adib. krokis batetik).</translation>
     </message>
     <message>
       <source>Make face from sketch</source>
-      <translation type="unfinished">Make face from sketch</translation>
+      <translation>Sortu aurpegia krokisetik</translation>
     </message>
     <message>
       <source>Make face from selected sketches</source>
-      <translation type="unfinished">Make face from selected sketches</translation>
+      <translation>Egin aurpegi bat hautatutako krokisetatik</translation>
     </message>
   </context>
   <context>
@@ -1804,11 +1808,11 @@
     </message>
     <message>
       <source>Offset...</source>
-      <translation type="unfinished">Offset...</translation>
+      <translation>Desplazamendua...</translation>
     </message>
     <message>
       <source>Utility to offset</source>
-      <translation type="unfinished">Utility to offset</translation>
+      <translation>Desplazatzeko utilitatea</translation>
     </message>
   </context>
   <context>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1938,7 +1942,7 @@
     </message>
     <message>
       <source>Create a ruled surface from two curves</source>
-      <translation type="unfinished">Create a ruled surface from two curves</translation>
+      <translation>Sortu gainazal erregelatu bat bi kurbatik</translation>
     </message>
   </context>
   <context>
@@ -2109,29 +2113,29 @@
     <name>DlgExtrusion</name>
     <message>
       <source>Select a shape for extrusion, first.</source>
-      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+      <translation>Hasteko, hautatu forma bat haren estrusioa sortzeko.</translation>
     </message>
     <message>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>%1' dokumentua ez da existitzen.</translation>
     </message>
   </context>
   <context>
     <name>DlgRevolution</name>
     <message>
       <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <translation>Hasteko, hautatu forma bat haren erreboluzioa sortzeko.</translation>
     </message>
   </context>
   <context>
     <name>DlgSettings3DViewPart</name>
     <message>
       <source>Deviation</source>
-      <translation type="unfinished">Deviation</translation>
+      <translation>Desbideratzea</translation>
     </message>
     <message>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+      <translation>Desbideratze txikiegia ezartzen bada, teselazioak denbora gehiago behar du eta erabiltzaile-interfazea izoztu edo moteldu egiten da.</translation>
     </message>
   </context>
   <context>
@@ -2173,11 +2177,19 @@
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation>Superkokapen-propietatearen ispilua. Kokapen gehiagrria eransten den objektuaren espazio lokalean adieraztzen da.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Eranskin-desplazamenduaren propietatea. Kokapena eransten den objektuaren espazio lokalean adierazten da.</translation>
     </message>
     <message>
       <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Eranskinaren desplazamendua:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Superkokapen-propietatearen ispilua. Kokapen gehigarria eransten den objektuaren espazio lokalean adierazten da.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
       <translation>Kokapen gehigarria:</translation>
     </message>
@@ -2385,9 +2397,9 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Alakatu ertzak</translation>
     </message>
   </context>
   <context>
@@ -2410,7 +2422,7 @@
     <message>
       <location line="+3"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Alderantzikatua</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2434,15 +2446,15 @@
     </message>
     <message>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <source>3D view</source>
-      <translation type="unfinished">3D view</translation>
+      <translation>3D bista</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation type="unfinished">Note:This option works for planes only</translation>
+      <translation>Oharra: Aukera honek planoetarako soilik balio du</translation>
     </message>
     <message>
       <location line="+283"/>
@@ -2547,7 +2559,7 @@
     </message>
     <message>
       <source>Select a shape for extrusion, first.</source>
-      <translation type="unfinished">Select a shape for extrusion, first.</translation>
+      <translation>Hasteko, hautatu forma bat haren estrusioa sortzeko.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="-26"/>
@@ -2557,7 +2569,7 @@
     <message>
       <location line="+241"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>%1' dokumentua ez da existitzen.</translation>
     </message>
     <message>
       <location line="+48"/>
@@ -2614,11 +2626,11 @@
     </message>
     <message>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Ongi egin da</translation>
     </message>
     <message>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Hutz egin du</translation>
     </message>
   </context>
   <context>
@@ -2684,9 +2696,9 @@
       <translation>Hautapenik ez</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2701,16 +2713,16 @@
     <message>
       <location line="+2"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Alakatuko diren ertzak</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Hasierako luzera</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Amaierako luzera</translation>
     </message>
@@ -2721,17 +2733,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Hasierako erradioa</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Amaierako erradioa</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Luzera</translation>
     </message>
@@ -2763,13 +2775,13 @@ Markatu ertz-entitate bat edo gehiago.</translation>
       <translation>Bat ere ez</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>%1 ertza</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Ez da formarik hautatu</translation>
     </message>
@@ -2791,7 +2803,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+6"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Esportatu</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2801,17 +2813,17 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+21"/>
       <source>Millimeter</source>
-      <translation type="unfinished">Millimeter</translation>
+      <translation>Milimetroa</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Meter</source>
-      <translation type="unfinished">Meter</translation>
+      <translation>Metroa</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Inch</source>
-      <translation type="unfinished">Inch</translation>
+      <translation>Hazbetea</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2830,7 +2842,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Enable B-REP mode</source>
-      <translation type="unfinished">Enable B-REP mode</translation>
+      <translation>Gaitu B-REP modua</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -2871,9 +2883,9 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Esportatu</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -2883,17 +2895,17 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="-31"/>
       <source>Millimeter</source>
-      <translation type="unfinished">Millimeter</translation>
+      <translation>Milimetroa</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Meter</source>
-      <translation type="unfinished">Meter</translation>
+      <translation>Metroa</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Inch</source>
-      <translation type="unfinished">Inch</translation>
+      <translation>Hazbetea</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -2906,7 +2918,22 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
       <translation>Idatzi kurbak azaleraren espazio parametrikoan</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Inportatu</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>Hau markatuta badago, ez da konposaturik fusionatuko fitxategia irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>Gaitu STEP konposatu-fusioa</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Goiburua</translation>
     </message>
@@ -2959,7 +2986,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+17"/>
       <source>Size:</source>
-      <translation>Neurria:</translation>
+      <translation>Tamaina:</translation>
     </message>
     <message>
       <location line="+51"/>
@@ -2974,7 +3001,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+7"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <location line="-154"/>
@@ -2984,7 +3011,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+58"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Norabidea:</translation>
     </message>
   </context>
   <context>
@@ -3017,7 +3044,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+19"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Norabidea:</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3077,7 +3104,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
       <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-      <translation type="unfinished">IGES (*.igs *.iges);;All Files (*.*)</translation>
+      <translation>IGES (*.igs *.iges);;Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
@@ -3124,7 +3151,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
       <source>STEP (*.stp *.step);;All Files (*.*)</source>
-      <translation type="unfinished">STEP (*.stp *.step);;All Files (*.*)</translation>
+      <translation>STEP (*.stp *.step);;Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
@@ -3146,47 +3173,47 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Primitive</source>
-      <translation type="unfinished">Primitive</translation>
+      <translation>Jatorrizkoa</translation>
     </message>
     <message>
       <source>X min</source>
-      <translation type="unfinished">X min</translation>
+      <translation>X min</translation>
     </message>
     <message>
       <source>x max</source>
-      <translation type="unfinished">x max</translation>
+      <translation>X max</translation>
     </message>
     <message>
       <source>Y min</source>
-      <translation type="unfinished">Y min</translation>
+      <translation>Y min</translation>
     </message>
     <message>
       <source>Y max</source>
-      <translation type="unfinished">Y max</translation>
+      <translation>Y max</translation>
     </message>
     <message>
       <source>Z min</source>
-      <translation type="unfinished">Z min</translation>
+      <translation>Z min</translation>
     </message>
     <message>
       <source>Z max</source>
-      <translation type="unfinished">Z max</translation>
+      <translation>Z max</translation>
     </message>
     <message>
       <source>X2 min</source>
-      <translation type="unfinished">X2 min</translation>
+      <translation>X2 min</translation>
     </message>
     <message>
       <source>X2 max</source>
-      <translation type="unfinished">X2 max</translation>
+      <translation>X2 max</translation>
     </message>
     <message>
       <source>Z2 min</source>
-      <translation type="unfinished">Z2 min</translation>
+      <translation>Z2 min</translation>
     </message>
     <message>
       <source>Z2 max</source>
-      <translation type="unfinished">Z2 max</translation>
+      <translation>Z2 max</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
@@ -3202,15 +3229,15 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation type="unfinished">X Axis Value:</translation>
+      <translation>X ardatzeko balioa:</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation type="unfinished">Y Axis Value:</translation>
+      <translation>Y ardatzeko balioa:</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation type="unfinished">Z Axis Value:</translation>
+      <translation>Z ardatzeko balioa:</translation>
     </message>
     <message>
       <location line="+91"/>
@@ -3227,11 +3254,11 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="+34"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Erpina</translation>
     </message>
     <message>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posizioa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="+1567"/>
@@ -3249,7 +3276,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Norabidea:</translation>
     </message>
     <message>
       <location line="-125"/>
@@ -3268,7 +3295,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
       <location line="+9"/>
       <location filename="../../DlgPrimitives.cpp" line="+16"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kutxa</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -3350,7 +3377,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
       <location line="-100"/>
       <location line="+93"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <location line="-7"/>
@@ -3420,11 +3447,11 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>U parametric:</source>
-      <translation type="unfinished">U parametric:</translation>
+      <translation>U parametrikoa:</translation>
     </message>
     <message>
       <source>V parametric:</source>
-      <translation type="unfinished">V parametric:</translation>
+      <translation>V parametrikoa:</translation>
     </message>
     <message>
       <location line="+150"/>
@@ -3540,7 +3567,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <location line="-487"/>
@@ -3671,7 +3698,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Select line in 3D view</source>
-      <translation type="unfinished">Select line in 3D view</translation>
+      <translation>Hautatu lerroa 3D bistan</translation>
     </message>
     <message>
       <location line="-17"/>
@@ -3686,7 +3713,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+81"/>
       <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <translation>Hasteko, hautatu forma bat haren erreboluzioa sortzeko.</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3729,23 +3756,23 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
       <source>View accuracy / Performance</source>
-      <translation type="unfinished">View accuracy / Performance</translation>
+      <translation>Bistaren doitasuna / performantzia</translation>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation type="unfinished">View smoothing</translation>
+      <translation>Bista leuntzea</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
-      <translation type="unfinished">Using high-quality normals</translation>
+      <translation>Kalitate handiko normalak erabiltzen</translation>
     </message>
     <message>
       <source>This will slow down render speed but will lead to nicer results</source>
-      <translation type="unfinished">This will slow down render speed but will lead to nicer results</translation>
+      <translation>Horrek errendatze-abiadura motelduko du baina emaitza hobeak emango ditu</translation>
     </message>
     <message>
       <source>Defines the appearance of surfaces</source>
-      <translation type="unfinished">Defines the appearance of surfaces</translation>
+      <translation>Azaleren itxura definitzen du</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="+14"/>
@@ -3773,7 +3800,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Do not define normal per vertex</source>
-      <translation type="unfinished">Do not define normal per vertex</translation>
+      <translation>Ez definitu normala erpineko</translation>
     </message>
     <message>
       <location line="-20"/>
@@ -3791,7 +3818,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Kalitate handiko normalak&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Honek moteldu egingo du errendatze-abiadura, baina emaitza itxurosoagoak emango ditu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3806,12 +3833,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
       <source>Deviation</source>
-      <translation type="unfinished">Deviation</translation>
+      <translation>Desbideratzea</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+      <translation>Desbideratze txikiegia ezartzen bada, teselazioak denbora gehiago behar du eta erabiltzaile-interfazea izoztu edo moteldu egiten da.</translation>
     </message>
   </context>
   <context>
@@ -3823,23 +3850,23 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Esportatu</translation>
     </message>
     <message>
       <source>Millimeter</source>
-      <translation type="unfinished">Millimeter</translation>
+      <translation>Milimetroa</translation>
     </message>
     <message>
       <source>Meter</source>
-      <translation type="unfinished">Meter</translation>
+      <translation>Metroa</translation>
     </message>
     <message>
       <source>Inch</source>
-      <translation type="unfinished">Inch</translation>
+      <translation>Hazbetea</translation>
     </message>
     <message>
       <source>Units for export of STEP/IGES</source>
-      <translation type="unfinished">Units for export of STEP/IGES</translation>
+      <translation>STEP/IGES esportaziorako unitateak</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3976,7 +4003,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+9"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posizioa</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -3988,7 +4015,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <name>PartGui::LoftWidget</name>
     <message>
       <source>Vertex/Wire</source>
-      <translation type="unfinished">Vertex/Wire</translation>
+      <translation>Erpina/alanbrea</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="+220"/>
@@ -4008,12 +4035,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Profil erabilgarriak</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Hautatutako profilak</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -4023,15 +4050,15 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+33"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
     <message>
       <source>At least two vertices, edges or wires are required.</source>
-      <translation type="unfinished">At least two vertices, edges or wires are required.</translation>
+      <translation>Gutxienez bi erpin, ertz edo alanbre behar dira.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
-      <translation type="unfinished">At least two vertices or wires are required.</translation>
+      <translation>Gutxienez bi erpin edo alanbre behar dira.</translation>
     </message>
   </context>
   <context>
@@ -4073,7 +4100,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Base point:</source>
-      <translation type="unfinished">Base point:</translation>
+      <translation>Oinarri-puntua:</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -4106,7 +4133,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location filename="../../TaskOffset.cpp" line="+204"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -4147,7 +4174,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation type="unfinished">Select three or more edges</translation>
+      <translation>Hautatu hiru ertz edo gehiago</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -4200,7 +4227,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="+416"/>
       <source>Vertex/Wire</source>
-      <translation type="unfinished">Vertex/Wire</translation>
+      <translation>Erpina/alanbrea</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4225,12 +4252,12 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Profil erabilgarriak</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Hautatutako profilak</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4260,7 +4287,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+37"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -4318,12 +4345,20 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation>Superkokapen-propietatearen ispilua. Kokapen gehiagrria eransten den objektuaren espazio lokalean adieraztzen da.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Eranskin-desplazamenduaren propietatea. Kokapena eransten den objektuaren espazio lokalean adierazten da.</translation>
     </message>
     <message>
       <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Eranskinaren desplazamendua:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Superkokapen-propietatearen ispilua. Kokapen gehigarria eransten den objektuaren espazio lokalean adierazten da.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
       <translation>Kokapen gehigarria:</translation>
     </message>
@@ -4389,11 +4424,20 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Eranskinaren desplazamendua (inaktiboa - erantsi gabea):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>Ezin da editatu eranskin-desplazamenduaren biraketa-zatia adierazpenez mugatuta dagoelako.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation>Kokapen gehigarria (inaktiboa - ez erantsia):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
@@ -4405,7 +4449,7 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
     <message>
       <location line="+5"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Erpina</translation>
     </message>
     <message>
       <location line="+59"/>
@@ -4418,19 +4462,18 @@ Hautatu baliozko forma bat goitibeherako kutxan.</translation>
       <translation>%1. erreferentzia</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation>Ezin da editatu superkokapenaren biraketa-zatia adierazpenez mugatuta dagoelako.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Erreferentzia-konbinazioak:
 </translation>
     </message>
     <message>
@@ -4453,7 +4496,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Formaren edukia</translation>
     </message>
@@ -4461,7 +4504,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Egiaztatu geometria</translation>
     </message>
@@ -4470,23 +4513,23 @@ Reference combinations:
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
       <source>Hint</source>
-      <translation type="unfinished">Hint</translation>
+      <translation>Oharra</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation type="unfinished">Select Control.</translation>
+      <translation>Hautatu kontrola.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>Kontrola</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation type="unfinished">Dynamic</translation>
+      <translation>Dinamikoa</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation type="unfinished">Align</translation>
+      <translation>Lerrokatu</translation>
     </message>
     <message>
       <source>Value</source>
@@ -4494,7 +4537,7 @@ Reference combinations:
     </message>
     <message>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>Berezia</translation>
     </message>
     <message>
       <source>Command</source>
@@ -4502,7 +4545,7 @@ Reference combinations:
     </message>
     <message>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Luzatu</translation>
     </message>
     <message>
       <source>Move</source>
@@ -4518,55 +4561,55 @@ Reference combinations:
     </message>
     <message>
       <source>Orient</source>
-      <translation type="unfinished">Orient</translation>
+      <translation>Orientatu</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation type="unfinished">Match</translation>
+      <translation>Bat egin</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation type="unfinished">Surround</translation>
+      <translation>Inguratu</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation type="unfinished">dummy</translation>
+      <translation>fikziozkoa</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X ardatza</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation type="unfinished">Y Axis</translation>
+      <translation>Y ardatza</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation type="unfinished">Z Axis</translation>
+      <translation>Z ardatza</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation type="unfinished">Increment</translation>
+      <translation>Gehikuntza</translation>
     </message>
     <message>
       <source>.125</source>
-      <translation type="unfinished">.125</translation>
+      <translation>,125</translation>
     </message>
     <message>
       <source>.500</source>
-      <translation type="unfinished">.500</translation>
+      <translation>,500</translation>
     </message>
     <message>
       <source>1.000</source>
-      <translation type="unfinished">1.000</translation>
+      <translation>1,000</translation>
     </message>
     <message>
       <source>5.000</source>
-      <translation type="unfinished">5.000</translation>
+      <translation>5,000</translation>
     </message>
     <message>
       <source>10.000</source>
-      <translation type="unfinished">10.000</translation>
+      <translation>10,000</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
@@ -4578,7 +4621,7 @@ Reference combinations:
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation type="unfinished">Not implemented yet</translation>
+      <translation>Inplementatu gabea</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
@@ -4602,11 +4645,11 @@ Reference combinations:
     </message>
     <message>
       <source>1.0</source>
-      <translation type="unfinished">1.0</translation>
+      <translation>1,0</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation type="unfinished">Enter Value</translation>
+      <translation>Sartu balioa</translation>
     </message>
     <message>
       <source>Select box to match</source>
@@ -4614,19 +4657,19 @@ Reference combinations:
     </message>
     <message>
       <source>Select a point</source>
-      <translation type="unfinished">Select a point</translation>
+      <translation>Hautatu puntu bat</translation>
     </message>
     <message>
       <source>0.0</source>
-      <translation type="unfinished">0.0</translation>
+      <translation>0,0</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation type="unfinished">Select dragger to align</translation>
+      <translation>Hautatu lerrokatu nahi duzun arrastelua</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation type="unfinished">Select dragger to modify</translation>
+      <translation>Hautatu aldatu nahi duzun arrastelua</translation>
     </message>
   </context>
   <context>
@@ -4634,7 +4677,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskAttacher.cpp" line="+217"/>
       <source>Datum dialog: Input error</source>
-      <translation>Zero puntuaren elarrizketa-koadroa: Sarrera-errorea</translation>
+      <translation>Zero puntuaren elkarrizketa-koadroa: Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -4674,7 +4717,7 @@ Reference combinations:
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation type="unfinished">Vertex/Wire</translation>
+      <translation>Erpina/alanbrea</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -4900,7 +4943,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location line="+71"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -4949,23 +4992,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Hautatu bi forma.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4990,29 +5033,29 @@ Do you want to continue?</source>
       <translation>Hautatu bi forma edo gehiago, Edo hautatu bi forma edo gehiago dituen konposatu bat, fusionatuak izan daitezen.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Hautatu forma bat edo gehiago.</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-      <translation type="unfinished">All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+      <translation>CAD fitxategi guztiak (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
       <source>STEP (*.stp *.step)</source>
-      <translation type="unfinished">STEP (*.stp *.step)</translation>
+      <translation>STEP (*.stp *.step)</translation>
     </message>
     <message>
       <source>IGES (*.igs *.iges)</source>
-      <translation type="unfinished">IGES (*.igs *.iges)</translation>
+      <translation>IGES (*.igs *.iges)</translation>
     </message>
     <message>
       <source>BREP (*.brp *.brep)</source>
-      <translation type="unfinished">BREP (*.brp *.brep)</translation>
+      <translation>BREP (*.brp *.brep)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="+61"/>
@@ -5046,7 +5089,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformatu</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="+209"/>
@@ -5067,7 +5110,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Select two shapes or more, please.</source>
-      <translation type="unfinished">Select two shapes or more, please.</translation>
+      <translation>Hautatu bi forma edo gehiago.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="+204"/>
@@ -5090,7 +5133,7 @@ Do you want to continue?</source>
       <translation>Editatu ertz biribilduak</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Ezarri koloreak...</translation>
     </message>
@@ -5115,7 +5158,7 @@ Do you want to continue?</source>
       <translation>Oskola</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
@@ -5141,7 +5184,7 @@ Do you want to continue?</source>
       <location line="+3"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Erpina</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
@@ -5404,7 +5447,7 @@ Do you want to continue?</source>
       <location line="-1039"/>
       <location line="+1046"/>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>Kontrola</translation>
     </message>
     <message>
       <location line="-269"/>

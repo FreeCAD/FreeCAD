@@ -134,7 +134,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation>Területek görbéi tervező eszköz kiválasztva [m]</translation>
+      <translation>Területek görbéinek tervező eszköze kiválasztva [m]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
@@ -144,12 +144,12 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation>Területek görbe vágó eszköz kiválasztva [fok]</translation>
+      <translation>Területek görbe vágó eszközének kiválasztva [fok]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation>Vágás szöge</translation>
+      <translation>Szög vágása</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
       <source>Computing hydrostatics</source>
-      <translation>Vízszilárdság / hydrostatika kiszámítása</translation>
+      <translation>Vízszilárdság / hidrosztatika kiszámítása</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="486"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
       <source>Any valid ship section found</source>
-      <translation>Bármely megtalálható érvényes hajó rész</translation>
+      <translation>Ennyi érvényes hajó részt talált</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="132"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation>Egy tartáj példányt kell kijelölni, mielőtt használja ezt az eszközt (nem található érvényes tartáj a kijelölt objektumokon)</translation>
+      <translation>Egy tartály példányt kell kijelölni, mielőtt használja ezt az eszközt (nem található érvényes tartáj a kijelölt objektumokon)</translation>
     </message>
     <message>
       <location filename="../../TankInstance.py" line="128"/>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation>ZeroDivisionError: Üres területet tslált a fő keret terület együttható számítása során!</translation>
+      <translation>ZeroDivisionError: Üres területet talált a fő keret terület együttható számítása során!</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="274"/>
       <source>Plot hydrostatics</source>
-      <translation>Vízszilárdság / hidrostatika nyomtatása</translation>
+      <translation>Vízszilárdság / hidrosztatika nyomtatása</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="278"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation>Példa hajó betüöltése</translation>
+      <translation>Példa hajó betöltése</translation>
     </message>
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="110"/>

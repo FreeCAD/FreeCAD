@@ -4,94 +4,94 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="44"/>
+      <location filename="../../NavigationIndicatorGui.py" line="62"/>
       <source>Select</source>
       <translation>Hautatu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="45"/>
+      <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
       <translation>Zooma</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="46"/>
+      <location filename="../../NavigationIndicatorGui.py" line="64"/>
       <source>Rotate</source>
       <translation>Biratu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="47"/>
+      <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
       <translation>Mugitu ezker-eskuin</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="48"/>
+      <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
       <translation>Mugitu gora-behera</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="49"/>
+      <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>Nabigazio-estiloa</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="50"/>
+      <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
       <translation>Page Up edo Page Down tekla.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="51"/>
+      <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
       <translation>Biraketa-fokua</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="52"/>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or key H.</source>
       <translation>Saguaren erdiko botoia edo H tekla.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="53"/>
+      <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Saguaren erdiko botoia.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="55"/>
+      <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
       <translation>Nabigazio-estiloa ez da onartzen.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="252"/>
+      <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="253"/>
+      <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
       <translation>Orbita-estiloa</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="256"/>
+      <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
       <translation>Trinkoa</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="259"/>
+      <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
       <translation>Argibidea</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="266"/>
+      <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
       <translation>Tornua</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="270"/>
+      <location filename="../../NavigationIndicatorGui.py" line="296"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="285"/>
+      <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Definitu gabea</translation>
     </message>
   </context>
 </TS>

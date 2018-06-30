@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -118,13 +118,13 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Een nieuwe kloon maken</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -142,14 +142,14 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Dupliceer geselecteerde object</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -203,36 +203,36 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Gat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Maak gat met geselecteerde schets</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>Maak een referentie lijn</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>Maak een nieuwe referentie lijn</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>Maak een linear patroon</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -261,10 +261,14 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migreren</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
     </message>
@@ -374,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -392,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -425,25 +429,25 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Maken referentie vlak</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Maak een nieuw referentie vlak</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -465,25 +469,25 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Maken referentie punt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Maak een nieuw referentie punt</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -545,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -563,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -629,27 +633,27 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Toevoegen van een primitief</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Toevoegen Doos</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Toevoegen Cilinder</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Toevoegen Bol</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Toevoegen Kegel</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -659,17 +663,17 @@
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Toevoegen Ring</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Toevoegen Prisma</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Toevoegen Wig</translation>
     </message>
   </context>
   <context>
@@ -680,10 +684,14 @@
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
       <translation type="unfinished">Create an subtractive primitive</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
+      <translation type="unfinished">Create a subtractive primitive</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -1157,7 +1165,6 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation type="unfinished">Common</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Deel</translation>
     </message>
@@ -1180,8 +1187,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>Basisvorm parameters</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>Basisvorm maken</translation>
     </message>
@@ -1243,12 +1249,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Ref toevoegen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Ref verwijderen</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1276,7 +1282,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation type="unfinished">Boolean: Accept: Input error</translation>
     </message>
@@ -1311,7 +1327,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Invoerfout</translation>
     </message>
@@ -1354,7 +1370,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Invoerfout</translation>
     </message>
@@ -1553,12 +1569,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Ref toevoegen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Ref verwijderen</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1782,12 +1798,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+12"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Sectie toevoegen</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Sectie verwijderen</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -1999,8 +2015,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
@@ -2015,8 +2031,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
@@ -2058,40 +2074,37 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Opdikkingsparameters</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Geen vlak geselecteerd</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>Naar laatste</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>Naar eerste</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>Naar oppervlak</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Twee dimensies</translation>
     </message>
@@ -2190,7 +2203,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Rand toevoegen</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -2218,7 +2231,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation type="unfinished">Section orientation</translation>
     </message>
@@ -2263,7 +2276,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Rand toevoegen</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -2291,7 +2304,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+14"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Constante</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2301,15 +2314,15 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+23"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Sectie toevoegen</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Sectie verwijderen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation type="unfinished">Section transformation</translation>
     </message>
@@ -2332,8 +2345,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
@@ -2354,8 +2367,13 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>2de lengte</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
@@ -2365,12 +2383,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>Weergave verversen</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Lengte</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Uitsparingsparameters</translation>
     </message>
@@ -2379,29 +2397,32 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>Naar laatste</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>Naar eerste</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>Langs alle</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>Naar oppervlak</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Twee dimensies</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Geen vlak geselecteerd</translation>
     </message>
@@ -2658,12 +2679,11 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Geen vlak geselecteerd</translation>
     </message>
@@ -2697,7 +2717,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+26"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Instelling</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2769,7 +2789,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Constructielijn %1</translation>
     </message>
     <message>
       <location line="-22"/>
@@ -2795,17 +2815,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="-9"/>
       <source>Base XY plane</source>
-      <translation type="unfinished">Base XY plane</translation>
+      <translation>Basis oppervlak XY</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base YZ plane</source>
-      <translation type="unfinished">Base YZ plane</translation>
+      <translation>Basis oppervlak YZ</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base XZ plane</source>
-      <translation type="unfinished">Base XZ plane</translation>
+      <translation>Basis oppervlak XZ</translation>
     </message>
   </context>
   <context>
@@ -2874,7 +2894,6 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
       <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
     </message>
@@ -2883,39 +2902,72 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
       <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
       <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation type="unfinished">Create an subtractive cone</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation type="unfinished">Create an subtractive ellipsoid</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation type="unfinished">Create an subtractive torus</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation type="unfinished">Create an subtractive prism</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
       <translation type="unfinished">Create an subtractive wedge</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation type="unfinished">Create a subtractive cone</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation type="unfinished">Create a subtractive torus</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation type="unfinished">Create a subtractive prism</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
+      <translation type="unfinished">Create a subtractive wedge</translation>
     </message>
   </context>
   <context>
@@ -3078,7 +3130,7 @@ Creëer de schets op een vlak.</translation>
       <translation>Afschuining bewerken</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation type="unfinished">Invalid selection</translation>
     </message>
@@ -3145,9 +3197,9 @@ Creëer de schets op een vlak.</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3157,8 +3209,8 @@ Creëer de schets op een vlak.</translation>
       <translation>Een dialoog is al geopend in het taakvenster</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3290,7 +3342,7 @@ Creëer de schets op een vlak.</translation>
       <translation type="unfinished">Edit revolve</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation type="unfinished">Part creation failed</translation>
     </message>
@@ -3300,7 +3352,7 @@ Creëer de schets op een vlak.</translation>
       <translation type="unfinished">Failed to create a part object.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3484,10 +3536,10 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Constructielijn %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
@@ -3520,7 +3572,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation type="unfinished">Feature is not in a body</translation>
     </message>
@@ -3565,26 +3617,26 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="-82"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Coördinaat Systeem</translation>
     </message>
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Bewerken referentie</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation type="unfinished">CoordinateSystem</translation>
+      <translation>Coördinaat Systeem</translation>
     </message>
     <message>
       <source>Edit datum </source>
-      <translation type="unfinished">Edit datum </translation>
+      <translation>Bewerken referentie </translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Bewerken %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3628,7 +3680,7 @@ This feature is broken and can't be edited.</translation>
       <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
     </message>

@@ -70,7 +70,7 @@ namespace Gui
     {
     public:
         typedef bool (*EventFilter)(void *message, long *result);
-        RawInputEventFilter(EventFilter) {
+        RawInputEventFilter(EventFilter filter) : eventFilter(filter) {
         }
         virtual ~RawInputEventFilter() {
         }

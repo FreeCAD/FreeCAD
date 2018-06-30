@@ -272,17 +272,17 @@ Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
 Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 
-Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m*s^2 or N/m^2)
+Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2));
 
-Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
-Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
-Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
+Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 
-Quantity Quantity::PSI              (0.145038      ,Unit(-1,1,-2)); // pounds/in^2
-Quantity Quantity::KSI              (145.038       ,Unit(-1,1,-2)); // 1000 x pounds/in^2
+Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in^2
+Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3)
 Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3)
@@ -317,14 +317,14 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     char temp[40];
     int i = 0;
     for(char* c=yytext;*c!='\0';c++){ 
-        // skipp group delimiter
+        // skip group delimiter
         if(*c==grp_delim) continue;
-        // check for a dez delimiter othere then dot
+        // check for a dez delimiter other then dot
         if(*c==dez_delim && dez_delim !='.')
              temp[i++] = '.';
         else
             temp[i++] = *c; 
-        // check buffor overflow
+        // check buffer overflow
         if (i>39) return 0.0;
     }
     temp[i] = '\0';
@@ -349,7 +349,7 @@ void Quantity_yyerror(char *errorinfo)
 namespace QuantityParser {
 
 #define YYINITDEPTH 20
-// show the parser the lexer method
+// show parser the lexer method
 #define yylex QuantityLexer
 int QuantityLexer(void);
 

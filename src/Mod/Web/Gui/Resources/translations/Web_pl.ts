@@ -168,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Prześlij</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>

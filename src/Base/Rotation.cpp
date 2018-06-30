@@ -51,7 +51,6 @@ Rotation::Rotation(const Vector3d& axis, const double fAngle)
 
 Rotation::Rotation(const Matrix4D& matrix)
 {
-    _axis.Set(0.0, 0.0, 1.0);
     this->setValue(matrix);
 }
 
@@ -61,8 +60,6 @@ Rotation::Rotation(const Matrix4D& matrix)
  */
 Rotation::Rotation(const double q[4])
 {
-    _axis.Set(0.0, 0.0, 1.0);
-    _angle = 0.0;
     this->setValue(q);
 }
 
@@ -72,15 +69,11 @@ Rotation::Rotation(const double q[4])
  */
 Rotation::Rotation(const double q0, const double q1, const double q2, const double q3)
 {
-    _axis.Set(0.0, 0.0, 1.0);
-    _angle = 0.0;
     this->setValue(q0, q1, q2, q3);
 }
 
 Rotation::Rotation(const Vector3d & rotateFrom, const Vector3d & rotateTo)
 {
-    _axis.Set(0.0, 0.0, 1.0);
-    _angle = 0.0;
     this->setValue(rotateFrom, rotateTo);
 }
 
@@ -94,7 +87,7 @@ Rotation::Rotation(const Rotation& rot)
     this->_axis[0] = rot._axis[0];
     this->_axis[1] = rot._axis[1];
     this->_axis[2] = rot._axis[2];
-    this->_angle =  rot._angle;
+    this->_angle   = rot._angle;
 }
 
 const double * Rotation::getValue(void) const
@@ -126,12 +119,9 @@ void Rotation::evaluateVector()
         this->_axis.z = this->quat[2] * l / scale;
 
         _angle = rfAngle;
-        if (_angle >= D_PI) {
-            _angle -= 2 * D_PI;
-        }
     }
     else {
-        // the vector stays unchanged
+        _axis.Set(0.0, 0.0, 1.0);
         _angle = 0.0;
     }
 }
@@ -271,7 +261,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the roatation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();

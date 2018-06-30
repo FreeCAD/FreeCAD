@@ -113,7 +113,7 @@ def list_install_names(path_macho):
     lines = output.split("\t")
     libs = []
 
-    #first line is the the filename, and if it is a library, the second line
+    #first line is the filename, and if it is a library, the second line
     #is the install name of it
     if path_macho.endswith(os.path.basename(lines[1].split(" (")[0])):
         lines = lines[2:]
@@ -353,7 +353,7 @@ def print_node(graph, node, path):
 
 def main():
     if len(sys.argv) < 2:
-        print "Usage " + sys.argv[0] + " path [additional search paths]"
+        print("Usage " + sys.argv[0] + " path [additional search paths]")
         quit()
 
     path = sys.argv[1]

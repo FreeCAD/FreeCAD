@@ -65,6 +65,7 @@ TYPESYSTEM_SOURCE(Measure::Measurement, Base::BaseClass)
 Measurement::Measurement()
 {
     measureType = Invalid;
+    References3D.setScope(App::LinkScope::Global);
 }
 
 Measurement::~Measurement()
@@ -229,6 +230,7 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
     }
 }
 
+//TODO:: add lengthX, lengthY (and lengthZ??) support
 // Methods for distances (edge length, two points, edge and a point
 double Measurement::length() const
 {

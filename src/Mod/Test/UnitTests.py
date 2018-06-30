@@ -24,6 +24,10 @@ def compare(x, y):
 
 
 class UnitBasicCases(unittest.TestCase):
+    def setUp(self):
+        par = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        dec = par.GetInt("Decimals")
+        self.delta = math.pow(10,-dec)
 
     def testConversions(self):
         #tu = FreeCAD.Units.translateUnit
@@ -42,6 +46,18 @@ class UnitBasicCases(unittest.TestCase):
         #self.failUnless(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
         self.failUnless(compare(tu('1\'(3+7/16)"'), 392.112500))
 
+        psi = FreeCAD.Units.parseQuantity("1psi")
+        mpa = psi.getValueAs("MPa").Value
+        self.assertAlmostEqual(0.006894744825, mpa, delta=self.delta)
+        kpa = psi.getValueAs("kPa").Value
+        self.assertAlmostEqual(6.894744825494, kpa, delta=self.delta)
+
+        ksi = FreeCAD.Units.parseQuantity("1ksi")
+        mpa = ksi.getValueAs("MPa").Value
+        self.assertAlmostEqual(6.894744825494, mpa, delta=self.delta)
+        kpa = ksi.getValueAs("kPa").Value
+        self.assertAlmostEqual(6894.744825494, kpa, delta=self.delta)
+
     def testSelfConsistency(self):
         qu = FreeCAD.Units.Quantity("0.23 W/m/K")
         self.assertTrue(ts(qu), ts2(qu))
@@ -49,6 +65,22 @@ class UnitBasicCases(unittest.TestCase):
         self.assertTrue(ts(qu), ts2(qu))
         qu = FreeCAD.Units.Quantity("237.000 W/mm/K")
         self.assertTrue(ts(qu), ts2(qu))
+
+    def testSchemes(self):
+        schemes = FreeCAD.Units.listSchemas()
+        num = len(schemes)
+
+        psi = FreeCAD.Units.parseQuantity("1psi")
+        for i in range(num):
+            t = FreeCAD.Units.schemaTranslate(psi, i)
+            v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("psi")
+            self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1".format(schemes[i], v.Value), delta=self.delta)
+
+        ksi = FreeCAD.Units.parseQuantity("1ksi")
+        for i in range(num):
+            t = FreeCAD.Units.schemaTranslate(ksi, i)
+            v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("ksi")
+            self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1".format(schemes[i], v.Value), delta=self.delta)
 
     def testTrigonometric(self):
         #tu=FreeCAD.Units.translateUnit

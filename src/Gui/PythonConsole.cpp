@@ -784,8 +784,8 @@ void PythonConsole::appendOutput(const QString& output, int state)
 void PythonConsole::runSource(const QString& line)
 {
     /**
-     * Check if there's a "source drain", which want's to consume the source in another way then just executing it.
-     * If so, put the source to the drain and emit a signal to notify the consumer, whoever this may be.
+     * Check if there's a "source drain", which wants to consume the source in another way then just executing it.
+     * If so, put the source to the drain and emit a signal to notify the consumer, whomever this may be.
      */
     if (this->_sourceDrain)
     {
@@ -811,6 +811,12 @@ void PythonConsole::runSource(const QString& line)
         setFocus(); // if focus was lost
     }
     catch (const Base::SystemExitException&) {
+#if PY_MAJOR_VERSION >= 3
+        // In Python the exception must be cleared because when the message box below appears
+        // callable Python objects can be invoked and due to a failing assert the application
+        // will be aborted.
+        PyErr_Clear();
+#endif
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         bool check = hPrefGrp->GetBool("CheckSystemExit",true);
         int ret = QMessageBox::Yes;

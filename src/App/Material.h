@@ -130,7 +130,7 @@ public:
         return ss.str();
 }
 
-    /// color values, public accesible
+    /// color values, public accessible
     float r,g,b,a;
 };
 

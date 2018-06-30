@@ -462,7 +462,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Max Spline Segment: </string>
+           <string>Max Spline Segment:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

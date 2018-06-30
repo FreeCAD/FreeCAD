@@ -127,10 +127,6 @@
       <translation>Movimenti Spaceball</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensibilità globale:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Modalità dominante</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Inverti</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilità globale:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD non sarebbe nulla senza i loro sforzi:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licenza</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Librerie</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Questo software utilizza componenti open source i cui copyright e altri diritti di proprietà appartengono ai rispettivi proprietari:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1384,27 +1399,25 @@ Il file esiste già.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Rinomina il File di Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Immettere il nuovo nome:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' esiste già.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Rinomina non riuscita</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Impossibile rinominare in '%1'. Forse un errore di autorizzazione del file?</translation>
     </message>
   </context>
   <context>
@@ -2138,8 +2151,8 @@ Specificare un'altra cartella.</translation>
       <translation>Salva la miniatura nel file del progetto al salvataggio del documento</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Numero di file di backup quando si salva di nuovo il documento</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Numero massimo di file di backup da conservare quando si salva nuovamente il documento</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2247,11 +2260,11 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Aggiungi il logo del programma alla miniatura generata</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Un URL dove l'utente può trovare ulteriori dettagli sulla licenza</translation>
     </message>
   </context>
   <context>
@@ -2619,7 +2632,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Piccole parti metriche &amp; CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2661,7 +2674,7 @@ Specificare un'altra cartella.</translation>
       <translation>Raggio di selezione (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Imposta l'area di confusione per la selezione degli elementi in una vista 3D. Un valore maggiore facilita la selezione, ma rende impossibile selezionare le cose piccole.</translation>
     </message>
   </context>
@@ -3349,10 +3362,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Vista combinata</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Progetto</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Azioni</translation>
     </message>
@@ -3490,7 +3499,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Vista della selezione</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -4028,7 +4037,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Cambia gli oggetti collegati</translation>
     </message>
   </context>
   <context>
@@ -5051,6 +5060,10 @@ Prestare attenzione al punto dove si fa clic.</translation>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>Il %1 non è vuoto, eliminare anche il suo contenuto?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Esportazione non riuscita</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5608,11 +5621,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Crea gruppo</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Crea un nuovo gruppo per ordinare oggetti</translation>
     </message>
   </context>
   <context>
@@ -6464,7 +6477,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Axonometric</source>
-      <translation>Assonometrica</translation>
+      <translation>Assonometria</translation>
     </message>
     <message>
       <source>Set to axonometric view</source>
@@ -6497,8 +6510,8 @@ Prestare attenzione al punto dove si fa clic.</translation>
       <translation>Crea una nuova vista</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Crea una vista in una nuova finestra per il documento attivo</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Crea una nuova vista per il documento attivo</translation>
     </message>
   </context>
   <context>
@@ -6854,7 +6867,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Visualizzare la finestra principale in modalità schermo intero</translation>
     </message>
   </context>
   <context>

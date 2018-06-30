@@ -36,7 +36,7 @@ class PathWorkbench (Workbench):
         FreeCADGui.addPreferencePage(PathPreferencesPathDressup.DressupPreferencesPage, "Path")
 
         # Check enablement of experimental features
-        from PathScripts.PathPreferences import PathPreferences
+        from PathScripts import PathPreferences
 
         # load the builtin modules
         import Path
@@ -48,12 +48,13 @@ class PathWorkbench (Workbench):
         # load python modules
         from PathScripts import PathArray
         from PathScripts import PathComment
-        # from PathScripts import PathCompoundExtended
         from PathScripts import PathCustom
+        from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
+        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
@@ -62,7 +63,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathInspect
         from PathScripts import PathJobCmd
         from PathScripts import PathMillFaceGui
-        from PathScripts import PathPlane
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
@@ -74,7 +74,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathStop
         from PathScripts import PathSurfaceGui
         from PathScripts import PathToolController
-        from PathScripts import PathToolLenOffset
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathSimulatorGui
         import PathCommands
@@ -82,11 +81,11 @@ class PathWorkbench (Workbench):
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
         toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
-        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Shape"]
+        prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
+        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -112,8 +111,9 @@ class PathWorkbench (Workbench):
 
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
+            prepcmdlist.append("Path_Shape")
             threedopcmdlist.append("Path_Surface")
-            extracmdlist.extend(["Path_Shape", "Path_Area", "Path_Area_Workplane"])
+            extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
             threedcmdgroup = ['Path_3dTools']
         else:
@@ -121,33 +121,26 @@ class PathWorkbench (Workbench):
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
-        #self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Partial Commands"), prepcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+threedcmdgroup)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Tools")], toolcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
-            "Path", "Partial Commands")], prepcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "New Operations")], opcmdlist)
+            "Path", "Supplemental Commands")], prepcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Path Modification")], modcmdmore)
-        # self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #     "Path", "Remote Operations")], remotecmdlist)
         if extracmdlist:
             self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
         self.dressupcmds = dressupcmdlist
 
-        Path.Area.setDefaultParams(Accuracy = PathPreferences.defaultLibAreaCurveAccuracy())
+        curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
+        if curveAccuracy:
+            Path.Area.setDefaultParams(curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 

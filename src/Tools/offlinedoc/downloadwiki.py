@@ -35,7 +35,7 @@ from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
 
-DEFAULTURL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
+DEFAULTURL = "https://www.freecadweb.org" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
@@ -47,7 +47,7 @@ VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 FOLDER = "./localwiki"
 LISTFILE = "wikifiles.txt"
 URL = DEFAULTURL
-wikiindex = "/index.php?title="
+wikiindex = "/wiki/index.php?title="
 defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet'></head><body>&nbsp;</body></html>"
 css = """/* Basic CSS for offline wiki rendering */
 
@@ -189,6 +189,8 @@ def getlinks(html):
     for l in links:
         # rg = re.findall('php\?title=(.*)\" title',l)
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
+        if not rg:
+            rg = re.findall('href="\/wiki\/(.*?)"',l)
         if rg:
             rg = rg[0]
             if not "Command_Reference" in rg:
@@ -287,7 +289,7 @@ def fetchimage(imagelink):
         while failcount < MAXFAIL:
             try:
                 if VERBOSE: print "    fetching " + filename
-                data = (urlopen(webroot(URL) + imagelink).read())
+                data = (urlopen(URL + imagelink).read())
                 path = local(filename,image=True)
                 file = open(path,'wb')
                 file.write(data)

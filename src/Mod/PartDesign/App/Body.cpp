@@ -206,8 +206,17 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
+    // ORIGINAL COMMENT:
     // This can be recognized because the Originals property is empty (it is contained
     // in the MultiTransform instead)
+    // COMMENT ON THE COMMENT:
+    // This is wrong because at the creation (addObject) and before assigning the originals, that 
+    // is when this code is executed, the originals property is indeed empty.
+    //
+    // However, for the purpose of setting the base feature, the transform feature has been modified
+    // to auto set it when the originals are not null. See:
+    // App::DocumentObjectExecReturn *Transformed::execute(void)
+    //
     return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
             static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
 }
@@ -320,6 +329,11 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     Group.setValues (model);
 
     // Set the BaseFeature property
+    setBaseProperty(feature);
+}
+
+void Body::setBaseProperty(App::DocumentObject* feature)
+{
     if (Body::isSolidFeature(feature)) {
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
@@ -333,9 +347,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
             static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
         }
     }
-
 }
-
 
 std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* feature)
 {
@@ -430,7 +442,8 @@ void Body::onSettingDocument() {
 }
 
 void Body::onChanged (const App::Property* prop) {
-    if (!this->getDocument()->isPerformingTransaction()) {
+    // we neither load a project nor perform undo/redo
+    if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
         if ( prop == &BaseFeature ) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();

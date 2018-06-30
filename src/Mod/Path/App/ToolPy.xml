@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="PersistencePy" 
-        Name="ToolPy" 
-        Twin="Tool" 
-        TwinPointer="Tool" 
-        Include="Mod/Path/App/Tooltable.h" 
-        Namespace="Path" 
-        FatherInclude="Base/PersistencePy.h" 
+    <PythonExport
+        Father="PersistencePy"
+        Name="ToolPy"
+        Twin="Tool"
+        TwinPointer="Tool"
+        Include="Mod/Path/App/Tooltable.h"
+        Namespace="Path"
+        FatherInclude="Base/PersistencePy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">
@@ -16,7 +16,7 @@
             <UserDocu>The Tool objects holds the properties of a CNC tool.
 optional attributes:
   name: a user-defined name for this tool
-  tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined 
+  tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined
   material: HighSpeedSteel, HighCarbonToolSteel, Carbide, CastAlloy, Ceramics, Diamond, Sialon or Undefined
   diameter : the diameter of this tool
   lengthOffset
@@ -84,6 +84,16 @@ HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
         <Methode Name="copy">
             <Documentation>
                 <UserDocu>returns a copy of this tool</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getToolTypes">
+            <Documentation>
+                <UserDocu>returns all available tool types</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getToolMaterials">
+            <Documentation>
+                <UserDocu>returns all available tool materials</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setFromTemplate">

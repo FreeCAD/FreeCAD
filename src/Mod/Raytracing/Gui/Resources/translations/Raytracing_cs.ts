@@ -160,7 +160,7 @@
     <message>
       <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Exportujte pozici kamery aktivního 3D zobrazení v POV-Ray formátu do souboru</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
@@ -468,7 +468,7 @@ Do you want to continue?</source>
     <message>
       <location line="-216"/>
       <source>Max mesh deviation:</source>
-      <translation type="unfinished">Max mesh deviation:</translation>
+      <translation>Max. odchylka sítě:</translation>
     </message>
     <message>
       <location line="+57"/>

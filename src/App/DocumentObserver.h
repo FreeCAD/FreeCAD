@@ -166,7 +166,7 @@ private:
 };
 
 /**
- * The DocumentObjectObserver class checks for a list of ojects
+ * The DocumentObjectObserver class checks for a list of objects
  * which of them get removed.
  *
  * @author Werner Mayer
@@ -198,7 +198,7 @@ private:
     /** The property of an observed object has changed */
     virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     /** This method gets called when all observed objects are deleted or the whole document is deleted.
-      * This method can be re-implemented to perform an extra step like closing a dialog tht observes
+      * This method can be re-implemented to perform an extra step like closing a dialog that observes
       * a document.
       */
     virtual void cancelObservation();

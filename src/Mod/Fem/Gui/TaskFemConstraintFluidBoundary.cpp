@@ -29,6 +29,7 @@
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
+# include <QAction>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
@@ -97,7 +98,7 @@ static const char* TurbulenceSpecificationHelpTexts[] = {
             "explicitly specific intensity k [SI unit] and dissipation rate epsilon [] / omega []",
             "intensity (0.05 ~ 0.15) and characteristic length scale of max eddy [m]",
             "intensity (0.05 ~ 0.15) and turbulent viscosity ratio",
-            "for fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
+            "for fully developed internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
 
 //static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer on boundary", "fixed value gradient [K/m]",
@@ -847,7 +848,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         } else {
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
         }
-        //Reverse control is done at BoundaryType selection, this UI is hiden from user
+        //Reverse control is done at BoundaryType selection, this UI is hidden from user
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), boundary->getReverse() ? "True" : "False");
 
         std::string scale = "1";

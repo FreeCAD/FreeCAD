@@ -127,10 +127,6 @@
       <translation>Moviment del ratolí 3D</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensibilitat global:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Mode dominant</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Revers</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilitat Global:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD seria no-res sense els seus esforços:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Llicència</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1381,27 +1396,27 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Reanomenar l'arxiu de Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Introdueix el nou nom:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' 
+ja existeix.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Error al reanomenar</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>No ha pogut canviar el nom per '%1'.
+Pot ser un problema de permisos d'arxiu</translation>
     </message>
   </context>
   <context>
@@ -2132,8 +2147,8 @@ Specify another directory, please.</source>
       <translation>Guarda la miniatura en el fitxer del projecte quan es guarde el document</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Nombre màxim de còpies de seguretat creades quan es torna a guardar el document</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Nombre màxim de fitxers de còpia de seguretat a mantenir quan es torna a desar el document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2245,7 +2260,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Una URL on l'usuari pot trobar més detalls sobre la llicència</translation>
     </message>
   </context>
   <context>
@@ -2655,8 +2670,8 @@ Specify another directory, please.</source>
       <translation>Trieu el radi (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Estableix l'àrea de confusió per a triar elements en la vista 3D. Un valor elevat facilita la selecció, però fa que siga impossible seleccionar algunes característiques xicotetes. </translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -3344,10 +3359,6 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Vista combinada</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Projecte</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Tasques</translation>
     </message>
@@ -4017,7 +4028,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Canviar els objectes enllaçats</translation>
     </message>
   </context>
   <context>
@@ -5029,6 +5040,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>L'%1 no és buit, voleu esborrar-ne le contingut?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exportació fallida</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5586,11 +5601,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Crea un grup</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Crear un nou grup per ordenar els objectes</translation>
     </message>
   </context>
   <context>
@@ -6475,7 +6490,7 @@ Be aware the point where you click matters.</source>
       <translation>Crea una visualització nova</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
+      <source>Creates a new view window for the active document</source>
       <translation>Crea una nova finestra de visualització per al document actiu</translation>
     </message>
   </context>
@@ -6832,7 +6847,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Mostrar la finestra principal en mode de pantalla completa</translation>
     </message>
   </context>
   <context>

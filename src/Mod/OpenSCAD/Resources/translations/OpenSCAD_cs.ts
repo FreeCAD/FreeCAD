@@ -116,17 +116,17 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Cesta pro spuštění OpenSCADu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Minimální úhel pro fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Minimální velikost fragmentu</translation>
     </message>
   </context>
   <context>
@@ -248,7 +248,7 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
       <translation>Odstranit sloučení, převzít umístění potomků a obarvit náhodně</translation>
     </message>
   </context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Exportovat objekty jako síťě a booleovskou operaci provést pomocí OpenSCADu.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Exportovat objekty jako síťě a booleovskou operaci provést pomocí OpenSCADu</translation>
     </message>
   </context>
   <context>
@@ -339,7 +339,7 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Nahrazení objektu ve stromu funkcí. Vyberte prosím starý, nový a nadřazený objekt</translation>
     </message>
   </context>

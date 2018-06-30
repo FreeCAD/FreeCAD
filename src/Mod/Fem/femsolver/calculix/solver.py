@@ -31,7 +31,7 @@ import os
 import glob
 
 import FreeCAD
-import FemUtils
+import femtools.femutils as FemUtils
 
 from .. import run
 from .. import solverbase
@@ -158,7 +158,7 @@ class Proxy(solverbase.Proxy):
         solver_type = ccx_prefs.GetInt("Solver", 0)
         obj.MatrixSolverType = known_ccx_solver_types[solver_type]
 
-        obj.addProperty("App::PropertyBool", "BeamShellResultOutput3D", "Fem", "Output 3D results for 1D and 2D anlysis ")
+        obj.addProperty("App::PropertyBool", "BeamShellResultOutput3D", "Fem", "Output 3D results for 1D and 2D analysis ")
         dimout = ccx_prefs.GetBool("BeamShellOutput", False)
         obj.BeamShellResultOutput3D = dimout
 

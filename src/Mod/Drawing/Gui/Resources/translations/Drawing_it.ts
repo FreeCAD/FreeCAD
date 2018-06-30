@@ -288,11 +288,17 @@
       <translation>Esporta PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>La stampante utilizza un orientamento diverso rispetto al disegno. Si desidera continuare?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>File PDF (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>File PDF</translation>
     </message>
@@ -337,13 +343,12 @@
       <translation>Orientamento diverso</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un orientamento diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Formato carta diverso</translation>
@@ -395,19 +400,31 @@ Do you want to continue?</source>
       <translation>In alto a sinistra x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Spaziatura dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Asse diretto all'esterno a destra</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Inclinazione verticale</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Spaziatura dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Asse esterno diretto a destra</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Inclinazione verticale</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -605,7 +622,7 @@ Do you want to continue?</source>
     <message>
       <location line="+11"/>
       <source>Axonometric</source>
-      <translation>Assonometrica</translation>
+      <translation>Assonometria</translation>
     </message>
   </context>
   <context>

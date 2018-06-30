@@ -68,7 +68,7 @@ def check_multmatrix(csg,ob,x,y,z):
         return 2 # center = true and no mm
     else:
         m = ob.Placement.toMatrix()
-        # adjust position for center displacments
+        # adjust position for center displacements
         csg.write("multmatrix([["+str(m.A11)+", "+str(m.A12)+", "+str(m.A13)+",\
             "+str(m.A14)+"], ["\
              +str(m.A21)+", "+str(m.A22)+", "+str(m.A23)+", "+str(m.A24)+"], ["\

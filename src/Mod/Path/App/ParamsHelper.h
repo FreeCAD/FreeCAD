@@ -102,7 +102,7 @@
  *   parameters are defined, <tt>short, long, double, bool, enum, enum2</tt>.
  *   \enum2 type is the same as \enum with additional information to be able to
  *   map to a user defined C enum type. To add more types, search this file for
- *   keyword \a _short, and supply all relavant macros.  It's quite trivial
+ *   keyword \a _short, and supply all relevant macros.  It's quite trivial
  *   actually.
  *
  * - \c arg is the argument name. It is intended to be used as function argument.

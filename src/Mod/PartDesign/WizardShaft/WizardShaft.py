@@ -31,7 +31,7 @@ class TaskWizardShaft:
     Gui = FreeCADGui
     
     def __init__(self, doc):
-        mw = QtGui.qApp.activeWindow()
+        mw = QtGui.QApplication.activeWindow()
         #cw = mw.centralWidget() # This is a qmdiarea widget
         cw = mw.findChild(QtGui.QMdiArea)
         self.doc = doc
@@ -87,7 +87,7 @@ class TaskWizardShaft:
         self.form.setLayout(layout)
         
         # Switch to feature window
-        mdi=QtGui.qApp.activeWindow().findChild(QtGui.QMdiArea)
+        mdi=QtGui.QApplication.activeWindow().findChild(QtGui.QMdiArea)
         cw.setActiveSubWindow(featureWindow)
         
     def slotAllx(self):

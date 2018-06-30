@@ -163,7 +163,16 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
     // Add move Tip Command
     if ( selection.size () >= 1 ) {
         App::DocumentObject *feature = selection.front().pObject;
-        PartDesign::Body *body =  PartDesignGui::getBodyFor (feature, false, false);
+        PartDesign::Body *body = nullptr;
+
+        // if PD workflow is not new-style then add a command to the context-menu
+        bool assertModern = true;
+        if (feature && !isModernWorkflow(feature->getDocument())) {
+            assertModern = false;
+            *item << "PartDesign_Migrate";
+        }
+
+        body = PartDesignGui::getBodyFor (feature, false, false, assertModern);
         // lote of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
             feature->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
@@ -215,6 +224,11 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
                 Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
                 *item << "PartDesign_MultiTransform";
+
+            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+                *item << "Std_SetAppearance"
+                      << "Std_RandomColor";
+            }
         }
     }
 }

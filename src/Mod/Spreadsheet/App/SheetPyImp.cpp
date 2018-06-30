@@ -55,7 +55,7 @@ int SheetPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-// +++ methodes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
+// +++ methods implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
 PyObject* SheetPy::set(PyObject *args)
 {
@@ -290,8 +290,8 @@ PyObject* SheetPy::setStyle(PyObject *args)
 
             // check on the key:
 #if PY_MAJOR_VERSION >= 3
-            if (PyBytes_Check(item))
-                style.insert(PyBytes_AsString(item));
+            if (PyUnicode_Check(item))
+                style.insert(PyUnicode_AsUTF8(item));
 #else
             if (PyString_Check(item))
                 style.insert(PyString_AsString(item));
@@ -306,7 +306,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
         Py_DECREF(copy);
     }
 #if PY_MAJOR_VERSION >= 3
-    else if (PyBytes_Check(value)) {
+    else if (PyUnicode_Check(value)) {
 #else
     else if (PyString_Check(value)) {
 #endif
@@ -314,7 +314,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
 
         escaped_list_separator<char> e('\0', '|', '\0');
 #if PY_MAJOR_VERSION >= 3
-        std::string line = PyBytes_AsString(value);
+        std::string line = PyUnicode_AsUTF8(value);
 #else
         std::string line = PyString_AsString(value);
 #endif
@@ -430,7 +430,7 @@ PyObject* SheetPy::getStyle(PyObject *args)
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
 #if PY_MAJOR_VERSION >= 3
-            PySet_Add(s, PyBytes_FromString((*i).c_str()));
+            PySet_Add(s, PyUnicode_FromString((*i).c_str()));
 #else
             PySet_Add(s, PyString_FromString((*i).c_str()));
 #endif
@@ -595,8 +595,8 @@ PyObject* SheetPy::setAlignment(PyObject *args)
             PyObject * item = PySet_Pop(copy);
 
 #if PY_MAJOR_VERSION >= 3
-            if (PyBytes_Check(item))
-                alignment = Cell::decodeAlignment(PyBytes_AsString(item), alignment);
+            if (PyUnicode_Check(item))
+                alignment = Cell::decodeAlignment(PyUnicode_AsUTF8(item), alignment);
 #else
             if (PyString_Check(item))
                 alignment = Cell::decodeAlignment(PyString_AsString(item), alignment);
@@ -612,7 +612,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         Py_DECREF(copy);
     }
 #if PY_MAJOR_VERSION >= 3
-    else if (PyBytes_Check(value)) {
+    else if (PyUnicode_Check(value)) {
 #else
     else if (PyString_Check(value)) {
 #endif
@@ -621,7 +621,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 
         escaped_list_separator<char> e('\0', '|', '\0');
 #if PY_MAJOR_VERSION >= 3
-        std::string line = PyBytes_AsString(value);
+        std::string line = PyUnicode_AsUTF8(value);
 #else
         std::string line = PyString_AsString(value);
 #endif
@@ -693,17 +693,17 @@ PyObject* SheetPy::getAlignment(PyObject *args)
 
 #if PY_MAJOR_VERSION >= 3
         if (alignment & Cell::ALIGNMENT_LEFT)
-            PySet_Add(s, PyBytes_FromString("left"));
+            PySet_Add(s, PyUnicode_FromString("left"));
         if (alignment & Cell::ALIGNMENT_HCENTER)
-            PySet_Add(s, PyBytes_FromString("center"));
+            PySet_Add(s, PyUnicode_FromString("center"));
         if (alignment & Cell::ALIGNMENT_RIGHT)
-            PySet_Add(s, PyBytes_FromString("right"));
+            PySet_Add(s, PyUnicode_FromString("right"));
         if (alignment & Cell::ALIGNMENT_TOP)
-            PySet_Add(s, PyBytes_FromString("top"));
+            PySet_Add(s, PyUnicode_FromString("top"));
         if (alignment & Cell::ALIGNMENT_VCENTER)
-            PySet_Add(s, PyBytes_FromString("vcenter"));
+            PySet_Add(s, PyUnicode_FromString("vcenter"));
         if (alignment & Cell::ALIGNMENT_BOTTOM)
-            PySet_Add(s, PyBytes_FromString("bottom"));
+            PySet_Add(s, PyUnicode_FromString("bottom"));
 #else
         if (alignment & Cell::ALIGNMENT_LEFT)
             PySet_Add(s, PyString_FromString("left"));

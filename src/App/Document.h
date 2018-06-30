@@ -276,7 +276,7 @@ public:
     void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
     int getUndoMode(void) const;
-    /// switch the tranaction mode
+    /// switch the transaction mode
     void setTransactionMode(int iMode);
     /// Open a new command Undo/Redo, an UTF-8 name can be specified
     void openTransaction(const char* name=0);

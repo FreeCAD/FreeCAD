@@ -371,7 +371,7 @@ Haluatko jatkaa?</translation>
       <location line="+276"/>
       <location line="+109"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Kaikki tiedostot</translation>
     </message>
     <message>
       <location line="-29"/>

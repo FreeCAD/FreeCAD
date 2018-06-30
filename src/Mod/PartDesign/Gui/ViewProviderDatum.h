@@ -103,7 +103,7 @@ public:
     // Returned default bounding box if relevant is can't be used for some reason
     static SbBox3f defaultBoundBox ();
 
-    // Returns a default marging factor (part of size )
+    // Returns a default margin factor (part of size )
     static double marginFactor () { return 0.1; };
 
 protected:

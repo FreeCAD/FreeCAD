@@ -65,5 +65,5 @@ if __name__ == "__main__":
     class line:
         pass
     new_type = Type('lie',scp)
-    print new_type.get_type()
+    print(new_type.get_type())
     

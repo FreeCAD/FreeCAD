@@ -84,18 +84,30 @@ class WriteXDMFTaskPanel:
             # group elements
             self.form.tableGroups.setItem(ind, 2, ro(QtGui.QTableWidgetItem(fem_mesh.getGroupElementType(gind))))
             # default value for not marked elements
-            self.form.tableGroups.setItem(ind, 3, QtGui.QTableWidgetItem(str(-1)))
+            self.form.tableGroups.setItem(ind, 3, QtGui.QTableWidgetItem(str(0)))
             # default value for marked elements
-            self.form.tableGroups.setItem(ind, 4, QtGui.QTableWidgetItem(str(gind)))
+            self.form.tableGroups.setItem(ind, 4, QtGui.QTableWidgetItem(str(1)))
+
+        header = self.form.tableGroups.horizontalHeader()
+        header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(2, QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(3, QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(4, QtGui.QHeaderView.Stretch)
 
     def convert_table_to_group_dict(self):
         group_values_dict = {}
         num_rows = self.form.tableGroups.rowCount()
 
         for r in range(num_rows):
-            g = int(self.form.tableGroups.item(r, 0).text())
-            default_value = int(self.form.tableGroups.item(r, 3).text())
-            marked_value = int(self.form.tableGroups.item(r, 4).text())
+            g = int(self.form.tableGroups.item(r, 0).text())  # read-only no prob
+            default_value = 0
+            marked_value = 1
+            try:
+                default_value = int(self.form.tableGroups.item(r, 3).text())
+                marked_value = int(self.form.tableGroups.item(r, 4).text())
+            except:
+                print("ERROR: value conversion failed in table to dict: assuming 0 for default, 1 for marked.")
 
             group_values_dict[g] = (marked_value, default_value)
 
@@ -138,6 +150,9 @@ def export(objectslist, fileString):
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         if fileExtension.lower() == '.xml':
+            FreeCAD.Console.PrintWarning("XML is not designed to save higher order elements.\n")
+            FreeCAD.Console.PrintWarning("Reducing order for second order mesh.\n")
+            FreeCAD.Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == '.xdmf':
             if importToolsFem.get_FemMeshObjectMeshGroups(obj) is not ():

@@ -135,7 +135,7 @@ CommandBase::CommandBase( const char* sMenu, const char* sToolTip, const char* s
 
 CommandBase::~CommandBase()
 {
-    //Note: The Action object becomes a children of MainWindow which gets destoyed _before_ the
+    //Note: The Action object becomes a children of MainWindow which gets destroyed _before_ the
     //command manager hence before any command object. So the action pointer is a dangling pointer
     //at this state.
 }
@@ -412,9 +412,9 @@ void Command::setGroupName(const char* s)
 //--------------------------------------------------------------------------
 /** Open a new Undo transaction on the active document
  *  This method opens a new UNDO transaction on the active document. This transaction
- *  will later apear in the UNDO REDO dialog with the name of the command. If the user
+ *  will later appear in the UNDO REDO dialog with the name of the command. If the user
  *  recall the transaction everything changed on the document between OpenCommand() and
- *  CommitCommand will be undone (or redone). You can use an alternetive name for the
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
@@ -908,6 +908,7 @@ PythonCommand::~PythonCommand()
 
 const char* PythonCommand::getResource(const char* sName) const
 {
+    Base::PyGILStateLocker lock;
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
@@ -1303,6 +1304,7 @@ const char* PythonGroupCommand::getHelpUrl(void) const
 
 const char* PythonGroupCommand::getResource(const char* sName) const
 {
+    Base::PyGILStateLocker lock;
     PyObject* pcTemp;
 
     // get the "MenuText" resource string

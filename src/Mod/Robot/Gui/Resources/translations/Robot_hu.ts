@@ -124,7 +124,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Helyezzen be egy Kuka IR210-et a dokumentumba.</translation>
+      <translation>Helyezzen be egy Kuka IR125-öt a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Helyezzen be egy Kuka IR210-et a dokumentumba.</translation>
+      <translation>Helyezzen be egy Kuka IR16-ot a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Helyezzen be egy Kuka IR16-ot a dokumentumba.</translation>
+      <translation>Helyezzen be egy Kuka IR210-et a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Helyezzen be egy Kuka IR125-öt a dokumentumba.</translation>
+      <translation>Helyezzen be egy Kuka IR500-at a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location line="+1"/>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Beállítási pozíció beszúrása az útvonalba (W)</translation>
+      <translation>Beállítási pozíció beszúrása az útvonalba (W) </translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     <message>
       <location line="+1"/>
       <source>Set default orientation</source>
-      <translation>Alapértelmezett hely beállítása</translation>
+      <translation>Alapértelmezett helyzet</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -296,7 +296,7 @@
     <message>
       <location line="+1"/>
       <source>Run a simulation on a trajectory</source>
-      <translation>Szimuláció futtaása az útvonalon</translation>
+      <translation>Szimuláció futtatása az útvonalon</translation>
     </message>
   </context>
   <context>
@@ -785,7 +785,7 @@
     <message>
       <location line="+14"/>
       <source>Cluster: 0</source>
-      <translation>Fürt: 0</translation>
+      <translation>Klaszter: 0</translation>
     </message>
     <message>
       <location line="+11"/>

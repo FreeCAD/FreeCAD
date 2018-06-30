@@ -42,7 +42,7 @@ CmdStartConstraintAxle::CmdStartConstraintAxle()
     sGroup          = QT_TR_NOOP("Start");
     sMenuText       = QT_TR_NOOP("Constraint Axle...");
     sToolTipText    = QT_TR_NOOP("Set an axle constraint between two objects");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Start_ConstraintAxle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/document-new";
 }

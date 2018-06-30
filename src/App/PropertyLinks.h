@@ -242,7 +242,7 @@ public:
     PropertyLinkListGlobal() {_pcScope = LinkScope::Global;};
 };
 
-/** the Link Poperty with sub elements
+/** the Link Property with sub elements
  *  This property links an object and a defined sequence of
  *  sub elements. These subelements (like Edges of a Shape)
  *  are stored as names, which can be resolved by the 

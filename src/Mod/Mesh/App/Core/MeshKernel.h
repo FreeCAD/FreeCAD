@@ -406,7 +406,7 @@ public:
     void Smooth(int iterations, float d_max);
     /**
      * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure. 
-     * The facets to be deleted are returned with their geometric reprsentation.
+     * The facets to be deleted are returned with their geometric representation.
      * @see CheckFacets().
      */
     void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod *pclP, const Base::Polygon2d& rclPoly,

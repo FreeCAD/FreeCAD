@@ -45,6 +45,7 @@
 # include <QTimer>
 # include <boost/signal.hpp>
 # include <boost/bind.hpp>
+# include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
@@ -793,10 +794,12 @@ void DlgFilletEdges::on_selectAllButton_clicked()
     model->blockSignals(block);
     model->updateCheckStates();
 
-    App::Document* doc = d->object->getDocument();
-    Gui::Selection().addSelection(doc->getName(),
-        d->object->getNameInDocument(),
-        subElements);
+    if (d->object) {
+        App::Document* doc = d->object->getDocument();
+        Gui::Selection().addSelection(doc->getName(),
+            d->object->getNameInDocument(),
+            subElements);
+    }
 }
 
 void DlgFilletEdges::on_selectNoneButton_clicked()
@@ -811,8 +814,10 @@ void DlgFilletEdges::on_selectNoneButton_clicked()
     model->blockSignals(block);
     model->updateCheckStates();
 
-    App::Document* doc = d->object->getDocument();
-    Gui::Selection().clearSelection(doc->getName());
+    if (d->object) {
+        App::Document* doc = d->object->getDocument();
+        Gui::Selection().clearSelection(doc->getName());
+    }
 }
 
 void DlgFilletEdges::on_filletType_activated(int index)

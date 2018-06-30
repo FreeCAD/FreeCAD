@@ -43,10 +43,19 @@ if [ ! -d 'PathScripts' ]; then
   exit 2
 fi
 
+EXTERNAL_MODULES+=' ArchPanel'
+EXTERNAL_MODULES+=' Draft'
+EXTERNAL_MODULES+=' DraftGeomUtils'
+EXTERNAL_MODULES+=' DraftVecUtils'
+EXTERNAL_MODULES+=' FreeCAD'
+EXTERNAL_MODULES+=' FreeCADGui'
+EXTERNAL_MODULES+=' Mesh'
+EXTERNAL_MODULES+=' MeshPart'
+EXTERNAL_MODULES+=' Part'
+EXTERNAL_MODULES+=' Path'
 EXTERNAL_MODULES+=' PySide.QtCore'
 EXTERNAL_MODULES+=' PySide.QtGui'
-EXTERNAL_MODULES+=' FreeCAD'
-EXTERNAL_MODULES+=' DraftGeomUtils'
+EXTERNAL_MODULES+=' TechDraw'
 EXTERNAL_MODULES+=' importlib'
 
 ARGS+=" --errors-only"
@@ -58,4 +67,5 @@ if [ -z "$(which pylint)" ]; then
   exit 1
 fi
 
-pylint ${ARGS} PathScripts/ PathTests/
+#pylint ${ARGS} PathScripts/ PathTests/
+pylint ${ARGS} PathScripts/

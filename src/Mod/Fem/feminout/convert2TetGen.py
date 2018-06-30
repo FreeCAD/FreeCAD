@@ -147,7 +147,7 @@ def createMesh():
     beVerbose = 1
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\n\n\n\n\n\n\n\nScript starts...") 
-    ## Geometry defenition
+    ## Geometry definition
     # Define objects names
     PyDocumentName = "pnJunction"
     PSideBoxName = "PSide"

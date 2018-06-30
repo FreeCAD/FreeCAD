@@ -29,6 +29,7 @@
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
+# include <Python.h>
 # include <Inventor/nodes/SoComplexity.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -170,7 +171,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
     // get the position of the mouse
     const SbVec2s pos(ev->getPosition());
 
-    // Keybooard events
+    // Keyboard events
     if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
         SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
         switch (ke->getKey()) {

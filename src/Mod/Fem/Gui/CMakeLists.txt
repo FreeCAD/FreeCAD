@@ -25,6 +25,7 @@ include_directories(
 )
 
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 
 set(FemGui_LIBS
@@ -45,11 +46,13 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
+    DlgSettingsFemElmerImp.h
     DlgSettingsFemExportAbaqusImp.h
     DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmshImp.h
+    DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterialImp.h
     DlgSettingsFemZ88Imp.h
-    DlgSettingsFemElmerImp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
@@ -88,11 +91,13 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
+    DlgSettingsFemElmer.ui
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
+    DlgSettingsFemInOutVtk.ui
+    DlgSettingsFemMaterial.ui
     DlgSettingsFemZ88.ui
-    DlgSettingsFemElmer.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -118,6 +123,7 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
         TaskPostCut.ui
@@ -139,21 +145,27 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemCcxImp.cpp
     DlgSettingsFemCcxImp.h
-    DlgSettingsFemGeneral.ui
-    DlgSettingsFemGeneralImp.cpp
-    DlgSettingsFemGeneralImp.h
-    DlgSettingsFemExportAbaqus.ui
-    DlgSettingsFemExportAbaqusImp.cpp
-    DlgSettingsFemExportAbaqusImp.h
-    DlgSettingsFemGmsh.ui
-    DlgSettingsFemGmshImp.cpp
-    DlgSettingsFemGmshImp.h
-    DlgSettingsFemZ88.ui
-    DlgSettingsFemZ88Imp.cpp
-    DlgSettingsFemZ88Imp.h
     DlgSettingsFemElmer.ui
     DlgSettingsFemElmerImp.cpp
     DlgSettingsFemElmerImp.h
+    DlgSettingsFemExportAbaqus.ui
+    DlgSettingsFemExportAbaqusImp.cpp
+    DlgSettingsFemExportAbaqusImp.h
+    DlgSettingsFemGeneral.ui
+    DlgSettingsFemGeneralImp.cpp
+    DlgSettingsFemGeneralImp.h
+    DlgSettingsFemGmsh.ui
+    DlgSettingsFemGmshImp.cpp
+    DlgSettingsFemGmshImp.h
+    DlgSettingsFemInOutVtk.ui
+    DlgSettingsFemInOutVtkImp.cpp
+    DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterial.ui
+    DlgSettingsFemMaterialImp.cpp
+    DlgSettingsFemMaterialImp.h
+    DlgSettingsFemZ88.ui
+    DlgSettingsFemZ88Imp.cpp
+    DlgSettingsFemZ88Imp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
@@ -290,6 +302,7 @@ if(BUILD_FEM_VTK)
         SphereWidget.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostDisplay.ui
         TaskPostWarpVector.ui
@@ -386,6 +399,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui
+    Resources/ui/ElementRotation1D.ui
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/Material.ui

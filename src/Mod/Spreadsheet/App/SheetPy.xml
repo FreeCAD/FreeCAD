@@ -57,7 +57,7 @@
     </Methode>
     <Methode Name="splitCell">
       <Documentation>
-        <UserDocu>Split a perviously merged cell</UserDocu>
+        <UserDocu>Split a previously merged cell</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="insertColumns">

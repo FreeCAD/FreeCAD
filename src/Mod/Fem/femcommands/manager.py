@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 
 class CommandManager(object):
         def __init__(self):
-            self.resources = {'Pixmap': 'fem-frequency-analysis',
+            self.resources = {'Pixmap': 'FemWorkbench',
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
                               'Accel': "",
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
@@ -53,6 +53,8 @@ class CommandManager(object):
         def IsActive(self):
             if not self.is_active:
                 active = False
+            elif self.is_active == 'allways':
+                active = True
             elif self.is_active == 'with_document':
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':
@@ -116,7 +118,7 @@ class CommandManager(object):
 
         def gmsh_femmesh_selected(self):
             sel = FreeCADGui.Selection.getSelection()
-            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "FemMeshGmsh":
+            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "Fem::FemMeshGmsh":
                 self.selobj = sel[0]
                 return True
             else:
@@ -140,7 +142,7 @@ class CommandManager(object):
         def has_no_nonlinear_material(self):
             "check if an nonlinear material exists which is already based on the selected material"
             for o in FreeCAD.ActiveDocument.Objects:
-                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "FemMaterialMechanicalNonlinear" and o.LinearBaseMaterial == self.selobj:
+                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear" and o.LinearBaseMaterial == self.selobj:
                     # FreeCAD.Console.PrintError(o.Name + ' is based on the selected material: ' + self.selobj + '. Only one nonlinear object for each material allowed.\n')
                     return False
             return True

@@ -168,7 +168,7 @@ void CommandPy::setParameters(Py::Dict arg)
 #endif
         }
         else {
-            throw Py::Exception("The dictionary can only contain string keys");
+            throw Py::TypeError("The dictionary can only contain string keys");
         }
 
         boost::to_upper(ckey);
@@ -185,7 +185,7 @@ void CommandPy::setParameters(Py::Dict arg)
             cvalue = PyFloat_AsDouble(value);
         }
         else {
-            throw Py::Exception("The dictionary can only contain number values");
+            throw Py::TypeError("The dictionary can only contain number values");
         }
         getCommandPtr()->Parameters[ckey]=cvalue;
     }
@@ -202,7 +202,7 @@ PyObject* CommandPy::toGCode(PyObject *args)
         return PyString_FromString(getCommandPtr()->toGCode().c_str());
 #endif
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* CommandPy::setFromGCode(PyObject *args)
@@ -214,7 +214,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    throw Py::Exception("Argument must be a string");
+    throw Py::TypeError("Argument must be a string");
 }
 
 // Placement attribute get/set
@@ -231,7 +231,7 @@ void CommandPy::setPlacement(Py::Object arg)
     if(arg.isType(PlacementType)) {
         getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
     } else
-    throw Py::Exception("Argument must be a placement");
+    throw Py::TypeError("Argument must be a placement");
 }
 
 PyObject* CommandPy::transform(PyObject *args)
@@ -242,7 +242,7 @@ PyObject* CommandPy::transform(PyObject *args)
         Path::Command trCmd = getCommandPtr()->transform( *p->getPlacementPtr() );
         return new CommandPy(new Path::Command(trCmd));
     } else
-    throw Py::Exception("Argument must be a placement");
+    throw Py::TypeError("Argument must be a placement");
 }
 
 // custom attributes get/set

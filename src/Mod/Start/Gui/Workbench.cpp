@@ -43,6 +43,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 
 #include <Mod/Start/App/StartConfiguration.h>
 
@@ -101,8 +102,8 @@ void StartGui::Workbench::activated()
         str << endl;
         str << "webView=WebView()" << endl;
 
-
-        Gui::Command::runCommand(Gui::Command::Gui, cmd);
+        Base::Interpreter().runString(cmd);
+        // Gui::Command::runCommand(Gui::Command::Gui, cmd);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());

@@ -58,7 +58,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         pass
 
     def getForm(self):
-        '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
+        '''getForm() ... returns UI, adapted to the results from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
         if not FeatureFacing & self.pocketFeatures():

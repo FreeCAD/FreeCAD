@@ -103,7 +103,7 @@ DrawViewDetail::DrawViewDetail()
     ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
 
     getParameters();
-    m_fudge = 1.1;
+    m_fudge = 1.01;
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -150,27 +150,23 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    App::DocumentObject* link = Source.getValue();
-    App::DocumentObject* base = BaseView.getValue();
-    if (!link || !base)  {
-        Base::Console().Log("INFO - DVD::execute - No Source or Link - creation?\n");
+    App::DocumentObject* baseObj = BaseView.getValue();
+    if (!baseObj)  {
+        Base::Console().Log("INFO - DVD::execute - No BaseView - creation?\n");
         return DrawView::execute();
     }
 
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Source object is not a Part object");
     DrawViewPart* dvp = nullptr;
-    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
     } else {
-        dvp = static_cast<DrawViewPart*>(base);
+        dvp = static_cast<DrawViewPart*>(baseObj);
     }
 
-    //Base::Console().Message("TRACE - DVD::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
-
-    const Part::TopoShape &partTopo = static_cast<Part::Feature*>(link)->Shape.getShape();
-    if (partTopo.getShape().IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    TopoDS_Shape shape = dvp->getSourceShapeFused();
+    if (shape.IsNull()) {
+        return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
+    }
 
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
@@ -179,15 +175,17 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     double scale = getScale();
     gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(0.0,0.0,0.0), dirDetail, false);
 
-    Base::BoundBox3d bbxSource = partTopo.getBoundBox();
+    Bnd_Box bbxSource;
+    BRepBndLib::Add(shape, bbxSource);
+    bbxSource.SetGap(0.0);
+    double diag = sqrt(bbxSource.SquareExtent());
 
-    BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
+    BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     gp_Pnt gpCenter = TechDrawGeometry::findCentroid(myShape,
                                                      dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
-    double diag = bbxSource.CalcDiagonalLength();
     Base::Vector3d extentFar,extentNear;
     extentFar = shapeCenter + dirDetail * diag;
     extentNear = shapeCenter + dirDetail * diag * -1.0;
@@ -231,7 +229,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-        Base::Console().Message("INFO - DVD::execute - testBox is void\n");
+        Base::Console().Message("DrawViewDetail - detail area contains no geometry\n");
     }
 
 //for debugging show compound instead of cut
@@ -276,6 +274,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     requestPaint();
+    dvp->requestPaint();
 
     return App::DocumentObject::StdReturn;
 }

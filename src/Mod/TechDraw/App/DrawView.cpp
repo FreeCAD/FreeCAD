@@ -71,11 +71,11 @@ DrawView::DrawView(void)
   : autoPos(true),
     mouseMove(false)
 {
-    static const char *group = "BaseView";
-    static const char *fgroup = "Format";
+    static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
+    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Prevent View from moving in Gui");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
@@ -83,9 +83,7 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false),fgroup,App::Prop_None,"Keep Label on Page even if toggled off");
-    ADD_PROPERTY_TYPE(Caption ,(""),fgroup,App::Prop_None,"Short text about the view");
-
+    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -105,6 +103,7 @@ void DrawView::checkScale(void)
         if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
+                Scale.purgeTouched();
             }
         }
     }
@@ -123,6 +122,7 @@ void DrawView::onChanged(const App::Property* prop)
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
+                       Scale.purgeTouched();
                     }
                 }
             } else if ( ScaleType.isValue("Custom") ) {
@@ -139,6 +139,7 @@ void DrawView::onChanged(const App::Property* prop)
                         double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                         if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
                             Scale.setValue(newScale);
+                            Scale.purgeTouched();
                         }
                     }
                 }
@@ -248,11 +249,17 @@ void DrawView::setPosition(double x, double y)
 double DrawView::getScale(void) const
 {
     auto result = Scale.getValue();
+    if (!(result > 0.0)) {
+        result = 1.0;
+        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+    }
     return result;
 }
 
 void DrawView::Restore(Base::XMLReader &reader)
 {
+// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
+// fcstd files with old property types in use. 
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
@@ -268,7 +275,7 @@ void DrawView::Restore(Base::XMLReader &reader)
                 } else  {
                     if (strcmp(PropName, "Scale") == 0) {
                         if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do
+                            schemaProp->Restore(reader);                                                  //nothing special to do (redundant)
                         } else {                                                                //Scale, but not PropertyFloatConstraint
                             App::PropertyFloat tmp;
                             if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
@@ -285,6 +292,29 @@ void DrawView::Restore(Base::XMLReader &reader)
                                 Base::Console().Log("DrawView::Restore - old Document Scale is Not Float!\n");
                                 // no idea
                             }
+                        }
+                    } else if (strcmp(PropName, "Source") == 0) {
+                        App::PropertyLinkGlobal glink;
+                        App::PropertyLink link;
+                        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+                            glink.setContainer(this);
+                            glink.Restore(reader);
+                            if (glink.getValue() != nullptr) {
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(glink.getValue());
+                            }
+                        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+                            link.setContainer(this);
+                            link.Restore(reader);
+                            if (link.getValue() != nullptr) {
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(link.getValue());
+                            }
+                        
+                        } else {
+                            // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
+                            Base::Console().Log("DrawView::Restore - old Document Source is weird: %s\n", TypeName);
+                            // no idea
                         }
                     } else {
                         Base::Console().Log("DrawView::Restore - old Document has unknown Property\n");
@@ -306,7 +336,7 @@ void DrawView::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

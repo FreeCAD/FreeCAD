@@ -32,7 +32,7 @@
 
 namespace AssemblyGui {
 
-//class for internal use to alllow access to protected functions of view provider part.
+//class for internal use to allow access to protected functions of view provider part.
 class AssemblyGuiExport ViewProviderConstraintInternal : public PartGui::ViewProviderPart {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintInternal);

@@ -141,7 +141,7 @@ protected:
     virtual void onChanged(const App::Property* prop);
     bool loadParameter();
     void updateVisual(const TopoDS_Shape &);
-    void GetNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
+    void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
 
     // nodes for the data representation
@@ -162,11 +162,10 @@ protected:
     SoBrepPointSet    * nodeset;
 
     bool VisualTouched;
+    bool NormalsFromUV;
 
 private:
     // settings stuff
-    bool noPerVertexNormals;
-    bool qualityNormals;
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;

@@ -607,7 +607,7 @@ int myPreactionCB_CollectFacets(JtkHierarchy *CurrNode, int level, JtkClientData
 
 void testLicence(void)
 {
-  // Try to create an JtkCADExporter to test for JT write/general licensing
+  // Try to create a JtkCADExporter to test for JT write/general licensing
    JtkCADExporter *jtwriter = NULL;
    jtwriter = JtkEntityFactory::createCADExporter();
    if( !jtwriter )
@@ -622,7 +622,7 @@ void testLicence(void)
       jtwriter = NULL;
    }
 
-   // Try to create an JtkCADImporter to test for JT read licensing
+   // Try to create a JtkCADImporter to test for JT read licensing
    JtkCADImporter *jtreader = NULL;
    jtreader = JtkEntityFactory::createCADImporter();
    if( !jtreader )

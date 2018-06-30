@@ -111,9 +111,8 @@ void QGIViewAnnotation::draw()
     }
 
     drawAnnotation();
-    if (borderVisible) {
-        drawBorder();
-    }
+    QGIView::draw();
+
 }
 
 //TODO: text is positioned slightly high (and left??) on page save to SVG file

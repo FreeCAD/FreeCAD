@@ -81,6 +81,9 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 		}
 	}
 
+	if (mid_vt == NULL)
+		return false;
+
 	// create a circle to test
 	Point p0(prev_vt.m_p);
 	Point p1(mid_vt->m_p);
@@ -226,7 +229,6 @@ void CCurve::FitArcs(bool retry)
 	if(might_be_an_arc.size() > 0) {
         // check if the last edge can form an arc with the starting edge
         if(!retry && 
-           !arc_found &&
            m_vertices.size()>2 && 
            m_vertices.begin()->m_type==0 && 
            IsClosed()) 
@@ -234,13 +236,32 @@ void CCurve::FitArcs(bool retry)
 	        std::list<const CVertex*> tmp;
             auto it = m_vertices.begin();
             tmp.push_back(&(*it++));
-            tmp.push_back(&(*it));
-            CArc tmpArc;
-            if(CheckForArc(new_vertices.back(),tmp,tmpArc)) {
-                m_vertices.push_front(CVertex(new_vertices.back().m_p));
-                m_vertices.pop_back();
-                FitArcs(true);
-                return;
+
+            // this condition check is to skip the situation when both the
+            // starting and ending has already been fitted with some arc
+            if(!arc_found || it->m_type==0) {
+                tmp.push_back(&(*it));
+                CArc tmpArc;
+                auto itEnd = m_vertices.end();
+                --itEnd;
+                --itEnd;
+                if(CheckForArc(*itEnd,tmp,tmpArc)) {
+                    if(arc_found) {
+                        // this means the last edge has already been fitted with
+                        // some arc, so we move the first edge to the end
+                        
+                        // Must pop first, because this is a closed curve,
+                        // meaning the last point must be equal to the first
+                        // point.
+                        m_vertices.pop_front();
+                        m_vertices.push_back(m_vertices.front());
+                    }else{
+                        m_vertices.push_front(CVertex(new_vertices.back().m_p));
+                        m_vertices.pop_back();
+                    }
+                    FitArcs(true);
+                    return;
+                }
             }
         }
         AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);

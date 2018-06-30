@@ -49,7 +49,7 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Recompute");
     sToolTipText  = QT_TR_NOOP("Recompute feature or document");
-    sWhatsThis    = QT_TR_NOOP("Recompute feature or document");
+    sWhatsThis    = "Std_Recompute";
     sStatusTip    = QT_TR_NOOP("Recompute feature or document");
     sPixmap       = "view-refresh";
     sAccel        = "Ctrl+R";
@@ -72,7 +72,7 @@ StdCmdRandomColor::StdCmdRandomColor()
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Random color");
     sToolTipText  = QT_TR_NOOP("Random color");
-    sWhatsThis    = QT_TR_NOOP("Random color");
+    sWhatsThis    = "Std_RandomColor";
     sStatusTip    = QT_TR_NOOP("Random color");
 }
 

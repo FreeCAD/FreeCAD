@@ -54,6 +54,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;
+class NaviCube;
 
 namespace Gui {
 
@@ -101,7 +102,7 @@ public:
     /** @name Anti-Aliasing modes of the rendered 3D scene
       * Specifies Anti-Aliasing (AA) method
       * - Smoothing enables OpenGL line and vertex smoothing (basically depreciated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite commom and efficient AA technique
+      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
       */
     //@{
     enum AntiAliasing {
@@ -161,6 +162,8 @@ public:
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);
     QImage grabFramebuffer();
+    void imageFromFramebuffer(int width, int height, int samples,
+                              const QColor& bgcolor, QImage& img);
 
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
@@ -199,9 +202,9 @@ public:
     //@{
     /**
      * Creates an image with width \a w and height \a h of the current scene graph
-     * and exports the rendered scenegraph to an image.
+     * using a multi-sampling of \a s and exports the rendered scenegraph to an image.
      */
-    void savePicture(int w, int h, const QColor&, QImage&) const;
+    void savePicture(int w, int h, int s, const QColor&, QImage&) const;
     void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
@@ -341,6 +344,9 @@ public:
     bool hasAxisCross(void);
     
     void setEnabledFPSCounter(bool b);
+    void setEnabledNaviCube(bool b);
+    bool isEnabledNaviCube(void) const;
+    void setNaviCubeCorner(int);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
 
@@ -392,8 +398,10 @@ private:
     void drawAxisCross(void);
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
+    void aboutToDestroyGLContext();
 
 private:
+    NaviCube* naviCube;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -424,6 +432,7 @@ private:
     //stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
+    SbBool naviCubeEnabled;
 
     SbBool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

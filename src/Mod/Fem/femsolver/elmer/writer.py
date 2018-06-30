@@ -33,7 +33,7 @@ import tempfile
 
 from FreeCAD import Units
 import Fem
-import FemUtils
+import femtools.femutils as FemUtils
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
@@ -262,10 +262,12 @@ class Writer(object):
             self._handled(obj)
 
     def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::FemConstraintBodyHeatSource")
+        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
-                heatSource = getFromUi(obj.HeatFlux, "W/kg", "L^2*T^-3")
+                heatSource = getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+                # according Elmer forum W/kg is correct, http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
+                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
                 self._bodyForce(name, "Heat Source", heatSource)
             self._handled(obj)
 
@@ -477,7 +479,7 @@ class Writer(object):
                 densityQuantity = Units.Quantity(m["Density"])
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
-                    density = None  # not tested, but it seams needed because denisty does not exist (IMHO, bernd)
+                    density = None  # not tested, but it seems needed because denisty does not exist (IMHO, bernd)
                     density.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
                 density = convert(densityQuantity, dimension)

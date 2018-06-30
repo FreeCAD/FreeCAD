@@ -31,12 +31,12 @@
 
 namespace Path
 {
-    
+
     /** The representation of a single tool */
     class PathExport Tool : public Base::Persistence
     {
     TYPESYSTEM_HEADER();
-    
+
     public:
         enum ToolType {
             UNDEFINED,
@@ -44,6 +44,7 @@ namespace Path
             CENTERDRILL,
             COUNTERSINK,
             COUNTERBORE,
+            FLYCUTTER,
             REAMER,
             TAP,
             ENDMILL,
@@ -52,7 +53,7 @@ namespace Path
             CHAMFERMILL,
             CORNERROUND,
             ENGRAVER };
-            
+
         enum ToolMaterial {
             MATUNDEFINED,
             HIGHSPEEDSTEEL,
@@ -62,25 +63,25 @@ namespace Path
             CERAMICS,
             DIAMOND,
             SIALON };
-    
+
         //constructors
         Tool();
-        Tool(const char* name,  
+        Tool(const char* name,
              ToolType type=Tool::UNDEFINED,
              ToolMaterial material=Tool::MATUNDEFINED,
-             double diameter=10.0, 
+             double diameter=10.0,
              double lengthoffset=100,
              double flatradius=0,
              double cornerradius=0,
              double cuttingedgeangle=0,
              double cuttingedgeheight=0);
         ~Tool();
-        
+
         // from base class
         virtual unsigned int getMemSize (void) const;
         virtual void Save (Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
-        
+
         // attributes
         std::string Name;
         ToolType Type;
@@ -91,21 +92,25 @@ namespace Path
         double CornerRadius;
         double CuttingEdgeAngle;
         double CuttingEdgeHeight;
-        
+
+        static const std::vector<std::string> ToolTypes(void);
+        static const std::vector<std::string> ToolMaterials(void);
         static const char* TypeName(ToolType typ);
+        static ToolType getToolType(std::string type);
+        static ToolMaterial getToolMaterial(std::string mat);
         static const char* MaterialName(ToolMaterial mat);
     };
-    
+
     /** The representation of a table of tools */
     class PathExport Tooltable : public Base::Persistence
     {
     TYPESYSTEM_HEADER();
-    
+
     public:
         //constructors
         Tooltable();
         ~Tooltable();
-        
+
         // from base class
         virtual unsigned int getMemSize (void) const;
         virtual void Save (Base::Writer &/*writer*/) const;
@@ -115,7 +120,7 @@ namespace Path
         void addTool(const Tool &tool); // adds a tool at the end
         void setTool(const Tool &tool, int); // inserts a tool
         void deleteTool(int); // deletes a tool
-        
+
         // auto
         unsigned int getSize(void) const {return Tools.size();}
         const Tool &getTool(int pos) {return *Tools[pos];}
@@ -125,7 +130,7 @@ namespace Path
         // attributes
         std::map<int,Tool*> Tools;
     };
-    
+
 } //namespace Path
 
 #endif // PATH_TOOLTABLE_H

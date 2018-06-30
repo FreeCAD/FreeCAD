@@ -151,7 +151,7 @@ protected Q_SLOTS:
     PartDesignGui::ViewProviderTransformed *getTopTransformedView () const;
 
     /**
-     * Returns the base transformated object
+     * Returns the base transformed object
      * For stand alone features it will be objects associated with this object
      * For features inside multitransform it will be the base multitransform object
      */

@@ -35,7 +35,7 @@ import FreeCAD
 
 def removeFromPath(module_name):
 	"""removes the module from the sys.path. The entry point for imports
-		will therfor always be FreeCAD.
+		will therefore always be FreeCAD.
 		eg.: from FreeCAD.Module.submodule import function"""
 	import sys, os
 	paths = sys.path
@@ -308,7 +308,7 @@ App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
 App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
 App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
-App.Units.LuminoseIntensity = App.Units.Unit(0,0,0,0,0,0,1) 
+App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
 App.Units.Stress        = App.Units.Unit(-1,1,-2) 
 App.Units.Pressure      = App.Units.Unit(-1,1,-2) 

@@ -60,15 +60,15 @@ DrawViewAnnotation::DrawViewAnnotation(void)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
     ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
 
-    ADD_PROPERTY_TYPE(TextSize,(8),vgroup,App::Prop_None,"The size of the text in mm");
+    ADD_PROPERTY_TYPE(TextSize,(8.0),vgroup,App::Prop_None,"The size of the text in units");
     ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"The maximum width of the Annotation block");
-    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment");
+    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment. 100 is normal spacing.");
 
     TextStyle.setEnums(TextStyleEnums);
     ADD_PROPERTY(TextStyle, ((long)0));
@@ -89,14 +89,9 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
             prop == &TextColor ||
             prop == &TextSize ||
             prop == &LineSpace ||
-            prop == &TextStyle ||                                     //changing this doesn't recompute until focus changes??
+            prop == &TextStyle ||
             prop == &MaxWidth) {
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
+            requestPaint();
         }
     }
     TechDraw::DrawView::onChanged(prop);

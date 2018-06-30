@@ -48,7 +48,7 @@ class MeasureExport Measurement : public Base::BaseClass {
       TYPESYSTEM_HEADER();
 public:
 
-    App::PropertyLinkSubListGlobal References3D;
+    App::PropertyLinkSubList References3D;
 
 public:
     Measurement();

@@ -47,6 +47,10 @@
         <file>translations/Spreadsheet_gl.qm</file>
         <file>translations/Spreadsheet_kab.qm</file>
         <file>translations/Spreadsheet_ko.qm</file>
+        <file>translations/Spreadsheet_fil.qm</file>
+        <file>translations/Spreadsheet_id.qm</file>
+        <file>translations/Spreadsheet_lt.qm</file>
+        <file>translations/Spreadsheet_val-ES.qm</file>
         <file>icons/SpreadsheetAlias.svg</file>
     </qresource>
 </RCC>

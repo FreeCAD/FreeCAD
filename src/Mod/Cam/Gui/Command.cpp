@@ -43,7 +43,7 @@ StdCamCutting::StdCamCutting()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Cutting...");
     sToolTipText  = QT_TR_NOOP("Cutting");
-    sWhatsThis    = QT_TR_NOOP("Cutting");
+    sWhatsThis    = "Cam_Cutting";
     sStatusTip    = QT_TR_NOOP("Cutting");
 }
 

@@ -164,7 +164,8 @@ void InputField::updateText(const Base::Quantity& quant)
     }
 
     double dFactor;
-    QString txt = quant.getUserString(dFactor,actUnitStr);
+    QString unitStr;
+    QString txt = quant.getUserString(dFactor, unitStr);
     actUnitValue = quant.getValue()/dFactor;
     setText(txt);
 }
@@ -286,7 +287,8 @@ void InputField::newInput(const QString & text)
     }
 
     double dFactor;
-    res.getUserString(dFactor,actUnitStr);
+    QString unitStr;
+    res.getUserString(dFactor, unitStr);
     actUnitValue = res.getValue()/dFactor;
     // Preserve previous format
     res.setFormat(this->actQuantity.getFormat());
@@ -512,7 +514,10 @@ void InputField::setUnitText(const QString& str)
 
 QString InputField::getUnitText(void)
 {
-    return actUnitStr;
+    double dFactor;
+    QString unitStr;
+    actQuantity.getUserString(dFactor, unitStr);
+    return unitStr;
 }
 
 int InputField::getPrecision() const
@@ -597,7 +602,7 @@ void InputField::showEvent(QShowEvent * event)
         selectNumber();
 }
 
-void InputField::focusInEvent(QFocusEvent * event)
+void InputField::focusInEvent(QFocusEvent *event)
 {
     if (event->reason() == Qt::TabFocusReason ||
         event->reason() == Qt::BacktabFocusReason  ||
@@ -607,6 +612,12 @@ void InputField::focusInEvent(QFocusEvent * event)
     }
 
     QLineEdit::focusInEvent(event);
+}
+
+void InputField::focusOutEvent(QFocusEvent *event)
+{
+    this->setText(actQuantity.getUserString());
+    QLineEdit::focusOutEvent(event);
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
@@ -620,14 +631,18 @@ void InputField::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Up:
         {
             double val = actUnitValue + StepSize;
-            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            Base::Quantity quant = actQuantity;
+            quant.setValue(val);
+            this->setText(quant.getUserString());
             event->accept();
         }
         break;
     case Qt::Key_Down:
         {
             double val = actUnitValue - StepSize;
-            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            Base::Quantity quant = actQuantity;
+            quant.setValue(val);
+            this->setText(quant.getUserString());
             event->accept();
         }
         break;
@@ -651,7 +666,9 @@ void InputField::wheelEvent (QWheelEvent * event)
     else if (val < Minimum)
         val = Minimum;
 
-    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+    Base::Quantity quant = actQuantity;
+    quant.setValue(val);
+    this->setText(quant.getUserString());
     selectNumber();
     event->accept();
 }

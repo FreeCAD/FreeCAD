@@ -1,4 +1,4 @@
-﻿# FreeCAD Part module
+# FreeCAD Part module
 # (c) 2001 Juergen Riegel
 #
 # Part design module
@@ -61,6 +61,7 @@ class TestCmd:
         QtUnitGui.addTest("Menu")
         QtUnitGui.addTest("Menu.MenuDeleteCases")
         QtUnitGui.addTest("Menu.MenuCreateCases")
+        QtUnitGui.addTest("TestPythonSyntax")
 
     def GetResources(self):
         return {'MenuText': 'Self-test...', 'ToolTip': 'Runs a self-test to check if the application works properly'}

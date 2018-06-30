@@ -2,16 +2,129 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="tr" sourcelanguage="en">
   <context>
+    <name>BoundarySelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <source>Select Faces/Edges/Vertexes</source>
+      <translation>Yüzeyleri / Kenarları / tepeleri seçin</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <source>To add references select them in the 3D view and then click "Add".</source>
+      <translation>Referansları eklemek için bunları 3D görünümde seçin ve "Ekle"ye tıklayın.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ControlWidget</name>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <source>Solver Control</source>
+      <translation>Çözücü Kontrolü</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <source>Working Directory</source>
+      <translation>Çalışma dizini</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <source>Write</source>
+      <translation>Yaz</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
+      <source>Elapsed Time:</source>
+      <translation>Geçen zaman:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
+      <source>Run</source>
+      <translation>Çaıştır</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
+      <source>Re-write</source>
+      <translation>Yeniden yaz</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+      <source>Re-run</source>
+      <translation>Yeniden çalıştır</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <source>Abort</source>
+      <translation>İptal</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Analiz kabı</translation>
     </message>
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Standart çözücü CalculiX ile bir analiz kutusu oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="37"/>
+      <source>Creates an analysis container with standard solver CalculiX</source>
+      <translation>Standart çözücü olan CalculiX ile bir analiz kabı oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="57"/>
+      <source>Constraint body heat source</source>
+      <translation>Sınırlayıcı gövde ısı kaynağı</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Creates a FEM constraint body heat source</source>
+      <translation>Bir FEM kısıtlama gövdesi ısı kaynağı yaratır</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="77"/>
+      <source>Constraint Potential</source>
+      <translation type="unfinished">Constraint Potential</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="80"/>
+      <source>Creates a FEM constraint electrostatic potential</source>
+      <translation>Bir FEM kısıtlaması elektrostatik potansiyel oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="97"/>
+      <source>Constraint Flow Velocity</source>
+      <translation>Sınır Akış Hızı</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="100"/>
+      <source>Creates a FEM constraint flow velocity</source>
+      <translation>Bir FEM kısıtlama akış hızı oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="117"/>
+      <source>Constraint Initial Flow Velocity</source>
+      <translation>Kısıtlama Başlangıç ​​Akış Hızı</translation>
     </message>
   </context>
   <context>
@@ -19,12 +132,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Öz ağırlık kısıtlaması</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Öz ağırlık FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -32,12 +145,12 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>1D akış için akışkan bölüm</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>FEM sıvı Bölüm 1 D akış için oluşturur</translation>
     </message>
   </context>
   <context>
@@ -45,12 +158,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Kiriş kesiti</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Bir dişi oluşturur kiriş kesiti</translation>
     </message>
   </context>
   <context>
@@ -58,12 +171,87 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Kabuk plaka kalınlığı</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>FEM kabuk plaka kalınlığı oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="184"/>
+      <source>Shell plate thickness</source>
+      <translation>Kabuk plaka kalınlığı</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="186"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>FEM kabuk plaka kalınlığı oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="200"/>
+      <source>Beam rotation</source>
+      <translation>Çubuk Döndürme</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="202"/>
+      <source>Creates a FEM beam rotation</source>
+      <translation type="unfinished">Creates a FEM beam rotation</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="232"/>
+      <source>Elasticity equation</source>
+      <translation>Esneklik denklemi</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="233"/>
+      <source>Creates a FEM equation for elasticity</source>
+      <translation>Esneklik için bir FEM denklemi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="216"/>
+      <source>Electrostatic equation</source>
+      <translation>Elektrostatik denklem</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="217"/>
+      <source>Creates a FEM equation for electrostatic</source>
+      <translation>Elektrostatik için bir FEM denklemi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="248"/>
+      <source>Flow equation</source>
+      <translation>Akış denklemi</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="249"/>
+      <source>Creates a FEM equation for flow</source>
+      <translation>Akış için bir FEM denklemi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFluxsolver</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="264"/>
+      <source>Fluxsolver equation</source>
+      <translation>Fluxsolver denklemi</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="265"/>
+      <source>Creates a FEM equation for fluxsolver</source>
+      <translation>Fluksolver için bir FEM denklemi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -71,25 +259,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM kafes kafes</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
-    <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>FEM kafes yüzeyi bir kafese dönüştürmek</translation>
     </message>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <location filename="../../../femcommands/commands.py" line="366"/>
+      <source>FEM mesh to mesh</source>
+      <translation>FEM kafes kafes</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="367"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>FEM kafes yüzeyi bir kafese dönüştürmek</translation>
     </message>
   </context>
   <context>
@@ -97,12 +282,12 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Doğrusal olmayan mekanik malzeme</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Bir doğrusal olmayan mekanik malzeme oluşturur</translation>
     </message>
   </context>
   <context>
@@ -110,12 +295,12 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
+      <translation>FEM malzeme için sıvı</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Sıvı için FEM malzemesi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -123,12 +308,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEM kafes sınır tabaka</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>FEM kafes sınır tabaka oluşturur</translation>
     </message>
   </context>
   <context>
@@ -136,12 +321,12 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Açık FEM kafes</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Açık bir FEM kafes kafes nesnesi</translation>
     </message>
   </context>
   <context>
@@ -149,25 +334,22 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM süzgeci Netgen tarafından şekil üzerinden</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Yaratmak a sağlam bir FEM birim kafes ya da yüz şekli Netgen iç mesher tarafından</translation>
     </message>
     <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <location filename="../../../femcommands/commands.py" line="472"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>FEM süzgeci Netgen tarafından şekil üzerinden</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="473"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Yaratmak a sağlam bir FEM birim kafes ya da yüz şekli Netgen iç mesher tarafından</translation>
     </message>
   </context>
   <context>
@@ -175,12 +357,12 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>FEM kafes grubu</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>FEM kafes grup oluşturur</translation>
     </message>
   </context>
   <context>
@@ -188,7 +370,7 @@
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <translation>FEM kafes bilgi yazdırmak</translation>
     </message>
   </context>
   <context>
@@ -196,12 +378,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEM kafes bölge</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>FEM kafes grup oluşturur</translation>
     </message>
   </context>
   <context>
@@ -214,7 +396,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Gösterir ve seçilen sonuç veri görüntüler</translation>
     </message>
   </context>
   <context>
@@ -222,25 +404,35 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Kuralları temizle</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Tüm sonuçları active çözümlemesi temizler</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="548"/>
+      <source>Purge results</source>
+      <translation>Kuralları temizle</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="550"/>
+      <source>Purges all results from active analysis</source>
+      <translation>Tüm sonuçları active çözümlemesi temizler</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculix</name>
+    <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <location filename="../../../femcommands/commands.py" line="592"/>
+      <source>Solver CalculiX (experimental)</source>
+      <translation>Çözücü CalculiX (Deneysel)</translation>
     </message>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <location filename="../../../femcommands/commands.py" line="594"/>
+      <source>Creates a FEM solver CalculiX (experimental)</source>
+      <translation>Bir FEM çözücüsü Calculix (Deneysel) oluşturur.</translation>
     </message>
   </context>
   <context>
@@ -248,12 +440,22 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Çözücü iş denetimi</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Çözücü özniteliklerini değiştirir ve hesaplamalar seçili çözücü için çalışır</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="610"/>
+      <source>Solver job control</source>
+      <translation>Çözücü iş denetimi</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="612"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>Çözücü özniteliklerini değiştirir ve hesaplamalar seçili çözücü için çalışır</translation>
     </message>
   </context>
   <context>
@@ -261,12 +463,12 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Çözücü hesapları çalıştırmak</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Hesaplamalar seçili çözücü için çalışır</translation>
     </message>
   </context>
   <context>
@@ -274,12 +476,12 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Çözücü Z88</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>FEM çözücü CalculiX oluşturur</translation>
     </message>
   </context>
   <context>
@@ -292,17 +494,82 @@
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Varsayılan Fem komut MenuText</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
       <translation>Varsayılan Fem komut MenuText</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Varsayılan Fem komut MenuText</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <source>Select Solids</source>
+      <translation>Katıları seçin</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Seç elemanlar parçası ait katı listeye eklenecektir söyledi. Daha To eklemek katı tıklayarak " Ekle ".</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <source>Add</source>
+      <translation>Ekle</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <source>Remove</source>
+      <translation>Kaldır</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>FEM malzeme için sıvı</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>Sıvı için FEM malzemesi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>FEM süzgeci Netgen tarafından şekil üzerinden</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>FEM kafes GMSH mesher tarafından bir şekil oluşturmak</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Çözücü CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>FEM çözücü CalculiX oluşturur</translation>
     </message>
   </context>
   <context>
@@ -310,12 +577,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Kiriş kesiti</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Bir dişi oluşturur kiriş kesiti</translation>
     </message>
   </context>
   <context>
@@ -323,12 +590,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>1D akış için akışkan bölüm</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>FEM sıvı Bölüm 1 D akış için oluşturur</translation>
     </message>
   </context>
   <context>
@@ -336,12 +603,12 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Kabuk plaka kalınlığı</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>FEM kabuk plaka kalınlığı oluşturur</translation>
     </message>
   </context>
   <context>
@@ -349,22 +616,22 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Analiz kabı</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Standart çözücü CalculiX ile bir analiz kutusu oluşturur</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
       <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <translation>Mekanik analiz</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Yeni bir mekanik analiz oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -372,22 +639,22 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Kiriş kesiti</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Bir dişi oluşturur kiriş kesiti</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation type="unfinished">FEM Beam Cross Section Definition ...</translation>
+      <translation>FEM kiriş kesit tanımı...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation type="unfinished">Creates a FEM Beam Cross Section</translation>
+      <translation>Bir FEM Kiriş Kesitini Oluşturur</translation>
     </message>
   </context>
   <context>
@@ -395,12 +662,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Açık FEM kafes</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Açık bir FEM kafes kafes nesnesi</translation>
     </message>
   </context>
   <context>
@@ -408,12 +675,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Öz ağırlık kısıtlaması</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Öz ağırlık FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -421,12 +688,12 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Çözücü iş denetimi</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Çözücü özniteliklerini değiştirir ve hesaplamalar seçili çözücü için çalışır</translation>
     </message>
   </context>
   <context>
@@ -434,12 +701,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM kafes kafes</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>FEM kafes yüzeyi bir kafese dönüştürmek</translation>
     </message>
   </context>
   <context>
@@ -447,12 +714,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Doğrusal olmayan mekanik malzeme</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Bir doğrusal olmayan mekanik malzeme oluşturur</translation>
     </message>
   </context>
   <context>
@@ -465,17 +732,17 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Mekanik malzeme...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation type="unfinished">Creates a mechanical material</translation>
+      <translation>Bir doğrusal olmayan mekanik malzeme oluşturur</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Mekanik malzeme tanımını oluşturur veya düzenler.</translation>
     </message>
   </context>
   <context>
@@ -483,12 +750,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM süzgeci Netgen tarafından şekil üzerinden</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Yaratmak a sağlam bir FEM birim kafes ya da yüz şekli Netgen iç mesher tarafından</translation>
     </message>
   </context>
   <context>
@@ -496,12 +763,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>FEM süzgeci Netgen tarafından şekil üzerinden</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>FEM kafes GMSH mesher tarafından bir şekil oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -509,12 +776,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEM kafes bölge</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>FEM kafes grup oluşturur</translation>
     </message>
   </context>
   <context>
@@ -522,7 +789,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <translation>FEM kafes bilgi yazdırmak</translation>
     </message>
   </context>
   <context>
@@ -530,17 +797,17 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Kuralları temizle</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
+      <translation>Bir analizden çıkan sonuçları temizle</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Tüm sonuçları active çözümlemesi temizler</translation>
     </message>
   </context>
   <context>
@@ -548,12 +815,12 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Çözücü hesapları çalıştırmak</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Hesaplamalar seçili çözücü için çalışır</translation>
     </message>
   </context>
   <context>
@@ -561,22 +828,22 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Kabuk plaka kalınlığı</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>FEM kabuk plaka kalınlığı oluşturur</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
+      <translation>FEM kabuk plaka kalınlığı tanımı...</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
+      <translation>FEM Kalınlık Kalınlığı Yaratır</translation>
     </message>
   </context>
   <context>
@@ -589,12 +856,12 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Bir analiz sonucu bilgiyi göster</translation>
     </message>
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Gösterir ve seçilen sonuç veri görüntüler</translation>
     </message>
   </context>
   <context>
@@ -602,22 +869,22 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Çözücü CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>FEM çözücü CalculiX oluşturur</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
+      <translation>FEM çözücü CalculiX oluşturur ...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+      <translation>FEM çözücü CalculiX oluşturur</translation>
     </message>
   </context>
   <context>
@@ -625,12 +892,12 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Çözücü Z88</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>FEM çözücü CalculiX oluşturur</translation>
     </message>
   </context>
   <context>
@@ -651,12 +918,12 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
       <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
+      <translation>Mekanik analiz</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Yeni bir mekanik analiz oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -664,12 +931,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
+      <translation>Calculix'i çalıştırın</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+      <translation>.İnP dosya ve çalışma CalculiX ccx yazmak</translation>
     </message>
   </context>
   <context>
@@ -677,12 +944,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Çözücü iş denetimi</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Seçilen çözücünün hesaplamasını başlatmak için diyalog kutusu</translation>
     </message>
   </context>
   <context>
@@ -690,12 +957,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Çözücü iş denetimi</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Seçilen çözücünün hesaplamasını başlatmak için diyalog kutusu</translation>
     </message>
   </context>
   <context>
@@ -703,12 +970,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Mekanik malzeme...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Mekanik malzeme tanımını oluşturur veya düzenler.</translation>
     </message>
   </context>
   <context>
@@ -721,7 +988,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Bir analiz sonucu bilgiyi göster</translation>
     </message>
   </context>
   <context>
@@ -766,12 +1033,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation type="unfinished">Create FEM displacement constraint</translation>
+      <translation>Sonlu Elemanlar Metodu rulman sınırlandırması oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <translation>Bir yüzünde hareket bir Öteleme için FEM kısıtlama oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -838,12 +1105,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Sonlu Elmenlar Metodu dişli sınırlandırması oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Bir yüzünde hareket bir Öteleme için FEM kısıtlama oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -909,12 +1176,12 @@
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Tek bir FEM örgüsünü veya düğüm setini seçin, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -928,7 +1195,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation type="unfinished">Add a solver to the Analysis</translation>
+      <translation>Analiz için bir parça ekle</translation>
     </message>
   </context>
   <context>
@@ -956,57 +1223,57 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation type="unfinished">Use internal editor for .inp files</translation>
+      <translation>.inp dosyaları için dahili düzenleyiciyi kullanın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Harici editör:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
+      <translation>Varsayılan CalculiX ccx ikili dosyasını kullanmak için boş bırakın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
       <source>ccx binary</source>
-      <translation type="unfinished">ccx binary</translation>
+      <translation>ccx ikili</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Çalışma dizini</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
       <source>Default analysis settings</source>
-      <translation type="unfinished">Default analysis settings</translation>
+      <translation>Varsayılan arama ayarları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Varsayılan türü analizi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statik</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Sıklık</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Eigenmode numarası</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -1016,43 +1283,43 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Yüksek frekans sınırı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Yüksek frekans sınırı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materials</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>Yerleşik malzeme kullanımı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+      <translation>.FreeCAD / Materials dizinindeki materyalleri kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Kullanıcı tanımlı dizindeki materyalleri kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Kullanıcı dizini</translation>
     </message>
   </context>
   <context>
@@ -1083,7 +1350,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
       <source>Nodes set</source>
-      <translation>Küme (Nodes) Oluştur</translation>
+      <translation>Düğümler ayarla</translation>
     </message>
   </context>
   <context>
@@ -1091,7 +1358,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
       <source>Nodes set</source>
-      <translation>Küme (Nodes) Oluştur</translation>
+      <translation>Düğümler ayarla</translation>
     </message>
   </context>
   <context>
@@ -1135,7 +1402,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation type="unfinished">Please specify a force greater than 0</translation>
+      <translation>Lütfen 0'dan büyük bir güç belirtin</translation>
     </message>
   </context>
   <context>
@@ -1157,7 +1424,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation type="unfinished">Please specify a pressure greater than 0</translation>
+      <translation>Lütfen 0'dan büyük bir basınç belirtin</translation>
     </message>
   </context>
   <context>
@@ -1173,12 +1440,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>FEM kafes Düzenle</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>İşlem hatası</translation>
     </message>
   </context>
   <context>
@@ -1186,7 +1453,7 @@
     <message>
       <location filename="../../TaskDriver.cpp" line="51"/>
       <source>Nodes set</source>
-      <translation>Küme (Nodes) Oluştur</translation>
+      <translation>Düğümler ayarla</translation>
     </message>
   </context>
   <context>
@@ -1217,7 +1484,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Lütfen tek bir referans noktası taşıyan rulman sınırlandırması kullanın</translation>
+      <translation>Yatak kısıtlaması için lütfen sadece tek bir referans kullanın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -1264,13 +1531,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation type="unfinished">Nothing selected!</translation>
+      <translation>Seçim yok!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Temel nesne bir parçası olmadığını!</translation>
     </message>
   </context>
   <context>
@@ -1307,17 +1574,17 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation type="unfinished">Point load</translation>
+      <translation>Noktası yükü</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation type="unfinished">Line load</translation>
+      <translation>Çizgi yük</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation type="unfinished">Area load</translation>
+      <translation>Alan yük</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -1443,7 +1710,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Sonsuz analiz</translation>
     </message>
   </context>
   <context>
@@ -1451,12 +1718,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>İşlem hatası</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>FEM modülü NETGEN desteği olmadan oluşturulmuştur. Örgü işe yaramaz!!!</translation>
     </message>
   </context>
   <context>
@@ -1470,36 +1737,36 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>En Kesit</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation type="unfinished">Use FreeCAD Property Editor</translation>
+      <translation>FreeCAD Emlak Editörü'nü kullanın</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>kesit değerlerini düzenlemek için</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Referanslar</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Başvurular boş bırakın </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>kalan tüm şekilleri seçmek için</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1515,7 +1782,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>kalınlık değerini düzenlemek için</translation>
     </message>
   </context>
   <context>
@@ -1528,7 +1795,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Çalışma dizini</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -1538,27 +1805,27 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Analiz Modu</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statik</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Sıklık</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>.İnP dosyası yazmak</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>.İnP dosyası yazmak</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
@@ -1596,22 +1863,22 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Malzeme tanımı</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Referanslar</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Başvurular boş bırakın </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>kalan tüm şekilleri seçmek için</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1621,7 +1888,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Özellikleri</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
@@ -1636,12 +1903,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Yoğunluk</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Dış malzeme kaynakları</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
@@ -1676,14 +1943,14 @@
       <location filename="../../Command.cpp" line="184"/>
       <location filename="../../Command.cpp" line="239"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>NETGEN desteği olmadan yapılan bir FreeCAD çalışmasıdır. Mesh işe yaramaz...</translation>
+      <translation>FreeCAD'iniz NETGEN desteği olmadan inşa edilmiştir. Örgü işe yaramaz....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -1716,7 +1983,7 @@
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
-      <translation>Kısıtlamayı Düzenle</translation>
+      <translation>Kısıt düzenleme</translation>
     </message>
     <message>
       <source>Combo View</source>
@@ -1764,18 +2031,18 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Sınırlanmış forum</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Normal stres kısıtı</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Düğümleri: %1, kenarları: %2, yüzler: %3, çokgenler: %4, Cilt: %5, Polyhedrons: %6]</translation>
     </message>
   </context>
   <context>
@@ -1788,22 +2055,22 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Sonuç türü</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -1813,12 +2080,12 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises stres</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -1968,7 +2235,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="59"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Çap</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
@@ -1993,7 +2260,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Yer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -2066,7 +2333,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Yer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>
@@ -2079,12 +2346,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Reçete deplasman</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <translation>Birden fazla yüzü seçin, Ekle veya Kaldır'ı tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -2099,7 +2366,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2109,7 +2376,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Ücretsiz</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2119,37 +2386,37 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Onarıldı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Yerdeğiştirme</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Döndürme yalnızca Kiriş ve Kabuk elemanları için geçerlidir.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>Dönüş x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Dönüş y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Dönüş z</translation>
     </message>
   </context>
   <context>
@@ -2208,12 +2475,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Basınç</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
       <source>1 MPa</source>
-      <translation type="unfinished">1 MPa</translation>
+      <translation>1 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
@@ -2244,7 +2511,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation>Ikinci dereceden</translation>
+      <translation>İkinci emir</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>

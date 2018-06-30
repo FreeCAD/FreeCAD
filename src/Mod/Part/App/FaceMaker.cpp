@@ -158,7 +158,7 @@ std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(Base::Type t
 
 void Part::FaceMaker::throwNotImplemented()
 {
-    throw Base::NotImplementedError("Not implemente yet...");
+    throw Base::NotImplementedError("Not implemented yet...");
 }
 
 

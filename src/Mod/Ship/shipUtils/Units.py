@@ -22,7 +22,7 @@
 #***************************************************************************
 
 import FreeCAD
-import Units
+from FreeCAD import Units
 
 
 # Systems of length units

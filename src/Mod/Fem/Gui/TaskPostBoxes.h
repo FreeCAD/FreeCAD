@@ -36,6 +36,7 @@ class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
 class Ui_TaskPostDataAlongLine;
+class Ui_TaskPostDataAtPoint;
 class Ui_TaskPostScalarClip;
 class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
@@ -88,6 +89,45 @@ public:
 protected:
     SoCoordinate3    * pCoords;
     friend class PointMarker;
+};
+
+class ViewProviderDataMarker;
+class DataMarker : public QObject
+{
+    Q_OBJECT
+
+public:
+    DataMarker(Gui::View3DInventorViewer* view, std::string ObjName);
+    ~DataMarker();
+
+    void addPoint(const SbVec3f&);
+    int countPoints() const;
+
+Q_SIGNALS:
+    void PointsChanged(double x, double y, double z);
+
+protected:
+    void customEvent(QEvent* e);
+
+private:
+    Gui::View3DInventorViewer *view;
+    ViewProviderDataMarker *vp;
+    std::string m_name;
+    std::string ObjectInvisible();
+};
+
+class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
+{
+    PROPERTY_HEADER(FemGui::ViewProviderDataMarker);
+
+public:
+    ViewProviderDataMarker();
+    virtual ~ViewProviderDataMarker();
+
+protected:
+    SoCoordinate3    * pCoords;
+    SoMarkerSet      * pMarker;
+    friend class DataMarker;
 };
 
 class TaskPostBox : public Gui::TaskView::TaskBox {
@@ -240,6 +280,30 @@ private:
     std::string ObjectVisible();
     QWidget* proxy;
     Ui_TaskPostDataAlongLine* ui;
+};
+
+class TaskPostDataAtPoint: public TaskPostBox {
+
+    Q_OBJECT
+
+public:
+    TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    virtual ~TaskPostDataAtPoint();
+
+    virtual void applyPythonCode();
+    static void pointCallback(void * ud, SoEventCallback * n);
+
+private Q_SLOTS:
+    void on_SelectPoint_clicked();
+    void on_Field_activated(int i);
+    void centerChanged(double);
+    void onChange(double x, double y, double z);
+
+
+private:
+    std::string ObjectVisible();
+    QWidget* proxy;
+    Ui_TaskPostDataAtPoint* ui;
 };
 
 class TaskPostScalarClip : public TaskPostBox {

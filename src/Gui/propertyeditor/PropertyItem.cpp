@@ -2178,6 +2178,7 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+    text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
     return QVariant(text);
 }
@@ -2204,7 +2205,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
     QTextStream str(&data);
     str << "[";
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << "unicode('" << *it << "', 'utf-8'),";
+        QString text(*it);
+        text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
+        str << "unicode('" << text << "', 'utf-8'),";
     }
     str << "]";
     setPropertyValue(data);
@@ -3493,7 +3496,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
 
-    // the list has four elements: [document name, internal name, label, internal name of container]
+    // the list has five elements:
+    // [document name, internal name, label, internal name of container, property name]
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
     if (obj) {
@@ -3526,6 +3530,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     else {
         list << QString::fromLatin1("Null");
     }
+
+    list << QString::fromLatin1(prop->getName());
 
     return QVariant(list);
 }
@@ -3675,7 +3681,8 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         objName = QString::fromLatin1("Null");
     }
 
-    // each item is a list of four elements: [document name, internal name, label, internal name of container]
+    // each item is a list of five elements:
+    //[document name, internal name, label, internal name of container, property name]
     // the variant list contains at least one item
     std::vector<App::DocumentObject*> obj = prop_link->getValues();
     QVariantList varList;
@@ -3686,6 +3693,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
             list << QString::fromLatin1((*it)->getNameInDocument());
             list << QString::fromUtf8((*it)->Label.getValue());
             list << objName;
+            list << QString::fromLatin1(prop->getName());
             varList << list;
         }
     }
@@ -3706,6 +3714,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         // the object label
         list << QString::fromLatin1("");
         list << objName;
+        list << QString::fromLatin1(prop->getName());
         varList << list;
     }
 

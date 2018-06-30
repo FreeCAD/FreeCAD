@@ -31,7 +31,7 @@ import os
 import glob
 
 import FreeCAD
-import FemUtils
+import femtools.femutils as FemUtils
 
 from .. import run
 from .. import solverbase

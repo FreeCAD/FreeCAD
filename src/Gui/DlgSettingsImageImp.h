@@ -57,6 +57,7 @@ public:
     //@{
     QString comment() const;
     int backgroundType() const;
+    void setBackgroundType( int );
     bool addWatermark() const;
     //@}
 

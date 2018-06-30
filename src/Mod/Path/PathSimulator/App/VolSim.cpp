@@ -30,8 +30,8 @@
 cStock::cStock(float px, float py, float pz, float lx, float ly, float lz, float res)
 	: m_px(px), m_py(py), m_pz(pz), m_lx(lx), m_ly(ly), m_lz(lz), m_res(res)
 {
-	m_x = (int)(lx / res) + 1;
-	m_y = (int)(ly / res) + 1;
+	m_x = (int)(m_lx / res) + 1;
+	m_y = (int)(m_ly / res) + 1;
 	m_stock.Init(m_x, m_y);
 	m_attr.Init(m_x, m_y);
 	m_plane = pz + lz;
@@ -440,7 +440,7 @@ void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4, std
 	facets.push_back(facet);
 }
 
-void cStock::Tesselate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner)
+void cStock::Tessellate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner)
 {
 	// reset attribs
 	for (int y = 0; y < m_y; y++)
@@ -676,8 +676,8 @@ void cLineSegment::SetPoints(Point3D & p1, Point3D & p2)
 void cLineSegment::PointAt(float dist, Point3D & retp)
 {
 	retp.x = pStart.x + pDir.x * dist;
-	retp.x = pStart.y + pDir.y * dist;
-	retp.x = pStart.z + pDir.z * dist;
+	retp.y = pStart.y + pDir.y * dist;
+	retp.z = pStart.z + pDir.z * dist;
 }
 
 //************************************************************************************************************
@@ -746,7 +746,7 @@ void cSimTool::InitTool()  // pos is 0..1 location along the radius of the tool
 	}
 }
 
-cVolSim::cVolSim()
+cVolSim::cVolSim() : stock(nullptr)
 {
 }
 

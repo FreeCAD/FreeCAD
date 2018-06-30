@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Minimális szög egy részlethez</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Minimális méret egy részlethez</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>távolítsa el a fúziót, alkalmazzon véletlenszerű elhelyezést a gyermekekre és a színre</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Távolítsa el a fúziót, alkalmazzon véletlenszerű elhelyezést az alárendeltekre és a színre</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Hálóként exportálja a tárgyakat és egy logikai művelet végrehajtásához használja az OpenSCAD-ot.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Hálóként exportálja a tárgyakat és egy logikai művelet végrehajtásához használja az OpenSCAD-t</translation>
     </message>
   </context>
   <context>
@@ -339,7 +339,7 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Visszahelyez egy objektumot a tulajdonság fában. Kérjük, válasszon régi, új, és a szülő objektumot</translation>
     </message>
   </context>

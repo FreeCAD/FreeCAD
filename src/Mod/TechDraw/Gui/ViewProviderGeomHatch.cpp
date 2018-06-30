@@ -52,6 +52,8 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/LineGroup.h>
+
 #include "TaskGeomHatch.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderGeomHatch.h"
@@ -65,12 +67,12 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObj
 
 ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
-    static const char *vgroup = "Format";
-
     sPixmap = "actions/techdraw-geomhatch";
 
+    static const char *vgroup = "GeomHatch";
+
     ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"The color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0.1),vgroup,App::Prop_None,"GeomHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeomHatch pattern line thickness");
 
     getParameters();
 
@@ -138,9 +140,20 @@ bool ViewProviderGeomHatch::doubleClicked(void)
 }
 
 //for VP properties - but each letter/digit in property editor triggers this!
-void ViewProviderGeomHatch::onChanged(const App::Property* prop)
+void ViewProviderGeomHatch::onChanged(const App::Property* p)
 {
-    Gui::ViewProviderDocumentObject::onChanged(prop);
+    if ((p == &WeightPattern)  ||
+        (p == &ColorPattern) ) {
+        auto gHatch = getViewObject();
+        if (gHatch != nullptr) {
+            TechDraw::DrawViewPart* parent = gHatch->getSourceView();
+            if (parent) {
+                parent->requestPaint();
+            }
+        }
+    }
+
+    Gui::ViewProviderDocumentObject::onChanged(p);
 }
 
 //for feature properties - but each letter/digit in property editor triggers this!
@@ -174,13 +187,15 @@ void ViewProviderGeomHatch::getParameters(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00000000));
+    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
     ColorPattern.setValue(fcColor);
-   
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT"); 
-    double lineWeight = hGrp->GetFloat("GeomWeight",0.1);
-    WeightPattern.setValue(lineWeight);
+
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Graphic");
+    delete lg;                                                    //Coverity CID 174667
+    WeightPattern.setValue(weight);
 }
 
 TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const

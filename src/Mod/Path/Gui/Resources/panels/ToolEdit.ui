@@ -50,68 +50,8 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="TypeField">
         <property name="currentIndex">
-         <number>6</number>
+         <number>0</number>
         </property>
-        <item>
-         <property name="text">
-          <string>Drill</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CenterDrill</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CounterSink</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CounterBore</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Reamer</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Tap</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EndMill</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>SlotCutter</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>BallEndMill</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ChamferMill</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CornerRound</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Engraver</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="4" column="0">
@@ -122,43 +62,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="MaterialField">
-        <item>
-         <property name="text">
-          <string>HighSpeedSteel</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>HighCarbonSteel</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CastAlloy</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Carbide</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Ceramics</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Diamond</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sialon</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="MaterialField"/>
       </item>
       <item row="6" column="0">
        <widget class="QLabel" name="label_4">
@@ -191,7 +95,7 @@
       <item row="16" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Cutting Edge Angle</string>
+         <string>Point/Tip Angle</string>
         </property>
        </widget>
       </item>
@@ -207,13 +111,13 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="singleStep" stdset="0">
+        <property name="singleStep">
          <double>0.125000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -226,10 +130,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -242,10 +146,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -258,10 +162,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -274,10 +178,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -287,6 +191,15 @@
       </item>
       <item row="16" column="1">
        <widget class="Gui::InputField" name="CuttingEdgeAngleField">
+        <property name="text">
+         <string>180 °</string>
+        </property>
+        <property name="maximum">
+         <double>180.000000000000000</double>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">°</string>
         </property>

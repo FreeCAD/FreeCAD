@@ -33,6 +33,9 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <gp_Pnt.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
 #endif
 
 #include <QLocale>
@@ -87,26 +90,13 @@ enum RefType{
 
 DrawViewDimension::DrawViewDimension(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
-    hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 3.5);
-
     ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
+    References2D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Format",App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
+    References3D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = LineGroup::lineGroupFactory(lgName);
-    double weight = lg->getWeight("Graphic");
-    ADD_PROPERTY_TYPE(LineWidth,(weight)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
-    //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
+    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value specified by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -128,6 +118,25 @@ DrawViewDimension::DrawViewDimension(void)
 
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured? 
+
+    //initialize the descriptive geometry. 
+    //TODO: should this be more like DVP with a "geometry object"?
+    m_linearPoints.first  = Base::Vector3d(0,0,0);
+    m_linearPoints.second = Base::Vector3d(0,0,0);
+
+    m_anglePoints.ends.first = Base::Vector3d(0,0,0);
+    m_anglePoints.ends.second = Base::Vector3d(0,0,0);
+    m_anglePoints.vertex = Base::Vector3d(0,0,0);
+
+    m_arcPoints.isArc = false;
+    m_arcPoints.center = Base::Vector3d(0,0,0);
+    m_arcPoints.onCurve.first = Base::Vector3d(0,0,0);
+    m_arcPoints.onCurve.second = Base::Vector3d(0,0,0);
+    m_arcPoints.arcEnds.first = Base::Vector3d(0,0,0);
+    m_arcPoints.arcEnds.second = Base::Vector3d(0,0,0);
+    m_arcPoints.midArc = Base::Vector3d(0,0,0);
+    m_arcPoints.arcCW = false;
+    m_hasGeometry = false;
 }
 
 DrawViewDimension::~DrawViewDimension()
@@ -155,6 +164,11 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 }
             }
         }
+        if (prop == &Arbitrary) {
+            if (!Arbitrary.getValue()) {
+                FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a usable FormatSpec
+            }
+        }
 
     DrawView::onChanged(prop);
     }
@@ -175,11 +189,21 @@ short DrawViewDimension::mustExecute() const
     if (!isRestoring()) {
         result =  (References2D.isTouched() ||
                   Type.isTouched() ||
+                  FormatSpec.isTouched() ||
                   MeasureType.isTouched());
     }
     if (result) {
         return result;
     }
+    
+    auto dvp = getViewPart();
+    if (dvp != nullptr) {
+        result = dvp->isTouched();
+    }
+    if (result) {
+        return result;
+    }
+
     return DrawView::mustExecute();
 }
 
@@ -192,26 +216,170 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     if (!has2DReferences()) {                                            //too soon
         return App::DocumentObject::StdReturn;
     }
+    
+    if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
+        Base::Console().Log("INFO - DVD::getDimValue ViewPart has no Geometry yet\n");
+        return App::DocumentObject::StdReturn;
+    }
+
+    if (!checkReferences2D()) {
+        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return App::DocumentObject::StdReturn;
+    }
+    
+    const std::vector<std::string> &subElements = References2D.getSubValues();
+
+    if ( Type.isValue("Distance")  ||
+         Type.isValue("DistanceX") ||
+         Type.isValue("DistanceY") )  {
+
+        if (getRefType() == oneEdge) {
+            m_linearPoints = getPointsOneEdge();
+        }else if (getRefType() == twoEdge) {
+            m_linearPoints = getPointsTwoEdges();
+        } else if (getRefType() == twoVertex) {
+            m_linearPoints = getPointsTwoVerts();
+        } else if (getRefType() == vertexEdge) {
+            m_linearPoints = getPointsEdgeVert();
+        }  //else tarfu
+        m_hasGeometry = true;
+    } else if(Type.isValue("Radius")){
+        int idx = DrawUtil::getIndexFromName(subElements[0]);
+        TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+        TechDrawGeometry::Circle* circle;
+        arcPoints pts;
+        pts.center = Base::Vector3d(0.0,0.0,0.0);
+        pts.radius = 0.0;
+        if( (base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
+           (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE))  {
+            circle = static_cast<TechDrawGeometry::Circle*> (base);
+            pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
+            pts.radius = circle->radius;
+            if (base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE) {
+                TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (circle);
+                pts.isArc = true;
+                pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
+                pts.arcEnds.first  = Base::Vector3d(aoc->startPnt.x,aoc->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(aoc->endPnt.x,aoc->endPnt.y,0.0);
+                pts.arcCW          = aoc->cw;
+            } else {
+                pts.isArc = false;
+                pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
+            }
+        } else {
+            Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+            return App::DocumentObject::StdReturn;
+        }
+        m_arcPoints = pts;
+        m_hasGeometry = true;
+    } else if(Type.isValue("Diameter")){
+        int idx = DrawUtil::getIndexFromName(subElements[0]);
+        TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+        TechDrawGeometry::Circle* circle;
+        arcPoints pts;
+        pts.center = Base::Vector3d(0.0,0.0,0.0);
+        pts.radius = 0.0;
+        if ((base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
+           (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE)) {
+            circle = static_cast<TechDrawGeometry::Circle*> (base);
+            pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
+            pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
+            pts.radius = circle->radius;
+            if (base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE) {
+                TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (circle);
+                pts.isArc = true;
+                pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
+                pts.arcEnds.first  = Base::Vector3d(aoc->startPnt.x,aoc->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(aoc->endPnt.x,aoc->endPnt.y,0.0);
+                pts.arcCW          = aoc->cw;
+            } else {
+                pts.isArc = false;
+                pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
+            }
+        } else {
+            Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+            return App::DocumentObject::StdReturn;
+        }
+        m_arcPoints = pts;
+        m_hasGeometry = true;
+    } else if(Type.isValue("Angle")){
+        //TODO: do we need to distinguish inner vs outer angle? -wf
+        if (getRefType() != twoEdge) {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+        TechDrawGeometry::BaseGeom* edge0 = getViewPart()->getProjEdgeByIndex(idx0);
+        TechDrawGeometry::BaseGeom* edge1 = getViewPart()->getProjEdgeByIndex(idx1);
+        TechDrawGeometry::Generic *gen0;
+        TechDrawGeometry::Generic *gen1;
+        if (edge0 && edge0->geomType == TechDrawGeometry::GeomType::GENERIC) {
+             gen0 = static_cast<TechDrawGeometry::Generic*>(edge0);
+        } else {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+        if (edge1 && edge1->geomType == TechDrawGeometry::GeomType::GENERIC) {
+             gen1 = static_cast<TechDrawGeometry::Generic*>(edge1);
+        } else {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+
+        anglePoints pts;
+        Base::Vector3d apex = DrawUtil::vector23(gen0->apparentInter(gen1));
+        Base::Vector3d extPoint0,extPoint1;
+        if ((DrawUtil::vector23(gen0->getStartPoint()) - apex).Length() >
+            (DrawUtil::vector23(gen0->getEndPoint()) - apex).Length()) {
+            extPoint0 = DrawUtil::vector23(gen0->getStartPoint());
+        } else {
+            extPoint0 = DrawUtil::vector23(gen0->getEndPoint());
+        }
+        if ((DrawUtil::vector23(gen1->getStartPoint()) - apex).Length() >
+            (DrawUtil::vector23(gen1->getEndPoint()) - apex).Length()) {
+            extPoint1 = DrawUtil::vector23(gen1->getStartPoint());
+        } else {
+            extPoint1 = DrawUtil::vector23(gen1->getEndPoint());
+        }
+        pts.ends.first  = extPoint0;
+        pts.ends.second = extPoint1;
+        pts.vertex = apex;
+        m_anglePoints = pts;
+        m_hasGeometry = true;
+    }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
     requestPaint();
 
-    return App::DocumentObject::execute();;
+    return App::DocumentObject::execute();
 }
 
-std::string  DrawViewDimension::getFormatedValue()
+std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 {
     std::string result;
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
+    }
+
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());    //internal units!
-
+    
     Base::Quantity qVal;
     qVal.setValue(val);
     if (Type.isValue("Angle")) {
         qVal.setUnit(Base::Unit::Angle);
+        if (obtuse) {
+            qVal.setValue(fabs(360.0 - val));
+        }
     } else {
         qVal.setUnit(Base::Unit::Length);
     }
+
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
                                                                       //but won't give more than Global_Decimals precision
                                                                       //really should be able to ask units for value in appropriate UoM!!
@@ -306,224 +474,118 @@ double DrawViewDimension::getDimValue()
         }
     } else {
         // Projected Values
-        const std::vector<App::DocumentObject*> &objects = References2D.getValues();
-        const std::vector<std::string> &subElements      = References2D.getSubValues();
-
         if (!checkReferences2D()) {
             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-            References2D.setValue(nullptr,"");
             return result;
         }
         if ( Type.isValue("Distance")  ||
              Type.isValue("DistanceX") ||
              Type.isValue("DistanceY") )  {
-            if (getRefType() == oneEdge) {
-                //TODO: Check for straight line Edge?
-                int idx = DrawUtil::getIndexFromName(subElements[0]);
-                TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-                TechDrawGeometry::Generic* gen;
-                if (geom && geom->geomType == TechDrawGeometry::GeomType::GENERIC) {
-                    gen = static_cast<TechDrawGeometry::Generic*>(geom);
-                } else {
-                    Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-                Base::Vector2d start = gen->points[0];
-                Base::Vector2d end = gen->points[1];
-                Base::Vector2d line = end - start;
-                if (Type.isValue("Distance")) {
-                    result = line.Length() / getViewPart()->getScale();
-                } else if (Type.isValue("DistanceX")) {
-                    return fabs(line.x) / getViewPart()->getScale();
-                } else {
-                    result = fabs(line.y) / getViewPart()->getScale();
-                }
-            }else if (getRefType() == twoEdge) {
-                //only works for straight line edges
-                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-                TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
-                TechDrawGeometry::Generic* gen0;
-                if (geom0 && geom0->geomType == TechDrawGeometry::GeomType::GENERIC) {
-                    gen0 = static_cast<TechDrawGeometry::Generic*>(geom0);
-                } else {
-                    Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-                TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
-                TechDrawGeometry::Generic* gen1;
-                if (geom1 && geom1->geomType == TechDrawGeometry::GeomType::GENERIC) {
-                    gen1 = static_cast<TechDrawGeometry::Generic*>(geom1);
-                } else {
-                    Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-                Base::Vector2d s0 = gen0->points[0];
-                Base::Vector2d e0 = gen0->points[1];
-                Base::Vector2d s1 = gen1->points[0];
-                Base::Vector2d e1 = gen1->points[1];
-                if (Type.isValue("Distance")) {
-                    result = dist2Segs(s0,e0,s1,e1) / getViewPart()->getScale();
-                } else if (Type.isValue("DistanceX")) {
-                    Base::Vector2d p1 = geom0->nearPoint(geom1);
-                    Base::Vector2d p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.x - p2.x) / getViewPart()->getScale();
-                } else if (Type.isValue("DistanceY")) {
-                    Base::Vector2d p1 = geom0->nearPoint(geom1);
-                    Base::Vector2d p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.y - p2.y) / getViewPart()->getScale();
-                }
-            } else if (getRefType() == twoVertex) {
-                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-                TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-                TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
-                if ((v0 == nullptr) ||
-                    (v1 == nullptr) ) {
-                    Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-                Base::Vector2d start = v0->pnt;    //v0 != nullptr, but v0->pnt is invalid
-                Base::Vector2d end = v1->pnt;
-                Base::Vector2d line = end - start;
-                if (Type.isValue("Distance")) {
-                    result = line.Length() / getViewPart()->getScale();
-                } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.x) / getViewPart()->getScale();
-                } else {
-                    result = fabs(line.y) / getViewPart()->getScale();
-                }
-            } else if (getRefType() == vertexEdge) {
-                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-                TechDrawGeometry::BaseGeom* e;
-                TechDrawGeometry::Vertex* v;
-                if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
-                    e = getViewPart()->getProjEdgeByIndex(idx0);
-                    v = getViewPart()->getProjVertexByIndex(idx1);
-                } else {
-                    e = getViewPart()->getProjEdgeByIndex(idx1);
-                    v = getViewPart()->getProjVertexByIndex(idx0);
-                }
-                if ((v == nullptr) ||
-                    (e == nullptr) ) {
-                    Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-                Base::Vector2d nearPoint = e->nearPoint(v->pnt);
-                Base::Vector2d line = nearPoint - v->pnt;
-                if (Type.isValue("Distance")) {
-                    result = e->minDist(v->pnt) / getViewPart()->getScale();
-                } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.x) / getViewPart()->getScale();
-                } else {
-                    result = fabs(line.y) / getViewPart()->getScale();
-                }
-            }  //else tarfu
+            pointPair pts = m_linearPoints;
+            Base::Vector3d dimVec = pts.first - pts.second;
+            if (Type.isValue("Distance")) {
+                result = dimVec.Length() / getViewPart()->getScale();
+            } else if (Type.isValue("DistanceX")) {
+                result = fabs(dimVec.x) / getViewPart()->getScale();
+            } else {
+                result = fabs(dimVec.y) / getViewPart()->getScale();
+            }
+
         } else if(Type.isValue("Radius")){
-            //only 1 reference for a Radius
-            int idx = DrawUtil::getIndexFromName(subElements[0]);
-            TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-            TechDrawGeometry::Circle* circle;
-                if( (base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
-                   (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE))  {
-                    circle = static_cast<TechDrawGeometry::Circle*> (base);
-                } else {
-                    Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                    References2D.setValue(nullptr,"");
-                    return result;
-                }
-            result = circle->radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
+            arcPoints pts = m_arcPoints;
+            result = pts.radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
+
             
         } else if(Type.isValue("Diameter")){
-            //only 1 reference for a Diameter
-            int idx = DrawUtil::getIndexFromName(subElements[0]);
-            TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-            TechDrawGeometry::Circle* circle;
-            if ((base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
-               (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE)) {
-                circle = static_cast<TechDrawGeometry::Circle*> (base);
-            } else {
-                return result;
-            }
-            result = (circle->radius  * 2.0) / getViewPart()->getScale();   //Projected BaseGeom is scaled for drawing
+            arcPoints pts = m_arcPoints;
+            result = (pts.radius  * 2.0) / getViewPart()->getScale();   //Projected BaseGeom is scaled for drawing
+
         } else if(Type.isValue("Angle")){
-            // Must project lines to 2D so cannot use measurement framework this time
-            //Relcalculate the measurement based on references stored.
-            //WF: why not use projected geom in GeomObject and Vector2d.GetAngle? intersection pt & direction issues?
-            //TODO: do we need to distinguish inner vs outer angle? -wf
-            if (getRefType() != twoEdge) {
-                 Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                 References2D.setValue(nullptr,"");
-                 return result;
-            }
-            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(objects[0]) );
-            if( viewPart == nullptr ) {
-                Base::Console().Log("INFO - DVD::getDimValue - References2D not DrawViewPart\n");
-                return result;
-            }
-            TechDrawGeometry::BaseGeom* edge0 = viewPart->getProjEdgeByIndex(idx0);
-            TechDrawGeometry::BaseGeom* edge1 = viewPart->getProjEdgeByIndex(idx1);
-            TechDrawGeometry::Generic *gen1;
-            TechDrawGeometry::Generic *gen2;
-            if (edge0 && edge0->geomType == TechDrawGeometry::GeomType::GENERIC) {
-                 gen1 = static_cast<TechDrawGeometry::Generic*>(edge0);
-            } else {
-                 Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                 References2D.setValue(nullptr,"");
-                 return result;
-            }
-            if (edge1 && edge1->geomType == TechDrawGeometry::GeomType::GENERIC) {
-                 gen2 = static_cast<TechDrawGeometry::Generic*>(edge1);
-            } else {
-                 Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
-                 References2D.setValue(nullptr,"");
-                 return result;
-            }
+            anglePoints pts = m_anglePoints;
+            Base::Vector3d vertex = pts.vertex;
+            Base::Vector3d leg0 = pts.ends.first - vertex;
+            Base::Vector3d leg1 = pts.ends.second - vertex;
+            double legAngle =  leg0.GetAngle(leg1) * 180.0 / M_PI;
+            result = legAngle;
+        }
+    }
+    return result;
+}
 
-            Base::Vector3d p1S(gen1->points.at(0).x, gen1->points.at(0).y, 0.);
-            Base::Vector3d p1E(gen1->points.at(1).x, gen1->points.at(1).y, 0.);
+pointPair DrawViewDimension::getPointsOneEdge()
+{
+    pointPair result;
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
 
-            Base::Vector3d p2S(gen2->points.at(0).x, gen2->points.at(0).y, 0.);
-            Base::Vector3d p2E(gen2->points.at(1).x, gen2->points.at(1).y, 0.);
+    //TODO: Check for straight line Edge?
+    int idx = DrawUtil::getIndexFromName(subElements[0]);
+    TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+    TechDrawGeometry::Generic* gen;
+    if (geom && geom->geomType == TechDrawGeometry::GeomType::GENERIC) {
+        gen = static_cast<TechDrawGeometry::Generic*>(geom);
+    } else {
+        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return result;
+    }
+    result.first = DrawUtil::vector23(gen->points[0]);
+    result.second = DrawUtil::vector23(gen->points[1]);
+    return result;
+}
 
-            Base::Vector3d dir1 = p1E - p1S;
-            Base::Vector3d dir2 = p2E - p2S;
+pointPair DrawViewDimension::getPointsTwoEdges()
+{
+    pointPair result;
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
 
-            // Line Intersetion (taken from ViewProviderSketch.cpp)
-            double det = dir1.x*dir2.y - dir1.y*dir2.x;
-            if ((det > 0 ? det : -det) < 1e-10)
-                throw Base::Exception("Invalid selection - Det = 0");
+    int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+    int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+    TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
+    TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+    result = closestPoints(geom0->occEdge,geom1->occEdge);
+    return result;
+}
 
-            double c1 = dir1.y*gen1->points.at(0).x - dir1.x*gen1->points.at(0).y;
-            double c2 = dir2.y*gen2->points.at(1).x - dir2.x*gen2->points.at(1).y;
-            double x = (dir1.x*c2 - dir2.x*c1)/det;
-            double y = (dir1.y*c2 - dir2.y*c1)/det;
+pointPair DrawViewDimension::getPointsTwoVerts()
+{
+    pointPair result;
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
 
-            // Intersection point
-            Base::Vector3d p0 = Base::Vector3d(x,y,0);
+    int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+    int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+    TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+    TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+    if ((v0 == nullptr) ||
+        (v1 == nullptr) ) {
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return result;
+    }
+    result.first  = DrawUtil::vector23(v0->pnt);
+    result.second = DrawUtil::vector23(v1->pnt);
+    return result;
+}    
 
-            Base::Vector3d lPos((double) X.getValue(), (double) Y.getValue(), 0.);
-            //Base::Vector3d delta = lPos - p0;
+pointPair DrawViewDimension::getPointsEdgeVert()
+{
+    pointPair result;
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
 
-            // Create vectors point towards intersection always
-            Base::Vector3d a = -p0, b = -p0;
-            a += ((p1S - p0).Length() < FLT_EPSILON) ? p1E : p1S;
-            b += ((p2S - p0).Length() < FLT_EPSILON) ? p2E : p2S;
-
-            double angle2 = atan2( a.x*b.y - a.y*b.x, a.x*b.x + a.y*b.y );
-            result = angle2 * 180. / M_PI;
-        } else {
-            throw Base::Exception("getDimValue() - Unknown Dimension Type (2)");
-        }  //endif Angle
-    } //endif Projected
+    int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+    int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+    TechDrawGeometry::BaseGeom* e;
+    TechDrawGeometry::Vertex* v;
+    if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
+        e = getViewPart()->getProjEdgeByIndex(idx0);
+        v = getViewPart()->getProjVertexByIndex(idx1);
+    } else {
+        e = getViewPart()->getProjEdgeByIndex(idx1);
+        v = getViewPart()->getProjVertexByIndex(idx0);
+    }
+    if ((v == nullptr) ||
+        (e == nullptr) ) {
+        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return result;
+    }
+    result = closestPoints(e->occEdge,v->occVertex);
     return result;
 }
 
@@ -604,6 +666,24 @@ bool DrawViewDimension::checkReferences2D() const
     return result;
 }
 
+pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1,
+                                           TopoDS_Shape s2) const
+{
+    pointPair result;
+    BRepExtrema_DistShapeShape extss(s1, s2);
+    if (!extss.IsDone()) {
+        throw Base::Exception("DVD::closestPoints - BRepExtrema_DistShapeShape failed");
+    }
+    int count = extss.NbSolution();
+    if (count != 0) {
+        gp_Pnt p = extss.PointOnShape1(1);
+        result.first = Base::Vector3d(p.X(),p.Y(),p.Z());
+        p = extss.PointOnShape2(1);
+        result.second = Base::Vector3d(p.X(),p.Y(),p.Z());
+    } //TODO: else { explode }
+
+    return result;
+}
 
 //!add Dimension 3D references to measurement
 void DrawViewDimension::setAll3DMeasurement()
@@ -659,7 +739,7 @@ double DrawViewDimension::dist2Segs(Base::Vector2d s1,
 
     BRepExtrema_DistShapeShape extss(edge1, edge2);
     if (!extss.IsDone()) {
-        throw Base::Exception("DVD - BRepExtrema_DistShapeShape failed");
+        throw Base::Exception("DVD::dist2Segs - BRepExtrema_DistShapeShape failed");
     }
     int count = extss.NbSolution();
     double minDist = 0.0;
@@ -668,6 +748,20 @@ double DrawViewDimension::dist2Segs(Base::Vector2d s1,
     } //TODO: else { explode }
 
     return minDist;
+}
+
+bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle) {
+    bool result = false;
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
+    int idx = DrawUtil::getIndexFromName(subElements[0]);
+    TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+    if( base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE )  {
+        TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (base);
+        if (aoc->intersectsArc(s,pointOnCircle)) {
+            result = true;
+        }
+    }
+    return result;
 }
 
 bool DrawViewDimension::has2DReferences(void) const

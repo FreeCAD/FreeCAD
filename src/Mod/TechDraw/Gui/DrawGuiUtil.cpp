@@ -71,40 +71,67 @@ using namespace TechDrawGui;
 //===========================================================================
 // validate helper routines
 //===========================================================================
+
+//find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = 0;
-    //check if a DrawPage is currently displayed
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
-    if (mvp) {
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
-    } else {
-        //DrawPage not displayed, check Selection and/or Document for a DrawPage
-        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                            //no page in selection
-            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-            if (selPages.empty()) {                                        //no page in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                     QObject::tr("Create a page first."));
-                return page;
-            } else if (selPages.size() > 1) {                              //multiple pages in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Can not determine correct page."));
-                return page;
-            } else {                                                       //use only page in document
-                page = static_cast<TechDraw::DrawPage*>(selPages.front());
-            }
-        } else if (selPages.size() > 1) {                                  //multiple pages in selection
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                 QObject::tr("Select exactly 1 page."));
-            return page;
-        } else {                                                           //use only page in selection
+    TechDraw::DrawPage* page;
+    int failCase = 0;
+
+    //check Selection and/or Document for a DrawPage
+    std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (selPages.empty()) {                                            //no page in selection
+        selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (selPages.empty()) {                                        //no page in document
+            page = nullptr; 
+            failCase = 1;
+        } else if (selPages.size() > 1) {                              //multiple pages in document, but none selected
+            page = nullptr;
+            failCase = 2;
+        } else {                                                       //only page in document - use it
             page = static_cast<TechDraw::DrawPage*>(selPages.front());
         }
+    } else if (selPages.size() > 1) {                                  //multiple pages in selection
+        page = nullptr;
+        failCase = 3;
+    } else {                                                           //use only page in selection
+        page = static_cast<TechDraw::DrawPage*>(selPages.front());
     }
+
+    //if no page is selected
+    //default to currently displayed DrawPage is there is one         //code moved Coverity CID 174668
+    if (page == nullptr) { 
+        if ((failCase == 1) ||
+            (failCase == 2)) {
+            Gui::MainWindow* w = Gui::getMainWindow();
+            Gui::MDIView* mv = w->activeWindow();
+            MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+            if (mvp) {
+                QString windowTitle = mvp->windowTitle();
+                QGVPage* qp = mvp->getQGVPage();
+                page = qp->getDrawPage();
+            } else {
+                failCase = 1;
+            }
+        }
+    }
+
+    if (page == nullptr) {
+        switch(failCase) {
+            case 1:
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                    QObject::tr("Create/select a page first."));
+                break;
+            case 2:
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Which page?"),
+                                     QObject::tr("Can not determine correct page."));
+                break;
+            case 3:
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                                     QObject::tr("Select exactly 1 page."));
+        }
+    }
+
     return page;
 }
 

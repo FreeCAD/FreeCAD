@@ -342,12 +342,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+75"/>
       <source>Lux project file missing</source>
-      <translation type="unfinished">Lux project file missing</translation>
+      <translation>Файл проекту Lux відсутній</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The Lux project file doesn't exist.</source>
-      <translation type="unfinished">The Lux project file doesn't exist.</translation>
+      <translation>Файл проекту Lux відсутній.</translation>
     </message>
     <message>
       <location line="-69"/>

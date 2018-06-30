@@ -34,6 +34,8 @@ DlgPrefsTechDrawImp::DlgPrefsTechDrawImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
+    plsb_LabelSize->setUnit(Base::Unit::Length);
+    plsb_TemplateDot->setUnit(Base::Unit::Length);
 }
 
 DlgPrefsTechDrawImp::~DlgPrefsTechDrawImp()
@@ -48,7 +50,6 @@ void DlgPrefsTechDrawImp::saveSettings()
     cb_Faces->onSave();
     cb_SectionEdges->onSave();
     cb_PageUpdate->onSave();
-    dsb_TemplateDot->onSave();
 
     pcb_Normal->onSave();
     pcb_Select->onSave();
@@ -58,8 +59,9 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_Background->onSave();
     pcb_Hatch->onSave();
 
-    le_LabelFont->onSave();
-    dsb_LabelSize->onSave();
+    pfb_LabelFont->onSave();
+    plsb_LabelSize->onSave();
+    plsb_TemplateDot->onSave();
 
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
@@ -75,7 +77,6 @@ void DlgPrefsTechDrawImp::loadSettings()
     cb_Faces->onRestore();
     cb_SectionEdges->onRestore();
     cb_PageUpdate->onRestore();
-    dsb_TemplateDot->onRestore();
 
     pcb_Normal->onRestore();
     pcb_Select->onRestore();
@@ -85,8 +86,9 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_Background->onRestore();
     pcb_Hatch->onRestore();
 
-    le_LabelFont->onRestore();
-    dsb_LabelSize->onRestore();
+    pfb_LabelFont->onRestore();
+    plsb_LabelSize->onRestore();
+    plsb_TemplateDot->onRestore();
 
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
@@ -103,7 +105,9 @@ void DlgPrefsTechDrawImp::loadSettings()
 void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        saveSettings();
         retranslateUi(this);
+        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

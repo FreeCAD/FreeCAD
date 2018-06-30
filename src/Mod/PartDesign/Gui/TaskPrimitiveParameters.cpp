@@ -55,63 +55,33 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 {
     proxy = new QWidget(this);
     ui.setupUi(proxy);
-    
+
     // box
     ui.boxLength->setMaximum(INT_MAX);    
     ui.boxWidth->setMaximum(INT_MAX);
     ui.boxHeight->setMaximum(INT_MAX);
-    connect(ui.boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
-    connect(ui.boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
-    connect(ui.boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
 
     // cylinder
     ui.cylinderRadius->setMaximum(INT_MAX);
     ui.cylinderHeight->setMaximum(INT_MAX);
-    connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
-    connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
-    connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
 
     // cone
     ui.coneRadius1->setMaximum(INT_MAX);
     ui.coneRadius2->setMaximum(INT_MAX);
     ui.coneHeight->setMaximum(INT_MAX);
-    connect(ui.coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
-    connect(ui.coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
-    connect(ui.coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
-    connect(ui.coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
-    
+
     // sphere
     ui.sphereRadius->setMaximum(INT_MAX);
-    connect(ui.sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
-    connect(ui.sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
-    connect(ui.sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
-    connect(ui.sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
-    
+
     // ellipsoid
     ui.ellipsoidRadius1->setMaximum(INT_MAX);
     ui.ellipsoidRadius2->setMaximum(INT_MAX);
     ui.ellipsoidRadius3->setMaximum(INT_MAX);
-    connect(ui.ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
-    connect(ui.ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
-    connect(ui.ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
-    connect(ui.ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
-    connect(ui.ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
-    connect(ui.ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
-    
+
     // torus
     ui.torusRadius1->setMaximum(INT_MAX);
     ui.torusRadius2->setMaximum(INT_MAX);
-    connect(ui.torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
-    connect(ui.torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
-    connect(ui.torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
-    connect(ui.torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
-    connect(ui.torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
-    
-    //prism
-    connect(ui.prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
-    connect(ui.prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
-    connect(ui.prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
-  
+
     // wedge
     ui.wedgeXmin->setMinimum(INT_MIN);
     ui.wedgeXmin->setMaximum(INT_MAX);
@@ -133,16 +103,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     ui.wedgeX2max->setMaximum(INT_MAX);
     ui.wedgeZ2max->setMinimum(INT_MIN);
     ui.wedgeZ2max->setMaximum(INT_MAX);
-    connect(ui.wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui.wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
-    connect(ui.wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui.wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
-    connect(ui.wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui.wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
-    connect(ui.wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui.wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
-    connect(ui.wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui.wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
     
     this->groupLayout()->addWidget(proxy);
     
@@ -237,6 +197,60 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+    
+    // box
+    connect(ui.boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
+    connect(ui.boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
+    connect(ui.boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+    
+    // cylinder
+    connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
+    connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+    
+    // cone
+    connect(ui.coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
+    connect(ui.coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
+    connect(ui.coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
+    connect(ui.coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+    
+    // sphere
+    connect(ui.sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
+    connect(ui.sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
+    connect(ui.sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
+    connect(ui.sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    
+    // ellipsoid
+    connect(ui.ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
+    connect(ui.ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
+    connect(ui.ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
+    connect(ui.ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
+    connect(ui.ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
+    connect(ui.ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+    
+    // torus
+    connect(ui.torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
+    connect(ui.torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
+    connect(ui.torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
+    connect(ui.torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
+    connect(ui.torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+    
+    //prism
+    connect(ui.prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
+    connect(ui.prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    connect(ui.prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+    
+    // wedge
+    connect(ui.wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
+    connect(ui.wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
+    connect(ui.wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
+    connect(ui.wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
+    connect(ui.wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
+    connect(ui.wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
+    connect(ui.wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
+    connect(ui.wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
+    connect(ui.wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
+    connect(ui.wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
 }
 
 /*  
@@ -624,10 +638,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
         }
 
         // Execute the Python block
-        QString prim = tr("Create primitive");
-        Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
+        // No need to open a transaction because this is already done in the command
+        // class or when starting to edit a primitive.
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
-        Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {

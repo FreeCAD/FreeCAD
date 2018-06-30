@@ -4,7 +4,7 @@
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+97"/>
+      <location filename="../../Command.cpp" line="+101"/>
       <source>Image</source>
       <translation>Kép</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location line="-46"/>
+      <location line="-50"/>
       <source>Image</source>
       <translation>Kép</translation>
     </message>
@@ -44,7 +44,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+331"/>
+      <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>A képnéző által meghatározhatatlan típusú színtér</translation>
@@ -99,7 +99,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="+107"/>
       <source>&amp;Fit image</source>
-      <translation>Kép kitöltse a képernyőt &amp;F</translation>
+      <translation>Kép kitöltse a képernyőt</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -159,7 +159,7 @@
       <location line="+11"/>
       <location line="+5"/>
       <source>zoom</source>
-      <translation>Nagyítás</translation>
+      <translation>nagyítás</translation>
     </message>
     <message>
       <location line="-62"/>
@@ -183,19 +183,19 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="+20"/>
-      <location line="+43"/>
+      <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Egy képfájl kiválasztása megnyitásra</translation>
     </message>
     <message>
-      <location line="-50"/>
-      <location line="+43"/>
+      <location line="-54"/>
+      <location line="+47"/>
       <source>Images</source>
       <translation>Képek</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+43"/>
+      <location line="-42"/>
+      <location line="+47"/>
       <source>All files</source>
       <translation>Összes fájl</translation>
     </message>

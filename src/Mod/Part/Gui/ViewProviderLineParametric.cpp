@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderLineParametric.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;

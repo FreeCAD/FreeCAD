@@ -95,7 +95,7 @@ public:
     inline void
     setDepth (int depth) { this->depth = depth; }
 
-    /** \brief Set the the depth at which a block Gauss-Seidel solver is used to solve the Laplacian equation
+    /** \brief Set the depth at which a block Gauss-Seidel solver is used to solve the Laplacian equation
       * \note Using this parameter helps reduce the memory overhead at the cost of a small increase in
       * reconstruction time. (In practice, we have found that for reconstructions of depth 9 or higher a subdivide
       * depth of 7 or 8 can greatly reduce the memory usage.)

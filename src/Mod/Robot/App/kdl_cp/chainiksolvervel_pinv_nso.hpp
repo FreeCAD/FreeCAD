@@ -39,10 +39,10 @@ namespace KDL
      * KDL::Chain. It uses a svd-calculation based on householders
      * rotations.
      *
-     * In case of a redundant robot this solver optimizes the the following criterium:
+     * In case of a redundant robot this solver optimizes the following criterium:
      * g=0.5*sum(weight*(Desired_joint_positions - actual_joint_positions))^2 as described in 
      *  A. Liegeois. Automatic supervisory control of the configuration and 
-     * behavior of multibody mechnisms. IEEE Transactions on Systems, Man, and 
+     * behavior of multibody mechanisms. IEEE Transactions on Systems, Man, and 
      * Cybernetics, 7(12):868–871, 1977
      *
      * @ingroup KinematicFamily

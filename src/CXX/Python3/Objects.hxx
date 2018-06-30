@@ -279,7 +279,7 @@ namespace Py
             return Object( PyObject_GetItem( p, *key ), true );
         }
 
-        long hashValue() const
+        Py_hash_t hashValue() const
         {
             return PyObject_Hash( p );
         }
@@ -2415,12 +2415,12 @@ namespace Py
             return pyob && Py::_List_Check( pyob );
         }
 
-        List getSlice( int i, int j ) const
+        List getSlice( Py_ssize_t i, Py_ssize_t j ) const
         {
             return List( PyList_GetSlice( ptr(), i, j ), true );
         }
 
-        void setSlice( int i, int j, const Object &v )
+        void setSlice( Py_ssize_t i, Py_ssize_t j, const Object &v )
         {
             if( PyList_SetSlice( ptr(), i, j, *v ) == -1 )
             {
@@ -2742,7 +2742,7 @@ namespace Py
             return mapref<T>( *this, key );
         }
 
-        int length() const
+        size_type length() const
         {
             return PyMapping_Length( ptr() );
         }
@@ -2838,7 +2838,7 @@ namespace Py
             //
             MapBase<T>      *map;
             List            keys;       // for iterating over the map
-            int             pos;        // index into the keys
+            size_type       pos;        // index into the keys
 
         public:
             ~iterator()
@@ -2862,7 +2862,7 @@ namespace Py
             , pos( other.pos )
             {}
 
-            iterator( MapBase<T> *map_, List keys_, int pos_ )
+            iterator( MapBase<T> *map_, List keys_, size_type pos_ )
             : map( map_ )
             , keys( keys_ )
             , pos( pos_ )
@@ -2955,7 +2955,7 @@ namespace Py
             friend class MapBase<T>;
             const MapBase<T>    *map;
             List                keys;   // for iterating over the map
-            int                 pos;    // index into the keys
+            size_type           pos;    // index into the keys
 
         public:
             ~const_iterator()
@@ -2967,7 +2967,7 @@ namespace Py
             , pos()
             {}
 
-            const_iterator( const MapBase<T> *m, List k, int p )
+            const_iterator( const MapBase<T> *m, List k, size_type p )
             : map( m )
             , keys( k )
             , pos( p )

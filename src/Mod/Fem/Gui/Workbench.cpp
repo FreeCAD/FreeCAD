@@ -68,7 +68,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialSolid"
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_MaterialEditor"
+           << "Separator"
            << "FEM_ElementGeometry1D"
+           << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D";
 
@@ -117,7 +120,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
-     *solve << "FEM_SolverCalculix"
+     *solve << "FEM_SolverCalculixCxxtools"
+           << "FEM_SolverCalculiX"
            << "FEM_SolverElmer"
            << "Separator"
            << "FEM_EquationHeat"
@@ -133,7 +137,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      results->setCommand("Results");
      *results << "FEM_ResultsPurge"
               << "FEM_ResultShow";
-
 #ifdef FC_USE_VTK
      *results << "Separator"
               << "FEM_PostApplyChanges"
@@ -145,9 +148,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "FEM_PostCreateWarpVectorFilter"
               << "FEM_PostCreateDataAlongLineFilter"
               << "FEM_PostCreateLinearizedStressesFilter"
+              << "FEM_PostCreateDataAtPointFilter"
               << "Separator"
               << "FEM_PostCreateFunctions";
 #endif
+
+     Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
+     utils->setCommand("Results");
+     *utils << "FEM_ClippingPlaneAdd"
+            << "FEM_ClippingPlaneRemoveAll";
 
     return root;
 }
@@ -156,6 +165,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 {
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
+
+    Gui::MenuItem* material = new Gui::MenuItem;
+    material->setCommand("Materials");
+    *material << "FEM_MaterialSolid"
+              << "FEM_MaterialFluid"
+              << "FEM_MaterialMechanicalNonlinear"
+              << "FEM_MaterialEditor";
+
+    Gui::MenuItem* elec = new Gui::MenuItem;
+    elec->setCommand("&Electrostatic Constraints");
+    *elec << "FEM_ConstraintElectrostaticPotential";
 
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical Constraints");
@@ -193,16 +213,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     model->setCommand("M&odel");
     *model << "FEM_Analysis"
            << "Separator"
-           << "FEM_MaterialSolid"
-           << "FEM_MaterialFluid"
-           << "FEM_MaterialMechanicalNonlinear"
+           << material
+           << "Separator"
            << "FEM_ElementGeometry1D"
+           << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D"
            << "Separator"
+           << elec
+           << fluid
            << mech
-           << thermal
-           << fluid;
+           << thermal;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
@@ -211,20 +232,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
      *mesh << "FEM_MeshNetgenFromShape";
 #endif
      *mesh << "FEM_MeshGmshFromShape"
-          << "Separator"
-          << "FEM_MeshBoundaryLayer"
-          << "FEM_MeshRegion"
-          << "FEM_MeshGroup"
-          << "Separator"
-          << "FEM_CreateNodesSet"
-          << "FEM_FEMMesh2Mesh";
+           << "Separator"
+           << "FEM_MeshBoundaryLayer"
+           << "FEM_MeshRegion"
+           << "FEM_MeshGroup"
+           << "Separator"
+           << "FEM_CreateNodesSet"
+           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);
     solve->setCommand("&Solve");
-    *solve << "FEM_SolverCalculix"
-           << "FEM_SolverZ88"
+    *solve << "FEM_SolverCalculixCxxtools"
+           << "FEM_SolverCalculiX"
            << "FEM_SolverElmer"
+           << "FEM_SolverZ88"
            << "Separator"
            << "FEM_EquationHeat"
            << "FEM_EquationElasticity"
@@ -240,7 +262,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     results->setCommand("&Results");
     *results << "FEM_ResultsPurge"
              << "FEM_ResultShow";
-
 #ifdef FC_USE_VTK
     *results << "Separator"
              << "FEM_PostApplyChanges"
@@ -252,9 +273,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostCreateWarpVectorFilter"
              << "FEM_PostCreateDataAlongLineFilter"
              << "FEM_PostCreateLinearizedStressesFilter"
+             << "FEM_PostCreateDataAtPointFilter"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
+
+    Gui::MenuItem* utils = new Gui::MenuItem;
+    root->insertItem(item, utils);
+    utils->setCommand("Utilities");
+    *utils << "FEM_ClippingPlaneAdd"
+           << "FEM_ClippingPlaneRemoveAll";
 
     return root;
 }

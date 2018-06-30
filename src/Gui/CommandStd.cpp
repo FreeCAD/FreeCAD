@@ -204,9 +204,13 @@ Action * StdCmdAbout::createAction(void)
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
     pcAction->setShortcut(QString::fromLatin1(sAccel));
-    //Prevent Qt from using AboutRole -- fixes issue #0001485
+#if QT_VERSION > 0x050000
+    // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
+    pcAction->setMenuRole(QAction::AboutRole);
+#else
+    // With Qt 4.8, having AboutRole set causes it to disappear when readding it: issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-
+#endif
     return pcAction;
 }
 
@@ -644,7 +648,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
-    sWhatsThis    = QT_TR_NOOP("Measures distance between two selected objects");
+    sWhatsThis    = "Std_MeasurementSimple";
     sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");
     sPixmap       = "view-measurement";
     eType         = 0;
@@ -699,7 +703,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("&Units calculator...");
     sToolTipText  = QT_TR_NOOP("Start the units calculator");
-    sWhatsThis    = QT_TR_NOOP("Start the units calculator");
+    sWhatsThis    = "Std_UnitsCalculator";
     sStatusTip    = QT_TR_NOOP("Start the units calculator");
     sPixmap       = "accessories-calculator";
     eType         = 0;

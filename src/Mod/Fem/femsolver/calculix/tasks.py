@@ -32,7 +32,7 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import FemUtils
+import femtools.femutils as FemUtils
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
 
@@ -66,9 +66,14 @@ class Prepare(run.Prepare):
             c.selfweight_constraints, c.force_constraints,
             c.pressure_constraints, c.temperature_constraints,
             c.heatflux_constraints, c.initialtemperature_constraints,
-            c.beam_sections, c.shell_thicknesses, c.fluid_sections,
-            self.solver.AnalysisType, self.directory)
+            c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
+            self.directory)
         path = w.write_calculix_input_file()
+        # report to user if task succeeded
+        if path is not None:
+            self.pushStatus("Write completed!")
+        else:
+            self.pushStatus("Writing CalculiX input file failed!")
         _inputFileName = os.path.splitext(os.path.basename(path))[0]
 
 
@@ -160,6 +165,7 @@ class _Container(object):
         self.force_constraints = []
         self.pressure_constraints = []
         self.beam_sections = []
+        self.beam_rotations = []
         self.fluid_sections = []
         self.shell_thicknesses = []
         self.displacement_constraints = []
@@ -180,7 +186,7 @@ class _Container(object):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
                 self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
                 material_nonlinear_dict = {}
                 material_nonlinear_dict['Object'] = m
                 self.materials_nonlinear.append(material_nonlinear_dict)
@@ -188,7 +194,7 @@ class _Container(object):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
                 selfweight_dict = {}
                 selfweight_dict['Object'] = m
                 self.selfweight_constraints.append(selfweight_dict)
@@ -230,15 +236,19 @@ class _Container(object):
                 transform_constraint_dict = {}
                 transform_constraint_dict['Object'] = m
                 self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementFluid1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
+                beam_rotation_dict = {}
+                beam_rotation_dict['Object'] = m
+                self.beam_rotations.append(beam_rotation_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry2D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)
@@ -246,10 +256,10 @@ class _Container(object):
     def get_refshape_type(self, fem_doc_object):
         # returns the reference shape type
         # for force object:
-        # in GUI defined frc_obj all frc_obj have at leas one ref_shape and ref_shape have all the same shape type
+        # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
         # for material object:
         # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-        # we gone need the RefShapes to be the same type inside one fem_doc_object
+        # we're going to need the RefShapes to be the same type inside one fem_doc_object
         # TODO here: check if all RefShapes inside the object really have the same type
         import femmesh.meshtools as FemMeshTools
         if hasattr(fem_doc_object, 'References') and fem_doc_object.References:

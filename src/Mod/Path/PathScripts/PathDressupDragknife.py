@@ -26,13 +26,13 @@ from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 import Path
-#import PathGui
-from PySide import QtCore, QtGui
+from PySide import QtCore
 import math
 import DraftVecUtils as D
 import PathScripts.PathUtils as PathUtils
 
 """Dragknife Dressup object and FreeCAD command"""
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -48,10 +48,10 @@ currLocation = {}
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
-        obj.addProperty("App::PropertyAngle", "filterangle", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Angles less than filter angle will not receive corner actions"))
-        obj.addProperty("App::PropertyFloat", "offset", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Distance the point trails behind the spindle"))
-        obj.addProperty("App::PropertyFloat", "pivotheight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Height to raise during corner action"))
+        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"))
+        obj.addProperty("App::PropertyAngle", "filterangle", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Angles less than filter angle will not receive corner actions"))
+        obj.addProperty("App::PropertyFloat", "offset", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Distance the point trails behind the spindle"))
+        obj.addProperty("App::PropertyFloat", "pivotheight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Height to raise during corner action"))
 
         obj.Proxy = self
 
@@ -69,7 +69,7 @@ class ObjectDressup:
 
         if queue[1].Name in arccommands:
             arcLoc = FreeCAD.Vector(queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation['Z'])
-            radvector = arcLoc.sub(queue[1].Placement.Base) #.sub(arcLoc)  # vector of chord from center to point
+            radvector = arcLoc.sub(queue[1].Placement.Base)  # .sub(arcLoc)  # vector of chord from center to point
             # vector of line perp to chord.
             v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
         else:
@@ -77,7 +77,7 @@ class ObjectDressup:
 
         # get the vector of the current move
         if queue[0].Name in arccommands:
-            arcLoc = FreeCAD.Vector( (queue[1].x + queue[0].I), (queue[1].y + queue[0].J), currLocation['Z'])
+            arcLoc = FreeCAD.Vector((queue[1].x + queue[0].I), (queue[1].y + queue[0].J), currLocation['Z'])
             radvector = queue[1].Placement.Base.sub(arcLoc)  # calculate arcangle
             v2 = radvector.cross(FreeCAD.Vector(0, 0, 1))
         else:
@@ -95,17 +95,17 @@ class ObjectDressup:
 
         global arccommands
         if currCommand.Name in arccommands:
-            arcLoc = FreeCAD.Vector( (prevCommand.x + currCommand.I), (prevCommand.y + currCommand.J), currentZ)
+            arcLoc = FreeCAD.Vector((prevCommand.x + currCommand.I), (prevCommand.y + currCommand.J), currentZ)
             if endpos is True:
-                radvector = arcLoc.sub(currCommand.Placement.Base) #Calculate vector at start of arc
+                radvector = arcLoc.sub(currCommand.Placement.Base)  # Calculate vector at start of arc
             else:
-                radvector = arcLoc.sub(prevCommand.Placement.Base) #Calculate vector at end of arc
+                radvector = arcLoc.sub(prevCommand.Placement.Base)  # Calculate vector at end of arc
 
             v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
             if currCommand.Name in ["G2", "G02"]:
                 v1 = D.rotate2D(v1, math.radians(180))
         else:
-            v1 = currCommand.Placement.Base.sub(prevCommand.Placement.Base) #Straight segments are easy
+            v1 = currCommand.Placement.Base.sub(prevCommand.Placement.Base)  # Straight segments are easy
 
         myAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
         return myAngle
@@ -214,7 +214,7 @@ class ObjectDressup:
 
         # add G2/G3 move
         arcmove = Path.Command(
-        arcdir, {"X": endpointvector.x, "Y": endpointvector.y, "I": offsetvector.x, "J": offsetvector.y})
+            arcdir, {"X": endpointvector.x, "Y": endpointvector.y, "I": offsetvector.x, "J": offsetvector.y})
         results.append(arcmove)
         currLocation.update(arcmove.Parameters)
 
@@ -378,7 +378,7 @@ class ObjectDressup:
 
                         if abs(incident_angle) >= obj.filterangle:
                             if self.shortcut(queue) == "CW":
-                            #if incident_angle >= 0:
+                                # if incident_angle >= 0:
                                 twistCW = True
                             else:
                                 twistCW = False
@@ -438,7 +438,7 @@ class ViewProviderDressup:
                             group.remove(g)
                     i.Group = group
                     print(i.Group)
-            #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
+            # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
 
     def unsetEdit(self, vobj, mode=0):
         return False
@@ -466,8 +466,8 @@ class CommandDressupDragknife:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_DragKnife", "DragKnife Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_DragKnife", "Modifies a path to add dragknife corner actions")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "DragKnife Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "Modifies a path to add dragknife corner actions")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -482,19 +482,19 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("PathDressup_DragKnife", "Please select one path object\n"))
+                translate("Path_DressupDragKnife", "Please select one path object")+"\n")
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("PathDressup_DragKnife", "The selected object is not a path\n"))
+                translate("Path_DressupDragKnife", "The selected object is not a path")+"\n")
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("PathDressup_DragKnife", "Please select a Path object"))
+                translate("Path_DressupDragKnife", "Please select a Path object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_DragKnife", "Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDragKnife", "Create Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupDragknife")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")')
@@ -513,6 +513,6 @@ class CommandDressupDragknife:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_DragKnife', CommandDressupDragknife())
+    FreeCADGui.addCommand('Path_DressupDragKnife', CommandDressupDragknife())
 
-FreeCAD.Console.PrintLog("Loading PathDressup_DragKnife... done\n")
+FreeCAD.Console.PrintLog("Loading Path_DressupDragKnife... done\n")

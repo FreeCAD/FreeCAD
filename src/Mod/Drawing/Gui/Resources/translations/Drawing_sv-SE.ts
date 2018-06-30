@@ -288,11 +288,18 @@
       <translation>Exportera PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation type="unfinished">The printer uses a different orientation than the drawing.
+Do you want to continue?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF-fil (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF-fil</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>Annan orientering</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Skrivaren använder en annan orientering än ritningen. Vill du fortsätta?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Annan pappersstorlek</translation>
@@ -395,19 +401,31 @@ Do you want to continue?</source>
       <translation>Övre vänstra x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Delning dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Axel ut och höger</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Vertikal lutning</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation type="unfinished">Spacing dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation type="unfinished">Axis out and right</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation type="unfinished">Vertical tilt</translation>
     </message>
     <message>
       <location line="+11"/>

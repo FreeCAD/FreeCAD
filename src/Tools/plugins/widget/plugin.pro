@@ -1,7 +1,12 @@
 
 TEMPLATE = lib
-CONFIG += designer plugin
-TARGET = FreeCAD_widgets
+CONFIG += plugin
+greaterThan(QT_MAJOR_VERSION, 4) {
+  QT += designer
+} else {
+  CONFIG += designer
+}
+TARGET = $$qtLibraryTarget(FreeCAD_widgets)
 DEPENDPATH += .
 INCLUDEPATH += .
 

@@ -2,6 +2,67 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="eu" sourcelanguage="en">
   <context>
+    <name>BoundarySelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <source>Select Faces/Edges/Vertexes</source>
+      <translation>Hautatu aurpegiak/ertzak/erpinak</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <source>To add references select them in the 3D view and then click "Add".</source>
+      <translation>Erreferentziak gehitzeko, hautatu horiek 3D bistan eta, ondoren, sakatu 'Gehitu'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ControlWidget</name>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <source>Solver Control</source>
+      <translation>Ebazle-kontrola</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <source>Working Directory</source>
+      <translation>Laneko direktorioa</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <source>Write</source>
+      <translation>Idatzi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
+      <source>Elapsed Time:</source>
+      <translation>Igarotako denbora:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
+      <source>Run</source>
+      <translation>Exekutatu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
+      <source>Re-write</source>
+      <translation>Berridatzi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+      <source>Re-run</source>
+      <translation>Berriro exekutatu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <source>Abort</source>
+      <translation>Abortatu</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -12,6 +73,58 @@
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
       <translation>Analisi-edukiontzia sortzen du CalculiX ebazle estandarrarekin</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="37"/>
+      <source>Creates an analysis container with standard solver CalculiX</source>
+      <translation>Analisi-edukiontzia sortzen du CalculiX ebazle estandarrarekin</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="57"/>
+      <source>Constraint body heat source</source>
+      <translation>Murriztu gorputzaren bero-iturburua</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Creates a FEM constraint body heat source</source>
+      <translation>FEM gorputz baten bero-iturburua murrizten du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="77"/>
+      <source>Constraint Potential</source>
+      <translation>Murriztu potentziala</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="80"/>
+      <source>Creates a FEM constraint electrostatic potential</source>
+      <translation>FEM potentzial elektrostatikoa murrizten du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="97"/>
+      <source>Constraint Flow Velocity</source>
+      <translation>Murriztu fluxu-abiadura</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="100"/>
+      <source>Creates a FEM constraint flow velocity</source>
+      <translation>FEM fluxu-abiadura murrizten du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="117"/>
+      <source>Constraint Initial Flow Velocity</source>
+      <translation>Murriztu hasierako fluxu-abiadura</translation>
     </message>
   </context>
   <context>
@@ -65,6 +178,81 @@
       <source>Creates a FEM shell plate thickness</source>
       <translation>FEM oskol-plakaren lodiera bat sortzen du</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="184"/>
+      <source>Shell plate thickness</source>
+      <translation>Oskol-plakaren lodiera</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="186"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>FEM oskol-plakaren lodiera bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="200"/>
+      <source>Beam rotation</source>
+      <translation>Habe-biraketa</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="202"/>
+      <source>Creates a FEM beam rotation</source>
+      <translation>FEM habe baten biraketa sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="232"/>
+      <source>Elasticity equation</source>
+      <translation>Elastikotasun-ekuazioa</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="233"/>
+      <source>Creates a FEM equation for elasticity</source>
+      <translation>FEM ekuazio bat sortzen du elastikotasunerako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="216"/>
+      <source>Electrostatic equation</source>
+      <translation>Elektrostatika-ekuazioa</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="217"/>
+      <source>Creates a FEM equation for electrostatic</source>
+      <translation>FEM ekuazio bat sortzen du elektrostatikarako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="248"/>
+      <source>Flow equation</source>
+      <translation>Jario-ekuazioa</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="249"/>
+      <source>Creates a FEM equation for flow</source>
+      <translation>FEM ekuazio bat sortzen du jariorako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFluxsolver</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="264"/>
+      <source>Fluxsolver equation</source>
+      <translation>Fluxua ebazteko ekuazioa</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="265"/>
+      <source>Creates a FEM equation for fluxsolver</source>
+      <translation>FEM ekuazio bat sortzen du fluxua ebazteko</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -78,18 +266,15 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Bihurtu sare FEM sare baten azalera</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>FEM materiala jariakinerako</translation>
+      <location filename="../../../femcommands/commands.py" line="366"/>
+      <source>FEM mesh to mesh</source>
+      <translation>FEM saretik sarera</translation>
     </message>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>FEM material bat sortzen du jariakinerako</translation>
+      <location filename="../../../femcommands/commands.py" line="367"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>Bihurtu sare FEM sare baten azalera</translation>
     </message>
   </context>
   <context>
@@ -156,18 +341,15 @@
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Sortu FEM bolumen-sare bat solido batetik edo aurpegi-forma batetik, Netgen barneko sare-sortzailea erabiliz</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM sarea formatik, GMSH bidez</translation>
+      <location filename="../../../femcommands/commands.py" line="472"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
     </message>
     <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Sortu FEM sare bat forma batetik abiatuz, GMSH sare-sortzailea erabiliz</translation>
+      <location filename="../../../femcommands/commands.py" line="473"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Sortu FEM bolumen-sare bat solido batetik edo aurpegi-forma batetik, Netgen barneko sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -229,18 +411,28 @@
       <source>Purges all results from active analysis</source>
       <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>CalculiX ebazlea</translation>
+      <location filename="../../../femcommands/commands.py" line="548"/>
+      <source>Purge results</source>
+      <translation>Araztu emaitzak</translation>
     </message>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>FEM CalculiX ebazlea sortzen du</translation>
+      <location filename="../../../femcommands/commands.py" line="550"/>
+      <source>Purges all results from active analysis</source>
+      <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="592"/>
+      <source>Solver CalculiX (experimental)</source>
+      <translation>CalculiX ebazlea (esperimentala)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="594"/>
+      <source>Creates a FEM solver CalculiX (experimental)</source>
+      <translation>FEM CalculiX ebazle bat sortzen du (esperimentala)</translation>
     </message>
   </context>
   <context>
@@ -252,6 +444,16 @@
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="610"/>
+      <source>Solver job control</source>
+      <translation>Ebazle-lanaren kontrola</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
     </message>
@@ -295,14 +497,79 @@
       <translation>Fem komandoaren tresna-punta lehenetsia</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
       <translation>Fem komandoaren laster-menu lehenetsia</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
       <translation>Fem komandoaren tresna-punta lehenetsia</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <source>Select Solids</source>
+      <translation>Hautatu solidoak</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Hautatu zerrendari gehi dakizkiokeen elementu-zatiak solidoan. Ondoren, solidoa gehitzeko, sakatu 'Gehitu'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <source>Add</source>
+      <translation>Gehitu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <source>Remove</source>
+      <translation>Kendu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>FEM materiala jariakinerako</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>FEM material bat sortzen du jariakinerako</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>FEM sarea formatik, GMSH bidez</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Sortu FEM sare bat forma batetik abiatuz, GMSH sare-sortzailea erabiliz</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>CalculiX ebazlea</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>FEM CalculiX ebazlea sortzen du</translation>
     </message>
   </context>
   <context>
@@ -638,12 +905,12 @@
     <message>
       <location filename="_CommandFemFromShape.py" line="39"/>
       <source>Create FEM mesh</source>
-      <translation type="unfinished">Create FEM mesh</translation>
+      <translation>Sortu FEM sarea</translation>
     </message>
     <message>
       <location filename="_CommandFemFromShape.py" line="40"/>
       <source>Create FEM mesh from shape</source>
-      <translation type="unfinished">Create FEM mesh from shape</translation>
+      <translation>Sortu FEM sarea formatik</translation>
     </message>
   </context>
   <context>
@@ -729,7 +996,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -743,7 +1010,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -761,7 +1028,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -779,7 +1046,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -797,7 +1064,7 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
@@ -815,7 +1082,7 @@
     <message>
       <location filename="../../Command.cpp" line="445"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="446"/>
@@ -833,7 +1100,7 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -851,7 +1118,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -869,7 +1136,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -882,15 +1149,15 @@
     <name>CmdFemCreateFromShape</name>
     <message>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <source>Create FEM mesh</source>
-      <translation type="unfinished">Create FEM mesh</translation>
+      <translation>Sortu FEM sarea</translation>
     </message>
     <message>
       <source>Create FEM mesh from shape</source>
-      <translation type="unfinished">Create FEM mesh from shape</translation>
+      <translation>Sortu FEM sarea formatik</translation>
     </message>
   </context>
   <context>
@@ -898,7 +1165,7 @@
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="720"/>
@@ -922,7 +1189,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="229"/>
@@ -936,7 +1203,7 @@
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="663"/>
@@ -1059,23 +1326,23 @@
     <name>FemGui::HypothesisWidget</name>
     <message>
       <source>Hypothesis</source>
-      <translation type="unfinished">Hypothesis</translation>
+      <translation>Hipotesia</translation>
     </message>
     <message>
       <source>Quadrangle</source>
-      <translation type="unfinished">Quadrangle</translation>
+      <translation>Lau angelukoa</translation>
     </message>
     <message>
       <source>Maximum length</source>
-      <translation type="unfinished">Maximum length</translation>
+      <translation>Luzera maximoa</translation>
     </message>
     <message>
       <source>Local length</source>
-      <translation type="unfinished">Local length</translation>
+      <translation>Luzera lokala</translation>
     </message>
     <message>
       <source>Maximum element area</source>
-      <translation type="unfinished">Maximum element area</translation>
+      <translation>Elementu-area maximoa</translation>
     </message>
   </context>
   <context>
@@ -1100,7 +1367,7 @@
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
       <location filename="../../TaskFemConstraint.cpp" line="206"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
@@ -1113,7 +1380,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="351"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -1121,7 +1388,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="639"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -1130,7 +1397,7 @@
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="384"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
@@ -1143,7 +1410,7 @@
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="310"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -1152,7 +1419,7 @@
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="273"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
@@ -1165,7 +1432,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="204"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -1355,15 +1622,15 @@
     </message>
     <message>
       <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
+      <translation>Puntu-karga [N]</translation>
     </message>
     <message>
       <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
+      <translation>Lerro-karga [N/mm]</translation>
     </message>
     <message>
       <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
+      <translation>Area-karga [N/mm²]</translation>
     </message>
   </context>
   <context>
@@ -1572,11 +1839,11 @@
     </message>
     <message>
       <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
+      <translation>Idatzi Calculix sarrera-fitxategia</translation>
     </message>
     <message>
       <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
+      <translation>Editatu Calculix sarrera-fitxategia</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
@@ -1650,11 +1917,11 @@
     </message>
     <message>
       <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
+      <translation>0 kg/m^3</translation>
     </message>
     <message>
       <source>Pa</source>
-      <translation type="unfinished">Pa</translation>
+      <translation>Pa</translation>
     </message>
   </context>
   <context>
@@ -1689,7 +1956,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation type="unfinished">Select an edge, face or body. Only one body is allowed.</translation>
+      <translation>Hautatu ertz, aurpegi edo gorputz bat. Gorputz bakarra onartzen da.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -1701,7 +1968,7 @@
       <location filename="../../Command.cpp" line="129"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Fillet works only on parts</source>
-      <translation type="unfinished">Fillet works only on parts</translation>
+      <translation>Biribiltzea piezetan soilik dabil</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="83"/>
@@ -1724,11 +1991,11 @@
     </message>
     <message>
       <source>combiTab</source>
-      <translation type="unfinished">combiTab</translation>
+      <translation>combiTab</translation>
     </message>
     <message>
       <source>qt_tabwidget_stackedwidget</source>
-      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
+      <translation>qt_tabwidget_stackedwidget</translation>
     </message>
     <message>
       <source>ShaftWizard</source>
@@ -1745,7 +2012,7 @@
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="73"/>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="75"/>
@@ -1754,7 +2021,7 @@
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="75"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="74"/>
       <source>Do you want to close this dialog?</source>
-      <translation type="unfinished">Do you want to close this dialog?</translation>
+      <translation>Koadro hori itxi nahi duzu?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
@@ -1879,7 +2146,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Murrizketak</translation>
     </message>
   </context>
   <context>
@@ -1912,7 +2179,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kutxa</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -1988,7 +2255,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="149"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Alderantzikatu norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
@@ -1998,7 +2265,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Distantzia</translation>
     </message>
   </context>
   <context>
@@ -2071,7 +2338,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Distantzia</translation>
     </message>
   </context>
   <context>
@@ -2190,7 +2457,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Alderantzikatu norabidea</translation>
     </message>
   </context>
   <context>
@@ -2218,7 +2485,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Alderantzikatu norabidea</translation>
     </message>
   </context>
   <context>

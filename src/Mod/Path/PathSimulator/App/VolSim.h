@@ -36,10 +36,10 @@
 #define SIM_WALK_RES		0.6   // step size in pixel units (to make sure all pixels in the path are visited)
 struct Point3D
 {
-	Point3D() {}
-	Point3D(float x, float y, float z) : x(x), y(y), z(z) {}
-	Point3D(Base::Vector3d & vec) : x(vec[0]), y(vec[1]), z(vec[2]) {}
-	Point3D(Base::Placement & pl) : x(pl.getPosition()[0]), y(pl.getPosition()[1]), z(pl.getPosition()[2]) {}
+	Point3D() : x(0), y(0), z(0), sina(0), cosa(0) {}
+	Point3D(float x, float y, float z) : x(x), y(y), z(z), sina(0), cosa(0) {}
+	Point3D(Base::Vector3d & vec) : x(vec[0]), y(vec[1]), z(vec[2]), sina(0), cosa(0) {}
+	Point3D(Base::Placement & pl) : x(pl.getPosition()[0]), y(pl.getPosition()[1]), z(pl.getPosition()[2]), sina(0), cosa(0) {}
 	inline void set(float px, float py, float pz) { x = px; y = py; z = pz; }
 	inline void Add(Point3D & p) { x += p.x; y += p.y; z += p.z; }
 	inline void Rotate() { float tx = x;  x = x * cosa - y * sina; y = tx * sina + y * cosa; }
@@ -110,7 +110,7 @@ template <class T>
 class Array2D
 {
 public:
-	Array2D() : data(nullptr) {}
+	Array2D() : data(nullptr), height(0) {}
 
 	~Array2D()
 	{
@@ -137,7 +137,7 @@ class cStock
 public:
 	cStock(float px, float py, float pz, float lx, float ly, float lz, float res);
 	~cStock();
-	void Tesselate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner);
+	void Tessellate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner);
     void CreatePocket(float x, float y, float rad, float height);
     void ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool &tool);
     void ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool &tool, bool isCCW);

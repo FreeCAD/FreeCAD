@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QApplication>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
@@ -33,9 +34,11 @@
 #include <Gui/Control.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
 #include <Base/Exception.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "TaskFeatureParameters.h"
 
@@ -47,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-    :oldWb(""), oldTip(NULL)
+:oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
 }
 
@@ -57,6 +60,7 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
+#if 0
 	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
     // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
 	if (body != NULL) {
@@ -70,6 +74,7 @@ bool ViewProvider::doubleClicked(void)
     } else {
         oldTip = NULL;
     }
+#endif
 
     try {
         std::string Msg("Edit ");
@@ -145,13 +150,17 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
+#if 0
         PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+#endif
         Gui::Control().closeDialog();
+#if 0
         if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
+#endif
         oldTip = NULL;
     }
     else {
@@ -198,30 +207,86 @@ void ViewProvider::onChanged(const App::Property* prop) {
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
+void ViewProvider::setTipIcon(bool onoff) {
+    isSetTipIcon = onoff;
+    
+    signalChangeIcon();
+}
+
+QIcon ViewProvider::getIcon(void) const
+{
+    return mergeTip(Gui::BitmapFactory().pixmap(sPixmap));
+}
+
+QIcon ViewProvider::mergeTip(QIcon orig) const
+{
+    if(isSetTipIcon) {
+        QPixmap px;
+        
+        static const char * const feature_tip_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #00cc00",
+            "a c #ffffff",
+            "...###...",
+            ".##aaa##.",
+            ".##aaa##.",
+            "###aaa###",
+            "##aaaaa##",
+            "##aaaaa##",
+            ".##aaa##.",
+            ".##aaa##.",
+            "...###..."};
+        px = QPixmap(feature_tip_xpm);
+
+        QIcon icon_mod;
+
+        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        return icon_mod;
+    }
+    else
+        return orig;
+}
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
     PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(getObject());
-    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
 
-    // Make the tip or the previous feature visiable again with preference to the previous one
-    // if the feature was visiable itself
-    if (isShow()) {
-        // TODO TaskDlgFeatureParameters::reject has the same code. May be this one is excess?
-        //      (2015-07-24, Fat-Zer)
-        if (previous && Gui::Application::Instance->getViewProvider(previous)) {
-            Gui::Application::Instance->getViewProvider(previous)->show();
-        } else {
-            // Body feature housekeeping
-            Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
-            if (body != NULL) {
-                App::DocumentObject* tip = body->Tip.getValue();
-                if (tip && Gui::Application::Instance->getViewProvider(tip)) {
-                    Gui::Application::Instance->getViewProvider(tip)->show();
-                }
-            }
-        }
+    App::DocumentObject* previousfeat = feature->BaseFeature.getValue();
+
+    // Visibility - we want:
+    // 1. If the visible object is not the one being deleted, we leave that one visible.
+    // 2. If the visible object is the one being deleted, we make the previous object visible.
+    if (isShow() && previousfeat && Gui::Application::Instance->getViewProvider(previousfeat)) {
+        Gui::Application::Instance->getViewProvider(previousfeat)->show();
     }
+
+    // find surrounding features in the tree
+    Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
+
+    if (body != NULL) {
+        // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
+        // about what a body is. Therefore, Bodies, although an "activable" container, know nothing 
+        // about what happens at Document level with the features they contain.
+        //
+        // The Deletion command StdCmdDelete::activated, however does notify the viewprovider corresponding
+        // to the feature (not body) of the imminent deletion (before actually doing it).
+        //
+        // Consequently, the only way of notifying a body of the imminent deletion of one of its features 
+        // so as to do the clean up required (moving basefeature references, tip management) is from the 
+        // viewprovider, so we call it here.
+        //
+        // fixes (#3084)
+
+        Gui::Command::doCommand ( Gui::Command::Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                                body->getNameInDocument(), feature->getNameInDocument() );
+    }
+
     return true;
 }
 

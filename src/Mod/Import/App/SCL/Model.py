@@ -33,7 +33,7 @@ class Model(objet):
     """ The container for entity instances
     """
     def __init_(self):
-        print "Model initialized"
+        print("Model initialized")
         self._instances = []
     
     def add_instance(self, entity_instance):

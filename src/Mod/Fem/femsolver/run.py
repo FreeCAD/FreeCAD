@@ -33,7 +33,7 @@ import threading
 import shutil
 
 import FreeCAD as App
-import FemUtils
+import femtools.femutils as FemUtils
 from . import settings
 from . import signal
 from . import task
@@ -59,7 +59,7 @@ def getMachine(solver, path=None):
 
 
 def _isPathValid(m, path):
-    t = _dirTypes[m.directory]
+    t = _dirTypes.get(m.directory)  # setting default None
     setting = settings.getDirSetting()
     if path is not None:
         return t is None and m.directory == path
@@ -94,7 +94,7 @@ def _createMachine(solver, path, testmode):
         _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
-    if oldMachine is not None:
+    if oldMachine is not None and _dirTypes.get(oldMachine.directory) is not None:
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
@@ -187,8 +187,8 @@ class Machine(BaseTask):
         self._confTasks()
         self._isReset = False
         self._pendingState = self.state
-        while (not self.aborted and not self.failed
-                and self._pendingState <= self.target):
+        while (not self.aborted and not self.failed and
+                self._pendingState <= self.target):
             task = self._getTask(self._pendingState)
             self._runTask(task)
             self.report.extend(task.report)
@@ -368,8 +368,8 @@ class _DocObserver(object):
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
-            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject")
-                    and hasattr(o, "Group") and obj in o.Group):
+            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject") and
+                    hasattr(o, "Group") and obj in o.Group):
                 if o in _machines:
                     _machines[o].reset()
 

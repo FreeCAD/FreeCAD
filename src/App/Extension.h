@@ -172,7 +172,7 @@ template<> void _class_::init(void){\
  * 
  * A special case that needs to be handled for extensions is the possibility of overridden methods. 
  * Often it is desired to customise extension behaviour by allowing the user to override methods 
- * provided by the extension. On c++ side this is trival, such methods are simply marked as "virtual" 
+ * provided by the extension. On c++ side this is trivial, such methods are simply marked as "virtual" 
  * and can than be overridden in any derived class. This is more involved for the python interface and
  * here special care needs to be taken. 
  * 

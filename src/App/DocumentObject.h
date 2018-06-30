@@ -138,7 +138,9 @@ public:
     //@{
     /// returns a list of objects this object is pointing to by Links
     std::vector<App::DocumentObject*> getOutList(void) const;
-    /// returns a list of objects this object is pointing to by Links and all further descended 
+    /// returns a list of objects linked by the property
+    std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
+    /// returns a list of objects this object is pointing to by Links and all further descended
     std::vector<App::DocumentObject*> getOutListRecursive(void) const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;

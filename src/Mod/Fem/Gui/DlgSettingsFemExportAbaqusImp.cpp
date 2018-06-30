@@ -59,12 +59,13 @@ void DlgSettingsFemExportAbaqusImp::saveSettings()
 
 void DlgSettingsFemExportAbaqusImp::loadSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-    hGrp->SetInt("AbaqusElementChoice", ui->comboBoxElemChoiceParam->currentIndex());
-
     ui->comboBoxElemChoiceParam->onRestore();
     ui->checkBoxWriteGroups->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
+    int index =  hGrp->GetInt("AbaqusElementChoice", 0);
+    if (index > -1) ui->comboBoxElemChoiceParam->setCurrentIndex(index);
 }
 
 /**

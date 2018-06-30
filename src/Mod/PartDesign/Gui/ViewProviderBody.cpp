@@ -111,7 +111,7 @@ void ViewProviderBody::setDisplayMode(const char* ModeName) {
     
     //if we show "Through" we must avoid to set the display mask modes, as this would result 
     //in going into "tip" mode. When through is chosen the child features are displayed, and all
-    //we need to ensure is that the display mode change is propagated to them fro within the
+    //we need to ensure is that the display mode change is propagated to them from within the
     //onChanged() method.
     if(DisplayModeBody.getValue() == 1)
         PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
@@ -225,6 +225,21 @@ void ViewProviderBody::updateData(const App::Property* prop)
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
     } 
+    
+    if (prop == &body->Tip) {
+        // We changed Tip
+        App::DocumentObject* tip = body->Tip.getValue();
+
+        auto features = body->Group.getValues();
+
+        // restore icons
+        for (auto feature : features) {
+            Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
+            if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+                static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
+            }
+        }
+    }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
@@ -365,6 +380,9 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
+
+        // #0002559: Body becomes visible upon changing DisplayModeBody
+        Visibility.touch();
     }
     else 
         unifyVisualProperty(prop);
@@ -379,16 +397,16 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
        prop == &Selectable ||
        prop == &DisplayModeBody)
         return;
-                
+
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
-       
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
     auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
-        
+
         //copy over the properties data
         auto p = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
         p->Paste(*prop);
@@ -398,15 +416,16 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 void ViewProviderBody::setVisualBodyMode(bool bodymode) {
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
-       
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
     auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             continue;
-        
-        static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature))->setBodyMode(bodymode);
+
+        auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
+        if (vp) vp->setBodyMode(bodymode);
     }
 }
 
@@ -457,7 +476,23 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         body->addObject(obj);
     }
-    else {
+    else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {
+        std::vector<App::DocumentObject*> move;
+        move.push_back(obj);
+        std::vector<App::DocumentObject*> deps = PartDesignGui::collectMovableDependencies(move);
+        move.insert(std::end(move), std::begin(deps), std::end(deps));
+
+        PartDesign::Body* source = PartDesign::Body::findBodyOf(obj);
+        if (source)
+            source->removeObjects(move);
+        try {
+            body->addObjects(move);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+    }
+    else if (body->BaseFeature.getValue() == nullptr) {
         body->BaseFeature.setValue(obj);
     }
 

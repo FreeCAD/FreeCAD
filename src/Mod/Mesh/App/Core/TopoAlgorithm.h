@@ -166,7 +166,7 @@ public:
      * \a fMaxAngle is the maximum allowed angle between the normals of two
      * adjacent facets to allow swapping the common edge. A too high value might
      * result into folds on the surface.
-     * @note This is a high-level operation and tries to optimze the mesh as a whole.
+     * @note This is a high-level operation and tries to optimize the mesh as a whole.
      */
     void OptimizeTopology(float fMaxAngle);
     void OptimizeTopology();
@@ -184,7 +184,7 @@ public:
     /**
      * Tries to adjust the edges to the curvature direction with the minimum
      * absolute value of maximum and minimum curvature.
-     * @note This is a high-level operation and tries to optimze the mesh as a
+     * @note This is a high-level operation and tries to optimize the mesh as a
      * whole.
      */
     void AdjustEdgesToCurvatureDirection();

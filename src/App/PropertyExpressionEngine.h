@@ -101,6 +101,8 @@ public:
 
     void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
 
+    void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
+
     bool depsAreTouched() const;
 
     boost::unordered_map<const App::ObjectIdentifier, const ExpressionInfo> getExpressions() const;

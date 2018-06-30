@@ -154,12 +154,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Add</source>
-      <translation>Ajouter</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="272"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="273"/>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>supprimer la fusion, appliquer le placement des enfants et des couleurs au hasard</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Exporter les objets sous forme de maillage et utiliser OpenSCAD pour effectuer une opération booléenne.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Remplacer un objet dans l'arborescence. Veuillez sélectionnez l'ancien objet, le nouveau et l'objet parent</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
     </message>
   </context>
   <context>

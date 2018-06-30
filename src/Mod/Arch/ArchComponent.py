@@ -25,11 +25,51 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# Possible roles for IFC objects
-Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
-         'Door','Foundation','Furniture','Hydro Equipment','Electric Equipment',
-         'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
-         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
+# IFC types
+
+IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHeatRecovery",
+"IfcAlarm", "IfcAnnotation", "IfcAudioVisualAppliance", "IfcBeam", "IfcBeamStandardCase",
+"IfcBoiler", "IfcBuilding", "IfcBuildingElement", "IfcBuildingElementPart", "IfcBuildingElementProxy",
+"IfcBuildingStorey", "IfcBurner", "IfcCableCarrierFitting", "IfcCableCarrierSegment",
+"IfcCableFitting", "IfcCableSegment", "IfcChiller", "IfcChimney", "IfcCivilElement",
+"IfcCoil", "IfcColumn", "IfcColumnStandardCase", "IfcCommunicationsAppliance", "IfcCompressor",
+"IfcCondenser", "IfcController", "IfcCooledBeam", "IfcCoolingTower", "IfcCovering",
+"IfcCurtainWall", "IfcDamper", "IfcDiscreteAccessory", "IfcDistributionChamberElement",
+"IfcDistributionControlElement", "IfcDistributionElement", "IfcDistributionFlowElement",
+"IfcDistributionPort", "IfcDoor", "IfcDoorStandardCase", "IfcDuctFitting", "IfcDuctSegment",
+"IfcDuctSilencer", "IfcElectricAppliance", "IfcElectricDistributionBoard", "IfcElectricFlowStorageDevice",
+"IfcElectricGenerator", "IfcElectricMotor", "IfcElectricTimeControl",
+"IfcElementAssembly", "IfcElementComponent", "IfcEnergyConversionDevice", "IfcEngine",
+"IfcEvaporativeCooler", "IfcEvaporator", "IfcExternalSpatialElement", "IfcExternalSpatialStructureElement",
+"IfcFan", "IfcFastener", "IfcFeatureElement", "IfcFeatureElementAddition", "IfcFeatureElementSubtraction",
+"IfcFilter", "IfcFireSuppressionTerminal", "IfcFlowController", "IfcFlowFitting", "IfcFlowInstrument",
+"IfcFlowMeter", "IfcFlowMovingDevice", "IfcFlowSegment", "IfcFlowStorageDevice", "IfcFlowTerminal",
+"IfcFlowTreatmentDevice", "IfcFooting", "IfcFurnishingElement", "IfcFurniture", "IfcGeographicElement",
+"IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
+"IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
+"IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
+"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase", "IfcPort",
+"IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
+"IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
+"IfcReinforcingElement", "IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
+"IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
+"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater", "IfcSpatialElement", "IfcSpatialStructureElement",
+"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight", "IfcStructuralAction",
+"IfcStructuralActivity", "IfcStructuralConnection", "IfcStructuralCurveAction",
+"IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
+"IfcStructuralCurveReaction", "IfcStructuralItem", "IfcStructuralLinearAction",
+"IfcStructuralMember", "IfcStructuralPlanarAction", "IfcStructuralPointAction",
+"IfcStructuralPointConnection", "IfcStructuralPointReaction", "IfcStructuralReaction",
+"IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
+"IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
+"IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
+"IfcTransformer", "IfcTransportElement", "IfcTubeBundle", "IfcUnitaryControlElement",
+"IfcUnitaryEquipment", "IfcValve", "IfcVibrationIsolator", "IfcVirtualElement", "IfcVoidingFeature",
+"IfcWall", "IfcWallElementedCase", "IfcWallStandardCase", "IfcWasteTerminal", "IfcWindow",
+"IfcWindowStandardCase"]
+
+# Possible roles for FreeCAD BIM objects
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IFCTYPES]
 
 import FreeCAD,Draft,ArchCommands,math
 from FreeCAD import Vector
@@ -53,11 +93,35 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
+
+
+def convertOldComponents(objs=[]):
+
+    """converts Arch Objects with a Role property to the new IfcRole.
+    if no object is given, all objects of the active document are converted"""
+
+    if not objs:
+        objs = FreeCAD.ActiveDocument.Objects
+    if not isinstance(objs,list):
+        objs = [objs]
+    for obj in objs:
+        if "Role" in obj.PropertiesList:
+            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+            obj.IfcRole = IfcRoles
+            if obj.Role in IfcRoles:
+                obj.IfcRole = obj.Role
+            else:
+                FreeCAD.Console.PrintMessage("Role "+obj.Role+" cannot be mapped for object "+obj.Label+"\n")
+            obj.removeProperty("Role")
+
+
 def addToComponent(compobject,addobject,mod=None):
+
     '''addToComponent(compobject,addobject,mod): adds addobject
     to the given component. Default is in "Additions", "Objects" or
     "Components", the first one that exists in the component. Mod
     can be set to one of those attributes ("Objects", Base", etc...)
+
     to override the default.'''
     import Draft
     if compobject == addobject: return
@@ -102,10 +166,12 @@ def addToComponent(compobject,addobject,mod=None):
 
 
 def removeFromComponent(compobject,subobject):
+
     '''removeFromComponent(compobject,subobject): subtracts subobject
     from the given component. If the subobject is already part of the
     component (as addition, subtraction, etc... it is removed. Otherwise,
     it is added as a subtraction.'''
+
     if compobject == subobject: return
     found = False
     attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures","Group","Hosts"]
@@ -135,7 +201,9 @@ def removeFromComponent(compobject,subobject):
 
 
 class SelectionTaskPanel:
-    """A temp taks panel to wait for a selection"""
+
+    """A temporary TaskPanel to wait for a selection"""
+
     def __init__(self):
         self.baseform = QtGui.QLabel()
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))
@@ -151,8 +219,11 @@ class SelectionTaskPanel:
 
 
 class ComponentTaskPanel:
+
     '''The default TaskPanel for all Arch components'''
+
     def __init__(self):
+
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -193,15 +264,19 @@ class ComponentTaskPanel:
         self.update()
 
     def isAllowedAlterSelection(self):
+
         return True
 
     def isAllowedAlterView(self):
+
         return True
 
     def getStandardButtons(self):
+
         return int(QtGui.QDialogButtonBox.Ok)
 
     def check(self,wid,col):
+
         if not wid.parent():
             self.delButton.setEnabled(False)
             if self.obj:
@@ -214,16 +289,18 @@ class ComponentTaskPanel:
             self.addButton.setEnabled(False)
 
     def getIcon(self,obj):
+
         if hasattr(obj.ViewObject,"Proxy"):
-            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
+
         'fills the treewidget'
         self.tree.clear()
         dirIcon = QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
@@ -255,6 +332,7 @@ class ComponentTaskPanel:
         self.retranslateUi(self.baseform)
 
     def addElement(self):
+
         it = self.tree.currentItem()
         if it:
             mod = None
@@ -266,6 +344,7 @@ class ComponentTaskPanel:
         self.update()
 
     def removeElement(self):
+
         it = self.tree.currentItem()
         if it:
             comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
@@ -273,11 +352,13 @@ class ComponentTaskPanel:
         self.update()
 
     def accept(self):
+
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def editObject(self,wid,col):
+
         if wid.parent():
             obj = FreeCAD.ActiveDocument.getObject(str(wid.toolTip(0)))
             if obj:
@@ -292,6 +373,7 @@ class ComponentTaskPanel:
                 FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
 
     def retranslateUi(self, TaskPanel):
+
         self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
@@ -306,63 +388,130 @@ class ComponentTaskPanel:
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
         self.treeHosts.setText(0,QtGui.QApplication.translate("Arch", "Hosts", None))
 
+
 class Component:
+
     "The default Arch Component object"
+
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
-        obj.addProperty("App::PropertyLink","CloneOf","Arch",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
-        obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
-        obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
-        obj.addProperty("App::PropertyLink","HiRes","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
-        obj.addProperty("App::PropertyLink","Axis","Arch",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+
         obj.Proxy = self
+        Component.setProperties(self,obj)
         self.Type = "Component"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Base" in pl:
+            obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+        if not "CloneOf" in pl:
+            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        if not "Additions" in pl:
+            obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        if not "Subtractions" in pl:
+            obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        if not "Description" in pl:
+            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        if not "Tag" in pl:
+            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        if not "IfcAttributes" in pl:
+            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        if not "Material" in pl:
+            obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        if "BaseMaterial" in pl:
+                obj.Material = obj.BaseMaterial
+                obj.removeProperty("BaseMaterial")
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
+        if not "IfcRole" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+            obj.IfcRole = IfcRoles
+        if "Role" in pl:
+            r = obj.Role
+            obj.removeProperty("Role")
+            if r in IfcRoles:
+                obj.IfcRole = r
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
+        if not "MoveWithHost" in pl:
+            obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+        if not "IfcProperties" in pl:
+            obj.addProperty("App::PropertyLink","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        if not "VerticalArea" in pl:
+            obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+            obj.setEditorMode("VerticalArea",1)
+        if not "HorizontalArea" in pl:
+            obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+            obj.setEditorMode("HorizontalArea",1)
+        if not "PerimeterLength" in pl:
+            obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+            obj.setEditorMode("PerimeterLength",1)
+        if not "HiRes" in pl:
+            obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+        if not "Axis" in pl:
+            obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
         self.Subvolume = None
-        self.MoveWithHost = False
-        obj.Role = Roles
-        obj.setEditorMode("VerticalArea",1)
-        obj.setEditorMode("HorizontalArea",1)
-        obj.setEditorMode("PerimeterLength",1)
+        #self.MoveWithHost = False
+        self.Type = "Component"
+
+    def onDocumentRestored(self,obj):
+
+        Component.setProperties(self,obj)
 
     def execute(self,obj):
+
         if self.clone(obj):
             return
         if obj.Base:
-            obj.Shape = self.spread(obj,obj.Base.Shape)
+            shape = self.spread(obj,obj.Base.Shape)
+            if obj.Additions or obj.Subtractions:
+                shape = self.processSubShapes(obj,shape)
+            obj.Shape = shape
 
     def __getstate__(self):
-        return self.Type
+
+        # for compatibility with 0.17
+        if hasattr(self,"Type"):
+            return self.Type
+        return "Component"
 
     def __setstate__(self,state):
-        if state:
-            self.Type = state
 
-    def onDocumentRestored(self,obj):
-        if hasattr(obj,"BaseMaterial"):
-            if not hasattr(obj,"Material"):
-                obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-                obj.Material = obj.BaseMaterial
-                obj.removeProperty("BaseMaterial")
-                print("Migrated old BaseMaterial property -> Material in ",obj.Label)
-                
+        return None
+
+    def onBeforeChange(self,obj,prop):
+
+        if prop == "Placement":
+            self.placementBefore = FreeCAD.Placement(obj.Placement)
+
     def onChanged(self,obj,prop):
-        return
+
+        if prop == "Placement":
+            if hasattr(self,"placementBefore"):
+                delta = FreeCAD.Placement()
+                delta.Base = obj.Placement.Base.sub(self.placementBefore.Base)
+                delta.Rotation = obj.Placement.multiply(self.placementBefore.inverse()).Rotation
+                for o in self.getIncluded(obj,movable=True):
+                    o.Placement = o.Placement.multiply(delta)
+
+    def getIncluded(self,obj,movable=False):
+
+        ilist = []
+        for o in obj.InList:
+            if hasattr(o,"Hosts"):
+                if obj in o.Hosts:
+                    if movable:
+                        if hasattr(o,"MoveWithHost"):
+                            if o.MoveWithHost:
+                                ilist.append(o)
+                    else:
+                        ilist.append(o)
+        return ilist
 
     def clone(self,obj):
+
         "if this object is a clone, sets the shape. Returns True if this is the case"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) == "Component"):
+                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
@@ -373,6 +522,7 @@ class Component:
         return False
 
     def getSiblings(self,obj):
+
         "returns a list of objects with the same type and same base as this object"
         if not hasattr(obj,"Base"):
             return []
@@ -389,6 +539,7 @@ class Component:
         return siblings
 
     def getExtrusionData(self,obj):
+
         "returns (shape,extrusion vector,placement) or None"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
@@ -396,7 +547,7 @@ class Component:
                     if hasattr(obj.CloneOf.Proxy,"getExtrusionData"):
                         data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
                         if data:
-                            return data 
+                            return data
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
@@ -442,8 +593,9 @@ class Component:
                 if rshapes and revs and rpls:
                     return (rshapes,revs,rpls)
         return None
-        
+
     def rebase(self,shape):
+
         """returns a shape that is a copy of the original shape
         but centered on the (0,0) origin, and a placement that is needed to
         reposition that shape to its original location/orientation"""
@@ -462,7 +614,7 @@ class Component:
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+            s.rotate(FreeCAD.Vector(0,0,0),r.Axis,math.degrees(-r.Angle))
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v
@@ -473,23 +625,28 @@ class Component:
             return(shapes,p)
 
     def hideSubobjects(self,obj,prop):
+
         "Hides subobjects when a subobject lists change"
-        if prop in ["Additions","Subtractions"]:
-            if hasattr(obj,prop):
-                for o in getattr(obj,prop):
-                    if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
-                        if (Draft.getType(obj) == "Wall"):
-                            if (Draft.getType(o) == "Roof"):
-                                continue
+
+        if FreeCAD.GuiUp:
+            if prop in ["Additions","Subtractions"]:
+                if hasattr(obj,prop):
+                    for o in getattr(obj,prop):
+                        if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
+                            if (Draft.getType(obj) == "Wall"):
+                                if (Draft.getType(o) == "Roof"):
+                                    continue
+                            o.ViewObject.hide()
+            elif prop in ["Mesh"]:
+                if hasattr(obj,prop):
+                    o = getattr(obj,prop)
+                    if o:
                         o.ViewObject.hide()
-        elif prop in ["Mesh"]:
-            if hasattr(obj,prop):
-                o = getattr(obj,prop)
-                if o:
-                    o.ViewObject.hide()            
 
     def processSubShapes(self,obj,base,placement=None):
+
         "Adds additions and subtractions to a base shape"
+
         import Draft,Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
@@ -589,6 +746,7 @@ class Component:
         return base
 
     def spread(self,obj,shape,placement=None):
+
         "spreads this shape along axis positions"
         points = None
         if hasattr(obj,"Axis"):
@@ -610,6 +768,7 @@ class Component:
         return shape
 
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
+
         "checks and cleans the given shape, and apply it to the object"
         if shape:
             if not shape.isNull():
@@ -649,6 +808,7 @@ class Component:
         self.computeAreas(obj)
 
     def computeAreas(self,obj):
+
         "computes the area properties"
         if not obj.Shape:
             return
@@ -659,6 +819,9 @@ class Component:
         if not obj.Shape.Faces:
             return
         import Drawing,Part
+        fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
+        if len(obj.Shape.Faces) > fmax:
+            return
         a = 0
         fset = []
         for i,f in enumerate(obj.Shape.Faces):
@@ -707,12 +870,16 @@ class Component:
 
 
 class ViewProviderComponent:
+
     "A default View Provider for Component objects"
+
     def __init__(self,vobj):
+
         vobj.Proxy = self
         self.Object = vobj.Object
 
     def updateData(self,obj,prop):
+
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
             if obj.Material:
@@ -737,7 +904,7 @@ class ViewProviderComponent:
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         mat = obj.Material
-                if not mat: 
+                if not mat:
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
@@ -746,6 +913,7 @@ class ViewProviderComponent:
         return
 
     def getIcon(self):
+
         import Arch_rc
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
@@ -754,6 +922,7 @@ class ViewProviderComponent:
         return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
+
         #print(vobj.Object.Name, " : changing ",prop)
         if prop == "Visibility":
             #for obj in vobj.Object.Additions+vobj.Object.Subtractions:
@@ -777,6 +946,7 @@ class ViewProviderComponent:
         return
 
     def attach(self,vobj):
+
         from pivy import coin
         self.Object = vobj.Object
         self.hiresgroup = coin.SoSeparator()
@@ -787,10 +957,12 @@ class ViewProviderComponent:
         return
 
     def getDisplayModes(self,vobj):
+
         modes=["HiRes"]
         return modes
 
     def setDisplayMode(self,mode):
+
         if hasattr(self,"meshnode"):
             if self.meshnode:
                 self.hiresgroup.removeChild(self.meshnode)
@@ -832,12 +1004,15 @@ class ViewProviderComponent:
         return mode
 
     def __getstate__(self):
+
         return None
 
     def __setstate__(self,state):
+
         return None
 
     def claimChildren(self):
+
         if hasattr(self,"Object"):
             c = []
             if hasattr(self.Object,"Base"):
@@ -877,6 +1052,7 @@ class ViewProviderComponent:
         return []
 
     def setEdit(self,vobj,mode):
+
         if mode == 0:
             taskd = ComponentTaskPanel()
             taskd.obj = self.Object
@@ -886,11 +1062,39 @@ class ViewProviderComponent:
         return False
 
     def unsetEdit(self,vobj,mode):
+
         FreeCADGui.Control.closeDialog()
         return False
 
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.toggleSubcomponents)
+        menu.addAction(action1)
+
+    def toggleSubcomponents(self):
+
+        FreeCADGui.runCommand("Arch_ToggleSubs")
+
+    def areDifferentColors(self,a,b):
+
+        if len(a) != len(b):
+            return True
+        for i in range(len(a)):
+            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
+                return True
+        return False
+
+    def colorize(self,obj,force=False):
+
+        if obj.CloneOf:
+            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+
 
 class ArchSelectionObserver:
+
     """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver
     object can be added as a selection observer to the FreeCAD Gui. If watched is given (a
     document object), the observer will be triggered only when that object is selected/unselected.
@@ -899,12 +1103,14 @@ class ArchSelectionObserver:
     is given (a FreeCAD command), it will be executed on leave."""
 
     def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
+
         self.origin = origin
         self.watched = watched
         self.hide = hide
         self.nextCommand = nextCommand
 
     def addSelection(self,document, object, element, position):
+
         if not self.watched:
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             if self.nextCommand:
@@ -912,7 +1118,7 @@ class ArchSelectionObserver:
             del FreeCAD.ArchObserver
         elif object == self.watched.Name:
             if not element:
-                FreeCAD.Console.PrintMessage(translate("Arch","closing Sketch edit"))
+                FreeCAD.Console.PrintMessage(translate("Arch","Closing Sketch edit"))
                 if self.hide:
                     if self.origin:
                         self.origin.ViewObject.Transparency = 0

@@ -130,13 +130,13 @@
       <location line="-65"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Деактивовано</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Point can be moved by editing Placement property.</translation>
+      <translation>Додаток відключений. Точка може бути перенесена шляхом редагування властивості місця розташування.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -148,7 +148,7 @@
       <location line="+1"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Точка ставиться на об'єкт Placement.Position. Працює на об'єктах з розміщеннями, а також еліптичних/параболічних/гіперболічних ребрах.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -183,7 +183,7 @@
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Точка ставиться на ребро, MapPathParameter контролює де. Крім того, вершина може бути пов'язана для створення проекції.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -194,19 +194,19 @@
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+      <translation>Центр кола дотичного до ребра. Необов'язкова вершинна ланка визначає де.</translation>
     </message>
     <message>
       <location line="-2"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Точка ставиться на ребро, MapPathParameter контролює де. Крім того, вершина може бути пов'язана для створення проекції.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Центр кола дотичного до ребра. Необов'язкова вершинна ланка визначає де.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -218,7 +218,7 @@
       <location line="+1"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>Центр маси всіх посилань (передбачається рівна щільність).</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -242,31 +242,31 @@
       <location line="+1"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Покладіть точку відліку, яка збігається з іншою вершиною.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Близька точка 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Покажіть перше посилання, яке найближче до другого посилання.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Близька точка 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Покажіть друге посилання, яке найближче до першого посилання.</translation>
     </message>
   </context>
   <context>
@@ -275,104 +275,104 @@
       <location line="-100"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Деактивовано</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+      <translation>Додаток вимкнений. Лінію можна перемістити, змінивши властивість "Розташування".</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>X об'єкта</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+6"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Лінія вирівнюється вздовж локальної осі X об'єкта. Працює на об'єктах з розміщеннями, а також на еліптичних/параболічних/гіперболічних ребрах.</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>Y об'єкта</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Лінія вирівнюється вздовж локальної осі Y об'єкта. Працює на об'єктах з розміщеннями, а також на еліптичних/параболічних/гіперболічних ребрах.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>Z об'єкта</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Axis of curvature</translation>
+      <translation>Вісь кривизни</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Лінія, яка є віссю кола, дотичного до криволінійного краю. Необов'язкова вершина визначає, де.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Директриса 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Директриса еліпсу, параболи, гіперболи.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Директриса 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Друга директриса еліпсу, параболи, гіперболи.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote1</translation>
+      <translation>Асимптота 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Asymptote of a hyperbola.</translation>
+      <translation>Асимптота гіперболи.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote2</translation>
+      <translation>Асимптота 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second asymptote of hyperbola.</translation>
+      <translation>Друга асимптота гіперболи.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -390,13 +390,13 @@
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Перпендикулярний до ребра</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Перпендикулярний до поверхні</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -419,7 +419,7 @@
       <location line="+2"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Бінормальний</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -431,7 +431,7 @@
       <location line="+2"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (U)</translation>
+      <translation>Дотична до поверхні (U)</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -444,19 +444,19 @@
       <location line="-1"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Дотично до поверхні (V)</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Through two points</translation>
+      <translation>Через дві точки</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that passes through two vertices.</translation>
+      <translation>Лінія, яка проходить через дві вершини.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -468,13 +468,13 @@
       <location line="+1"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Not implemented.</translation>
+      <translation>Не реалізовано.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Близька лінія</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -486,7 +486,7 @@
       <location line="+2"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">1st principal axis</translation>
+      <translation>Перша головна вісь</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -498,7 +498,7 @@
       <location line="+2"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">2nd principal axis</translation>
+      <translation>Друга головна вісь</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -510,7 +510,7 @@
       <location line="+2"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">3rd principal axis</translation>
+      <translation>Третя головна вісь</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -525,7 +525,7 @@
       <location line="-133"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Деактивовано</translation>
     </message>
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
@@ -542,7 +542,7 @@
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Перемістити початок координат</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -554,43 +554,43 @@
       <location line="+2"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>XY об'єкта</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>Площина, вирівнена до локальної площини XY пов'язаного об'єкта.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>XZ об'єкта</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>Площина, вирівнена до локальної площини XZ пов'язаного об'єкта.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's  YZ</translation>
+      <translation>YZ об'єкта</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>Площина, вирівнена до локальної площини YZ пов'язаного об'єкта.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Площина поверхні</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -602,7 +602,7 @@
       <location line="+2"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Дотично до поверхні</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -614,7 +614,7 @@
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Перпендикулярний до ребра</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -626,7 +626,7 @@
       <location line="+2"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -640,19 +640,19 @@
       <location line="-4"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Концентричний</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -664,7 +664,7 @@
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Круговий розріз</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -681,7 +681,7 @@
       <location line="+2"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Площина по 3 точкам</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -693,7 +693,7 @@
       <location line="+2"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Нормаль по 3 точкам</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -705,7 +705,7 @@
       <location line="+2"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Згинання</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -732,7 +732,7 @@
       <location line="-124"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Деактивовано</translation>
     </message>
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
@@ -749,7 +749,7 @@
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Перемістити початок координат</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -821,7 +821,7 @@
       <location line="+2"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z дотична до ребра</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -833,7 +833,7 @@
       <location line="+2"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -847,19 +847,19 @@
       <location line="-4"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Концентричний</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -871,7 +871,7 @@
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Круговий розріз</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -883,7 +883,7 @@
       <location line="+2"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>Площина XY по 3 точкам</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -895,7 +895,7 @@
       <location line="+2"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>Площина XZ по 3 точкам</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -907,7 +907,7 @@
       <location line="+2"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Згинання</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -919,19 +919,19 @@
       <location line="+2"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Inertial CS</translation>
+      <translation>Інерційна СК</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>Інерційна система координат, побудована на головних осях інерції та центрі мас.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Вирівняти O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1484,14 +1484,14 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Split objects...</source>
-      <translation type="unfinished">Split objects...</translation>
+      <translation>Розділити обʼєкти...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1737,6 +1737,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g. from a sketch)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
       <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
     </message>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Частина</translation>
     </message>
@@ -2149,22 +2153,22 @@
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Орієнтир 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Орієнтир 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Орієнтир 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Орієнтир 4</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2173,11 +2177,19 @@
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation type="unfinished">Attachment Offset:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>Extra placement:</source>
       <translation type="unfinished">Extra placement:</translation>
     </message>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Фаски країв</translation>
     </message>
@@ -2473,7 +2485,7 @@
     <message>
       <location line="+3"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Уздовж ребра:</translation>
     </message>
     <message>
       <location line="+98"/>
@@ -2483,7 +2495,7 @@
     <message>
       <location line="+6"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>Уздовж:</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -2508,7 +2520,7 @@
     <message>
       <location line="+3"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>Симетрично</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -2552,7 +2564,7 @@
     <message>
       <location filename="../../DlgExtrusion.cpp" line="-26"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Вибір...</translation>
     </message>
     <message>
       <location line="+241"/>
@@ -2572,7 +2584,7 @@
     <message>
       <location line="+67"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Об'єкт не знайдено: %1</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -2684,7 +2696,7 @@
       <translation>Нічого не вибрано</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Довжина:</translation>
     </message>
@@ -2705,12 +2717,12 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Початкова довжина</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Кінцева довжина</translation>
     </message>
@@ -2721,17 +2733,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Початковий радіус</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Кінцевий радіус</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Довжина</translation>
     </message>
@@ -2763,13 +2775,13 @@ Please check one or more edge entities first.</source>
       <translation>Немає</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Ребро%1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Немає обраної форми</translation>
     </message>
@@ -2796,7 +2808,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+6"/>
       <source>Units for export of IGES</source>
-      <translation type="unfinished">Units for export of IGES</translation>
+      <translation>Одиниці для експорту IGES</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -2871,14 +2883,14 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Експорт</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Units for export of STEP</source>
-      <translation type="unfinished">Units for export of STEP</translation>
+      <translation>Одиниці для експорту STEP</translation>
     </message>
     <message>
       <location line="-31"/>
@@ -2906,7 +2918,22 @@ Please select a valid shape in the drop-down box first.</source>
       <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Імпортувати</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation type="unfinished">Enable STEP Compound merge</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Заголовок</translation>
     </message>
@@ -3594,44 +3621,44 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+8"/>
       <source>Center X:</source>
-      <translation type="unfinished">Center X:</translation>
+      <translation>Центр X:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Y:</source>
-      <translation type="unfinished">Center Y:</translation>
+      <translation>Центр Y:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Z:</source>
-      <translation type="unfinished">Center Z:</translation>
+      <translation>Центр Z:</translation>
     </message>
     <message>
       <location line="+42"/>
       <location line="+41"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Натисніть, щоб назначити це віссю</translation>
     </message>
     <message>
       <location line="-38"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>Напр. X:</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Напр. Y:</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Напр. Z:</translation>
     </message>
     <message>
       <location line="+22"/>
       <location filename="../../DlgRevolution.cpp" line="+440"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Виберіть орієнтир</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3681,7 +3708,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="-268"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Об'єкт не знайдено: %1</translation>
     </message>
     <message>
       <location line="+81"/>
@@ -3722,7 +3749,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+12"/>
       <source>Selecting... (line or arc)</source>
-      <translation type="unfinished">Selecting... (line or arc)</translation>
+      <translation>Вибір... (ліня або дуга)</translation>
     </message>
   </context>
   <context>
@@ -3945,12 +3972,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+38"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>Анотації</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Default text color</source>
-      <translation type="unfinished">Default text color</translation>
+      <translation>Колір тексту за замовчуванням</translation>
     </message>
   </context>
   <context>
@@ -4069,7 +4096,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+8"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>Базова точка</translation>
     </message>
     <message>
       <source>Base point:</source>
@@ -4294,22 +4321,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Орієнтир 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Орієнтир 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Орієнтир 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Орієнтир 4</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -4318,12 +4345,20 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation type="unfinished">Attachment Offset:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
       <source>Extra placement:</source>
       <translation type="unfinished">Extra placement:</translation>
     </message>
@@ -4365,12 +4400,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="-17"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>Помилка OCC %1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>невідома помилка</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4389,11 +4424,20 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation type="unfinished">Extra placement (inactive - not attached):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Поверхня</translation>
     </message>
@@ -4410,50 +4454,48 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+59"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Вибір...</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>Посилання%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
-</translation>
+Комбінації виносок:</translation>
     </message>
     <message>
       <source>Reference combinations:
 </source>
-      <translation type="unfinished">Reference combinations:
+      <translation>Комбінації виносок:
 </translation>
     </message>
     <message>
       <location line="+17"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (додати %2)</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (додати більше виносок)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation type="unfinished">Shape Content</translation>
     </message>
@@ -4461,7 +4503,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Перевірка геометрії</translation>
     </message>
@@ -4949,23 +4991,23 @@ in the 3D view for the sweep path.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Виберіть дві форми, будь ласка.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4990,7 +5032,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
@@ -5072,7 +5114,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="+204"/>
       <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
+      <translation>Всі CAD файли</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -5090,7 +5132,7 @@ Do you want to continue?</source>
       <translation>Редагувати кромку граней</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Встановити кольори...</translation>
     </message>
@@ -5115,7 +5157,7 @@ Do you want to continue?</source>
       <translation>Оболонка</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Поверхня</translation>
@@ -5429,7 +5471,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="+80"/>
       <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
+      <translation>Показати контрольні точки</translation>
     </message>
   </context>
   <context>

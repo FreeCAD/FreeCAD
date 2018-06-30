@@ -33,5 +33,9 @@
         <file>translations/ReverseEngineering_gl.qm</file>
         <file>translations/ReverseEngineering_kab.qm</file>
         <file>translations/ReverseEngineering_ko.qm</file>
+        <file>translations/ReverseEngineering_fil.qm</file>
+        <file>translations/ReverseEngineering_id.qm</file>
+        <file>translations/ReverseEngineering_lt.qm</file>
+        <file>translations/ReverseEngineering_val-ES.qm</file>
     </qresource>
 </RCC>

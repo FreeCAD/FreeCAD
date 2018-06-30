@@ -43,5 +43,9 @@
         <file>translations/Web_gl.qm</file>
         <file>translations/Web_kab.qm</file>
         <file>translations/Web_ko.qm</file>
+        <file>translations/Web_fil.qm</file>
+        <file>translations/Web_id.qm</file>
+        <file>translations/Web_lt.qm</file>
+        <file>translations/Web_val-ES.qm</file>
     </qresource>
 </RCC>

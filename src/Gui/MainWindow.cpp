@@ -313,90 +313,109 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     DockWindowManager* pDockMgr = DockWindowManager::instance();
 
+    std::string hiddenDockWindows;;
+    const std::map<std::string,std::string>& config = App::Application::Config();
+    std::map<std::string, std::string>::const_iterator ht = config.find("HiddenDockWindow");
+    if (ht != config.end())
+        hiddenDockWindows = ht->second;
+
     // Show all dockable windows over the workbench facility
     //
 #if 0
     // Toolbox
-    ToolBox* toolBox = new ToolBox(this);
-    toolBox->setObjectName(QT_TRANSLATE_NOOP("QDockWidget","Toolbox"));
-    pDockMgr->registerDockWindow("Std_ToolBox", toolBox);
-    ToolBoxManager::getInstance()->setToolBox( toolBox );
-
-    // Help View
-    QString home = Gui::Dialog::DlgOnlineHelpImp::getStartpage();
-    HelpView* pcHelpView = new HelpView( home, this );
-    pDockMgr->registerDockWindow("Std_HelpView", pcHelpView);
+    if (hiddenDockWindows.find("Std_ToolBox") == std::string::npos) {
+        ToolBox* toolBox = new ToolBox(this);
+        toolBox->setObjectName(QT_TRANSLATE_NOOP("QDockWidget","Toolbox"));
+        pDockMgr->registerDockWindow("Std_ToolBox", toolBox);
+        ToolBoxManager::getInstance()->setToolBox( toolBox );
+    }
 #endif
 
     // Tree view
-    TreeDockWidget* tree = new TreeDockWidget(0, this);
-    tree->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
-    tree->setMinimumWidth(210);
-    pDockMgr->registerDockWindow("Std_TreeView", tree);
+    if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
+        TreeDockWidget* tree = new TreeDockWidget(0, this);
+        tree->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+        tree->setMinimumWidth(210);
+        pDockMgr->registerDockWindow("Std_TreeView", tree);
+    }
 
     // Property view
-    PropertyDockView* pcPropView = new PropertyDockView(0, this);
-    pcPropView->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
-    pcPropView->setMinimumWidth(210);
-    pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+    if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
+        PropertyDockView* pcPropView = new PropertyDockView(0, this);
+        pcPropView->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+        pcPropView->setMinimumWidth(210);
+        pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+    }
 
     // Selection view
-    SelectionView* pcSelectionView = new SelectionView(0, this);
-    pcSelectionView->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
-    pcSelectionView->setMinimumWidth(210);
-    pDockMgr->registerDockWindow("Std_SelectionView", pcSelectionView);
+    if (hiddenDockWindows.find("Std_SelectionView") == std::string::npos) {
+        SelectionView* pcSelectionView = new SelectionView(0, this);
+        pcSelectionView->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
+        pcSelectionView->setMinimumWidth(210);
+        pDockMgr->registerDockWindow("Std_SelectionView", pcSelectionView);
+    }
 
     // Combo view
-    CombiView* pcCombiView = new CombiView(0, this);
-    pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
-    pcCombiView->setMinimumWidth(150);
-    pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
+    if (hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
+        CombiView* pcCombiView = new CombiView(0, this);
+        pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
+        pcCombiView->setMinimumWidth(150);
+        pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
+    }
 
 #if QT_VERSION < 0x040500
     // Report view
-    Gui::DockWnd::ReportView* pcReport = new Gui::DockWnd::ReportView(this);
-    pcReport->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-    pDockMgr->registerDockWindow("Std_ReportView", pcReport);
+    if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
+        Gui::DockWnd::ReportView* pcReport = new Gui::DockWnd::ReportView(this);
+        pcReport->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
+    }
 #else
     // Report view (must be created before PythonConsole!)
-    ReportOutput* pcReport = new ReportOutput(this);
-    pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
-    pcReport->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-    pDockMgr->registerDockWindow("Std_ReportView", pcReport);
-
-    // Python console
-    PythonConsole* pcPython = new PythonConsole(this);
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-
-    if (hGrp->GetBool("PythonWordWrap", true)) {
-      pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    } else {
-      pcPython->setWordWrapMode(QTextOption::NoWrap);
+    if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
+        ReportOutput* pcReport = new ReportOutput(this);
+        pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
+        pcReport->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
     }
 
-    pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-    pcPython->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
-    pDockMgr->registerDockWindow("Std_PythonView", pcPython);
-    
+    // Python console
+    if (hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
+        PythonConsole* pcPython = new PythonConsole(this);
+        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+
+        if (hGrp->GetBool("PythonWordWrap", true)) {
+          pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        } else {
+          pcPython->setWordWrapMode(QTextOption::NoWrap);
+        }
+
+        pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
+        pcPython->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
+        pDockMgr->registerDockWindow("Std_PythonView", pcPython);
+    }
+
     //Dag View.
-    //work through parameter.
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
-    bool enabled = group->GetBool("Enabled", false);
-    group->SetBool("Enabled", enabled); //ensure entry exists.
-    if (enabled)
-    {
-      DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
-      dagDockWindow->setObjectName
-          (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
-      pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+    if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+        bool enabled = group->GetBool("Enabled", false);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled)
+        {
+          DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
+          dagDockWindow->setObjectName
+              (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+          pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+        }
     }
 
 #if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
@@ -1013,7 +1032,12 @@ void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
     if (App::Application::Config()["RunMode"] == "Internal") {
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        try {
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
         return;
     }
 

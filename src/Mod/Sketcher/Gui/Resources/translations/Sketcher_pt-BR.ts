@@ -11,7 +11,7 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline curvature comb</source>
-      <translation>Mostrar/ocultar pente (gráfico) de curvatura da B-spline</translation>
+      <translation>Mostrar/ocultar pente de curvatura da B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -153,7 +153,7 @@
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline curvature comb</source>
-      <translation>Mostrar/ocultar pente (gráfico) de curvatura da B-spline</translation>
+      <translation>Mostrar/ocultar pente de curvatura da B-spline</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -182,7 +182,7 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4764"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -210,7 +210,7 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2804"/>
+      <location line="+2831"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -228,7 +228,7 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location line="+357"/>
+      <location line="+358"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -256,7 +256,7 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1053"/>
+      <location line="-1076"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -299,7 +299,7 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3033"/>
+      <location line="+3091"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -309,12 +309,16 @@
       <translation>Criar polígono regular</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Create an regular polygon in the sketcher</source>
       <translation>Criar um polígono regular no esboço</translation>
     </message>
     <message>
-      <location line="+103"/>
+      <location line="+1"/>
+      <source>Create a regular polygon in the sketcher</source>
+      <translation>Criar um polígono regular no esboço</translation>
+    </message>
+    <message>
+      <location line="+118"/>
       <source>Triangle</source>
       <translation>Triângulo</translation>
     </message>
@@ -342,6 +346,11 @@
       <location line="+4"/>
       <source>Octagon</source>
       <translation>Octógono</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Regular Polygon</source>
+      <translation>Polígono regular</translation>
     </message>
   </context>
   <context>
@@ -375,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -393,7 +402,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+4971"/>
+      <location filename="../../CommandConstraints.cpp" line="+5429"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -409,9 +418,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainBlock</name>
+    <message>
+      <location line="-3501"/>
+      <source>Sketcher</source>
+      <translation>Esboço</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain Block</source>
+      <translation>Restrição de blocagem</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create a Block constraint on the selected item</source>
+      <translation>Cria uma restrição de blocagem no ítem selecionado</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location line="-3074"/>
+      <location line="+307"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -429,7 +456,7 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+139"/>
+      <location line="+190"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -447,7 +474,7 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location line="+556"/>
+      <location line="+568"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -469,7 +496,7 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location line="+242"/>
+      <location line="+248"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -491,7 +518,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2640"/>
+      <location line="+2689"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -509,7 +536,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4389"/>
+      <location line="-4776"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -527,7 +554,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+4968"/>
+      <location line="+5376"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -545,7 +572,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4512"/>
+      <location line="-4886"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -563,7 +590,7 @@
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location line="+1563"/>
+      <location line="+1871"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -581,7 +608,7 @@
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location line="+185"/>
+      <location line="+190"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -603,7 +630,7 @@
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location line="-900"/>
+      <location line="-915"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -621,7 +648,7 @@
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location line="+2097"/>
+      <location line="+2142"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -639,7 +666,7 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1402"/>
+      <location line="+1433"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -657,7 +684,7 @@
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location line="-260"/>
+      <location line="-275"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -679,7 +706,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1734"/>
+      <location line="-1774"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -697,7 +724,7 @@
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location line="-2599"/>
+      <location line="-2935"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -733,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -751,7 +778,7 @@
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5584"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -769,7 +796,7 @@
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3244"/>
+      <location line="+3272"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -787,7 +814,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3559"/>
+      <location line="-3588"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -813,7 +840,7 @@
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location line="+1853"/>
+      <location line="+1857"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -831,7 +858,7 @@
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location line="+381"/>
+      <location line="+382"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -849,7 +876,7 @@
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location line="+342"/>
+      <location line="+343"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -867,7 +894,7 @@
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+566"/>
+      <location line="+588"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -885,7 +912,7 @@
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2539"/>
+      <location line="-2565"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -903,7 +930,7 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3246"/>
+      <location line="+3274"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -921,7 +948,7 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2380"/>
+      <location line="-2407"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -957,7 +984,7 @@
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2693"/>
+      <location line="+2721"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -979,7 +1006,7 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1566"/>
+      <location line="+1574"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1015,7 +1042,7 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6907"/>
+      <location line="-6951"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1033,7 +1060,7 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6955"/>
+      <location line="+6999"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1069,7 +1096,7 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2471"/>
+      <location line="-2482"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1087,7 +1114,7 @@
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location line="+608"/>
+      <location line="+610"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1105,7 +1132,7 @@
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4091"/>
+      <location line="-4122"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1127,7 +1154,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-694"/>
+      <location line="-697"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1143,9 +1170,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCreateRegularPolygon</name>
+    <message>
+      <location line="+6786"/>
+      <source>Sketcher</source>
+      <translation>Esboço</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create regular polygon</source>
+      <translation>Criar polígono regular</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create a regular polygon in the sketch</source>
+      <translation>Criar um polígono regular no esboço</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location line="+6354"/>
+      <location line="-392"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1163,7 +1208,7 @@
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location line="+256"/>
+      <location line="+257"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1181,7 +1226,7 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1806"/>
+      <location line="-1815"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1199,7 +1244,7 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1776"/>
+      <location line="+1785"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1233,6 +1278,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherDeleteAllGeometry</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <source>Sketcher</source>
+      <translation>Esboço</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Geometry</source>
+      <translation>Excluir toda a geometria</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the geometry and constraints but external geometry</source>
+      <translation>Exclui toda a geometria e restrições exceto a geometria externa</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherEditSketch</name>
     <message>
       <location filename="../../Command.cpp" line="+283"/>
@@ -1253,7 +1316,7 @@
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-949"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1271,7 +1334,7 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+222"/>
+      <location line="+223"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1451,7 +1514,7 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+315"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1487,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1617,9 +1680,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherSwitchVirtualSpace</name>
+    <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="+97"/>
+      <source>Sketcher</source>
+      <translation>Esboço</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switch virtual space</source>
+      <translation>Alternar espaço virtual</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches the selected constraints or the view to the other virtual space</source>
+      <translation>Alterna as restrições selecionadas para um outro espaço virtual</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1663,7 +1744,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5154"/>
+      <location filename="../../CommandConstraints.cpp" line="+5545"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1681,7 +1762,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-580"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1749,46 +1830,46 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4100"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
-      <translation>Esta versão do OCE/Cco não suporta operações com nós. Você precisa da versão 6.9.0 ou superior
+      <translation>Esta versão do OCE/OCC não suporta operações com nós. Você precisa da versão 6.9.0 ou superior
 </translation>
     </message>
     <message>
       <location line="+4"/>
       <source>BSpline GeoId is out of bounds.</source>
-      <translation type="unfinished">BSpline GeoId is out of bounds.</translation>
+      <translation>O GeoId da BSpline está fora dos limites.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation>Você não está a solicitar nenhuma mudança na multiplicidade de nó.</translation>
+      <translation>Você não solicitou nenhuma mudança de multiplicidade em nós.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>The GeoId provided is not a B-spline curve.</source>
-      <translation type="unfinished">The GeoId provided is not a B-spline curve.</translation>
+      <translation>O GeoId fornecido não é uma curva B-spline.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
-      <translation>O índice do nó está fora dos limites. Note que, de acordo com a notação de OCC, o primeiro nó tem índice 1 e não zero.</translation>
+      <translation>O índice do nó está fora dos limites. Note que, de acordo com a notação do OCC, o primeiro nó tem índice 1 e não zero.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The multiplicity cannot be increased beyond the degree of the b-spline.</source>
-      <translation>A multiplicidade não pode ser aumentada além do grau de b-spline.</translation>
+      <translation>A multiplicidade não pode ser aumentada além do grau da b-spline.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation>A multiplicidade não pode ser diminuída, abaixo de zero.</translation>
+      <translation>A multiplicidade não pode ser diminuída abaixo de zero.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
-      <translation>OCC é incapaz de diminuir a multiplicidade dentro de tolerância máxima.</translation>
+      <translation>O OCC não consegue diminuir a multiplicidade dentro de tolerância máxima.</translation>
     </message>
   </context>
   <context>
@@ -1804,44 +1885,48 @@
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6258"/>
-      <location line="+900"/>
-      <location line="+230"/>
-      <location line="+229"/>
+      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location line="+6"/>
+      <location line="+965"/>
+      <location line="+247"/>
+      <location line="+246"/>
       <location line="+23"/>
       <location line="+4"/>
-      <location line="+317"/>
+      <location line="+241"/>
+      <location line="+27"/>
+      <location line="+4"/>
+      <location line="+280"/>
       <location line="+11"/>
       <location line="+10"/>
-      <location line="+121"/>
+      <location line="+174"/>
       <location line="+11"/>
-      <location line="+93"/>
-      <location line="+30"/>
-      <location line="+85"/>
+      <location line="+95"/>
+      <location line="+32"/>
+      <location line="+91"/>
       <location line="+154"/>
       <location line="+40"/>
       <location line="+16"/>
       <location line="+7"/>
-      <location line="+46"/>
-      <location line="+18"/>
-      <location line="+57"/>
+      <location line="+47"/>
+      <location line="+17"/>
+      <location line="+58"/>
       <location line="+11"/>
       <location line="+27"/>
-      <location line="+47"/>
-      <location line="+26"/>
+      <location line="+49"/>
+      <location line="+29"/>
       <location line="+29"/>
       <location line="+104"/>
       <location line="+11"/>
       <location line="+25"/>
-      <location line="+48"/>
-      <location line="+26"/>
+      <location line="+50"/>
+      <location line="+28"/>
       <location line="+29"/>
       <location line="+142"/>
       <location line="+13"/>
       <location line="+14"/>
       <location line="+16"/>
       <location line="+39"/>
-      <location line="+123"/>
+      <location line="+128"/>
       <location line="+13"/>
       <location line="+81"/>
       <location line="+38"/>
@@ -1849,20 +1934,20 @@
       <location line="+25"/>
       <location line="+9"/>
       <location line="+133"/>
-      <location line="+29"/>
+      <location line="+35"/>
       <location line="+9"/>
       <location line="+267"/>
       <location line="+13"/>
-      <location line="+80"/>
-      <location line="+38"/>
+      <location line="+82"/>
+      <location line="+21"/>
       <location line="+9"/>
       <location line="+25"/>
-      <location line="+109"/>
-      <location line="+30"/>
+      <location line="+142"/>
+      <location line="+36"/>
       <location line="+134"/>
       <location line="+130"/>
       <location line="+11"/>
-      <location line="+41"/>
+      <location line="+51"/>
       <location line="+237"/>
       <location line="+185"/>
       <location line="+12"/>
@@ -1875,17 +1960,16 @@
       <location line="+16"/>
       <location line="+16"/>
       <location line="+9"/>
-      <location line="+105"/>
+      <location line="+111"/>
       <location line="+12"/>
+      <location line="+24"/>
       <location line="+21"/>
-      <location line="+21"/>
-      <location line="+18"/>
-      <location line="+12"/>
+      <location line="+29"/>
       <location line="+36"/>
       <location line="+22"/>
-      <location line="+18"/>
+      <location line="+27"/>
       <location line="+16"/>
-      <location line="+118"/>
+      <location line="+122"/>
       <location line="+97"/>
       <location line="+11"/>
       <location line="+20"/>
@@ -1918,10 +2002,14 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
+      <location line="+8"/>
+      <location line="+24"/>
       <source>Wrong selection</source>
       <translation>Seleção errada</translation>
     </message>
@@ -1932,49 +2020,62 @@
       <translation>Selecione aresta(s) no esboço.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5428"/>
-      <location line="+230"/>
+      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Selecione uma aresta do esboço.</translation>
     </message>
     <message>
-      <location line="-196"/>
-      <location line="+82"/>
-      <location line="+148"/>
-      <location line="+87"/>
+      <location line="-213"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+98"/>
+      <location line="+422"/>
+      <location line="+50"/>
       <source>Double constraint</source>
       <translation>Restrição dupla</translation>
     </message>
     <message>
-      <location line="-316"/>
-      <location line="+82"/>
-      <location line="+230"/>
+      <location line="-816"/>
+      <location line="+93"/>
+      <location line="+247"/>
       <source>The selected edge has already a horizontal constraint!</source>
       <translation>A aresta selecionada já possui uma restrição horizontal!</translation>
     </message>
     <message>
-      <location line="-322"/>
+      <location line="-350"/>
       <location line="+14"/>
+      <location line="+6"/>
       <location line="+19"/>
-      <location line="+49"/>
+      <location line="+27"/>
+      <location line="+27"/>
       <location line="+14"/>
+      <location line="+6"/>
       <location line="+134"/>
       <location line="+14"/>
-      <location line="+19"/>
-      <location line="+49"/>
+      <location line="+6"/>
+      <location line="+18"/>
+      <location line="+27"/>
+      <location line="+28"/>
       <location line="+9"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location line="+11"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Restrição impossível</translation>
     </message>
     <message>
-      <location line="-1246"/>
+      <location line="-1356"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>Não é possível adicionar uma restrição entre duas geometrias externas!</translation>
     </message>
     <message>
-      <location line="+455"/>
+      <location line="+6"/>
+      <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
+      <translation>Não foi possível criar uma restrição entre duas geometrias fixas! Geometrias fixas podem ser geometria externa, geometria bloqueada, ou pontos especiais usados como nós de curvas B-Spline.</translation>
+    </message>
+    <message>
+      <location line="+520"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -1987,32 +2088,48 @@
     </message>
     <message>
       <location line="+439"/>
-      <location line="+82"/>
-      <location line="+148"/>
-      <location line="+82"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
       <source>The selected edge is not a line segment</source>
       <translation>A aresta selecionada não é um segmento de linha</translation>
     </message>
     <message>
-      <location line="-298"/>
-      <location line="+82"/>
-      <location line="+143"/>
-      <location line="+87"/>
+      <location line="-326"/>
+      <location line="+93"/>
+      <location line="+149"/>
+      <location line="+98"/>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>A aresta selecionada já possui uma restrição vertical!</translation>
     </message>
     <message>
-      <location line="-293"/>
+      <location line="-334"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
+      <location line="+416"/>
+      <location line="+50"/>
+      <source>The selected edge has already a Block constraint!</source>
+      <translation>A aresta selecionada já possui uma restrição de bloqueio!</translation>
+    </message>
+    <message>
+      <location line="-787"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>Os itens selecionados não podem aceitar uma restrição horizontal!</translation>
     </message>
     <message>
-      <location line="+211"/>
+      <location line="+27"/>
+      <location line="+246"/>
+      <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
+      <translation>Mais de um ponto fixo selecionado. Selecione um único ponto fixo!</translation>
+    </message>
+    <message>
+      <location line="-51"/>
       <source>The selected edge has already a horizontral constraint!</source>
       <translation>A aresta selecionada já possui uma restrição de horizontalidade!</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="+24"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
       <translation>Os itens selecionados não podem aceitar uma restrição vertical!</translation>
     </message>
@@ -2029,7 +2146,7 @@
       <translation>Selecione um vértice do esboço.</translation>
     </message>
     <message>
-      <location line="+656"/>
+      <location line="+956"/>
       <source>Select vertexes from the sketch.</source>
       <translation>Selecione vértices do esboço.</translation>
     </message>
@@ -2038,7 +2155,7 @@
       <translation>Não é possível adicionar uma restrição de coordenada x fixa em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="+642"/>
+      <location line="+655"/>
       <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
       <translation>Não é possível adicionar uma restrição de coordenada x fixa no ponto de raiz!</translation>
     </message>
@@ -2047,23 +2164,54 @@
       <translation>Não é possível adicionar uma restrição de coordenada y fixa em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="-1105"/>
+      <location line="-1406"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Selecione um vértice do esboço que não seja a origem.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation>Selecione somente os vértices do esboço. O último vértice selecionado deve ser a origem.</translation>
+      <translation>Selecione somente os vértices do esboço. O último vértice selecionado pode ser a origem.</translation>
     </message>
     <message>
-      <location line="+872"/>
-      <location line="+69"/>
+      <location line="+252"/>
+      <source>Wrong solver status</source>
+      <translation>Erro no status do calculador</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
+      <translation>Uma restrição de bloqueio não pode ser adicionada se o esboço não estiver resolvido ou se existirem restrições redundantes e/ou conflitantes.</translation>
+    </message>
+    <message>
+      <location line="+15"/>
+      <source>Select one edge from the sketch.</source>
+      <translation>Selecione uma aresta do esboço.</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Select only edges from the sketch.</source>
+      <translation>Selecione somente arestas do esboço.</translation>
+    </message>
+    <message>
+      <location line="+355"/>
+      <location line="+2231"/>
+      <source>Constraint Substitution</source>
+      <translation>Substituição de restrição</translation>
+    </message>
+    <message>
+      <location line="-2230"/>
+      <source>Endpoint to endpoint tangency was applied instead.</source>
+      <translation>Uma tangência de ponto a ponto de extremidade foi aplicado em vez disso.</translation>
+    </message>
+    <message>
+      <location line="+542"/>
+      <location line="+70"/>
       <source>Point on B-spline edge currently unsupported.</source>
-      <translation>Ponto na aresta da Bspline atualmente sem suporte.</translation>
+      <translation>Ponto em aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="-53"/>
+      <location line="-54"/>
       <location line="+71"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Nenhum dos pontos selecionados foi restringido para as respectivas curvas, eles são partes do mesmo elemento, ou ambos são geometria externa.</translation>
@@ -2074,27 +2222,32 @@
       <translation>Selecione um ponto e várias curvas, ou uma curva e vários pontos. Você selecionou %1 curvas e %2 pontos.</translation>
     </message>
     <message>
-      <location line="+449"/>
+      <location line="+457"/>
       <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
       <translation>Não é possível adicionar uma restrição de coordenada y fixa no ponto de raiz!</translation>
     </message>
     <message>
-      <location line="+543"/>
+      <location line="+550"/>
       <location line="+34"/>
-      <location line="+171"/>
+      <location line="+177"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
-      <translation>Perpendicular à aresta da Bspline atualmente sem suporte.</translation>
+      <translation>Perpendicular à aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="+407"/>
+      <location line="+392"/>
       <location line="+25"/>
-      <location line="+139"/>
+      <location line="+178"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation>Tangência à aresta da Bspline atualmente sem suporte.</translation>
+      <translation>Tangência à aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="+275"/>
-      <location line="+41"/>
+      <location line="-147"/>
+      <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
+      <translation>Uma tangência de ponto a ponto foi aplicada. A restrição de coincidência foi excluída.</translation>
+    </message>
+    <message>
+      <location line="+422"/>
+      <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Selecione um ou mais arcos ou círculos no esboço.</translation>
     </message>
@@ -2113,45 +2266,46 @@
       <translation>Selecione apenas entidades no esboço.</translation>
     </message>
     <message>
-      <location line="-3059"/>
+      <location line="-3412"/>
+      <location line="+268"/>
       <source>Select vertices from the sketch.</source>
       <translation>Selecione vértices do esboço.</translation>
     </message>
     <message>
-      <location line="+344"/>
+      <location line="+311"/>
       <source>Select two or more points from the sketch.</source>
       <translation>Selecione dois ou mais pontos no esboço.</translation>
     </message>
     <message>
-      <location line="+361"/>
+      <location line="+424"/>
       <source>This constraint does not make sense for non-linear curves</source>
       <translation>Essa restrição não faz sentido para curvas não-lineares</translation>
     </message>
     <message>
       <location line="+154"/>
-      <location line="+184"/>
-      <location line="+244"/>
-      <location line="+1667"/>
-      <location line="+474"/>
+      <location line="+185"/>
+      <location line="+249"/>
+      <location line="+1706"/>
+      <location line="+484"/>
       <source>Select the right things from the sketch.</source>
       <translation>Selecione as coisas corretas no esboço.</translation>
     </message>
     <message>
       <source>Point on BSpline edge currently unsupported.</source>
-      <translation>Ponto na aresta da BSpline atualmente sem suporte.</translation>
+      <translation>Ponto em aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="-2245"/>
-      <location line="+243"/>
+      <location line="-2294"/>
+      <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
-      <translation>Esta restrição só faz sentido num segmento de reta ou num par de pontos</translation>
+      <translation>Esta restrição só faz sentido num segmento reto ou num par de pontos</translation>
     </message>
     <message>
       <source>Perpendicular to BSpline edge currently unsupported.</source>
-      <translation>Perpendicular à aresta da BSpline atualmente sem suporte.</translation>
+      <translation>Perpendicular à aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="+938"/>
+      <location line="+949"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2162,12 +2316,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <source>Tangency to BSpline edge currently unsupported.</source>
-      <translation>Tangência à aresta da BSpline atualmente sem suporte.</translation>
+      <translation>Tangência à aresta de Bspline ainda não está suportado.</translation>
     </message>
     <message>
-      <location line="+879"/>
+      <location line="+913"/>
       <source>Constraint only applies to arcs or circles.</source>
-      <translation>Restrição só aplicável a arcos ou círculos.</translation>
+      <translation>Restrição aplicável somente em arcos ou círculos.</translation>
     </message>
     <message>
       <location line="+197"/>
@@ -2189,10 +2343,10 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <source>Equality for BSpline edge currently unsupported.</source>
-      <translation>Igualdade para aresta da BSpline atualmente sem suporte.</translation>
+      <translation>Igualdade para aresta de Bspline ainda não está suportada.</translation>
     </message>
     <message>
-      <location line="+585"/>
+      <location line="+606"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Selecione dois pontos finais de linhas para atuar como raios e uma aresta que representa um limite. O primeiro ponto selecionado corresponde ao índice n1, o segundo ao n2, e a distância define a relação n2/n1.</translation>
@@ -2219,12 +2373,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <source>SnellsLaw on BSpline edge currently unsupported.</source>
-      <translation>SnellsLaw na aresta da BSpline atualmente sem suporte.</translation>
+      <translation>SnellsLaw em aresta de BSpline ainda não está suportada.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>SnellsLaw on B-spline edge currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on B-spline edge currently unsupported.</translation>
+      <translation>SnellsLaw em aresta de Bspline ainda não está suportada.</translation>
     </message>
     <message>
       <location line="+97"/>
@@ -2309,6 +2463,9 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location line="+53"/>
       <location line="+8"/>
       <location line="+30"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
+      <location line="+8"/>
+      <location line="+24"/>
       <source>Select constraint(s) from the sketch.</source>
       <translation>Selecione restrições do desenho.</translation>
     </message>
@@ -2317,14 +2474,14 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Selecione exatamente dois vértices do esboço.</translation>
     </message>
     <message>
-      <location line="-4615"/>
+      <location line="-4754"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>Selecione dois ou mais vértices do esboço.</translation>
     </message>
     <message>
-      <location line="+132"/>
-      <location line="+123"/>
+      <location line="+185"/>
+      <location line="+127"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Selecione exatamente uma linha ou um ponto e uma linha ou dois pontos no esboço.</translation>
     </message>
@@ -2333,7 +2490,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível adicionar uma restrição de comprimento em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="-30"/>
+      <location line="-32"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Não é possível adicionar uma restrição de comprimento em um eixo!</translation>
     </message>
@@ -2342,10 +2499,10 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Selecione exatamente um ponto e um objeto no esboço.</translation>
     </message>
     <message>
-      <location line="+464"/>
-      <location line="+100"/>
+      <location line="+473"/>
+      <location line="+105"/>
       <location line="+144"/>
-      <location line="+99"/>
+      <location line="+103"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Selecione exatamente uma linha ou até dois pontos no esboço.</translation>
     </message>
@@ -2354,7 +2511,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível adicionar uma restrição de comprimento horizontal em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="-316"/>
+      <location line="-325"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Não é possível adicionar uma restrição de comprimento horizontal em um eixo!</translation>
     </message>
@@ -2371,7 +2528,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível adicionar uma restrição de comprimento vertical em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="+242"/>
+      <location line="+247"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Não é possível adicionar uma restrição de comprimento vertical em um eixo!</translation>
     </message>
@@ -2384,18 +2541,18 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível adicionar uma restrição de coordenada Y fixa sobre um ponto raiz!</translation>
     </message>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Selecione duas ou mais linhas no esboço.</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2360"/>
+      <location line="+2405"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Selecione pelo menos duas linhas no esboço.</translation>
     </message>
     <message>
-      <location line="-2346"/>
+      <location line="-2391"/>
       <source>Select a valid line</source>
       <translation>Selecione uma linha válida</translation>
     </message>
@@ -2406,7 +2563,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>A aresta selecionada não é uma linha válida</translation>
     </message>
     <message>
-      <location line="+100"/>
+      <location line="+105"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2428,24 +2585,26 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Número errado de objetos selecionados!</translation>
     </message>
     <message>
-      <location line="+59"/>
-      <location line="+459"/>
-      <location line="+154"/>
-      <location line="+432"/>
-      <location line="+1576"/>
+      <location line="-1767"/>
+      <location line="+46"/>
+      <location line="+1780"/>
+      <location line="+465"/>
+      <location line="+156"/>
+      <location line="+454"/>
+      <location line="+1607"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
     <message>
-      <location line="-2605"/>
-      <location line="+612"/>
+      <location line="-2666"/>
+      <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation>Com 3 objetos, deve haver 2 curvas e 1 ponto.</translation>
     </message>
     <message>
-      <location line="-603"/>
+      <location line="-611"/>
       <location line="+38"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Não é possível adicionar uma restrição de perpendicularidade em um ponto não conectado!</translation>
@@ -2464,7 +2623,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <location line="+34"/>
-      <location line="+171"/>
+      <location line="+177"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Uma das arestas selecionadas deve ser uma linha.</translation>
     </message>
@@ -2490,9 +2649,9 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Número errado de objetos selecionados!</translation>
     </message>
     <message>
-      <location line="+83"/>
-      <location line="+38"/>
-      <location line="+307"/>
+      <location line="+85"/>
+      <location line="+21"/>
+      <location line="+346"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Não é possível adicionar uma restrição de tangência em um ponto não conectado!</translation>
     </message>
@@ -2509,7 +2668,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível adicionar uma restrição de ângulo em uma geometria externa!</translation>
     </message>
     <message>
-      <location line="+796"/>
+      <location line="+806"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Não é possível adicionar uma restrição de ângulo em um eixo!</translation>
     </message>
@@ -2528,19 +2687,19 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <location line="+28"/>
-      <location line="+597"/>
+      <location line="+618"/>
       <source>Select two or more compatible edges</source>
       <translation>Selecione duas ou mais arestas compatíveis</translation>
     </message>
     <message>
-      <location line="-591"/>
+      <location line="-612"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Os eixos do esboço não podem ser usados em restrições de igualdade</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>Igualdade para aresta da Bspline atualmente sem suporte.</translation>
+      <translation>Igualdade para aresta de Bspline ainda não está suportada.</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -2549,24 +2708,23 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Selecione duas ou mais arestas do mesmo tipo</translation>
     </message>
     <message>
-      <location line="+105"/>
+      <location line="+111"/>
       <location line="+12"/>
-      <location line="+42"/>
-      <location line="+66"/>
-      <location line="+56"/>
+      <location line="+45"/>
+      <location line="+65"/>
+      <location line="+65"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>Selecione dois pontos e uma linha de simetria, dois pontos e um ponto de simetria ou uma linha e um ponto de simetria no esboço.</translation>
     </message>
     <message>
-      <location line="-104"/>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Não é possível adicionar uma restrição entre geometrias externas!</translation>
     </message>
     <message>
-      <location line="-39"/>
-      <location line="+51"/>
+      <location line="-151"/>
+      <location line="+50"/>
       <location line="+58"/>
-      <location line="+18"/>
+      <location line="+27"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Não é possível adicionar uma restrição de simetria entre uma linha e seus pontos finais!</translation>
     </message>
@@ -2653,8 +2811,8 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não é possível editar o dado porque o esboço contém restrições conflitantes</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5680"/>
-      <location line="+4599"/>
+      <location filename="../../CommandConstraints.cpp" line="-6155"/>
+      <location line="+5057"/>
       <location line="+133"/>
       <location filename="../../EditDatumDialog.cpp" line="+93"/>
       <source>Dimensional constraint</source>
@@ -2689,13 +2847,14 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Selecione elementos de um esboço único.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Nenhuma restrição selecionada</translation>
     </message>
@@ -2705,11 +2864,21 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Pelo menos uma restrição deve ser selecionada</translation>
     </message>
     <message>
+      <location line="+1065"/>
+      <source>Delete All Geometry</source>
+      <translation>Excluir toda a geometria</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the geometry and constraints?</source>
+      <translation>Tem certeza que deseja apagar toda a geometria e restrições?</translation>
+    </message>
+    <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Atualmente a geometria interna só é suportada para elipses ou arcos de elipse. O último elemento selecionado deve ser uma elipse ou um arco de elipse.</translation>
     </message>
     <message>
-      <location line="+246"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Uma construção simétrica requer pelo menos dois elementos geométricos, sendo o último elemento geométrico a referência para a construção da simetria.</translation>
     </message>
@@ -2719,7 +2888,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>O último elemento deve ser um ponto ou uma linha, servindo como referência para a construção da simetria.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Uma cópia requer pelo menos um elemento geométrico não-externo selecionado</translation>
@@ -2771,7 +2940,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Não anexar</translation>
     </message>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="+121"/>
+      <location filename="../../AppSketcherGui.cpp" line="+123"/>
       <location line="+1"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
@@ -2791,7 +2960,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location line="-159"/>
       <location line="+160"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
-      <translation>Esta versão do OCE/Cco não suporta operações com nós. Você precisa da versão 6.9.0 ou superior</translation>
+      <translation>Esta versão do OCE/OCC não suporta operações com nós. Você precisa da versão 6.9.0 ou superior</translation>
     </message>
     <message>
       <location line="-142"/>
@@ -2802,7 +2971,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location line="-118"/>
       <source>CAD Kernel Error</source>
-      <translation type="unfinished">CAD Kernel Error</translation>
+      <translation>Erro de Kernel CAD</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2850,7 +3019,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+622"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Cópia de carbono poderia causar uma dependência circular.</translation>
     </message>
@@ -2860,9 +3029,13 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Este objeto está em um outro documento.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>This object belongs to another body.</source>
-      <translation type="unfinished">This object belongs to another body.</translation>
+      <translation>Este objeto pertence a outro corpo.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
+      <translation>Este objeto pertence a outro corpo. Pressione a tecla Ctrl para permitir referências cruzadas.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2877,18 +3050,18 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location line="+3"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Os eixos XY do esboço selecionado não tem a mesma direção que este esboço. Pressione Ctrl + Alt para ignorá-lo.</translation>
+      <translation>Os eixos XY do esboço selecionado não tem a mesma direção que este esboço. Pressione Ctrl + Alt para ignorar isto.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>A origem do esboço selecionado não está alinhada com a origem deste esboço. Pressione Ctrl + Alt para ignorá-lo.</translation>
+      <translation>A origem do esboço selecionado não está alinhada com a origem deste esboço. Pressione Ctrl + Alt para ignorar isto.</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+400"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
       <source>Toggle to/from reference</source>
       <translation>Alternar para/de referência</translation>
     </message>
@@ -2898,7 +3071,17 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Mudar o valor</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+8"/>
+      <source>Show constraints</source>
+      <translation>Mostrar as restrições</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Hide constraints</source>
+      <translation>Ocultar as restrições</translation>
+    </message>
+    <message>
+      <location line="+6"/>
       <source>Rename</source>
       <translation>Renomear</translation>
     </message>
@@ -2918,7 +3101,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Trocar nomes de restrição</translation>
     </message>
     <message>
-      <location line="+70"/>
+      <location line="+88"/>
       <source>Unnamed constraint</source>
       <translation>Restrição sem nome</translation>
     </message>
@@ -2931,7 +3114,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-4796"/>
+      <location filename="../../CommandConstraints.cpp" line="-5254"/>
       <location filename="../../EditDatumDialog.cpp" line="-77"/>
       <source>Insert angle</source>
       <translation>Insira o ângulo</translation>
@@ -2963,21 +3146,21 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Relação n2/n1:</translation>
     </message>
     <message>
-      <location line="+4598"/>
+      <location line="+5056"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Mudar raio</translation>
     </message>
     <message>
-      <location line="-4748"/>
-      <location line="+4604"/>
+      <location line="-5206"/>
+      <location line="+5062"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="-5"/>
       <source>Radius:</source>
       <translation>Raio:</translation>
     </message>
     <message>
-      <location line="+1132"/>
+      <location line="+1153"/>
       <source>Refractive index ratio</source>
       <translation>Relação de índice de refração</translation>
     </message>
@@ -2987,7 +3170,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Relação n2/n1:</translation>
     </message>
     <message>
-      <location line="-5873"/>
+      <location line="-6352"/>
       <location filename="../../EditDatumDialog.cpp" line="+9"/>
       <source>Insert length</source>
       <translation>Insira o comprimento</translation>
@@ -3010,7 +3193,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Esta ligação irá causar dependência circular.</translation>
     </message>
@@ -3022,7 +3205,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location line="+3"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation type="unfinished">This object belongs to another body, can't link.</translation>
+      <translation>Este objeto pertence a outro corpo, não é possível vincular.</translation>
     </message>
     <message>
       <source>This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.</source>
@@ -3055,7 +3238,8 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+124"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
+      <location line="+52"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
     </message>
@@ -3162,7 +3346,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location line="+13"/>
       <source>If selected, each element in the array is constraint with respect to the others using construction lines</source>
-      <translation type="unfinished">If selected, each element in the array is constraint with respect to the others using construction lines</translation>
+      <translation>Se selecionado, cada elemento do array é restringido em relação aos outros usando linhas de construção</translation>
     </message>
     <message>
       <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
@@ -3209,9 +3393,27 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
   </context>
   <context>
+    <name>SketcherGui::SketcherRegularPolygonDialog</name>
+    <message>
+      <location filename="../../SketcherRegularPolygonDialog.ui" line="+17"/>
+      <source>Create array</source>
+      <translation>Criar matriz</translation>
+    </message>
+    <message>
+      <location line="+8"/>
+      <source>Number of Sides:</source>
+      <translation>Número de lados:</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Number of columns of the linear array</source>
+      <translation>Número de colunas da matriz linear</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+188"/>
+      <location filename="../../SketcherSettings.cpp" line="+192"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -3344,17 +3546,46 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Aplicar aos esboços existentes</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+37"/>
+      <source>Notifications</source>
+      <translation>Notificações</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Notify automatic constraint substitutions.</source>
+      <translation>Notificar substituições automáticas de restrições.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Notify automatic constraint substitutions</source>
+      <translation>Notificar substituições automáticas de restrições</translation>
+    </message>
+    <message>
+      <location line="+19"/>
       <source>Segments per geometry</source>
       <translation>Segmentos por geometria</translation>
     </message>
     <message>
-      <location line="+39"/>
+      <location line="+26"/>
+      <source>Sketcher Solver</source>
+      <translation>Solver do esboço</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Dragging Performance</source>
+      <translation>Performance durante manipulação</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Improve solving while dragging (requires to re-enter edit mode to take effect)</source>
+      <translation>Melhorar a performance durante a manipulação (requere sair e entrar novamente em modo de edição)</translation>
+    </message>
+    <message>
       <source>Sketch Solver</source>
       <translation>Solver o esboço</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="-22"/>
       <source>Show Advanced Solver Control in the Task bar</source>
       <translation>Mostrar controle solver avançado na barra de tarefas</translation>
     </message>
@@ -3379,7 +3610,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>A espessura de linha padrão para novas formas</translation>
     </message>
     <message>
-      <location line="-292"/>
+      <location line="-334"/>
       <source>px</source>
       <translation>px</translation>
     </message>
@@ -3457,23 +3688,28 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     </message>
     <message>
       <location line="+7"/>
-      <location line="+66"/>
+      <location line="+96"/>
       <source>The color of edges being edited</source>
       <translation>Editando a cor das arestas</translation>
     </message>
     <message>
-      <location line="-40"/>
+      <location line="-70"/>
       <source>Default vertex color</source>
       <translation>Cor padrão dos vértices</translation>
     </message>
     <message>
       <location line="+7"/>
-      <location line="+66"/>
+      <location line="+96"/>
       <source>The color of vertices being edited</source>
       <translation>Editando a cor dos vértices</translation>
     </message>
     <message>
-      <location line="-40"/>
+      <location line="-70"/>
+      <source>Making line color</source>
+      <translation>Cor de linha sendo desenhada</translation>
+    </message>
+    <message>
+      <location line="+30"/>
       <source>Edit edge color</source>
       <translation>Editar cor da aresta</translation>
     </message>
@@ -3488,22 +3724,27 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Geometria de construção</translation>
     </message>
     <message>
-      <location line="+106"/>
+      <location line="+73"/>
       <source>The color of fully constrained geometry in edit mode</source>
       <translation>A cor da geometria totalmente restrita no modo de edição</translation>
     </message>
     <message>
-      <location line="-79"/>
+      <location line="+281"/>
+      <source>Cursor crosshair color</source>
+      <translation>Cor do ponteiro do mouse</translation>
+    </message>
+    <message>
+      <location line="-347"/>
       <source>The color of construction geometry in edit mode</source>
       <translation>A cor da construção de geometria no modo de edição</translation>
     </message>
     <message>
-      <location line="-20"/>
+      <location line="+186"/>
       <source>The color of the datum portion of a driving constraint</source>
-      <translation type="unfinished">The color of the datum portion of a driving constraint</translation>
+      <translation>A cor do texto de um restrição de condução</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="-160"/>
       <source>External geometry</source>
       <translation>Geometria externa</translation>
     </message>
@@ -3518,41 +3759,51 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Geometria totalmente restrita</translation>
     </message>
     <message>
-      <location line="+13"/>
+      <location line="+33"/>
       <source>Constraint color</source>
       <translation>Cor das restrições</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+54"/>
+      <source>Expression dependent constraint color</source>
+      <translation>Cor das restrições que dependem de expressões</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>The color of expression dependent datum constraints in edit mode</source>
+      <translation>A cor do texto das restrições que dependem de uma expressão, em modo de edição</translation>
+    </message>
+    <message>
+      <location line="+26"/>
       <source>Datum color</source>
       <translation>Cor da data</translation>
     </message>
     <message>
-      <location line="+13"/>
+      <location line="+33"/>
       <source>Datum text size</source>
       <translation>Datar o tamanho do texto</translation>
     </message>
     <message>
-      <location line="+13"/>
+      <location line="+35"/>
       <source>Default vertex size</source>
       <translation>Tamanho padrão dos vértices</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="-28"/>
       <location line="+35"/>
-      <location line="+52"/>
+      <location line="+35"/>
       <source>The default line thickness for new shapes</source>
       <translation>A espessura de linha padrão para novas formas</translation>
     </message>
     <message>
-      <location line="-84"/>
+      <location line="-67"/>
       <location line="+35"/>
-      <location line="+52"/>
+      <location line="+35"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location line="-62"/>
+      <location line="-10"/>
       <source>Default line width</source>
       <translation>Espessura de linha padrão</translation>
     </message>
@@ -3562,21 +3813,21 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Cor do texto do cursor</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="-198"/>
       <source>Reference Constraint color</source>
-      <translation type="unfinished">Reference Constraint color</translation>
+      <translation>Cor de Restrição de Referência</translation>
     </message>
     <message>
-      <location line="+27"/>
+      <location line="+7"/>
       <source>The color of reference constrains and datum in edit mode</source>
-      <translation type="unfinished">The color of reference constrains and datum in edit mode</translation>
+      <translation>A cor da referência de constrição e texto no modo de edição</translation>
     </message>
     <message>
       <source>Non-driving Datum color</source>
       <translation>Cor de dados não ativos</translation>
     </message>
     <message>
-      <location line="-20"/>
+      <location line="-27"/>
       <source>The color of driving constraints in edit mode</source>
       <translation>A cor das restrições ativas no modo de edição</translation>
     </message>
@@ -3588,7 +3839,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+325"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
       <source>No missing coincidences</source>
       <translation>Nenhum coincidência faltante</translation>
     </message>
@@ -3608,7 +3859,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>%1 coincidências faltantes encontradas</translation>
     </message>
     <message>
-      <location line="+60"/>
+      <location line="+66"/>
       <source>No invalid constraints</source>
       <translation>Nenhuma restrição inválida</translation>
     </message>
@@ -3740,7 +3991,7 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
     <message>
       <location line="+10"/>
       <source>Hide Internal Aligment</source>
-      <translation type="unfinished">Hide Internal Aligment</translation>
+      <translation>Ocultar Alinhamento Interno</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
@@ -3748,7 +3999,8 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
       <translation>Restrições</translation>
     </message>
     <message>
-      <location line="+190"/>
+      <location line="+199"/>
+      <location line="+17"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
@@ -3928,12 +4180,12 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
     <message>
       <location line="+20"/>
       <source>Avoid redundant auto constraints</source>
-      <translation type="unfinished">Avoid redundant auto constraints</translation>
+      <translation>Evitar auto-restrições redundantes</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Rendering order:</source>
-      <translation type="unfinished">Rendering order:</translation>
+      <translation>Ordem de processamento:</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -4070,7 +4322,12 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
       <translation>Destacar os vértices abertos</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+7"/>
+      <source>Ignore construction geometry</source>
+      <translation>Ignorar a geometria de construção</translation>
+    </message>
+    <message>
+      <location line="+13"/>
       <source>Reversed external geometry</source>
       <translation>Geometria externa invertida</translation>
     </message>
@@ -4095,14 +4352,14 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
       <translation>Desativar</translation>
     </message>
     <message>
-      <location line="-93"/>
+      <location line="-103"/>
       <location line="+40"/>
-      <location line="+23"/>
+      <location line="+33"/>
       <source>Find</source>
       <translation>Procurar</translation>
     </message>
     <message>
-      <location line="-70"/>
+      <location line="-80"/>
       <location line="+37"/>
       <source>Fix</source>
       <translation>Consertar</translation>
@@ -4116,7 +4373,7 @@ No entanto, nenhuma restrição foi encontrada nos pontos de extremidade.</trans
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5110"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
       <source>Invalid sketch</source>
       <translation>Esboço inválido</translation>
     </message>
@@ -4151,7 +4408,7 @@ Use the sketch validation tool.</source>
       <translation>O esboço é inválido e não pode ser editado.</translation>
     </message>
     <message>
-      <location line="+141"/>
+      <location line="+156"/>
       <source>Please remove the following constraint:</source>
       <translation>Por favor, remova a seguinte restrição:</translation>
     </message>
@@ -4323,7 +4580,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4291"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Criar um arco a partir de seus pontos de extremidade e um ponto ao longo do arco</translation>
@@ -4332,7 +4589,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3245"/>
+      <location line="+3273"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Criar um círculo a partir de 3 pontos de borda</translation>
@@ -4341,7 +4598,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3251"/>
+      <location line="-3279"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Criar um arco a partir do seu centro e por seus pontos de extremidade</translation>
@@ -4350,7 +4607,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location line="+2311"/>
+      <location line="+2316"/>
       <location line="+1"/>
       <source>Create an arc of ellipse by its center, major radius, endpoints</source>
       <translation>Criar um arco de elipse pelo seu centro, raio principal, pontos de extremidade</translation>
@@ -4371,7 +4628,7 @@ Use the sketch validation tool.</source>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create an arc of parabola by its focus, vertex, endpoints</source>
-      <translation>Criar um arco de parábola pelo seu foco, vértice, pontos de extremidade</translation>
+      <translation>Criar um arco de parábola pelo seu foco, vértice, e pontos de extremidade</translation>
     </message>
   </context>
   <context>
@@ -4385,21 +4642,21 @@ Use the sketch validation tool.</source>
       <translation>Criar uma B-spline por pontos de controle ou polos</translation>
     </message>
     <message>
-      <location line="+572"/>
+      <location line="+594"/>
       <source>B-spline by control points</source>
-      <translation type="unfinished">B-spline by control points</translation>
+      <translation>B-spline por pontos de controle</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a B-spline by control points</source>
-      <translation type="unfinished">Create a B-spline by control points</translation>
+      <translation>Criar uma B-spline por pontos de controle</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location line="+351"/>
+      <location line="+352"/>
       <location line="+1"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Criar um círculo a partir do seu centro e por um ponto de borda</translation>
@@ -4408,7 +4665,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-939"/>
+      <location line="-962"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Criar uma elipse por periapsis apoapsis e menor raio</translation>
@@ -4426,7 +4683,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3169"/>
+      <location line="+3242"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Criar um heptágono pelo seu centro e por um canto</translation>
@@ -4449,11 +4706,17 @@ Use the sketch validation tool.</source>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Criar um octógono pelo seu centro e por um canto</translation>
     </message>
+    <message>
+      <location line="+3"/>
+      <location line="+1"/>
+      <source>Create a regular polygon by its center and by one corner</source>
+      <translation>Criar um polígono regular pelo seu centro e por um vértice</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location line="-13"/>
+      <location line="-17"/>
       <location line="+1"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Criar um pentágono pelo seu centro e por um canto</translation>
@@ -4488,15 +4751,15 @@ Use the sketch validation tool.</source>
       <translation>Criar uma B-spline periódica por pontos de controle ou polos</translation>
     </message>
     <message>
-      <location line="-2562"/>
+      <location line="-2613"/>
       <source>Periodic B-spline by control points</source>
-      <translation type="unfinished">Periodic B-spline by control points</translation>
+      <translation>B-spline periódica por pontos de controle</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation type="unfinished">Create a periodic B-spline by control points</translation>
+      <translation>Criar uma B-spline periódica por pontos de controle</translation>
     </message>
   </context>
   <context>
@@ -4852,7 +5115,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+3"/>
       <source>Console Debug mode:</source>
-      <translation type="unfinished">Console Debug mode:</translation>
+      <translation>Modo de depuração do console:</translation>
     </message>
     <message>
       <source>Console  Debug mode:</source>
@@ -4907,11 +5170,16 @@ Do you want to detach it from the support?</source>
       <translation>Ferramentas de esboço</translation>
     </message>
     <message>
+      <location line="+1"/>
+      <source>Sketcher virtual space</source>
+      <translation>Espaço virtual de esboço</translation>
+    </message>
+    <message>
       <source>Sketcher geoms</source>
       <translation>Geometrias de esboço</translation>
     </message>
     <message>
-      <location line="-1"/>
+      <location line="-2"/>
       <source>Sketcher constraints</source>
       <translation>Restrições de esboço</translation>
     </message>

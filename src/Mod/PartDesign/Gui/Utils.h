@@ -44,7 +44,7 @@ namespace Sketcher {
 namespace PartDesignGui {
 
 /// Return active body or show a warning message
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true);
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true);
 
 /// Display error when there are existing Body objects, but none are active
 void needActiveBodyError(void);
@@ -56,7 +56,8 @@ PartDesign::Body * makeBody(App::Document *doc);
  * Finds a body for the given feature. And shows a message if not found
  * Also unlike Body::findBodyFor it checks if the active body has the feature first.
  */
-PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot, bool autoActivate=true);
+PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot,
+                             bool autoActivate=true, bool assertModern=true);
 App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
 App::Part        *getActivePart();
 

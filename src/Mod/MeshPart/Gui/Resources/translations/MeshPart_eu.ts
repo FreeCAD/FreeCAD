@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="+245"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -24,7 +24,7 @@
     <message>
       <location line="-191"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -42,7 +42,7 @@
     <message>
       <location line="+106"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -60,7 +60,7 @@
     <message>
       <location line="-85"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -205,12 +205,12 @@
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Desbideratze angeluarra:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Azaleraren desbideratze erlatiboa</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -284,7 +284,7 @@
     </message>
     <message>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Ezarpenak</translation>
     </message>
     <message>
       <location line="-293"/>
@@ -293,7 +293,7 @@
     </message>
     <message>
       <source>Max. edge length:</source>
-      <translation type="unfinished">Max. edge length:</translation>
+      <translation>Ertz-luzera maximoa:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="+225"/>

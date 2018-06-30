@@ -180,7 +180,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             if(filter->Input.getValue() != Input.getValue())
                 filter->Input.setValue(Input.getValue());
 
-            //all the others need to be connected to the previous filter or the source, dependend on the mode
+            //all the others need to be connected to the previous filter or the source, dependent on the mode
             ++it;
             for(; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
@@ -203,7 +203,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             if(filter->Input.getValue() != NULL)
                 filter->Input.setValue(NULL);
 
-            //all the others need to be connected to the previous filter or grab the data, dependend on mode
+            //all the others need to be connected to the previous filter or grab the data, dependent on mode
             ++it;
             for(; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);

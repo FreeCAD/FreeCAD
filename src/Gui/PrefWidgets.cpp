@@ -457,6 +457,39 @@ void PrefColorButton::savePreferences()
 
 // --------------------------------------------------------------------
 
+PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
+  : QuantitySpinBox(parent), PrefWidget()
+{
+}
+
+PrefUnitSpinBox::~PrefUnitSpinBox()
+{
+}
+
+void PrefUnitSpinBox::restorePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        Console().Warning("Cannot restore!\n");
+        return;
+    }
+
+    double fVal = (double)getWindowParameter()->GetFloat( entryName() ,rawValue() );
+    setValue(fVal);
+}
+
+void PrefUnitSpinBox::savePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        Console().Warning("Cannot save!\n");
+        return;
+    }
+
+    double q = rawValue();
+    getWindowParameter()->SetFloat( entryName(), q );
+}
+
+// --------------------------------------------------------------------
+
 namespace Gui {
 class PrefQuantitySpinBoxPrivate
 {
@@ -638,6 +671,47 @@ void PrefQuantitySpinBox::setHistorySize(int i)
 {
     Q_D(PrefQuantitySpinBox);
     d->historySize = i;
+}
+
+// --------------------------------------------------------------------
+
+PrefFontBox::PrefFontBox ( QWidget * parent )
+  : QFontComboBox(parent), PrefWidget()
+{
+}
+
+PrefFontBox::~PrefFontBox()
+{
+}
+
+void PrefFontBox::restorePreferences()
+{
+  if ( getWindowParameter().isNull() )
+  {
+    Console().Warning("Cannot restore!\n");
+    return;
+  }
+
+  QFont currFont = currentFont();                         //QFont from selector widget
+  QString currName = currFont.family();
+  
+  std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  //font name from cfg file
+
+  currFont.setFamily(QString::fromStdString(prefName));
+  setCurrentFont(currFont);                               //set selector widget to name from cfg file
+}
+
+void PrefFontBox::savePreferences()
+{
+  if (getWindowParameter().isNull())
+  {
+    Console().Warning("Cannot save!\n");
+    return;
+  }
+
+  QFont currFont = currentFont();
+  QString currName = currFont.family();
+  getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
 }
 
 #include "moc_PrefWidgets.cpp"

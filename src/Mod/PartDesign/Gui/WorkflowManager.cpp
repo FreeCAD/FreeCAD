@@ -127,7 +127,7 @@ Workflow WorkflowManager::getWorkflowForDocument( App::Document *doc) {
     }
 }
 
-Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
+Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
     Workflow rv = getWorkflowForDocument (doc);
 
     if (rv != Workflow::Undetermined) {
@@ -138,14 +138,15 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
     // Guess the workflow again
     rv = guessWorkflow (doc);
     if (rv != Workflow::Modern) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(Gui::getMainWindow());
 
         if ( rv == Workflow::Legacy ) { // legacy messages
             msgBox.setText( QObject::tr( "The document \"%1\" you are editing was designed with an old version of "
                             "PartDesign workbench." ).arg( QString::fromStdString ( doc->getName()) ) );
             msgBox.setInformativeText (
                     QObject::tr( "Do you want to migrate in order to use modern PartDesign features?" ) );
-        } else { // The document is already in the middle of migration
+        }
+        else { // The document is already in the middle of migration
             msgBox.setText( QObject::tr( "The document \"%1\" seems to be either in the middle of"
                         " the migration process from legacy PartDesign or have a slightly broken structure."
                         ).arg( QString::fromStdString ( doc->getName()) ) );
@@ -153,7 +154,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
                     QObject::tr( "Do you want to make the migration automatically?" ) );
         }
         msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
-                    " the file with an old FreeCAD versions.\n"
+                    " the file with an older FreeCAD version.\n"
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
@@ -162,6 +163,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (
                 QObject::tr ( "Migrate manually" ), QMessageBox::YesRole );
+
         // If it is already a document in the middle of the migration the user shouldn't refuse to migrate
         if ( rv != Workflow::Undetermined ) {
             msgBox.addButton ( QMessageBox::No  );
@@ -187,7 +189,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
     return rv;
 }
 
-void WorkflowManager::forceWorkflow( const App::Document *doc, Workflow wf) {
+void WorkflowManager::forceWorkflow(const App::Document *doc, Workflow wf) {
     dwMap[ doc ] = wf;
 }
 

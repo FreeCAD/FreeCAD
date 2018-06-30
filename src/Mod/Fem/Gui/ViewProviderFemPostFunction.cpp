@@ -157,7 +157,7 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    //transfom us unrefed when it is replaced by the dragger
+    //transform is unref'd when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)

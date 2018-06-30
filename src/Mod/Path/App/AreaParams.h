@@ -23,7 +23,7 @@
 #ifndef PATH_AreaParams_H
 #define PATH_AreaParams_H
 
-// deifne this to enable offset algo selection
+// define this to enable offset algo selection
 // #define AREA_OFFSET_ALGO
 
 /** \file
@@ -172,7 +172,7 @@
         (OpenRound)(ClosedPolygon)(ClosedLine)(OpenSquare)(OpenButt),(ClipperLib::EndType,ClipperLib::et)))\
     ((double,miter_limit,MiterLimit,2.0,\
         "Miter limit for joint type Miter. See https://goo.gl/K8xX9h",App::PropertyFloat))\
-    ((double,round_precision,RoundPreceision,0.0,\
+    ((double,round_precision,RoundPrecision,0.0,\
         "Round joint precision. If =0, it defaults to Accuracy. \n"\
         "See https://goo.gl/4odfQh",App::PropertyPrecision))
 

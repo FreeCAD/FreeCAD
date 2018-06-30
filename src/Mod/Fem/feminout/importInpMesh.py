@@ -31,7 +31,6 @@ __date__ = "04/08/2016"
 
 import FreeCAD
 import os
-import string
 
 
 ########## generic FreeCAD import and export methods ##########
@@ -129,7 +128,7 @@ def read_inp(file_name):
         if (line[:5].upper() == "*NODE") and (model_definition is True):
             read_node = True
         elif read_node is True:
-            line_list = string.split(line, ',')
+            line_list = line.split(',')
             number = int(line_list[0])
             x = float(line_list[1])
             y = float(line_list[2])
@@ -184,7 +183,7 @@ def read_inp(file_name):
                 error_seg3 = True  # to print "not supported"
 
         elif elm_category != []:
-            line_list = string.split(line, ',')
+            line_list = line.split(',')
             if elm_2nd_line is False:
                 number = int(line_list[0])
                 elm_category[number] = []

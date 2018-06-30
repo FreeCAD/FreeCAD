@@ -126,38 +126,36 @@ void TaskSketchBasedParameters::exitSelectionMode()
     onSelectReference(false, false, false, false);
 }
 
-const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
+QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
 {
     if (text.isEmpty())
-        return QByteArray();
+        return QVariant();
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2)
         parts.push_back(QString::fromLatin1(""));
+
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (obj == NULL)
-        return QByteArray();
-
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    if (!activeBody)
-        return QByteArray();
+        return QVariant();
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
-        return QByteArray();
-    } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        if (!activeBody->hasObject(obj))
-            return QByteArray();
-        return QByteArray();
-    } else {
-        // We must expect that "text" is the translation of "Face" followed by an ID.
+        return QVariant();
+    }
+    else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        // it's up to the document to check that the datum plane is in the same body
+        return QVariant();
+    }
+    else {
+        // We must expect that "parts[1]" is the translation of "Face" followed by an ID.
         QString name;
         QTextStream str(&name);
         str << "^" << tr("Face") << "(\\d+)$";
         QRegExp rx(name);
-        if (text.indexOf(rx) < 0) {
-            return QByteArray();
+        if (parts[1].indexOf(rx) < 0) {
+            return QVariant();
         }
 
         int faceId = rx.cap(1).toInt();
@@ -173,11 +171,36 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     }
 }
 
+QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
+                                                      const QVariant& suggest) const
+{
+    // search for an object with the given label
+    App::Document* doc = this->vp->getObject()->getDocument();
+    // for faster access try the suggestion
+    if (suggest.isValid()) {
+        App::DocumentObject* obj = doc->getObject(suggest.toByteArray());
+        if (obj && QString::fromUtf8(obj->Label.getValue()) == label) {
+            return QVariant(QByteArray(obj->getNameInDocument()));
+        }
+    }
+
+    // go through all objects and check the labels
+    std::string name = label.toUtf8().data();
+    std::vector<App::DocumentObject*> objs = doc->getObjects();
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        if (name == (*it)->Label.getValue()) {
+            return QVariant(QByteArray((*it)->getNameInDocument()));
+        }
+    }
+
+    return QVariant(); // no such feature found
+}
+
 QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
 {
     QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
-    if (o == tr("No face selected"))
+    if (o.isEmpty())
         return QString();
     else
         return QString::fromLatin1("(App.activeDocument().") + o +
@@ -232,13 +255,13 @@ bool TaskDlgSketchBasedParameters::reject()
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
 
-    // rv should be true anyway but to be on the safe side dur to thurver changes better respect it.
+    // rv should be true anyway but to be on the safe side due to further changes better respect it.
     rv = TaskDlgFeatureParameters::reject();
 
     // if abort command deleted the object the sketch is visible again.
-    // The the previous one feature already should be made visiable
+    // The previous one feature already should be made visible
     if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
-        // Make the sketch visiable
+        // Make the sketch visible
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
     }

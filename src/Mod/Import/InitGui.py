@@ -68,5 +68,6 @@ class ImportWorkbench ( Workbench ):
 
 Gui.addWorkbench("Import",ImportWorkbench())
 """
-import Import_rc
-FreeCADGui.addPreferencePage(":/ui/preferences-import.ui","Import-Export")
+# See https://forum.freecadweb.org/viewtopic.php?f=3&t=26782
+#import Import_rc
+#FreeCADGui.addPreferencePage(":/ui/preferences-import.ui","Import-Export")

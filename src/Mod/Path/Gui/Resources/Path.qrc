@@ -119,5 +119,9 @@
         <file>translations/Path_gl.qm</file>
         <file>translations/Path_kab.qm</file>
         <file>translations/Path_ko.qm</file>
+        <file>translations/Path_fil.qm</file>
+        <file>translations/Path_id.qm</file>
+        <file>translations/Path_lt.qm</file>
+        <file>translations/Path_val-ES.qm</file>
     </qresource>
 </RCC>

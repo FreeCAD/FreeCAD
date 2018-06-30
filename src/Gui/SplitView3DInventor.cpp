@@ -450,7 +450,7 @@ AbstractSplitViewPy::~AbstractSplitViewPy()
 void AbstractSplitViewPy::testExistence()
 {
     if (!(_view && _view->getViewer(0)))
-        throw Py::Exception("Object already deleted");
+        throw Py::RuntimeError("Object already deleted");
 }
 
 Py::Object AbstractSplitViewPy::repr()
@@ -473,13 +473,13 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
         _view->onMsg("ViewFit", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
 }
@@ -494,13 +494,13 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
         _view->onMsg("ViewBottom", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -516,13 +516,13 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
         _view->onMsg("ViewFront", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -538,13 +538,13 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
         _view->onMsg("ViewLeft", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -560,13 +560,13 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
         _view->onMsg("ViewRear", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -582,13 +582,13 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
         _view->onMsg("ViewRight", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -604,13 +604,13 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
         _view->onMsg("ViewTop", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -626,13 +626,13 @@ Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
         _view->onMsg("ViewAxo", 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -652,13 +652,13 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
         return Py::Object(view->getPyObject());
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 

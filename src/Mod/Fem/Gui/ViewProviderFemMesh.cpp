@@ -507,12 +507,11 @@ PyObject * ViewProviderFemMesh::getPyObject()
 
 void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &NodeColorMap)
 {
-    long startId = NodeColorMap.begin()->first;
     long endId = (--NodeColorMap.end())->first;
 
-    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    std::vector<App::Color> colorVec(endId+1,App::Color(0,1,0));
     for(std::map<long,App::Color>::const_iterator it=NodeColorMap.begin();it!=NodeColorMap.end();++it)
-        colorVec[it->first-startId] = it->second;
+        colorVec[it->first] = it->second;
 
     setColorByNodeIdHelper(colorVec);
 
@@ -520,14 +519,12 @@ void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &Node
 void ViewProviderFemMesh::setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color> &NodeColors)
 {
 
-    long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));
-    long endId   = *(std::max_element(NodeIds.begin(), NodeIds.end()));
+    long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
 
-    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    std::vector<App::Color> colorVec(endId+1,App::Color(0,1,0));
     long i=0;
     for(std::vector<long>::const_iterator it=NodeIds.begin();it!=NodeIds.end();++it,i++)
-        colorVec[*it-startId] = NodeColors[i];
-
+        colorVec[*it] = NodeColors[i];
 
     setColorByNodeIdHelper(colorVec);
 
@@ -545,8 +542,7 @@ void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color> &
     for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
             ;it!=vNodeElementIdx.end()
             ;++it,i++)
-       colors[i] = SbColor(colorVec[*it-1].r,colorVec[*it-1].g,colorVec[*it-1].b);
-
+       colors[i] = SbColor(colorVec[*it].r,colorVec[*it].g,colorVec[*it].b);
 
     pcShapeMaterial->diffuseColor.finishEditing();
 }
@@ -1101,7 +1097,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     vFaceElementIdx.resize(triangleCount);
     int index=0,indexIdx=0;
     int32_t* indices = faces->coordIndex.startEditing();
-    // iterate all not hided element faces, always assure CLOCKWISE triangle ordering to allow backface culling
+    // iterate all non-hidden element faces, always assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
         if(! facesHelper[l].hide){
             switch( facesHelper[l].Element->NbNodes()){
@@ -1124,7 +1120,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap, nIdx0, nIdx1);
                             insEdgeVec(EdgeMap, nIdx1, nIdx2);
                             insEdgeVec(EdgeMap, nIdx2, nIdx0);
-                            // rember the element and face number for that triangle
+                            // remember the element and face number for that triangle
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
                         default: assert(0);
@@ -1150,7 +1146,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             // add the two edge segments for that triangle
                             insEdgeVec(EdgeMap, nIdx0, nIdx1);
                             insEdgeVec(EdgeMap, nIdx1, nIdx2);
-                            // rember the element and face number for that triangle
+                            // remember the element and face number for that triangle
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 2 ----------------------------------------------
                             indices[index++] = nIdx2;
@@ -1317,7 +1313,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             // add the two edge segments for that triangle
                             insEdgeVec(EdgeMap, nIdx5, nIdx0);
                             insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                            // rember the element and face number for that triangle
+                            // remember the element and face number for that triangle
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 2 ----------------------------------------------
                             indices[index++] = nIdx1;
@@ -1455,7 +1451,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             // add the two edge segments for that triangle
                             insEdgeVec(EdgeMap, nIdx7, nIdx0);
                             insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                            // rember the element and face number for that triangle
+                            // remember the element and face number for that triangle
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 2 ----------------------------------------------
                             indices[index++] = nIdx1;

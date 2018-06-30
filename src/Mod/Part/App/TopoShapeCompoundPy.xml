@@ -21,7 +21,10 @@
     </Methode>
     <Methode Name="connectEdgesToWires" Const="true">
       <Documentation>
-        <UserDocu>Build a compound of wires out of the edges of this compound.</UserDocu>
+        <UserDocu>Build a compound of wires out of the edges of this compound.
+myCompound.connectEdgesToWires( Shared = True, Tolerance = 1e-7)
+If Shared is True  connection is performed only when adjacent edges share the same vertex.
+If Shared is False connection is performed only when ends of adjacent edges are at distance less than Tolerance.</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

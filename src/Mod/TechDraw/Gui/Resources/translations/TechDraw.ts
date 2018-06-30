@@ -1652,7 +1652,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../DlgTemplateField.ui" line="45"/>
-        <source>Text Name: </source>
+        <source>Text Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

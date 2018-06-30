@@ -1,6 +1,8 @@
 <RCC>
     <qresource> 
         <file>icons/image-import.svg</file>
+        <file>icons/image-import-to-plane.svg</file>
+        <file>icons/image-scale.svg</file>
         <file>icons/ImageWorkbench.svg</file>
         <file>translations/Image_af.qm</file>
         <file>translations/Image_de.qm</file>
@@ -33,5 +35,9 @@
         <file>translations/Image_gl.qm</file>
         <file>translations/Image_kab.qm</file>
         <file>translations/Image_ko.qm</file>
+        <file>translations/Image_fil.qm</file>
+        <file>translations/Image_id.qm</file>
+        <file>translations/Image_lt.qm</file>
+        <file>translations/Image_val-ES.qm</file>
     </qresource>
 </RCC> 

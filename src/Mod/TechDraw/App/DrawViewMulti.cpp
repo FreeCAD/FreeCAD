@@ -80,7 +80,7 @@ DrawViewMulti::DrawViewMulti()
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Sources ,(0),group,App::Prop_None,"3D Shapes to view");
-
+    Sources.setScope(App::LinkScope::Global);
     //Source is replaced by Sources in Multi
     Source.setStatus(App::Property::ReadOnly,true);
     Source.setStatus(App::Property::Hidden,true);
@@ -117,40 +117,6 @@ void DrawViewMulti::onChanged(const App::Property* prop)
     }
 
     DrawViewPart::onChanged(prop);
-}
-
-TopoDS_Shape DrawViewMulti::getSourceShape(void) const
-{
-    TopoDS_Shape result;
-    const std::vector<App::DocumentObject*>& links = Sources.getValues();
-    if (links.empty())  {
-        Base::Console().Log("DVM::execute - No Sources - creation? - %s\n",getNameInDocument());
-    } else {
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-        for (auto& l:links) {
-            if (l->isDerivedFrom(Part::Feature::getClassTypeId())){
-                const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
-                if (partTopo.isNull()) {
-                    continue;    //has no shape
-                }
-                BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
-                TopoDS_Shape shape = BuilderCopy.Shape();
-                builder.Add(comp, shape);
-            } else if (l->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-                TopoDS_Shape s = getShapeFromPart(static_cast<App::Part*>(l));
-                if (s.IsNull()) {
-                    continue;
-                }
-                BRepBuilderAPI_Copy BuilderCopy(s);
-                TopoDS_Shape shape = BuilderCopy.Shape();
-                builder.Add(comp, shape);
-            }
-        }        
-        result = comp;
-    }
-    return result;
 }
 
 App::DocumentObjectExecReturn *DrawViewMulti::execute(void)

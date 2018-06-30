@@ -271,6 +271,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL, NULL
     };
     PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
+    _PyImport_FixupBuiltin(pBaseModule, "__FreeCADBase__");
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
@@ -1014,7 +1015,7 @@ void Application::destruct(void)
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
 
-    // not initialized or doubel destruct!
+    // not initialized or double destruct!
     assert(_pcSingleton);
     delete _pcSingleton;
 
@@ -1159,7 +1160,7 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
    //{
    //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Devision by zero!");
+   //       throw Base::DivisionByZeroError("Division by zero!");
    //    break;
    //}
 
@@ -1417,7 +1418,7 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
 
-    // Parse the options which have impact to the init process
+    // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
 
     // Init console ===========================================================
@@ -1618,7 +1619,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
-                else {
+                else if (file.exists()) {
                     Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
@@ -1641,11 +1642,20 @@ void Application::processCmdLineFiles(void)
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
-    processFiles(files);
+    std::list<std::string> processed = processFiles(files);
 
     if (files.empty()) {
         if (mConfig["RunMode"] == "Exit")
             mConfig["RunMode"] = "Cmd";
+    }
+    else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
+        // In case we are in console mode and the argument is not a file but Python code
+        // then execute it. This is to behave like the standard Python executable.
+        Base::FileInfo file(files.front());
+        if (!file.exists()) {
+            Interpreter().runString(files.front().c_str());
+            mConfig["RunMode"] = "Exit";
+        }
     }
 
     const std::map<std::string,std::string>& cfg = Application::Config();
@@ -2384,7 +2394,7 @@ std::string Application::FindHomePath(const char* sCall)
 #endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::FileSystemError("Cannot determine the absolute path of the executable");
-        resolved[nchars] = '\0'; // enfore null termination
+        resolved[nchars] = '\0'; // enforce null termination
         absPath = resolved;
     }
 

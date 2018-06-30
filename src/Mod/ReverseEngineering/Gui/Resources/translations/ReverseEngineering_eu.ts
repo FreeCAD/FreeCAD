@@ -28,15 +28,23 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>B-spline azalera hurbildua...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Hurbildu B-spline azalera batera</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>B-Spline azalera hurbildua...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
-      <translation type="unfinished">Approximate surface...</translation>
+      <translation>Azalera hurbildua...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Hurbildu B-Spline azalera batera</translation>
     </message>
@@ -79,15 +87,19 @@
     </message>
     <message>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Bistaren triangelaketa</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
       <translation>Doitu B-Spline azalera</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>Doitu B-spline azalera</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -114,7 +126,7 @@
     <message>
       <location line="+67"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Ezarpenak</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -172,7 +184,7 @@
     <message>
       <location line="+28"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -205,7 +217,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>

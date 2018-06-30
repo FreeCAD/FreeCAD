@@ -60,7 +60,7 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation>Jatorriaren bistaratze-tamaina</translation>
+      <translation>Jatorriaren bistaratutako tamaina</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posizioa</translation>
     </message>
     <message>
       <source>Base</source>
@@ -106,7 +106,7 @@
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Neurketa ezabatu</translation>
+      <translation>Garbitu neurketa</translation>
     </message>
   </context>
   <context>
@@ -117,7 +117,7 @@
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Neurketa gaitu/desgaitu</translation>
+      <translation>Txandakatu neurketa</translation>
     </message>
   </context>
   <context>
@@ -125,10 +125,6 @@
     <message>
       <source>Spaceball Motion</source>
       <translation>Spaceball mugimendua</translation>
-    </message>
-    <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sentsibilitate globala:  </translation>
     </message>
     <message>
       <source>Dominant Mode</source>
@@ -140,11 +136,11 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Traslazioak gaitu</translation>
+      <translation>Gaitu traslazioak</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
-      <translation>Biraketak gaitu</translation>
+      <translation>Gaitu biraketak</translation>
     </message>
     <message>
       <source>Calibrate</source>
@@ -162,12 +158,16 @@
       <source>Reverse</source>
       <translation>Alderantzizkatu</translation>
     </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sentikortasun globala:</translation>
+    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
     <message>
       <source>Formula editor</source>
-      <translation>Formula editorea</translation>
+      <translation>Formula-editorea</translation>
     </message>
     <message>
       <source>Result:</source>
@@ -194,7 +194,7 @@
     </message>
     <message>
       <source>Filename</source>
-      <translation>Fitxategiaren izena</translation>
+      <translation>Fitxategi-izena</translation>
     </message>
   </context>
   <context>
@@ -212,7 +212,7 @@
     </message>
     <message>
       <source>Selected:</source>
-      <translation>Aukeratuta:</translation>
+      <translation>Hautatua:</translation>
     </message>
     <message>
       <source>Add</source>
@@ -246,7 +246,7 @@
     <name>Gui::Assistant</name>
     <message>
       <source>%1 Help</source>
-      <translation>%1 Laguntza</translation>
+      <translation>%1 laguntza</translation>
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
@@ -336,7 +336,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Rename object</source>
-      <translation>Berrizendatu objektua</translation>
+      <translation>Aldatu objektuaren izena</translation>
     </message>
     <message>
       <source>Finish editing</source>
@@ -371,11 +371,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Release date</source>
-      <translation>Bertsio-data</translation>
+      <translation>Argitaratze-data</translation>
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Kopiatu Arbelean</translation>
+      <translation>Kopiatu arbelean</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -399,6 +399,21 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Liburutegiak</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Software honek kode irekiko osagaiak darabiltza, eta horien copyright-a eta beste jabetza-eskubide batzuk beren jabearenak dira:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Lizentzia</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -413,11 +428,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation>Mozketa</translation>
+      <translation>Ebaketa</translation>
     </message>
     <message>
       <source>Clipping X</source>
-      <translation>X mozketa</translation>
+      <translation>X ebaketa</translation>
     </message>
     <message>
       <source>Flip</source>
@@ -429,15 +444,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Clipping Y</source>
-      <translation>Y mozketa</translation>
+      <translation>Y ebaketa</translation>
     </message>
     <message>
       <source>Clipping Z</source>
-      <translation>Z mozketa</translation>
+      <translation>Z ebaketa</translation>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation>Norabide pertsonalizatuan mozketa</translation>
+      <translation>Norabide pertsonalizatuko ebaketa</translation>
     </message>
     <message>
       <source>View</source>
@@ -617,7 +632,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>What's this:</source>
-      <translation>Zer da:</translation>
+      <translation>Zer da hau:</translation>
     </message>
     <message>
       <source>Status text:</source>
@@ -625,7 +640,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Tresna-punta:</translation>
+      <translation>Iradokizuna:</translation>
     </message>
     <message>
       <source>Menu text:</source>
@@ -664,11 +679,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Macro not found</source>
-      <translation>Ez dugu makroa aurkitu</translation>
+      <translation>Ez da makroa aurkitu</translation>
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>Barkatu, ezin dugu %1 makro-fitxategia aurkitu.</translation>
+      <translation>Barkatu, ez da '%1' makro-fitxategia aurkitu.</translation>
     </message>
     <message>
       <source>Empty macro</source>
@@ -688,11 +703,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>No item selected</source>
-      <translation>Elementurik hautatu gabe</translation>
+      <translation>Ez da elementurik hautatu</translation>
     </message>
     <message>
       <source>Please select a macro item first.</source>
-      <translation>Mesedez, zehaztu makro-elementua lehenik.</translation>
+      <translation>Mesedez, hautatu makro-elementua lehenik.</translation>
     </message>
   </context>
   <context>
@@ -737,7 +752,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>C&amp;ommands:</source>
-      <translation>&amp;Komandoak:</translation>
+      <translation>K&amp;omandoak:</translation>
     </message>
     <message>
       <source>Current shortcut:</source>
@@ -745,7 +760,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>Sakatu &amp;berria lasterbidea:</translation>
+      <translation>Sakatu lasterbide &amp;berria:</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
@@ -769,7 +784,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>&amp;Berrezarri guztia</translation>
+      <translation>Be&amp;rrezarri guztia</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -872,7 +887,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Rename...</source>
-      <translation>Izena aldatu...</translation>
+      <translation>Aldatu izena...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -1000,7 +1015,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Viewing mode</source>
-      <translation>Ikusteko modua</translation>
+      <translation>Bistaratze modua</translation>
     </message>
     <message>
       <source>Plot mode:</source>
@@ -1047,7 +1062,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Bronze</source>
-      <translation>Brontze</translation>
+      <translation>Brontzea</translation>
     </message>
     <message>
       <source>Copper</source>
@@ -1119,7 +1134,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Stone</source>
-      <translation>harria</translation>
+      <translation>Harria</translation>
     </message>
   </context>
   <context>
@@ -1146,7 +1161,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Insert spaces</source>
-      <translation>Txertatu espazioak</translation>
+      <translation>Txertatu zuriuneak</translation>
     </message>
     <message>
       <source>Tab size:</source>
@@ -1158,7 +1173,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Tabulazioak mantendu</translation>
+      <translation>Mantendu tabulazioak</translation>
     </message>
     <message>
       <source>Display Items</source>
@@ -1170,7 +1185,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Size:</source>
-      <translation>Neurria:</translation>
+      <translation>Tamaina:</translation>
     </message>
     <message>
       <source>Preview:</source>
@@ -1344,11 +1359,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Macro file</source>
-      <translation>Makro fitxategia</translation>
+      <translation>Makro-fitxategia</translation>
     </message>
     <message>
       <source>Enter a file name, please:</source>
-      <translation>Idatzi fitxategi izena, mesedez:</translation>
+      <translation>Sartu fitxategi-izena, mesedez:</translation>
     </message>
     <message>
       <source>Existing file</source>
@@ -1382,27 +1397,27 @@ Fitxategi hau lehendik badago.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Makro-fitxategiaren izena aldatzen</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Sartu izen berria:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ badago lehendik.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Izena aldatzeak huts egin du</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Ezin izan da '%1' izenez aldatu.
+Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
   </context>
   <context>
@@ -1444,7 +1459,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>Lehenik zehaztu non gorde.</translation>
+      <translation>Lehenengo, zehaztu non gorde.</translation>
     </message>
     <message>
       <source>Existing macro</source>
@@ -1452,26 +1467,26 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>'%1' makroa lehendik badago. Gainidatzi nahi duzu?</translation>
+      <translation>'%1' makroa badago lehendik. Gainidatzi nahi duzu?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Makro direktorioa ez da existitzen. Mesedez, aukeratu beste bat.</translation>
+      <translation>Makro-direktorioa ez da existitzen. Aukeratu beste bat.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Aukeratu makro direktorioa</translation>
+      <translation>Aukeratu makro-direktorioa</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>Ez duzu baimenik direktorio honetan. Mesedez, aukeratu beste bat.</translation>
+      <translation>Ez duzu baimenik direktorio honetan idazteko. Aukeratu beste bat.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
       <source>Material properties</source>
-      <translation>Materialan ezaugarriak</translation>
+      <translation>Materialaren ezaugarriak</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1639,7 +1654,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>&amp;Iruzkina:</translation>
+      <translation>I&amp;ruzkina:</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -1651,7 +1666,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>&amp;Nork sortuta:</translation>
+      <translation>&amp;Nork sortua:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
@@ -1659,11 +1674,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>Azkeneko &amp;aldaketaren data:</translation>
+      <translation>A&amp;zken aldaketaren data:</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>Kreazio &amp;data:</translation>
+      <translation>Sorrera-&amp;data:</translation>
     </message>
     <message>
       <source/>
@@ -1671,11 +1686,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>UUID:</source>
-      <translation>UUID:</translation>
+      <translation>UUIDa:</translation>
     </message>
     <message>
       <source>License information:</source>
-      <translation>Lizentzia informazioa:</translation>
+      <translation>Lizentzia-informazioa:</translation>
     </message>
     <message>
       <source>License URL</source>
@@ -1683,7 +1698,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Open in browser</source>
-      <translation>Ireki arakatzailean</translation>
+      <translation>Ireki nabigatzailean</translation>
     </message>
   </context>
   <context>
@@ -1718,7 +1733,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Kargatu proiektuaren fitxategia sortu ondoren</translation>
+      <translation>Kargatu proiektuaren fitxategia hura sortu ondoren</translation>
     </message>
     <message>
       <source>Empty source</source>
@@ -1726,7 +1741,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>Iturburua definitu gabea.</translation>
+      <translation>Ez da iturbururik definitu.</translation>
     </message>
     <message>
       <source>Empty destination</source>
@@ -1734,7 +1749,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>Helburua definitu gabea.</translation>
+      <translation>Ez da helbururik definitu.</translation>
     </message>
     <message>
       <source>Project file</source>
@@ -1757,7 +1772,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Please select an object from the list</source>
-      <translation>Aukeratu objektu bat listatik</translation>
+      <translation>Aukeratu objektu bat zerrendatik</translation>
     </message>
     <message>
       <source>Search</source>
@@ -1784,11 +1799,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Grabatu erregistro-mezuak</translation>
+      <translation>Grabatu egunkari-mezuak</translation>
     </message>
     <message>
       <source>Record warnings</source>
-      <translation>Grabatu oharrak</translation>
+      <translation>Grabatu abisuak</translation>
     </message>
     <message>
       <source>Record error messages</source>
@@ -1804,11 +1819,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Erregistro-mezuak:</translation>
+      <translation>Egunkari-mezuak:</translation>
     </message>
     <message>
       <source>Warnings:</source>
-      <translation>Oharrak:</translation>
+      <translation>Abisuak:</translation>
     </message>
     <message>
       <source>Errors:</source>
@@ -1843,7 +1858,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
-      <translation>Aurreratua&gt;&gt;</translation>
+      <translation>Aurreratua &gt;&gt;</translation>
     </message>
     <message>
       <source>...</source>
@@ -1942,11 +1957,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Zoom urratsa</translation>
+      <translation>Zoom-urratsa</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
-      <translation>Anti-Aliasing-a</translation>
+      <translation>Antialiasing-a</translation>
     </message>
     <message>
       <source>None</source>
@@ -1954,7 +1969,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Line Smoothing</source>
-      <translation>Lerro leuntzea</translation>
+      <translation>Lerroaren leuntzea</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
@@ -1970,11 +1985,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Errendatze ortogonala</translation>
+      <translation>Errendatze or&amp;tografikoa</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Perspektiba errendatzea</translation>
+      <translation>&amp;Perspektiba errendatzea</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
@@ -2135,8 +2150,8 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Gorde miniatura proiektu-fitxategian, dokumentua gordetzean</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Sortu babeskopia-fitxategiak dokumentua berriro gordetzean</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Dokumentua gordetzean mantenduko den babeskopia-fitxategien kopuru maximoa</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2248,7 +2263,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Erabiltzaileak lizentziari buruzko informazio gehiago aurki dezakeen URL bat</translation>
     </message>
   </context>
   <context>
@@ -2275,7 +2290,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Block comment</source>
-      <translation>Bloke iruzkina</translation>
+      <translation>Bloke-iruzkina</translation>
     </message>
     <message>
       <source>Number</source>
@@ -2658,7 +2673,7 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Aukeratu erradioa (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Area lausoa ezartzen du 3D bistan elementuak aukeratzeko. Balio handiagoarekin errazagoa da elementuak aukeratzea, baina zenbait elementu txiki hautatzea ezinezko bihurtuko du.</translation>
     </message>
   </context>
@@ -2673,7 +2688,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <source>Units calculator</source>
-      <translation>Unitate kalkulagailua</translation>
+      <translation>Unitate-kalkulagailua</translation>
     </message>
     <message>
       <source>as:</source>
@@ -2771,7 +2786,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Gehitu den gaitutako lan-mahaiei</translation>
+      <translation>Gehitu dena gaitutako lan-mahaiei</translation>
     </message>
   </context>
   <context>
@@ -3208,7 +3223,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Aplikatu</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -3323,7 +3338,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformatu</translation>
     </message>
   </context>
   <context>
@@ -3346,10 +3361,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Ikuspegi konbinatua</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Proiektua</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3786,7 +3797,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Norabidea:</translation>
     </message>
   </context>
   <context>
@@ -4029,7 +4040,7 @@ Nola jarraitu nahi duzu?</translation>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Aldatu estekatutako objektuak</translation>
     </message>
   </context>
   <context>
@@ -4283,7 +4294,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::TaskBoxPosition</name>
     <message>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posizioa</translation>
     </message>
   </context>
   <context>
@@ -4332,7 +4343,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
   </context>
   <context>
@@ -4430,7 +4441,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Rename object</source>
-      <translation>Berrizendatu objektua</translation>
+      <translation>Aldatu objektuaren izena</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
@@ -4565,55 +4576,55 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation type="unfinished">0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation type="unfinished">0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
-      <translation type="unfinished">1 mm</translation>
+      <translation>1 mm</translation>
     </message>
     <message>
       <source>2 mm</source>
-      <translation type="unfinished">2 mm</translation>
+      <translation>2 mm</translation>
     </message>
     <message>
       <source>5 mm</source>
-      <translation type="unfinished">5 mm</translation>
+      <translation>5 mm</translation>
     </message>
     <message>
       <source>10 mm</source>
-      <translation type="unfinished">10 mm</translation>
+      <translation>10 mm</translation>
     </message>
     <message>
       <source>20 mm</source>
-      <translation type="unfinished">20 mm</translation>
+      <translation>20 mm</translation>
     </message>
     <message>
       <source>50 mm</source>
-      <translation type="unfinished">50 mm</translation>
+      <translation>50 mm</translation>
     </message>
     <message>
       <source>100 mm</source>
-      <translation type="unfinished">100 mm</translation>
+      <translation>100 mm</translation>
     </message>
     <message>
       <source>200 mm</source>
-      <translation type="unfinished">200 mm</translation>
+      <translation>200 mm</translation>
     </message>
     <message>
       <source>500 mm</source>
-      <translation type="unfinished">500 mm</translation>
+      <translation>500 mm</translation>
     </message>
     <message>
       <source>1 m</source>
-      <translation type="unfinished">1 m</translation>
+      <translation>1 m</translation>
     </message>
     <message>
       <source>2 m</source>
-      <translation type="unfinished">2 m</translation>
+      <translation>2 m</translation>
     </message>
     <message>
       <source>5 m </source>
@@ -4990,11 +5001,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformatu</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation type="unfinished">Do you want to close this dialog?</translation>
+      <translation>Elkarrizketa-koadro hau itxi nahi duzu?</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
@@ -5051,6 +5062,10 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 ez dago hutsik, bere edukiak ere ezabatu nahi dituzu?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Esportazioak huts egin du</translation>
     </message>
   </context>
   <context>
@@ -5259,7 +5274,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Ebaki</translation>
+      <translation>Mo&amp;ztu</translation>
     </message>
     <message>
       <source>Cut out</source>
@@ -5609,11 +5624,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Sortu taldea</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Sortu talde berria objektuak ordenatzeko</translation>
     </message>
   </context>
   <context>
@@ -6285,11 +6300,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Mozte-planoa</translation>
+      <translation>Ebaketa-planoa</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Bista aktiboaren mozte-planoa txandakatzen du</translation>
+      <translation>Bista aktiboaren ebaketa-planoa txandakatzen du</translation>
     </message>
   </context>
   <context>
@@ -6390,7 +6405,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Transformatu</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -6498,7 +6513,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Sortu bista berria</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
+      <source>Creates a new view window for the active document</source>
       <translation>Bista-leiho berria sortzen du dokumentu aktiborako</translation>
     </message>
   </context>
@@ -6855,7 +6870,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Bistaratu leiho nagusia pantaila osoan</translation>
     </message>
   </context>
   <context>

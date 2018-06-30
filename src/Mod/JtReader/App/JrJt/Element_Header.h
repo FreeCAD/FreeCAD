@@ -51,12 +51,12 @@ struct Element_Header
 		// only zip less implemented so far...
 		assert(zLib == false);
 
-		Element_Lenght.read(cont);
+		Element_Length.read(cont);
 		Object_Type_ID.read(cont);
 		Object_Base_Type.read(cont);
 	};
 
-	I32  Element_Lenght;
+	I32  Element_Length;
 	GUID Object_Type_ID;
 	UChar Object_Base_Type;
 

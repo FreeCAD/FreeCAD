@@ -95,7 +95,7 @@ public:
     /// gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// (shown by the green pixmap), returns false if the input is a unparsable string or has a wrong unit
     /// (shown by the red pixmap in the gui)
-    bool hasValidInput() { return validInput;};
+    bool hasValidInput() { return validInput;}
 
     /** sets the Unit this field is working with. 
      *  After setting the Unit the field will only accept
@@ -189,6 +189,7 @@ protected Q_SLOTS:
 protected:
     virtual void showEvent(QShowEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
+    virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void wheelEvent(QWheelEvent * event);
     virtual void contextMenuEvent(QContextMenuEvent * event);
@@ -210,7 +211,6 @@ private:
     Base::Quantity actQuantity;
     Base::Unit     actUnit;
     double         actUnitValue;
-    QString        actUnitStr;
 
     double Maximum;
     double Minimum;

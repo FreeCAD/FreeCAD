@@ -25,39 +25,64 @@ import TechDraw
 import time
 App = FreeCAD
 
+from TDTest.DHatchTest         import DHatchTest
+from TDTest.DProjGroupTest     import DProjGroupTest
+from TDTest.DVAnnoSymImageTest import DVAnnoSymImageTest
+from TDTest.DVDimensionTest    import DVDimensionTest
+from TDTest.DVPartTest         import DVPartTest
+from TDTest.DVSectionTest      import DVSectionTest
+
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD TechDraw module
 #---------------------------------------------------------------------------
 
 
 class TechDrawTestCases(unittest.TestCase):
-    def setUp(self):
-        self.Doc = FreeCAD.newDocument("TechDrawTest")
+    def testViewPartCase(self):
+        print("starting TD DrawViewPart test")
+        rc = DVPartTest()
+        if rc:
+            print("TD DrawViewPart test passed")
+        else:
+            print("TD DrawViewPart test failed")
 
-    def testPageCase(self):
-        self.templateFileSpec = App.getResourceDir() + 'Mod/TechDraw/Templates/A4_LandscapeTD.svg'
-        self.Box = self.Doc.addObject("Part::Box","Box")
-        self.Page = self.Doc.addObject('TechDraw::DrawPage','Page')
-        self.Template = self.Doc.addObject('TechDraw::DrawSVGTemplate','Template')
-        self.Template.Template = self.templateFileSpec
-        self.Page.Template = self.Template
-        self.View = self.Doc.addObject('TechDraw::DrawViewPart','View')
-        rc = self.Page.addView(self.View)
-        self.View.Source = self.Box
-        self.Anno = self.Doc.addObject('TechDraw::DrawViewAnnotation','TestAnno')
-        rc = self.Page.addView(self.Anno)
-        self.Sect = self.Doc.addObject('TechDraw::DrawViewSection','Section')
-        self.Sect.Source = self.Box
-        self.Sect.Direction = FreeCAD.Vector(-1.0,0.0,0.0)
-        self.Sect.BaseView = self.View
-        self.Sect.SectionDirection = "Right"
-        self.Sect.SectionOrigin = FreeCAD.Vector(1.0,1.0,1.0)
-        self.Sect.SectionNormal = FreeCAD.Vector(-1.0,0.0,0.0)
-        rc = self.Page.addView(self.Sect)
-        self.Doc.recompute()
-        self.failUnless(len(self.Page.Views) == 3)
+    def testHatchCase(self):
+        print("starting TD DrawHatch test")
+        rc = DHatchTest()
+        if rc:
+            print("TD DrawHatch test passed")
+        else:
+            print("TD DrawHatch test failed")
 
-    def tearDown(self):
-        #closing doc
-        FreeCAD.closeDocument("TechDrawTest")
-        #print ("omit closing document for debugging")
+    def testAnnoSymImageCase(self):
+        print("starting TD DrawAnno/Sym/Image test")
+        rc = DVAnnoSymImageTest()
+        if rc:
+            print("TD DrawAnno/Sym/Image test passed")
+        else:
+            print("TD DrawAnno/Sym/Image test failed")
+
+    def testProjGroupCase(self):
+        print("starting TD DrawProjGroup test")
+        rc = DProjGroupTest()
+        if rc:
+            print("TD DrawProjGroup test passed")
+        else:
+            print("TD DrawProjGroup test failed")
+
+    def testDimensionCase(self):
+        print("starting TD DrawViewDimension test")
+        rc = DVDimensionTest()
+        if rc:
+            print("TD DrawViewDimension test passed")
+        else:
+            print("TD DrawViewDimension test failed")
+
+    def testSectionCase(self):
+        print("starting TD DrawViewSection test")
+        rc = DVSectionTest()
+        if rc:
+            print("TD DrawViewSection test passed")
+        else:
+            print("TD DrawViewSection test failed")
+

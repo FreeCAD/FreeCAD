@@ -191,8 +191,13 @@ BuildingTypes = ['Undefined',
 
 
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
+
     '''makeBuilding(objectslist): creates a building including the
     objects from the given list.'''
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Building(obj)
     if FreeCAD.GuiUp:
@@ -202,18 +207,24 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     obj.Label = translate("Arch",name)
     return obj
 
+
 class _CommandBuilding:
+
     "the Arch Building command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Building',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Building","Building"),
                 'Accel': "B, U",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Building","Creates a building object including selected objects.")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         link = p.GetBool("FreeLinking",False)
@@ -229,13 +240,13 @@ class _CommandBuilding:
                     warning = True
         if warning :
             message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
-Building object are not allowed to accept Site and Building object.\n\
+Building object is not allowed to accept Site and Building object.\n\
 Site and Building objects will be removed from the selection.\n\
-You can change that in the preferences.\n" )
+You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(buildingobj) == 0:
             message = translate( "Arch" , "There is no valid object in the selection.\n\
-Building creation aborted.\n" )
+Building creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
@@ -250,23 +261,46 @@ Building creation aborted.\n" )
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
+
 class _Building(ArchFloor._Floor):
+
     "The Building object"
+
     def __init__(self,obj):
+
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
-        self.Type = "Building"
+        self.setProperties(obj)
+        obj.IfcRole = "Building"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "BuildingType" in pl:
+            obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
+            obj.BuildingType = BuildingTypes
         obj.setEditorMode('Height',2)
-        obj.BuildingType = BuildingTypes
+        self.Type = "Building"
+
+    def onDocumentRestored(self,obj):
+
+        ArchFloor._Floor.onDocumentRestored(self,obj)
+        self.setProperties(obj)
+
 
 class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
+
     "A View Provider for the Building object"
+
     def __init__(self,vobj):
+
         ArchFloor._ViewProviderFloor.__init__(self,vobj)
 
     def getIcon(self):
+
         import Arch_rc
         return ":/icons/Arch_Building_Tree.svg"
 
+
 if FreeCAD.GuiUp:
+
     FreeCADGui.addCommand('Arch_Building',_CommandBuilding())

@@ -87,7 +87,10 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
         number_of_increments = len(m['Results'])
         for result_set in m['Results']:
-            eigenmode_number = result_set['number']
+            if 'number' in result_set:
+                eigenmode_number = result_set['number']
+            else:
+                eigenmode_number = 0
             step_time = result_set['time']
             step_time = round(step_time, 2)
             if eigenmode_number > 0:
@@ -152,43 +155,51 @@ def readResult(frd_input):
     mode_massflow = {}
     mode_networkpressure = {}
 
-    mode_disp_found = False
     nodes_found = False
+    elements_found = False
+    mode_time_found = False
+    mode_disp_found = False
     mode_stress_found = False
     mode_strain_found = False
     mode_peeq_found = False
     mode_temp_found = False
     mode_massflow_found = False
     mode_networkpressure_found = False
-    mode_time_found = False
-    elements_found = False
+    end_of_section_found = False
+    end_of_frd_data_found = False
     input_continues = False
+    mode_eigen_changed = False
+    mode_time_changed = False
+
     eigenmode = 0
+    eigentemp = 0
     elem = -1
     elemType = 0
     timestep = 0
     timetemp = 0
 
     for line in frd_file:
+
         # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
-        # first lets extract the node and coordinate information from the results file
         if nodes_found and (line[1:3] == "-1"):
+            # we found a nodes line, lets extract the node and coordinate data
             elem = int(line[4:13])
             nodes_x = float(line[13:25])
             nodes_y = float(line[25:37])
             nodes_z = float(line[37:49])
             nodes[elem] = FreeCAD.Vector(nodes_x, nodes_y, nodes_z)
-        # Check if we found nodes section
+
+        # Check if we found elements section
         if line[4:6] == "3C":
             elements_found = True
-        # first lets extract element number
         if elements_found and (line[1:3] == "-1"):
+            # we found a first element line, lets extract element number
             elem = int(line[4:13])
             elemType = int(line[14:18])
-        # then import elements
         if elements_found and (line[1:3] == "-2"):
+            # we found a second element line, lets extract the elements
             # node order fits with node order in writeAbaqus() in FemMesh.cpp
             if elemType == 1:
                 # C3D8 CalculiX --> hexa8 FreeCAD
@@ -249,7 +260,7 @@ def readResult(frd_input):
                 nd20 = int(line[93:103])
                 input_continues = False
                 # CalculiX uses a different node order in input file *.inp and result file *.frd for hexa20 (C3D20)
-                # according to Guido (the developer of ccx)
+                # according to Guido (the developer of ccx), see note in in first line of cgx manuel part element types
                 # ccx (and thus the *.inp) follows the ABAQUS convention (documented in the ccx-documentation)
                 # cgx (and thus the *.frd) follows the FAM2 convention (documented in the cgx-documentation)
                 # FAM32 is from the company FEGS limited, maybe this company does not exist any more)
@@ -284,7 +295,7 @@ def readResult(frd_input):
                 nd14 = int(line[33:43])
                 nd15 = int(line[43:53])
                 input_continues = False
-                # CalculiX uses a different node order in input file *.inp and result file *.frd for penta15 (C3D15)
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for penta15 (C3D15), see notes at hexa20
                 # elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
                 #                           nd9, nd7, nd14, nd15, nd13)  # order of the *.inp file
                 elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd14, nd15, nd13, nd8,
@@ -349,10 +360,11 @@ def readResult(frd_input):
             elif elemType == 12:
                 # B32 CalculiX --> seg3 FreeCAD
                 # Also D element element number
-                # N1, N3 ,N2 Order in outpufile is 1,3,2
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for seg3 (B32), see notes at hexa20
+                # N1, N2 ,N3
                 nd1 = int(line[3:13])
-                nd3 = int(line[13:23])
-                nd2 = int(line[23:33])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
                 if inout_nodes:
                     for i in range(len(inout_nodes)):
                         if nd1 == int(inout_nodes[i][1]):
@@ -362,23 +374,39 @@ def readResult(frd_input):
                 else:
                     elements_seg3[elem] = (nd1, nd2, nd3)  # normal node numbering for D, B32 elements
 
-        # Check if we found new eigenmode
+        # Check if we found new eigenmode line
         if line[5:10] == "PMODE":
-            eigenmode = int(line[30:36])
+            eigentemp = int(line[30:36])
+            if eigentemp > eigenmode:
+                eigenmode = eigentemp
+                mode_eigen_changed = True
+
+        # Check if we found new time step
+        if line[4:10] == "1PSTEP":
+            mode_time_found = True
+        if mode_time_found and (line[2:7] == "100CL"):
+            # we found the new time step line
+            timetemp = float(line[13:25])
+            if timetemp > timestep:
+                timestep = timetemp
+                mode_time_changed = True
+
         # Check if we found displacement section
         if line[5:9] == "DISP":
             mode_disp_found = True
-        # we found a displacement line in the frd file
         if mode_disp_found and (line[1:3] == "-1"):
+            # we found a displacement line
             elem = int(line[4:13])
             mode_disp_x = float(line[13:25])
             mode_disp_y = float(line[25:37])
             mode_disp_z = float(line[37:49])
             mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
+
+        # Check if we found stress section
         if line[5:11] == "STRESS":
             mode_stress_found = True
-        # we found a stress line in the frd file
         if mode_stress_found and (line[1:3] == "-1"):
+            # we found a stress line
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
             stress_2 = float(line[25:37])
@@ -388,44 +416,44 @@ def readResult(frd_input):
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
             mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
+
+        # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
             mode_strain_found = True
-        # we found a strain line in the frd file
         if mode_strain_found and (line[1:3] == "-1"):
+            # we found a strain line in the frd file
             elem = int(line[4:13])
             strain_1 = float(line[13:25])
             strain_2 = float(line[25:37])
             strain_3 = float(line[37:49])
-#            strain_4 = float(line[49:61])  #Not used in vector
-#            strain_5 = float(line[61:73])
-#            strain_6 = float(line[73:85])
+            # strain_4 = float(line[49:61])  # Not used in vector
+            # strain_5 = float(line[61:73])
+            # strain_6 = float(line[73:85])
             mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
 
+        # Check if we found an equivalent plastic strain section
         if line[5:7] == "PE":
             mode_peeq_found = True
-        # we found an equivalent plastic strain line in the frd file
         if mode_peeq_found and (line[1:3] == "-1"):
+            # we found an equivalent plastic strain line
             elem = int(line[4:13])
             peeq = float(line[13:25])
             mode_peeq[elem] = (peeq)
-        # Check if we found a time step
-        if line[4:10] == "1PSTEP":
-            mode_time_found = True
-        if mode_time_found and (line[2:7] == "100CL"):
-            timetemp = float(line[13:25])
-            if timetemp > timestep:
-                timestep = timetemp
+
+        # Check if we found a temperature section
         if line[5:11] == "NDTEMP":
             mode_temp_found = True
-        # we found a temperatures line in the frd file
         if mode_temp_found and (line[1:3] == "-1"):
+            # we found a temperature line
             elem = int(line[4:13])
             temperature = float(line[13:25])
             mode_temp[elem] = (temperature)
+
+        # Check if we found a mass flow section
         if line[5:11] == "MAFLOW":
             mode_massflow_found = True
-        # we found a mass flow line in the frd file
         if mode_massflow_found and (line[1:3] == "-1"):
+            # we found a mass flow line
             elem = int(line[4:13])
             massflow = float(line[13:25])
             mode_massflow[elem] = (massflow * 1000)  # convert units to kg/s from t/s
@@ -434,10 +462,12 @@ def readResult(frd_input):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
                         mode_massflow[node] = (massflow * 1000)  # convert units to kg/s from t/s
+
+        # Check if we found a network pressure section
         if line[5:11] == "STPRES":
             mode_networkpressure_found = True
-        # we found a network pressure line in the frd file
         if mode_networkpressure_found and (line[1:3] == "-1"):
+            # we found a network pressure line
             elem = int(line[4:13])
             networkpressure = float(line[13:25])
             mode_networkpressure[elem] = (networkpressure)
@@ -446,82 +476,120 @@ def readResult(frd_input):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
                         mode_networkpressure[node] = (networkpressure)
-        # Check for the end of a section
+
+        # Check if we found the end of a section
         if line[1:3] == "-3":
+            end_of_section_found = True
+
+            if nodes_found:
+                nodes_found = False
+                node_element_section = True
+
+            if elements_found:
+                elements_found = False
+                node_element_section = True
+
             if mode_disp_found:
+                mode_results['disp'] = mode_disp
+                mode_disp = {}
                 mode_disp_found = False
+                node_element_section = False
 
             if mode_stress_found:
+                mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_stress = {}
+                mode_stressv = {}
                 mode_stress_found = False
+                node_element_section = False
 
             if mode_strain_found:
+                mode_results['strainv'] = mode_strain
+                mode_strain = {}
                 mode_strain_found = False
+                node_element_section = False
 
             if mode_peeq_found:
+                mode_results['peeq'] = mode_peeq
+                mode_peeq = {}
                 mode_peeq_found = False
+                node_element_section = False
 
             if mode_temp_found:
+                mode_results['temp'] = mode_temp
+                mode_temp = {}
                 mode_temp_found = False
-
-            if mode_time_found:
-                mode_time_found = False
+                node_element_section = False
 
             if mode_massflow_found:
+                mode_results['mflow'] = mode_massflow
+                mode_massflow = {}
                 mode_massflow_found = False
+                node_element_section = False
 
             if mode_networkpressure_found:
-                mode_networkpressure_found = False
-
-            if mode_disp and mode_stress and mode_strain and mode_temp:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['disp'] = mode_disp
-                mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
-                mode_results['strainv'] = mode_strain
-                mode_results['peeq'] = mode_peeq
-                mode_results['temp'] = mode_temp
-                mode_results['time'] = timestep
-                results.append(mode_results)
-                mode_disp = {}
-                mode_stress = {}
-                mode_stressv = {}
-                mode_strain = {}
-                mode_peeq = {}
-                mode_temp = {}
-                eigenmode = 0
-
-            if mode_disp and mode_stress and mode_strain:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['disp'] = mode_disp
-                mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
-                mode_results['strainv'] = mode_strain
-                mode_results['peeq'] = mode_peeq
-                mode_results['time'] = 0  # Don't return time if static
-                results.append(mode_results)
-                mode_disp = {}
-                mode_stress = {}
-                mode_stressv = {}
-                mode_strain = {}
-                mode_peeq = {}
-                eigenmode = 0
-
-            if mode_massflow and mode_networkpressure:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['mflow'] = mode_massflow
                 mode_results['npressure'] = mode_networkpressure
-                mode_results['time'] = timestep
-                results.append(mode_results)
-                mode_massflow = {}
+                mode_networkpressure_found = False
                 mode_networkpressure = {}
-                eigenmode = 0
-            nodes_found = False
-            elements_found = False
+                node_element_section = False
 
+            '''
+            print('---- End of Section --> Mode_Results may be changed ----')
+            for key in sorted(mode_results.keys()):
+                if key is 'number' or key is 'time':
+                    print(key + ' --> ' + str(mode_results[key]))
+                else:
+                    print(key + ' --> ' + str(len(mode_results[key])))
+            print('----Mode_Results----\n')
+            '''
+
+        # Check if we found the end of frd data
+        if line[1:5] == "9999":
+            end_of_frd_data_found = True
+
+        if (mode_eigen_changed or mode_time_changed or end_of_frd_data_found) and end_of_section_found and not node_element_section:
+
+            '''
+            print('\n\n----Append mode_results to results')
+            print(line)
+            for key in sorted(mode_results.keys()):
+                if key is 'number' or key is 'time':
+                    print(key + ' --> ' + str(mode_results[key]))
+                else:
+                    print(key + ' --> ' + str(len(mode_results[key])))
+            print('----Append Mode_Results----\n')
+            '''
+
+            # append mode_results to results and reset mode_result
+            results.append(mode_results)
+            mode_results = {}
+            end_of_section_found = False
+
+        # on changed --> write changed values in mode_result --> will be the first to do on an empty mode_result
+        if mode_eigen_changed:
+            mode_results['number'] = eigenmode
+            mode_eigen_changed = False
+
+        if mode_time_changed:
+            mode_results['time'] = timestep
+            # mode_results['time'] = 0  # Don't return time if static  # WARUM?
+            mode_time_found = False
+            mode_time_changed = False
+
+        # here we are in the indent of loop for every line in frd file, do not add a print here :-)
+
+    # close frd file if loop over all lines is finished
     frd_file.close()
+
+    '''
+    # debug prints and checks with the read data
+    print('\n\n----RESULTS values begin----')
+    print(len(results))
+    # print('\n')
+    # print(results)
+    print('----RESULTS values end----\n\n')
+    '''
+
     if not inout_nodes:
         if results:
             if 'mflow' in results[0] or 'npressure' in results[0]:

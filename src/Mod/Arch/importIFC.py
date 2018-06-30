@@ -184,7 +184,7 @@ def explore(filename=None):
 
     if not filename:
         from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'IFC files','*.ifc')
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'IFC files','*.ifc')
         if filename:
             filename = filename[0]
 
@@ -215,6 +215,7 @@ def explore(filename=None):
     entities =  ifc.by_type("IfcRoot")
     entities += ifc.by_type("IfcRepresentation")
     entities += ifc.by_type("IfcRepresentationItem")
+    entities += ifc.by_type("IfcRepresentationMap")
     entities += ifc.by_type("IfcPlacement")
     entities += ifc.by_type("IfcProperty")
     entities += ifc.by_type("IfcPhysicalSimpleQuantity")
@@ -257,6 +258,8 @@ def explore(filename=None):
                 item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
             elif entity.is_a() in ["IfcMaterial"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Material.svg"))
+            elif entity.is_a() in ["IfcReinforcingBar"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Rebar.svg"))
             item.setText(2,str(entity.is_a()))
             item.setFont(2,bold);
 
@@ -674,16 +677,20 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             baseobj.ViewObject.hide()
                     # setting role
                     try:
-                        r = ptype[3:]
-                        tr = dict((v,k) for k, v in translationtable.iteritems())
-                        if r in tr.keys():
-                            r = tr[r]
-                        # remove the "StandardCase"
-                        if "StandardCase" in r:
-                            r = r[:-12]
-                        obj.Role = r
+                        if hasattr(obj,"IfcRole"):
+                            obj.IfcRole = ptype[3:]
+                        else:
+                            # pre-0.18 objects, only support a small subset of types
+                            r = ptype[3:]
+                            tr = dict((v,k) for k, v in translationtable.iteritems())
+                            if r in tr.keys():
+                                r = tr[r]
+                            # remove the "StandardCase"
+                            if "StandardCase" in r:
+                                r = r[:-12]
+                            obj.Role = r
                     except:
-                        pass
+                        print("Unable to give IFC role ",ptype," to object ",obj.Label)
                     # setting uid
                     if hasattr(obj,"IfcAttributes"):
                         a = obj.IfcAttributes
@@ -1097,7 +1104,7 @@ def export(exportList,filename):
 
         # getting generic data
         name = str(obj.Label.encode("utf8"))
-        description = str(obj.Description) if hasattr(obj,"Description") else ""
+        description = str(obj.Description.encode("utf8")) if hasattr(obj,"Description") else ""
 
         # getting uid
         uid = None
@@ -1113,20 +1120,22 @@ def export(exportList,filename):
                 obj.IfcAttributes = d
 
         # setting the IFC type + name conversions
-        if hasattr(obj,"Role"):
+        if hasattr(obj,"IfcRole"):
+            ifctype = obj.IfcRole.replace(" ","")
+        elif hasattr(obj,"Role"):
             ifctype = obj.Role.replace(" ","")
         else:
             ifctype = Draft.getType(obj)
         if ifctype in translationtable.keys():
             ifctype = translationtable[ifctype]
         ifctype = "Ifc" + ifctype
+        if ifctype == "IfcVisGroup":
+            ifctype = "IfcGroup"
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
-        ifctypes = []
-        for v in typesmap.values():
-            ifctypes.extend(v)
-        if ifctype not in ifctypes:
+        from ArchComponent import IFCTYPES
+        if ifctype not in IFCTYPES:
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
@@ -1142,36 +1151,44 @@ def export(exportList,filename):
         if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # setting the arguments
-        args = [uid,history,name,description,None,placement,representation,None]
+        kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
+            "Description": description, "ObjectPlacement": placement, "Representation": representation}
         if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
-            args = args + ["NOTDEFINED"]
+            kwargs.update({"PredefinedType": "NOTDEFINED"})
         elif ifctype in ["IfcWindow","IfcDoor"]:
             if hasattr(obj,"Width") and hasattr(obj,"Height"):
-                args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+                kwargs.update({"OverallHeight": obj.Width.Value/1000.0,
+                    "OverallWidth": obj.Height.Value/1000.0})
             else:
                 if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
                     l = obj.Shape.BoundBox.XLength
                 else:
                     l = obj.Shape.BoundBox.YLength
-                args = args + [l/1000.0,obj.Shape.BoundBox.ZLength/1000.0]
+                kwargs.update({"OverallHeight": l/1000.0,
+                    "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
         elif ifctype == "IfcSpace":
-            args = args + ["ELEMENT","INTERNAL",obj.Shape.BoundBox.ZMin/1000.0]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "InteriorOrExteriorSpace": "INTERNAL",
+                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
-            args = args + ["ELEMENT"]
+            if ifcopenshell.schema_identifier == "IFC4":
+                kwargs.update({"PredefinedType": "ELEMENT"})
+            else:
+                kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
-            latitude = None
-            longitude = None
-            elevation = None
-            landtitlenumber = None
-            address = None
-            args = args + ["ELEMENT",latitude,longitude,elevation,landtitlenumber,address]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
-            args = args + ["ELEMENT",None,None,None]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
-            args = args + ["ELEMENT",obj.Placement.Base.z]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "Elevation": obj.Placement.Base.z})
+        elif ifctype == "IfcReinforcingBar":
+            kwargs.update({"NominalDiameter": obj.Diameter.Value,
+                "BarLength": obj.Length.Value})
 
         # creating the product
-        product = getattr(ifcfile,"create"+ifctype)(*args)
+        #print(obj.Label," : ",ifctype," : ",kwargs)
+        product = getattr(ifcfile,"create"+ifctype)(**kwargs)
         products[obj.Name] = product
 
         # additions
@@ -1183,8 +1200,15 @@ def export(exportList,filename):
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
 
         # subtractions
+        guests = []
+        for o in obj.InList:
+            if hasattr(o,"Hosts"):
+                for co in o.Hosts:
+                    if co == obj:
+                        if not o in guests:
+                            guests.append(o)
         if hasattr(obj,"Subtractions") and (shapetype == "extrusion"):
-            for o in obj.Subtractions:
+            for o in obj.Subtractions + guests:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o,forcebrep=True,subtraction=True)
                 if DEBUG: print("      subtracting ",c2," : ",o.Label)
                 prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None)
@@ -1215,7 +1239,7 @@ def export(exportList,filename):
                                 key = key.encode("utf8")
                             else:
                                 key = str(key)
-                            tp = tp.encode("utf8")
+                            #tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
                             elif tp == "IfcBoolean":

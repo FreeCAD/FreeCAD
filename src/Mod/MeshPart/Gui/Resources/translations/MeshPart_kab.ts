@@ -89,7 +89,7 @@
     <message>
       <location line="+2"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location line="+1"/>

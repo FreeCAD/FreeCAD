@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>587</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,29 +22,6 @@
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Arrow Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AltDecimals</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cbShowUnits">
           <property name="text">
@@ -62,6 +39,23 @@
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefColorButton" name="colDimColor">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Color</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -85,39 +79,17 @@
           </property>
          </spacer>
         </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsbFontSize">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <double>3.500000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FontSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Alternate Decimals</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="Gui::PrefColorButton" name="colDimColor">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Color</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Arrow Size</string>
           </property>
          </widget>
         </item>
@@ -146,13 +118,6 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Alternate Decimals</string>
           </property>
          </widget>
         </item>
@@ -241,17 +206,49 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_12">
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Arrow Size</string>
+           <string>Arrow Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AltDecimals</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
+          <property name="toolTip">
+           <string>Dimension font size in units</string>
+          </property>
+          <property name="value">
+           <double>3.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsbArrowSize">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+          <property name="toolTip">
+           <string>Dimension arrowhead size in units</string>
           </property>
           <property name="value">
            <double>3.500000000000000</double>
@@ -265,19 +262,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="1" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -478,32 +462,6 @@
           </property>
          </spacer>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="toolTip">
-           <string>Default weight for GeomHatch lines</string>
-          </property>
-          <property name="text">
-           <string>Hatch Weight</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>GeomWeight</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/PAT</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_13">
           <property name="text">
@@ -514,7 +472,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefLineEdit" name="leLineGroup">
           <property name="text">
-           <string>FC 0.70mm</string>
+           <string notr="true">FC 0.70mm</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
@@ -546,6 +504,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
@@ -576,8 +539,8 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -264,10 +264,15 @@ void Document::resetEdit(void)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
-        d->_editViewProvider->finishEditing();
-        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
-        d->_editViewProvider = 0;
+        // Nullify the member variable before calling finishEditing().
+        // This is to avoid a possible stack overflow when a view provider wrongly
+        // invokes the document's resetEdit() method.
+        ViewProvider* editViewProvider = d->_editViewProvider;
+        d->_editViewProvider = nullptr;
+
+        editViewProvider->finishEditing();
+        if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
     }
 }
 
@@ -611,15 +616,15 @@ bool Document::isModified() const
 
 ViewProvider* Document::getViewProviderByPathFromTail(SoPath * path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
+    // Get the lowest root node in the pick path!
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNodeFromTail(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = d->_ViewProviderMap.begin();
-            for(;it!= d->_ViewProviderMap.end();++it)
+            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
+            for(it = d->_ViewProviderMap.begin();it!= d->_ViewProviderMap.end();++it) {
                 if (node == it->second->getRoot())
                     return it->second;
-            
+            }
          }
     }
 
@@ -1422,7 +1427,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  This method opens a new UNDO transaction on the active document. This transaction
  *  will later appear in the UNDO/REDO dialog with the name of the command. If the user 
  *  recall the transaction everything changed on the document between OpenCommand() and 
- *  CommitCommand will be undone (or redone). You can use an alternetive name for the 
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the 
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */

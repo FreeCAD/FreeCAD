@@ -261,7 +261,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="141"/>
       <source>Title</source>
-      <translation>Название</translation>
+      <translation>Заголовок</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="145"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Список модифицируемых элементов</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Удалить числовой ряд</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>Если отмечено числовой ряд не будет включаться в легенду</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Удаляет этот числовой ряд</translation>
     </message>
   </context>
 </TS>

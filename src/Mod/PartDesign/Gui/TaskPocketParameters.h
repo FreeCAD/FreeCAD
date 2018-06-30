@@ -57,6 +57,7 @@ public:
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onLength2Changed(double);
     void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
@@ -69,6 +70,7 @@ protected:
 
 private:
     double getLength(void) const;
+    double getLength2(void) const;
     double getOffset(void) const;
     int    getMode(void) const;
     bool   getMidplane(void) const;

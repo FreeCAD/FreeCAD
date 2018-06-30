@@ -9,6 +9,7 @@
         <file>icons/Part_Box.svg</file>
         <file>icons/Part_Chamfer.svg</file>
         <file>icons/Part_Common.svg</file>
+        <file>icons/Part_Compound.svg</file>
         <file>icons/Part_CompoundFilter.svg</file>
         <file>icons/Part_Cone.svg</file>
         <file>icons/Part_Cut.svg</file>
@@ -101,5 +102,9 @@
         <file>translations/Part_gl.qm</file>
         <file>translations/Part_kab.qm</file>
         <file>translations/Part_ko.qm</file>
+        <file>translations/Part_fil.qm</file>
+        <file>translations/Part_id.qm</file>
+        <file>translations/Part_lt.qm</file>
+        <file>translations/Part_val-ES.qm</file>
     </qresource>
 </RCC> 

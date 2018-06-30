@@ -79,13 +79,13 @@ PyObject *DocumentProtectorPy::method_varargs_ext_handler(PyObject *_self_and_na
         return pycxx_handler(_self_and_name_tuple, _args);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 

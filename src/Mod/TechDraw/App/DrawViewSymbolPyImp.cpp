@@ -43,7 +43,7 @@ PyObject* DrawViewSymbolPy::dumpSymbol(PyObject *args)
     } else {
         std::string error = std::string("Can't write ");
         error += fileSpec;
-        throw Py::Exception(error);
+        throw Py::RuntimeError(error);
     }
     Py_Return;
 }

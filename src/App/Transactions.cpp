@@ -76,6 +76,18 @@ Transaction::~Transaction()
             // of an object is not undone or when an addition is undone.
 
             if (!It->first->isAttachedToDocument()) {
+                if (It->first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
+                    // #0003323: Crash when clearing transaction list
+                    // It can happen that when clearing the transaction list several objects
+                    // are destroyed with dependencies which can lead to dangling pointers.
+                    // When setting the 'Destroy' flag of an object the destructors of link
+                    // properties don't ry to remove backlinks, i.e. they don't try to access
+                    // possible dangling pointers.
+                    // An alternative solution is to call breakDependency inside
+                    // Document::_removeObject. Make this change in v0.18.
+                    const DocumentObject* obj = static_cast<const DocumentObject*>(It->first);
+                    const_cast<DocumentObject*>(obj)->setStatus(ObjectStatus::Destroy, true);
+                }
                 delete It->first;
             }
         }

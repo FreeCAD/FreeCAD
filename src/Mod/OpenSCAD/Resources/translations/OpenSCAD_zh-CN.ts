@@ -111,7 +111,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation>在控制台中打印调试信息</translation>
+      <translation>于主控台显示调试信息</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>片段的最小角度</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>片段最小尺寸</translation>
     </message>
   </context>
   <context>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="273"/>
       <source>as Mesh</source>
-      <translation>作为网格</translation>
+      <translation>当作网格</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="274"/>
@@ -184,12 +184,12 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="566"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>错误：所有形状必须是2D 或两者必须都是3D</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="98"/>
       <source>Unable to explode %s</source>
-      <translation>无法拆解 %s</translation>
+      <translation>无法分解 %s</translation>
     </message>
   </context>
   <context>
@@ -210,12 +210,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="125"/>
       <source>Color Shapes</source>
-      <translation>形体着色</translation>
+      <translation>形状着色</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="127"/>
       <source>Color Shapes by validity and type</source>
-      <translation>按有效性和类型给形体着色</translation>
+      <translation>按有效性和类型给形状着色</translation>
     </message>
   </context>
   <context>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="207"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>扩大安置</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="209"/>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>移除联集，随机分配子项位置及色彩</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>移除合并，随机分配子项位置及色彩</translation>
     </message>
   </context>
   <context>
@@ -270,12 +270,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Increase Tolerance Feature</source>
-      <translation>提升容忍度特征</translation>
+      <translation>提高容差特征</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="190"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation>建立允许增加容忍度的特征</translation>
+      <translation>建立允许提高容差的特征</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="403"/>
       <source>Mesh Boolean...</source>
-      <translation>网格布林运算...</translation>
+      <translation>网格布尔运算...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>将物件以网格形式汇出，并使用 OpenSCAD 执行布林运算</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>将对象导出为网格, 并使用 OpenSCAD 执行布尔运算</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Refine Shape Feature</source>
-      <translation>细化形体特征</translation>
+      <translation>细化形状特征</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="169"/>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="248"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>移除所有选择的对象及其子对象</translation>
+      <translation>移除所选对象及所有与其他对象无关的子对象</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>替换特征树中的对象.请选择原始对象、新对象和父节点对象</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>替换特征树中的对象。请选择原始对象、新对象和父节点对象</translation>
     </message>
   </context>
   <context>

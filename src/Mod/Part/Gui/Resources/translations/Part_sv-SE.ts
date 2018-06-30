@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1737,6 +1737,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g. from a sketch)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
       <translation>Part_MakeFace: Gör sida från en uppsättning trådar (t.ex. från en skiss).</translation>
     </message>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Detalj</translation>
     </message>
@@ -2173,11 +2177,19 @@
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation type="unfinished">Attachment Offset:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>Extra placement:</source>
       <translation>Extra placering:</translation>
     </message>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Fasa Kanter</translation>
     </message>
@@ -2682,7 +2694,7 @@
       <translation>Inget val</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Längd:</translation>
     </message>
@@ -2703,12 +2715,12 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Starta längd</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Avsluta längd</translation>
     </message>
@@ -2719,17 +2731,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Start radie</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Slut radie</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
@@ -2761,13 +2773,13 @@ Välj en eller fler kanter först.</translation>
       <translation>inget</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Kant%1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Ingen form har valts</translation>
     </message>
@@ -2868,7 +2880,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Exportera</translation>
     </message>
@@ -2903,7 +2915,22 @@ Please select a valid shape in the drop-down box first.</source>
       <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Importera</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation type="unfinished">Enable STEP Compound merge</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Rubrik</translation>
     </message>
@@ -4313,12 +4340,20 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation type="unfinished">Attachment Offset:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
       <source>Extra placement:</source>
       <translation>Extra placering:</translation>
     </message>
@@ -4384,11 +4419,20 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation type="unfinished">Extra placement (inactive - not attached):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -4413,12 +4457,11 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Referens%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
@@ -4448,7 +4491,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Forminnehåll</translation>
     </message>
@@ -4456,7 +4499,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Kontrollera geometri</translation>
     </message>
@@ -4943,23 +4986,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Fel val</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Välj två former.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4984,7 +5027,7 @@ Do you want to continue?</source>
       <translation>Välj två eller fler former. Eller välj en sammansättning som inehåller minst två former.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Välj en form eller fler.</translation>
     </message>
@@ -5084,7 +5127,7 @@ Do you want to continue?</source>
       <translation>Redigera avrundade kanter</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Ställ in färgerna ...</translation>
     </message>
@@ -5109,7 +5152,7 @@ Do you want to continue?</source>
       <translation>Skal</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Yta</translation>

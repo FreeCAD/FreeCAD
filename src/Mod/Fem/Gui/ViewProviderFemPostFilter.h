@@ -54,6 +54,19 @@ public:
 protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
 };
+
+class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObject {
+
+    PROPERTY_HEADER(FemGui::ViewProviderFemPostDataAtPoint);
+
+public:
+    /// constructor.
+    ViewProviderFemPostDataAtPoint();
+    ~ViewProviderFemPostDataAtPoint();
+
+protected:
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
+};
 class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObject {
 
     PROPERTY_HEADER(FemGui::ViewProviderFemPostScalarClip);

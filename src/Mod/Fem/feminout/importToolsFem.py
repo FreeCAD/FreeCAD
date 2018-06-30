@@ -100,7 +100,8 @@ def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True
         "Node": 0, "Edge": 1, "Hexa": 3, "Polygon": 2, "Polyhedron": 3,
         "Prism": 3, "Pyramid": 3, "Quadrangle": 2, "Tetra": 3, "Triangle": 2}
 
-    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count"), s, d) for (s, d) in FreeCAD_element_names_dims.iteritems()]
+    eval_dict = locals()  # to access local variables from eval
+    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count", eval_dict), s, d) for (s, d) in FreeCAD_element_names_dims.items()]
     # ugly but necessary
     if remove_zero_element_entries:
         elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
@@ -395,9 +396,14 @@ def fill_femresult_mechanical(results, result_set, span):
                      temp_min, temp_avg, temp_max,
                      mflow_min, mflow_avg, mflow_max,
                      npress_min, npress_avg, npress_max]
-    # do not forget to adapt the def get_stats in FemResultTools module as well as the TestFem module
     # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-    # TODO: a dictionary would be far robust than a list, but needs adapten in VTK too because of VTK result import
+    # len(stat_types) == 13*3 == 39
+    # do not forget to adapt the def get_stats in the following code:
+    # - module femresult/resulttools.py
+    # - module femtest/testccxtools.py
+    # - C++ App/FemVTKTools.cpp
+    # - module feminout/importVTKResults.py  (workaround fix in importVtkFCResult for broken function in App/FemVTKTools.cpp)
+    # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
     return results
 

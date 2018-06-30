@@ -91,12 +91,12 @@
     <message>
       <location line="+1"/>
       <source>New POV-Ray project</source>
-      <translation>Új POV-Ray projekt</translation>
+      <translation>Új Nézőpont-fénysugár projekt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert new POV-Ray project into the document</source>
-      <translation>Új POV-Ray projekt beszúrása a dokumentumba</translation>
+      <translation>Új Nézőpont-fénysugár projekt beszúrása a dokumentumba</translation>
     </message>
     <message>
       <location line="+45"/>
@@ -119,7 +119,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Render</source>
-      <translation>&amp;Renderelés</translation>
+      <translation>Renderelés</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -155,16 +155,16 @@
     <message>
       <location line="+1"/>
       <source>Export camera to POV-Ray...</source>
-      <translation>Kamera exportálása POV-Raybe...</translation>
+      <translation>Kamera exportálása Nézőpont-fánysugárba...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>Kamera helyzet aktív 3D-s nézet POV-Ray formátumának exportálása fájlba</translation>
+      <translation>Kamera helyzet aktív 3D-s nézet Nézőpont fénysugár formátumának exportálása fájlba</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-      <translation>Kamera helyzet aktív 3D-s nézet POV-Ray formátumának exportálása fájlba</translation>
+      <translation>Kamera helyzet aktív 3D-s nézet Nézőpont fénysugár formátumának exportálása fájlba</translation>
     </message>
     <message>
       <source>Export camera to povray...</source>
@@ -185,12 +185,12 @@
     <message>
       <location line="+1"/>
       <source>Export part to POV-Ray...</source>
-      <translation>Alkatrész exportálás POV-Raybe...</translation>
+      <translation>Alkatrész exportálás Nézőpont-fénysugárba...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation>Írja a kijelölt részt (objektumot) POV-Ray fájlba</translation>
+      <translation>Írja a kijelölt részt (objektumot) Nézőpont-fénysugár fájlba</translation>
     </message>
     <message>
       <source>Export part to povray...</source>
@@ -217,17 +217,17 @@
       <location line="+93"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép POV-Ray eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
+      <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép Nézőpont-fánysugár eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
     </message>
     <message>
       <location line="-109"/>
       <source>Export view to POV-Ray...</source>
-      <translation>Nézet exportálása POV-Raybe...</translation>
+      <translation>Nézet exportálása Nézőpont-fénysugárba...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation>Írja le az aktív 3D-s nézetet a kamerával és összes tartalmával egy POV-Ray fájlba</translation>
+      <translation>Írja le az aktív 3D-s nézetet a kamerával és összes tartalmával egy Nézőpont-fénysugár fájlba</translation>
     </message>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -325,17 +325,17 @@ Do you want to continue?</source>
       <location line="+74"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
-      <translation>POV-Ray nem található</translation>
+      <translation>Nézőpont-fénysugár nem található</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Kérjük, állítsa be a POV-Ray elérési útját a beállításokban.</translation>
+      <translation>Kérjük, állítsa be a Nézőpont-fénysugár elérési útját a beállításokban.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>Kérjük, javítsa a POV-Ray elérési útját a beállításokban.</translation>
+      <translation>Kérjük, javítsa a Nézőpont-fénysugár elérési útját a beállításokban.</translation>
     </message>
     <message>
       <location line="+75"/>
@@ -383,12 +383,12 @@ Do you want to continue?</source>
     <message>
       <location line="+12"/>
       <source>POV-Ray file missing</source>
-      <translation>POV-Ray fájl hiányzik</translation>
+      <translation>Nézőpont-fénysugár fájl hiányzik</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The POV-Ray project file doesn't exist.</source>
-      <translation>A POV-Ray projekt fájl nem létezik.</translation>
+      <translation>A Nézőpont-fénysugár projekt fájl nem létezik.</translation>
     </message>
     <message>
       <source>Rendered image (*.bmp)</source>
@@ -432,22 +432,22 @@ Do you want to continue?</source>
     <message>
       <location line="+103"/>
       <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-      <translation>A futtatható POV-Ray elérési út, ha a FreeCAD-ból szeretne renderelni</translation>
+      <translation>A futtatható nézőpont-fénysugár elérési út, ha a FreeCAD-ból szerete renderelni</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>POV-Ray executable:</source>
-      <translation>Végrehajtható POV-Ray:</translation>
+      <translation>Végrehajtható Nézőpont-fénysugár:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>POV-Ray output parameters:</source>
-      <translation>POV-Ray kimeneti paraméterek:</translation>
+      <translation>Nézőpont-fénysugár kimeneti paraméterek:</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>A POV-Ray paraméterek átadása a rendernek.</translation>
+      <translation>A nézőpont-fénysugár paraméterek átadása a renderel-nek.</translation>
     </message>
     <message>
       <location line="+95"/>
@@ -472,7 +472,7 @@ Do you want to continue?</source>
     <message>
       <location line="+57"/>
       <source>Render</source>
-      <translation>Renderelés - Fotórealisztikus, háromdimenziós megjelenítés, árnyékkal és tükrözéssel</translation>
+      <translation>Renderelés - Fotó-realisztikus, háromdimenziós megjelenítés, árnyékkal és tükrözéssel</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -482,7 +482,7 @@ Do you want to continue?</source>
     <message>
       <location line="+13"/>
       <source>+W: </source>
-      <translation>+ SZ: </translation>
+      <translation>+SZ: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -492,7 +492,7 @@ Do you want to continue?</source>
     <message>
       <location line="+19"/>
       <source> +H : </source>
-      <translation> + M: </translation>
+      <translation> +M: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -507,7 +507,7 @@ Do you want to continue?</source>
     <message>
       <location line="+7"/>
       <source>The path to the luxrender (or luxconsole) executable</source>
-      <translation>A futtatható luxrender (vagy luxconsole) elérési útja</translation>
+      <translation>A futtatható luxrender (vagy luxkonzol) elérési útja</translation>
     </message>
     <message>
       <location line="+38"/>

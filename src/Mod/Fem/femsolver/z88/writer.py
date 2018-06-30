@@ -28,9 +28,10 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import time
 import femmesh.meshtools as FemMeshTools
 import feminout.importZ88Mesh as importZ88Mesh
-import FemInputWriter
+from .. import writerbase as FemInputWriter
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
@@ -41,8 +42,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, shellthickness_obj, fluidsection_obj,
-                 analysis_type=None, dir_name=None
+                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
+                 dir_name=None
                  ):
 
         FemInputWriter.FemInputWriter.__init__(
@@ -53,14 +54,15 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
-            beamsection_obj, shellthickness_obj, fluidsection_obj,
-            analysis_type, dir_name)
+            beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
+            dir_name)
         # self.dir_name does have a slash at the end
         self.file_name = self.dir_name + 'z88'
-        print('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name)
-        print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)
+        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
+        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_z88_input(self):
+        timestart = time.clock()
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -75,6 +77,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
+        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
         return self.dir_name
 
     def set_z88_elparam(self):
@@ -91,7 +94,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         # elemente 17, 16, 10, INTORD etc ... testen !!!
         self.z88_element_type = importZ88Mesh.get_z88_element_type(self.femmesh, self.femelement_table)
         self.z88_elparam = self.z88_param[self.z88_element_type]
-        print(self.z88_elparam)
+        FreeCAD.Console.PrintMessage(self.z88_elparam)
+        FreeCAD.Console.PrintMessage('\n')
 
     def write_z88_mesh(self):
         mesh_file_path = self.file_name + 'i1.txt'
@@ -166,7 +170,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             fmd.write('\n')
             fmd.close()
         else:
-            print("Multiple Materials for Z88 not yet supported!")
+            FreeCAD.Console.PrintError("Multiple Materials for Z88 not yet supported!\n")
 
     def write_z88_elements_properties(self):
         element_properties_file_path = self.file_name + 'elp.txt'
@@ -178,20 +182,20 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                 height = beam_obj.RectHeight.getValueAs('mm')
                 area = str(width * height)
                 elements_data.append('1 ' + str(self.element_count) + ' ' + area + ' 0 0 0 0 0 0 ')
-                print("Be aware, only trusses are supported for edge meshes!")
+                FreeCAD.Console.PrintMessage("Be aware, only trusses are supported for edge meshes!\n")
             else:
-                print("Multiple beamsections for Z88 not yet supported!")
+                FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
         elif FemMeshTools.is_face_femmesh(self.femmesh):
             if len(self.shellthickness_objects) == 1:
                 thick_obj = self.shellthickness_objects[0]['Object']
                 thickness = str(thick_obj.Thickness.getValueAs('mm'))
                 elements_data.append('1 ' + str(self.element_count) + ' ' + thickness + ' 0 0 0 0 0 0 ')
             else:
-                print("Multiple thicknesses for Z88 not yet supported!")
+                FreeCAD.Console.PrintError("Multiple thicknesses for Z88 not yet supported!\n")
         elif FemMeshTools.is_solid_femmesh(self.femmesh):
             elements_data.append('1 ' + str(self.element_count) + ' 0 0 0 0 0 0 0')
         else:
-            print("Error!")
+            FreeCAD.Console.PrintError("Error!\n")
         f = open(element_properties_file_path, 'w')
         f.write(str(len(elements_data)) + '\n')
         for e in elements_data:
@@ -228,6 +232,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         f = open(solver_parameter_file_path, 'w')
         f.write(z88_dyn_template)
         f.close()
+
 
 # for solver parameter file Z88man.txt
 z88_man_template = '''DYNAMIC START

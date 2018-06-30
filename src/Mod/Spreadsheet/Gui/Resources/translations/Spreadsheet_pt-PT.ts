@@ -144,11 +144,11 @@
     </message>
     <message>
       <source>Merge cells</source>
-      <translation>Juntar células</translation>
+      <translation>Unir células</translation>
     </message>
     <message>
       <source>Merge selected cells in spreadsheet</source>
-      <translation>Juntar células selecionadas na folha de cálculo</translation>
+      <translation>Unir células selecionadas na folha de cálculo</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Definir atalho</translation>
+      <translation>Definir nome alternativo</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Definir atalho para a célula selecionada</translation>
+      <translation>Definir nome alternativo para a célula selecionada</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividir células juntas anteriormente na folha de cálculo</translation>
+      <translation>Dividir células unidas anteriormente na folha de cálculo</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>Alinhamento</translation>
+      <translation>&amp;Alinhamento</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -285,7 +285,7 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation>&amp; Estilo</translation>
+      <translation>&amp;Estilo</translation>
     </message>
     <message>
       <source>Bold</source>
@@ -301,7 +301,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Unidades de exibição</translation>
+      <translation>&amp;Mostrar Unidades</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -309,11 +309,11 @@
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation>&amp;Atalho</translation>
+      <translation>Nome&amp; Alternativo</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Atalho para esta célula</translation>
+      <translation>Nome alternativo para esta célula</translation>
     </message>
   </context>
   <context>
@@ -337,6 +337,22 @@
     <message>
       <source>Show spreadsheet</source>
       <translation>Mostrar folha de cálculo</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Definir cor de primeiro plano da célula (s)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Definir a cor de primeiro plano das células da Tabela (folha de cálculo)</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Definir cor do plano de fundo da célula (s)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Definir a cor de plano de fundo das células da Tabela (folha de cálculo)</translation>
     </message>
   </context>
   <context>

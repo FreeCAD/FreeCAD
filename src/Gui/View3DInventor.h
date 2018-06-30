@@ -129,7 +129,6 @@ protected:
     void focusInEvent     (QFocusEvent     * e);
     void customEvent      (QEvent          * e);
     void contextMenuEvent (QContextMenuEvent*e);
-    void previewFromFramebuffer(const QRect&, QImage&);
 
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;

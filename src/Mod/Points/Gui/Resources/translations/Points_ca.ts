@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+191"/>
+      <location filename="../../Command.cpp" line="+187"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Convertir en punts</translation>
     </message>
@@ -24,7 +23,7 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location line="-82"/>
+      <location line="-80"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Exporta un núvol de punts</translation>
     </message>
@@ -44,7 +42,7 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location line="-53"/>
+      <location line="-51"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Importa un núvol de punts</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+245"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>Fusiona diversos núvols de punts en un de sol</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Talla un núvol de punts amb un polígon seleccionat</translation>
     </message>
@@ -104,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
@@ -115,8 +110,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Prova per a transformar un núvol de punts</translation>
     </message>
@@ -273,19 +267,23 @@
       <translation>Punts Ascii (*. asc);; Tots els arxius (*. *)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-80"/>
-      <location line="+51"/>
       <source>Ascii Points</source>
       <translation>Punts ASCII</translation>
     </message>
     <message>
-      <location line="-51"/>
-      <location line="+51"/>
+      <location filename="../../Command.cpp" line="-76"/>
+      <location line="+50"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="-50"/>
+      <location line="+50"/>
+      <source>Point formats</source>
+      <translation type="unfinished">Point formats</translation>
+    </message>
+    <message>
+      <location line="+71"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>

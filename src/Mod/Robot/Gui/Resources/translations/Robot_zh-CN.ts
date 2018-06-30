@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Place robot...</source>
-      <translation>机器人区域...</translation>
+      <translation>放置机器人...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Place a robot (experimental!)</source>
-      <translation>放置机器人(功能调试中!)</translation>
+      <translation>放置机器人(实验!)</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location line="+1"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>从一组边生成轨迹</translation>
+      <translation>由一组边生成轨迹</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka compact subroutine...</source>
-      <translation>Kuka压缩子例程...</translation>
+      <translation>库卡精简子程式...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>导出轨迹为压缩 KRL 子例程.</translation>
+      <translation>以精简KRL子程式导出轨迹</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location line="+1"/>
       <source>Kuka full subroutine...</source>
-      <translation>Kuka完整子例程...</translation>
+      <translation>库卡完整子例程...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -119,12 +119,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka IR125</source>
-      <translation>Kuka IR125</translation>
+      <translation>库卡IR125</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>将Kuka IR125导入文档.</translation>
+      <translation>将库卡IR125导入文档.</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka IR16</source>
-      <translation>Kuka IR16</translation>
+      <translation>库卡IR16</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>将Kuka IR16导入文档.</translation>
+      <translation>将库卡IR16导入文档.</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka IR210</source>
-      <translation>Kuka IR210</translation>
+      <translation>库卡IR210</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>将Kuka IR210导入文档.</translation>
+      <translation>将库卡IR210导入文档.</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka IR500</source>
-      <translation>Kuka IR500</translation>
+      <translation>库卡IR500</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>将Kuka IR500导入文档.</translation>
+      <translation>将库卡IR500导入文档.</translation>
     </message>
   </context>
   <context>
@@ -332,7 +332,7 @@
     <message>
       <location line="+1"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+      <translation>创建覆盖轨迹部分设定的修饰对象</translation>
     </message>
     <message>
       <source>Dress up trajectory...</source>
@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>选择一个机器人来设置初始位置</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -445,7 +445,7 @@
     </message>
     <message>
       <source>Select one Robot to set home postion</source>
-      <translation>选择置于中心的机器人</translation>
+      <translation>选择一个机器人来设置初始位置</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-106"/>
@@ -476,7 +476,7 @@
     <message>
       <location line="+1"/>
       <source>continuous ?</source>
-      <translation>连续的?</translation>
+      <translation>连续?</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -709,22 +709,22 @@
     <message>
       <location line="+5"/>
       <source>100 ms</source>
-      <translation>100 ms</translation>
+      <translation>100毫秒</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>500 ms</source>
-      <translation>500 ms</translation>
+      <translation>500毫秒</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>1 s</source>
-      <translation>1 s</translation>
+      <translation>1秒</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-      <translation>位置: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+      <translation>位置：(200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
       <location line="+26"/>

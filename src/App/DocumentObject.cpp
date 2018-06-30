@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 
 #include "Document.h"
 #include "DocumentObject.h"
@@ -77,7 +78,11 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this))
+#if 1
+        Base::Console().Warning("%s: Links go out of the allowed scope\n", getTypeId().getName());
+#else
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
+#endif
 
     // set/unset the execution bit
     Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
@@ -187,6 +192,42 @@ std::vector<DocumentObject*> DocumentObject::getOutList(void) const
 
     // Get document objects that this document object relies on
     ExpressionEngine.getDocumentObjectDeps(ret);
+
+    return ret;
+}
+
+std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
+{
+    std::vector<DocumentObject*> ret;
+    if (!prop || prop->getContainer() != this)
+        return ret;
+
+    if (prop->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(prop)->getValues();
+        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
+            if (*It2)
+                ret.push_back(*It2);
+        }
+    }
+    else if (prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(prop)->getValues();
+        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
+            if (*It2)
+                ret.push_back(*It2);
+        }
+    }
+    else if (prop->isDerivedFrom(PropertyLink::getClassTypeId())) {
+        if (static_cast<PropertyLink*>(prop)->getValue())
+            ret.push_back(static_cast<PropertyLink*>(prop)->getValue());
+    }
+    else if (prop->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+        if (static_cast<PropertyLinkSub*>(prop)->getValue())
+            ret.push_back(static_cast<PropertyLinkSub*>(prop)->getValue());
+    }
+    else if (prop == &ExpressionEngine) {
+        // Get document objects that this document object relies on
+        ExpressionEngine.getDocumentObjectDeps(ret);
+    }
 
     return ret;
 }
@@ -479,7 +520,8 @@ bool DocumentObject::isTouched() const
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    writer.ObjectName = this->getNameInDocument();
+    if (this->getNameInDocument())
+        writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
 

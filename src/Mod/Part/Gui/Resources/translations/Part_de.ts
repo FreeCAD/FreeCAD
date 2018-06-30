@@ -49,7 +49,7 @@
       <location line="+1"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Kegelschnitt</translation>
+      <translation>Konisch</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -115,7 +115,7 @@
       <location line="+1"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Volumenkörper</translation>
+      <translation>Vollkörper</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -402,7 +402,7 @@
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Linie senkrecht zur Oberfläche an einem Punkt, der durch einen Vertex bestimmt ist.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -536,7 +536,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -743,7 +743,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -833,7 +833,7 @@
       <location line="+2"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -847,13 +847,13 @@
       <location line="-4"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -931,135 +931,135 @@
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Ausrichten O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Ausrichten O-Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Ausrichten O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Ausrichten O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Ausrichten O-Y-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Ausrichten O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Ausrichten O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normalen und der Achse der horizontalen Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Ausrichten O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normalen und der Achse der vertikalen Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Achsen von horizontaler und vertikaler Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Ausrichten O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der horizontalen Achse der Ebene zur Normalen in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Ausrichten O-Y-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Achse von vertikaler Ebene und der Normalen in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Achsen von vertikaler und horizontaler Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
   </context>
   <context>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1496,7 +1496,7 @@
     <message>
       <location line="+1"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Formteilungs-Werkzeug. Zusammengesetzte Festkörper-Werkzeuge. OCC 6.9.0 oder neuer wird benötigt.</translation>
     </message>
   </context>
   <context>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1711,12 +1711,12 @@
     <message>
       <location line="+1"/>
       <source>Loft...</source>
-      <translation>Loft...</translation>
+      <translation>Ausformung...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Utility to loft</source>
-      <translation>Loft-Werkzeug</translation>
+      <translation>Ausformungs-Werkzeug</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
@@ -1737,8 +1737,12 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Erzeuge Fläche aus einem Satz von Linien (z.B. aus einer Zeichnung)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
-      <translation>Part_MakeFace: Erzeuge Fläche aus Menge von Kantenzügen (z.B. aus einer Skizze).</translation>
+      <translation>Part_MakeFace: Erzeuge Fläche aus einem Satz von Linien (z.B. aus einer Zeichnung).</translation>
     </message>
     <message>
       <source>Make face from sketch</source>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -2113,7 +2117,7 @@
     </message>
     <message>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Das Dokument '%1' existiert nicht.</translation>
     </message>
   </context>
   <context>
@@ -2173,11 +2177,19 @@
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Befestigungsversatz-Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Befestigungsversatz:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation>Spiegelung der SuperPlacement-Eigenschaft. Zusätzliche Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>Extra placement:</source>
       <translation>Zusätzliche Platzierung:</translation>
     </message>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Kanten abschrägen</translation>
     </message>
@@ -2557,7 +2569,7 @@
     <message>
       <location line="+241"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Das Dokument '%1' existiert nicht.</translation>
     </message>
     <message>
       <location line="+48"/>
@@ -2680,7 +2692,7 @@
       <translation>Keine Auswahl</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Länge:</translation>
     </message>
@@ -2701,12 +2713,12 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Startlänge</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Endlänge</translation>
     </message>
@@ -2717,17 +2729,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Start-Radius</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>End-Radius</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Länge</translation>
     </message>
@@ -2759,13 +2771,13 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
       <translation>Keine</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Kante%1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Keine Form gewählt</translation>
     </message>
@@ -2831,7 +2843,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+13"/>
       <source>Import</source>
-      <translation>Import</translation>
+      <translation>Importieren</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2867,7 +2879,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Exportieren</translation>
     </message>
@@ -2902,7 +2914,22 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Kurven im Parameterraum der Oberfläche ausgeben</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Importieren</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>Wenn aktiviert, werden beim Lesen der Datei keine Körper zusammengeführt (langsamer, aber höhere Details).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>Zusammenführung von Flächenverbünden in STEP aktivieren</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Kopfzeile</translation>
     </message>
@@ -3991,7 +4018,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+1"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Ausformung</translation>
     </message>
     <message>
       <location line="-63"/>
@@ -4001,12 +4028,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Verfügbare Profile</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Ausgewählte Profile</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -4218,12 +4245,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Verfügbare Profile</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Ausgewählte Profile</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4311,12 +4338,20 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Befestigungsversatz-Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Befestigungsversatz:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation>Spiegelung der SuperPlacement-Eigenschaft. Zusätzliche Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
       <source>Extra placement:</source>
       <translation>Zusätzliche Platzierung:</translation>
     </message>
@@ -4382,11 +4417,20 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Befestigungsversatz (Inaktiv - nicht gebunden):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>Nicht editierbar, da der Rotationsteil des Befestigungsversatzes durch Ausdrücke gebunden ist.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation>Zusätzliche Platzierung (inaktiv - nicht gebunden):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
@@ -4411,19 +4455,18 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Referenz%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation>Nicht bearbeitbar, da Rotationsanteil des SuperPlacements durch Ausdrücke gebunden ist.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Referenz-Kombinationen:
 </translation>
     </message>
     <message>
@@ -4446,7 +4489,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Form-Inhalt</translation>
     </message>
@@ -4454,7 +4497,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Geometrie überprüfen</translation>
     </message>
@@ -4627,7 +4670,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskAttacher.cpp" line="+217"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>Bezugspunkt Dialog: Eingabefehler</translation>
     </message>
   </context>
   <context>
@@ -4663,7 +4706,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Ausformung</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
@@ -4910,7 +4953,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>"Bull's-eye" Flächenersteller</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4920,7 +4963,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Käse Flächenersteller</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4930,7 +4973,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Bauteil-Aufdicken-Flächenersteller</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4941,23 +4984,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Wählen Sie bitte zwei Formen.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4982,7 +5025,7 @@ Do you want to continue?</source>
       <translation>Bitte wählen Sie zwei oder mehr Formen. Oder wählen Sie einen Verbund mit zwei oder mehr Formen, welche verbunden werden werden sollen.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Bitte wählen Sie mindestens eine Form.</translation>
     </message>
@@ -5082,7 +5125,7 @@ Do you want to continue?</source>
       <translation>Abgerundete Kanten bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Legen Sie Farben fest...</translation>
     </message>
@@ -5099,7 +5142,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Solid</source>
-      <translation>Volumenkörper</translation>
+      <translation>Vollkörper</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -5107,7 +5150,7 @@ Do you want to continue?</source>
       <translation>Hüllkörper</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Fläche</translation>
@@ -5373,7 +5416,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>"BOPAlgo_InvalidCurveOnSurface"</translation>
     </message>
     <message>
       <location line="+1"/>

@@ -23,7 +23,7 @@
 
 
 import FreeCAD as App
-import Units
+from FreeCAD import Units
 import TankInstance as Instance
 
 

@@ -79,7 +79,7 @@ QGIMatting::QGIMatting() :
 void QGIMatting::draw()
 {
     prepareGeometryChange();
-    double radiusFudge = 1.15;                    //keep slightly larger than fudge in App/DVDetail to prevent bleed through
+    double radiusFudge = 1.1;                    //keep slightly larger than fudge in App/DVDetail to prevent bleed through
     double outerRadius = m_radius * radiusFudge;
     m_width = outerRadius;
     m_height = outerRadius;
@@ -106,7 +106,7 @@ int QGIMatting::getHoleStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 1l);
+    int style = hGrp->GetInt("MattingStyle", 0l);
     return style;
 }
 

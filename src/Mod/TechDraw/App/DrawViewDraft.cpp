@@ -52,6 +52,7 @@ DrawViewDraft::DrawViewDraft(void)
     static const char *group = "Draft view";
 
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Draft object for this view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0),group,App::Prop_None,"Projection direction. The direction you are looking from.");
@@ -140,6 +141,75 @@ std::string DrawViewDraft::getSVGTail(void)
 {
     std::string tail = "\\n</svg>";
     return tail;
+}
+
+//DVD is still compatible with old Source PropertyLink so doesn't need DV::Restore logic
+void DrawViewDraft::Restore(Base::XMLReader &reader)
+{
+// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
+// fcstd files with old property types in use. 
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* schemaProp = getPropertyByName(PropName);
+        try {
+            if(schemaProp){
+                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
+                    schemaProp->Restore(reader);                                      //nothing special to do
+                } else if (strcmp(PropName, "Source") == 0) {
+                    App::PropertyLinkGlobal glink;
+                    App::PropertyLink link;
+                    if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+                        glink.setContainer(this);
+                        glink.Restore(reader);
+                        if (glink.getValue() != nullptr) {
+                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
+                            static_cast<App::PropertyLink*>(schemaProp)->setValue(glink.getValue());
+                        }
+                    } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+                        link.setContainer(this);
+                        link.Restore(reader);
+                        if (link.getValue() != nullptr) {
+                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
+                            static_cast<App::PropertyLink*>(schemaProp)->setValue(link.getValue());
+                        }
+                    
+                    } else {
+                        // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
+                        Base::Console().Log("DrawViewDraft::Restore - old Document Source is weird: %s\n", TypeName);
+                        // no idea
+                    }
+                } else {
+                    Base::Console().Log("DrawViewDraft::Restore - old Document has unknown Property\n");
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
+
 }
 
 // Python Drawing feature ---------------------------------------------------------

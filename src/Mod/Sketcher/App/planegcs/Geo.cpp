@@ -613,6 +613,12 @@ DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
     // place holder
     DeriVector2 ret;
     
+    // even if this method is call CalculateNormal, the returned vector is not the normal strictu sensus
+    // but a normal vector, where the vector should point to the left when one walks along the curve from 
+    // start to end.
+    //
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=26312#p209486
+    
     if (mult[0] > degree && mult[mult.size()-1] > degree) {
     // if endpoints through end poles    
         if(*p.x == *start.x && *p.y == *start.y) {
@@ -620,30 +626,18 @@ DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
             // then tangency is defined by first to second poles
             DeriVector2 endpt(this->poles[1], derivparam);
             DeriVector2 spt(this->poles[0], derivparam);
-            DeriVector2 npt(this->poles[2], derivparam); // next pole to decide normal direction
             
             DeriVector2 tg = endpt.subtr(spt);
-            DeriVector2 nv = npt.subtr(spt);
-            
-            if ( tg.scalarProd(nv) > 0 )
-                ret = tg.rotate90cw();
-            else
-                ret = tg.rotate90ccw();
+            ret = tg.rotate90ccw();
         }
         else if(*p.x == *end.x && *p.y == *end.y) {
             // and you are asking about the normal at end point
             // then tangency is defined by last to last but one poles
             DeriVector2 endpt(this->poles[poles.size()-1], derivparam);
             DeriVector2 spt(this->poles[poles.size()-2], derivparam);
-            DeriVector2 npt(this->poles[poles.size()-3], derivparam); // next pole to decide normal direction
             
             DeriVector2 tg = endpt.subtr(spt);
-            DeriVector2 nv = npt.subtr(spt);
-            
-            if ( tg.scalarProd(nv) > 0 )
-                ret = tg.rotate90ccw();
-            else
-                ret = tg.rotate90cw();
+            ret = tg.rotate90ccw();
         } else {
            // another point and we have no clue until we implement De Boor
             ret = DeriVector2();

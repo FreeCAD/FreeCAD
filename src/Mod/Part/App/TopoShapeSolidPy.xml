@@ -82,12 +82,14 @@ shape if the solid has no shells</UserDocu>
     </Attribute>
     <Methode Name="getMomentOfInertia">
       <Documentation>
-        <UserDocu>computes the moment of inertia of the material system about the axis A.</UserDocu>
+        <UserDocu>computes the moment of inertia of the material system about the axis A.
+mySolid.getMomentOfInertia( point, direction )</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getRadiusOfGyration">
       <Documentation>
-        <UserDocu>Returns the radius of gyration of the current system about the axis A.</UserDocu>
+        <UserDocu>Returns the radius of gyration of the current system about the axis A.
+mySolid.getRadiusOfGyration( point, direction )</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="offsetFaces" ReadOnly="true">

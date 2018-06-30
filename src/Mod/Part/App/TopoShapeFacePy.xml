@@ -19,7 +19,16 @@
 				<UserDocu>Offset the face by a given amount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="tangentAt" Const="true">
+        <Methode Name="getUVNodes" Const="true">
+            <Documentation>
+                <UserDocu>
+getUVNodes() --&gt; list
+Get the list of (u,v) nodes of the tessellation
+An exception is raised if the face is not triangulated.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="tangentAt" Const="true">
 			<Documentation>
 				<UserDocu>Get the tangent in u and v isoparametric at the given point if defined</UserDocu>
 			</Documentation>

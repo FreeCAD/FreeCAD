@@ -97,9 +97,13 @@ char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
 
+//NOTE: this is not shown in toolbar and doesn't always work right in the menu. 
+//      should be removed. 
 //===========================================================================
 // TechDraw_NewDimension
 //===========================================================================
+
+// this is deprecated. use individual add dimension commands.
 
 DEF_STD_CMD_A(CmdTechDrawNewDimension);
 
@@ -108,7 +112,7 @@ CmdTechDrawNewDimension::CmdTechDrawNewDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a dimension into a drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
     sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
@@ -210,6 +214,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -234,9 +239,9 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new radius dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
-    sWhatsThis      = "TechDraw_NewRadiusDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
+    sWhatsThis      = "TechDraw_Dimension_Radius";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Radius";
 }
@@ -297,6 +302,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -321,9 +327,9 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
-    sWhatsThis      = "TechDraw_NewDiameterDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
+    sWhatsThis      = "TechDraw_Dimension_Diameter";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Diameter";
 }
@@ -384,6 +390,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -408,9 +415,9 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new length dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new length dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
-    sWhatsThis      = "TechDraw_NewLengthDimension";
+    sWhatsThis      = "TechDraw_Dimension_Length";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Length";
 }
@@ -492,6 +499,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -516,9 +524,9 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceXDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
+    sWhatsThis      = "TechDraw_Dimension_Horizontal";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Horizontal";
 }
@@ -600,6 +608,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -624,9 +633,9 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceYDimension";
+    sWhatsThis      = "TechDraw_Dimension_Vertical";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Vertical";
 }
@@ -707,6 +716,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -731,9 +741,9 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new angle dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
-    sWhatsThis      = "TechDraw_NewAngleDimension";
+    sWhatsThis      = "TechDraw_Dimension_Angle";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Angle";
 }
@@ -794,6 +804,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
+    dim->recomputeFeature();
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -822,7 +833,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Link a dimension to 3D geometry");
     sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
-    sWhatsThis      = "TechDraw_LinkDimension";
+    sWhatsThis      = "TechDraw_Dimension_Link";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Link";
 }
@@ -994,11 +1005,11 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                     edgeType = isDiagonal;
                 }
             } else if (geom->geomType == TechDrawGeometry::CIRCLE ||
-                       geom->geomType == TechDrawGeometry::ELLIPSE ||
-                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ||
-                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ) {
+                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ) {
                 edgeType = isCircle;
-            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
+            } else if (geom->geomType == TechDrawGeometry::ELLIPSE ||
+                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ||
+                       geom->geomType == TechDrawGeometry::BSPLINE) {
                 edgeType = isCurve;
             } else {
                 edgeType = isInvalid;

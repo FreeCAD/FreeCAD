@@ -176,6 +176,7 @@ void View3DInventorPy::init_type()
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
     add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+    add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
 
 }
@@ -210,13 +211,13 @@ PyObject *View3DInventorPy::method_varargs_ext_handler(PyObject *_self_and_name_
         return pycxx_handler(_self_and_name_tuple, _args);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -274,13 +275,13 @@ Py::Object View3DInventorPy::message(const Py::Tuple& args)
         _view->onMsg(psMsgStr,ppReturn);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
 }
@@ -295,13 +296,13 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
         _view->getViewer()->viewAll((float)factor);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
 }
@@ -328,13 +329,13 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(0, -1, 0, 0));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -350,13 +351,13 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(-root, 0, 0, -root));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -371,13 +372,13 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -393,13 +394,13 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(0, root, root, 0));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -414,13 +415,13 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -435,13 +436,13 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
         _view->getViewer()->setCameraOrientation(SbRotation(0, 0, 0, 1));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -470,13 +471,13 @@ Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
              (0.424708f, 0.17592f, 0.339851f, 0.820473f));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -496,13 +497,13 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -522,13 +523,13 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -543,13 +544,13 @@ Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
         _view->getViewer()->navigationStyle()->zoomIn();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -564,13 +565,13 @@ Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
         _view->getViewer()->navigationStyle()->zoomOut();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -606,13 +607,13 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
         throw; // re-throw
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -695,43 +696,6 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
     return Py::Boolean(ok ? true : false);
 }
 
-void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
-{
-    View3DInventorViewer* viewer = _view->getViewer();
-    static_cast<QtGLWidget*>(viewer->getGLWidget())->makeCurrent();
-
-    const QtGLContext* context = QtGLContext::currentContext();
-    if (!context) {
-        Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
-        return;
-    }
-#if QT_VERSION >= 0x040600
-    QtGLFramebufferObjectFormat format;
-    format.setSamples(8);
-    format.setAttachment(QtGLFramebufferObject::Depth);
-#if defined(HAVE_QT5_OPENGL)
-    format.setInternalTextureFormat(GL_RGB32F_ARB);
-#else
-    format.setInternalTextureFormat(GL_RGB);
-#endif
-    QtGLFramebufferObject fbo(width, height, format);
-#else
-    QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
-#endif
-    const QColor col = viewer->backgroundColor();
-    bool on = viewer->hasGradientBackground();
-
-    if (bgcolor.isValid()) {
-        viewer->setBackgroundColor(bgcolor);
-        viewer->setGradientBackground(false);
-    }
-
-    viewer->renderToFramebuffer(&fbo);
-    viewer->setBackgroundColor(col);
-    viewer->setGradientBackground(on);
-    img = fbo.toImage();
-}
-
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
@@ -755,23 +719,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-#if !defined(HAVE_QT5_OPENGL)
-    bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
-#else
-    bool pbuffer = false;
-#endif
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
-        createImageFromFramebuffer(w, h, bg, img);
-    }
-    else {
-        try {
-            _view->getViewer()->savePicture(w, h, bg, img);
-        }
-        catch (const Base::Exception&) {
-            createImageFromFramebuffer(w, h, bg, img);
-        }
-    }
+    _view->getViewer()->savePicture(w, h, 8, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
@@ -802,14 +750,14 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
         vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
     }
     else {
-        throw Py::Exception("Not supported vector graphic");
+        throw Py::RuntimeError("Not supported vector graphic");
     }
 
     SoVectorOutput * out = vo->getOutput();
     if (!out || !out->openFile(filename)) {
         std::ostringstream a_out;
         a_out << "Cannot open file '" << filename << "'";
-        throw Py::Exception(a_out.str());
+        throw Py::RuntimeError(a_out.str());
     }
 
     QColor bg;
@@ -841,7 +789,7 @@ Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -862,13 +810,13 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
         return Py::String(buffer);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -881,13 +829,13 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
         return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -915,13 +863,13 @@ Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
         throw; // re-throw
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
@@ -940,13 +888,13 @@ Py::Object View3DInventorPy::setCamera(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -960,7 +908,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
 
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) {
-        throw Py::Exception("No camera set!");
+        throw Py::RuntimeError("No camera set!");
     }
     else if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         return Py::String(CameraTypeEnums[0]);
@@ -969,7 +917,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
         return Py::String(CameraTypeEnums[1]);
     }
     else {
-        throw Py::Exception("Unknown camera type");
+        throw Py::TypeError("Unknown camera type");
     }
 }
 
@@ -997,7 +945,7 @@ Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
     }
 
     if (cameratype < 0 || cameratype > 1)
-        throw Py::Exception("Out of range");
+        throw Py::IndexError("Out of range");
     if (cameratype==0)
         _view->getViewer()->setCameraType(SoOrthographicCamera::getClassTypeId());
     else
@@ -1018,13 +966,13 @@ Py::Object View3DInventorPy::listCameraTypes(const Py::Tuple& args)
         return list;
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -1039,13 +987,13 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -1060,7 +1008,7 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", object, &ptr, 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     SoNode* node = reinterpret_cast<SoNode*>(ptr);
     return Py::String(SoFCDB::writeNodesToString(node));
@@ -1094,19 +1042,19 @@ Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
 
     try {
         if (stereomode < 0 || stereomode > 4)
-            throw Py::Exception("Out of range");
+            throw Py::IndexError("Out of range");
         Quarter::SoQTQuarterAdaptor::StereoMode mode = Quarter::SoQTQuarterAdaptor::StereoMode(stereomode);
         _view->getViewer()->setStereoMode(mode);
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -1120,13 +1068,13 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         return Py::String(StereoTypeEnums[mode]);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -1144,13 +1092,13 @@ Py::Object View3DInventorPy::listStereoTypes(const Py::Tuple& args)
         return list;
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -1205,20 +1153,34 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("y", Py::Float(pt[1]));
             dict.setItem("z", Py::Float(pt[2]));
 
-            ViewProvider *vp = _view->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            Gui::Document* doc = _view->getViewer()->getDocument();
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
+                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 dict.setItem("Document",
                     Py::String(vpd->getObject()->getDocument()->getName()));
                 dict.setItem("Object",
                     Py::String(vpd->getObject()->getNameInDocument()));
-                dict.setItem("Component",
-                    Py::String(vpd->getElement(Point->getDetail())));
+                if (vp->useNewSelectionModel()) {
+                    dict.setItem("Component",
+                        Py::String(vpd->getElement(Point->getDetail())));
+                }
+                else {
+                    // search for a SoFCSelection node
+                    SoFCDocumentObjectAction objaction;
+                    objaction.apply(Point->getPath());
+                    if (objaction.isHandled()) {
+                        dict.setItem("Component",
+                            Py::String(objaction.componentName.getString()));
+                    }
+                }
+
                 // ok, found the node of interest
                 ret = dict;
             }
             else {
-                // search for a SoFCSelection node
+                // custom nodes not in a VP: search for a SoFCSelection node
                 SoFCDocumentObjectAction objaction;
                 objaction.apply(Point->getPath());
                 if (objaction.isHandled()) {
@@ -1269,6 +1231,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
+        Gui::Document* doc = _view->getViewer()->getDocument();
         Py::Object ret = Py::None();
         if (pp.getLength() > 0) {
             Py::List list;
@@ -1280,20 +1243,32 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = _view->getViewer()->getViewProviderByPath(point->getPath());
-                if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
+                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
+                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                     dict.setItem("Document",
                         Py::String(vpd->getObject()->getDocument()->getName()));
                     dict.setItem("Object",
                         Py::String(vpd->getObject()->getNameInDocument()));
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(point->getDetail())));
+                    if (vp->useNewSelectionModel()) {
+                        dict.setItem("Component",
+                            Py::String(vpd->getElement(point->getDetail())));
+                    }
+                    else {
+                        // search for a SoFCSelection node
+                        SoFCDocumentObjectAction objaction;
+                        objaction.apply(point->getPath());
+                        if (objaction.isHandled()) {
+                            dict.setItem("Component",
+                                Py::String(objaction.componentName.getString()));
+                        }
+                    }
                     // ok, found the node of interest
                     list.append(dict);
                 }
                 else {
-                    // search for a SoFCSelection node
+                    // custom nodes not in a VP: search for a SoFCSelection node
                     SoFCDocumentObjectAction objaction;
                     objaction.apply(point->getPath());
                     if (objaction.isHandled()) {
@@ -1304,7 +1279,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                         dict.setItem("Component",
                             Py::String(objaction.componentName.getString()));
                         // ok, found the node of interest
-                        list.append(dict);
+                        ret = dict;
                     }
                 }
             }
@@ -1349,7 +1324,7 @@ Py::Object View3DInventorPy::getPoint(const Py::Tuple& args)
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception&) {
         throw;
@@ -1369,7 +1344,7 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
     else {
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "ddd", &vx,&vy,&vz)) {
-            throw Py::Exception("Wrong argument, Vector or three floats expected expected");
+            throw Py::TypeError("Wrong argument, Vector or three floats expected expected");
         }
     }
 
@@ -1399,7 +1374,7 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
         return tuple;
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception&) {
         throw;
@@ -1796,14 +1771,14 @@ Py::Object View3DInventorPy::addEventCallback(const Py::Tuple& args)
         throw Py::Exception();
     try {
         if (PyCallable_Check(method) == 0) {
-            throw Py::Exception("object is not callable");
+            throw Py::TypeError("object is not callable");
         }
         SoType eventId = SoType::fromName(eventtype);
         if (eventId.isBad() || !eventId.isDerivedFrom(SoEvent::getClassTypeId())) {
             std::string s;
             std::ostringstream s_out;
             s_out << eventtype << " is not a valid event type";
-            throw Py::Exception(s_out.str());
+            throw Py::TypeError(s_out.str());
         }
 
         _view->getViewer()->addEventCallback(eventId, View3DInventorPy::eventCallback, method);
@@ -1824,14 +1799,14 @@ Py::Object View3DInventorPy::removeEventCallback(const Py::Tuple& args)
         throw Py::Exception();
     try {
         if (PyCallable_Check(method) == 0) {
-            throw Py::Exception("object is not callable");
+            throw Py::RuntimeError("object is not callable");
         }
         SoType eventId = SoType::fromName(eventtype);
         if (eventId.isBad() || !eventId.isDerivedFrom(SoEvent::getClassTypeId())) {
             std::string s;
             std::ostringstream s_out;
             s_out << eventtype << " is not a valid event type";
-            throw Py::Exception(s_out.str());
+            throw Py::TypeError(s_out.str());
         }
 
         _view->getViewer()->removeEventCallback(eventId, View3DInventorPy::eventCallback, method);
@@ -1856,7 +1831,7 @@ Py::Object View3DInventorPy::setAnnotation(const Py::Tuple& args)
     }
     catch (const Base::Exception& e) {
         delete view;
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 
     _view->getGuiDocument()->setAnnotationViewProvider(psAnnoName, view);
@@ -1895,7 +1870,7 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -1989,7 +1964,7 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 
     SoType* eventId = reinterpret_cast<SoType*>(ptr);
@@ -1997,12 +1972,12 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
         std::string s;
         std::ostringstream s_out;
         s_out << eventId->getName().getString() << "is not a valid event type";
-        throw Py::Exception(s_out.str());
+        throw Py::TypeError(s_out.str());
     }
 
     try {
         if (PyCallable_Check(method) == 0) {
-            throw Py::Exception("object is not callable");
+            throw Py::TypeError("object is not callable");
         }
 
         SoEventCallbackCB* callback = (ex == 1 ? 
@@ -2031,7 +2006,7 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 
     SoType* eventId = reinterpret_cast<SoType*>(ptr);
@@ -2039,12 +2014,12 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
         std::string s;
         std::ostringstream s_out;
         s_out << eventId->getName().getString() << "is not a valid event type";
-        throw Py::Exception(s_out.str());
+        throw Py::TypeError(s_out.str());
     }
 
     try {
         if (PyCallable_Check(method) == 0) {
-            throw Py::Exception("object is not callable");
+            throw Py::TypeError("object is not callable");
         }
 
         SoEventCallbackCB* callback = (ex == 1 ? 
@@ -2091,7 +2066,7 @@ void View3DInventorPy::draggerCallback(void * ud, SoDragger* n)
         method.apply(args);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception& e) {
         Py::Object o = Py::type(e);
@@ -2123,13 +2098,13 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
     }
     catch (const Base::Exception&) {
-        throw Py::Exception("The first argument must be of type SoDragger");
+        throw Py::TypeError("The first argument must be of type SoDragger");
     }
     SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
 
     //Check if method is callable
     if (PyCallable_Check(method) == 0) {
-        throw Py::Exception("the method is not callable");
+        throw Py::TypeError("the method is not callable");
     }
 
     try {
@@ -2149,7 +2124,7 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
             std::string s;
             std::ostringstream s_out;
             s_out << type << " is not a valid dragger callback type";
-            throw Py::Exception(s_out.str());
+            throw Py::TypeError(s_out.str());
         }
 
         callbacks.push_back(method);
@@ -2175,7 +2150,7 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
     }
     catch (const Base::Exception&) {
-        throw Py::Exception("The first argument must be of type SoDragger");
+        throw Py::TypeError("The first argument must be of type SoDragger");
     }
 
     SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
@@ -2196,7 +2171,7 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
             std::string s;
             std::ostringstream s_out;
             s_out << type << " is not a valid dragger callback type";
-            throw Py::Exception(s_out.str());
+            throw Py::TypeError(s_out.str());
         }
 
         callbacks.remove(method);
@@ -2210,38 +2185,52 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-	PyObject* docObject = 0;
-	char* name;
-	
-        //allow reset of active object by setting "None"
-        if( args.length() == 2 && args.back() == Py::None() ) {
-            PyArg_Parse(args.front().ptr(), "s", &name);
-            _view->setActiveObject(NULL, name);
-            return Py::None();
-        }
-        
-        if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
-		throw Py::Exception();
-                
+    PyObject* docObject = 0;
+    char* name;
 
-	if (docObject){
-		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-		_view->setActiveObject(obj, name);
-	}
-	return Py::None();
+    //allow reset of active object by setting "None"
+    if (args.length() == 2 && args.back() == Py::None()) {
+        PyArg_Parse(args.front().ptr(), "s", &name);
+        _view->setActiveObject(NULL, name);
+        return Py::None();
+    }
+
+    if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
+        throw Py::Exception();
+
+    if (docObject){
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+        _view->setActiveObject(obj, name);
+    }
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
 {
     char* name;
     if (!PyArg_ParseTuple(args.ptr(), "s", &name))
-                throw Py::Exception();
-    
+        throw Py::Exception();
+
     App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
     if(!obj)
         return Py::None();
-    
+
     return Py::Object(obj->getPyObject());
+}
+
+Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+        throw Py::Exception();
+
+    std::vector<ViewProvider*> vps = _view->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
+    Py::List list;
+    for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
+        list.append(Py::asObject((*it)->getPyObject()));
+    }
+
+    return list;
 }
 
 Py::Object View3DInventorPy::redraw(const Py::Tuple& args)

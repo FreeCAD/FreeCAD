@@ -33,7 +33,7 @@ from . import run
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    import PyGui._TaskPanelFemSolverControl
+    from femguiobjects import _TaskPanelFemSolverControl
 
 
 class Proxy(object):
@@ -91,7 +91,7 @@ class ViewProxy(object):
                 "Can't open Task Panel",
                 "Selected working directory doesn't exist.")
             return False
-        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        task = _TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
 

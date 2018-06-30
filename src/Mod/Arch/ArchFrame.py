@@ -35,7 +35,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchFrame
 #  \ingroup ARCH
 #  \brief The Frame object and tools
@@ -48,12 +48,15 @@ __title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# Possible roles for frames
-Roles = ['Undefined','Covering','Member','Railing','Shading Device','Tendon']
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
+
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
     _Frame(obj)
@@ -67,19 +70,24 @@ def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
             profile.ViewObject.hide()
     return obj
 
+
 class _CommandFrame:
+
     "the Arch Frame command definition"
 
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Frame',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
                 'Accel': "F, R",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 2:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Frame"))
@@ -92,29 +100,47 @@ class _CommandFrame:
 
 
 class _Frame(ArchComponent.Component):
+
     "A parametric frame object"
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"))
-        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"))
-        obj.addProperty("App::PropertyVectorDistance","Offset","Arch",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"))
-        obj.addProperty("App::PropertyInteger","BasePoint","Arch",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
-        obj.addProperty("App::PropertyPlacement","ProfilePlacement","Arch",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"))
-        obj.addProperty("App::PropertyAngle","Rotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
-        obj.addProperty("App::PropertyEnumeration","Edges","Arch",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"))
-        obj.addProperty("App::PropertyBool","Fuse","Arch",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
+        self.setProperties(obj)
+        obj.IfcRole = "Railing"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Profile" in pl:
+            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"))
+        if not "Align" in pl:
+            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"))
+            obj.Align = True
+        if not "Offset" in pl:
+            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"))
+        if not "BasePoint" in pl:
+            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
+        if not "ProfilePlacement" in pl:
+            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"))
+        if not "Rotation" in pl:
+            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
+        if not "Edges" in pl:
+            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"))
+            obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
+        if not "Fuse" in pl:
+            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
         self.Type = "Frame"
-        obj.Align = True
-        obj.Role = Roles
-        obj.Role = "Railing"
-        obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-        
+
         if not obj.Base:
             return
         if not obj.Base.Shape:
@@ -191,7 +217,7 @@ class _Frame(ArchComponent.Component):
                     try:
                         basepoint = basepointliste[obj.BasePoint]
                     except IndexError:
-                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.\n"))
+                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.")+"\n")
                         basepoint = basepointliste[0]
                 else :
                     basepoint = profile.CenterOfMass
@@ -225,21 +251,26 @@ class _Frame(ArchComponent.Component):
 
 
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
+
     "A View Provider for the Frame object"
 
     def __init__(self,vobj):
+
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):
+
         import Arch_rc
         return ":/icons/Arch_Frame_Tree.svg"
 
     def claimChildren(self):
+
         p = []
         if hasattr(self,"Object"):
             if self.Object.Profile:
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Frame',_CommandFrame())

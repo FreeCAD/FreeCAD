@@ -92,6 +92,12 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
+    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+
+    //init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 short ProfileBased::mustExecute() const
@@ -436,10 +442,28 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             }
         }
 
+        // It must also be checked that all projected inner wires of the upToFace
+        // lie outside the sketch shape. If this is not the case then the sketch
+        // shape is not completely covered by the upToFace. See #0003141
+        if (!remove_limits) {
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(upToFace);
+            for (Ex.Init(upToFace, TopAbs_WIRE); Ex.More(); Ex.Next()) {
+                if (!outerWire.IsSame(Ex.Current())) {
+                    BRepProj_Projection proj(TopoDS::Wire(Ex.Current()), sketchshape, -dir);
+                    if (proj.More()) {
+                        remove_limits = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         if (remove_limits) {
             // Note: Using an unlimited face every time gives unnecessary failures for concave faces
             TopLoc_Location loc = upToFace.Location();
             BRepAdaptor_Surface adapt(upToFace, Standard_False);
+            // use the placement of the adapter, not of the upToFace
+            loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
     #if OCC_VERSION_HEX >= 0x060502
                   , Precision::Confusion()
@@ -644,7 +668,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
     int intersections = 0;
     std::vector<gp_Pnt> intersectionpoints;
 
-    // Note: We need to look at evey edge separately to catch coincident lines
+    // Note: We need to look at every edge separately to catch coincident lines
     for (ex.Init(outerWire, TopAbs_EDGE); ex.More(); ex.Next()) {
         BRepAdaptor_Curve edge(TopoDS::Edge(ex.Current()));
         Extrema_ExtCC intersector(axis, edge);
@@ -1021,9 +1045,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
 
 TopoDS_Shape ProfileBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    if (hGrp->GetBool("RefineModel", false)) {
+    if (this->Refine.getValue()) {
         try {
             Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
             TopoDS_Shape resShape = mkRefine.Shape();

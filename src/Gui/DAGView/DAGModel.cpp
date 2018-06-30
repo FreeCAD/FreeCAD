@@ -133,7 +133,9 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   renameAction = new QAction(this);
   renameAction->setText(tr("Rename"));
   renameAction->setStatusTip(tr("Rename object"));
+#ifndef Q_OS_MAC
   renameAction->setShortcut(Qt::Key_F2);
+#endif
   connect(renameAction, SIGNAL(triggered()), this, SLOT(onRenameSlot()));
   
   editingFinishedAction = new QAction(this);

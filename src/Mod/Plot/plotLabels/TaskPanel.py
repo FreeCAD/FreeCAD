@@ -110,7 +110,7 @@ class TaskPanel:
         return False
 
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i

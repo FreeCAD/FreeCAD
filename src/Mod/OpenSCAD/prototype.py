@@ -63,7 +63,7 @@ class Node:
         return bool(self.name or self.arguments or self.children)
 
     def __len__(self):
-        '''return the numer of children'''
+        '''return the number of children'''
         return len(self.children)
 
     def __getitem__(self,key):

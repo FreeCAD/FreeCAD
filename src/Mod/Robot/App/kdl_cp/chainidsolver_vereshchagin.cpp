@@ -91,7 +91,7 @@ void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const 
         //Put Z in the joint root reference frame:
         s.Z = s.F * s.Z;
 
-        //The total velocity of the segment expressed in the the segments reference frame (tip)
+        //The total velocity of the segment expressed in the segments reference frame (tip)
         if (i != 0)
         {
             s.v = s.F.Inverse(results[i].v) + vj; // recursive velocity of each link in segment frame

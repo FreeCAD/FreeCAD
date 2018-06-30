@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Показать таблицу</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Установить цвет переднего плана ячеек</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Задает цвет переднего плана ячеек таблицы</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Установить цвет фона ячеек</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Задает цвет фона ячеек таблицы</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

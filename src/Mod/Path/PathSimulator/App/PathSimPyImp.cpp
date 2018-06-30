@@ -85,12 +85,17 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 	if (!PyArg_ParseTuple(args, ""))
 		return 0;
 	cStock *stock = getPathSimPtr()->m_stock;
+	if (stock == NULL)
+	{
+		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");
+		return 0;
+	}
 
 	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
 	Mesh::MeshPy *meshOuterpy = new Mesh::MeshPy(meshOuter);
 	Mesh::MeshObject *meshInner = new Mesh::MeshObject();
 	Mesh::MeshPy *meshInnerpy = new Mesh::MeshPy(meshInner);
-	stock->Tesselate(*meshOuter, *meshInner);
+	stock->Tessellate(*meshOuter, *meshInner);
 	PyObject *tuple = PyTuple_New(2);
 	PyTuple_SetItem(tuple, 0, meshOuterpy);
 	PyTuple_SetItem(tuple, 1, meshInnerpy);

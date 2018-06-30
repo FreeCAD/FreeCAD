@@ -101,8 +101,8 @@ class PyObjectBase;
 /** Python Object handle class
  *  Using pointers on classes derived from PyObjectBase would
  *  be potentionaly dangerous because you would have to take
- *  care of the referenc counting of python by your self. There
- *  fore this class was designd. It takes care of references and
+ *  care of the reference counting of python by your self. Hence
+ *  this class was designed. It takes care of references and
  *  as long as a object of this class exists the handled class get
  *  not destructed. That means a PyObjectBase derived object you can
  *  only destruct by destructing all FCPyHandle and all python
@@ -135,7 +135,7 @@ public:
     }
 
     /** destructor
-     *  Release the referenc count which cause,
+     *  Release the reference count which cause,
      *  if was the last one, the referenced object to
      *  destruct!
      */

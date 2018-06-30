@@ -10,7 +10,7 @@ def replaceTemplate(dirName, oldName, newName):
 		pathName = os.path.join(dirName, file)
 		if not os.path.isdir(pathName):
 			try:
-				print pathName
+				print(pathName)
 				origFile = open(pathName)									# open file
 				lines = origFile.readlines()								# read the file...
 				origFile.close()											# ... and close it
@@ -21,14 +21,14 @@ def replaceTemplate(dirName, oldName, newName):
 					output.write(line)										# write the modified line back
 				output.close												# close the file
 			except:
-				print 'Error modifying', pathName, '--skipped'
-				print sys.exc_type, sys.exc_value
+				print('Error modifying', pathName, '--skipped')
+				print(sys.exc_info()[0], sys.exc_info()[1])
 		else:
 			try:
 				replaceTemplate(pathName, oldName, newName)
 			except:
-				print 'Error changing to directory', pathName, '--skipped'
-				print sys.exc_type, sys.exc_value
+				print('Error changing to directory', pathName, '--skipped')
+				print(sys.exc_info()[0], sys.exc_info()[1])
 
 
 def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
@@ -37,7 +37,7 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
 	"""
 	global dcount, fcount
 	for file in os.listdir(dirFrom):										# for files/dirs here
-		print file
+		print(file)
 		pathFrom = os.path.join(dirFrom, file)
 		pathTo   = os.path.join(dirTo,   file)								# extend both paths
 		if (string.find(pathTo, oldName) != -1):
@@ -49,15 +49,15 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
 					hit = 1
 					break
 			if hit:
-				print 'Ignore file '+file
+				print('Ignore file '+file)
 				continue
 			try:
-				if verbose > 1: print 'copying', pathFrom, 'to', pathTo
+				if verbose > 1: print('copying', pathFrom, 'to', pathTo)
 				FCFileTools.cpfile(pathFrom, pathTo)
 				fcount = fcount+1
 			except:
-				print 'Error copying', pathFrom, 'to', pathTo, '--skipped'
-				print sys.exc_type, sys.exc_value
+				print('Error copying', pathFrom, 'to', pathTo, '--skipped')
+				print(sys.exc_info()[0], sys.exc_info()[1])
 		else:
 			hit = 0
 			for matchpat in MatchDir:
@@ -65,13 +65,13 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
 					hit = 1
 					break
 			if hit:
-				print 'Ignore directory '+file
+				print('Ignore directory '+file)
 				continue
-			if verbose: print 'copying dir', pathFrom, 'to', pathTo
+			if verbose: print('copying dir', pathFrom, 'to', pathTo)
 			try:
 				os.mkdir(pathTo)																# make new subdir
 				copyTemplate(pathFrom, pathTo, oldName, newName, MatchFile, MatchDir)			# recur into subdirs
 				dcount = dcount+1
 			except:
-				print 'Error creating', pathTo, '--skipped'
-				print sys.exc_type, sys.exc_value
+				print('Error creating', pathTo, '--skipped')
+				print(sys.exc_info()[0], sys.exc_info()[1])

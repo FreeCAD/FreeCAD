@@ -85,14 +85,16 @@ public:
     //! Returns 2D bounding box
     Base::BoundBox3d calcBoundingBox() const;
 
-    const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; };
-    const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; };
+    const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; }
+    const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
     const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
-    const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; };
+    const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
 
     void projectShape(const TopoDS_Shape &input,
                       const gp_Ax2 viewAxis);
-
+    void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
+                                     const gp_Ax2 viewAxis);
+    
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();
@@ -100,6 +102,8 @@ public:
     void setParentName(std::string n);                          //for debug messages
     void isPerspective(bool b) { m_isPersp = b; }
     bool isPerspective(void) { return m_isPersp; }
+    void usePolygonHLR(bool b) { m_usePolygonHLR = b; }
+    bool usePolygonHLR(void) const { return m_usePolygonHLR; }
     void setFocus(double f) { m_focus = f; }
     double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
@@ -150,6 +154,7 @@ protected:
     int m_isoCount;
     bool m_isPersp;
     double m_focus;
+    bool m_usePolygonHLR;
 };
 
 } //namespace TechDrawGeometry

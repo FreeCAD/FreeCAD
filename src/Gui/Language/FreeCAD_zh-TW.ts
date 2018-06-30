@@ -127,10 +127,6 @@
       <translation>Spaceball行為</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>全域有效：</translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>主導模式</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>反向</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD能夠在此皆因這些人的貢獻：</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>版權</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2132,8 +2147,8 @@ Specify another directory, please.</source>
       <translation>儲存文件時縮圖儲存到專案檔</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>重新存檔時並建立備份檔案</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2655,8 +2670,8 @@ Specify another directory, please.</source>
       <translation>選取半徑 (px)：</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>設定於3D視圖中選取物件的範圍,較大可以使得選取較為方便,但同時也會使一些較小的特徵無法被選取。</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -3343,10 +3358,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>組合檢視</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>專案</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -5033,6 +5044,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6479,8 +6494,8 @@ Be aware the point where you click matters.</source>
       <translation>創建新視圖</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>創建活動文檔的一個新視圖視窗</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

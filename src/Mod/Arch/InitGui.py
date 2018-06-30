@@ -33,8 +33,8 @@ class ArchWorkbench(Workbench):
         from DraftTools import translate
 
         # arch tools
-        self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar",
-                     "Arch_Floor","Arch_Building","Arch_Site",
+        self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar","Arch_Floor",
+                     "Arch_BuildingPart","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
@@ -115,14 +115,14 @@ class ArchWorkbench(Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
-        Msg("Arch workbench activated\n")
+        Log("Arch workbench activated\n")
                 
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.hide()
-        Msg("Arch workbench deactivated\n")
+        Log("Arch workbench deactivated\n")
 
     def ContextMenu(self, recipient):
         self.appendContextMenu("Utilities",self.draftcontexttools)

@@ -1,5 +1,4 @@
-Changelog you find now here:
-http://www.freecadweb.org/tracker/changelog_page.php
+Note: Future changelog now located at: http://www.freecadweb.org/tracker/changelog_page.php
 
 Version: 0.14
   * Python path messed up after installation
@@ -62,7 +61,7 @@ Version: 0.14
   * Draft Dimensions due not observe Dimension Precision on FreeCAD Windows
   * invalid DXF export
   * Port wiki, phpbb and mantis to self-hosted
-  * Crash propably in MeshPart
+  * Crash probably in MeshPart
   * Part.BSplineCurve: allow to set degree and mutliplicites when calling constructor.
   * FeaturePython objects should be able to define how POVray output is generated
   * Losing Snap when Object is getting more complex.
@@ -608,7 +607,7 @@ Version: V0.1B109 Date: Mon Jan 24 11:13:15 2005 +++++++++++++++++++++++++++++++
     - SetStatus and GetStatus switch on or off the observer
 
 Version: V0.1B108 Date: Sat Jan 15 14:24:52 2005 +++++++++++++++++++++++++++++++
-  * Moved HtmlView to HelpView   * Reimplementaion
+  * Moved HtmlView to HelpView   * Reimplementation
   * Added class FileChooser ( line edit with button on its right side to browse)
   * Merged pref. page "Help viewer" and "Online Help" to one page
   * TextEdit class with completion
@@ -751,7 +750,7 @@ Version: V0.1B78 Date: Sun Nov 23 13:15:15 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B77 Date: Fri Nov 14 14:56:14 2003 +++++++++++++++++++++++++++++++
   * Finished Setup stuff
-  * Removed all relativ paths
+  * Removed all relative paths
   * config HomePath is now not in bin anymore
   * all config files one dir up
   * FC runs now from every directory
@@ -906,7 +905,7 @@ Version: V0.1B50 Date: Fri Apr 04 22:10:24 2003 +++++++++++++++++++++++++++++++
   * some work on the Linux port
 
 Version: V0.1B49 Date: Thu Apr 03 22:45:35 2003 +++++++++++++++++++++++++++++++
-  * Master redisign of the window system, not yet full working
+  * Master redesign of the window system, not yet full working
 
 Version: V0.1B48 Date: Sun Mar 30 15:06:23 2003 +++++++++++++++++++++++++++++++
   * Big patch from Werner about:
@@ -952,10 +951,10 @@ Version: V0.1B39 Date: Mon Mar 03 12:32:14 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B38 Date: Thu Feb 27 22:19:35 2003 +++++++++++++++++++++++++++++++
   * fix of memory leack in CmdBar (werner)
-  * start rebulding FCCommand framework
+  * start rebuilding FCCommand framework
 
 Version: V0.1B37 Date: Tue Feb 25 20:29:19 2003 +++++++++++++++++++++++++++++++
-  * massiv improved costomize dialog (werner)
+  * massively improved customize dialog (werner)
     - sorting position of toolbars
 
 Version: V0.1B36 Date: Sat Feb 22 18:12:19 2003 +++++++++++++++++++++++++++++++
@@ -1013,7 +1012,7 @@ Version: V0.1B26 Date: Tue Jan 21 05:59:01 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B25 Date: Sun Jan 19 18:20:51 2003 +++++++++++++++++++++++++++++++
   * Big Linux port patch from Vaclav
-    - some fixes on implicite type conversion (Vaclav)
+    - some fixes on implicit type conversion (Vaclav)
     - moving all .cxx to .cpp mainly in gui
     - moving DlgCusomizeImpl to Imp
     - and InitGui to GuiInit

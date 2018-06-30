@@ -21,43 +21,46 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import Draft
+# import Draft
 import FreeCAD
 import FreeCADGui
-import Path
-import PathScripts
-#import PathScripts.PathDressupTag as PathDressupTag
+# import Path
+# import PathScripts
+# import PathScripts.PathDressupTag as PathDressupTag
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.trackModule()
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 def addDebugDisplay():
     return PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
 
+
 class PathDressupTagTaskPanel:
-    DataX  = QtCore.Qt.ItemDataRole.UserRole
-    DataY  = QtCore.Qt.ItemDataRole.UserRole + 1
-    DataZ  = QtCore.Qt.ItemDataRole.UserRole + 2
+    DataX = QtCore.Qt.ItemDataRole.UserRole
+    DataY = QtCore.Qt.ItemDataRole.UserRole + 1
+    DataZ = QtCore.Qt.ItemDataRole.UserRole + 2
     DataID = QtCore.Qt.ItemDataRole.UserRole + 3
 
     def __init__(self, obj, viewProvider, jvoVisibility=None):
         self.obj = obj
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
-        self.form  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
         self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
@@ -116,15 +119,15 @@ class PathDressupTagTaskPanel:
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
             y = item.data(self.DataY)
-            #print("(%.2f, %.2f) i=%d/%s" % (x, y, i, index))
+            # print("(%.2f, %.2f) i=%d/%s" % (x, y, i, index))
             if includeCurrent or i != index:
                 tags.append((x, y, enabled))
         return tags
 
     def getFields(self):
-        width  = FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value
+        width = FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value
         height = FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value
-        angle  = self.form.dsbAngle.value()
+        angle = self.form.dsbAngle.value()
         radius = FreeCAD.Units.Quantity(self.form.ifRadius.text()).Value
 
         tags = self.getTags(True)
@@ -153,7 +156,6 @@ class PathDressupTagTaskPanel:
         if disabled != self.obj.Disabled:
             self.obj.Disabled = disabled
             self.isDirty = True
-
 
     def updateTagsView(self):
         PathLog.track()
@@ -185,7 +187,7 @@ class PathDressupTagTaskPanel:
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
         self.Positions = self.obj.Positions
-        self.Disabled  = self.obj.Disabled
+        self.Disabled = self.obj.Disabled
         self.updateTagsView()
 
     def updateModel(self):
@@ -214,7 +216,7 @@ class PathDressupTagTaskPanel:
     def updateTagsViewWith(self, tags):
         self.tags = tags
         self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in tags]
-        self.Disabled = [i for (i,t) in enumerate(self.tags) if not t[2]]
+        self.Disabled = [i for (i, t) in enumerate(self.tags) if not t[2]]
         self.updateTagsView()
 
     def deleteSelectedTag(self):
@@ -265,7 +267,7 @@ class PathDressupTagTaskPanel:
 
     def setupUi(self):
         self.Positions = self.obj.Positions
-        self.Disabled  = self.obj.Disabled
+        self.Disabled = self.obj.Disabled
 
         self.setFields()
         self.whenCountChanged()
@@ -285,7 +287,6 @@ class PathDressupTagTaskPanel:
         self.form.pbAdd.clicked.connect(self.addNewTag)
 
         self.viewProvider.turnMarkerDisplayOn(True)
-
 
 
 class HoldingTagMarker:
@@ -320,6 +321,7 @@ class HoldingTagMarker:
             self.material.diffuseColor = self.color[1] if not self.selected else self.color[2]
             self.material.transparency = 0.6
 
+
 class PathDressupTagViewProvider:
 
     def __init__(self, vobj):
@@ -331,9 +333,9 @@ class PathDressupTagViewProvider:
         self.debugDisplay()
 
     def debugDisplay(self):
-        #if False and addDebugDisplay():
+        # if False and addDebugDisplay():
         #    if not hasattr(self.vobj, 'Debug'):
-        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('PathDressup_TagGui', 'Some elements for debugging'))
+        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Some elements for debugging'))
         #        dbg = self.vobj.Object.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
         #        self.vobj.Debug = dbg
         #    return True
@@ -341,6 +343,7 @@ class PathDressupTagViewProvider:
 
     def __getstate__(self):
         return None
+
     def __setstate__(self, state):
         return None
 
@@ -351,9 +354,9 @@ class PathDressupTagViewProvider:
 
         pref = PathPreferences.preferences()
         #                                                      R         G          B          A
-        npc = pref.GetUnsigned('DefaultPathMarkerColor',    (( 85*256 + 255)*256 +   0)*256 + 255)
-        hpc = pref.GetUnsigned('DefaultHighlightPathColor', ((255*256 + 125)*256 +   0)*256 + 255)
-        dpc = pref.GetUnsigned('DefaultDisabledPathColor',  ((205*256 + 205)*256 + 205)*256 + 154)
+        npc = pref.GetUnsigned('DefaultPathMarkerColor', ((85*256 + 255)*256 + 0) * 256 + 255)
+        hpc = pref.GetUnsigned('DefaultHighlightPathColor', ((255*256 + 125)*256 + 0)*256 + 255)
+        dpc = pref.GetUnsigned('DefaultDisabledPathColor', ((205*256 + 205)*256 + 205)*256 + 154)
         self.colors = [colorForColorValue(npc), colorForColorValue(dpc), colorForColorValue(hpc)]
 
     def attach(self, vobj):
@@ -372,7 +375,7 @@ class PathDressupTagViewProvider:
                     i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
             if self.obj.Base.ViewObject:
                 self.obj.Base.ViewObject.Visibility = False
-            #if self.debugDisplay() and self.vobj.Debug.ViewObject:
+            # if self.debugDisplay() and self.vobj.Debug.ViewObject:
             #    self.vobj.Debug.ViewObject.Visibility = False
 
     def turnMarkerDisplayOn(self, display):
@@ -381,7 +384,7 @@ class PathDressupTagViewProvider:
 
     def claimChildren(self):
         PathLog.track()
-        #if self.debugDisplay():
+        # if self.debugDisplay():
         #    return [self.obj.Base, self.vobj.Debug]
         return [self.obj.Base]
 
@@ -393,7 +396,7 @@ class PathDressupTagViewProvider:
         job = PathUtils.findParentJob(self.obj)
         job.Proxy.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
-        #if self.debugDisplay():
+        # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    self.vobj.Debug.Document.removeObject(self.vobj.Debug.Name)
         #    self.vobj.Debug = None
@@ -417,7 +420,7 @@ class PathDressupTagViewProvider:
 
     def onModelChanged(self):
         PathLog.track()
-        #if self.debugDisplay():
+        # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    for solid in self.obj.Proxy.solids:
         #        tag = self.obj.Document.addObject('Part::Feature', 'tag')
@@ -482,24 +485,26 @@ class PathDressupTagViewProvider:
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
 
+
 def Create(baseObject, name='DressupTag'):
     '''
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     Use this command only iff the UI is up - for batch processing see PathDressupTag.Create
     '''
-    FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Tag", "Create a Tag dressup"))
+    FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupTag", "Create a Tag dressup"))
     obj = PathDressupTag.Create(baseObject, name)
     vp = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
     obj.ViewObject.startEditing()
     return obj
 
+
 class CommandPathDressupTag:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Tag Dress-up'),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Creates a Tag Dress-up object from a selected path')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Tag Dress-up'),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Creates a Tag Dress-up object from a selected path')}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -512,12 +517,12 @@ class CommandPathDressupTag:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate('PathDressup_Tag', 'Please select one path object\n'))
+            PathLog.error(translate('Path_DressupTag', 'Please select one path object')+'\n')
             return
         baseObject = selection[0]
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate('PathDressup_Tag', 'Create Tag Dress-up'))
+        FreeCAD.ActiveDocument.openTransaction(translate('Path_DressupTag', 'Create Tag Dress-up'))
         FreeCADGui.addModule('PathScripts.PathDressupTagGui')
         FreeCADGui.doCommand("PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)" % baseObject.Name)
         FreeCAD.ActiveDocument.commitTransaction()
@@ -525,6 +530,6 @@ class CommandPathDressupTag:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_Tag', CommandPathDressupTag())
+    FreeCADGui.addCommand('Path_DressupTag', CommandPathDressupTag())
 
 PathLog.notice('Loading PathDressupTagGui... done\n')

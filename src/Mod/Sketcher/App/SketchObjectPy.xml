@@ -102,7 +102,22 @@
       <Documentation>
         <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
       </Documentation>
-    </Methode>    
+    </Methode>
+    <Methode Name="setVirtualSpace">
+        <Documentation>
+            <UserDocu>set the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getVirtualSpace">
+        <Documentation>
+            <UserDocu>Get the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="toggleVirtualSpace">
+        <Documentation>
+            <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>
@@ -156,6 +171,11 @@
       <Documentation>
         <UserDocu>add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
       </Documentation>
+    </Methode>
+    <Methode Name="addMove">
+        <Documentation>
+            <UserDocu>Moves the geometric objects in the sketch displaced by a vector3d</UserDocu>
+        </Documentation>
     </Methode>
     <Methode Name="addRectangularArray">
       <Documentation>
@@ -243,7 +263,16 @@
         </UserDocu>
       </Documentation>
     </Methode>
-
+    <Methode Name="getGeometryWithDependentParameters">
+        <Documentation>
+            <UserDocu>
+                getGeometryWithDependentParameters - returns a list of geoid posid pairs
+                with all the geometry element edges and vertices which the solver regards
+                as being dependent on other parameters.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>
@@ -259,7 +288,7 @@
     <Attribute Name="AxisCount" ReadOnly="true">
       <Documentation>
         <UserDocu>
-          return the the number of construction lines in the sketch which can be used as axes
+          Return the number of construction lines in the sketch which can be used as axes
         </UserDocu>
       </Documentation>
       <Parameter Name="AxisCount" Type="Long"/>

@@ -49,13 +49,14 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 class ObjectFace(PathPocketBase.ObjectPocket):
     '''Proxy object for Mill Facing operation.'''
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
-        obj.BoundaryShape = ['Perimeter', 'Boundbox']
+        obj.BoundaryShape = ['Perimeter', 'Boundbox', 'Stock']
 
     def pocketInvertExtraOffset(self):
         return True
@@ -67,12 +68,25 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             obj.StepOver = 1
 
         # default depths calculation not correct for facing
-        if prop == "Base" and len(obj.Base) == 1:
-            base, sub = obj.Base[0]
-            shape = base.Shape.getElement(sub[0])
-            d = PathUtils.guessDepths(shape, None)
-            obj.OpStartDepth = d.safe_height
-            obj.OpFinalDepth = d.start_depth
+        if prop == "Base":
+            job = PathUtils.findParentJob(obj)
+            obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+
+            if len(obj.Base) >= 1:
+                print('processing')
+                sublist = []
+                for i in obj.Base:
+                    o = i[0]
+                    for s in i[1]:
+                        sublist.append(o.Shape.getElement(s))
+
+            # If the operation has a geometry identified the Finaldepth
+            # is the top of the bboundbox which includes all features.
+            # Otherwise, top of part.
+
+                obj.OpFinalDepth = Part.makeCompound(sublist).BoundBox.ZMax
+            else:
+                obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''
@@ -96,12 +110,15 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             planeshape = self.baseobject.Shape
             PathLog.debug("Working on a shape {}".format(self.baseobject.Name))
 
-        # if user wants the boundbox, calculate that
+        # Find the correct shape depending on Boundary shape.
         PathLog.debug("Boundary Shape: {}".format(obj.BoundaryShape))
         bb = planeshape.BoundBox
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Vector(0, 0, 1))
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
+        elif obj.BoundaryShape == 'Stock':
+            stock = PathUtils.findParentJob(obj).Stock.Shape
+            env = stock
         else:
             env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 
@@ -112,12 +129,18 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
 
-        # need to overwrite the default depth calculations for facing
         job = PathUtils.findParentJob(obj)
+
+        # need to overwrite the default depth calculations for facing
         if job and job.Base:
-            d = PathUtils.guessDepths(job.Base.Shape, None)
-            obj.OpStartDepth = d.safe_height
-            obj.OpFinalDepth = d.start_depth
+            obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+            obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
+
+            # If the operation has a geometry identified the Finaldepth
+            # is the top of the bboundbox which includes all features.
+            if len(obj.Base) >= 1:
+                obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
+
 
 def Create(name):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''

@@ -288,11 +288,18 @@
       <translation>Експорт в PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Принтер використовує відмінну від креслення орієнтацію.
+Бажаєте продовжити?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF файл (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF-файл</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>Відмінна орієнтація</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Принтер використовує відмінну від креслення орієнтацію. Бажаєте продовжити?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Відмінний розмір паперу</translation>
@@ -395,19 +401,31 @@ Do you want to continue?</source>
       <translation>Вгору ліворуч x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Відстань dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation>Вісь назовні та ліворуч</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Вертикальний нахил</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Інтервал dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Осі назовні та ліворуч</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Вертикальний нахил</translation>
     </message>
     <message>
       <location line="+11"/>

@@ -454,7 +454,7 @@ FileOptionsDialog::~FileOptionsDialog()
 
 void FileOptionsDialog::accept()
 {
-    // Fixes a bug of the default implementation when entering an asterik
+    // Fixes a bug of the default implementation when entering an asterisk
     QLineEdit* filename = this->findChild<QLineEdit*>();
     QString fn = filename->text();
     if (fn.startsWith(QLatin1String("*"))) {

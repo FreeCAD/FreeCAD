@@ -127,10 +127,6 @@
       <translation>Mouvement de la SpaceBall</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensitivité globale:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Mode dominant</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Inverser</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilité globale :</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD n'existerait pas sans leurs efforts :</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>License</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliothèques</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Ce logiciel utilise des composants open source dont le copyright et autres droits associés appartiennent à leurs propriétaires respectifs :</translation>
     </message>
     <message>
       <source>License</source>
@@ -1383,27 +1398,25 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Renommer le fichier de macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Indiquer un nouveau nom :</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' existe déjà.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Échec du renommage</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Impossible de renommer en '%1'. Peut-être une erreur de permission des fichiers ?</translation>
     </message>
   </context>
   <context>
@@ -2137,8 +2150,8 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Enregistrer la vignette dans le fichier projet lors de la sauvegarde du document</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Nombre maximal de sauvegardes crées lors du ré-enregistrement du document</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Nombre maximal de fichiers de sauvegarde à conserver lorsqu'un document est enregistré à nouveau</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2250,7 +2263,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Une URL où l'utilisateur peut trouver plus d'informations sur la licence</translation>
     </message>
   </context>
   <context>
@@ -2660,8 +2673,8 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Selectionner le rayon (px) :</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Définit la zone de confusion pour sélectionner des éléments dans la vue 3D. Une valeur élevée facilite la sélection, mais rendra les petits éléments impossible de sélectionner.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Définit la zone de confusion pour sélectionner des éléments dans la vue 3D. Une valeur élevée facilite la sélection, mais rendra les petits éléments impossibles à sélectionner.</translation>
     </message>
   </context>
   <context>
@@ -3350,10 +3363,6 @@ La colonne « État » indique si le document peut être récupéré.</translati
       <translation>Vue combinée</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Projet</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Tâches</translation>
     </message>
@@ -4027,7 +4036,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Modifier les objets liés</translation>
     </message>
   </context>
   <context>
@@ -5045,6 +5054,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>Le %1 n’est pas vide, supprimez son contenu quand même ?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Échec de l'exportation</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5602,11 +5615,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Créer un groupe</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Créer un nouveau groupe pour ordonner des objets</translation>
     </message>
   </context>
   <context>
@@ -5862,7 +5875,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create part</source>
-      <translation>Créer une pièce</translation>
+      <translation>Crée une pièce</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -6491,8 +6504,8 @@ Be aware the point where you click matters.</source>
       <translation>Créer une nouvelle vue</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Créez une nouvelle fenêtre de vue pour le document actif</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Crée une nouvelle fenêtre de la vue pour le document actif</translation>
     </message>
   </context>
   <context>
@@ -6848,7 +6861,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Afficher la fenêtre principale en mode plein écran</translation>
     </message>
   </context>
   <context>

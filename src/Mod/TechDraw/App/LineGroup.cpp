@@ -54,11 +54,11 @@ LineGroup::~LineGroup()
 
 void LineGroup::init(void)
 {
-    m_name    = "";
-    m_thin    = 0.0;
-    m_graphic = 0.0;
-    m_thick   = 0.0;
-    m_extra   = 0.0;
+    m_name    = "Default";
+    m_thin    = 0.35;
+    m_graphic = 0.50;
+    m_thick   = 0.70;
+    m_extra   = 1.40;
 }
 
 double LineGroup::getWeight(std::string s)
@@ -132,7 +132,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, std::string group
     std::ifstream inFile;
     inFile.open (parmFile, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open input file: %s\n",parmFile.c_str());
+        Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
         return record;
     }
 

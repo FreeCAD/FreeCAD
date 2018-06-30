@@ -54,7 +54,7 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
-    App::PropertyLinkGlobal  Source;
+    App::PropertyLinkList  Source;
     App::PropertyEnumeration ProjectionType;
 
     App::PropertyBool AutoDistribute;
@@ -128,6 +128,7 @@ public:
     void spinCCW(void);
     
     void dumpISO(char * title);
+    std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
 protected:
     void onChanged(const App::Property* prop) override;

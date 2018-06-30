@@ -45,11 +45,10 @@ try:
     from PySide import QtCore, QtGui, QtSvg
 except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
-    
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, utf8_decode=False):
+    def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
                 context is typically a class name (e.g., "MyDialog")
@@ -91,6 +90,29 @@ def utf8_decode(text):
     except AttributeError:
         return text
 
+
+# in-command shortcut definitions: Shortcut / Translation / related UI control
+inCommandShortcuts = {
+    "Relative":   ["R",translate("draft","Relative"),             "isRelative"],
+    "Continue":   ["T",translate("draft","Continue"),             "continueCmd"],
+    "Close":      ["O",translate("draft","Close"),                "closeButton"],
+    "Copy":       ["P",translate("draft","Copy"),                 "isCopy"],
+    "Fill":       ["L",translate("draft","Fill"),                 "hasFill"],
+    "Exit":       ["A",translate("draft","Exit"),                 "finishButton"],
+    "Snap":       ["S",translate("draft","Snap On/Off"),          None],
+    "Increase":   ["[",translate("draft","Increase snap radius"), None],
+    "Decrease":   ["]",translate("draft","Decrease snap radius"), None],
+    "RestrictX":  ["X",translate("draft","Restrict X"),           None],
+    "RestrictY":  ["Y",translate("draft","Restrict Y"),           None],
+    "RestrictZ":  ["Z",translate("draft","Restrict Z"),           None],
+    "SelectEdge": ["E",translate("draft","Select edge"),          "selectButton"],
+    "AddHold":    ["Q",translate("draft","Add custom snap point"),None],
+    "Length":     ["H",translate("draft","Length mode"),          "lengthValue"],
+    "Wipe":       ["W",translate("draft","Wipe"),                 "wipeButton"],
+    "SetWP":      ["U",translate("draft","Set Working Plane"),    "orientWPButton"]
+}
+
+
 class todo:
     ''' static todo class, delays execution of functions.  Use todo.delay
     to schedule geometry manipulation that would crash coin if done in the
@@ -104,20 +126,26 @@ class todo:
     
     @staticmethod
     def doTasks():
-        # print("debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary)
-        for f, arg in todo.itinerary:
-            try:
-                # print("debug: executing",f)
-                if arg:
-                    f(arg)
-                else:
-                    f()
-            except:
-                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
-                FreeCAD.Console.PrintWarning (wrn)
+        #print("debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary)
+        try:
+            for f, arg in todo.itinerary:
+                try:
+                    # print("debug: executing",f)
+                    if arg:
+                        f(arg)
+                    else:
+                        f()
+                except:
+                    wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                    FreeCAD.Console.PrintWarning (wrn)
+        except ReferenceError:
+            print ("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
+                if sys.version_info.major < 3:
+                    if isinstance(name,unicode):
+                        name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
                     name = str(name)
@@ -720,17 +748,17 @@ class DraftToolBar:
         self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
         self.angleValue.setToolTip(translate("draft", "Angle of current segment"))
         #self.angleLock.setText(translate("draft", "&Lock"))
-        self.angleLock.setToolTip(translate("draft", "Check this to lock the current angle (l)"))
+        self.angleLock.setToolTip(translate("draft", "Check this to lock the current angle")+" ("+inCommandShortcuts["Length"][0]+")")
         self.labelRadius.setText(translate("draft", "Radius"))
         self.radiusValue.setToolTip(translate("draft", "Radius of Circle"))
-        self.isRelative.setText(translate("draft", "&Relative"))
-        self.isRelative.setToolTip(translate("draft", "Coordinates relative to last point or absolute (SPACE)"))
-        self.hasFill.setText(translate("draft", "F&illed"))
-        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe (i)"))
-        self.finishButton.setText(translate("draft", "&Finish"))
-        self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation (F)"))
+        self.isRelative.setText(translate("draft", "Relative")+" ("+inCommandShortcuts["Relative"][0]+")")
+        self.isRelative.setToolTip(translate("draft", "Coordinates relative to last point or absolute"))
+        self.hasFill.setText(translate("draft", "Filled")+" ("+inCommandShortcuts["Fill"][0]+")")
+        self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe"))
+        self.finishButton.setText(translate("draft", "Finish")+" ("+inCommandShortcuts["Exit"][0]+")")
+        self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
-        self.continueCmd.setText(translate("draft", "Co&ntinue"))
+        self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
@@ -738,16 +766,16 @@ class DraftToolBar:
         self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
-        self.undoButton.setText(translate("draft", "&Undo"))
-        self.undoButton.setToolTip(translate("draft", "Undo the last segment (CTRL+Z)"))
-        self.closeButton.setText(translate("draft", "Cl&ose"))
-        self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
-        self.wipeButton.setText(translate("draft", "&Wipe"))
-        self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
-        self.orientWPButton.setText(translate("draft", "&Set WP"))
-        self.orientWPButton.setToolTip(translate("draft", "Reorients the working plane on the last segment (S)"))
-        self.selectButton.setText(translate("draft", "&Select edge"))
-        self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension (E)"))
+        self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
+        self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
+        self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
+        self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line"))
+        self.wipeButton.setText(translate("draft", "Wipe")+" ("+inCommandShortcuts["Wipe"][0]+")")
+        self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point"))
+        self.orientWPButton.setText(translate("draft", "Set WP")+" ("+inCommandShortcuts["SetWP"][0]+")")
+        self.orientWPButton.setToolTip(translate("draft", "Reorients the working plane on the last segment"))
+        self.selectButton.setText(translate("draft", "Select edge")+" ("+inCommandShortcuts["SelectEdge"][0]+")")
+        self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension"))
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
@@ -761,8 +789,8 @@ class DraftToolBar:
         self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))
         self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
-        self.isCopy.setText(translate("draft", "C&opy"))
-        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (O)"))
+        self.isCopy.setText(translate("draft", "Copy")+" ("+inCommandShortcuts["Copy"][0]+")")
+        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
         self.SSizeValue.setToolTip(translate("draft", "Height of text"))
@@ -943,10 +971,18 @@ class DraftToolBar:
         self.xValue.show()
         self.yValue.show()
         self.zValue.show()
+        # reset UI to (0,0,0) on start
+        self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.x = 0
+        self.y = 0
+        self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
         todo.delay(self.setFocus,None)
         self.xValue.selectAll()
+        self.showCommandOptions(title)
         
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtGui.QWidget()
@@ -1160,7 +1196,26 @@ class DraftToolBar:
     def vertUi(self,addmode=True):
         self.addButton.setChecked(addmode)
         self.delButton.setChecked(not(addmode))
-        
+
+    def showCommandOptions(self,name):
+        cmdstr = "\n"+name+" "+translate("draft","options")+" : "
+        first = True
+        for k,v in inCommandShortcuts.items():
+            if v[2]:
+                if getattr(self,v[2]).isVisible():
+                    if first:
+                        first = False
+                    else:
+                        cmdstr += ", "
+                    cmdstr += v[0] + ":" + v[1]
+            else:
+                if first:
+                    first = False
+                else:
+                    cmdstr += ", "
+                cmdstr += v[0] + ":" + v[1]
+        FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
+
     def checkLocal(self):
         "checks if x,y,z coords must be displayed as local or global"
         self.labelx.setText(translate("draft", "Global X"))
@@ -1256,7 +1311,7 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 # Processing functions
 #---------------------------------------------------------------------------
-					
+
     def getcol(self):
         "opens a color picker dialog"
         self.color=QtGui.QColorDialog.getColor()
@@ -1289,7 +1344,7 @@ class DraftToolBar:
         for i in FreeCADGui.Selection.getSelection():
             if "ShapeColor" in i.ViewObject.PropertiesList:
                 i.ViewObject.ShapeColor = col
-					
+
     def setwidth(self,val):
         self.linewidth = float(val)
         if Draft.getParam("saveonexit",False):
@@ -1524,73 +1579,104 @@ class DraftToolBar:
         checks for special characters in the entered coords that mut be
         treated as shortcuts
         '''
+
+        # in-command shortcut definitions
+        #Relative
+        #Continue
+        #Close
+        #Copy
+        #Fill
+        #Exit
+        #Snap
+        #Increase
+        #Decrease
+        #RestrictX
+        #RestrictY
+        #RestrictZ
+        #SelectEdge
+        #AddHold
+        #Length
+        #Wipe
+        #SetWP
+
         spec = False
-        if txt.endswith("r"):
+        if txt.upper().endswith(inCommandShortcuts["Relative"][0]):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endswith("I"):
+        elif txt.upper().endswith(inCommandShortcuts["Fill"][0]):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endswith("F"):
+        elif txt.upper().endswith(inCommandShortcuts["Exit"][0]):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endswith("T"):
+        elif txt.upper().endswith(inCommandShortcuts["Continue"][0]):
             self.toggleContinue()
             spec = True
-        elif txt.endswith("w"):
+        elif txt.upper().endswith(inCommandShortcuts["Wipe"][0]):
             self.wipeLine()
             spec = True
-        elif txt.endswith("e"):
+        elif txt.upper().endswith(inCommandShortcuts["SelectEdge"][0]):
             self.selectEdge()
             spec = True
-        elif txt.endswith("s"):
+        elif txt.upper().endswith(inCommandShortcuts["Snap"][0]):
             self.togglesnap()
             spec = True
-        elif txt.endswith("["):
+        elif txt.upper().endswith(inCommandShortcuts["Increase"][0]):
             self.toggleradius(1)
             spec = True
-        elif txt.endswith("]"):
+        elif txt.upper().endswith(inCommandShortcuts["Decrease"][0]):
             self.toggleradius(-1)
             spec = True
-        elif txt.endswith("q"):
+        elif txt.upper().endswith(inCommandShortcuts["AddHold"][0]):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
-        elif txt.endswith("x"):
+        elif txt.upper().endswith(inCommandShortcuts["RestrictX"][0]):
             self.constrain("x")
             self.displayPoint()
             spec = True
-        elif txt.endswith("y"):
+        elif txt.upper().endswith(inCommandShortcuts["RestrictY"][0]):
             self.constrain("y")
             self.displayPoint()
             spec = True
-        elif txt.endswith("z"):
+        elif txt.upper().endswith(inCommandShortcuts["RestrictZ"][0]):
             self.constrain("z")
             self.displayPoint()
             spec = True
-        elif txt.endswith("l"):
+        elif txt.upper().endswith(inCommandShortcuts["Length"][0]):
             self.constrain("angle")
             self.displayPoint()
             spec = True
-        elif txt.endswith("o"):
+        elif txt.upper().endswith(inCommandShortcuts["Close"][0]):
             if self.closeButton.isVisible():
                 self.closeLine()
-            elif self.isCopy.isVisible():
+        elif txt.upper().endswith(inCommandShortcuts["SetWP"][0]):
+            self.orientWP()
+            spec = True
+        elif txt.upper().endswith(inCommandShortcuts["Copy"][0]):
+            if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
-        elif txt.endswith("N"):
-            if self.continueCmd.isVisible():
-                self.continueCmd.setChecked(not self.continueCmd.isChecked())
-            spec = True
         if spec:
-            for i in [self.xValue,self.yValue,self.zValue]:
-                if (i.property("text") == txt):
-                    i.setProperty("text",txt[:-1])
-                    i.setFocus()
-                    i.selectAll()
+            for i,k in enumerate([self.xValue,self.yValue,self.zValue,self.lengthValue,self.angleValue]):
+                if (k.property("text") == txt):
+                    #print "debug:matching:",k.property("text")
+                    if i == 0:
+                        v = FreeCAD.Units.Quantity(self.x,FreeCAD.Units.Length).getUserPreferred()[0]
+                    elif i == 1:
+                        v = FreeCAD.Units.Quantity(self.y,FreeCAD.Units.Length).getUserPreferred()[0]
+                    elif i == 2:
+                        v = FreeCAD.Units.Quantity(self.z,FreeCAD.Units.Length).getUserPreferred()[0]
+                    elif i == 3:
+                        v = FreeCAD.Units.Quantity(self.lvalue,FreeCAD.Units.Length).getUserPreferred()[0]
+                    else:
+                        v = FreeCAD.Units.Quantity(self.avalue,FreeCAD.Units.Angle).getUserPreferred()[0]
+                    k.setProperty("text",v)
+                    k.setFocus()
+                    k.selectAll()
         self.updateSnapper()
                     
     def updateSnapper(self):
@@ -1759,7 +1845,8 @@ class DraftToolBar:
         self.continueMode = not self.continueMode
         try:
             if hasattr(self,"continueCmd"):
-                self.continueCmd.toggle()
+                if self.continueCmd.isVisible():
+                    self.continueCmd.toggle()
             if hasattr(self,"panel"):
                 if hasattr(self.panel,"form"):
                     if isinstance(self.panel.form,list):
@@ -1941,6 +2028,7 @@ class DraftToolBar:
         self.STrack = d
         
     def changeLengthValue(self,d):
+        self.lvalue = d
         v = FreeCAD.Vector(self.x,self.y,self.z)
         if not v.Length:
             if self.angle:
@@ -2211,9 +2299,12 @@ class ScaleTaskPanel:
         layout.addWidget(self.isOriginal,7,0,1,2)
         self.isCopy = QtGui.QRadioButton()
         layout.addWidget(self.isCopy,8,0,1,2)
+        self.pickrefButton = QtGui.QPushButton()
+        layout.addWidget(self.pickrefButton,9,0,1,2)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
+        QtCore.QObject.connect(self.pickrefButton,QtCore.SIGNAL("clicked()"),self.pickRef)
         self.retranslateUi()
         
     def setValue(self,val=None):
@@ -2235,6 +2326,11 @@ class ScaleTaskPanel:
         self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
         self.isOriginal.setText(QtGui.QApplication.translate("Draft", "Modify original", None))
         self.isCopy.setText(QtGui.QApplication.translate("Draft", "Create a copy", None))
+        self.pickrefButton.setText(QtGui.QApplication.translate("Draft", "Pick from/to points", None))
+
+    def pickRef(self):
+        if self.sourceCmd:
+            self.sourceCmd.pickRef()
 
     def accept(self):
         if self.sourceCmd:

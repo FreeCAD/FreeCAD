@@ -24,7 +24,7 @@
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -59,7 +59,7 @@ public:
     int addView(App::DocumentObject *docObj);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const;
-    boost::signal<void (const DrawPage*)> signalGuiPaint;
+    boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -88,6 +88,7 @@ public:
     const char* getPageOrientation() const;
     bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
+    std::vector<App::DocumentObject*> getAllViews(void) ;
 
 
 protected:

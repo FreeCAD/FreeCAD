@@ -201,7 +201,7 @@ protected:
     void removeTaskWatcher(void);
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher(void);
-    /// used by Gui::Contol to register Dialogs
+    /// used by Gui::Control to register Dialogs
     void showDialog(TaskDialog *dlg);
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog(void);

@@ -1,65 +1,60 @@
 package:
     name: freecad_daily
-    version: 0.17
+    version: 0.18
 
 build:
     number: 0
 
-    features:
-        - vc14  # [win and py>=35]
-        - occt7.2.0
-
-    track_features:
-        - vc14  # [win and py>=35]
-        - occt7.2.0
-
 requirements:
     build:
-        - nomkl  # [unix]
+        - toolchain
+        - gcc  # [unix]
         - vc 14  # [win and py>=35]
-        - ninja  # [win and py>=35]
+        - ninja
         - cmake
+        - nomkl  # [unix]
         - swig
         - eigen
-        - boost-cpp 1.64*
+        - boost-cpp 1.66.0
+        - boost 1.66.0  # [win]
         - pybind11  # [unix]
-        - boost 1.64*  # [win]
         - python
         - matplotlib
         - coin3d
         - pivy
-        - qt 5.*
-        - pyside2  2.0.0.dev0 py36_0  # [unix]
-        - pyside2  2.0.0.dev0 py36_vc14_0  # [win]
-        - occt
-        - netgen
-        - vtk
-        - libmed
+        - qt 5.6.*
+        - pyside2 5.6.*
+        - occt 7.2.0
+        - smesh
+        - netgen  # [not win32]
+        - vtk 8.1.*
         - hdf5
-        - xerces-c 3.1.*
+        - xerces-c 3.2.*
         - zlib 1.2.*
         - doxygen
         - git
+        - libglu  # [linux]
     run:
+        - libgcc  # [unix]
         - vc 14  # [win and py>=35]
-        - boost-cpp 1.64*
-        - boost 1.64*  # [win]
+        - boost-cpp 1.66.0
+        - boost 1.66.0  # [win]
         - python
         - numpy
         - matplotlib
         - coin3d
         - pivy
-        - qt 5.*
-        - pyside2  2.0.0.dev0 py36_0  # [unix]
-        - pyside2  2.0.0.dev0 py36_vc14_0  # [win]
-        - occt
-        - netgen
-        - vtk
-        - libmed
-        - xerces-c 3.1.*
+        - qt 5.6.*
+        - pyside2 5.6.*
+        - occt 7.2.0
+        - vtk 8.1.*
+        - smesh
+        - netgen  # [not win32]
+        - xerces-c 3.2.*
         - zlib 1.2*
         - git
         - calculix  # [unix]
+        - libglu  # [linux]
 about:
     summary: freecad
 

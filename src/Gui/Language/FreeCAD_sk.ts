@@ -127,10 +127,6 @@
       <translation type="unfinished">Spaceball Motion</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation type="unfinished">Global Sensitivity:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation type="unfinished">Dominant Mode</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Naspäť</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -393,6 +393,21 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation type="unfinished">License</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2139,8 +2154,8 @@ Určite iný adresár.</translation>
       <translation>Pri ukladaní projektu uložiť aj miniatúry</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Vytvoriť zálohu pri opätovnom ukladaní súboru</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2662,8 +2677,8 @@ Určite iný adresár.</translation>
       <translation type="unfinished">Pick radius (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -3350,10 +3365,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Kombinovaný pohľad</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -5055,6 +5066,10 @@ Buďte opatrní pri klikaní na body.</translation>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6501,8 +6516,8 @@ Buďte opatrní pri klikaní na body.</translation>
       <translation>Vytvoriť nové zobrazenie</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Vytvorí nové zobrazenie pre aktívny dokument</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

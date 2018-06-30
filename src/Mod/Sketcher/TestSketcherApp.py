@@ -90,23 +90,21 @@ def CreateSlotPlateSet(SketchFeature):
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',2)) 
 	SketchFeature.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(60.039921,3.811391,0),App.Vector(0,0,1),35.127132),-1.403763,1.419522))
-	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',3,2,2,2)) 
-	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',3,1,0,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',2,2,3,2))
 	SketchFeature.addConstraint(Sketcher.Constraint('Tangent',0,1,3,1))
 	SketchFeature.addConstraint(Sketcher.Constraint('Angle',0,2,1,1,0.947837)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Distance',0,184.127425)) 
-	SketchFeature.setDatum(9,200.000000)
+	SketchFeature.setDatum(7,200.000000)
 	SketchFeature.addConstraint(Sketcher.Constraint('Radius',3,38.424808)) 
-	SketchFeature.setDatum(10,40.000000)
-	SketchFeature.setDatum(8,0.872665)
+	SketchFeature.setDatum(8,40.000000)
+	SketchFeature.setDatum(6,0.872665)
 	SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',0,2,0.0)) 
-	SketchFeature.setDatum(11,0.000000)
+	SketchFeature.setDatum(9,0.000000)
 	SketchFeature.movePoint(0,2,App.Vector(-0.007829,-33.376450,0))
 	SketchFeature.movePoint(0,2,App.Vector(-0.738149,-10.493386,0))
 	SketchFeature.movePoint(0,2,App.Vector(-0.007829,2.165328,0))
 	SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',0,2,2.165328)) 
-	SketchFeature.setDatum(12,0.000000)
+	SketchFeature.setDatum(10,0.000000)
 
 def CreateSlotPlateInnerSet(SketchFeature):
 	SketchFeature.addGeometry(Part.Circle(App.Vector(195.055893,39.562252,0),App.Vector(0,0,1),29.846098))
@@ -210,6 +208,7 @@ class SketcherSolverTestCases(unittest.TestCase):
 		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
 		self.Doc2.recompute()
 		self.failUnless(len(values) == 0)
+		FreeCAD.closeDocument("Issue3245")
 	
 	def tearDown(self):
 		#closing doc

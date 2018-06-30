@@ -34,9 +34,40 @@ if(OCE_FOUND)
   set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
   #set(OCC_LIBRARY_DIR ${OCE_LIBRARY_DIR})
 else(OCE_FOUND) #look for OpenCASCADE
-  if(WIN32)
-    if(CYGWIN OR MINGW)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+  # we first try to find opencascade directly:
+  if(NOT OCCT_CMAKE_FALLBACK)
+    find_package(OpenCASCADE CONFIG QUIET)
+  endif(NOT OCCT_CMAKE_FALLBACK)
+  if(OpenCASCADE_FOUND)
+    set(OCC_FOUND ${OpenCASCADE_FOUND})
+    set(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
+    set(OCC_LIBRARY_DIR ${OpenCASCADE_LIBRARY_DIR})
+    set(OCC_LIBRARIES ${OpenCASCADE_LIBRARIES})
+    set(OCC_OCAF_LIBRARIES TKCAF TKXCAF)
+  else(OpenCASCADE_FOUND)
+    if(WIN32)
+      if(CYGWIN OR MINGW)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          /usr/include/opencascade
+          /usr/local/include/opencascade
+          /opt/opencascade/include
+          /opt/opencascade/inc
+        )
+        FIND_LIBRARY(OCC_LIBRARY TKernel
+          /usr/lib
+          /usr/local/lib
+          /opt/opencascade/lib
+        )
+      else(CYGWIN OR MINGW)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/include"
+        )
+        FIND_LIBRARY(OCC_LIBRARY TKernel
+          "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/lib"
+        )
+      endif(CYGWIN OR MINGW)
+    else(WIN32)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
         /usr/include/opencascade
         /usr/local/include/opencascade
         /opt/opencascade/include
@@ -47,35 +78,16 @@ else(OCE_FOUND) #look for OpenCASCADE
         /usr/local/lib
         /opt/opencascade/lib
       )
-    else(CYGWIN OR MINGW)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/include"
-      )
-      FIND_LIBRARY(OCC_LIBRARY TKernel
-        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/lib"
-      )
-    endif(CYGWIN OR MINGW)
-  else(WIN32)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-      /usr/include/opencascade
-      /usr/local/include/opencascade
-      /opt/opencascade/include
-      /opt/opencascade/inc
-    )
-    FIND_LIBRARY(OCC_LIBRARY TKernel
-      /usr/lib
-      /usr/local/lib
-      /opt/opencascade/lib
-    )
-  endif(WIN32)
-  if(OCC_LIBRARY)
-    GET_FILENAME_COMPONENT(OCC_LIBRARY_DIR ${OCC_LIBRARY} PATH)
-    IF(NOT OCC_INCLUDE_DIR)
-      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-        ${OCC_LIBRARY_DIR}/../inc
-      )
-    ENDIF()
-  endif(OCC_LIBRARY)
+    endif(WIN32)
+    if(OCC_LIBRARY)
+      GET_FILENAME_COMPONENT(OCC_LIBRARY_DIR ${OCC_LIBRARY} PATH)
+      IF(NOT OCC_INCLUDE_DIR)
+        FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          ${OCC_LIBRARY_DIR}/../inc
+        )
+      ENDIF()
+    endif(OCC_LIBRARY)
+  endif(OpenCASCADE_FOUND)
 endif(OCE_FOUND)
 
 if(OCC_INCLUDE_DIR)

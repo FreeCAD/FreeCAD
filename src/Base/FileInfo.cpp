@@ -145,7 +145,7 @@ const std::string &FileInfo::getTempPath(void)
 
 std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 {
-    //FIXME: To avoid race conditons we should rather return a file pointer
+    //FIXME: To avoid race conditions we should rather return a file pointer
     //than a file name.
 #ifdef FC_OS_WIN32
     wchar_t buf[MAX_PATH + 2];

@@ -280,6 +280,61 @@
         </layout>
        </widget>
       </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Notifications</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_22">
+         <item>
+          <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
+           <property name="toolTip">
+            <string>Notify automatic constraint substitutions.</string>
+           </property>
+           <property name="text">
+            <string>Notify automatic constraint substitutions</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>NotifyConstraintSubstitutions</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">

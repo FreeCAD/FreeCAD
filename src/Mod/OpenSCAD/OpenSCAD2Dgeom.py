@@ -106,7 +106,7 @@ class Overlappingfaces():
 
     @staticmethod
     def hasnoparentstatic(isinsidedict,faceindex):
-        for smalllist in isinsidedict.itervalues():
+        for smalllist in isinsidedict.values():
             if faceindex in smalllist:
                 return False
         return True
@@ -124,7 +124,7 @@ class Overlappingfaces():
         dchildren=[]
         for child in isinsidedict.get(parent,[]):
             direct = True
-            for key, value in isinsidedict.iteritems():
+            for key, value in isinsidedict.items():
                 if key != parent and child in value and parent not in value:
                     direct = False
             if direct:
@@ -190,14 +190,14 @@ class Overlappingfaces():
                 #del faces[tfi]
                 if tfi in isinsidedict:
                     del isinsidedict[tfi]
-                for key,value in isinsidedict.iteritems():
+                for key,value in isinsidedict.items():
                     if tfi in value:
                         newlist=value[:] #we work on a shallow copy of isinsidedict
                         newlist.remove(tfi)
                         isinsidedict[key]=newlist
 
         def hasnoparent(faceindex):
-            for smalllist in self.isinsidedict.itervalues():
+            for smalllist in self.isinsidedict.values():
                 if faceindex in smalllist:
                     return False
             return True
@@ -276,9 +276,9 @@ def findConnectedEdges(edgelist,eps=1e-6,debug=False):
         return retlist
 
 def endpointdistance(edges):
-    '''return the distance of of vertices in path (list of edges) as
+    '''return the distance of vertices in path (list of edges) as
     maximum, minimum and distance between start and endpoint
-    it expects the edges to be traversed forward from starting from Vertex 0'''
+    it expects the edges to be traversed forward starting from Vertex 0'''
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
             return 0.0,0.0,0.0
@@ -292,9 +292,9 @@ def endpointdistance(edges):
         return 0.0,0.0,outerdistance
 
 def endpointdistancedebuglist(debuglist):
-    '''return the distance of of vertices in path (list of edges) as
+    '''return the distance of vertices in path (list of edges) as
     maximum, minimum and distance between start and endpoint
-    it it expects a 'not reversed' flag for every edge'''
+    it expects a 'not reversed' flag for every edge'''
     numedges=len(debuglist)
     if numedges == 1 and len(debuglist[0][0].Vertexes) == 1:
             return 0.0,0.0,0.0

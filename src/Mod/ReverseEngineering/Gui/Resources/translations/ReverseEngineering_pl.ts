@@ -28,15 +28,23 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Przybliżona powierzchnia B-splajnu...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Przybliżenie powierzchni B-splajnu</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <translation>Przybliżona powierzchnia B-splajnu...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
       <translation>Aproksymacja powierzchni</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Aproksymuj płaszczyznę B-Splajn</translation>
     </message>
@@ -85,14 +93,18 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
+      <translation>Dopasuj powierzchnie B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>Dopasuj powierzchnie B-spline</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-Direction</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -109,7 +121,7 @@
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-Direction</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -144,17 +156,17 @@
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Energia zginania</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Odchylenie krzywizny</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Użytkownik zdefiniował kierunki u/v</translation>
     </message>
   </context>
   <context>
@@ -167,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Proszę wybrać pojedynczy obiekt miejsca końcowego, aby uzyskać lokalną orientację.</translation>
     </message>
     <message>
       <location line="+28"/>

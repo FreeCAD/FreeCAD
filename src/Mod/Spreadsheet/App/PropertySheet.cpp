@@ -358,7 +358,9 @@ Cell * PropertySheet::cellAt(CellAddress address)
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -378,7 +380,9 @@ const Cell * PropertySheet::cellAt(CellAddress address) const
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -885,7 +889,9 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     if (i != mergedCells.end()) {
         CellAddress anchor = i->second;
 
-        cellAt(anchor)->getSpans(rows, cols);
+        const Cell* cell = cellAt(anchor);
+        if (cell)
+            cell->getSpans(rows, cols);
     }
     else {
         rows = cols = 1;

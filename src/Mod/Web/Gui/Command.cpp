@@ -50,7 +50,7 @@ CmdWebOpenWebsite::CmdWebOpenWebsite()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Open website...");
     sToolTipText    = QT_TR_NOOP("Opens a website in FreeCAD");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_OpenWebsite";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-browser";
 }
@@ -76,7 +76,7 @@ CmdWebBrowserBack::CmdWebBrowserBack()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Previous page");
     sToolTipText    = QT_TR_NOOP("Go back to the previous page");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserBack";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-previous";
 }
@@ -105,7 +105,7 @@ CmdWebBrowserNext::CmdWebBrowserNext()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Next page");
     sToolTipText    = QT_TR_NOOP("Go to the next page");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserNext";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-next";
 }
@@ -134,7 +134,7 @@ CmdWebBrowserRefresh::CmdWebBrowserRefresh()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Refresh web page");
     sToolTipText    = QT_TR_NOOP("Refresh web page");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserRefresh";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-refresh";
 }
@@ -162,7 +162,7 @@ CmdWebBrowserStop::CmdWebBrowserStop()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Stop loading");
     sToolTipText    = QT_TR_NOOP("Stop the current loading");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserStop";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-stop";
 }
@@ -192,7 +192,7 @@ CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom in");
     sToolTipText    = QT_TR_NOOP("Zoom into the page");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserZoomIn";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-in";
 }
@@ -221,7 +221,7 @@ CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom out");
     sToolTipText    = QT_TR_NOOP("Zoom out of the page");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Web_BrowserZoomOut";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-out";
 }

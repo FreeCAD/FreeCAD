@@ -82,7 +82,9 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->relabelObjectAction = new QAction(this);
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
+#ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
+#endif
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
 
@@ -977,8 +979,10 @@ DocumentItem::~DocumentItem()
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor",4294902015);
     FOREACH_ITEM(item,v)
-        item->setBackgroundColor(0,Qt::yellow);
+        item->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
     END_FOREACH_ITEM
 }
 
@@ -1279,8 +1283,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;
         case Gui::LightBlue:
-            if (set)
-                item->setBackgroundColor(0,QColor(230,230,255));
+            if (set) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
+                item->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
+            }
             else
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;

@@ -36,7 +36,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchFloor
 #  \ingroup ARCH
 #  \brief The Floor object and tools
@@ -49,9 +49,15 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+
     '''makeFloor(objectslist): creates a floor including the
     objects from the given list.'''
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     obj.Label = translate("Arch",name)
     _Floor(obj)
@@ -61,18 +67,24 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
         obj.Group = objectslist
     return obj
 
+
 class _CommandFloor:
+
     "the Arch Cell command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
                 'Accel': "F, L",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         link = p.GetBool("FreeLinking",False)
@@ -90,11 +102,11 @@ class _CommandFloor:
             message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
 Floor object are not allowed to accept Site or Building object.\n\
 Site, Building and Floor objects will be removed from the selection.\n\
-You can change that in the preferences.\n" )
+You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(floorobj) == 0:
             message = translate( "Arch" , "There is no valid object in the selection.\n\
-Floor creation aborted.\n" )
+Floor creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
@@ -109,26 +121,48 @@ Floor creation aborted.\n" )
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
+
 class _Floor:
+
     "The Floor object"
+
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
-        obj.addProperty("App::PropertyArea","Area", "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        if not hasattr(obj,"Placement"):
-            # obj can be a Part Feature and already has a placement
-            obj.addProperty("App::PropertyPlacement","Placement","Arch",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        self.Type = "Floor"
+
         obj.Proxy = self
         self.Object = obj
+        _Floor.setProperties(self,obj)
+        self.IfcRole = "Building Storey"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        if not "Area" in pl:
+            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+        if not hasattr(obj,"Placement"):
+            # obj can be a Part Feature and already has a placement
+            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+        if not "IfcRole" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+            import ArchComponent
+            obj.IfcRole = ArchComponent.IfcRoles
+        self.Type = "Floor"
+
+    def onDocumentRestored(self,obj):
+
+        _Floor.setProperties(self,obj)
 
     def __getstate__(self):
-        return self.Type
+
+        return None
 
     def __setstate__(self,state):
-        if state:
-            self.Type = state
-            
+
+        return None
+
     def onChanged(self,obj,prop):
+
         if not hasattr(self,"Object"):
             # on restore, self.Object is not there anymore
             self.Object = obj
@@ -142,6 +176,7 @@ class _Floor:
                             obj.Area = a
 
     def execute(self,obj):
+
         # move children with this floor
         if hasattr(obj,"Placement"):
             if not hasattr(self,"OldPlacement"):
@@ -163,6 +198,7 @@ class _Floor:
                         o.Proxy.execute(o)
 
     def addObject(self,child):
+
         if hasattr(self,"Object"):
             g = self.Object.Group
             if not child in g:
@@ -170,33 +206,60 @@ class _Floor:
                 self.Object.Group = g
 
     def removeObject(self,child):
+
         if hasattr(self,"Object"):
             g = self.Object.Group
             if child in g:
                 g.remove(child)
                 self.Object.Group = g
 
+
 class _ViewProviderFloor:
+
     "A View Provider for the Floor object"
+
     def __init__(self,vobj):
+
         vobj.Proxy = self
 
     def getIcon(self):
+
         import Arch_rc
         return ":/icons/Arch_Floor_Tree.svg"
 
     def attach(self,vobj):
+
         self.Object = vobj.Object
         return
 
     def claimChildren(self):
-        return self.Object.Group
+
+        if hasattr(self,"Object"):
+            if self.Object:
+                return self.Object.Group
+        return []
 
     def __getstate__(self):
+
         return None
 
     def __setstate__(self,state):
+
         return None
+
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        import Arch_rc
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
+        menu.addAction(action1)
+
+    def convertToBuildingPart(self):
+        if hasattr(self,"Object"):
+            import ArchBuildingPart
+            from DraftGui import todo
+            todo.delay(ArchBuildingPart.convertFloors,self.Object)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Floor',_CommandFloor())

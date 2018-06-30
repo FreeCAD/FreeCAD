@@ -24,21 +24,23 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 class HoldingTagPreferences:
-    DefaultHoldingTagWidth   = 'DefaultHoldingTagWidth'
-    DefaultHoldingTagHeight  = 'DefaultHoldingTagHeight'
-    DefaultHoldingTagAngle   = 'DefaultHoldingTagAngle'
-    DefaultHoldingTagRadius  = 'DefaultHoldingTagRadius'
-    DefaultHoldingTagCount   = 'DefaultHoldingTagCount'
+    DefaultHoldingTagWidth = 'DefaultHoldingTagWidth'
+    DefaultHoldingTagHeight = 'DefaultHoldingTagHeight'
+    DefaultHoldingTagAngle = 'DefaultHoldingTagAngle'
+    DefaultHoldingTagRadius = 'DefaultHoldingTagRadius'
+    DefaultHoldingTagCount = 'DefaultHoldingTagCount'
 
     @classmethod
     def defaultWidth(cls, ifNotSet):
@@ -55,27 +57,26 @@ class HoldingTagPreferences:
         return value
 
     @classmethod
-    def defaultAngle(cls, ifNotSet = 45.0):
+    def defaultAngle(cls, ifNotSet=45.0):
         value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagAngle, ifNotSet)
         if value < 10.0:
             return ifNotSet
         return value
 
     @classmethod
-    def defaultCount(cls, ifNotSet = 4):
+    def defaultCount(cls, ifNotSet=4):
         value = PathPreferences.preferences().GetUnsigned(cls.DefaultHoldingTagCount, ifNotSet)
         if value < 2:
             return float(ifNotSet)
         return float(value)
 
     @classmethod
-    def defaultRadius(cls, ifNotSet = 0.0):
+    def defaultRadius(cls, ifNotSet=0.0):
         return PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
-
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = translate("PathDressup_HoldingTag", 'Holding Tag')
+        self.label = translate("Path_DressupTag", 'Holding Tag')
 
     def loadSettings(self):
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)

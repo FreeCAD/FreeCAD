@@ -15,6 +15,7 @@
         <file>icons/Arch_SectionPlane.svg</file>
         <file>icons/Arch_Window.svg</file>
         <file>icons/Arch_Wall_Tree.svg</file>
+        <file>icons/Arch_Wall_Clone.svg</file>
         <file>icons/Arch_Cell_Tree.svg</file>
         <file>icons/Arch_Building_Tree.svg</file>
         <file>icons/Arch_Floor_Tree.svg</file>
@@ -63,6 +64,7 @@
         <file>icons/Git.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_Subcomponent.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
@@ -81,6 +83,8 @@
         <file>icons/Arch_ToggleSubs.svg</file>
         <file>icons/Arch_Nest.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_BuildingPart.svg</file>
+        <file>icons/Arch_BuildingPart_Tree.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
@@ -130,5 +134,9 @@
         <file>translations/Arch_gl.qm</file>
         <file>translations/Arch_kab.qm</file>
         <file>translations/Arch_ko.qm</file>
+        <file>translations/Arch_fil.qm</file>
+        <file>translations/Arch_id.qm</file>
+        <file>translations/Arch_lt.qm</file>
+        <file>translations/Arch_val-ES.qm</file>
     </qresource>
 </RCC> 

@@ -225,6 +225,10 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    /// updates the visibility of the virtual space
+    void updateVirtualSpace(void);
+    void setIsShownVirtualSpace(bool isshownvirtualspace);
+    bool getIsShownVirtualSpace(void) const;
     
     friend class DrawSketchHandler;
     friend struct ::EditData;
@@ -373,6 +377,7 @@ protected:
     static SbColor ConstrDimColor;
     static SbColor ConstrIcoColor;
     static SbColor NonDrivingConstrDimColor;
+    static SbColor ExprBasedConstrDimColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
@@ -385,7 +390,9 @@ protected:
 
     float zCross;
     //float zLines;
-    float zPoints;
+    //float zPoints;
+    float zLowPoints;
+    float zHighPoints;
     float zConstr;
     float zHighlight;
     float zText;
@@ -407,6 +414,9 @@ protected:
     // information layer variables
     bool visibleInformationChanged;
     double combrepscalehyst;
+    
+    // Virtual space variables
+    bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 };
 
 } // namespace PartGui

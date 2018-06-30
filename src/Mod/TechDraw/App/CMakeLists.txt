@@ -25,6 +25,7 @@ set(TechDrawLIBS
     Part
     Spreadsheet
     Drawing
+    Import
 )
 
 generate_from_xml(DrawPagePy)
@@ -42,6 +43,7 @@ generate_from_xml(DrawGeomHatchPy)
 generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
+generate_from_xml(DrawViewAnnotationPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -143,7 +145,9 @@ SET(Python_SRCS
     DrawProjGroupPy.xml
     DrawProjGroupPyImp.cpp
     DrawProjGroupItemPy.xml
-    DrawProjGroupItemPyImp.cpp)
+    DrawProjGroupItemPyImp.cpp
+    DrawViewAnnotationPy.xml
+    DrawViewAnnotationPyImp.cpp)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})
@@ -158,6 +162,12 @@ SET(TechDraw_Templates
     Templates/A4_LandscapeTD.svg
     Templates/A4_Landscape_ISO7200TD.svg
     Templates/A4_Portrait_ISO7200TD.svg
+    Templates/A0_Landscape_blank.svg
+    Templates/A1_Landscape_blank.svg
+    Templates/A2_Landscape_blank.svg
+    Templates/A3_Landscape_blank.svg
+    Templates/A4_Landscape_blank.svg
+    Templates/A4_Portrait_blank.svg
 )
 
 SET(TechDraw_PATFile
@@ -202,6 +212,13 @@ fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_LineGroupFile})
+
+ADD_CUSTOM_COMMAND(TARGET TechDraw
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Patterns
+                   ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Patterns
+)   
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

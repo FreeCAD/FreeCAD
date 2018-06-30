@@ -42,6 +42,8 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewDraft.h>
+#include <Mod/TechDraw/App/DrawViewArch.h>
 
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
@@ -123,11 +125,18 @@ void QGIViewSymbol::drawSvg()
         return;
     }
 
-//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
-//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
-
     double rezfactor = Rez::getRezFactor();
-    double scaling = viewSymbol->getScale() * rezfactor;
+    double scaling = viewSymbol->getScale();
+    double pxMm = 3.78;                 //96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
+//    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
+                                        //some software uses different px/in, so symbol will need Scale adjusted.
+    //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
+    if (viewSymbol->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId()) ||
+        viewSymbol->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId()) ) {
+        scaling = scaling * rezfactor;
+    } else { 
+        scaling = scaling * rezfactor / pxMm;
+    }
     m_svgItem->setScale(scaling);
 
     QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));

@@ -97,7 +97,7 @@ class _ArchSchedule:
             # silently fail on old schedule objects
             return
         if not obj.Result:
-            FreeCAD.Console.PrintError(translate("Arch","No spreadsheet attached to this schedule\n"))
+            FreeCAD.Console.PrintError(translate("Arch","No spreadsheet attached to this schedule")+"\n")
             return
         obj.Result.clearAll()
         obj.Result.set("A1","Description")
@@ -156,13 +156,19 @@ class _ArchSchedule:
                                 if Draft.getType(o).upper() == args[1].upper():
                                     ok = False
                             elif args[0].upper() == "ROLE":
-                                if hasattr(o,"Role"):
+                                if hasattr(o,"IfcRole"):
+                                    if o.IfcRole.upper() != args[1].upper():
+                                        ok = False
+                                elif hasattr(o,"Role"):
                                     if o.Role.upper() != args[1].upper():
                                         ok = False
                                 else:
                                     ok = False
                             elif args[0].upper() == "!ROLE":
                                 if hasattr(o,"Role"):
+                                    if o.IfcRole.upper() == args[1].upper():
+                                        ok = False
+                                elif hasattr(o,"Role"):
                                     if o.Role.upper() == args[1].upper():
                                         ok = False
                         if ok:
@@ -314,7 +320,7 @@ class _ArchScheduleTaskPanel:
         self.form.list.setRowCount(0)
 
     def importCSV(self):
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
         if filename:
             self.form.list.clearContents()
             import csv
@@ -333,7 +339,7 @@ class _ArchScheduleTaskPanel:
     def exportCSV(self):
         if self.obj:
             if self.obj.Result:
-                filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+                filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
                 if filename:
                     # the following line crashes, couldn't fnid out why
                     # self.obj.Result.exportFile(str(filename[0].encode("utf8")))

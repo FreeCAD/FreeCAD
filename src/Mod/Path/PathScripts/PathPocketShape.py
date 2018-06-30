@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Part
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
@@ -31,7 +32,6 @@ import PathScripts.PathUtils as PathUtils
 import TechDraw
 import sys
 
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 __title__ = "Path Pocket Shape Operation"

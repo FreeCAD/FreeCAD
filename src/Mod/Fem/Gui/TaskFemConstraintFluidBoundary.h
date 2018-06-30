@@ -83,7 +83,7 @@ private Q_SLOTS:
     void onThermalBoundaryTypeChanged(void);
     void onReferenceDeleted(void);
     void onButtonDirection(const bool pressed = true);
-    void onCheckReverse(bool); // consider remove this slot as the UI is hiden
+    void onCheckReverse(bool); // consider removing this slot as the UI is hidden
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -98,7 +98,7 @@ private:
 
 private:
     Ui_TaskFemConstraintFluidBoundary* ui;
-    int dimension;  // -1: unknow, 2 for 2D and 3 for 3D
+    int dimension;  // -1: unknown, 2 for 2D and 3 for 3D
     Fem::FemSolverObject* pcSolver;
     App::PropertyBool* pHeatTransfering;
     App::PropertyEnumeration* pTurbulenceModel;

@@ -47,6 +47,11 @@
 
 #include "TaskDlgAnalysis.h"
 
+#ifdef FC_USE_VTK
+    #include <Mod/Fem/App/FemPostObject.h>
+#endif
+
+
 using namespace FemGui;
 
 
@@ -198,6 +203,10 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return true;
     else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
         return true;
+#ifdef FC_USE_VTK
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId()))
+        return true;
+#endif
     else
         return false;
 }

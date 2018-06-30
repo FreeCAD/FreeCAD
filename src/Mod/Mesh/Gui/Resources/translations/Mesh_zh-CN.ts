@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>检测 &amp;&amp; 修复网格...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>评估和修复网格...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>缩放...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>缩放所选网格</translation>
     </message>
   </context>
   <context>
@@ -420,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>从网格和平面创建剖面</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>从网格和平面的剖面</translation>
     </message>
   </context>
   <context>
@@ -768,14 +772,14 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>设置</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>评估设置</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -783,15 +787,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>检查非重叠网格点</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>启用检查曲面上的折叠</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>只将零面积面作为退化考虑</translation>
     </message>
   </context>
   <context>
@@ -1026,7 +1030,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Only selection</source>
-      <translation type="unfinished">Only selection</translation>
+      <translation>仅选择</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1422,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>对象文件格式</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
@@ -1462,11 +1466,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>缩放</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>输入缩放系数</translation>
     </message>
   </context>
   <context>

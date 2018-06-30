@@ -35,7 +35,7 @@ import FreeCAD
 def purge_results(analysis):
     for m in analysis.Group:
         if (m.isDerivedFrom('Fem::FemResultObject')):
-            if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
+            if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()

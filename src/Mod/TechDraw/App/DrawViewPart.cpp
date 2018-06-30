@@ -33,6 +33,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepLib.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
@@ -77,6 +78,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/GroupExtension.h>
 #include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -116,22 +118,23 @@ PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
     static const char *group = "Projection";
-    static const char *fgroup = "Format";
-    static const char *lgroup = "Lines";
-    static const char *sgroup = "Show";
+    static const char *sgroup = "HLR Parameters";
     nowUnsetting = false;
+
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
 
-
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking from.");
     ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
-    //properties that affect Appearance
+    //properties that control HLR algoaffect Appearance
+    bool coarseView = hGrp->GetBool("CoarseView", false);
+    ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
     //visible outline
     ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
     ADD_PROPERTY_TYPE(SeamVisible ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
@@ -141,33 +144,9 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
-    
-    //default line weights
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = LineGroup::lineGroupFactory(lgName);
-    double weight = lg->getWeight("Thick");
-    ADD_PROPERTY_TYPE(LineWidth,(weight),lgroup,App::Prop_None,"The thickness of visible lines");
-    weight = lg->getWeight("Thin");
-    ADD_PROPERTY_TYPE(HiddenWidth,(weight),lgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    weight = lg->getWeight("Graphic");
-    ADD_PROPERTY_TYPE(IsoWidth,(weight),lgroup,App::Prop_None,"The thickness of isoparameter/center/section lines, if enabled");
-    weight = lg->getWeight("Extra");
-    ADD_PROPERTY_TYPE(ExtraWidth,(weight),lgroup,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
-
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),lgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),lgroup,App::Prop_None,"Show a vertical centerline through view");
-
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),sgroup,App::Prop_None,"Center marks on/off");
-    ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
-
-    //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup,App::Prop_None,"Show/hide section line if applicable");
 
     geometryObject = nullptr;
     getRunControl();
-    delete lg;
 }
 
 DrawViewPart::~DrawViewPart()
@@ -178,43 +157,77 @@ DrawViewPart::~DrawViewPart()
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
     TopoDS_Shape result;
-    App::DocumentObject *link = Source.getValue();
-    if (!link) {
-        Base::Console().Error("DVP - No Source object linked - %s\n",getNameInDocument());
-    } else if (link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        result = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
-    } else if (link->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-        result = getShapeFromPart(static_cast<App::Part*>(link));
-    } else {        Base::Console().Error("DVP - Can't handle this Source - %s\n",getNameInDocument());
-    }
-    return result;
-}
-
-TopoDS_Shape DrawViewPart::getShapeFromPart(App::Part* ap) const
-{
-    TopoDS_Shape result;
-    std::vector<App::DocumentObject*> objs = ap->Group.getValues();
-    std::vector<TopoDS_Shape> shapes;
-    for (auto& d: objs) {
-        if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            shapes.push_back(static_cast<Part::Feature*>(d)->Shape.getShape().getShape());
+    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    if (links.empty())  {
+        Base::Console().Log("DVP::getSourceShape - No Sources - creation? - %s\n",getNameInDocument());
+    } else {
+        std::vector<TopoDS_Shape> sourceShapes;
+        for (auto& l:links) {
+            std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+            sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
         }
-    }
-    if (!shapes.empty()) {
+
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
-        for (auto& s: shapes) {
+        bool found = false;
+        for (auto& s:sourceShapes) {
+            if (s.IsNull()) {
+                continue;    //has no shape
+            }
+            found = true;
             BRepBuilderAPI_Copy BuilderCopy(s);
             TopoDS_Shape shape = BuilderCopy.Shape();
             builder.Add(comp, shape);
         }
-        result = comp;
+        //it appears that an empty compound is !IsNull(), so we need to check if we added anything to the compound.
+        if (found) {
+            result = comp;
+        }
     }
     return result;
 }
 
+std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
+{
+    std::vector<TopoDS_Shape> result;
+    App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
+    if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        result.push_back(static_cast<Part::Feature*>(docObj)->Shape.getShape().getShape());
+    } else if (gex != nullptr) {
+        std::vector<App::DocumentObject*> objs = gex->Group.getValues();
+        std::vector<TopoDS_Shape> shapes;
+        for (auto& d: objs) {
+            shapes = getShapesFromObject(d);
+            if (!shapes.empty()) {
+                result.insert(result.end(),shapes.begin(),shapes.end());
+            }
+        }
+    }
+    return result;
+}
 
+TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
+{
+    TopoDS_Shape baseShape = getSourceShape();
+    if (!baseShape.IsNull()) {
+        TopoDS_Iterator it(baseShape);
+        TopoDS_Shape fusedShape = it.Value();
+        it.Next();
+        for (; it.More(); it.Next()) {
+            const TopoDS_Shape& aChild = it.Value();
+            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+            // Let's check if the fusion has been successful
+            if (!mkFuse.IsDone()) {
+                Base::Console().Error("DVp - Fusion failed\n");
+                return baseShape;
+            }
+            fusedShape = mkFuse.Shape();
+        }
+        baseShape = fusedShape;
+    }
+    return baseShape;
+}
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
@@ -246,7 +259,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces()) {
+    if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
         }
@@ -268,7 +281,18 @@ short DrawViewPart::mustExecute() const
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
                     Scale.isTouched() ||
-                    ScaleType.isTouched());
+                    ScaleType.isTouched() ||
+                    Perspective.isTouched() ||
+                    Focus.isTouched() ||
+                    SmoothVisible.isTouched() ||
+                    SeamVisible.isTouched() ||
+                    IsoVisible.isTouched() ||
+                    HardHidden.isTouched() ||
+                    SmoothHidden.isTouched() ||
+                    SeamHidden.isTouched() ||
+                    IsoHidden.isTouched() ||
+                    IsoCount.isTouched() ||
+                    CoarseView.isTouched());
     }
 
     if (result) {
@@ -291,12 +315,19 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
+    go->usePolygonHLR(CoarseView.getValue());
 
     Base::Vector3d baseProjDir = Direction.getValue();
     saveParamSpace(baseProjDir);
 
-    go->projectShape(shape,
-                     viewAxis);
+    if (go->usePolygonHLR()){
+        go->projectShapeWithPolygonAlgo(shape,
+            viewAxis);
+    }
+    else{
+        go->projectShape(shape,
+            viewAxis);
+    }
     go->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -481,11 +512,14 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     return result;
 }
 
+//return *unique* list of Dimensions which reference this DVP
 std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
 {
     std::vector<TechDraw::DrawViewDimension*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+    std::sort(children.begin(),children.end(),std::less<App::DocumentObject*>());
+    std::vector<App::DocumentObject*>::iterator newEnd = std::unique(children.begin(),children.end());
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawViewDimension::getClassTypeId())) {
             TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
@@ -615,7 +649,13 @@ QRectF DrawViewPart::getRect() const
 //used to project pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
-    Base::Vector3d centeredPoint = pt - shapeCentroid;
+    gp_Trsf mirrorTransform;
+    mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(shapeCentroid.x,shapeCentroid.y,shapeCentroid.z),
+                                      gp_Dir(0, -1, 0)) );
+    gp_Pnt basePt(pt.x,pt.y,pt.z);
+    gp_Pnt mirrorGp = basePt.Transformed(mirrorTransform);
+    Base::Vector3d mirrorPt(mirrorGp.X(),mirrorGp.Y(), mirrorGp.Z());
+    Base::Vector3d centeredPoint = mirrorPt - shapeCentroid;
     Base::Vector3d direction = Direction.getValue();
     gp_Ax2 viewAxis = getViewAxis(centeredPoint,direction);
     HLRAlgo_Projector projector( viewAxis );
@@ -756,15 +796,28 @@ void DrawViewPart::unsetupObject()
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
-              page->removeView(*it3);
-              std::string viewName = (*it3)->getNameInDocument();
-              Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                docName.c_str(), viewName.c_str());
+            page->removeView(*it3);
+            const char* name = (*it3)->getNameInDocument();
+            if (name) {
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
+            }
         }
     }
 
 }
 
+//! is this an Isometric projection?
+bool DrawViewPart::isIso(void) const
+{
+    bool result = false;
+    Base::Vector3d dir = Direction.getValue();
+    if ( DrawUtil::fpCompare(fabs(dir.x),fabs(dir.y))  &&
+         DrawUtil::fpCompare(fabs(dir.x),fabs(dir.z)) ) {
+        result = true;
+    }
+    return result;
+}
 
 PyObject *DrawViewPart::getPyObject(void)
 {

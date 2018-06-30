@@ -21,17 +21,17 @@
     <message>
       <location filename="../../Instance.py" line="53"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Ship length [m]</translation>
+      <translation>Dužina broda [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="61"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Širina broda [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Brod gaz [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../../Instance.py" line="95"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Postavi količinu spremnika</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="103"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Postavi uvjete tereta</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>Iscrtaj hidrostatiku broda</translation>
     </message>
   </context>
   <context>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Load an example ship geometry</translation>
+      <translation>Učitavanje primjera geometrije broda</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Učitavanje primjera geometrije trupa broda.</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Crtanje kontura</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="80"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Smanji kut</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="../../ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Kapacitet spremnika, krivulja</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="165"/>
@@ -200,17 +200,17 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">Computing hydrostatics</translation>
+      <translation>Računanje hidrostatike</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="486"/>
       <source>Computing external faces</source>
-      <translation type="unfinished">Computing external faces</translation>
+      <translation>Računanje vanjskog oblika</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation type="unfinished">Computing sections</translation>
+      <translation>Računanje sekcije</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Maksimalni kut</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="248"/>
@@ -499,12 +499,12 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="283"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimum draft</translation>
+      <translation>Minimalni gaz</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="288"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximum draft</translation>
+      <translation>Maksimalni gaz</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="293"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Load example ship</translation>
+      <translation>Učitaj primjer broda</translation>
     </message>
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="110"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="233"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Crtanje kontura</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="495"/>
       <source>Water line positions [m]</source>
-      <translation type="unfinished">Water line positions [m]</translation>
+      <translation>Pozicija vodene linije [m]</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
       <source>Create a new tank</source>
-      <translation type="unfinished">Create a new tank</translation>
+      <translation>Napravi novi spremnik</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Brod</translation>
     </message>
   </context>
   <context>
@@ -649,7 +649,7 @@
     <message>
       <location filename="../../ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Stvoriti novu težinu broda</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
@@ -659,17 +659,17 @@
     <message>
       <location filename="../../WeightInstance.py" line="55"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation>Masa [kg]</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="64"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation>Linearna gustoća [kg / m]</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="82"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Gustoća [kg / m^3]</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
@@ -689,42 +689,42 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="213"/>
       <source>Create a new weight</source>
-      <translation type="unfinished">Create a new weight</translation>
+      <translation>Stvoriti novu težinu</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="217"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Brod</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="223"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Masa</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="229"/>
       <source>Linear density</source>
-      <translation type="unfinished">Linear density</translation>
+      <translation>Linearna gustoća</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="235"/>
       <source>Area density</source>
-      <translation type="unfinished">Area density</translation>
+      <translation>Gustoća područja</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="241"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Gustoća</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="73"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Gustoća područja [kg / m^2]</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Nepoznati oblik objekta odabran</translation>
     </message>
   </context>
 </TS>

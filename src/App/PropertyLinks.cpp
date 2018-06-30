@@ -703,10 +703,10 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 }
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames)
-{   
+{
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
-    
+
 #ifndef USE_OLD_DAG
     //maintain backlinks. 
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -731,8 +731,10 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     _lValueList = lValue;
     _lSubList.resize(lSubNames.size());
     int i = 0;
-    for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it)
-        _lSubList[i]  = *it;
+    for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it,++i) {
+        if (*it != nullptr)
+            _lSubList[i] = *it;
+    }
     hasSetValue();
 }
 
@@ -892,24 +894,15 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues()
     if (_lValueList.size() != _lSubList.size())
         throw Base::ValueError("PropertyLinkSubList::getSubListValues: size of subelements list != size of objects list");
 
-    std::map<App::DocumentObject*, std::vector<std::string> > tmp;
     for (std::size_t i = 0; i < _lValueList.size(); i++) {
         App::DocumentObject* link = _lValueList[i];
         std::string sub = _lSubList[i];
-        if (tmp.find(link) == tmp.end()) {
-            // make sure to keep the same order as in '_lValueList'
-            PropertyLinkSubList::SubSet item;
-            item.first = link;
-            values.push_back(item);
+        if (values.size() == 0 || values.back().first != link){
+            //new object started, start a new subset.
+            values.push_back(SubSet(link, std::vector<std::string>()));
         }
-
-        tmp[link].push_back(sub);
+        values.back().second.push_back(sub);
     }
-
-    for (std::vector<PropertyLinkSubList::SubSet>::iterator it = values.begin(); it != values.end(); ++it) {
-        it->second = tmp[it->first];
-    }
-
     return values;
 }
 
@@ -995,6 +988,11 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
                             pcObj = static_cast<DocumentObjectPy*>(tup[0].ptr());
                             values.insert(values.end(), list.size(), pcObj->getDocumentObjectPtr());
                         }
+                    }
+                    else {
+                        std::string error = std::string("type of first item must be 'DocumentObject', not ");
+                        error += Py_TYPE(tup[0].ptr())->tp_name;
+                        throw Base::TypeError(error);
                     }
                 }
                 else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {

@@ -21,11 +21,8 @@
  ***************************************************************************/
 
 
-#include <QtDesigner/QDesignerContainerExtension>
-#include <QtDesigner/QDesignerCustomWidgetCollectionInterface>
-
-#include <QtCore/qplugin.h>
-#include <QtGui/QIcon>
+#include <QtDesigner>
+#include <qplugin.h>
 
 class QDesignerFormEditorInterface;
 
@@ -33,6 +30,9 @@ class CustomWidgetPlugin : public QObject, public QDesignerCustomWidgetCollectio
 {
     Q_OBJECT
     Q_INTERFACES(QDesignerCustomWidgetCollectionInterface)
+#if QT_VERSION >= 0x050000
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QDesignerCustomWidgetCollectionInterface")
+#endif // QT_VERSION >= 0x050000
 public:
     CustomWidgetPlugin(QObject *parent = 0);
     QList<QDesignerCustomWidgetInterface *> customWidgets () const;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
-    <height>689</height>
+    <width>428</width>
+    <height>703</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,6 +98,46 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>applyconstructionStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Do not compute areas for object with more than:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox">
+          <property name="suffix">
+           <string> faces</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxComputeAreas</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -510,7 +550,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is checked, the &quot;open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is checked, the &quot;Open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>
@@ -578,6 +618,11 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>

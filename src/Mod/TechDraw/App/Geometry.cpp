@@ -62,6 +62,7 @@
 #include "DrawUtil.h"
 
 using namespace TechDrawGeometry;
+using namespace TechDraw;
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -426,6 +427,44 @@ Generic::Generic()
     geomType = GENERIC;
 }
 
+Base::Vector2d Generic::asVector(void)
+{
+    Base::Vector2d result = getEndPoint() - getStartPoint();
+    return result;
+}
+
+double Generic::slope(void)
+{
+    double slope;
+    Base::Vector2d v = asVector();
+    if (v.x == 0.0) {
+        slope = DOUBLE_MAX;
+    } else {
+        slope = v.y/v.x;
+    }
+    return slope;
+}
+
+Base::Vector2d Generic::apparentInter(Generic* g)
+{
+    Base::Vector3d dir0 = DrawUtil::vector23(asVector());
+    Base::Vector3d dir1 = DrawUtil::vector23(g->asVector());
+
+    // Line Intersetion (taken from ViewProviderSketch.cpp)
+    double det = dir0.x*dir1.y - dir0.y*dir1.x;
+    if ((det > 0 ? det : -det) < 1e-10)
+        throw Base::Exception("Invalid selection - Det = 0");
+
+    double c0 = dir0.y*points.at(0).x - dir0.x*points.at(0).y;
+    double c1 = dir1.y*g->points.at(1).x - dir1.x*g->points.at(1).y;
+    double x = (dir0.x*c1 - dir1.x*c0)/det;
+    double y = (dir0.y*c1 - dir1.y*c0)/det;
+
+    // Apparent Intersection point
+    Base::Vector2d result = Base::Vector2d(x,y);
+    return result;
+
+}
 
 BSpline::BSpline(const TopoDS_Edge &e)
 {
@@ -520,6 +559,8 @@ Vertex::Vertex(double x, double y)
     visible = false;
     ref3D = -1;                        //obs. never used.
     isCenter = false;
+    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x,y,0.0));
+    occVertex = mkVert.Vertex();
 }
 
 bool Vertex::isEqual(Vertex* v, double tol)

@@ -11,13 +11,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Huomautus</translation>
+      <translation>&amp;Huomautukset</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Lisää Huomautus näkymä aktiiviseen tekniseenpiirustukseen</translation>
+      <translation>Lisää huomautus aktiiviseen piirrustukseen</translation>
     </message>
   </context>
   <context>
@@ -49,7 +49,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Draft View</source>
-      <translation>&amp; Vedos näkymä</translation>
+      <translation>&amp; Vedosnäkymä</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -115,7 +115,7 @@
     <message>
       <location line="+1"/>
       <source>Insert view in drawing</source>
-      <translation>Lisää näkymä piirustukseen</translation>
+      <translation>Lisää näkymä piirrokseen</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -207,7 +207,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>Taulukkonäkymä</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -288,13 +288,20 @@
       <translation>Vie PDF-asiakirjaan</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Tulostin käyttää eri paperisuuntaa kuin piirroksesi.
+Haluatko jatkaa?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF-tiedosto (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF-tiedosto</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -337,14 +344,13 @@
       <translation>Erilainen sivun suunta</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Tulostin käyttää eri paperisuuntaa kuin piirros.
 Haluatko jatkaa?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Erilainen paperikoko</translation>
@@ -360,12 +366,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location line="+11"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Tiedoston avaaminen epäonnistui</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Tiedostoon ”%1” ei voida tallentaa.</translation>
     </message>
   </context>
   <context>
@@ -397,19 +403,31 @@ Haluatko jatkaa?</translation>
       <translation>Ylävasen x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Välit dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Akseli ulos oikealle</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> pystykallistus</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Välistys dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation type="unfinished">Axis out and right</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Pystysuora kallistus</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -597,12 +615,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location line="+125"/>
       <source>Show hidden lines</source>
-      <translation type="unfinished">Show hidden lines</translation>
+      <translation>Näytä piilotetut tiedostot</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Show smooth lines</source>
-      <translation type="unfinished">Show smooth lines</translation>
+      <translation>Näytä tasoitetut viivat</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -680,7 +698,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location line="+5"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Ei aktiivista näkymää</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -816,7 +834,7 @@ Haluatko jatkaa?</translation>
       <location line="+517"/>
       <location line="+53"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>Skaalautuva vektorigrafiikka</translation>
     </message>
     <message>
       <location line="-313"/>
@@ -852,12 +870,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location line="+6"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Kaikki tiedostot</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+      <translation>Valitse täsmälleen yksi kohde.</translation>
     </message>
     <message>
       <source>SVG (*.svg)</source>

@@ -77,6 +77,8 @@ public:
                                const bool flip=true) const override;
 
     virtual double getScale(void) const override;
+    void autoPosition(void);
+    bool isAnchor(void);
 
 
 protected:

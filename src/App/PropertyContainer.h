@@ -25,6 +25,7 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <map>
+#include <climits>
 #include <Base/Persistence.h>
 
 namespace Base {
@@ -36,6 +37,7 @@ namespace App
 {
 class Property;
 class PropertyContainer;
+class DynamicProperty;
 class DocumentObject;
 class Extension;
 
@@ -68,7 +70,11 @@ struct AppExport PropertyData
       OffsetBase(const App::Extension* container) : m_container(container) {};
       
       short int getOffsetTo(const App::Property* prop) const {
-            return (short) ((char*)prop - (char*)m_container);
+            auto *pt = (const char*)prop;
+            auto *base = (const char *)m_container;
+            if(pt<base || pt>base+SHRT_MAX)
+                return -1;
+            return (short) (pt-base);
       };
       char* getOffset() const {return (char*) m_container;};
       
@@ -184,6 +190,7 @@ public:
 
 
   friend class Property;
+  friend class DynamicProperty;
 
 
 protected: 

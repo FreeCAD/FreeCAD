@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QButtonGroup>
+#endif
 
 #include <Interface_Static.hxx>
 
@@ -230,14 +233,17 @@ void DlgImportExportStep::saveSettings()
     }
     else {
         // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
-        Interface_Static::SetCVal("write.step.schema","AP214CD");
-        hStepGrp->SetASCII("Scheme", "AP214CD");
+        Interface_Static::SetCVal("write.step.schema","AP214IS");
+        hStepGrp->SetASCII("Scheme", "AP214IS");
     }
 
     // header info
     hStepGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
     hStepGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
   //hStepGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
+
+    // (h)STEP of Import module
+    ui->checkBoxMergeCompound->onSave();
 }
 
 void DlgImportExportStep::loadSettings()
@@ -269,6 +275,9 @@ void DlgImportExportStep::loadSettings()
     ui->lineEditAuthor->setText(QString::fromStdString(hStepGrp->GetASCII("Author")));
     ui->lineEditProduct->setText(QString::fromLatin1(
         Interface_Static::CVal("write.step.product.name")));
+
+    // (h)STEP of Import module
+    ui->checkBoxMergeCompound->onRestore();
 }
 
 /**

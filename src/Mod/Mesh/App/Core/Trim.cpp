@@ -240,7 +240,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
                 float fP3P4 = (float)(P4-P3).Length();
                 float fSP3  = (float)(P3-S).Length();
                 float fSP4  = (float)(P4-S).Length();
-                // compute propotion of length
+                // compute proportion of length
                 float l = fSP1 / fP1P2;
                 float m = fSP2 / fP1P2;
 

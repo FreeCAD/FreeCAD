@@ -4,29 +4,29 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchAxis.py" line="169"/>
+      <location filename="../../ArchAxis.py" line="172"/>
       <source>The intervals between axes</source>
       <translation>Tengelyek közötti meghatározott közök</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="170"/>
+      <location filename="../../ArchAxis.py" line="173"/>
       <source>The angles of each axis</source>
       <translation>Minden egyes tengely szöge</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="172"/>
+      <location filename="../../ArchAxis.py" line="175"/>
       <source>The length of the axes</source>
       <translation>A tengelyek hossza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="223"/>
+      <location filename="../../ArchAxis.py" line="226"/>
       <source>The size of the axis bubbles</source>
       <translation>A tengely buborékok mérete</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="224"/>
+      <location filename="../../ArchAxis.py" line="227"/>
       <source>The numbering style</source>
-      <translation>Számozási stíus</translation>
+      <translation>Számozási stílus</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="257"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../ArchComponent.py" line="312"/>
       <source>The base object this component is built upon</source>
-      <translation>Összetevő szülő tárgya ebből épült</translation>
+      <translation>Ennek az összetevőnek az alap objektuma ebből épült</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="313"/>
@@ -44,12 +44,12 @@
       <translation>Ennek az összetevőnek a tárgyát klónozza</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="323"/>
+      <location filename="../../ArchSite.py" line="322"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Ehhez a tárgyhoz csatolt egyéb alakzatok</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="324"/>
+      <location filename="../../ArchSite.py" line="323"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Ebből a tárgyból kivált egyéb alakzatok</translation>
     </message>
@@ -66,10 +66,10 @@
     <message>
       <location filename="../../ArchComponent.py" line="322"/>
       <source>Custom IFC properties and attributes</source>
-      <translation>Egyéni IFC tulajdonságai és attribútumai</translation>
+      <translation>Egyéni IFC tulajdonságok és attribútumok</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="353"/>
+      <location filename="../../ArchComponent.py" line="356"/>
       <source>A material for this object</source>
       <translation>Egy anyag ehhez a tárgyhoz</translation>
     </message>
@@ -89,7 +89,7 @@
       <translation>Ennek az objektumnak az összes függőleges felületének területe</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="325"/>
+      <location filename="../../ArchSite.py" line="324"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Ennek az objektumnak az XY síkra vetített vetületének területe</translation>
     </message>
@@ -169,42 +169,42 @@
       <translation>Ennek az elemnek a szélessége, ha nem profilon áll</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="354"/>
+      <location filename="../../ArchPanel.py" line="355"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>Ennek az elemnek a vastagsága vagy kihúzás mélysége</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="355"/>
+      <location filename="../../ArchPanel.py" line="356"/>
       <source>The number of sheets to use</source>
       <translation>A használandó burkolólapok száma</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="356"/>
+      <location filename="../../ArchPanel.py" line="357"/>
       <source>The offset between this panel and its baseline</source>
       <translation>A panel és az alapvonala közötti eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="357"/>
+      <location filename="../../ArchPanel.py" line="358"/>
       <source>The length of waves for corrugated elements</source>
       <translation>Hullámos elemek hullámainak hossza</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="358"/>
+      <location filename="../../ArchPanel.py" line="359"/>
       <source>The height of waves for corrugated elements</source>
       <translation>Hullámos elemek hullámainak magassága</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="359"/>
+      <location filename="../../ArchPanel.py" line="360"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>Hullámos elemek hullámainak iránya</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="360"/>
+      <location filename="../../ArchPanel.py" line="361"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Hullámos elemek hullámainak típusa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="361"/>
+      <location filename="../../ArchPanel.py" line="362"/>
       <source>The area of this panel</source>
       <translation>Ennek a panelnek a területe</translation>
     </message>
@@ -229,82 +229,82 @@
       <translation>A megjelenített objektumok vonalvastagsága</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="657"/>
+      <location filename="../../ArchPanel.py" line="658"/>
       <source>The color of the panel outline</source>
       <translation>A panel körvonalának színe</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="966"/>
+      <location filename="../../ArchPanel.py" line="967"/>
       <source>The size of the tag text</source>
       <translation>Címkeszöveg mérete</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="659"/>
+      <location filename="../../ArchPanel.py" line="660"/>
       <source>The color of the tag text</source>
       <translation>Címkeszöveg színe</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="660"/>
+      <location filename="../../ArchPanel.py" line="661"/>
       <source>The X offset of the tag text</source>
       <translation>Címkeszöveg X eltolása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="661"/>
+      <location filename="../../ArchPanel.py" line="662"/>
       <source>The Y offset of the tag text</source>
       <translation>Címkeszöveg Y eltolása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="969"/>
+      <location filename="../../ArchPanel.py" line="970"/>
       <source>The font of the tag text</source>
       <translation>A címkeszöveg betűtípusa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="735"/>
+      <location filename="../../ArchPanel.py" line="736"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>A szöveg megjelenítéséhez. Lehet %tag%, %label% vagy %description% a panel címke vagy felirat megjelenítéséhez</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="967"/>
+      <location filename="../../ArchPanel.py" line="968"/>
       <source>The position of the tag text. Keep (0,0,0) for automatic center position</source>
-      <translation>A címke helyzete. Hagyja (0,0,0) értéken az automatikus középre pozicionáláshoz</translation>
+      <translation>A címke helyzete. Hagyja (0,0,0) értéken a középre pozicionáláshoz</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="968"/>
+      <location filename="../../ArchPanel.py" line="969"/>
       <source>The rotation of the tag text</source>
       <translation>A címkeszöveg elfordulása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1118"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>A margin inside the boundary</source>
       <translation>Szegélyen belüli határ</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1119"/>
+      <location filename="../../ArchPanel.py" line="1120"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Szegélyek kijelzésének be/ki kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="964"/>
+      <location filename="../../ArchPanel.py" line="965"/>
       <source>The linked Panel cuts</source>
-      <translation>A csatolt panel vág</translation>
+      <translation>A csatolt kivágó panel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="965"/>
+      <location filename="../../ArchPanel.py" line="966"/>
       <source>The tag text to display</source>
       <translation>Megjelenítendő címkeszöveg</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="970"/>
+      <location filename="../../ArchPanel.py" line="971"/>
       <source>The width of the sheet</source>
       <translation>Burkolólapok szélessége</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="971"/>
+      <location filename="../../ArchPanel.py" line="972"/>
       <source>The height of the sheet</source>
       <translation>Burkolólapok magassága</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="972"/>
+      <location filename="../../ArchPanel.py" line="973"/>
       <source>The fill ratio of this sheet</source>
       <translation>Ennek a burkolólapnak a kitöltési aránya</translation>
     </message>
@@ -436,22 +436,22 @@
     <message>
       <location filename="../../ArchPrecast.py" line="454"/>
       <source>The number of holes in this element</source>
-      <translation>Ezen az elemen a lyukak száma</translation>
+      <translation>Ezen az elemen a furatok száma</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="455"/>
       <source>The major radius of the holes of this element</source>
-      <translation>Ezen az elemen a lyukak fő sugara</translation>
+      <translation>Ezen az elemen a furatok fő sugara</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="456"/>
       <source>The minor radius of the holes of this element</source>
-      <translation>Ezen az elemen a lyukak alárendelt sugara</translation>
+      <translation>Ezen az elemen a furatok alárendelt sugara</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="457"/>
       <source>The spacing between the holes of this element</source>
-      <translation>Ennek az elemnek a lyukak közötti térközei</translation>
+      <translation>Ennek az elemnek a furatok közötti térközei</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
@@ -486,12 +486,12 @@
     <message>
       <location filename="../../ArchProfile.py" line="213"/>
       <source>Width of the beam</source>
-      <translation>Fénycsóva szélessége</translation>
+      <translation>Gerenda szélessége</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="214"/>
       <source>Height of the beam</source>
-      <translation>Fénycsóva magassága</translation>
+      <translation>Gerenda magassága</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="136"/>
@@ -729,32 +729,27 @@
       <translation>Egy Url-cím ami leképezési honlapban jeleníti meg ezt az oldalt</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="322"/>
-      <source>The objects that are part of this site</source>
-      <translation>Ennek az oldalnak a részét képező alkatrészek</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="326"/>
+      <location filename="../../ArchSite.py" line="325"/>
       <source>The perimeter length of this terrain</source>
       <translation>Ennek a terepnek a kerület hossza</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="327"/>
+      <location filename="../../ArchSite.py" line="326"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>Ehhez a terephez adandó föld térfogata</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="328"/>
+      <location filename="../../ArchSite.py" line="327"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>Ebből a terepből kivonandó föld térfogata</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="329"/>
+      <location filename="../../ArchSite.py" line="328"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>Logikai művelet végzése során használatos kihúzási vektor</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="330"/>
+      <location filename="../../ArchSite.py" line="329"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>Távolítsa el az eredményül kapott alakzat darabolóit</translation>
     </message>
@@ -779,122 +774,122 @@
       <translation>Szoláris diagram színe</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="250"/>
+      <location filename="../../ArchSpace.py" line="251"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>A tárgyakat, amelyek a térben lévő tárgyak határait alkotják</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="251"/>
+      <location filename="../../ArchSpace.py" line="252"/>
       <source>The computed floor area of this space</source>
       <translation>Ennek a területnek a számított szint alapterülete</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="252"/>
+      <location filename="../../ArchSpace.py" line="253"/>
       <source>The finishing of the floor of this space</source>
       <translation>Ennek a terület aljzatának a burkolata</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="253"/>
+      <location filename="../../ArchSpace.py" line="254"/>
       <source>The finishing of the walls of this space</source>
       <translation>Ennek a terület falának a burkolata</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="254"/>
+      <location filename="../../ArchSpace.py" line="255"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>Ennek a terület mennyezetének a burkolata</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="255"/>
+      <location filename="../../ArchSpace.py" line="256"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>Tárgyak, melyek szerepelnek ebben a térben, mint például a bútorok</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="256"/>
+      <location filename="../../ArchSpace.py" line="257"/>
       <source>The type of this space</source>
       <translation>Ennek a térnek a típusa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="257"/>
+      <location filename="../../ArchSpace.py" line="258"/>
       <source>The thickness of the floor finish</source>
       <translation>Padlóburkolat vastagsága</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="258"/>
+      <location filename="../../ArchSpace.py" line="259"/>
       <source>A zone this space is part of</source>
       <translation>A zóna melynek a terület egy része</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="259"/>
+      <location filename="../../ArchSpace.py" line="260"/>
       <source>The number of people who typically occupy this space</source>
       <translation>Az emberek, akik általában elfoglalják ezt a teret</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="260"/>
+      <location filename="../../ArchSpace.py" line="261"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>A villamos energia Wattban amely szükséges ennek a helynek a megvilágításához</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="261"/>
-      <source>The electric power needed by the equipment of this space in Watts</source>
-      <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
-    </message>
-    <message>
       <location filename="../../ArchSpace.py" line="262"/>
-      <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation type="unfinished">If True, Equipment Power will be automatically filled by the equipment included in this space</translation>
+      <source>The electric power needed by the equipment of this space in Watts</source>
+      <translation>Ehhez az eszközhöz ebben a helyiségben szükséges elektromos áram Wattban</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="263"/>
+      <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
+      <translation>Ha igaz, a felszerelt energiát a területen szereplő berendezések alapján automatikusan számítja</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="264"/>
       <source>The type of air conditioning of this space</source>
       <translation>Ennek a helynek a légkondicionáló típusa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="421"/>
+      <location filename="../../ArchSpace.py" line="422"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>A szöveg megjelenítéséhez. $area, $label, $tag, $floor, $walls, $ceiling segítségével illessze be a megfelelő adatokat</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="422"/>
+      <location filename="../../ArchSpace.py" line="423"/>
       <source>The name of the font</source>
       <translation>Betűtípus neve</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="423"/>
+      <location filename="../../ArchSpace.py" line="424"/>
       <source>The color of the area text</source>
       <translation>A terület szöveg színe</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="424"/>
+      <location filename="../../ArchSpace.py" line="425"/>
       <source>The size of the text font</source>
       <translation>A betűtípus mérete</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="425"/>
+      <location filename="../../ArchSpace.py" line="426"/>
       <source>The size of the first line of text</source>
       <translation>A szöveg első sorának a mérete</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="426"/>
+      <location filename="../../ArchSpace.py" line="427"/>
       <source>The space between the lines of text</source>
       <translation>A szövegsorok közötti térköz</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="427"/>
+      <location filename="../../ArchSpace.py" line="428"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>A szöveg helyzete. Hagyja (0,0,0) értéken az automatikus pozicionáláshoz</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="428"/>
+      <location filename="../../ArchSpace.py" line="429"/>
       <source>The justification of the text</source>
       <translation>A szöveges indoklása</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="429"/>
+      <location filename="../../ArchSpace.py" line="430"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>A számításhoz használt szövegek tizedesjegyek száma</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="430"/>
+      <location filename="../../ArchSpace.py" line="431"/>
       <source>Show the unit suffix</source>
       <translation>Mértékegység utótag megjelenítése</translation>
     </message>
@@ -1069,47 +1064,47 @@
       <translation>Ennek a falnak és a kiindulási pontja (csak a bal és jobb nyomvonalak) közötti eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="628"/>
+      <location filename="../../ArchWindow.py" line="634"/>
       <source>the components of this window</source>
       <translation>ennek az ablaknak az összetevői</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="629"/>
+      <location filename="../../ArchWindow.py" line="635"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>A nyílás mélysége melyet ez az ablak képez a hordozó felületen. Automatikushoz hagyja 0-án.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="630"/>
+      <location filename="../../ArchWindow.py" line="636"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>a megválasztható tárgy, mely meghatározza a területet amit az ablak a gazda területből kivesz</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="631"/>
+      <location filename="../../ArchWindow.py" line="637"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>Az ablak szélessége (csak előre beállított ablakoknál)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="632"/>
+      <location filename="../../ArchWindow.py" line="638"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>Az ablak magassága (csak előre beállított ablakoknál)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="633"/>
+      <location filename="../../ArchWindow.py" line="639"/>
       <source>The normal direction of this window</source>
       <translation>Ennek az ablaknak a normál iránya</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="635"/>
+      <location filename="../../ArchWindow.py" line="641"/>
       <source>The area of this window</source>
       <translation>Ennek az ablaknak a területe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="636"/>
+      <location filename="../../ArchWindow.py" line="642"/>
       <source>the width of louvre elements</source>
       <translation>zsalu elemek szélessége</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="637"/>
+      <location filename="../../ArchWindow.py" line="643"/>
       <source>the space between louvre elements</source>
       <translation>zsalu elemek közötti távolság</translation>
     </message>
@@ -1124,47 +1119,47 @@
       <translation>Egy választható kiegészítő elhelyezés a profil hozzáadásához, mielőtt kihúzná</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="638"/>
+      <location filename="../../ArchWindow.py" line="644"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Megnyitja az al-összetevőket, melyekhez egy zsanér van meghatározva</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="182"/>
+      <location filename="../../ArchMaterial.py" line="183"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Egy szabványos kód (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="464"/>
+      <location filename="../../ArchMaterial.py" line="465"/>
       <source>A description for this material</source>
       <translation>Egy leírás ehhez az anyaghoz</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="183"/>
+      <location filename="../../ArchMaterial.py" line="184"/>
       <source>An URL where to find information about this material</source>
       <translation>Egy URL ahol megtalálom az információt erről az anyagról</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="184"/>
+      <location filename="../../ArchMaterial.py" line="185"/>
       <source>The transparency value of this material</source>
       <translation>Az átlátszóság értéke ehhez az anyaghoz</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="185"/>
+      <location filename="../../ArchMaterial.py" line="186"/>
       <source>The color of this material</source>
       <translation>Ennek az anyagnak a színe</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="465"/>
+      <location filename="../../ArchMaterial.py" line="466"/>
       <source>The list of layer names</source>
       <translation>A réteg neveknek a listája</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="466"/>
+      <location filename="../../ArchMaterial.py" line="467"/>
       <source>The list of layer materials</source>
       <translation>Réteg anyagok listája</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="467"/>
+      <location filename="../../ArchMaterial.py" line="468"/>
       <source>The list of layer thicknesses</source>
       <translation>A réteg vastagságok listája</translation>
     </message>
@@ -1184,27 +1179,27 @@
       <translation>Az átfedés a futófelület aljától a tartógerendák tetejéig</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1277"/>
+      <location filename="../../ArchWindow.py" line="1327"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>A lyukakat meghatározó dróthálók száma. A 0 érték azt jelenti, hogy automatikus</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="171"/>
+      <location filename="../../ArchAxis.py" line="174"/>
       <source>The label of each axis</source>
       <translation>Minden egyes tengely címkéje</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="232"/>
+      <location filename="../../ArchAxis.py" line="235"/>
       <source>If true, show the labels</source>
       <translation>Ha igaz, mutatja a feliratokat</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="233"/>
+      <location filename="../../ArchAxis.py" line="236"/>
       <source>A transformation to apply to each label</source>
       <translation>Egy átalakítás mely az összes címkére vonatkozik</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="669"/>
+      <location filename="../../ArchAxis.py" line="672"/>
       <source>The axes this system is made of</source>
       <translation>Tengelyek melyekre a rendszer épült</translation>
     </message>
@@ -1224,32 +1219,32 @@
       <translation>Ha igaz, geometriát összeolvaszt, egyébként egyesít</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="973"/>
+      <location filename="../../ArchPanel.py" line="974"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Ha igaz, az objektumot felületként képzi, ha lehetséges.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="741"/>
+      <location filename="../../ArchPanel.py" line="742"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>Ennek az objektumnak a megengedett szögei forgathatóak, ha lapokra helyezett</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="974"/>
+      <location filename="../../ArchPanel.py" line="975"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Itt adhatja meg a fa illesztés szögét (jobbra, 0 az Észak)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="990"/>
+      <location filename="../../ArchPanel.py" line="991"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Itt adhatja meg az összes panel nézetre alkalmazott léptéket.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="976"/>
+      <location filename="../../ArchPanel.py" line="977"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Egy lista a fészkek lehetséges forgatásáról</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1121"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Fa illesztés textúra kijelzésének be/ki kapcsolása</translation>
     </message>
@@ -1274,7 +1269,7 @@
       <translation>Betonacél egyedi térközzel</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="389"/>
+      <location filename="../../ArchRebar.py" line="399"/>
       <source>Shape of rebar</source>
       <translation>Betonacél alakja</translation>
     </message>
@@ -1284,25 +1279,35 @@
       <translation>Fordítsa a tetőt irányba, ha rossz irányban van</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="640"/>
+      <location filename="../../ArchWindow.py" line="646"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Kijelzi a terv nyitó szimbólumait, ha rendelkezésre állnak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="641"/>
+      <location filename="../../ArchWindow.py" line="647"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Kijelzi a magassági nyitó szintek szimbólumait, ha rendelkezésre állnak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="626"/>
+      <location filename="../../ArchWindow.py" line="632"/>
       <source>The objects that host this window</source>
-      <translation type="unfinished">The objects that host this window</translation>
+      <translation>Az objektumok, amelyek ebben az ablakban benne vannak</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRebar.py" line="166"/>
+      <source>Length of a single rebar</source>
+      <translation>Egyetlen betonacél hossza</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRebar.py" line="167"/>
+      <source>Total length of all rebars</source>
+      <translation>Összes betonacél teljes hossza</translation>
     </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1483"/>
+      <location filename="../../ArchWindow.py" line="1533"/>
       <source>Components</source>
       <translation>Összetevők</translation>
     </message>
@@ -1317,84 +1322,79 @@
       <translation>Tengelyek</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="107"/>
+      <location filename="../../ArchAxis.py" line="110"/>
       <source>Create Axis</source>
       <translation>Tengelyek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1477"/>
+      <location filename="../../ArchWindow.py" line="1527"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1478"/>
+      <location filename="../../ArchWindow.py" line="1528"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="654"/>
+      <location filename="../../ArchCommands.py" line="648"/>
       <source>is not closed</source>
       <translation>nincs lezárva</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="656"/>
+      <location filename="../../ArchCommands.py" line="650"/>
       <source>is not valid</source>
       <translation>Érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="658"/>
+      <location filename="../../ArchCommands.py" line="652"/>
       <source>doesn't contain any solid</source>
       <translation>nem tartalmazhat semmilyen szilárd testet</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="664"/>
+      <location filename="../../ArchCommands.py" line="658"/>
       <source>contains a non-closed solid</source>
       <translation>le nem zárt szilárd testet tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="666"/>
+      <location filename="../../ArchCommands.py" line="660"/>
       <source>contains faces that are not part of any solid</source>
       <translation>tartalmaz felületet, amelyek nem tartoznak semmilyen szilárd testhez</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1256"/>
+      <location filename="../../ArchCommands.py" line="1250"/>
       <source>Grouping</source>
       <translation>Csoportosítás</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1288"/>
+      <location filename="../../ArchCommands.py" line="1282"/>
       <source>Ungrouping</source>
       <translation>Csoportbontás</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1319"/>
+      <location filename="../../ArchCommands.py" line="1313"/>
       <source>Split Mesh</source>
-      <translation>Háló osztása</translation>
+      <translation>Háló felosztása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchCommands.py" line="1353"/>
       <source>Mesh to Shape</source>
       <translation>Hálókat alakzatokká</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1440"/>
-      <source>All good! no problems found</source>
-      <translation>Minden jó! nincs probléma</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="299"/>
@@ -1417,7 +1417,7 @@
       <translation>Objektumok</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>closing Sketch edit</source>
       <translation>Vázlat szerkesztés bezárása</translation>
     </message>
@@ -1492,52 +1492,52 @@
       <translation>A háló egy érvénytelen szilárd test</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="476"/>
+      <location filename="../../ArchWindow.py" line="482"/>
       <source>Create Window</source>
       <translation>Ablak létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1479"/>
+      <location filename="../../ArchWindow.py" line="1529"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1480"/>
+      <location filename="../../ArchWindow.py" line="1530"/>
       <source>Create/update component</source>
       <translation>Létrehozni/frissíteni összetevőt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1481"/>
+      <location filename="../../ArchWindow.py" line="1531"/>
       <source>Base 2D object</source>
       <translation>Alap 2D objektumot</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1487"/>
+      <location filename="../../ArchWindow.py" line="1537"/>
       <source>Wires</source>
       <translation>Drótvázak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1484"/>
+      <location filename="../../ArchWindow.py" line="1534"/>
       <source>Create new component</source>
       <translation>Új összetevő létrehozásához</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1485"/>
+      <location filename="../../ArchWindow.py" line="1535"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1486"/>
+      <location filename="../../ArchWindow.py" line="1536"/>
       <source>Type</source>
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1488"/>
+      <location filename="../../ArchWindow.py" line="1538"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1489"/>
+      <location filename="../../ArchWindow.py" line="1539"/>
       <source>Z offset</source>
       <translation>Z-eltolás</translation>
     </message>
@@ -1547,46 +1547,27 @@
       <translation>Hiba: Nem állapítható meg a karakterkódolás</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="266"/>
+      <location filename="../../importDAE.py" line="274"/>
       <source>file %s successfully created.</source>
       <translation>a program sikeresen létrehozta a %s fájl.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="823"/>
-      <source>Error: Couldn't determine character encoding
-</source>
-      <translation>Hiba: Nem állapítható meg a karakterkódolás
-</translation>
-    </message>
-    <message>
-      <location filename="../../importIFClegacy.py" line="115"/>
-      <source>Couldn't locate IfcOpenShell
-</source>
-      <translation>Nem találta meg a IfcOpenShell </translation>
-    </message>
-    <message>
-      <location filename="../../importIFClegacy.py" line="398"/>
-      <source>IFC Schema not found, IFC import disabled.
-</source>
-      <translation>IFC-séma nem található, az IFC import letiltva </translation>
-    </message>
-    <message>
-      <location filename="../../importOBJ.py" line="214"/>
+      <location filename="../../importOBJ.py" line="191"/>
       <source>successfully written </source>
       <translation>írás sikeresen elvégezve </translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1252"/>
+      <location filename="../../ArchCommands.py" line="1246"/>
       <source>Add space boundary</source>
       <translation>Hely határvonal hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1284"/>
+      <location filename="../../ArchCommands.py" line="1278"/>
       <source>Remove space boundary</source>
       <translation>Távolítsa el a hely határvonalán</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="141"/>
+      <location filename="../../ArchSpace.py" line="241"/>
       <source>Please select a base object</source>
       <translation>Kérjük válassza ki az alap tárgyat</translation>
     </message>
@@ -1611,21 +1592,7 @@
       <translation>Új betonacél létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="144"/>
-      <source>Please select a base face on a structural object
-</source>
-      <translation>Válasszon egy alap nézetet a strukturális objektumon
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="240"/>
-      <source>Please select a base object
-</source>
-      <translation>Kérjük válassza ki az alapértelmezett tárgyat
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="226"/>
+      <location filename="../../ArchSpace.py" line="227"/>
       <source>Create Space</source>
       <translation>Térköz létrehozása</translation>
     </message>
@@ -1655,11 +1622,6 @@
       <translation>Fal egyesítése</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="439"/>
-      <source>The selected wall contain no subwall to merge</source>
-      <translation>A kijelölt fal nem tartalmaz összeegyeztethető fal részleteket</translation>
-    </message>
-    <message>
       <location filename="../../ArchWall.py" line="446"/>
       <source>Please select only wall objects</source>
       <translation>Kérem csak fal objektumokat válasszon ki</translation>
@@ -1670,40 +1632,12 @@
       <translation>Falak egyesítése</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="462"/>
-      <source>Pick a face on an existing object or select a preset
-</source>
-      <translation>Válasszon egy felületet a meglévő objektumon vagy válasszon egy előre beállítottat
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1440"/>
-      <source>Unable to create component
-</source>
-      <translation>Nem lehet létrehozni összetevőt
-</translation>
-    </message>
-    <message>
-      <location filename="../../importDAE.py" line="52"/>
-      <source>pycollada not found, collada support is disabled.
-</source>
-      <translation>pycollada nem található, collada támogatás letiltva.
-</translation>
-    </message>
-    <message>
-      <location filename="../../importIFClegacy.py" line="392"/>
-      <source>IfcOpenShell not found or disabled, falling back on internal parser.
-</source>
-      <translation>IfcOpenShell nem található vagy le van tiltva, a belső értelmező lesz használva helyette.
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="659"/>
+      <location filename="../../ArchAxis.py" line="662"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Tengelyek közti távolságok (mm) és szögek (fokban)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="618"/>
+      <location filename="../../ArchComponent.py" line="647"/>
       <source>Error computing the shape of this object</source>
       <translation>Hiba a tárgy alakjának számítása közben</translation>
     </message>
@@ -1713,60 +1647,32 @@
       <translation>Szerkezeti rendszer létrehozása</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="945"/>
-      <source>Error: IfcOpenShell is not installed
-</source>
-      <translation>Hiba: IfcOpenShell nincs telepítve
-</translation>
-    </message>
-    <message>
-      <location filename="../../importIFClegacy.py" line="952"/>
-      <source>Error: your IfcOpenShell version is too old
-</source>
-      <translation>Hiba: a IfcOpenShell verziója túl régi
-</translation>
-    </message>
-    <message>
-      <location filename="../../importOBJ.py" line="71"/>
-      <source>Found a shape containing curves, triangulating
-</source>
-      <translation>Találtam egy görbét tartalmazó alakzatot, háromszögelést
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="387"/>
-      <source>Invalid cutplane
-</source>
-      <translation>Érvénytelen kivágási séma
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1086"/>
+      <location filename="../../ArchCommands.py" line="1080"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Objektum nem rendelkezik beállítható IFC-jellemzőkkel</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1092"/>
+      <location filename="../../ArchCommands.py" line="1086"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Brep erő zászló letiltása a tárgyon</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1098"/>
+      <location filename="../../ArchCommands.py" line="1092"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Brep erő jelző engedélyezése a tárgyon</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="636"/>
+      <location filename="../../ArchComponent.py" line="665"/>
       <source>has no solid</source>
       <translation>nem szilárd test</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="643"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has an invalid shape</source>
       <translation>egy érvénytelen alak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="645"/>
+      <location filename="../../ArchComponent.py" line="674"/>
       <source>has a null shape</source>
       <translation>van egy null alakja</translation>
     </message>
@@ -1811,7 +1717,7 @@
       <translation>3 nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="180"/>
+      <location filename="../../ArchPanel.py" line="181"/>
       <source>Create Panel</source>
       <translation>Panel létrehozása</translation>
     </message>
@@ -1853,7 +1759,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="../../ArchCutPlane.py" line="54"/>
       <source>CutVolume</source>
-      <translation>VágnikívántŰrtartalom</translation>
+      <translation>Vágni kívánt űrtartalom</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="61"/>
@@ -1863,7 +1769,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="../../ArchCutPlane.py" line="101"/>
       <source>PreviewCutVolume</source>
-      <translation>VágnikívántŰrtartalomElőnézet</translation>
+      <translation>Vágni kívánt űrtartalom előnézet</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="145"/>
@@ -1884,13 +1790,6 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
       <location filename="../../ArchCutPlane.py" line="148"/>
       <source>Front</source>
       <translation>Elölnézet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFrame.py" line="194"/>
-      <source>Crossing point not found in profile.
-</source>
-      <translation>Keresztezési pont nem található a profilban.
-</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="794"/>
@@ -1918,12 +1817,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
       <translation>Magasság (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1531"/>
+      <location filename="../../ArchCommands.py" line="1525"/>
       <source>Create Component</source>
       <translation>Összetevő létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="104"/>
+      <location filename="../../ArchMaterial.py" line="105"/>
       <source>Create material</source>
       <translation>Anyag létrehozás</translation>
     </message>
@@ -1938,37 +1837,32 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
       <translation>Metszősík által látható tárgyak</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="611"/>
+      <location filename="../../ArchSpace.py" line="612"/>
       <source>Set text position</source>
       <translation>Szöveg helyzetének beállítása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1551"/>
+      <location filename="../../ArchCommands.py" line="1545"/>
       <source>Category</source>
       <translation>Kategória</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1552"/>
+      <location filename="../../ArchCommands.py" line="1546"/>
       <source>Key</source>
       <translation>Kulcs</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1554"/>
+      <location filename="../../ArchCommands.py" line="1548"/>
       <source>Value</source>
       <translation>Érték</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1555"/>
+      <location filename="../../ArchCommands.py" line="1549"/>
       <source>Unit</source>
       <translation>Egység</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1562"/>
-      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
-      <translation>Az objektum nem rendelkezik IfcProperties attribútummal. Mégse hozzon létre számolótáblát ehhez az objektumhoz: </translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1580"/>
+      <location filename="../../ArchCommands.py" line="1574"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC tulajdonság számolótábla létrehozása</translation>
     </message>
@@ -1979,7 +1873,7 @@ Building object are not allowed to accept Site and Building object.
 Site and Building objects will be removed from the selection.
 You can change that in the preferences.
 </source>
-      <translation>Bármint tehet az Épület objektumba, csak nem Telket vagy Épületet. 
+      <translation>Bármin tehet az Épület objektumba, csak nem Telket vagy Épületet. 
 Épület objektumnak tilos telek és épület objektum elfogadása. 
 Telek és épület objektumokat eltávolítja a kijelölésből. 
 Módosíthatja ezt a beállításokban.
@@ -2011,7 +1905,7 @@ Floor object are not allowed to accept Site or Building object.
 Site, Building and Floor objects will be removed from the selection.
 You can change that in the preferences.
 </source>
-      <translation>Bármint tehet a Szint objektumba, csak nem Oldalt, Épületet vagy Szintet. 
+      <translation>Bármit tehet a Szint objektumba, csak nem Oldalt, Épületet vagy Szintet. 
 Szint objektumnak tilos Oldal és Épület objektum elfogadása. 
 Oldal, Épület és Szint objektumokat eltávolítja a kijelölésből. 
 Módosíthatja ezt a beállításokban.
@@ -2032,12 +1926,12 @@ Padló létrehozása megszakadt.
       <translation>Szint létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="309"/>
+      <location filename="../../ArchPanel.py" line="310"/>
       <source>Create Panel Cut</source>
       <translation>Panel kivágás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="330"/>
+      <location filename="../../ArchPanel.py" line="331"/>
       <source>Create Panel Sheet</source>
       <translation>Panel lap létrehozása</translation>
     </message>
@@ -2047,12 +1941,12 @@ Padló létrehozása megszakadt.
       <translation>Felületlétrehozás hibával tért vissza</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1209"/>
+      <location filename="../../ArchPanel.py" line="1210"/>
       <source>Tools</source>
       <translation>Eszközök</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1213"/>
+      <location filename="../../ArchPanel.py" line="1214"/>
       <source>Edit views positions</source>
       <translation>Nézet pozíciók szerkesztése</translation>
     </message>
@@ -2062,114 +1956,9 @@ Padló létrehozása megszakadt.
       <translation>Cső létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="155"/>
-      <source>Please select exactly 2 or 3 Pipe objects
-</source>
-      <translation>Kérjük, válasszon ki pontosan 2 vagy 3 cső objektumot
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="160"/>
-      <source>Please select only Pipe objects
-</source>
-      <translation>Kérem csak cső tárgyakat válasszon
-</translation>
-    </message>
-    <message>
       <location filename="../../ArchPipe.py" line="164"/>
       <source>Create Connector</source>
       <translation>Csatlakozó létrehozása</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="195"/>
-      <source>Unable to build the base path
-</source>
-      <translation>Nem sikerült létrehozni az alap útvonalat
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="211"/>
-      <source>Unable to build the profile
-</source>
-      <translation>Nem sikerült felépíteni a profilt
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="223"/>
-      <source>Unable to build the pipe
-</source>
-      <translation>Nem sikerült felépíteni a csövet
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="236"/>
-      <source>The base object is not a Part
-</source>
-      <translation>Az alap objektum nem alkotórész
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="239"/>
-      <source>Too many wires in the base shape
-</source>
-      <translation>Túl sok vezeték az alap alakzatban
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="242"/>
-      <source>The base wire is closed
-</source>
-      <translation>Az alap drótváz zárt
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="256"/>
-      <source>The profile is not a 2D Part
-</source>
-      <translation>A felület profil nem 2D alkotórész
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="259"/>
-      <source>Too many wires in the profile
-</source>
-      <translation>Túl sok vezeték az alap felület profilban
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="262"/>
-      <source>The profile is not closed
-</source>
-      <translation>A felület profil nem zárt
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="312"/>
-      <source>Only the 3 first wires will be connected
-</source>
-      <translation>Csak az első 3 drótváz lesz csatlakoztatva
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="376"/>
-      <source>Common vertex not found
-</source>
-      <translation>Nem található közös végpont
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="348"/>
-      <source>Pipes are already aligned
-</source>
-      <translation>Csövek már összeigazítottak
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPipe.py" line="388"/>
-      <source>At least 2 pipes must aligned
-</source>
-      <translation>Legalább 2 csövek kell igazítani
-</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="855"/>
@@ -2307,13 +2096,6 @@ Padló létrehozása megszakadt.
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="100"/>
-      <source>No spreadsheet attached to this schedule
-</source>
-      <translation>Ehhez az ütemezéshez nincs táblázat csatolva
-</translation>
-    </message>
-    <message>
       <location filename="../../ArchSchedule.py" line="193"/>
       <source>Unable to retrieve value from object</source>
       <translation>Nem sikerült lekérdezni az objektum értékét</translation>
@@ -2397,83 +2179,36 @@ Oldal létrehozás megszakítva.</translation>
       <translation>A dokumentum összes szerkezeti csomópontjának átkapcsolása</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="814"/>
-      <source>Pick another Structure object: </source>
-      <translation>Válasszon ki egy másik szerkezeti objektumot: </translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="819"/>
-      <source>The picked object is not a Structure
-</source>
-      <translation>A kiválasztott objektum nem szerkezeti
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="822"/>
-      <source>The picked object has no structural nodes
-</source>
-      <translation>A kiválasztott objektumnak nincsenek szerkezeti csomópontjai
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="825"/>
-      <source>One of these objects has more than 2 nodes
-</source>
-      <translation>Egy ezek közül az objektumok közül több mint 2 csomóponttal rendelkezik
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="832"/>
-      <source>Unable to find a suitable intersection point
-</source>
-      <translation>Nem képes találni egy megfelelő metszéspontot
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="835"/>
+      <location filename="../../ArchStructure.py" line="804"/>
       <source>Intersection found.
 </source>
       <translation>Metszéspont található.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="387"/>
+      <location filename="../../ArchWindow.py" line="393"/>
       <source>Door</source>
       <translation>Ajtó</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1490"/>
+      <location filename="../../ArchWindow.py" line="1540"/>
       <source>Hinge</source>
       <translation>Zsanér</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1491"/>
+      <location filename="../../ArchWindow.py" line="1541"/>
       <source>Opening mode</source>
       <translation>Nyitás módja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1492"/>
+      <location filename="../../ArchWindow.py" line="1542"/>
       <source>Get selected edge</source>
       <translation>Kiválasztott élt kapja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1493"/>
+      <location filename="../../ArchWindow.py" line="1543"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Nyomja meg a kiválasztott él lekéréséhez</translation>
-    </message>
-    <message>
-      <location filename="../../importGBXML.py" line="51"/>
-      <source>This exporter can currently only export one site object
-</source>
-      <translation>Ez az exportáló jelenleg csak egy terület objektumot exportál
-</translation>
-    </message>
-    <message>
-      <location filename="../../importGBXML.py" line="92"/>
-      <source>Error: Space '%s' has no Zone. Aborting.
-</source>
-      <translation>Hiba: '%s' térköznek nincs zónája. Megszakítás.
-</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="147"/>
@@ -2486,27 +2221,22 @@ Oldal létrehozás megszakítva.</translation>
       <translation>Ki kell választania egy alap alakzat objektumot, és tetszés szerint még egy háló objektumot</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="292"/>
-      <source>successfully imported </source>
-      <translation>sikeresen importálva </translation>
-    </message>
-    <message>
-      <location filename="../../ArchMaterial.py" line="133"/>
+      <location filename="../../ArchMaterial.py" line="134"/>
       <source>Create multi-material</source>
       <translation>Több részből álló anyag létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="568"/>
+      <location filename="../../ArchMaterial.py" line="569"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="596"/>
+      <location filename="../../ArchMaterial.py" line="597"/>
       <source>New layer</source>
       <translation>Új réteg</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="579"/>
+      <location filename="../../ArchPanel.py" line="580"/>
       <source>Error computing shape of </source>
       <translation>Számítási hiba ennél az alakzatnál </translation>
     </message>
@@ -2516,136 +2246,122 @@ Oldal létrehozás megszakítva.</translation>
       <translation>Fal előre beállított értékei...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1474"/>
+      <location filename="../../ArchWindow.py" line="1524"/>
       <source>Hole wire</source>
       <translation>Drótháló lyuk</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1475"/>
+      <location filename="../../ArchWindow.py" line="1525"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire</source>
       <translation>A hordozó objektumon lévő lyuk meghatározásához használt drótháló száma. A nulla értékkel automatikusan a legnagyobb dróthálót fogadja el</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1476"/>
+      <location filename="../../ArchWindow.py" line="1526"/>
       <source>Pick selected</source>
       <translation>Véletlenszerűen kiválasztott</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="131"/>
-      <source>Only axes must be selected
-</source>
-      <translation>Csak tengelyeket kell kijelölni
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="135"/>
+      <location filename="../../ArchAxis.py" line="138"/>
       <source>Create Axis System</source>
       <translation>Tengelyrendszer létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="140"/>
-      <source>Please select at least one axis
-</source>
-      <translation>Kérem válasszon legalább egy tengelyt
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="155"/>
+      <location filename="../../ArchAxis.py" line="158"/>
       <source>Create Grid</source>
       <translation>Rács létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Label</source>
       <translation>Címke</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="872"/>
+      <location filename="../../ArchAxis.py" line="875"/>
       <source>Axis system components</source>
       <translation>Tengely rendszer komponensei</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="910"/>
+      <location filename="../../ArchAxis.py" line="913"/>
       <source>Auto height is bigger than height</source>
       <translation>Automatikus magasság nagyobb, mint a magasság</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="919"/>
+      <location filename="../../ArchAxis.py" line="922"/>
       <source>Total row size is bigger than height</source>
       <translation>Teljes sor mérete nagyobb, mint a magasság</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="941"/>
+      <location filename="../../ArchAxis.py" line="944"/>
       <source>Auto width is bigger than width</source>
       <translation>Automatikus szélessége nagyobb, mint a szélesség</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="950"/>
+      <location filename="../../ArchAxis.py" line="953"/>
       <source>Total column size is bigger than width</source>
       <translation>Teljes oszlop mérete nagyobb, mint a szélesség</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1161"/>
+      <location filename="../../ArchAxis.py" line="1164"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1162"/>
+      <location filename="../../ArchAxis.py" line="1165"/>
       <source>Total width</source>
       <translation>Teljes szélesség</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1163"/>
+      <location filename="../../ArchAxis.py" line="1166"/>
       <source>Total height</source>
       <translation>Teljes magasság</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1164"/>
+      <location filename="../../ArchAxis.py" line="1167"/>
       <source>Add row</source>
       <translation>Sor hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1165"/>
+      <location filename="../../ArchAxis.py" line="1168"/>
       <source>Del row</source>
       <translation>Sor törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1166"/>
+      <location filename="../../ArchAxis.py" line="1169"/>
       <source>Add col</source>
       <translation>Oszlop hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1167"/>
+      <location filename="../../ArchAxis.py" line="1170"/>
       <source>Del col</source>
       <translation>Oszlop törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1168"/>
+      <location filename="../../ArchAxis.py" line="1171"/>
       <source>Create span</source>
       <translation>Kiforgatás létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1169"/>
+      <location filename="../../ArchAxis.py" line="1172"/>
       <source>Remove span</source>
       <translation>Kiforgatás eltávolítás</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Rows</source>
       <translation>Sorok</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Columns</source>
       <translation>Oszlopok</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1293"/>
+      <location filename="../../ArchPanel.py" line="1294"/>
       <source>This object has no face</source>
       <translation>Ennek az objektumnak nincs felülete</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="615"/>
+      <location filename="../../ArchSpace.py" line="616"/>
       <source>Space boundaries</source>
       <translation>Terület határvonal</translation>
     </message>
@@ -2655,59 +2371,274 @@ Oldal létrehozás megszakítva.</translation>
       <translation>Hiba: Nem lehet módosítani ennek a falnak az alap objektumát</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1473"/>
+      <location filename="../../ArchWindow.py" line="1523"/>
       <source>Window elements</source>
       <translation>Ablak elemek</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="952"/>
+      <location filename="../../ArchCommands.py" line="946"/>
       <source>Survey</source>
       <translation>Felmérés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="953"/>
+      <location filename="../../ArchCommands.py" line="947"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Leírás megadása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="954"/>
+      <location filename="../../ArchCommands.py" line="948"/>
       <source>Clear</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="955"/>
+      <location filename="../../ArchCommands.py" line="949"/>
       <source>Copy Length</source>
-      <translation type="unfinished">Copy Length</translation>
+      <translation>Másolás hossza</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="956"/>
+      <location filename="../../ArchCommands.py" line="950"/>
       <source>Copy Area</source>
-      <translation type="unfinished">Copy Area</translation>
+      <translation>Másolási terület</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="957"/>
+      <location filename="../../ArchCommands.py" line="951"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Exportálás CSV-be</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="958"/>
+      <location filename="../../ArchCommands.py" line="952"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="958"/>
+      <location filename="../../ArchCommands.py" line="952"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Terület</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1000"/>
       <source>Total</source>
-      <translation type="unfinished">Total</translation>
+      <translation>Összesen</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="307"/>
       <source>Hosts</source>
-      <translation type="unfinished">Hosts</translation>
+      <translation>Állomások</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="134"/>
+      <source>Only axes must be selected</source>
+      <translation>Csak tengelyeket kell kijelölni</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="143"/>
+      <source>Please select at least one axis</source>
+      <translation>Kérlek válassz legalább egy tengelyt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="381"/>
+      <source>Invalid cutplane</source>
+      <translation>Érvénytelen kivágási síkfelület</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1434"/>
+      <source>All good! No problems found</source>
+      <translation>Minden jó! nincs probléma</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1556"/>
+      <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
+      <translation>Az objektum nem rendelkezik IfcProperties attribútummal. Mégse hozzon létre számolótáblát ehhez az objektumhoz:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFrame.py" line="194"/>
+      <source>Crossing point not found in profile.</source>
+      <translation>Keresztezési pont a profilban nem található.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="155"/>
+      <source>Please select exactly 2 or 3 Pipe objects</source>
+      <translation>Kérjük, válasszon ki pontosan 2 vagy 3 cső objektumot</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="160"/>
+      <source>Please select only Pipe objects</source>
+      <translation>Kérem csak egy objektumot válasszon</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="195"/>
+      <source>Unable to build the base path</source>
+      <translation>Nem sikerült létrehozni az alap útvonalat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="211"/>
+      <source>Unable to build the profile</source>
+      <translation>Nem sikerült felépíteni a profilt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="223"/>
+      <source>Unable to build the pipe</source>
+      <translation>Nem sikerült felépíteni a csövet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="236"/>
+      <source>The base object is not a Part</source>
+      <translation>Az alap objektum nem alkatrész</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="239"/>
+      <source>Too many wires in the base shape</source>
+      <translation>Túl sok drótváz az alap alakzatban</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="242"/>
+      <source>The base wire is closed</source>
+      <translation>Az alap drótváz zárt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="256"/>
+      <source>The profile is not a 2D Part</source>
+      <translation>A felület profil nem 2D alkatrész</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="259"/>
+      <source>Too many wires in the profile</source>
+      <translation>Túl sok vezeték a profilban</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="262"/>
+      <source>The profile is not closed</source>
+      <translation>A profil nem zárt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="312"/>
+      <source>Only the 3 first wires will be connected</source>
+      <translation>Csak az első 3 drótváz lesz csatlakoztatva</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="376"/>
+      <source>Common vertex not found</source>
+      <translation>Nem található közös végpont</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="348"/>
+      <source>Pipes are already aligned</source>
+      <translation>Csövek már összeigazítottak</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="388"/>
+      <source>At least 2 pipes must aligned</source>
+      <translation>Legalább 2 csövet kell igazítani</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRebar.py" line="144"/>
+      <source>Please select a base face on a structural object</source>
+      <translation>Válasszon egy alap nézetet a tárgy szerkezetén</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="100"/>
+      <source>No spreadsheet attached to this schedule</source>
+      <translation>Ehhez az ütemezéshez nincs táblázat csatolva</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="814"/>
+      <source>Choose another Structure object:</source>
+      <translation>Válasszon ki egy másik szerkezeti objektumot:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="819"/>
+      <source>The chosen object is not a Structure</source>
+      <translation>A kiválasztott objektum nem szerkezet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="822"/>
+      <source>The chosen object has no structural nodes</source>
+      <translation>A kiválasztott objektumnak nincsenek szerkezeti csomópontjai</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="825"/>
+      <source>One of these objects has more than 2 nodes</source>
+      <translation>Egy ezek közül az objektumok közül több mint 2 csomóponttal rendelkezik</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="832"/>
+      <source>Unable to find a suitable intersection point</source>
+      <translation>Nem képes találni egy megfelelő metszéspontot</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="835"/>
+      <source>Intersection found.</source>
+      <translation>Metszéspont található.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="439"/>
+      <source>The selected wall contains no subwall to merge</source>
+      <translation>A kijelölt fal nem tartalmaz összeegyeztethető fal részleteket</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="468"/>
+      <source>Choose a face on an existing object or select a preset</source>
+      <translation>Válasszon egy felületet a meglévő objektumon vagy válasszon egy előre beállítottat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1490"/>
+      <source>Unable to create component</source>
+      <translation>Nem sikerült létrehozni egy összetevőt</translation>
+    </message>
+    <message>
+      <location filename="../../importDAE.py" line="52"/>
+      <source>pycollada not found, collada support is disabled.</source>
+      <translation>pycollada nem található, collada támogatás letiltva.</translation>
+    </message>
+    <message>
+      <location filename="../../importGBXML.py" line="51"/>
+      <source>This exporter can currently only export one site object</source>
+      <translation>Ez az exportáló jelenleg csak egy terület objektumot exportál</translation>
+    </message>
+    <message>
+      <location filename="../../importGBXML.py" line="92"/>
+      <source>Error: Space '%s' has no Zone. Aborting.</source>
+      <translation>Hiba: '%s' térköznek nincs zónája. Megszakítás.</translation>
+    </message>
+    <message>
+      <location filename="../../importIFClegacy.py" line="115"/>
+      <source>Couldn't locate IfcOpenShell</source>
+      <translation>IfcOpenShell nem található</translation>
+    </message>
+    <message>
+      <location filename="../../importIFClegacy.py" line="392"/>
+      <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
+      <translation>IfcOpenShell nem található vagy le van tiltva, a belső értelmező lesz használva helyette.</translation>
+    </message>
+    <message>
+      <location filename="../../importIFClegacy.py" line="398"/>
+      <source>IFC Schema not found, IFC import disabled.</source>
+      <translation>IFC séma nem található, IFC importáló kikapcsolva.</translation>
+    </message>
+    <message>
+      <location filename="../../importIFClegacy.py" line="945"/>
+      <source>Error: IfcOpenShell is not installed</source>
+      <translation>Hiba: IfcOpenShell nincs telepítve</translation>
+    </message>
+    <message>
+      <location filename="../../importIFClegacy.py" line="952"/>
+      <source>Error: your IfcOpenShell version is too old</source>
+      <translation>Hiba: a IfcOpenShell verziója túl régi</translation>
+    </message>
+    <message>
+      <location filename="../../importOBJ.py" line="214"/>
+      <source>successfully written</source>
+      <translation>sikeresen kiírva</translation>
+    </message>
+    <message>
+      <location filename="../../importOBJ.py" line="71"/>
+      <source>Found a shape containing curves, triangulating</source>
+      <translation>Találtam egy görbét tartalmazó alakzatot, háromszögesítés</translation>
+    </message>
+    <message>
+      <location filename="../../importOBJ.py" line="292"/>
+      <source>Successfully imported</source>
+      <translation>Sikeresen importálva</translation>
     </message>
   </context>
   <context>
@@ -2805,7 +2736,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="208"/>
       <source>A URL describing this material</source>
-      <translation type="unfinished">A URL describing this material</translation>
+      <translation>Egy URL, amely leírja ezt az anyagot</translation>
     </message>
   </context>
   <context>
@@ -2824,12 +2755,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1243"/>
+      <location filename="../../ArchCommands.py" line="1237"/>
       <source>Add component</source>
       <translation>Összetevő hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1244"/>
+      <location filename="../../ArchCommands.py" line="1238"/>
       <source>Adds the selected components to the active object</source>
       <translation>A kijelölt összetevőket hozzáadja az aktív objektumhoz</translation>
     </message>
@@ -2837,43 +2768,43 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="102"/>
+      <location filename="../../ArchAxis.py" line="105"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="104"/>
-      <source>Creates a set of axes.</source>
-      <translation>Létrehoz egy tengely csoportot.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="150"/>
+      <location filename="../../ArchAxis.py" line="153"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="152"/>
+      <location filename="../../ArchAxis.py" line="155"/>
       <source>Creates a customizable grid object</source>
       <translation>Létrehoz egy testre szabható rács objektumot</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="107"/>
+      <source>Creates a set of axes</source>
+      <translation>Létrehoz egy tengely csoportot</translation>
     </message>
   </context>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxis.py" line="121"/>
+      <location filename="../../ArchAxis.py" line="124"/>
       <source>Axis System</source>
       <translation>Tengely rendszer</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="123"/>
-      <source>Creates an axis system from a set of axes.</source>
-      <translation>Létrehoz egy tengely rendszert a meghatározott tengelyekről.</translation>
+      <location filename="../../ArchAxis.py" line="126"/>
+      <source>Creates an axis system from a set of axes</source>
+      <translation>Létrehoz egy tengely rendszert a meghatározott tengelyekről</translation>
     </message>
   </context>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1321"/>
+      <location filename="../../ArchAxis.py" line="1324"/>
       <source>Axis tools</source>
       <translation>Tengely eszközök</translation>
     </message>
@@ -2894,30 +2825,30 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1431"/>
+      <location filename="../../ArchCommands.py" line="1425"/>
       <source>Check</source>
       <translation>Ellenőrzés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1432"/>
+      <location filename="../../ArchCommands.py" line="1426"/>
       <source>Checks the selected objects for problems</source>
       <translation>Ellenőrzi a kijelölt objektumok problémáit</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1453"/>
-      <source>Explore the contents of an Ifc file</source>
-      <translation>Fedezze fel az Ifc fájl tartalmát</translation>
+      <location filename="../../ArchCommands.py" line="1447"/>
+      <source>Explore the contents of an IFC file</source>
+      <translation>Fedezze fel egy Ifc fájl tartalmát</translation>
     </message>
   </context>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1521"/>
+      <location filename="../../ArchCommands.py" line="1515"/>
       <source>Clone component</source>
       <translation>Összetevő klónozása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1523"/>
+      <location filename="../../ArchCommands.py" line="1517"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Klónoz egy objektumot egy nem definiált építészeti összetevőként</translation>
     </message>
@@ -2925,12 +2856,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1414"/>
+      <location filename="../../ArchCommands.py" line="1408"/>
       <source>Close holes</source>
-      <translation>Lyukak bezárása</translation>
+      <translation>Furatok bezárása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1415"/>
+      <location filename="../../ArchCommands.py" line="1409"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Bezárja a nyitott alakzatokat, szilárd testé változtatja azokat</translation>
     </message>
@@ -2938,12 +2869,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
+      <location filename="../../ArchCommands.py" line="1490"/>
       <source>Component</source>
       <translation>Összetevő</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1498"/>
+      <location filename="../../ArchCommands.py" line="1492"/>
       <source>Creates an undefined architectural component</source>
       <translation>Létrehoz egy meghatározatlan építészeti összetevőt</translation>
     </message>
@@ -3003,70 +2934,70 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="880"/>
+      <location filename="../../ArchAxis.py" line="883"/>
       <source>The number of rows</source>
       <translation>A sorok száma</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="881"/>
+      <location filename="../../ArchAxis.py" line="884"/>
       <source>The number of columns</source>
       <translation>Az oszlopok száma</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="882"/>
+      <location filename="../../ArchAxis.py" line="885"/>
       <source>The sizes for rows</source>
       <translation>Mértek a sorokhoz</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="883"/>
+      <location filename="../../ArchAxis.py" line="886"/>
       <source>The sizes of columns</source>
       <translation>Méretek az oszlopokhoz</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="884"/>
+      <location filename="../../ArchAxis.py" line="887"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Az összefőzött cellák kitöltési határai</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="885"/>
-      <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="886"/>
-      <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="887"/>
-      <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
-    </message>
-    <message>
       <location filename="../../ArchAxis.py" line="888"/>
-      <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <source>The type of 3D points produced by this grid object</source>
+      <translation>A rács tárgy által létrehozott 3D pontok típusa</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="889"/>
-      <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <source>The total width of this grid</source>
+      <translation>Ennek a rácsnak a teljes szélessége</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="890"/>
-      <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <source>The total height of this grid</source>
+      <translation>Ennek a rácsnak a teljes magassága</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="891"/>
+      <source>Creates automatic column divisions (set to 0 to disable)</source>
+      <translation>Automatikus oszlop kiosztást hoz létre (állítsa 0-ra a kikapcsoláshoz)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="892"/>
+      <source>Creates automatic row divisions (set to 0 to disable)</source>
+      <translation>Automatikus sor kiosztást hoz létre (állítsa 0-ra a kikapcsoláshoz)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="893"/>
+      <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
+      <translation>Az élfelezőpont módban, ha a rácsnak el kell fordítania az elágazásait a normál él mentén, vagy sem</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="894"/>
       <source>The indices of faces to hide</source>
-      <translation type="unfinished">The indices of faces to hide</translation>
+      <translation>A felületek jelöléseinek elrejtése</translation>
     </message>
   </context>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1452"/>
+      <location filename="../../ArchCommands.py" line="1446"/>
       <source>Ifc Explorer</source>
       <translation>IFC Böngésző</translation>
     </message>
@@ -3074,25 +3005,25 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1571"/>
+      <location filename="../../ArchCommands.py" line="1565"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFC számolótábla létrehozása...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1573"/>
-      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <location filename="../../ArchCommands.py" line="1567"/>
+      <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Készít egy számolótáblát egy objektum ifc tulajdonságainak tárolására.</translation>
     </message>
   </context>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchMaterial.py" line="101"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>A kiválasztott tárgy anyag meghatározását hozza létre vagy szerkeszti.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="98"/>
+      <location filename="../../ArchMaterial.py" line="99"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
@@ -3100,7 +3031,7 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="672"/>
+      <location filename="../../ArchMaterial.py" line="673"/>
       <source>Material tools</source>
       <translation>Anyag eszközök</translation>
     </message>
@@ -3121,12 +3052,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1335"/>
+      <location filename="../../ArchCommands.py" line="1329"/>
       <source>Mesh to Shape</source>
       <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1330"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>A kiválasztott hálókat alakzat objektumokká alakítja</translation>
     </message>
@@ -3134,12 +3065,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="127"/>
+      <location filename="../../ArchMaterial.py" line="128"/>
       <source>Multi-Material</source>
       <translation>Több részből álló anyag</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="129"/>
+      <location filename="../../ArchMaterial.py" line="130"/>
       <source>Creates or edits multi-materials</source>
       <translation>Létrehozza vagy szerkeszti a több részből álló anyagokat</translation>
     </message>
@@ -3147,25 +3078,25 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1229"/>
+      <location filename="../../ArchPanel.py" line="1230"/>
       <source>Nest</source>
-      <translation type="unfinished">Nest</translation>
+      <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1231"/>
+      <location filename="../../ArchPanel.py" line="1232"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>Kiválasztott alakzatok háló sorozatát konténerbe</translation>
     </message>
   </context>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="133"/>
+      <location filename="../../ArchPanel.py" line="134"/>
       <source>Panel</source>
       <translation>Panel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="135"/>
+      <location filename="../../ArchPanel.py" line="136"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Panel tárgyat hoz létre a semmiből vagy egy kijelölt objektumból (vázlat, drót, felület vagy szilárd test)</translation>
     </message>
@@ -3173,7 +3104,7 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1381"/>
       <source>Panel tools</source>
       <translation>Panel eszközök</translation>
     </message>
@@ -3181,7 +3112,7 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="300"/>
+      <location filename="../../ArchPanel.py" line="301"/>
       <source>Panel Cut</source>
       <translation>Panel vágó</translation>
     </message>
@@ -3189,17 +3120,17 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="302"/>
+      <location filename="../../ArchPanel.py" line="303"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Létrehoz 2D nézeteket a kijelölt panelekből</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="322"/>
+      <location filename="../../ArchPanel.py" line="323"/>
       <source>Panel Sheet</source>
       <translation>Panel lap</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="324"/>
+      <location filename="../../ArchPanel.py" line="325"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Létrehoz egy 2D-s lapot, amely tartalmazhat panel vágásokat</translation>
     </message>
@@ -3254,12 +3185,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1275"/>
+      <location filename="../../ArchCommands.py" line="1269"/>
       <source>Remove component</source>
       <translation>Összetevő törlése</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1276"/>
+      <location filename="../../ArchCommands.py" line="1270"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>A kijelölt alkatrészek eltávolítása a szülőktől, vagy egy lyuk létrehozása alkatrészen</translation>
     </message>
@@ -3267,12 +3198,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1399"/>
+      <location filename="../../ArchCommands.py" line="1393"/>
       <source>Remove Shape from Arch</source>
       <translation>Alakzat elhagyása az Építészet-ből</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1400"/>
+      <location filename="../../ArchCommands.py" line="1394"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Eltávolítja a harmadfokú alakzatokat az Arch alkatrészekből</translation>
     </message>
@@ -3319,12 +3250,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1370"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <source>Select non-manifold meshes</source>
       <translation>Válassza ki a nem-sokrétű hálózatot</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1371"/>
+      <location filename="../../ArchCommands.py" line="1365"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Kiválasztja az összes nem-sokrétű hálózatot a dokumentumból vagy a kijelölt csoportokból</translation>
     </message>
@@ -3345,12 +3276,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchSpace.py" line="218"/>
+      <location filename="../../ArchSpace.py" line="219"/>
       <source>Space</source>
       <translation>Térköz</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="220"/>
+      <location filename="../../ArchSpace.py" line="221"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Létrehoz egy Terület-objektumot a határoló objektumokból</translation>
     </message>
@@ -3363,12 +3294,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1310"/>
+      <location filename="../../ArchCommands.py" line="1304"/>
       <source>Split Mesh</source>
-      <translation>Háló osztása</translation>
+      <translation>Háló felosztása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1311"/>
+      <location filename="../../ArchCommands.py" line="1305"/>
       <source>Splits selected meshes into independent components</source>
       <translation>A kiválasztott hálót független összetevőkre osztja</translation>
     </message>
@@ -3397,12 +3328,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1460"/>
       <source>Survey</source>
       <translation>Felmérés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1461"/>
       <source>Starts survey</source>
       <translation>Felmérés indítása</translation>
     </message>
@@ -3410,12 +3341,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1481"/>
+      <location filename="../../ArchCommands.py" line="1475"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep jelölő zászló</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1482"/>
+      <location filename="../../ArchCommands.py" line="1476"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Erőltessen egy tárgyat Brep exportálásra vagy sem</translation>
     </message>
@@ -3423,12 +3354,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1596"/>
+      <location filename="../../ArchCommands.py" line="1590"/>
       <source>Toggle subcomponents</source>
       <translation>Al-összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1597"/>
+      <location filename="../../ArchCommands.py" line="1591"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Megjeleníti vagy elrejti ennek az objektumnak az al-összetevőit</translation>
     </message>
@@ -3449,12 +3380,12 @@ Oldal létrehozás megszakítva.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="399"/>
+      <location filename="../../ArchWindow.py" line="405"/>
       <source>Window</source>
       <translation>Ablak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="401"/>
+      <location filename="../../ArchWindow.py" line="407"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Ablak objektumot hoz létre a kijelölt objektumból (vonalas, téglalap vagy vázlat)</translation>
     </message>
@@ -3993,7 +3924,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="34"/>
       <source>Auto-join walls</source>
-      <translation>Falak auto-összekötése</translation>
+      <translation>Falak autó-összekötése</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="54"/>
@@ -4033,7 +3964,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="178"/>
       <source>Force flat faces</source>
-      <translation>Lapos felületek erültetése</translation>
+      <translation>Lapos felületek eröltetése</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="195"/>
@@ -4069,11 +4000,6 @@ Oldal létrehozás megszakítva.</translation>
       <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>Prefix names with ID number</source>
       <translation>Előtag nevek, ID azonosító számmal</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="336"/>
-      <source>Exclude list: </source>
-      <translation>Kizárási lista: </translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="343"/>
@@ -4143,7 +4069,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="768"/>
       <source>Number of steps:</source>
-      <translation>Lépések száma:</translation>
+      <translation>Lépcsők száma:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="796"/>
@@ -4468,7 +4394,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="94"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Ha ez be van jelölve, akkor, ha egy objektum az Építészeti objektum kivonása vagy hozzáadása lesz, akkor az az Építési vázlat színét kapja meg.</translation>
+      <translation>Ha bejelölt, akkor, ha egy objektum az Építészeti objektum kivonása vagy hozzáadása lesz, akkor az az Építési vázlat színét kapja meg.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="97"/>
@@ -4503,7 +4429,7 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="542"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Ha ez be van jelölve, a vágólapra helyezett szöveg magában foglalja a mértékegységet is. Ellenkező esetben lesz egy egyszerű belső mértékegységben kifejezett szám (milliméter)</translation>
+      <translation>Ha bejelölt, a vágólapra helyezett szöveg magában foglalja a mértékegységet is. Ellenkező esetben lesz egy egyszerű belső mértékegységben kifejezett szám (milliméter)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="545"/>
@@ -4558,27 +4484,32 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="366"/>
       <source>Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</source>
-      <translation type="unfinished">Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</translation>
+      <translation>Importálandó tárgy nézetbe illesztése az importáláskor. Ez lelassítja az importálást, de felügyelheti az importot.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="369"/>
       <source>Fit view while importing</source>
-      <translation type="unfinished">Fit view while importing</translation>
+      <translation>Nézetbe illesztés az importáláskor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="518"/>
       <source>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</source>
-      <translation type="unfinished">If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</translation>
+      <translation>Ha ez be van jelölve, minden FreeCAD tárgy tulajdonságait tárolja az exportált objektum, lehetővé teszi, a teljes parametrikus modell ismételt létrehozását újra importálákor.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="521"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation type="unfinished">Export full FreeCAD parametric model</translation>
+      <translation>Teljes FreeCAD parametrikus modell export</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="513"/>
       <source>If this is checked, the "open BimServer in browser" button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is checked, the "open BimServer in browser" button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</translation>
+      <translation>Ha ez be van jelölve, a "BimServer megnyitása a böngészőben" gomb nyitja meg a Bim szerver felületet egy külső böngészőben a FreeCAD web munkafelülete helyett</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="336"/>
+      <source>Exclude list:</source>
+      <translation>Kizárási lista:</translation>
     </message>
   </context>
   <context>
@@ -4614,12 +4545,12 @@ Oldal létrehozás megszakítva.</translation>
     <message>
       <location filename="../../InitGui.py" line="99"/>
       <source>Snapping</source>
-      <translation>Igazítás</translation>
+      <translation>Illesztés</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="96"/>
       <source>&amp;Arch</source>
-      <translation>Épít</translation>
+      <translation>Építészet</translation>
     </message>
   </context>
 </TS>

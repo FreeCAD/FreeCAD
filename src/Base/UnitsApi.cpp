@@ -160,7 +160,7 @@ void UnitsApi::setSchema(UnitSystem s)
 //}
 //
 
-// === static translation methodes ==========================================
+// === static translation methods ==========================================
 
 QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {

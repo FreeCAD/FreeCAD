@@ -119,10 +119,10 @@ public:
 protected:
 public: // FIXME: Remove the public keyword
  /* sMessage may be:
-  * - an UI compliant string subsceptible of being translated and shown to the user in the UI
-  * - a very technical message not intended to be traslated or shown to the user in the UI
-  * The preferred way of throwing an exception is using the macros above. This way, the file, 
-  * line and function are automatically inserted. */
+  * - a UI compliant string susceptible to being translated and shown to the user in the UI
+  * - a very technical message not intended to be translated or shown to the user in the UI
+  * The preferred way of throwing an exception is using the macros above.
+  * This way, the file, line, and function are automatically inserted. */
   Exception(const char * sMessage);
   Exception(const std::string& sMessage);
   Exception(void);
@@ -229,7 +229,8 @@ public:
   virtual void setPyObject( PyObject * pydict);
 protected:
   FileInfo file;
-  // necessary   for what() legacy behaviour as it returns a buffer that can not be of a temporary object to be destroyed at end of what()
+  // necessary   for what() legacy behaviour as it returns a buffer that
+  // can not be of a temporary object to be destroyed at end of what()
   std::string _sErrMsgAndFileName; 
 };
 

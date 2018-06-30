@@ -332,7 +332,7 @@
     <message>
       <location line="+1"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Crea un oggetto di vestimento che sostituisce alcuni aspetti di una traiettoria</translation>
+      <translation>Crea un oggetto di vestizione che sostituisce alcuni aspetti di una traiettoria</translation>
     </message>
     <message>
       <source>Dress up trajectory...</source>
@@ -976,7 +976,7 @@
       <location line="+26"/>
       <location line="+37"/>
       <source>Use</source>
-      <translation>Uso</translation>
+      <translation>Usa</translation>
     </message>
     <message>
       <location line="-26"/>

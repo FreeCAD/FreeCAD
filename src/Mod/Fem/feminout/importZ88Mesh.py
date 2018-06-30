@@ -121,8 +121,8 @@ def read_z88_mesh(z88_mesh_input):
     nodes_count = int(mesh_info[1])
     elements_count = int(mesh_info[2])
     kflag = int(mesh_info[4])
-    if kflag:  # for non rotational elements ist --> kflag = 0 --> karthesian, kflag = 1 polar koordinates
-        FreeCAD.Console.PrintError("KFLAG = 1, Rotational koordinates not supported at the moment\n")
+    if kflag:  # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
+        FreeCAD.Console.PrintError("KFLAG = 1, Rotational coordinates not supported at the moment\n")
         return {}
     nodes_first_line = 2  # first line is mesh_info
     nodes_last_line = nodes_count + 1
@@ -290,9 +290,9 @@ def read_z88_mesh(z88_mesh_input):
                                                 nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20)
                     input_continues = False
 
-                # not known elements, some example have -1 for some teaching reasons to show some other stuff
+                # unknown elements, some examples have -1 for some teaching reasons to show some other stuff
                 else:
-                    FreeCAD.Console.PrintError("Not known element\n")
+                    FreeCAD.Console.PrintError("Unknown element\n")
                     return {}
 
     if Debug:
@@ -417,7 +417,7 @@ def get_z88_element_type(femmesh, femelement_table=None):
             elif elem_length == 10:
                 return 16
             else:
-                print('Tetra with neiter 4 nor 10 nodes')
+                print('Tetra with neither 4 nor 10 nodes')
         elif femmesh.HexaCount == femmesh.VolumeCount:
             if elem_length == 8:
                 return 1
@@ -445,7 +445,7 @@ def get_z88_element_type(femmesh, femelement_table=None):
             elif elem_length == 8:
                 return 23
             else:
-                print('Quad with neiter 4 nor 8 nodes')
+                print('Quad with neither 4 nor 8 nodes')
                 return 0
         else:
             print('no tria, no quad')
@@ -454,6 +454,6 @@ def get_z88_element_type(femmesh, femelement_table=None):
         print('Edge femmesh will be exported as 3D truss element nr 4')
         return 4
     else:
-        print('Neither, edge, face or solid femmesh')
+        print('Neither edge nor face nor solid femmesh')
         return 0
     return 0

@@ -1263,7 +1263,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
                 occweights.SetValue(i,1.0);
             }
         }
-        // check if the numer of poles matches the sum of mults
+        // check if the number of poles matches the sum of mults
         if ((PyObject_IsTrue(periodic) && sum_of_mults != number_of_poles) ||
                 (PyObject_Not(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");

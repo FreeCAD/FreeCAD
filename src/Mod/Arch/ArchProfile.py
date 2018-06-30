@@ -43,7 +43,7 @@ else:
 #  \brief Profile tools for ArchStructure
 #
 #  This module provides tools to build base profiles
-#  for Arch Strucutre elements
+#  for Arch Structure elements
 
 __title__="FreeCAD Profile"
 __author__ = "Yorik van Havre"
@@ -80,6 +80,9 @@ def readPresets():
 
 def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     '''makeProfile(profile): returns a shape  with the face defined by the profile data'''
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
     obj.Label = translate("Arch",profile[2])
     if profile[3]=="C":
@@ -118,9 +121,9 @@ class _ProfileC(_Profile):
         import Part
         pl = obj.Placement
         c1=Part.Circle()
-        c1.Radius=obj.OutDiameter.Value
+        c1.Radius=obj.OutDiameter.Value/2
         c2=Part.Circle()
-        c2.Radius=obj.OutDiameter.Value-2*obj.Thickness.Value
+        c2.Radius=obj.OutDiameter.Value/2-obj.Thickness.Value
         cs1=c1.toShape()
         cs2=c2.toShape()
         p=Part.makeRuledSurface(cs2,cs1)
@@ -201,8 +204,11 @@ class _ProfileRH(_Profile):
         q4 = Vector(-obj.Width.Value/2+obj.Thickness.Value,obj.Height.Value/2-obj.Thickness.Value,0)
         p = Part.makePolygon([p1,p2,p3,p4,p1])
         q = Part.makePolygon([q1,q2,q3,q4,q1])
-        r = Part.Face([p,q])
+        #r = Part.Face([p,q])
         #r.reverse()
+        p = Part.Face(p)
+        q = Part.Face(q)
+        r = p.cut(q)
         obj.Shape = r
         obj.Placement = pl
         

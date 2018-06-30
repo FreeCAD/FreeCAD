@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation type="unfinished">Approximate B-spline surface...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation type="unfinished">Approximate a B-spline surface</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation type="unfinished">Approximate B-Spline surface...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Приблизна поверхня...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Приблизна B-Spline-поверхня</translation>
     </message>
@@ -85,9 +93,13 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
       <translation type="unfinished">Fit B-Spline surface</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation type="unfinished">Fit B-spline surface</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -134,17 +146,17 @@
     <message>
       <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Загальна вага</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Довжина градієнту</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Енергія згинання</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -185,7 +197,7 @@
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Параметри</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -200,7 +212,7 @@
     <message>
       <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Зразків на вузол</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
@@ -220,7 +232,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Оберіть одну точку хмари.</translation>
     </message>
   </context>
   <context>

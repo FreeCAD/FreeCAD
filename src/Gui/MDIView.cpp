@@ -94,6 +94,10 @@ void MDIView::deleteSelf()
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
         // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+#if QT_VERSION < 0x050000
+        // With Qt5 this would lead to some annoying flickering
+        getMainWindow()->removeWindow(this);
+#endif
         parent->close();
     }
     else {

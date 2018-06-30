@@ -26,9 +26,12 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathDressup.py
+    PathScripts/PathDressupAxisMap.py
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
+    PathScripts/PathDressupLeadInOut.py
     PathScripts/PathDressupRampEntry.py
     PathScripts/PathDressupTag.py
     PathScripts/PathDressupTagGui.py
@@ -54,7 +57,6 @@ SET(PathScripts_SRCS
     PathScripts/PathMillFaceGui.py
     PathScripts/PathOp.py
     PathScripts/PathOpGui.py
-    PathScripts/PathPlane.py
     PathScripts/PathPocket.py
     PathScripts/PathPocketBase.py
     PathScripts/PathPocketBaseGui.py
@@ -83,7 +85,6 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathToolController.py
-    PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
@@ -102,7 +103,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
-    PathScripts/post/phillips_post.py
+    PathScripts/post/philips_post.py
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py

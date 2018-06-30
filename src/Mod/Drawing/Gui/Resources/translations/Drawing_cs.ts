@@ -288,11 +288,18 @@
       <translation>Export PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Tiskárna používá jinou orientaci než výkres.
+Chcete pokračovat?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>Soubor PDF (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF soubor</translation>
     </message>
@@ -337,14 +344,13 @@
       <translation>Jiná orientace</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Tiskárna používá jinou orientaci než výkres.
 Chcete pokračovat?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Jiný formát papíru</translation>
@@ -397,19 +403,31 @@ Chcete pokračovat?</translation>
       <translation>Horní levý x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Odsazení dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Osa ven a doprava</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Svislý sklon</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Odsazení dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Osa ven a doprava</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Svislý sklon</translation>
     </message>
     <message>
       <location line="+11"/>

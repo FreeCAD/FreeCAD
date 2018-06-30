@@ -35,6 +35,7 @@
 # include <ShapeExtend_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QMessageBox>
+# include <Python.h>
 # include <Inventor/system/inttypes.h>
 #endif
 
@@ -174,8 +175,8 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
         //visibility automation
         try{
             QString code = QString::fromLatin1(
-                        "import TempoVis\n"
-                        "tv = TempoVis.TempoVis(App.ActiveDocument)\n"
+                        "import Show\n"
+                        "tv = Show.TempoVis(App.ActiveDocument)\n"
                         "tv.hide([%1])"
                         );
             std::vector<App::DocumentObject*>sources = getShapesToExtrude();

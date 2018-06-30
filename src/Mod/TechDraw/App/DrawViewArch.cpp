@@ -55,6 +55,7 @@ DrawViewArch::DrawViewArch(void)
     static const char *group = "Arch view";
 
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Section Plane object for this view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);
     ADD_PROPERTY_TYPE(RenderMode, ((long)0),group,App::Prop_None,"The render mode to use");
@@ -138,4 +139,73 @@ std::string DrawViewArch::getSVGTail(void)
 {
     std::string tail = "\\n</svg>";
     return tail;
+}
+
+//DVA is still Source PropertyLink so needs different logic vs DV::Restore
+void DrawViewArch::Restore(Base::XMLReader &reader)
+{
+// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
+// fcstd files with old property types in use. 
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* schemaProp = getPropertyByName(PropName);
+        try {
+            if(schemaProp){
+                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
+                    schemaProp->Restore(reader);                                      //nothing special to do
+                } else if (strcmp(PropName, "Source") == 0) {
+                    App::PropertyLinkGlobal glink;
+                    App::PropertyLink link;
+                    if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+                        glink.setContainer(this);
+                        glink.Restore(reader);
+                        if (glink.getValue() != nullptr) {
+                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
+                            static_cast<App::PropertyLink*>(schemaProp)->setValue(glink.getValue());
+                        }
+                    } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+                        link.setContainer(this);
+                        link.Restore(reader);
+                        if (link.getValue() != nullptr) {
+                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
+                            static_cast<App::PropertyLink*>(schemaProp)->setValue(link.getValue());
+                        }
+                    
+                    } else {
+                        // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
+                        Base::Console().Log("DrawViewArch::Restore - old Document Source is weird: %s\n", TypeName);
+                        // no idea
+                    }
+                } else {
+                    Base::Console().Log("DrawViewArch::Restore - old Document has unknown Property\n");
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
+
 }

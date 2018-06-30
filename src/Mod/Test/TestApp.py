@@ -73,7 +73,8 @@ def All():
                "TestPartDesignApp",
                "TestSpreadsheet",
                "TestTechDrawApp",
-               "TestPathApp" ]
+               "TestPathApp",
+               "TestPythonSyntax"]
 
     # gui tests of modules
     if (FreeCAD.GuiUp == 1):

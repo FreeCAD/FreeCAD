@@ -6,9 +6,15 @@
 
 #include "DrawPage.h"
 #include "DrawView.h"
+#include "DrawViewPart.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 
 // inclusion of the generated files
 #include <Mod/TechDraw/App/DrawViewPy.h>
+#include <Mod/TechDraw/App/DrawViewPartPy.h>
+#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
+#include <Mod/TechDraw/App/DrawViewAnnotationPy.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawPagePy.cpp>
 
@@ -70,6 +76,30 @@ PyObject* DrawPagePy::removeView(PyObject* args)
 #endif
 }
 
+PyObject* DrawPagePy::getAllViews(PyObject* args)
+{
+    (void) args;
+    DrawPage* page = getDrawPagePtr();
+    std::vector<App::DocumentObject*> allViews = page->getAllViews();
+
+    PyObject* ret = PyList_New(0);
+    for (auto&v: allViews) {
+        if (v->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
+            PyList_Append(ret,new TechDraw::DrawProjGroupItemPy(dpgi));   //is this legit? or need to make new copy of dv?
+        } else if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(v);
+            PyList_Append(ret,new TechDraw::DrawViewPartPy(dvp));
+        } else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+            TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
+            PyList_Append(ret,new TechDraw::DrawViewAnnotationPy(dva));
+        } else {
+            TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
+            PyList_Append(ret,new TechDraw::DrawViewPy(dv));
+        }
+    }
+    return ret;
+}
 
 //    double getPageWidth() const;
 PyObject* DrawPagePy::getPageWidth(PyObject *)

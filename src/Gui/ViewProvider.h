@@ -181,7 +181,7 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
-    /** Tell the tree view if this object should apear there */
+    /** Tell the tree view if this object should appear there */
     virtual bool showInTree() const
     {
       return true;

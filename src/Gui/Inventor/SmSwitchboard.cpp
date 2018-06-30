@@ -134,7 +134,7 @@ SmSwitchboard::doAction(SoAction * action)
     for (int idx = 0; idx < this->enable.getNum(); idx++) {
       const int numchildren = this->children->getLength();
       if ( numchildren > 0 )
-        action->traverse((*this->children)[idx % numchildren]);
+        this->children->traverse(action, (idx % numchildren));
       // If center point is set, accumulate.
       if (bbaction->isCenterSet()) {
         acccenter += bbaction->getCenter();
@@ -150,7 +150,7 @@ SmSwitchboard::doAction(SoAction * action)
       if ( this->enable[idx] ) {
         const int numchildren = this->children->getLength();
         if ( numchildren > 0 )
-          action->traverse((*this->children)[idx % numchildren]);
+          this->children->traverse(action, (idx % numchildren));
       }
     }
   }

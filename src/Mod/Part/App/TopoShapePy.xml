@@ -135,7 +135,9 @@ Part.show(r)
     <Methode Name="check" Const="true">
       <Documentation>
         <UserDocu>Checks the shape and report errors in the shape structure.
-This is a more detailed check as done in isValid().</UserDocu>
+This is a more detailed check as done in isValid().
+myShape.check(runBopCheck = False)
+if runBopCheck is True, a BOPCheck analysis is also performed.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fuse" Const="true">
@@ -195,9 +197,11 @@ OCC 6.9.0 or later is required.</UserDocu>
     <Methode Name="section" Const="true">
       <Documentation>
         <UserDocu>Section of this with a given (list of) topo shape.
-section(tool) -> Shape
+section(tool,[approximation=False]) -> Shape
   or
-section((tool1,tool2,...),[tolerance=0.0]) -> Shape
+section((tool1,tool2,...),[tolerance=0.0, approximation=False]) -> Shape
+
+If approximation is True, section edges are approximated to a C1-continuous BSpline curve.
 
 Section of this and a given list of topo shapes.
 
@@ -441,7 +445,12 @@ As a result, this shape becomes null.</UserDocu>
     </Methode>
     <Methode Name="isClosed" Const="true">
       <Documentation>
-        <UserDocu>Checks if the shape is closed.</UserDocu>
+        <UserDocu>Checks if the shape is closed
+If the shape is a shell it returns True if it has no free boundaries (edges).
+If the shape is a wire it returns True if it has no free ends (vertices).
+(Internal and External sub-shepes are ignored in these checks)
+If the shape is an edge it returns True if its vertices are the same.
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isPartner" Const="true">
@@ -687,6 +696,13 @@ infos contains additional info on the solutions. It is a list of tuples:
         ShapeType = other value : all (vertices,edges,faces) are set
         Returns True if at least one tolerance of the sub-shape has
         been modified
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="optimalBoundingBox" Const="true">
+      <Documentation>
+        <UserDocu>
+        optimalBoundingBox(useTriangulation = True, useShapeTolerance = False) -> bound box
         </UserDocu>
       </Documentation>
     </Methode>

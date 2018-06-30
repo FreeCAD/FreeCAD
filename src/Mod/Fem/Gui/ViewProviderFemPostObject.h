@@ -102,7 +102,7 @@ public:
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
 
       /** @name Selection handling
-      * This group of methodes do the selection handling.
+      * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProvider
       * works.
      */
@@ -112,7 +112,7 @@ public:
 //     /// return a hit element to the selection path or 0
 //     virtual std::string getElement(const SoDetail*) const;
 //     virtual SoDetail* getDetail(const char*) const;
-//     /// return the higlight lines for a given element or the whole shape
+//     /// return the highlight lines for a given element or the whole shape
 //     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
 //     //@}
 

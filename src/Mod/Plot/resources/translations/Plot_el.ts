@@ -243,7 +243,7 @@
     <message>
       <location filename="../../PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>Ο μύθος πρέπει να ενεργοποιηθεί στο έγγραφο γραφικών</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="161"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Οι κουκίδες ανά σημείο ορίζουν την ανάλυση εικόνας εξόδου με μέγεθος</translation>
     </message>
   </context>
   <context>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>Εάν έχει επιλεγεί, δεν είναι αποδεκτή η σειρά για μύθο</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>

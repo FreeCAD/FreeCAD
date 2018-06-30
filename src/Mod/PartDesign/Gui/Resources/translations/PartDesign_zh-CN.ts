@@ -4,19 +4,19 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation>添加锥柱体</translation>
+      <translation>增料放样</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>通过其他轮廓截面放样选定的轮廓</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -33,7 +33,7 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation>添加管状体</translation>
+      <translation>增料管状体</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -56,7 +56,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>创建新的可编辑实体</translation>
+      <translation>创建新的可编辑实体并激活</translation>
     </message>
   </context>
   <context>
@@ -100,31 +100,31 @@
     <message>
       <location line="+1"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>给选的形的边缘倒角</translation>
+      <translation>给所选形状的边缘倒角</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>创建副本</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>创建新副本</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -154,7 +154,7 @@
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>复制所选对象并将它添加到激活的实体</translation>
+      <translation>复制所选对象并将它添加到激活状态的实体</translation>
     </message>
   </context>
   <context>
@@ -185,12 +185,12 @@
     <message>
       <location line="+1"/>
       <source>Groove</source>
-      <translation>旋转槽</translation>
+      <translation>挖槽</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>选定草绘创建旋转槽</translation>
+      <translation>以选定草图挖槽</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -261,12 +261,16 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation>移动</translation>
+      <translation>迁移</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>将文档迁移到当前PartDesign 工作流</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>移动文件至PartDesign工作区</translation>
+      <translation>迁移文件至时下的零件设计工作流</translation>
     </message>
   </context>
   <context>
@@ -301,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation>将对象移动到其他物体</translation>
+      <translation>将对象移动到其他实体</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation>移动选定对象到另一个物体</translation>
+      <translation>移动选定对象到另一个实体</translation>
     </message>
   </context>
   <context>
@@ -355,7 +359,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation>创建多重转换</translation>
+      <translation>创建多重变换</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -364,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation>创建多重转换特征</translation>
+      <translation>创建多重变换特征</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -374,14 +378,14 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create sketch</source>
-      <translation>创建草绘</translation>
+      <translation>创建草图</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -392,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -419,13 +423,13 @@
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>创建新的可编辑实体</translation>
+      <translation>创建新的可编辑零件并激活</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -443,19 +447,19 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Pocket</source>
-      <translation>凹槽</translation>
+      <translation>凹坑</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>用选定草图创建切除特征</translation>
+      <translation>基于选定草图创建凹坑</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -465,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -483,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
@@ -545,41 +549,41 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>创建形状粘合剂</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>创建新的形状粘合剂</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>删减锥体</translation>
+      <translation>减料放样</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>通过其他轮廓截面来放样所选轮廓, 并将其从实体中删除</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>以选定草图为截面沿路径或轮廓做切除扫掠</translation>
+      <translation>以选定草图为截面沿路径或轮廓做减料扫掠</translation>
     </message>
   </context>
   <context>
@@ -592,12 +596,12 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation>删减管状体</translation>
+      <translation>减料管状体</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>以选定草图为截面沿路径或轮廓做切除扫掠</translation>
+      <translation>以选定草图为截面沿路径或轮廓做减料扫掠</translation>
     </message>
   </context>
   <context>
@@ -615,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>做一个厚的实体</translation>
     </message>
   </context>
   <context>
@@ -629,47 +633,47 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>创建附加楔形体</translation>
+      <translation>创建增料楔形体</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation>添加方体</translation>
+      <translation>增料方体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation>添加圆柱体</translation>
+      <translation>增料圆柱体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation>添加球体</translation>
+      <translation>增料球体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation>添加圆锥体</translation>
+      <translation>增料圆锥体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation>添加椭球体</translation>
+      <translation>增料椭球体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation>添加空环体</translation>
+      <translation>增料空环体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation>添加棱柱体</translation>
+      <translation>增料棱柱体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation>添加楔形体</translation>
+      <translation>增料楔形体</translation>
     </message>
   </context>
   <context>
@@ -680,50 +684,54 @@
       <translation>零件设计</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
-      <translation>创建棱柱体切除特征</translation>
+      <translation>创建减料棱柱体特征</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
+      <translation>创建减料棱柱体特征</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation>删减方体</translation>
+      <translation>减料立方体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation>删减圆柱体</translation>
+      <translation>减料圆柱体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation>删减球体</translation>
+      <translation>减料球体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation>删减圆锥体</translation>
+      <translation>减料圆锥体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>删减椭球体</translation>
+      <translation>减料椭球体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Torus</source>
-      <translation>删减圆环</translation>
+      <translation>减料圆环</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation>删减棱柱体</translation>
+      <translation>减料棱柱体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation>删减楔形体</translation>
+      <translation>减料楔形体</translation>
     </message>
   </context>
   <context>
@@ -736,17 +744,17 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>选择的几何体不是可编缉物体的一部分。请定义如何处理这些选择。如果放弃编辑请取消指令。</translation>
+      <translation>选择的几何体不是激活状态实体的一部分。请定义如何处理这些选择。如果放弃编辑请取消指令。</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Make independent copy (recommended)</source>
-      <translation>独立复制(推荐)</translation>
+      <translation>创建独立副本 (推荐)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make dependent copy</source>
-      <translation>关联复制</translation>
+      <translation>创建关联副本</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -769,7 +777,7 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>草图找不到路径</translation>
+      <translation>草图中找不到线框</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -779,7 +787,7 @@
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>草图属于另一个体特征</translation>
+      <translation>草图属于另一个实体特征</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -789,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>特征位于尖点特征之后</translation>
     </message>
   </context>
   <context>
@@ -852,7 +860,7 @@
     <message>
       <location line="-68"/>
       <source>Pressure angle:</source>
-      <translation>压力角</translation>
+      <translation>压力角:</translation>
     </message>
   </context>
   <context>
@@ -1155,7 +1163,6 @@ Please check one or more edge entities first.</source>
       <translation>交集</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>截面</translation>
     </message>
@@ -1178,8 +1185,7 @@ Please check one or more edge entities first.</source>
       <translation>原始参数</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>创建图元</translation>
     </message>
@@ -1274,7 +1280,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation>空的实体列表</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation>实体列表不能空</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>布尔值： 接受： 输入错误</translation>
     </message>
@@ -1309,7 +1325,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -1352,7 +1368,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -1474,12 +1490,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+17"/>
       <source>Make independent copy (recommended)</source>
-      <translation>独立复制(推荐)</translation>
+      <translation>创建独立副本 (推荐)</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Make dependent copy</source>
-      <translation>关联复制</translation>
+      <translation>创建关联副本</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1499,7 +1515,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>草图找不到路径</translation>
+      <translation>草图中找不到线框</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1509,7 +1525,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation>属于另一个体</translation>
+      <translation>属于另一个实体</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1533,7 +1549,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>特征位于尖点特征之后</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1795,7 +1811,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation>平滑参数</translation>
+      <translation>放样参数</translation>
     </message>
   </context>
   <context>
@@ -1905,7 +1921,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+15"/>
       <source>Transformations</source>
-      <translation>转换</translation>
+      <translation>变换</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1930,7 +1946,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+4"/>
       <source>Add mirrored transformation</source>
-      <translation>添加镜像转换</translation>
+      <translation>添加镜像变换</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1945,7 +1961,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+4"/>
       <source>Add scaled transformation</source>
-      <translation>添加缩放转换</translation>
+      <translation>添加缩放变换</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1997,8 +2013,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -2013,8 +2029,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>尺寸标注</translation>
     </message>
@@ -2056,42 +2072,39 @@ Please check one or more edge entities first.</source>
       <translation>凸台操作参数</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>凸台参数</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
-      <translation>未选择面</translation>
+      <translation>未选择任何面</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>直到最后</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
-      <translation>直到下一个</translation>
+      <translation>到起始位置</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>直到表面</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
-      <translation>两个尺寸</translation>
+      <translation>双向尺寸</translation>
     </message>
   </context>
   <context>
@@ -2135,7 +2148,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>方向模式</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2178,7 +2191,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+7"/>
       <source>Profile</source>
-      <translation>配置文件</translation>
+      <translation>轮廓</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2198,7 +2211,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>设置用于计算轮廓方向的常量副向量</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2216,7 +2229,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>截面方向</translation>
     </message>
@@ -2251,7 +2264,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+10"/>
       <source>Profile</source>
-      <translation>配置文件</translation>
+      <translation>轮廓</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2307,7 +2320,7 @@ Please check one or more edge entities first.</source>
       <translation>删除截面</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>截面变换</translation>
     </message>
@@ -2330,8 +2343,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>尺寸标注</translation>
     </message>
@@ -2352,8 +2365,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>第二长度</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -2363,12 +2381,12 @@ Please check one or more edge entities first.</source>
       <translation>更新视图</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>凹槽参数</translation>
     </message>
@@ -2377,31 +2395,34 @@ Please check one or more edge entities first.</source>
       <translation>直到最后</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
-      <translation>直到下一个</translation>
+      <translation>到起始位置</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>通过所有</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>直到表面</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>双向尺寸</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
-      <translation>未选择面</translation>
+      <translation>未选择任何面</translation>
     </message>
   </context>
   <context>
@@ -2520,7 +2541,7 @@ Please check one or more edge entities first.</source>
       <location line="-15"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+181"/>
       <source>Base X axis</source>
-      <translation>X轴</translation>
+      <translation>X 轴</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2656,14 +2677,13 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
-      <translation>未选择面</translation>
+      <translation>未选择任何面</translation>
     </message>
   </context>
   <context>
@@ -2743,7 +2763,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
       <source>Transformed feature messages</source>
-      <translation>转换特征消息</translation>
+      <translation>变换特征消息</translation>
     </message>
   </context>
   <context>
@@ -2772,7 +2792,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-22"/>
       <source>Base X axis</source>
-      <translation>X轴</translation>
+      <translation>X 轴</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2818,102 +2838,134 @@ Please check one or more edge entities first.</source>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation>创建边长驱动的长方体附加特征</translation>
+      <translation>创建边长驱动的增料长方体特征</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation>创建半径、高、角度驱动的圆柱体附加特征</translation>
+      <translation>创建半径、高、角度驱动的增料圆柱体特征</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation>创建半径、角度驱动的球体附加特征</translation>
+      <translation>创建半径、角度驱动的增料球体特征</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation>依据宽、高、长创建立方体</translation>
+      <translation>依据宽、高、长创建增料立方体</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>创建半径、角度驱动的球体附加特征</translation>
+      <translation>创建半径、角度驱动的增料球体特征</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation>创建附加圆锥体</translation>
+      <translation>创建增料圆锥体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive ellipsoid</source>
-      <translation>创建附加椭球体</translation>
+      <translation>创建增料椭球体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive torus</source>
-      <translation>创建附加旋转体</translation>
+      <translation>创建增料旋转体</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive prism</source>
-      <translation>创建附加棱柱</translation>
+      <translation>创建增料棱柱</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive wedge</source>
-      <translation>创建附加楔形体</translation>
+      <translation>创建增料楔形体</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation>创建边长驱动的长方体切除特征</translation>
+      <translation>创建边长驱动的减料长方体特征</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation>创建半径、高、角度驱动的圆柱体切除特征</translation>
+      <translation>创建半径、高、角度驱动的减料圆柱体特征</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation>创建半径、角度驱动的球体切除特征</translation>
+      <translation>创建半径、角度驱动的减料球体特征</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation>创建边长驱动的长方体切除特征</translation>
+      <translation>创建边长驱动的减料长方体特征</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation>创建半径、角度驱动的球体切除特征</translation>
+      <translation>创建半径、角度驱动的减料球体特征</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
-      <translation>创建圆锥体切除特征</translation>
+      <translation>创建减料圆锥体特征</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
-      <translation>创建椭球体切除特征</translation>
+      <translation>创建减料椭球体特征</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
-      <translation>创建旋转体切除特征</translation>
+      <translation>创建减料旋转体特征</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
-      <translation>创建棱柱体切除特征</translation>
+      <translation>创建减料棱柱体特征</translation>
+    </message>
+    <message>
+      <source>Create an subtractive wedge</source>
+      <translation>创建减料楔形体特征</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation>创建边长驱动的减料长方体特征</translation>
     </message>
     <message>
       <location line="+4"/>
-      <source>Create an subtractive wedge</source>
-      <translation>创建楔形体切除特征</translation>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation>创建半径、高、角度驱动的减料圆柱体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation>创建半径、角度驱动的减料球体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>创建减料圆锥体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>创建减料椭球体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>创建减料旋转体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>创建减料棱柱体特征</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
+      <translation>创建减料楔形体特征</translation>
     </message>
   </context>
   <context>
@@ -3020,7 +3072,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation>请先创建一个切除或添加特征</translation>
+      <translation>请先创建一个减料或增料特征</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3076,18 +3128,18 @@ Create the sketch on a face.</source>
       <translation>编辑倒角</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>无效选择</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>没有适合所选对象的附件模式。选择其他的东西。</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>没有适合选定对象的附件模式。请选择其他的东西。</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3099,7 +3151,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>无激活状态的实体。请在插入基准实体前激活实体。</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3143,9 +3195,9 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3155,8 +3207,8 @@ Create the sketch on a face.</source>
       <translation>一个对话框已在任务面板打开</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3191,12 +3243,12 @@ Create the sketch on a face.</source>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation>选择不在激活的实体</translation>
+      <translation>未在激活状态的实体中进行选择</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>从一激活的实体中选择一边，面或体</translation>
+      <translation>从一激活状态的实体中选择一边，面或体</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3221,12 +3273,12 @@ Create the sketch on a face.</source>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>请先选择唯一的减料或增料特征</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>请在活动体中选择唯一的减料或增料特征。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3266,17 +3318,17 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="+151"/>
       <source>One transformed shape does not intersect support</source>
-      <translation>转换后形体与支持面不相交</translation>
+      <translation>变换后形状与支持物不相交</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>%1 transformed shapes do not intersect support</source>
-      <translation>转换后形体%1与支持面不相交</translation>
+      <translation>变换后形状%1与支持面不相交</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Transformation succeeded</source>
-      <translation>转换成功</translation>
+      <translation>变换成功</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="+51"/>
@@ -3288,7 +3340,7 @@ Create the sketch on a face.</source>
       <translation type="unfinished">Edit revolve</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation>零件创建失败</translation>
     </message>
@@ -3298,7 +3350,7 @@ Create the sketch on a face.</source>
       <translation>创建零件对象失败。</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3314,58 +3366,58 @@ Create the sketch on a face.</source>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>%1 已经属于一个实体, 不能用它作为另一个实体的基础特征。</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
-      <translation type="unfinished">Body can't be based on annother body.</translation>
+      <translation>实体不能基于另一个实体。</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>实体不能基于另一个实体。</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>基础特征 (%1) 录属于其他部件。</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
-      <translation type="unfinished">Body may be based no more than on one feature.</translation>
+      <translation>实体基于的特征不能超过一个。</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>所选形状由多个实体组成。
+这可能会导致意外的结果。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>所选形状由多个壳体组成。
+这可能会导致意外的结果。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>所选形状仅由一个壳体组成。
+这可能会导致意外的结果。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>所选形状由多个实体或壳体组成。
+这可能会导致意外的结果。</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>基础特征</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3375,7 +3427,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation>没有可移动的对象。</translation>
+      <translation>没有可迁移的对象。</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3404,43 +3456,43 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>仅选择一个 PartDesign 特征或一个实体。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>无法确定所选特征 "%s" 的实体。</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determin a body for the selected feature '%s'.</translation>
+      <translation>无法确定所选特征 "%s" 的实体。</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>只有实体特征才能成为实体的尖点。</translation>
     </message>
     <message>
       <location line="+116"/>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>特征无法被移动</translation>
     </message>
     <message>
       <location line="-36"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>一些选定的特征依赖于源实体</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>只能移动单个源实体的特征</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>没有其他实体可以移动</translation>
     </message>
     <message>
       <location line="+135"/>
@@ -3455,17 +3507,17 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+13"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>实体的起始</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>未找到之前的特征</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>如果没有可用的基础特征, 就不可能创建减料特征</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3485,7 +3537,7 @@ This may lead to unexpected results.</translation>
       <translation>辅助线 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3496,36 +3548,36 @@ This may lead to unexpected results.</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>想使用零件设计工作台，需要文档中有激活状态的实体对象。请 (双击) 激活或创建一个。如果您的旧版文档中存在没有实体的零件设计工作台对象, 请使用零件设计工作台中的转换功能将它们放入一个实体中。</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>想使用零件设计工作台, 您需要一个激活状态的实体对象。请 (双击) 激活或创建一个。
 
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+如果您的旧版文档中存在没有实体的零件设计工作台对象, 请使用零件设计工作台中的转换功能将它们放入一个实体中。</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>需要激活状态的实体</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>要创建新的 PartDesign 对象, 文档中必须有一个激活状态的实体。请 (双击) 激活或创建一个新的实体。</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>特征不在实体内</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>要使用此特征, 它需隶属于文档中的实体对象。</translation>
     </message>
     <message>
       <location line="+32"/>
@@ -3535,7 +3587,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>要使用此特征, 它需隶属于文档中的零件对象。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
@@ -3582,7 +3634,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>编辑 %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3593,13 +3645,13 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>%1 基本特征缺失。
+此特征已损坏, 无法编辑。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>编辑放样</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
@@ -3609,26 +3661,26 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>编辑形状粘合剂</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was design with old version of PartDesign workbench.</translation>
+      <translation>您正在编辑的文档 "%1" 是用旧版本的零件设计工作台设计的。</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>您正在编辑的文档 "%1" 是用旧版本的零件设计工作台设计的。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>是否要迁移以使用时下的零件设计功能？</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>文档 "%1" 似乎是在从旧版PartDesign迁移过程中, 或是有一个稍微破碎的结构。</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3640,22 +3692,18 @@ This feature is broken and can't be edited.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>注意: 如果您选择迁移, 您将无法使用旧的 FreeCAD 版本编辑该文件。如果你拒绝迁移, 你将无法使用新的零件设计工作台功能, 如实体和零部件。因此, 您也无法在装配工作台中使用您的零部件。但是以后您仍然可以用 "零件设计-迁移..."来完成迁移。</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>注意: 如果您选择迁移, 您将无法使用旧的 FreeCAD 版本编辑该文件。如果你拒绝迁移, 你将无法使用新的 PartDesign 功能, 如实体和零件。因此, 您也无法在装配工作台中使用您的部件。但是稍后您仍然可以用 "零件设计-迁移..."来做迁移。</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>手动迁移</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
@@ -3665,7 +3713,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>编辑基元</translation>
     </message>
   </context>
   <context>
@@ -3731,7 +3779,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+21"/>
       <source>Hole norm</source>
-      <translation>标准孔</translation>
+      <translation>孔的法线</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3748,7 +3796,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="+119"/>
       <location line="+106"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>直径</translation>
     </message>
     <message>
       <location line="-194"/>
@@ -3759,7 +3807,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="+49"/>
       <location line="+8"/>
       <source>Thread norm</source>
-      <translation>标准螺纹</translation>
+      <translation>螺纹法线</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3802,7 +3850,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>任务孔参数</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3814,7 +3862,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="-244"/>
       <location line="+260"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>直径</translation>
     </message>
     <message>
       <location line="-253"/>
@@ -3830,12 +3878,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>种类：</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation>圆锥</translation>
+      <translation>锥孔</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3845,37 +3893,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>配合孔</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>平头孔</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>斜钻孔</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>螺距</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Right hand</source>
-      <translation>右手</translation>
+      <translation>右旋</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation>左手</translation>
+      <translation>左旋</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>建立真实螺纹模型</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3890,7 +3938,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+26"/>
       <source>Profile</source>
-      <translation>配置文件</translation>
+      <translation>轮廓</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3915,27 +3963,27 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>标准配合</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>紧密配合</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>外切除</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; 钻取点 &lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; 杂项 &lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3945,7 +3993,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; 螺纹和尺寸 &lt;/b&gt;</translation>
     </message>
   </context>
   <context>

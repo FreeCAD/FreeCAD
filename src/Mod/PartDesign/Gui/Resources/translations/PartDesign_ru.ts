@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Создание переходной формы между двумя и более эскизными контурами</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -33,7 +33,7 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Аддитивный сдвиг</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -51,7 +51,7 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Создание тела</translation>
+      <translation>Создать тело</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -100,31 +100,31 @@
     <message>
       <location line="+1"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Притупить фаской выбранные грани фигуры</translation>
+      <translation>Притупить фаской выбранные ребра фигуры</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Создать клон</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Создать нового клона</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -142,14 +142,14 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation>Дублирование выбранного объекта</translation>
+      <translation>Дублировать выбранный объект</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -265,8 +265,12 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>Перенести документ в современный рабочий процесс Partdesign</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>Перенести документ в современный рабочий процесс partdesign</translation>
+      <translation>Перенести документ в современный рабочий процесс Partdesign</translation>
     </message>
   </context>
   <context>
@@ -301,7 +305,7 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation>Перемещение объекта на другое тело</translation>
+      <translation>Перемещение объекта в другое тело</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -337,7 +341,7 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>Установка подсказки</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -355,7 +359,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>Множественное преобразование</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -364,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Создать элемент множественного преобразования</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -374,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -392,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -425,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -443,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -465,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -483,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -535,7 +539,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Создать масштабируемый элемент</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -545,25 +549,25 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Создать связующую форму</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Создать новую связующую форму</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -575,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Создание переходной формы между двумя и более эскизными контурами с дальнейшим вычитанием полученной фигуры из пересекаемого ею тела</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -592,7 +596,7 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Субтрактивный сдвиг</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -629,12 +633,12 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Создать аддитивный примитив</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Аддитивный Параллелепипед</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -680,15 +684,19 @@
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
+      <translation>Создать субтрактивный примитив</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
       <translation>Создать субтрактивный примитив</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Субтрактивный Параллелепипед</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -736,7 +744,7 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Вы выбрали геометрию, которая не является частью активного тела. Определите, как поступить с выборкой. В противном случае отмените команду.</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -751,7 +759,7 @@
     <message>
       <location line="+7"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Создать перекрестную ссылку</translation>
     </message>
   </context>
   <context>
@@ -769,17 +777,17 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Без проводов в эскизе</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Эскиз уже используется другим элементом</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Рисунок принадлежит телу другого элемента</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -789,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>Элемент расположен после элемента Подсказка</translation>
     </message>
   </context>
   <context>
@@ -1120,7 +1128,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Выбор этого вызовет циклическую зависимость.</translation>
     </message>
   </context>
   <context>
@@ -1143,7 +1151,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Объединение</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1153,10 +1161,9 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Пересечение</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Раздел</translation>
     </message>
@@ -1179,8 +1186,7 @@ Please check one or more edge entities first.</source>
       <translation>Параметры примитива</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>Создать примитив</translation>
     </message>
@@ -1242,12 +1248,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Добавить ребро</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Удалить ссылку</translation>
+      <translation>Удалить ребро</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1275,9 +1281,19 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Логическое значение: Принять: Ошибка ввода</translation>
     </message>
   </context>
   <context>
@@ -1292,12 +1308,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation type="unfinished">Incompatible reference set</translation>
+      <translation>Несовместимый эталонный набор</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Это режим без вложений, которому соответствует текущий набор ссылок. Если Вы выберете "Продолжить", элемент останется там, где он сейчас находится, и не будет перенесён как изменение ссылки. Продолжить?</translation>
     </message>
   </context>
   <context>
@@ -1310,7 +1326,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -1353,7 +1369,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -1465,12 +1481,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation type="unfinished">From  other bodies of the same part</translation>
+      <translation>От других тел этой же детали</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>Из разных деталей или свободных элементов</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1485,7 +1501,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+10"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Создать перекрестную ссылку</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
@@ -1500,12 +1516,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Без проводов в эскизе</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Эскиз уже используется другим элементом</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1524,7 +1540,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
-      <translation type="unfinished">Doesn't belongs to any body</translation>
+      <translation>Не принадлежит ни какому телу</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1534,7 +1550,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>Элемент расположен после элемента Подсказка</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1552,12 +1568,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Добавить ребро</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Удалить ссылку</translation>
+      <translation>Удалить ребро</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1656,27 +1672,27 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>ISO метрический грубый профиль</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>ISO метрический тонкий профиль</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>UTC грубый профиль</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>UTC тонкий профиль</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>UTC экстра тонкий профиль</translation>
     </message>
   </context>
   <context>
@@ -1998,8 +2014,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Поверхность</translation>
     </message>
@@ -2014,8 +2030,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
@@ -2057,40 +2073,37 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Параметры панели</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Поверхность не выбрана</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>К последнему</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>К первому</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>До грани</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Два измерения</translation>
     </message>
@@ -2141,7 +2154,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+14"/>
       <source>Standard</source>
-      <translation>По умолчанию</translation>
+      <translation>Стандартно</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2164,12 +2177,12 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
-      <translation type="unfinished">Curvelinear equivalenz</translation>
+      <translation>Криволинейность эквивалентна</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Вспомогательный</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -2199,7 +2212,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Установить постоянный вектор бинормали, используемый для вычисления ориентации профилей</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2217,7 +2230,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Ориентация секции</translation>
     </message>
@@ -2308,7 +2321,7 @@ Please check one or more edge entities first.</source>
       <translation>Удалить сечение</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Параметры трансформации сечения</translation>
     </message>
@@ -2331,8 +2344,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
@@ -2353,8 +2366,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>Вторая длина</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Поверхность</translation>
     </message>
@@ -2364,12 +2382,12 @@ Please check one or more edge entities first.</source>
       <translation>Обновить</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Длина</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Параметры выреза</translation>
     </message>
@@ -2378,29 +2396,32 @@ Please check one or more edge entities first.</source>
       <translation>К последнему</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>К первому</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
-      <translation>Через все</translation>
+      <translation>Насквозь</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>До грани</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Два измерения</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Поверхность не выбрана</translation>
     </message>
@@ -2651,18 +2672,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation type="unfinished">Datum shape parameters</translation>
+      <translation>Параметры связующей формы</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Поверхность</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Поверхность не выбрана</translation>
     </message>
@@ -2819,26 +2839,26 @@ Please check one or more edge entities first.</source>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>Создать аддитивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Создать аддитивный цилиндр, указав его радиус, высоту и угол</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>Создать аддитивную сферу, указав её радиус и различные углы</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Создать аддитивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Создать аддитивную сферу, указав её радиус и различные углы</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2870,50 +2890,82 @@ Please check one or more edge entities first.</source>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Создать субтрактивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Создать субтрактивный цилиндр, указав его радиус, высоту и угол</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Создать субтрактивную сферу, указав её радиус и различные углы</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Создать субтрактивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Создать субтрактивную сферу, указав её радиус и различные углы</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>Создать субтрактивный конус</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>Создать субтрактивный эллипсоид</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>Создать субтрактивный тор</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>Создать субтрактивную призму</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
+      <translation>Создать субтрактивный клин</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation>Создать субтрактивный параллелепипед, указав его ширину, высоту и длину</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation>Создать субтрактивный цилиндр, указав его радиус, высоту и угол</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation>Создать субтрактивную сферу, указав её радиус и различные углы</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>Создать субтрактивный конус</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>Создать субтрактивный эллипсоид</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>Создать субтрактивный тор</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>Создать субтрактивную призму</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
       <translation>Создать субтрактивный клин</translation>
     </message>
   </context>
@@ -2927,7 +2979,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Выберите тело из списка</translation>
     </message>
   </context>
   <context>
@@ -3021,7 +3073,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Сначала создайте субтрактивный или аддитивный элемент.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3077,18 +3129,18 @@ Create the sketch on a face.</source>
       <translation>Редактировать фаску</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Неверный выбор</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>Нет режимов вложения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Нет режимов вложения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3100,7 +3152,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Нет активного тела. Пожалуйста, создайте новое тело или сделайте существующее активным, прежде чем вставлять объект привязки.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3144,9 +3196,9 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3156,8 +3208,8 @@ Create the sketch on a face.</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3171,12 +3223,12 @@ Create the sketch on a face.</source>
     <message>
       <location line="-913"/>
       <source>No sketch to work on</source>
-      <translation type="unfinished">No sketch to work on</translation>
+      <translation>Нет эскиза для работы на</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No sketch is available in the document</source>
-      <translation type="unfinished">No sketch is available in the document</translation>
+      <translation>Нет доступного эскиза в документе</translation>
     </message>
     <message>
       <location line="+600"/>
@@ -3186,48 +3238,48 @@ Create the sketch on a face.</source>
     <message>
       <location line="+4"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Выберите кромку, лицо или тело от одного тела.</translation>
     </message>
     <message>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Выбор не является Активным Телом</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Выберите кромку, сторону или тело от активного тела.</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>%1 works only on parts.</source>
-      <translation type="unfinished">%1 works only on parts.</translation>
+      <translation>%1 работает только с деталями.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Форма выбранной Детали пустая</translation>
     </message>
     <message>
       <location line="+12"/>
       <source> not possible on selected faces/edges.</source>
-      <translation type="unfinished"> not possible on selected faces/edges.</translation>
+      <translation> невозможно на выбранной грани/кромке.</translation>
     </message>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Выбрано несколько элементов</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Выберите только один субтрактивный или аддитивный элемент сначала.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Выберите только один субтрактивный или аддитивный элемент в активном теле.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3289,33 +3341,33 @@ Create the sketch on a face.</source>
       <translation>Изменить вращение</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Ошибка создания детали</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>Не удалось создать объект Деталь.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Испорченный базовый элемент</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation type="unfinished">Body can't be based on a PartDesign feature.</translation>
+      <translation>Тело не может основываться на PartDesign элементе.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>%1 уже принадлежит к телу, невозможно использовать его в качестве базового элемента для другого тела.</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
@@ -3329,59 +3381,59 @@ Create the sketch on a face.</source>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Базовый элемент (%1) принадлежит другой детали.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
-      <translation type="unfinished">Body may be based no more than on one feature.</translation>
+      <translation>Тело может быть основано не более чем на одном элементе.</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Выбранная форма состоит из нескольких твердых тел.
+Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Выбранная форма состоит из нескольких оболочек.
+Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Выбранная форма состоит только из оболочки.
+Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Выбранная форма состоит из нескольких твердых тел или оболочек.
+Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Базовый элемент</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Тело может быть основано не более, чем на одном элементе.</translation>
     </message>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>Нечему мигрировать</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features which doesn't belong to a body found. Nothing to migrate.</translation>
+      <translation>Обнаружено тело с элементами не принадлежащими PartDesign. Нет ничего для миграции.</translation>
     </message>
     <message>
       <location line="+148"/>
@@ -3391,7 +3443,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+1"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation type="unfinished">Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+      <translation>Пожалуйста, отредактируйте '%1' и переопределите его, чтобы использовать базовую или опорную плоскость в качестве плоскости эскиза.</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3405,68 +3457,68 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Выберите элемент PartDesign или тело.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Не удалось определить тело для выбранного элемента '%s'.</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determin a body for the selected feature '%s'.</translation>
+      <translation>Не удалось определить тело для выбранного элемента '%s'.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>Только твердый элемент может быть вершиной тела.</translation>
     </message>
     <message>
       <location line="+116"/>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Элементы не могут быть перемещены</translation>
     </message>
     <message>
       <location line="-36"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>Некоторые из выбранных элементов имеют зависимости в исходном теле</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Могут быть перемещены только элементы одного исходного тела</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>Нет других тел для перемещение к</translation>
     </message>
     <message>
       <location line="+135"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Невозможно переместить базовые элементы тела.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Select one or more features from the same body.</source>
-      <translation type="unfinished">Select one or more features from the same body.</translation>
+      <translation>Выберите один или несколько элементов одного тела.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>Начало тела</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Предыдущий элемент не найден</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Невозможно создать субтрактивный элемент без базового элемента</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3486,14 +3538,14 @@ This may lead to unexpected results.</translation>
       <translation>Вспомогательная линия %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Поверхность</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Нет активного Тела</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
@@ -3504,44 +3556,42 @@ This may lead to unexpected results.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
-
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Для того чтобы использовать PartDesign необходимо активное тело в документе. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое. Если у вас устаревший документ с объектами PartDesign без тела, то используйте функцию миграции в меню PartDesign чтобы вложить их в тело.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Требуется активное тело</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Чтобы создать новый объект PartDesign, в документе должно быть активное тело. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Элемент вне тела</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Чтобы использовать этот элемент, он должен принадлежать объекту тело в документе.</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Элемент вне детали</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Для того, чтобы использовать этот элемент, он должен являться частью детали в документе.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
       <source>Edit boolean</source>
-      <translation type="unfinished">Edit boolean</translation>
+      <translation>Редактировать параметры булевой операции</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="-131"/>
@@ -3569,33 +3619,32 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Редактировать привязку</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation type="unfinished">CoordinateSystem</translation>
+      <translation>Система координат</translation>
     </message>
     <message>
       <source>Edit datum </source>
-      <translation type="unfinished">Edit datum </translation>
+      <translation>Редактировать привязку </translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Редактировать %1</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Ошибка элемента</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>%1 пропускает базовый элемент. Этот элемент нарушен и не может быть изменён.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
@@ -3610,26 +3659,26 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Редактировать связующую форму</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was design with old version of PartDesign workbench.</translation>
+      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии верстака PartDesign.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии верстака PartDesign.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Вы хотите совершить миграцию для того чтобы начать использовать современные функции PartDesign?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Документ "%1", по-видимому, находится либо в середине процесса миграции из старого PartDesign, либо имеет слегка нарушенную структуру.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3647,14 +3696,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Примечание. Если вы решите выполнить миграцию, вы не сможете редактировать файл в старых версиях FreeCAD. Если вы откажетесь мигрировать, вы не сможете использовать новые функции PartDesign, такие как Тело и Деталь. В результате вы также не сможете использовать свои детали в верстаке Assembly. В любом случае вы сможете мигрировать позже, выполнив 'Part Design-&gt;Миграция'.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Миграция вручную</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
@@ -3664,7 +3711,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Редактировать примитив</translation>
     </message>
   </context>
   <context>
@@ -3704,7 +3751,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Насквозь</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3730,7 +3777,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+21"/>
       <source>Hole norm</source>
-      <translation type="unfinished">Hole norm</translation>
+      <translation>Стандарт отверстия</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3758,17 +3805,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="+49"/>
       <location line="+8"/>
       <source>Thread norm</source>
-      <translation type="unfinished">Thread norm</translation>
+      <translation>Стандарт резьбы</translation>
     </message>
     <message>
       <location line="+62"/>
       <source> Custom thread length</source>
-      <translation type="unfinished"> Custom thread length</translation>
+      <translation> Пользовательская длина резьбы</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Finish depth</source>
-      <translation type="unfinished">Finish depth</translation>
+      <translation>Глубина финиша</translation>
     </message>
     <message>
       <location line="+43"/>
@@ -3778,7 +3825,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+44"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>Цековка/зенковка диаметр</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3801,7 +3848,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Параметры задачи отверстия</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3824,7 +3871,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Внутренняя отсечка</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3834,7 +3881,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Сужение</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3844,17 +3891,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Посадка</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Плоскость</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>Угольность</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3874,7 +3921,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Модель фактической резьбы</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3904,7 +3951,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+5"/>
       <source>Through all</source>
-      <translation>Через все</translation>
+      <translation>Насквозь</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -3914,22 +3961,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Стандартная посадка</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Плотная посадка</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Наружная отсечка</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Сверлить точку&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>

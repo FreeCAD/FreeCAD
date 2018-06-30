@@ -82,11 +82,12 @@ public:
     DrawViewPart(void);
     virtual ~DrawViewPart();
 
-    App::PropertyLinkGlobal   Source;                                        //Part Feature
+    App::PropertyLinkList     Source;
     App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyBool         Perspective;
     App::PropertyDistance     Focus;
 
+    App::PropertyBool   CoarseView;
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
@@ -98,17 +99,6 @@ public:
     //App::PropertyBool   OutlinesHidden;
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
-
-    App::PropertyFloat  LineWidth;
-    App::PropertyFloat  HiddenWidth;
-    App::PropertyFloat  IsoWidth;
-    App::PropertyFloat  ExtraWidth;
-    App::PropertyBool   ArcCenterMarks;
-    App::PropertyFloat  CenterScale;
-    App::PropertyBool   HorizCenterLine;
-    App::PropertyBool   VertCenterLine;
-    App::PropertyBool   ShowSectionLine;
-
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
@@ -165,8 +155,10 @@ public:
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
     virtual TopoDS_Shape getSourceShape(void) const; 
-    virtual TopoDS_Shape getShapeFromPart(App::Part* ap) const;
-    
+    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; 
+    virtual TopoDS_Shape getSourceShapeFused(void) const; 
+    bool isIso(void) const;
+
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
@@ -184,7 +176,7 @@ protected:
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
     void getRunControl(void);
-
+    
     bool m_sectionEdges;
     bool m_handleFaces;
 

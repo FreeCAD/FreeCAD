@@ -63,7 +63,7 @@ namespace PartGui
    */
   bool getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc, const std::string &object, const std::string &sub);
   /*!examine pre selection
-   * @param shape1 firt shape in current selection
+   * @param shape1 first shape in current selection
    * @param shape2 second shape in current selection
    * @return signal if preselection is valid. false means shape1 and shape2 are invalid.
    */
@@ -349,7 +349,7 @@ private:
 /*!start of the measure angular command*/
 void goDimensionAngularRoot();
 /*!examine angular pre selection
-  * @param vector1Out firt shape in current selection
+  * @param vector1Out first shape in current selection
   * @param vector2Out second shape in current selection
   * @return signal if preselection is valid. false means vector1Out and vector2Out are invalid.
   */

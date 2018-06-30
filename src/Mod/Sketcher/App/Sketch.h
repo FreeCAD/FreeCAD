@@ -78,6 +78,13 @@ public:
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
+    /// add unspecified geometry, where each element's "fixed" status is given by the blockedGeometry array
+    int addGeometry(const std::vector<Part::Geometry *> &geo,
+                    const std::vector<bool> &blockedGeometry);
+    /// get boolean list indicating whether the geometry is to be blocked or not
+    void getBlockedGeometry(std::vector<bool> & blockedGeometry,
+                            std::vector<bool> & unenforceableConstraints,
+                            const std::vector<Constraint *> &ConstraintList) const;
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
@@ -87,7 +94,10 @@ public:
     /// retrieves the index of a point
     int getPointId(int geoId, PointPos pos) const;
     /// retrieves a point
-    Base::Vector3d getPoint(int geoId, PointPos pos);
+    Base::Vector3d getPoint(int geoId, PointPos pos) const;
+
+    /// retrieves whether a geometry has dependent parameters or not
+    bool hasDependentParameters(int geoId, PointPos pos) const;
 
     // Inline methods
     inline bool hasConflicts(void) const { return !Conflicting.empty(); }
@@ -145,6 +155,9 @@ public:
     //@{
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
+    /// add all constraints in the list, provided that are enforceable
+    int addConstraints(const std::vector<Constraint *> &ConstraintList,
+                       const std::vector<bool> & unenforceableConstraints);
     /// add one constraint to the sketch
     int addConstraint(const Constraint *constraint);
 
@@ -155,7 +168,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */
-    int addCoordinateXConstraint(int geoId, PointPos pos, double * value);
+    int addCoordinateXConstraint(int geoId, PointPos pos, double * value, bool driving = true);
     /** 
     *   add a fixed Y coordinate constraint to a point
     * 
@@ -163,7 +176,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addCoordinateYConstraint(int geoId, PointPos pos, double *  value);
+    int addCoordinateYConstraint(int geoId, PointPos pos, double *  value, bool driving = true);
     /** 
     *   add a horizontal distance constraint to two points or line ends
     * 
@@ -171,7 +184,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */
-    int addDistanceXConstraint(int geoId, double * value);
+    int addDistanceXConstraint(int geoId, double * value, bool driving = true);
     /** 
     *   add a horizontal distance constraint to two points or line ends
     * 
@@ -179,7 +192,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double * value);
+    int addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double * value, bool driving = true);
     /** 
     *   add a vertical distance constraint to two points or line ends
     * 
@@ -187,7 +200,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */
-    int addDistanceYConstraint(int geoId, double *  value);
+    int addDistanceYConstraint(int geoId, double *  value, bool driving = true);
     /** 
     *   add a vertical distance constraint to two points or line ends
     * 
@@ -195,7 +208,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value);
+    int addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value, bool driving = true);
     /// add a horizontal constraint to a geometry
     int addHorizontalConstraint(int geoId);
     int addHorizontalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
@@ -211,7 +224,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addDistanceConstraint(int geoId1, double *  value);
+    int addDistanceConstraint(int geoId1, double *  value, bool driving = true);
     /** 
     *   add a length or distance constraint
     * 
@@ -219,7 +232,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double *  value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double *  value, bool driving = true);
     /** 
     *   add a length or distance constraint
     * 
@@ -227,7 +240,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value, bool driving = true);
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
@@ -239,7 +252,7 @@ public:
             int geoId2, PointPos pos2,
             int geoId3, PointPos pos3,
             double *  value,
-            ConstraintType cTyp);
+            ConstraintType cTyp, bool driving = true);
     /** 
     *   add a radius constraint on a circle or an arc
     * 
@@ -247,7 +260,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addRadiusConstraint(int geoId, double *  value);
+    int addRadiusConstraint(int geoId, double *  value, bool driving = true);
     /** 
     *   add an angle constraint on a line or between two lines
     * 
@@ -255,7 +268,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */     
-    int addAngleConstraint(int geoId, double *  value);
+    int addAngleConstraint(int geoId, double *  value, bool driving = true);
     /** 
     *   add an angle constraint on a line or between two lines
     * 
@@ -263,7 +276,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addAngleConstraint(int geoId1, int geoId2, double *  value);
+    int addAngleConstraint(int geoId1, int geoId2, double *  value, bool driving = true);
     /** 
     *   add an angle constraint on a line or between two lines
     * 
@@ -271,7 +284,7 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value);
+    int addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value, bool driving = true);
     /** 
     *   add angle-via-point constraint between any two curves
     * 
@@ -279,11 +292,11 @@ public:
     *   constraint value and already inserted into either the FixParameters or 
     *   Parameters array, as the case may be.
     */    
-    int addAngleViaPointConstraint(int geoId1, int geoId2, int geoId3, PointPos pos3, double value);
+    int addAngleViaPointConstraint(int geoId1, int geoId2, int geoId3, PointPos pos3, double value, bool driving = true);
     /// add an equal length or radius constraints between two lines or between circles and arcs
     int addEqualConstraint(int geoId1, int geoId2);   
     /// add a point on line constraint
-    int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2);
+    int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
     /// add a symmetric constraint between two points with respect to a line
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a symmetric constraint between three points, the last point is in the middle of the first two
@@ -303,7 +316,7 @@ public:
                                int geoIdRay2, PointPos posRay2,
                                int geoIdBnd,
                                double *  value,
-                               double *  second);
+                               double *  second, bool driving = true);
     //@}
     
     /// Internal Alignment constraints
@@ -385,9 +398,12 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    
+    std::vector<double *> pconstraintplistOut;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
+    std::vector<double*> DrivenParameters;    // with memory allocation
     std::vector<double*> FixParameters; // with memory allocation
     std::vector<double> MoveParameters, InitParameters;
     std::vector<GCS::Point>  Points;
@@ -418,6 +434,7 @@ public:
     inline void setConvergence(double conv){GCSsys.convergence=conv;}
     inline void setConvergenceRedundant(double conv){GCSsys.convergenceRedundant=conv;}
     inline void setQRAlgorithm(GCS::QRAlgorithm alg){GCSsys.qrAlgorithm=alg;}
+    inline GCS::QRAlgorithm getQRAlgorithm(){return GCSsys.qrAlgorithm;}
     inline void setQRPivotThreshold(double val){GCSsys.qrpivotThreshold=val;}
     inline void setLM_eps(double val){GCSsys.LM_eps=val;}
     inline void setLM_eps1(double val){GCSsys.LM_eps1=val;}
@@ -435,14 +452,15 @@ public:
 protected:
     GCS::DebugMode debugMode;
 
-
 private:
 
     bool updateGeometry(void);
     bool updateNonDrivingConstraints(void);
+    
+    void calculateDependentParametersElements(void);
 
     /// checks if the index bounds and converts negative indices to positive
-    int checkGeoId(int geoId);
+    int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
 };
 

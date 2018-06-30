@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <Inventor/SbVec3f.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
@@ -394,7 +395,7 @@ void ViewProviderPath::updateShowConstraints() {
         blockPropertyChange = false;
         StartIndex.purgeTouched();
     }
-    StartIndexConstraints.StepSize = ShowCount.getValue()>0?ShowCount.getValue():1;
+    StartIndexConstraints.StepSize = ShowCount.getValue()>2?ShowCount.getValue()-2:1;
 }
 
 void ViewProviderPath::updateData(const App::Property* prop)
@@ -418,6 +419,20 @@ void ViewProviderPath::hideSelection() {
 
     // Hide arrow
     pcArrowSwitch->whichChild = -1;
+}
+
+Base::Vector3d compensateRotation(const Base::Vector3d &pt, const Base::Rotation &rot, const Base::Vector3d &center)
+{
+    Base::Vector3d ptRotated;
+    rot.multVec(pt - center, ptRotated);
+    return ptRotated + center;
+}
+
+Base::Rotation yawPitchRoll(double a, double b, double c)
+{
+    Base::Rotation rot; 
+    rot.setYawPitchRoll(-c, b, -a);
+    return rot;
 }
 
 void ViewProviderPath::updateVisual(bool rebuild) {
@@ -446,7 +461,14 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         float deviation = hGrp->GetFloat("MeshDeviation",0.2);
         std::deque<Base::Vector3d> points;
         std::deque<Base::Vector3d> markers;
+
+        Base::Vector3d rotCenter = tp.getCenter();
         Base::Vector3d last(StartPosition.getValue());
+        Base::Rotation lrot;
+        double A = 0.0;
+        double B = 0.0;
+        double C = 0.0;
+
         colorindex.clear();
         bool absolute = true;
         bool absolutecenter = false;
@@ -463,28 +485,60 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             const Path::Command &cmd = tp.getCommand(i);
             const std::string &name = cmd.Name;
             Base::Vector3d next = cmd.getPlacement().getPosition();
+            double a = A;
+            double b = B;
+            double c = C;
 
             if (!absolute)
                 next = last + next;
-            if (!cmd.has("X"))
-                next.x = last.x;
-            if (!cmd.has("Y"))
-                next.y = last.y;
-            if (!cmd.has("Z"))
-                next.z = last.z;
+            if (!cmd.has("X")) next.x = last.x;
+            if (!cmd.has("Y")) next.y = last.y;
+            if (!cmd.has("Z")) next.z = last.z;
+            if ( cmd.has("A")) a = cmd.getValue("A");
+            if ( cmd.has("B")) b = cmd.getValue("B");
+            if ( cmd.has("C")) c = cmd.getValue("C");
+
+            Base::Rotation nrot = yawPitchRoll(a, b, c);
+
+            Base::Vector3d rnext = compensateRotation(next, nrot, rotCenter);
 
             if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
                 // straight line
-                points.push_back(next);
-                markers.push_back(next); // endpoint
-                last = next;
-                if ( (name == "G0") || (name == "G00") )
-                    colorindex.push_back(0); // rapid color
-                else
-                    colorindex.push_back(1); // std color
+                int color = ((name == "G0") || (name == "G00")) ? 0 : 1;
+                if (nrot != lrot) {
+                    double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+                    double angle = amax / 180 * M_PI;
+                    int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
+
+                    double da = (a - A) / segments;
+                    double db = (b - B) / segments;
+                    double dc = (c - C) / segments;
+
+                    Base::Vector3d dnext = (next - last) / segments;
+
+                    for (int j = 1; j < segments; j++) {
+                        Base::Vector3d inter = last + dnext * j;
+
+                        Base::Rotation rot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
+                        Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
+
+                        points.push_back(rinter);
+                        colorindex.push_back(color);
+                    }
+                }
+                points.push_back(rnext);
+                markers.push_back(rnext); // endpoint
+                colorindex.push_back(color); // std color
+
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = next;
+                A = a;
+                B = b;
+                C = c;
+                lrot = nrot;
 
             } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
                 // arc
@@ -510,33 +564,52 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 double angle = (next0 - center0).GetAngle(last0 - center0);
                 // GetAngle will always return the minor angle. Switch if needed
                 Base::Vector3d anorm = (last0 - center0) % (next0 - center0);
-                if(anorm.*pz < 0) {
+                if (anorm.*pz < 0) {
                     if(name == "G3" || name == "G03")
                         angle = M_PI * 2 - angle;
-                }else if(anorm.*pz > 0) {
+                } else if(anorm.*pz > 0) {
                     if(name == "G2" || name == "G02")
                         angle = M_PI * 2 - angle;
-                }else if (angle == 0)
+                } else if (angle == 0)
                     angle = M_PI * 2;
-                int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle)); //we use a rather simple rule here, provisorily
+
+                double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+
+                int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/std::max(angle, amax))); //we use a rather simple rule here, provisorily
                 double dZ = (next.*pz - last.*pz)/segments; //How far each segment will helix in Z
+
+                double dangle = angle/segments;
+                double da = (a - A) / segments;
+                double db = (b - B) / segments;
+                double dc = (c - C) / segments;
 
                 for (int j = 1; j < segments; j++) {
                     Base::Vector3d inter;
-                    Base::Rotation rot(norm,(angle/segments)*j);
-                    rot.multVec((last0 - center0),inter);
+                    Base::Rotation rot(norm, dangle*j);
+                    rot.multVec((last0 - center0), inter);
                     inter.*pz = last.*pz + dZ * j; //Enable displaying helices
-                    points.push_back( center0 + inter);
+
+                    Base::Rotation arot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
+                    Base::Vector3d rinter = compensateRotation(center0 + inter, arot, rotCenter);
+
+                    points.push_back(rinter);
                     colorindex.push_back(1);
                 }
-                points.push_back(next);
-                markers.push_back(next); // endpoint
+
+                points.push_back(rnext);
+                markers.push_back(rnext); // endpoint
                 markers.push_back(center); // add a marker at center too
-                last = next;
+
                 colorindex.push_back(1);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = next;
+                A = a;
+                B = b;
+                C = c;
+                lrot = nrot;
 
             } else if (name == "G90") {
                 // absolute mode
@@ -559,36 +632,72 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 double r = 0;
                 if (cmd.has("R"))
                     r = cmd.getValue("R");
+
                 Base::Vector3d p1(next);
                 p1.*pz = last.*pz;
-                points.push_back(p1);
-                markers.push_back(p1);
+
+                if (nrot != lrot) {
+                    double amax = std::max(fmod(fabs(a - A), 360), std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+                    double angle = amax / 180 * M_PI;
+                    int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle));
+
+                    double da = (a - A) / segments;
+                    double db = (b - B) / segments;
+                    double dc = (c - C) / segments;
+
+                    Base::Vector3d dnext = (p1 - last) / segments;
+
+                    for (int j = 1; j < segments; j++) {
+                        Base::Vector3d inter = last + dnext * j;
+
+                        Base::Rotation rot = yawPitchRoll(A + da*j, B + db*j, C + dc*j);
+                        Base::Vector3d rinter = compensateRotation(inter, rot, rotCenter);
+
+                        points.push_back(rinter);
+                        colorindex.push_back(0);
+                    }
+                }
+
+                Base::Vector3d p1r = compensateRotation(p1, nrot, rotCenter);
+                points.push_back(p1r);
+                markers.push_back(p1r);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next);
                 p2.*pz = r;
-                points.push_back(p2);
-                markers.push_back(p2);
+                Base::Vector3d p2r = compensateRotation(p2, nrot, rotCenter);
+                points.push_back(p2r);
+                markers.push_back(p2r);
                 colorindex.push_back(0);
-                points.push_back(next);
-                markers.push_back(next);
+                points.push_back(rnext);
+                markers.push_back(rnext);
                 colorindex.push_back(1);
                 double q;
                 if (cmd.has("Q")) {
                     q = cmd.getValue("Q");
                     if (q>0) {
                         Base::Vector3d temp(next);
-                        for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q)
-                            markers.push_back(temp);
+                        for(temp.*pz=r;temp.*pz>next.*pz;temp.*pz-=q) {
+                            Base::Vector3d pr = compensateRotation(temp, nrot, rotCenter);
+                            markers.push_back(pr);
+                        }
                     }
                 }
                 Base::Vector3d p3(next);
                 p3.*pz = last.*pz;
-                points.push_back(p3);
-                markers.push_back(p2);
+                Base::Vector3d p3r = compensateRotation(p3, nrot, rotCenter);
+                points.push_back(p3r);
+                markers.push_back(p2r);
                 colorindex.push_back(0);
                 command2Edge[i] = edgeIndices.size();
                 edgeIndices.push_back(points.size());
                 edge2Command.push_back(i);
+
+                last = p3;
+                A = a;
+                B = b;
+                C = c;
+                lrot = nrot;
+
 
             } else if ((name=="G38.2")||(name=="38.3")||(name=="G38.4")||(name=="G38.5")){
                 // Straight probe
@@ -609,7 +718,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
                 pz = &Base::Vector3d::y;
             } else if(name=="G19") {
                 pz = &Base::Vector3d::x;
-            }}
+            }
+        }
 
         if (!edgeIndices.empty()) {
             pcLineCoords->point.setNum(points.size());
@@ -713,4 +823,3 @@ PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderPathPython, PathGui::ViewProviderP
 // explicit template instantiation
 template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderPath>;
 }
-

@@ -208,7 +208,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         /*//build the law functions instead
         else if(Transformation.getValue() == 2) {
             if(ScalingData.getValues().size()<1)
-                return new App::DocumentObjectExecReturn("No valid data given for liinear scaling mode");
+                return new App::DocumentObjectExecReturn("No valid data given for linear scaling mode");
             
             Handle(Law_Linear) lin = new Law_Linear();
             lin->Set(0,1,1,ScalingData[0].x);

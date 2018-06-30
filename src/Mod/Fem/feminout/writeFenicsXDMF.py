@@ -21,7 +21,7 @@
 # ***************************************************************************
 from __future__ import print_function
 
-from importToolsFem import \
+from .importToolsFem import \
     get_FemMeshObjectDimension,\
     get_FemMeshObjectElementTypes,\
     get_MaxDimElementFromList,\
@@ -101,7 +101,7 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, effective_dim), Format="XML")
         nodes = []
-        for (ind, (key, node)) in enumerate(fem_mesh_obj.FemMesh.Nodes.iteritems()):
+        for (ind, (key, node)) in enumerate(list(fem_mesh_obj.FemMesh.Nodes.items())):
             nodes.append(node)
             recalc_nodes_ind_dict[key] = ind
 
@@ -171,6 +171,7 @@ def write_fenics_mesh_scalar_cellfunctions(name, cell_array, attributenode, enco
         dataitem.text = numpy_array_to_str(cell_array)
     elif encoding == ENCODING_HDF5:
         pass
+
 
 """
 Example: mesh with two topologies and one mesh function for the facet one
@@ -245,7 +246,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
     base_geometry = ET.SubElement(base_grid, "Geometry")
 
     # TODO: for the general mesh: write out topology and geometry in grid node
-    # TOOD: for every marked group write own grid node with topology (ref if cells)
+    # TODO: for every marked group write own grid node with topology (ref if cells)
     #       geometry ref, attribute
 
     #####################################
@@ -281,7 +282,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 
         elem_dict = {}
-        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (g, -1))
+        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (1, 0))
 
         # TODO: is it better to save all groups each at once or collect all codim equal
         # groups to put them into one function?
@@ -298,8 +299,8 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
 
     # TODO: improve cell functions support
 
-    fp = open(outputfile, "w")
-    fp.write('''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
+    fp = open(outputfile, "wb")
+    fp.write(b'''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
     fp.write(ET.tostring(root))
     # xml core functionality does not support pretty printing
     # so the output file looks quite ugly

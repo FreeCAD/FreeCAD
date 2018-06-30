@@ -25,7 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
+#include <boost/signals2/connection.hpp>
 #include <boost/bind.hpp>
 
 #endif
@@ -61,11 +62,13 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "TechDraw_Tree_View";
+    static const char *group = "Base";
+
+    ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
 
     // Do not show in property editor   why? wf
     DisplayMode.setStatus(App::Property::ReadOnly,true);
     m_docReady = true;
-    
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -110,7 +113,13 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
         } else {
             hide();
         }
+    } else if (prop == &KeepLabel) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
     }
+
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -193,7 +202,9 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Rotation)  ) {
+    if (prop == &(getViewObject()->Rotation) ||
+        prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);

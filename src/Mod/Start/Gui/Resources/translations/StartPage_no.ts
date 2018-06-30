@@ -221,7 +221,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
       <source>Getting started</source>
-      <translation type="unfinished">Getting started</translation>
+      <translation>Komme i gang</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
       <source>Ship Design</source>
-      <translation type="unfinished">Ship Design</translation>
+      <translation>Skipsdesign</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
@@ -342,6 +342,21 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation type="unfinished">Load an FEM 3D new solver example analysis</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

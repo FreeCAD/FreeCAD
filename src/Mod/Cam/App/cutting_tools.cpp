@@ -828,7 +828,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //
 // //  outfile << projectedPoint.X() <<","<<projectedPoint.Y()<<","<<projectedPoint.Z()<<std::endl;
 //   //Jetzt die aktuelle Kurve als BSpline interpolieren
-//  //check for intersections due to wrong offseted points
+//  //check for intersections due to wrong offsetted points
 //  checkPointIntersection(finalPoints);
 //  std::vector<gp_Pnt> finalPointscorrected;
 //  finalPointscorrected.clear();
@@ -1853,7 +1853,7 @@ Base::BoundBox3f cutting_tools::getWireBBox(TopoDS_Wire aWire)
 
 TopoDS_Shape cutting_tools::getProperCut(TopoDS_Shape& aShape)
 {
-    //A cutting Shape is coming as aShape
+    //A cutting Shape is aShape
     //check direction to decide which Topology to hold and which to delete
     if (m_direction)//From top to bottom
     {

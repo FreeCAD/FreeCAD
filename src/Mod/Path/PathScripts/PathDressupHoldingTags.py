@@ -24,18 +24,15 @@
 import FreeCAD
 import Part
 import Path
-import PathScripts
+import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
-import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
 
-from PathScripts import PathUtils
-from PathScripts.PathGeom import PathGeom
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
-from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
@@ -47,11 +44,13 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-def debugEdge(edge, prefix, force = False):
+
+def debugEdge(edge, prefix, force=False):
     if force or PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         pf = edge.valueAt(edge.FirstParameter)
         pl = edge.valueAt(edge.LastParameter)
@@ -61,34 +60,37 @@ def debugEdge(edge, prefix, force = False):
             pm = edge.valueAt((edge.FirstParameter+edge.LastParameter)/2)
             print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pm.x, pm.y, pm.z, pl.x, pl.y, pl.z))
 
-def debugMarker(vector, label, color = None, radius = 0.5):
+
+def debugMarker(vector, label, color=None, radius=0.5):
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
-        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
         if color:
             obj.ViewObject.ShapeColor = color
 
-def debugCylinder(vector, r, height, label, color = None):
+
+def debugCylinder(vector, r, height, label, color=None):
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
         obj.Height = height
-        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
         obj.ViewObject.Transparency = 90
         if color:
             obj.ViewObject.ShapeColor = color
 
-def debugCone(vector, r1, r2, height, label, color = None):
+
+def debugCone(vector, r1, r2, height, label, color=None):
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cone", label)
         obj.Label = label
         obj.Radius1 = r1
         obj.Radius2 = r2
         obj.Height = height
-        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
         obj.ViewObject.Transparency = 90
         if color:
             obj.ViewObject.ShapeColor = color
@@ -156,10 +158,10 @@ class Tag:
             # degenerated case - no tag
             PathLog.debug("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
-        if not R == 0: # testing is easier if the solid is not rotated
+        if not R == 0:  # testing is easier if the solid is not rotated
             angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
             PathLog.debug("solid.rotate(%f)" % angle)
-            self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
+            self.solid.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), angle)
         orig = self.originAt(z - 0.01 * self.actualHeight)
         PathLog.debug("solid.translate(%s)" % orig)
         self.solid.translate(orig)
@@ -188,19 +190,18 @@ class Tag:
             return True
         if PathGeom.isRoughly(edge.FirstParameter, param) or PathGeom.isRoughly(edge.LastParameter, param):
             return True
-        #print("-------- X %.2f <= %.2f <=%.2f   (%.2f, %.2f, %.2f)   %.2f:%.2f" % (edge.FirstParameter, param, edge.LastParameter, pt.x, pt.y, pt.z, edge.Curve.parameter(edge.valueAt(edge.FirstParameter)), edge.Curve.parameter(edge.valueAt(edge.LastParameter))))
-        p1 = edge.Vertexes[0]
-        f1 = edge.Curve.parameter(FreeCAD.Vector(p1.X, p1.Y, p1.Z))
-        p2 = edge.Vertexes[1]
-        f2 = edge.Curve.parameter(FreeCAD.Vector(p2.X, p2.Y, p2.Z))
+        # print("-------- X %.2f <= %.2f <=%.2f   (%.2f, %.2f, %.2f)   %.2f:%.2f" % (edge.FirstParameter, param, edge.LastParameter, pt.x, pt.y, pt.z, edge.Curve.parameter(edge.valueAt(edge.FirstParameter)), edge.Curve.parameter(edge.valueAt(edge.LastParameter))))
+        # p1 = edge.Vertexes[0]
+        # f1 = edge.Curve.parameter(FreeCAD.Vector(p1.X, p1.Y, p1.Z))
+        # p2 = edge.Vertexes[1]
+        # f2 = edge.Curve.parameter(FreeCAD.Vector(p2.X, p2.Y, p2.Z))
         return False
 
-
     def nextIntersectionClosestTo(self, edge, solid, refPt):
-        ef = edge.valueAt(edge.FirstParameter)
-        em = edge.valueAt((edge.FirstParameter+edge.LastParameter)/2)
-        el = edge.valueAt(edge.LastParameter)
-        #print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, em.x, em.y, em.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
+        # ef = edge.valueAt(edge.FirstParameter)
+        # em = edge.valueAt((edge.FirstParameter+edge.LastParameter)/2)
+        # el = edge.valueAt(edge.LastParameter)
+        # print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, em.x, em.y, em.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
 
         vertexes = edge.common(solid).Vertexes
         if vertexes:
@@ -358,7 +359,7 @@ class MapWireToTag:
         p0 = self.entry
         lastP = p0
         while edges:
-            #print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z))
+            # print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z))
             for e in edges:
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
@@ -428,7 +429,7 @@ class MapWireToTag:
                 shape = self.shell().common(self.tag.solid)
                 commands = []
                 rapid = None
-                for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
+                for e, flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
                     debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
                     p1 = e.valueAt(e.FirstParameter)
                     p2 = e.valueAt(e.LastParameter)
@@ -478,6 +479,7 @@ class MapWireToTag:
     def mappingComplete(self):
         return self.complete
 
+
 class _RapidEdges:
     def __init__(self, rapid):
         self.rapid = rapid
@@ -492,6 +494,7 @@ class _RapidEdges:
                 if PathGeom.isRoughly(r0.X, v0.X) and PathGeom.isRoughly(r0.Y, v0.Y) and PathGeom.isRoughly(r0.Z, v0.Z) and PathGeom.isRoughly(r1.X, v1.X) and PathGeom.isRoughly(r1.Y, v1.Y) and PathGeom.isRoughly(r1.Z, v1.Z):
                     return True
         return False
+
 
 class PathData:
     def __init__(self, obj):
@@ -519,8 +522,8 @@ class PathData:
         return self.baseWire is not None
 
     def findZLimits(self, edges):
-        # not considering arcs and spheres in Z direction, find the highes and lowest Z values
-        minZ =  99999999999
+        # not considering arcs and spheres in Z direction, find the highest and lowest Z values
+        minZ = 99999999999
         maxZ = -99999999999
         for e in edges:
             if self.rapid.isRapid(e):
@@ -538,7 +541,7 @@ class PathData:
 
     def generateTags(self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None):
         PathLog.track(count, width, height, angle, spacing)
-        #for e in self.baseWire.Edges:
+        # for e in self.baseWire.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
@@ -550,7 +553,6 @@ class PathData:
         H = height if height else self.defaultTagHeight()
         A = angle if angle else self.defaultTagAngle()
         R = radius if radius else self.defaultTagRadius()
-
 
         # start assigning tags on the longest segment
         (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
@@ -577,7 +579,7 @@ class PathData:
         PathLog.debug("               -> lastTagLength=%.2f)" % lastTagLength)
         PathLog.debug("               -> currentLength=%.2f)" % currentLength)
 
-        edgeDict = { startIndex: startCount }
+        edgeDict = {startIndex: startCount}
 
         for i in range(startIndex + 1, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
@@ -591,8 +593,8 @@ class PathData:
         for (i, count) in PathUtil.keyValueIter(edgeDict):
             edge = self.baseWire.Edges[i]
             PathLog.debug(" %d: %d" % (i, count))
-            #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
-            #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
+            # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
+            # debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
             if 0 != count:
                 distance = (edge.LastParameter - edge.FirstParameter) / count
                 for j in range(0, count):
@@ -663,18 +665,19 @@ class PathData:
     def pointAtBottom(self, p):
         return FreeCAD.Vector(p.x, p.y, self.minZ)
 
+
 class ObjectTagDressup:
 
     def __init__(self, obj, base):
 
-        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
-        obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
-        obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
-        obj.addProperty("App::PropertyAngle", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
-        obj.addProperty("App::PropertyLength", "Radius", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Radius of the fillet for the tag."))
-        obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of inserted holding tags"))
-        obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "IDs of disabled holding tags"))
-        obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Factor determining the # of segments used to approximate rounded tags."))
+        obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "The base path to modify"))
+        obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Width of tags."))
+        obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Height of tags."))
+        obj.addProperty("App::PropertyAngle", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Angle of tag plunge and ascent."))
+        obj.addProperty("App::PropertyLength", "Radius", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Radius of the fillet for the tag."))
+        obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Locations of inserted holding tags"))
+        obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "IDs of disabled holding tags"))
+        obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Factor determining the # of segments used to approximate rounded tags."))
 
         obj.Proxy = self
         obj.Base = base
@@ -684,6 +687,7 @@ class ObjectTagDressup:
 
     def __getstate__(self):
         return None
+
     def __setstate__(self, state):
         return None
 
@@ -697,7 +701,7 @@ class ObjectTagDressup:
             if hasattr(self, "pathData"):
                 self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
                 obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
-                obj.Disabled  = []
+                obj.Disabled = []
                 return False
             else:
                 self.setup(obj, count)
@@ -725,9 +729,9 @@ class ObjectTagDressup:
         commands = []
         lastEdge = 0
         lastTag = 0
-        sameTag = None
+        # sameTag = None
         t = 0
-        inters = None
+        # inters = None
         edge = None
 
         segm = 50
@@ -746,7 +750,7 @@ class ObjectTagDressup:
                 edge = pathData.edges[lastEdge]
                 debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(pathData.edges)))
                 lastEdge += 1
-                sameTag = None
+                # sameTag = None
 
             if mapper:
                 mapper.add(edge)
@@ -766,7 +770,6 @@ class ObjectTagDressup:
                     self.mappers.append(mapper)
                     edge = mapper.tail
 
-
             if not mapper and t >= len(tags):
                 # gone through all tags, consume edge and move on
                 if edge:
@@ -783,13 +786,14 @@ class ObjectTagDressup:
                 edge = None
                 t = 0
 
-        lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0});
+        lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0})
         outCommands = []
 
-        horizFeed = obj.Base.ToolController.HorizFeed.Value
-        vertFeed = obj.Base.ToolController.VertFeed.Value
-        horizRapid = obj.Base.ToolController.HorizRapid.Value
-        vertRapid = obj.Base.ToolController.VertRapid.Value
+        tc = PathDressup.toolController(obj.Base)
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
+        horizRapid = tc.HorizRapid.Value
+        vertRapid = tc.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
@@ -814,7 +818,7 @@ class ObjectTagDressup:
                 lastCmd = cmd
 
             outCommands.append(Path.Command(cmd.Name, params))
-            
+
         return Path.Path(outCommands)
 
     def problems(self):
@@ -851,20 +855,20 @@ class ObjectTagDressup:
                 PathLog.debug("previousTag = %d [%s]" % (i, prev))
             else:
                 disabled.append(i)
-            tag.id = i # assigne final id
+            tag.id = i  # assigne final id
             tags.append(tag)
             positions.append(tag.originAt(self.pathData.minZ))
         return (tags, positions, disabled)
 
     def execute(self, obj):
-        #import cProfile
-        #pr = cProfile.Profile()
-        #pr.enable()
+        # import cProfile
+        # pr = cProfile.Profile()
+        # pr.enable()
         self.doExecute(obj)
-        #pr.disable()
-        #pr.print_stats()
+        # pr.disable()
+        # pr.print_stats()
 
-    def doExecute(self,obj):
+    def doExecute(self, obj):
         if not obj.Base:
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
@@ -917,10 +921,10 @@ class ObjectTagDressup:
                 tagID += 1
                 if tag.enabled:
                     PathLog.debug("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
-                    #debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                    #if tag.angle != 90:
+                    # debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                    # if tag.angle != 90:
                     #    debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
-                    #else:
+                    # else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
         obj.Path = self.createPath(obj, self.pathData, self.tags)
@@ -931,15 +935,15 @@ class ObjectTagDressup:
         try:
             pathData = PathData(obj)
         except ValueError:
-            PathLog.error(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
+            PathLog.error(translate("Path_DressupTag", "Cannot insert holding tags for this path - please select a Profile path")+"\n")
             return None
 
-        self.toolRadius = obj.Base.ToolController.Tool.Diameter / 2
+        self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()
-            obj.Width  = self.pathData.defaultTagWidth()
-            obj.Angle  = self.pathData.defaultTagAngle()
+            obj.Width = self.pathData.defaultTagWidth()
+            obj.Angle = self.pathData.defaultTagAngle()
             obj.Radius = self.pathData.defaultTagRadius()
             count = HoldingTagPreferences.defaultCount()
             self.generateTags(obj, count)
@@ -952,7 +956,7 @@ class ObjectTagDressup:
         positions = []
         disabled = []
         for i, (x, y, enabled) in enumerate(triples):
-            #print("%d: (%.2f, %.2f) %d" % (i, x, y, enabled))
+            # print("%d: (%.2f, %.2f) %d" % (i, x, y, enabled))
             positions.append(FreeCAD.Vector(x, y, 0))
             if not enabled:
                 disabled.append(i)
@@ -970,16 +974,16 @@ class ObjectTagDressup:
         return self.pathData.pointAtBottom(point)
 
 
-def Create(baseObject, name = 'DressupTag'):
+def Create(baseObject, name='DressupTag'):
     '''
-    Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
+    Create(basePath, name='DressupTag') ... create tag dressup object for the given base path.
     '''
     if not baseObject.isDerivedFrom('Path::Feature'):
-        PathLog.error(translate('PathDressup_Tag', 'The selected object is not a path\n'))
+        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path')+'\n')
         return None
 
     if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):
-        PathLog.error(translate('PathDressup_Tag', 'Please select a Profile object'))
+        PathLog.error(translate('Path_DressupTag', 'Please select a Profile object'))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")
@@ -989,4 +993,4 @@ def Create(baseObject, name = 'DressupTag'):
     dbo.setup(obj, True)
     return obj
 
-PathLog.notice("Loading PathDressupHoldingTags... done\n")
+PathLog.notice("Loading Path_DressupTag... done\n")

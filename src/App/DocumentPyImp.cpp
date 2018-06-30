@@ -341,7 +341,7 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     }
 #else
     else if (PyUnicode_Check(value)) {
-        PyObject* unicode = PyUnicode_AsLatin1String(value);
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
         cmd = PyString_AsString(unicode);
         Py_DECREF(unicode);
     }

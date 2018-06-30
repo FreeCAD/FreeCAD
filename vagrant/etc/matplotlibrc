@@ -324,7 +324,7 @@ backend      : TkAgg
 #legend.columnspacing : 2.    # the border between the axes and legend edge in fraction of fontsize
 #legend.shadow        : False
 #legend.frameon       : True   # whether or not to draw a frame around legend
-#legend.framealpha    : None    # opacity of of legend frame
+#legend.framealpha    : None    # opacity of legend frame
 #legend.scatterpoints : 3 # number of scatter points
 
 ### FIGURE

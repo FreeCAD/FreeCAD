@@ -86,7 +86,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
             items = self.contents.items()
             items.sort()
             for key,val in items:
-                print ("   " + key + " : " + val)
+                print ("   " + key.encode("utf-8").strip() + " : " + val.encode("utf-8").strip())
             self.contents = {}
             print ("   Objects: ("+self.count+")")
             

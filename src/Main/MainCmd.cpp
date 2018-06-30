@@ -53,7 +53,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2017\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
                        "  #     ##  #### ####  #     #   #  #   # \n" \

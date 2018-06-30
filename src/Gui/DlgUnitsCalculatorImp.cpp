@@ -69,7 +69,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Velocity
           << Base::Unit::Acceleration << Base::Unit::Temperature
           << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
-          << Base::Unit::AmountOfSubstance << Base::Unit::LuminoseIntensity << Base::Unit::Stress
+          << Base::Unit::AmountOfSubstance << Base::Unit::LuminousIntensity << Base::Unit::Stress
           << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
           << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
           << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient <<Base::Unit::HeatFlux;

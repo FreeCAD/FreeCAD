@@ -68,7 +68,7 @@
 # include <TShort_Array1OfShortReal.hxx>
 # include <TShort_HArray1OfShortReal.hxx>
 # include <Precision.hxx>
-
+# include <Python.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -128,12 +128,12 @@ using namespace PartGui;
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
 
-void ViewProviderPartExt::GetNormals(const TopoDS_Face&  theFace,
-             const Handle(Poly_Triangulation)& aPolyTri,
-             TColgp_Array1OfDir& theNormals)
+void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
+                                     const Handle(Poly_Triangulation)& aPolyTri,
+                                     TColgp_Array1OfDir& theNormals)
 {
     Poly_Connect thePolyConnect(aPolyTri);
-    const TColgp_Array1OfPnt&         aNodes   = aPolyTri->Nodes();
+    const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
     {
@@ -228,12 +228,19 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 ViewProviderPartExt::ViewProviderPartExt() 
 {
     VisualTouched = true;
+    NormalsFromUV = true;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long lcol = hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
+    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    unsigned long lcol = hView->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
     float r,g,b;
     r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
-    int lwidth = hGrp->GetInt("DefaultShapeLineWidth",2);
+    int lwidth = hView->GetInt("DefaultShapeLineWidth",2);
+
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Part");
+    NormalsFromUV = hPart->GetBool("NormalsFromUVNodes", NormalsFromUV);
+
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
     mat.diffuseColor.set(r,g,b);
@@ -784,8 +791,7 @@ bool ViewProviderPartExt::loadParameter()
         ("User parameter:BaseApp/Preferences/Mod/Part");
     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
     float angularDeflection = hGrp->GetFloat("MeshAngularDeflection",28.65);
-    bool novertexnormals = hGrp->GetBool("NoPerVertexNormals",false);
-    bool qualitynormals = hGrp->GetBool("QualityNormals",false);
+    NormalsFromUV = hGrp->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
     if (Deviation.getValue() != deviation) {
         Deviation.setValue(deviation);
@@ -793,14 +799,6 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection ) {
         AngularDeflection.setValue(angularDeflection);
-    }
-    if (this->noPerVertexNormals != novertexnormals) {
-        this->noPerVertexNormals = novertexnormals;
-        changed = true;
-    }
-    if (this->qualityNormals != qualitynormals) {
-        this->qualityNormals = qualitynormals;
-        changed = true;
     }
 
     return changed;
@@ -1029,7 +1027,8 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-            GetNormals(actFace, mesh, Normals);
+            if (NormalsFromUV)
+                getNormals(actFace, mesh, Normals);
             
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
@@ -1047,16 +1046,32 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 
                 // get the 3 normals of this triangle
-                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));                
+                gp_Vec NV1, NV2, NV3;
+                if (NormalsFromUV) {
+                    NV1.SetXYZ(Normals(N1).XYZ());
+                    NV2.SetXYZ(Normals(N2).XYZ());
+                    NV3.SetXYZ(Normals(N3).XYZ());
+                }
+                else {
+                    gp_Vec v1(V1.X(),V1.Y(),V1.Z()),
+                           v2(V2.X(),V2.Y(),V2.Z()),
+                           v3(V3.X(),V3.Y(),V3.Z());
+                    gp_Vec normal = (v2-v1)^(v3-v1);
+                    NV1 = normal;
+                    NV2 = normal;
+                    NV3 = normal;
+                }
 
                 // transform the vertices and normals to the place of the face
-                if(!identity) {
+                if (!identity) {
                     V1.Transform(myTransf);
                     V2.Transform(myTransf);
                     V3.Transform(myTransf);
-                    NV1.Transform(myTransf);
-                    NV2.Transform(myTransf);
-                    NV3.Transform(myTransf);
+                    if (NormalsFromUV) {
+                        NV1.Transform(myTransf);
+                        NV2.Transform(myTransf);
+                        NV3.Transform(myTransf);
+                    }
                 }
 
                 // add the normals for all points of this triangle

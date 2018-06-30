@@ -288,11 +288,18 @@
       <translation>PDF exportieren</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung.
+Möchten Sie fortfahren?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF-Datei (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF-Datei</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>Andere Ausrichtung</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung. Möchten Sie fortfahren?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Anderes Papierformat</translation>
@@ -395,19 +401,31 @@ Do you want to continue?</source>
       <translation>Oben links x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Abstand dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Achse außerhalb und rechts</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Vertikale Neigung</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Abstand dx / dy   </translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Achse außerhalb und rechts</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Vertikale Neigung</translation>
     </message>
     <message>
       <location line="+11"/>

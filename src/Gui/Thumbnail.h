@@ -56,9 +56,6 @@ public:
     //@}
 
 private:
-    void createThumbnailFromFramebuffer(QImage&) const;
-
-private:
     QUrl uri;
     View3DInventorViewer* viewer;
     int size;

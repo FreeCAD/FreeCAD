@@ -1,5 +1,5 @@
 # Navigation indicator for FreeCAD
-# Copyright (C) 2016, 2017  triplus @ FreeCAD
+# Copyright (C) 2016, 2017, 2018 triplus @ FreeCAD
 #
 #
 # This library is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@ statusBar = mw.statusBar()
 p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
 
+
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
 
@@ -41,233 +42,283 @@ except AttributeError:
         "convenience function for Qt 5 translator"
         return QtGui.QApplication.translate(context, text, None)
 
-text01 = translate("NavigationIndicator", "Select")
-text02 = translate("NavigationIndicator", "Zoom")
-text03 = translate("NavigationIndicator", "Rotate")
-text04 = translate("NavigationIndicator", "Pan")
-text05 = translate("NavigationIndicator", "Tilt")
-text06 = translate("NavigationIndicator", "Navigation style")
-text07 = translate("NavigationIndicator", "Page Up or Page Down key.")
-text08 = translate("NavigationIndicator", "Rotation focus")
-text09 = translate("NavigationIndicator", "Middle mouse button or key H.")
-text10 = translate("NavigationIndicator", "Middle mouse button.")
 
-t0 = translate("NavigationIndicator", "Navigation style not recognized.")
+class IndicatorButton(QtGui.QPushButton):
+    """Detect language change events."""
+    def __init__(self, parent=None):
+        super(IndicatorButton, self).__init__()
 
-t1 = "<p align='center'><b>OpenInventor</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationOpenInventor_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenInventor_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenInventor_ZoomAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenInventor_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenInventor_Pan.svg'></td>
- </tr>
-</table>
-<b>""" + text08 + ":</b> " + text10 + "</small></p>"
+    def changeEvent(self, event):
+        """Change events."""
+        if event.type() == QtCore.QEvent.LanguageChange:
+            retranslateUi()
+            onTooltip()
+        return super(IndicatorButton, self).changeEvent(event)
 
-t2 = "<p align='center'><b>CAD</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationCAD_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationCAD_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationCAD_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationCAD_RotateAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationCAD_Pan.svg'></td>
- </tr>
-</table>
-<b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
-t3 = "<p align='center'><b>Blender</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationBlender_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationBlender_Pan.svg'></td>
-  <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
- </tr>
-</table>
-<b>""" + text08 + ":</b> " + text10 + "</small></p>"
+def retranslateUi():
+    """Retranslate navigation indicator on language change"""
 
-t4 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text05 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_Pan.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_Tilt.svg'></td>
- </tr>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text05 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_SelectTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_RotateTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouchAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationMayaGesture_TiltTouch.svg'></td>
- </tr>
-</table>
-<p><small><b>""" + text02 + ":</b> " + text07 + """<br>
-<b>""" + text08 + ":</b> " + text09 + "</small></p>"
+    text01 = translate("NavigationIndicator", "Select")
+    text02 = translate("NavigationIndicator", "Zoom")
+    text03 = translate("NavigationIndicator", "Rotate")
+    text04 = translate("NavigationIndicator", "Pan")
+    text05 = translate("NavigationIndicator", "Tilt")
+    text06 = translate("NavigationIndicator", "Navigation style")
+    text07 = translate("NavigationIndicator", "Page Up or Page Down key.")
+    text08 = translate("NavigationIndicator", "Rotation focus")
+    text09 = translate("NavigationIndicator", "Middle mouse button or key H.")
+    text10 = translate("NavigationIndicator", "Middle mouse button.")
 
-t5 = "<p align='center'><b>Touchpad</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationTouchpad_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_ZoomAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_RotateAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_Pan.svg'></td>
- </tr>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationTouchpad_SelectTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_ZoomTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouchAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationTouchpad_PanTouch.svg'></td>
- </tr>
-</table>
-<p><small><b>""" + text02 + ":</b> " + text07 + "</p>"
+    global t0
+    t0 = translate("NavigationIndicator", "Navigation style not recognized.")
 
-t6 = "<p align='center'><b>Gesture</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text05 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationGesture_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_RotateAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_Pan.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_Tilt.svg'></td>
- </tr>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text05 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationGesture_SelectTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_ZoomTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_RotateTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_PanTouch.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_PanTouchAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationGesture_TiltTouch.svg'></td>
- </tr>
-</table>
-<p><small><b>""" + text02 + ":</b> " + text07 + """<br>
-<b>""" + text08 + ":</b> " + text09 + "</small></p>"
+    global t1
+    t1 = "<p align='center'><b>OpenInventor</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationOpenInventor_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenInventor_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenInventor_ZoomAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenInventor_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenInventor_Pan.svg'></td>
+     </tr>
+    </table>
+    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
-t7 = "<p align='center'><b>OpenCascade</b> " + text06 + """</p>
-<table>
- <tr>
-  <th><small>""" + text01 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text02 + """</small></th>
-  <th><small>""" + text03 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
-  <th><small>""" + text04 + """</small></th>
- </tr>
- <tr>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_Select.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_Zoom.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_ZoomAlt.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_Rotate.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_Pan.svg'></td>
-  <td align='center'><img src=':/icons/NavigationOpenCascade_PanAlt.svg'></td>
- </tr>
-</table>"""
+    global t2
+    t2 = "<p align='center'><b>CAD</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationCAD_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationCAD_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationCAD_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationCAD_RotateAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationCAD_Pan.svg'></td>
+     </tr>
+    </table>
+    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
-indicator = QtGui.QPushButton(statusBar)
+    global t3
+    t3 = "<p align='center'><b>Revit</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationRevit_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationRevit_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+     </tr>
+    </table>
+    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+
+    global t4
+    t4 = "<p align='center'><b>Blender</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+     </tr>
+    </table>
+    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+
+    global t5
+    t5 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text05 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_Tilt.svg'></td>
+     </tr>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text05 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationMayaGesture_TiltTouch.svg'></td>
+     </tr>
+    </table>
+    <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
+    <b>""" + text08 + ":</b> " + text09 + "</small></p>"
+
+    global t6
+    t6 = "<p align='center'><b>Touchpad</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationTouchpad_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_RotateAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_Pan.svg'></td>
+     </tr>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationTouchpad_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTouchpad_PanTouch.svg'></td>
+     </tr>
+    </table>
+    <p><small><b>""" + text02 + ":</b> " + text07 + "</p>"
+
+    global t7
+    t7 = "<p align='center'><b>Gesture</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text05 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationGesture_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_RotateAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_Tilt.svg'></td>
+     </tr>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text05 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationGesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationGesture_TiltTouch.svg'></td>
+     </tr>
+    </table>
+    <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
+    <b>""" + text08 + ":</b> " + text09 + "</small></p>"
+
+    global t8
+    t8 = "<p align='center'><b>OpenCascade</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_ZoomAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenCascade_PanAlt.svg'></td>
+     </tr>
+    </table>"""
+
+    menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
+    menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
+    aCompact.setText(translate("NavigationIndicator", "Compact"))
+    aTooltip.setText(translate("NavigationIndicator", "Tooltip"))
+    aTurntable.setText(translate("NavigationIndicator", "Turntable"))
+    aTrackball.setText(translate("NavigationIndicator", "Trackball"))
+    a0.setText(translate("NavigationIndicator", "Undefined"))
+
+
+indicator = IndicatorButton(statusBar)
 indicator.setFlat(True)
 indicator.setObjectName("NavigationIndicator")
 
 menu = QtGui.QMenu(indicator)
 indicator.setMenu(menu)
 
-menuSettings = QtGui.QMenu(translate("NavigationIndicator", "Settings"), menu)
-menuOrbit = QtGui.QMenu(translate("NavigationIndicator", "Orbit style"), menu)
+menuSettings = QtGui.QMenu(menu)
+menuOrbit = QtGui.QMenu(menu)
 
 aCompact = QtGui.QAction(menuSettings)
-aCompact.setText(translate("NavigationIndicator", "Compact"))
 aCompact.setCheckable(True)
 aTooltip = QtGui.QAction(menuSettings)
-aTooltip.setText(translate("NavigationIndicator", "Tooltip"))
 aTooltip.setCheckable(True)
 
 gOrbit = QtGui.QActionGroup(menuSettings)
 
 aTurntable = QtGui.QAction(gOrbit)
 aTurntable.setObjectName("NavigationIndicator_Turntable")
-aTurntable.setText(translate("NavigationIndicator", "Turntable"))
 aTurntable.setCheckable(True)
 aTrackball = QtGui.QAction(gOrbit)
 aTrackball.setObjectName("NavigationIndicator_Trackball")
-aTrackball.setText(translate("NavigationIndicator", "Trackball"))
 aTrackball.setCheckable(True)
 
 menuOrbit.addAction(aTurntable)
@@ -282,7 +333,6 @@ gStyle = QtGui.QActionGroup(menu)
 
 a0 = QtGui.QAction(gStyle)
 a0.setIcon(QtGui.QIcon(":/icons/NavigationUndefined.svg"))
-a0.setText(translate("NavigationIndicator", "Undefined"))
 a0.setData("Undefined")
 a0.setObjectName("Indicator_NavigationUndefined")
 
@@ -299,34 +349,40 @@ a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setIcon(QtGui.QIcon(":/icons/NavigationBlender.svg"))
-a3.setText("Blender")
-a3.setData("Gui::BlenderNavigationStyle")
-a3.setObjectName("Indicator_NavigationBlender")
+a3.setIcon(QtGui.QIcon(":/icons/NavigationRevit.svg"))
+a3.setText("Revit")
+a3.setData("Gui::RevitNavigationStyle")
+a3.setObjectName("Indicator_NavigationRevit")
 
 a4 = QtGui.QAction(gStyle)
-a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture.svg"))
-a4.setText("MayaGesture")
-a4.setData("Gui::MayaGestureNavigationStyle")
-a4.setObjectName("Indicator_NavigationMayaGesture")
+a4.setIcon(QtGui.QIcon(":/icons/NavigationBlender.svg"))
+a4.setText("Blender")
+a4.setData("Gui::BlenderNavigationStyle")
+a4.setObjectName("Indicator_NavigationBlender")
 
 a5 = QtGui.QAction(gStyle)
-a5.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad.svg"))
-a5.setText("Touchpad")
-a5.setData("Gui::TouchpadNavigationStyle")
-a5.setObjectName("Indicator_NavigationTouchpad")
+a5.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture.svg"))
+a5.setText("MayaGesture")
+a5.setData("Gui::MayaGestureNavigationStyle")
+a5.setObjectName("Indicator_NavigationMayaGesture")
 
 a6 = QtGui.QAction(gStyle)
-a6.setIcon(QtGui.QIcon(":/icons/NavigationGesture.svg"))
-a6.setText("Gesture")
-a6.setData("Gui::GestureNavigationStyle")
-a6.setObjectName("Indicator_NavigationGesture")
+a6.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad.svg"))
+a6.setText("Touchpad")
+a6.setData("Gui::TouchpadNavigationStyle")
+a6.setObjectName("Indicator_NavigationTouchpad")
 
 a7 = QtGui.QAction(gStyle)
-a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade.svg"))
-a7.setText("OpenCascade")
-a7.setData("Gui::OpenCascadeNavigationStyle")
-a7.setObjectName("Indicator_NavigationOpenCascade")
+a7.setIcon(QtGui.QIcon(":/icons/NavigationGesture.svg"))
+a7.setText("Gesture")
+a7.setData("Gui::GestureNavigationStyle")
+a7.setObjectName("Indicator_NavigationGesture")
+
+a8 = QtGui.QAction(gStyle)
+a8.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade.svg"))
+a8.setText("OpenCascade")
+a8.setData("Gui::OpenCascadeNavigationStyle")
+a8.setObjectName("Indicator_NavigationOpenCascade")
 
 menu.addMenu(menuSettings)
 menu.addSeparator()
@@ -338,6 +394,7 @@ menu.addAction(a4)
 menu.addAction(a5)
 menu.addAction(a6)
 menu.addAction(a7)
+menu.addAction(a8)
 
 
 def onCompact():
@@ -372,6 +429,7 @@ def onTooltip():
         a5.setToolTip(t5)
         a6.setToolTip(t6)
         a7.setToolTip(t7)
+        a8.setToolTip(t8)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():
@@ -429,7 +487,6 @@ def onMenu(action):
 
 def setCurrent():
     """Set navigation style on start and on interval."""
-
     gStyle.blockSignals(True)
 
     s = False
@@ -466,12 +523,14 @@ def setCurrent():
 
     gStyle.blockSignals(False)
 
+
 if p.GetBool("Compact", 0):
     aCompact.setChecked(True)
 
 if p.GetBool("Tooltip", 1):
     aTooltip.setChecked(True)
 
+retranslateUi()
 onCompact()
 onTooltip()
 onOrbitShow()

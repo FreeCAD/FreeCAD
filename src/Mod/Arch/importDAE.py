@@ -49,7 +49,7 @@ def checkCollada():
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.\n"))
+        FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.")+"\n")
         return False
     else:
         return True
@@ -193,9 +193,7 @@ def export(exportList,filename,tessellation=1):
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     for obj in objectslist:
-        vindex = []
-        nindex = []
-        findex = []
+        findex = numpy.array([])
         m = None
         if obj.isDerivedFrom("Part::Feature"):
             print("exporting object ",obj.Name, obj.Shape)
@@ -204,20 +202,30 @@ def export(exportList,filename,tessellation=1):
             print("exporting object ",obj.Name, obj.Mesh)
             m = obj.Mesh
         if m:
+            Topology = m.Topology
+            Facets = m.Facets
+
             # vertex indices
-            for v in m.Topology[0]:
-                vindex.extend([v.x*scale,v.y*scale,v.z*scale])
+            vindex = numpy.empty(len(Topology[0]) * 3)
+            for i in xrange(len(Topology[0])):
+                v = Topology[0][i]
+                vindex[list(range(i*3, i*3+3))] = (v.x*scale,v.y*scale,v.z*scale)
+
             # normals
-            for f in m.Facets:
-                n = f.Normal
-                nindex.extend([n.x,n.y,n.z])
+            nindex = numpy.empty(len(Facets) * 3)
+            for i in xrange(len(Facets)):
+                n = Facets[i].Normal
+                nindex[list(range(i*3, i*3+3))] = (n.x,n.y,n.z)
+
             # face indices
-            for i in xrange(len(m.Topology[1])):
-                f = m.Topology[1][i]
-                findex.extend([f[0],i,f[1],i,f[2],i])
+            findex = numpy.empty(len(Topology[1]) * 6, numpy.int64)
+            for i in xrange(len(Topology[1])):
+                f = Topology[1][i]
+                findex[list(range(i*6, i*6+6))] = (f[0],i,f[1],i,f[2],i)
+
         print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")
-        vert_src = collada.source.FloatSource("cubeverts-array"+str(objind), numpy.array(vindex), ('X', 'Y', 'Z'))
-        normal_src = collada.source.FloatSource("cubenormals-array"+str(objind), numpy.array(nindex), ('X', 'Y', 'Z'))
+        vert_src = collada.source.FloatSource("cubeverts-array"+str(objind), vindex, ('X', 'Y', 'Z'))
+        normal_src = collada.source.FloatSource("cubenormals-array"+str(objind), nindex, ('X', 'Y', 'Z'))
         geom = collada.geometry.Geometry(colmesh, "geometry"+str(objind), obj.Name, [vert_src, normal_src])
         input_list = collada.source.InputList()
         input_list.addInput(0, 'VERTEX', "#cubeverts-array"+str(objind))
@@ -252,7 +260,7 @@ def export(exportList,filename,tessellation=1):
                 colmesh.effects.append(effect)
                 colmesh.materials.append(defaultmat)
             matnode = collada.scene.MaterialNode(matref, defaultmat, inputs=[])
-        triset = geom.createTriangleSet(numpy.array(findex), input_list, matref)
+        triset = geom.createTriangleSet(findex, input_list, matref)
         geom.primitives.append(triset)
         colmesh.geometries.append(geom)
         geomnode = collada.scene.GeometryNode(geom, [matnode])

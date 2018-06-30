@@ -44,6 +44,7 @@
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
+#include "Body.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -63,6 +64,13 @@ Transformed::Transformed()
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
     Placement.setStatus(App::Property::ReadOnly, true);
+
+    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+
+    //init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 void Transformed::positionBySupport(void)
@@ -172,7 +180,7 @@ void Transformed::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 
@@ -195,6 +203,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
+
+    if(!this->BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if(body) {
+            body->setBaseProperty(this);
+        }
+    }
 
     this->positionBySupport();
 
@@ -374,9 +389,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
 TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    if (hGrp->GetBool("RefineModel", false)) {
+    if (this->Refine.getValue()) {
         try {
             Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
             TopoDS_Shape resShape = mkRefine.Shape();
@@ -393,61 +406,56 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
 void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
                               TopoDS_Compound &compoundOut) const
 {
-  typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
-  typedef std::list<ShapeBoundPair> PairList;
-  typedef std::vector<ShapeBoundPair> PairVector;
-  
-  PairList pairList;
-  
-  std::vector<TopoDS_Shape>::const_iterator it;
-  for (it = toolsIn.begin(); it != toolsIn.end(); ++it)
-  {
-    Bnd_Box bound;
-    BRepBndLib::Add(*it, bound);
-    bound.SetGap(0.0);
-    ShapeBoundPair temp = std::make_pair(*it, bound);
-    pairList.push_back(temp);
-  }
-  
-  BRep_Builder builder;
-  builder.MakeCompound(compoundOut);
-  
-  while(!pairList.empty())
-  {
-    PairVector currentGroup;
-    currentGroup.push_back(pairList.front());
-    pairList.pop_front();
-    PairList::iterator it = pairList.begin();
-    while(it != pairList.end())
-    {
-      PairVector::const_iterator groupIt;
-      bool found(false);
-      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
-      {
-	if (!(*it).second.IsOut((*groupIt).second))//touching means is out.
-	{
-	  found = true;
-	  break;
-	}
-      }
-      if (found)
-      {
-	currentGroup.push_back(*it);
-	pairList.erase(it);
-	it=pairList.begin();
-	continue;
-      }
-      it++;
+    typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
+    typedef std::list<ShapeBoundPair> PairList;
+    typedef std::vector<ShapeBoundPair> PairVector;
+
+    PairList pairList;
+
+    std::vector<TopoDS_Shape>::const_iterator it;
+    for (it = toolsIn.begin(); it != toolsIn.end(); ++it) {
+        Bnd_Box bound;
+        BRepBndLib::Add(*it, bound);
+        bound.SetGap(0.0);
+        ShapeBoundPair temp = std::make_pair(*it, bound);
+        pairList.push_back(temp);
     }
-    if (currentGroup.size() == 1)
-      builder.Add(compoundOut, currentGroup.front().first);
-    else
-    {
-      PairVector::const_iterator groupIt;
-      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
-	individualsOut.push_back((*groupIt).first);
+
+    BRep_Builder builder;
+    builder.MakeCompound(compoundOut);
+
+    while(!pairList.empty()) {
+        PairVector currentGroup;
+        currentGroup.push_back(pairList.front());
+        pairList.pop_front();
+        PairList::iterator it = pairList.begin();
+        while(it != pairList.end()) {
+            PairVector::const_iterator groupIt;
+            bool found(false);
+            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
+                if (!(*it).second.IsOut((*groupIt).second)) {//touching means is out.
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                currentGroup.push_back(*it);
+                pairList.erase(it);
+                it=pairList.begin();
+                continue;
+            }
+            ++it;
+        }
+
+        if (currentGroup.size() == 1) {
+            builder.Add(compoundOut, currentGroup.front().first);
+        }
+        else {
+            PairVector::const_iterator groupIt;
+            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
+                individualsOut.push_back((*groupIt).first);
+        }
     }
-  }
 }
-  
+
 }

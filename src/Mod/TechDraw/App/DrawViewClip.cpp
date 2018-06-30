@@ -25,15 +25,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+
 #endif
 
-
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <iostream>
 
 #include "DrawViewClip.h"
 #include "DrawPage.h"
@@ -55,8 +50,8 @@ DrawViewClip::DrawViewClip(void)
     static const char *group = "Clip Group";
     //App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
 
-    ADD_PROPERTY_TYPE(Height     ,(10),group,App::Prop_None,"The height of the view area of this clip");
-    ADD_PROPERTY_TYPE(Width      ,(10),group,App::Prop_None,"The width of the view area of this clip");
+    ADD_PROPERTY_TYPE(Height     ,(100),group,App::Prop_None,"The height of the view area of this clip");
+    ADD_PROPERTY_TYPE(Width      ,(100),group,App::Prop_None,"The width of the view area of this clip");
     ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
     ADD_PROPERTY_TYPE(ShowLabels ,(0) ,group,App::Prop_None,"Specifies if View labels appear within the clip area");
     ADD_PROPERTY_TYPE(Views      ,(0) ,group,App::Prop_None,"The Views in this Clip group");
@@ -83,7 +78,10 @@ void DrawViewClip::addView(DrawView *view)
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(view);
     Views.setValues(newViews);
-    Views.touch();
+    view->X.setValue(Width.getValue()/2.0);
+    view->Y.setValue(Height.getValue()/2.0);
+    auto page = findParentPage();             //get Page to release child relationship in tree
+    page->Views.touch();
 }
 
 void DrawViewClip::removeView(DrawView *view)
@@ -98,7 +96,6 @@ void DrawViewClip::removeView(DrawView *view)
         }
     }
     Views.setValues(newViews);
-    touch();
 }
 
 App::DocumentObjectExecReturn *DrawViewClip::execute(void)
@@ -111,7 +108,7 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
             TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
-            view->touch();
+            view->requestPaint();
         }
     }
 

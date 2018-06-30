@@ -513,7 +513,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Spacing dx / dy   </string>
+            <string>Spacing dx / dy</string>
            </property>
            <property name="margin">
             <number>2</number>
@@ -584,14 +584,14 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_9">
            <property name="text">
-            <string> Axis out and right</string>
+            <string>Axis out and right</string>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_11">
            <property name="text">
-            <string> Vertical tilt</string>
+            <string>Vertical tilt</string>
            </property>
           </widget>
          </item>

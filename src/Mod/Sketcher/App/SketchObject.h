@@ -169,6 +169,12 @@ public:
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
+    /// set the driving status of this constraint and solve
+    int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// get the driving status of this constraint
+    int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
+    /// toggle the driving status of this constraint
+    int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeoBeforeMoving=false);
     /// retrieves the coordinates of a point
@@ -194,7 +200,7 @@ public:
     /// with default parameters adds a copy of the geometric elements displaced by the displacement vector.
     /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
-    int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool clone=false, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
+    int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool moveonly = false, bool clone=false, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
@@ -265,6 +271,8 @@ public:
     bool isPointOnCurve(int geoIdCurve, double px, double py);
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
+    /// returns whether a given constraint has an associated expression or not
+    bool constraintHasExpression(int constrid) const;
 
     ///porting functions
     int port_reversedExternalArcs(bool justAnalyze);
@@ -308,6 +316,10 @@ public:
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
+    
+    /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
+    /// these parameters relate to not fully constraint edges/vertices.
+    void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool isAllowedOtherBody() const {
@@ -331,6 +343,7 @@ public:
         rlCircularReference,
         rlOtherPart,
         rlOtherBody,
+        rlOtherBodyWithLinks,   // for carbon copy
         rlNotASketch,           // for carbon copy
         rlNonParallel,          // for carbon copy
         rlAxesMisaligned,       // for carbon copy

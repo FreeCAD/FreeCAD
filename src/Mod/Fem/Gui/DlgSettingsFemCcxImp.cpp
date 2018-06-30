@@ -71,8 +71,6 @@ void DlgSettingsFemCcxImp::saveSettings()
     cb_ccx_binary_std->onSave();
     fc_ccx_binary_path->onSave();
     cb_split_inp_writer->onSave();
-    rb_ccx_solver_old->onSave();
-    rb_ccx_solver_new->onSave();
 }
 
 void DlgSettingsFemCcxImp::loadSettings()
@@ -98,8 +96,6 @@ void DlgSettingsFemCcxImp::loadSettings()
     cb_ccx_binary_std->onRestore();
     fc_ccx_binary_path->onRestore();
     cb_split_inp_writer->onRestore();
-    rb_ccx_solver_old->onRestore();
-    rb_ccx_solver_new->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");

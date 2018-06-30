@@ -49,11 +49,17 @@
 # include <gp_Hypr.hxx>
 # include <gp_Parab.hxx>
 # include <gp_Lin.hxx>
+# include <Poly_Polygon2D.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Poly_Triangulation.hxx>
+# include <Poly_PolygonOnTriangulation.hxx>
+# include <TColStd_Array1OfReal.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
@@ -181,7 +187,8 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    double t=Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "d|d",&u,&t))
         return 0;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
@@ -191,15 +198,17 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     double first = BRepLProp_CurveTool::FirstParameter(adapt);
     double last = BRepLProp_CurveTool::LastParameter(adapt);
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
+        double length = GCPnts_AbscissaPoint::Length(adapt,t);
 
-        if (u < 0 || u > length) {
+        if (u < -length || u > length) {
             PyErr_SetString(PyExc_ValueError, "value out of range");
             return 0;
         }
-
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
+        if (u < 0)
+            u = length+u;
+        GCPnts_AbscissaPoint abscissaPoint(t,adapt,u,first);
+        double parm = abscissaPoint.Parameter();
+        return PyFloat_FromDouble(parm);
     }
 
     return PyFloat_FromDouble(u);
@@ -219,6 +228,65 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     BRepLProp_CLProps prop(adapt,u,0,Precision::Confusion());
     const gp_Pnt& V = prop.Value();
     return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+}
+
+PyObject* TopoShapeEdgePy::parameters(PyObject *args)
+{
+    PyObject* pyface = 0;
+    if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
+        return 0;
+
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    TopLoc_Location aLoc;
+    Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(e, aLoc);
+    if (!aPoly.IsNull()) {
+        Py::List list;
+        if (!aPoly->HasParameters()) {
+            return Py::new_reference_to(list);
+        }
+
+        const TColStd_Array1OfReal& aNodes = aPoly->Parameters();
+        for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
+            list.append(Py::Float(aNodes(i)));
+        }
+
+        return Py::new_reference_to(list);
+    }
+    else if (pyface) {
+        // build up map edge->face
+        const TopoDS_Shape& face = static_cast<TopoShapeFacePy*>(pyface)->getTopoShapePtr()->getShape();
+        TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
+        TopExp::MapShapesAndAncestors(TopoDS::Face(face), TopAbs_EDGE, TopAbs_FACE, edge2Face);
+        if (edge2Face.Contains(e)) {
+            Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(face),aLoc);
+            if (!aPolyTria.IsNull()) {
+                Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
+                if (!aPoly.IsNull()) {
+                    if (!aPoly->HasParameters()) {
+                        Py::List list;
+                        return Py::new_reference_to(list);
+                    }
+
+                    Handle(TColStd_HArray1OfReal) aNodes = aPoly->Parameters();
+                    if (!aNodes.IsNull()) {
+                        Py::List list;
+                        for (int i=aNodes->Lower(); i<=aNodes->Upper(); i++) {
+                            list.append(Py::Float(aNodes->Value(i)));
+                        }
+
+                        return Py::new_reference_to(list);
+                    }
+                }
+            }
+        }
+        else {
+            PyErr_SetString(PyExc_ValueError, "Edge is not part of the face");
+            return 0;
+        }
+    }
+
+    PyErr_SetString(PyExc_RuntimeError, "Edge has no polygon");
+    return 0;
 }
 
 PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
@@ -932,7 +1000,7 @@ Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
 Py::Boolean TopoShapeEdgePy::getClosed(void) const
 {
     if (getTopoShapePtr()->getShape().IsNull())
-        throw Py::Exception("Cannot determine the 'Closed'' flag of an empty shape");
+        throw Py::RuntimeError("Cannot determine the 'Closed'' flag of an empty shape");
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->getShape());
     return Py::Boolean(ok ? true : false);
 }

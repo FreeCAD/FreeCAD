@@ -98,7 +98,7 @@ static std::string getUnitString(const Base::Unit & unit)
     appendUnit(sig.ElectricCurrent, true, "A", numerator);
     appendUnit(sig.ThermodynamicTemperature, true, "K", numerator);
     appendUnit(sig.AmountOfSubstance, true, "mol", numerator);
-    appendUnit(sig.LuminoseIntensity, true, "cd", numerator);
+    appendUnit(sig.LuminousIntensity, true, "cd", numerator);
     appendUnit(sig.Angle, true, "deg", numerator);
 
     // Denominator
@@ -108,7 +108,7 @@ static std::string getUnitString(const Base::Unit & unit)
     appendUnit(sig.ElectricCurrent, false, "A", denominator);
     appendUnit(sig.ThermodynamicTemperature, false, "K", denominator);
     appendUnit(sig.AmountOfSubstance, false, "mol", denominator);
-    appendUnit(sig.LuminoseIntensity, false, "cd", denominator);
+    appendUnit(sig.LuminousIntensity, false, "cd", denominator);
     appendUnit(sig.Angle, false, "deg", denominator);
 
     std::string unitStr;

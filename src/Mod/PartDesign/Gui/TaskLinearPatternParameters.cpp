@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QAction>
 # include <QTimer>
 #endif
 

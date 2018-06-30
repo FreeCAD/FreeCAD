@@ -38,7 +38,7 @@ def tankCapacityCurve(tank, n):
 
     Returned value:
     List of computed points. Each point contains the filling level percentage
-    (interval [0, 1]), the the filling level (0 for the bottom of the tank), and
+    (interval [0, 1]), the filling level (0 for the bottom of the tank), and
     the volume.
     """
     bbox = tank.Shape.BoundBox

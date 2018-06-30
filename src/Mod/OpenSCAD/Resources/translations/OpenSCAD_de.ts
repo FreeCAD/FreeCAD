@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Minimaler Winkel für ein Fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Mindestgröße eines Fragments</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>Verschmelzung entfernen, Platzierung für Kinder übernehmen und zufällig färben</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Entfernt die Verschmelzung, wendet die Platzierung auf die untergeordneten Elemente an und färbt sie zufällig</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Exportiere Objekte als Polygonnetze und führe eine Boolsche Operation mit OpenSCAD durch.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Operation auszuführen</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Ersetze ein Objekt im Feature Baum. Bitte wählen Sie das alte, das neue und das übergeordnete Objekt aus</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>Ersetzt ein Objekt im Feature-Baum. Bitte wählen Sie altes, neues und übergeordnetes Objekt</translation>
     </message>
   </context>
   <context>

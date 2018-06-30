@@ -103,7 +103,7 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 	// for now and testing
     Kinematic = temp;
 
-	// get the actuall TCP out of tha axis
+	// get the actual TCP out of the axis
 	calcTcp();
 }
 
@@ -117,14 +117,14 @@ double Robot6Axis::getMinAngle(int Axis)
     return Min(Axis) * (180.0/M_PI);
 }
 
-void split(std::string const& string, const char delemiter, std::vector<std::string>& destination)
+void split(std::string const& string, const char delimiter, std::vector<std::string>& destination)
 {
     std::string::size_type  last_position(0);
     std::string::size_type  position(0);
          
     for (std::string::const_iterator it(string.begin()); it != string.end(); ++it, ++position)
     {
-        if (*it == delemiter )
+        if (*it == delimiter )
         {
             destination.push_back(string.substr(last_position, position - last_position ));
             last_position = position + 1;

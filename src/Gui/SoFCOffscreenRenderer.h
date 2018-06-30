@@ -143,6 +143,7 @@ private:
 
     SbViewportRegion viewport;
     SbColor4f backgroundcolor;
+    SbColor4f backgroundopaque;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
     SbBool pbuffer;
