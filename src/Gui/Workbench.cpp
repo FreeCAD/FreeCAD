@@ -533,7 +533,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_BoxSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_SelectAll" << "Std_Delete"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 

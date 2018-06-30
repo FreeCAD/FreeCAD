@@ -69,6 +69,7 @@
 #include "NavigationStyle.h"
 
 #include <Base/Console.h>
+#include <Base/Tools2D.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
@@ -79,6 +80,8 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/MeasureDistance.h>
 #include <App/DocumentObject.h>
+#include <App/ComplexGeoDataPy.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -2404,14 +2407,138 @@ StdBoxSelection::StdBoxSelection()
     eType         = AlterSelection;
 }
 
+typedef enum { CENTER, INTERSECT } SelectionMode;
+
+static std::vector<std::string> getBoxSelection(
+        ViewProviderDocumentObject *vp, SelectionMode mode, bool selectElement,
+        const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
+        const Base::Matrix4D &mat, bool transform=true, int depth=0)
+{
+    std::vector<std::string> ret;
+    auto obj = vp->getObject();
+    if(!obj || !obj->getNameInDocument())
+        return ret;
+
+    // DO NOT check this view object Visibility, let the caller do this. Because
+    // we may be called by upper object hierarchy that manages our visibility.
+
+    auto bbox3 = vp->getBoundingBox(transform);
+    if(!bbox3.IsValid())
+        return ret;
+
+    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+
+    // check if both two boundary points are inside polygon, only
+    // valid since we know the given polygon is a box.
+    if(polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY)) && 
+       polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+    {
+        ret.emplace_back("");
+        return ret;
+    }
+
+    if(!bbox.Intersect(polygon)) 
+        return ret;
+
+    const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+    if(subs.empty()) {
+        if(!selectElement) {
+            if(mode==INTERSECT || bbox.Contains(bbox.GetCenter()))
+                ret.emplace_back("");
+            return ret;
+        }
+        PyObject *pyobj = 0;
+        Base::Matrix4D matCopy(mat);
+        obj->getSubObject(0,&pyobj,&matCopy,transform,depth);
+        if(!pyobj)
+            return ret;
+        Py::Object pyobject(pyobj,true);
+        if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
+            return ret;
+        auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+        for(auto type : data->getElementTypes()) {
+            size_t count = data->countSubElements(type);
+            if(!count)
+                continue;
+            for(size_t i=1;i<=count;++i) {
+                std::string element(type);
+                element += std::to_string(i);
+                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+                if(!segment)
+                    continue;
+                std::vector<Base::Vector3d> points;
+                std::vector<Data::ComplexGeoData::Line> lines;
+                data->getLinesFromSubelement(segment.get(),points,lines);
+                if(lines.empty()) {
+                    if(points.empty())
+                        continue;
+                    auto v = proj(points[0]);
+                    if(polygon.Contains(Base::Vector2d(v.x,v.y)))
+                        ret.push_back(element);
+                    continue;
+                }
+                Base::Polygon2d loop;
+                // TODO: can we assume the line returned above are in proper
+                // order if the element is a face?
+                auto v = proj(points[lines.front().I1]);
+                loop.Add(Base::Vector2d(v.x,v.y));
+                for(auto &line : lines) {
+                    for(auto i=line.I1;i<line.I2;++i) {
+                        auto v = proj(points[i+1]);
+                        loop.Add(Base::Vector2d(v.x,v.y));
+                    }
+                }
+                if(!polygon.Intersect(loop))
+                    continue;
+                if(mode==CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter()))
+                    continue;
+                ret.push_back(element);
+            }
+            break;
+        }
+        return ret;
+    }
+
+    size_t count = 0;
+    for(auto &sub : subs) {
+        App::DocumentObject *parent = 0;
+        std::string childName;
+        Base::Matrix4D smat(mat);
+        auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
+        if(!sobj) 
+            continue;
+        int vis;
+        if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+            vis = sobj->Visibility.getValue()?1:0;
+
+        if(!vis)
+            continue;
+
+        auto svp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sobj));
+        if(!svp)
+            continue;
+
+        const auto &sels = getBoxSelection(svp,mode,selectElement,proj,polygon,smat,false,depth+1);
+        if(sels.size()==1 && sels[0] == "")
+            ++count;
+        for(auto &sel : sels)
+            ret.emplace_back(sub+sel);
+    }
+    if(count==subs.size()) {
+        ret.resize(1);
+        ret[0].clear();
+    }
+    return ret;
+}
+
 static void selectionCallback(void * ud, SoEventCallback * cb)
 {
+    bool selectElement = ud?true:false;
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
     SoNode* root = view->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
-    typedef enum { CENTER, INTERSECT } SelectionMode;
     SelectionMode selectionMode = CENTER;
 
     std::vector<SbVec2f> picked = view->getGLPolygon();
@@ -2446,34 +2573,17 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
-        for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
-            Gui::ViewProvider* vp = Application::Instance->getViewProvider(*it);
-            if (!vp->isVisible())
+        for(auto obj : doc->getObjects()) {
+            if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
                 continue;
-            std::vector<App::Property*> props;
-            (*it)->getPropertyList(props);
-            for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
-                if ((*jt)->isDerivedFrom(App::PropertyGeometry::getClassTypeId())) {
-                    App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
-                    Base::BoundBox3d bbox = prop->getBoundingBox();
 
-                    if (selectionMode == CENTER) {
-                        Base::Vector3d pt2d;
-                        pt2d = proj(bbox.GetCenter());
-                        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    else {
-                        Base::BoundBox2d bbox2 = bbox.ProjectBox(&proj);
-                        if (bbox2.Intersect(polygon)) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    break;
-                }
-            }
+            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            if (!vp || !vp->isVisible())
+                continue;
+
+            Base::Matrix4D mat;
+            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat)) 
+                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
         }
     }
 }
@@ -2499,6 +2609,49 @@ void StdBoxSelection::activated(int iMsg)
         }
     }
 }
+
+//===========================================================================
+// Std_BoxElementSelection
+//===========================================================================
+DEF_3DV_CMD(StdBoxElementSelection)
+
+StdBoxElementSelection::StdBoxElementSelection()
+  : Command("Std_BoxElementSelection")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Box element selection");
+    sToolTipText  = QT_TR_NOOP("Box element selection");
+    sWhatsThis    = "Std_BoxElementSelection";
+    sStatusTip    = QT_TR_NOOP("Box element selection");
+#if QT_VERSION >= 0x040200
+    sPixmap       = "edit-element-select-box";
+#endif
+    sAccel        = "Shift+E";
+    eType         = AlterSelection;
+}
+
+void StdBoxElementSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (view) {
+        View3DInventorViewer* viewer = view->getViewer();
+        if (!viewer->isSelecting()) {
+            // #0002931: Box select misbehaves with touchpad navigation style
+            // Notify the navigation style to cleanup internal states
+            int mode = viewer->navigationStyle()->getViewingMode();
+            if (mode != Gui::NavigationStyle::IDLE) {
+                SoKeyboardEvent ev;
+                viewer->navigationStyle()->processEvent(&ev);
+            }
+            viewer->startSelection(View3DInventorViewer::Rubberband);
+            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, this);
+            SoNode* root = viewer->getSceneGraph();
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+        }
+    }
+}
+
 
 //===========================================================================
 // Std_TreeSelection
@@ -2867,6 +3020,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewZoomOut());
     rcCmdMgr.addCommand(new StdViewBoxZoom());
     rcCmdMgr.addCommand(new StdBoxSelection());
+    rcCmdMgr.addCommand(new StdBoxElementSelection());
     rcCmdMgr.addCommand(new StdCmdTreeSelection());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
     rcCmdMgr.addCommand(new StdCmdMeasureDistance());
