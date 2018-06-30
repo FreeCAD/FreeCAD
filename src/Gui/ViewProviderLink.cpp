@@ -588,6 +588,12 @@ void ViewProviderLinkObserver::extensionModeSwitchChange() {
         linkInfo->updateSwitch();
 }
 
+void ViewProviderLinkObserver::extensionHide() {
+    auto owner = dynamic_cast<ViewProviderDocumentObject*>(getExtendedContainer());
+    if(owner && linkInfo)
+        linkInfo->updateSwitch();
+}
+
 void ViewProviderLinkObserver::extensionUpdateData(const App::Property *prop) {
     if(linkInfo && linkInfo->pcLinked && linkInfo->pcLinked->getObject() && 
        prop != &linkInfo->pcLinked->getObject()->Visibility) 

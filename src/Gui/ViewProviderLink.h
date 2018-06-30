@@ -71,6 +71,7 @@ public:
     bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
     bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
     void extensionModeSwitchChange(void) override;
+    void extensionHide(void) override;
 
     LinkInfoPtr linkInfo;
 };
