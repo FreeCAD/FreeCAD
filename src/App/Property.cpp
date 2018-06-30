@@ -173,7 +173,11 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
         for (Py_ssize_t i=0; i<nSize;++i) {
             std::string keyStr;
             PyObject* key = PyList_GetItem(keyList, i);
+#if PY_MAJOR_VERSION < 3
             if(!PyInt_Check(key)) 
+#else
+            if(!PyLong_Check(key))
+#endif
                 throw Base::TypeError("expect key type to be interger");
             auto idx = PyLong_AsLong(key);
             if(idx<-1 || idx>listSize) 
