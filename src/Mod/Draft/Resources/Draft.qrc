@@ -47,6 +47,7 @@
         <file>icons/Draft_Snap.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
+        <file>icons/Draft_PointArray.svg</file>
         <file>icons/Draft_VisGroup.svg</file>
         <file>icons/Snap_Lock.svg</file>
         <file>icons/Snap_Endpoint.svg</file>
@@ -68,6 +69,7 @@
         <file>icons/Draft_Ellipse.svg</file>
         <file>icons/Draft_ShapeString.svg</file>
         <file>icons/Draft_Facebinder.svg</file>
+        <file>icons/Draft_Facebinder_Provider.svg</file>
         <file>icons/Draft_FlipDimension.svg</file>
         <file>icons/Draft_Mirror.svg</file>
         <file>icons/Draft_Grid.svg</file>

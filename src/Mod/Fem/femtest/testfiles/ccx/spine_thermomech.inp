@@ -197,11 +197,6 @@ FemConstraintTemperature,11,11,310.93
 U, NT
 *EL FILE
 S, E
-** outputs --> dat file
-*NODE PRINT , NSET=Nall
-U 
-*EL PRINT , ELSET=Eall
-S 
 
 ***********************************************************
 ** written by write_step_end function

@@ -619,7 +619,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(str(e))
-            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
             raise Exception(error_message)

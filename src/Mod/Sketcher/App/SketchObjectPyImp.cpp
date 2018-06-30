@@ -293,8 +293,10 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         // if the geometry moved during the solve, then the initial solution is invalid
         // at this point, so a point movement may not work in cases where redundant constraints exist.
         // this forces recalculation of the initial solution (not a full solve)
-        if(this->getSketchObjectPtr()->noRecomputes)
-            this->getSketchObjectPtr()->setUpSketch(); 
+        if(this->getSketchObjectPtr()->noRecomputes) {
+            this->getSketchObjectPtr()->setUpSketch();
+            this->getSketchObjectPtr()->Constraints.touch(); // update solver information
+        }
         return Py::new_reference_to(Py::Long(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
@@ -1272,6 +1274,26 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
     }
     
     Py_Return;
+}
+
+
+PyObject* SketchObjectPy::getGeometryWithDependentParameters(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    std::vector<std::pair<int,PointPos>> geometrymap;
+
+    this->getSketchObjectPtr()->getGeometryWithDependentParameters(geometrymap);
+
+    Py::List list;
+    for (auto pair : geometrymap) {
+        Py::Tuple t(2);
+        t.setItem(0, Py::Long(pair.first));
+        t.setItem(1, Py::Long(((pair.second == Sketcher::none)?0:(pair.second == Sketcher::start)?1:(pair.second == Sketcher::end)?2:3)));
+        list.append(t);
+    }
+    return Py::new_reference_to(list);
 }
 
 Py::Long SketchObjectPy::getConstraintCount(void) const

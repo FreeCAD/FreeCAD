@@ -29,11 +29,11 @@ import math
 import Part
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore, QtGui
 
 """Dogbone Dressup object and FreeCAD command"""

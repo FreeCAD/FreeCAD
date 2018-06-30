@@ -1677,27 +1677,41 @@ TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
 #endif
 }
 
-TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
+TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
+#if OCC_VERSION_HEX < 0x060900
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
+#else
+    BRepAlgoAPI_Section mkSection;
+    mkSection.Init1(this->_Shape);
+    mkSection.Init2(shape);
+    mkSection.Approximation(approximate);
+    mkSection.Build();
+#endif
+    if (!mkSection.IsDone())
+        throw Base::RuntimeError("Section failed");
     return mkSection.Shape();
 }
 
-TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
+                                Standard_Real tolerance,
+                                Standard_Boolean approximate) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
+    (void)approximate;
     throw Base::RuntimeError("Multi section is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_Section mkSection;
     mkSection.SetRunParallel(true);
+    mkSection.Approximation(approximate);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {

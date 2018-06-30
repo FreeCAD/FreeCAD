@@ -324,6 +324,11 @@ class _Space(ArchComponent.Component):
                             p += o.EquipmentPower
                     if p != obj.EquipmentPower:
                         obj.EquipmentPower = p
+        elif prop == "Zone":
+            if obj.Zone:
+                if obj.Zone.ViewObject:
+                    if hasattr(obj.Zone.ViewObject,"Proxy"):
+                        obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
         ArchComponent.Component.onChanged(self,obj,prop)

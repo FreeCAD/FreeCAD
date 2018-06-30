@@ -2058,6 +2058,7 @@ void Document::restore (bool delaySignal)
         signalTransactionRemove(*(*obj), 0);
     }
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
+        (*obj)->setStatus(ObjectStatus::Destroy, true);
         delete *obj;
     }
     d->objectArray.clear();

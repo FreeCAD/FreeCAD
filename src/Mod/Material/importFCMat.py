@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *  
+#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,28 +20,22 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Material
+
+import FreeCAD
+# import Material
+from Material import getMaterialAttributeStructure
 import os
 
-__title__="FreeCAD material card importer"
+
+__title__ = "FreeCAD material card importer"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-# file structure - this affects how files are saved
-FileStructure = [
-    [ "Meta",            ["CardName","AuthorAndLicense","Source"] ],
-    [ "General",         ["Name","Father","Description","Density","Vendor","ProductURL","SpecificPrice"] ],
-    [ "Mechanical",      ["YoungsModulus","UltimateTensileStrength","CompressiveStrength","Elasticity","FractureToughness"] ],
-    [ "FEM",             ["PoissonRatio"] ],
-    [ "Architectural",   ["Model","ExecutionInstructions","FireResistanceClass","StandardCode","ThermalConductivity","SoundTransmissionClass","Color","Finish","UnitsPerQuantity","EnvironmentalEfficiencyClass"] ],
-    [ "Rendering",       ["DiffuseColor","AmbientColor","SpecularColor","Shininess","EmissiveColor","Transparency","VertexShader","FragmentShader","TexturePath","TextureScaling"] ],
-    [ "Vector rendering",["ViewColor","ViewFillPattern","SectionFillPattern","ViewLinewidth","SectionLinewidth"] ],
-    [ "User defined",    [] ]
-]
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ == '__builtin__':
     pythonopen = open
+
 
 def open(filename):
     "called when freecad wants to open a file"
@@ -52,7 +46,8 @@ def open(filename):
     read(filename)
     return doc
 
-def insert(filename,docname):
+
+def insert(filename, docname):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -62,9 +57,11 @@ def insert(filename,docname):
     read(filename)
     return doc
 
-def export(exportList,filename):
+
+def export(exportList, filename):
     "called when freecad exports a file"
     return
+
 
 def decode(name):
     "decodes encoded strings"
@@ -78,9 +75,10 @@ def decode(name):
             decodedName = name
     return decodedName
 
+
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
-    if isinstance(filename,unicode): 
+    if isinstance(filename, unicode):
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
     f = pythonopen(filename)
@@ -99,19 +97,20 @@ def read(filename):
         l += 1
     return d
 
-def write(filename,dictionary):
+
+def write(filename, dictionary):
     "writes the given dictionary to the given file"
     # sort the data into sections
     contents = []
-    for key in FileStructure:
-        contents.append({"keyname":key[0]})
+    for key in getMaterialAttributeStructure():  # get the mat file structure from material module
+        contents.append({"keyname": key[0]})
         if key[0] == "Meta":
             header = contents[-1]
         elif key[0] == "User defined":
             user = contents[-1]
         for p in key[1]:
             contents[-1][p] = ""
-    for k,i in dictionary.iteritems():
+    for k, i in dictionary.iteritems():
         found = False
         for group in contents:
             if not found:
@@ -121,12 +120,12 @@ def write(filename,dictionary):
         if not found:
             user[k] = i
     # write header
-    rev = FreeCAD.ConfigGet("BuildVersionMajor")+"."+FreeCAD.ConfigGet("BuildVersionMinor")+" "+FreeCAD.ConfigGet("BuildRevision")
-    if isinstance(filename,unicode):
+    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + " " + FreeCAD.ConfigGet("BuildRevision")
+    if isinstance(filename, unicode):
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
     print(filename)
-    f = pythonopen(filename,"wb")
+    f = pythonopen(filename, "wb")
     f.write("; " + header["CardName"].encode("utf8") + "\n")
     f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
     f.write("; file produced by FreeCAD " + rev + "\n")
@@ -143,7 +142,7 @@ def write(filename,dictionary):
             if len(s) > 1:
                 # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
-                for k,i in s.iteritems():
+                for k, i in s.iteritems():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
                         f.write(k + "=" + i.encode('utf-8') + "\n")

@@ -32,6 +32,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <boost/math/special_functions/round.hpp>
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -361,6 +362,8 @@ bool PropertyEnumeration::isPartOf(const char *value) const
 
 const char * PropertyEnumeration::getValueAsString(void) const
 {
+    if (!_enum.isValid())
+        throw Base::RuntimeError("Cannot get value from invalid enumeration");
     return _enum.getCStr();
 }
 
@@ -418,6 +421,11 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         reader.readEndElement("CustomEnumList");
 
         _enum.setEnums(values);
+    }
+
+    if (val < 0) {
+        Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+        val = getValue();
     }
 
     setValue(val);

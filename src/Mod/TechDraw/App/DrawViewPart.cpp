@@ -807,6 +807,17 @@ void DrawViewPart::unsetupObject()
 
 }
 
+//! is this an Isometric projection?
+bool DrawViewPart::isIso(void) const
+{
+    bool result = false;
+    Base::Vector3d dir = Direction.getValue();
+    if ( DrawUtil::fpCompare(fabs(dir.x),fabs(dir.y))  &&
+         DrawUtil::fpCompare(fabs(dir.x),fabs(dir.z)) ) {
+        result = true;
+    }
+    return result;
+}
 
 PyObject *DrawViewPart::getPyObject(void)
 {

@@ -2518,7 +2518,7 @@ void ViewProviderSketch::updateColor(void)
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
         pverts[i].getValue(x,y,z);
         const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
-        if(tmp) {
+        if(tmp && z < zHighlight) {
             if(tmp->Construction)
                 pverts[i].setValue(x,y,zConstrPoint);
             else

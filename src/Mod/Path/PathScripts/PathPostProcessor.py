@@ -24,9 +24,8 @@
 
 import FreeCAD
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import sys
-
-from PathScripts.PathPreferences import PathPreferences
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 

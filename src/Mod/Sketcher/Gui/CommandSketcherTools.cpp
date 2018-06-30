@@ -1950,6 +1950,8 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
                                     QMessageBox::Yes, QMessageBox::Cancel);
     // use an equality constraint
     if (ret == QMessageBox::Yes) {
+        getSelection().clearSelection();
+
         Gui::Document * doc= getActiveGuiDocument();
 
         SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());

@@ -407,7 +407,7 @@ class _SectionPlane:
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
         if not "Objects" in pl:
-            obj.addProperty("App::PropertyLinkList","Objects","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means all document"))
+            obj.addProperty("App::PropertyLinkList","Objects","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means the whole document."))
         if not "OnlySolids" in pl:
             obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
             obj.OnlySolids = True

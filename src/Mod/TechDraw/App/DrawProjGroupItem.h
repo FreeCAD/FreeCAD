@@ -78,6 +78,7 @@ public:
 
     virtual double getScale(void) const override;
     void autoPosition(void);
+    bool isAnchor(void);
 
 
 protected:

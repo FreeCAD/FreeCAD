@@ -204,8 +204,11 @@ class _ProfileRH(_Profile):
         q4 = Vector(-obj.Width.Value/2+obj.Thickness.Value,obj.Height.Value/2-obj.Thickness.Value,0)
         p = Part.makePolygon([p1,p2,p3,p4,p1])
         q = Part.makePolygon([q1,q2,q3,q4,q1])
-        r = Part.Face([p,q])
+        #r = Part.Face([p,q])
         #r.reverse()
+        p = Part.Face(p)
+        q = Part.Face(q)
+        r = p.cut(q)
         obj.Shape = r
         obj.Placement = pl
         

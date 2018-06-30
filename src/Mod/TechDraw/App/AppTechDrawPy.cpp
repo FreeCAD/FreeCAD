@@ -608,8 +608,19 @@ private:
                         if (dvp == nullptr) {
                             continue;
                         }
-                        double parentX = dvp->X.getValue();
-                        double parentY = dvp->Y.getValue();
+                        double grandParentX = 0.0;
+                        double grandParentY = 0.0;
+                        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+                            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
+                            TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
+                            if (dpg == nullptr) {
+                                continue;
+                            }
+                            grandParentX = dpg->X.getValue();
+                            grandParentY = dpg->Y.getValue();
+                        }
+                        double parentX = dvp->X.getValue() + grandParentX;
+                        double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
                         std::string sDimText = dvd->getFormatedValue();
                         char* dimText = &sDimText[0u];                  //hack for const-ness
@@ -656,7 +667,7 @@ private:
                             arcPoints pts = dvd->getArcPoints();
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
-                            Base::Vector3d arcPoint = pts.midArc;
+                            Base::Vector3d arcPoint = pts.onCurve.first;
                             arcPoint.y = -arcPoint.y;
                             center = center + parentPos;
                             arcPoint = arcPoint + parentPos;

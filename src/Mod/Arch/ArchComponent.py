@@ -418,6 +418,10 @@ class Component:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        if "BaseMaterial" in pl:
+                obj.Material = obj.BaseMaterial
+                obj.removeProperty("BaseMaterial")
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "IfcRole" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
             obj.IfcRole = IfcRoles
@@ -426,7 +430,7 @@ class Component:
             obj.removeProperty("Role")
             if r in IfcRoles:
                 obj.IfcRole = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+"  Role property to IfcRole\n")
+                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
         if not "IfcProperties" in pl:
@@ -464,20 +468,14 @@ class Component:
 
     def __getstate__(self):
 
-        return None
+        # for compatibility with 0.17
+        if hasattr(self,"Type"):
+            return self.Type
+        return "Component"
 
     def __setstate__(self,state):
 
         return None
-
-    def onDocumentRestored(self,obj):
-
-        if hasattr(obj,"BaseMaterial"):
-            if not hasattr(obj,"Material"):
-                obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-                obj.Material = obj.BaseMaterial
-                obj.removeProperty("BaseMaterial")
-                print("Migrated old BaseMaterial property -> Material in ",obj.Label)
 
     def onBeforeChange(self,obj,prop):
 
@@ -513,7 +511,7 @@ class Component:
         "if this object is a clone, sets the shape. Returns True if this is the case"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) == "Component"):
+                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
@@ -629,23 +627,26 @@ class Component:
     def hideSubobjects(self,obj,prop):
 
         "Hides subobjects when a subobject lists change"
-        if prop in ["Additions","Subtractions"]:
-            if hasattr(obj,prop):
-                for o in getattr(obj,prop):
-                    if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
-                        if (Draft.getType(obj) == "Wall"):
-                            if (Draft.getType(o) == "Roof"):
-                                continue
+
+        if FreeCAD.GuiUp:
+            if prop in ["Additions","Subtractions"]:
+                if hasattr(obj,prop):
+                    for o in getattr(obj,prop):
+                        if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
+                            if (Draft.getType(obj) == "Wall"):
+                                if (Draft.getType(o) == "Roof"):
+                                    continue
+                            o.ViewObject.hide()
+            elif prop in ["Mesh"]:
+                if hasattr(obj,prop):
+                    o = getattr(obj,prop)
+                    if o:
                         o.ViewObject.hide()
-        elif prop in ["Mesh"]:
-            if hasattr(obj,prop):
-                o = getattr(obj,prop)
-                if o:
-                    o.ViewObject.hide()
 
     def processSubShapes(self,obj,base,placement=None):
 
         "Adds additions and subtractions to a base shape"
+
         import Draft,Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
@@ -1064,6 +1065,32 @@ class ViewProviderComponent:
 
         FreeCADGui.Control.closeDialog()
         return False
+
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.toggleSubcomponents)
+        menu.addAction(action1)
+
+    def toggleSubcomponents(self):
+
+        FreeCADGui.runCommand("Arch_ToggleSubs")
+
+    def areDifferentColors(self,a,b):
+
+        if len(a) != len(b):
+            return True
+        for i in range(len(a)):
+            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
+                return True
+        return False
+
+    def colorize(self,obj,force=False):
+
+        if obj.CloneOf:
+            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
 
 
 class ArchSelectionObserver:

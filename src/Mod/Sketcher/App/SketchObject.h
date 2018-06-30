@@ -320,6 +320,10 @@ public:
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
+    
+    /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
+    /// these parameters relate to not fully constraint edges/vertices.
+    void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool isAllowedOtherBody() const {

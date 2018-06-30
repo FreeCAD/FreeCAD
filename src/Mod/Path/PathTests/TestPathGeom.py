@@ -26,12 +26,12 @@ import FreeCAD
 import Part
 import Path
 import PathScripts
+import PathScripts.PathGeom as PathGeom
 import math
 import unittest
 
 from FreeCAD import Vector
 #from PathScripts.PathDressupHoldingTags import *
-from PathScripts.PathGeom import PathGeom
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathGeom(PathTestBase):
@@ -239,14 +239,28 @@ class TestPathGeom(PathTestBase):
 
         def cmds(pa, pb, pc, flip):
             return PathGeom.cmdsForEdge(Part.Edge(Part.Arc(pa, pb, pc)), flip)[0]
-        def cmd(c, end, off):
-            return Path.Command(c, {'X': end.x, 'Y': end.y, 'Z': end.z, 'I': off.x, 'J': off.y, 'K': off.z})
+        def cmd(g, end, off):
+            return Path.Command(g, {'X': end.x, 'Y': end.y, 'Z': end.z, 'I': off.x, 'J': off.y, 'K': off.z})
 
         self.assertCommandEqual(cmds(p1, p2, p3, False), cmd('G2', p3, Vector(0,  10, 0)))
         self.assertCommandEqual(cmds(p1, p4, p3, False), cmd('G3', p3, Vector(0,  10, 0)))
 
         self.assertCommandEqual(cmds(p1, p2, p3,  True), cmd('G3', p1, Vector(0, -10, 0)))
         self.assertCommandEqual(cmds(p1, p4, p3,  True), cmd('G2', p1, Vector(0, -10, 0)))
+
+    def test41(self):
+        """Verify circle results in proper G2/G3 comamnds."""
+
+        def cmds(center, radius, up = True):
+            norm = Vector(0, 0, 1) if up else Vector(0, 0, -1)
+            return PathGeom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))[0]
+        def cmd(g, end, off):
+            return Path.Command(g, {'X': end.x, 'Y': end.y, 'Z': end.z, 'I': off.x, 'J': off.y, 'K': off.z})
+
+        center = Vector(10, 10, 0)
+        radius = 5
+
+        self.assertCommandEqual(cmds(center, radius), cmd('G3', Vector(15, 10, 0), Vector(-5, 0, 0)))
 
 
     def test50(self):

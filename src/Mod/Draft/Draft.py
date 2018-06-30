@@ -47,11 +47,11 @@ __url__ = "http://www.freecadweb.org"
 
 '''The Draft module offers a range of tools to create and manipulate basic 2D objects'''
 
-import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc, WorkingPlane
+import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui, Draft_rc
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
@@ -270,6 +270,11 @@ def autogroup(obj):
                             gr = g.Group
                             gr.append(obj)
                             g.Group = gr
+                else:
+                    # Arch active container
+                    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                    if a:
+                        a.addObject(obj)
 
 def dimSymbol(symbol=None,invert=False):
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
@@ -364,6 +369,15 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         if getType(obj) in ["Wall","Structure"]:
             for o in obj.OutList:
                 l.extend(getWindows(o))
+            for i in obj.InList:
+                if (getType(i) in ["Window"]) or isClone(obj,"Window"):
+                    if hasattr(i,"Hosts"):
+                        if obj in i.Hosts:
+                            l.append(i)
+                elif (getType(i) in ["Rebar"]) or isClone(obj,"Rebar"):
+                    if hasattr(i,"Host"):
+                        if obj == i.Host:
+                            l.append(i)
         elif (getType(obj) in ["Window","Rebar"]) or isClone(obj,["Window","Rebar"]):
             l.append(obj)
         return l
@@ -635,7 +649,7 @@ def getMovableChildren(objectslist,recursive=True):
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     for obj in objectslist:
-        if not (getType(obj) in ["Clone","SectionPlane","Facebinder"]):
+        if not (getType(obj) in ["Clone","SectionPlane","Facebinder","BuildingPart"]):
             # objects that should never move their children
             children = obj.OutList
             if  hasattr(obj,"Proxy"):
@@ -912,8 +926,20 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeLine(p1,p2):
-    '''makeLine(p1,p2): Creates a line between p1 and p2.'''
+def makeLine(p1,p2=None):
+    '''makeLine(p1,p2): Creates a line between p1 and p2.
+    makeLine(LineSegment): Creates a line from a Part.LineSegment
+    makeLine(Shape): Creates a line from first vertex to last vertex of the given shape'''
+    if not p2:
+        if hasattr(p1,"StartPoint") and hasattr(p1,"EndPoint"):
+            p2 = p1.EndPoint
+            p1 = p1.StartPoint
+        elif hasattr(p1,"Vertexes"):
+            p2 = p1.Vertexes[-1].Point
+            p1 = p1.Vertexes[0].Point
+        else:
+            FreeCAD.Console.PrintError("Unable to create a line from the given data\n")
+            return
     obj = makeWire([p1,p2])
     return obj
 
@@ -1241,6 +1267,22 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
                 FreeCAD.ActiveDocument.recompute()
                 obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
+        select(obj)
+    return obj
+
+def makePointArray(base, ptlst):
+    '''makePointArray(base,pointlist):'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PointArray")
+    _PointArray(obj, base, ptlst)
+    obj.Base = base
+    obj.PointList = ptlst
+    if gui:
+        _ViewProviderDraftArray(obj.ViewObject)
+        base.ViewObject.hide()
+        formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            FreeCAD.ActiveDocument.recompute()
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -3089,8 +3131,10 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
+
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape'''
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -3111,11 +3155,13 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     return obj
 
 def clone(obj,delta=None,forcedraft=False):
+
     '''clone(obj,[delta,forcedraft]): makes a clone of the given object(s). The clone is an exact,
     linked copy of the given object. If the original object changes, the final object
     changes too. Optionally, you can give a delta Vector to move the clone from the
     original position. If forcedraft is True, the resulting object is a Draft clone
     even if the input object is an Arch object.'''
+
     prefix = getParam("ClonePrefix","")
     if prefix:
         prefix = prefix.strip()+" "
@@ -3124,14 +3170,18 @@ def clone(obj,delta=None,forcedraft=False):
     if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
         cl = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
-    elif (len(obj) == 1) and hasattr(obj[0],"CloneOf") and (not forcedraft):
+    elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (getType(obj[0]) == "BuildingPart")) and (not forcedraft):
         # arch objects can be clones
         import Arch
-        cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
+        if getType(obj[0]) == "BuildingPart":
+            cl = Arch.makeComponent()
+        else:
+            cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
         base = getCloneBase(obj[0])
         cl.Label = prefix + base.Label
         cl.CloneOf = base
-        cl.Placement = obj[0].Placement
+        if getType(obj[0]) != "BuildingPart":
+            cl.Placement = obj[0].Placement
         try:
             cl.Role = base.Role
             cl.Description = base.Description
@@ -3140,7 +3190,7 @@ def clone(obj,delta=None,forcedraft=False):
             pass
         if gui:
             cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
-            if obj[0].Proxy.Type == "Window":
+            if getType(obj[0]) in ["Window","BuildingPart"]:
                 from DraftGui import todo
                 todo.delay(Arch.recolorize,cl)
         select(cl)
@@ -6195,6 +6245,46 @@ class _PathArray(_DraftLink):
             travel += step
         return base
 
+class _PointArray(_DraftObject):
+    "The Draft Point Array object"
+    def __init__(self, obj, bobj, ptlst):
+        _DraftObject.__init__(self,obj,"PointArray")
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","Base")).Base = bobj
+        obj.addProperty("App::PropertyLink","PointList","Draft",QT_TRANSLATE_NOOP("App::Property","PointList")).PointList = ptlst
+        obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Count")).Count = 0
+        obj.setEditorMode("Count", 1)
+
+    def execute(self, obj):
+        import Part
+        from FreeCAD import Base, Vector
+        pls = []
+        opl = obj.PointList
+        while getType(opl) == 'Clone':
+            opl = opl.Objects[0]
+        if hasattr(opl, 'Geometry'):
+            pls = opl.Geometry
+        elif hasattr(opl, 'Links'):
+            pls = opl.Links
+        elif hasattr(opl, 'Components'):
+            pls = opl.Components
+
+        base = []
+        i = 0
+        if hasattr(obj.Base, 'Shape'):
+            for pts in pls:
+                #print pts # inspect the objects
+                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Y'):
+        	        nshape = obj.Base.Shape.copy()
+        	        if hasattr(pts, 'Placement'):
+        	            place = pts.Placement
+        	            nshape.translate(place.Base)
+        	            nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )
+        	        nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
+        	        i += 1
+        	        base.append(nshape)
+        obj.Count = i
+        obj.Shape = Part.makeCompound(base)
+
 class _Point(_DraftObject):
     "The Draft Point object"
     def __init__(self, obj,x=0,y=0,z=0):
@@ -6370,7 +6460,11 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
         _ViewProviderDraft.__init__(self,vobj)
 
     def getIcon(self):
-        return ":/icons/Draft_Array.svg"
+        if hasattr(self.Object,"ArrayType"):
+            return ":/icons/Draft_Array.svg"
+        elif hasattr(self.Object,"PointList"):
+            return ":/icons/Draft_PointArray.svg"
+        return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
         colors = []
@@ -6548,6 +6642,8 @@ class _Facebinder(_DraftObject):
         obj.addProperty("App::PropertyLinkSubList","Faces","Draft",QT_TRANSLATE_NOOP("App::Property","Linked faces"))
         obj.addProperty("App::PropertyBool","RemoveSplitter","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed"))
         obj.addProperty("App::PropertyDistance","Extrusion","Draft",QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces"))
+        obj.addProperty("App::PropertyBool","Sew","Draft",QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew"))
+
 
     def execute(self,obj):
         import Part
@@ -6580,6 +6676,10 @@ class _Facebinder(_DraftObject):
                 if not sh:
                     sh = faces.pop()
                     sh = sh.multiFuse(faces)
+                if hasattr(obj,"Sew"):
+                    if obj.Sew:
+                        sh = sh.copy()
+                        sh.sewShape()
                 if hasattr(obj,"RemoveSplitter"):
                     if obj.RemoveSplitter:
                         sh = sh.removeSplitter()
@@ -6616,6 +6716,9 @@ class _Facebinder(_DraftObject):
 class _ViewProviderFacebinder(_ViewProviderDraft):
     def __init__(self,vobj):
         _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Facebinder_Provider.svg"
 
     def setEdit(self,vobj,mode):
         import DraftGui
@@ -7301,6 +7404,10 @@ class ViewProviderDraftText:
         vobj.addDisplayMode(self.node2d,"2D text")
         vobj.addDisplayMode(self.node3d,"3D text")
         self.onChanged(vobj,"TextColor")
+        self.onChanged(vobj,"FontSize")
+        self.onChanged(vobj,"FontName")
+        self.onChanged(vobj,"Justification")
+        self.onChanged(vobj,"LineSpacing")
 
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]

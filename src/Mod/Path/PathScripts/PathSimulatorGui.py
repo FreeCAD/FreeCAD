@@ -1,14 +1,15 @@
-import os
 import FreeCAD
-import Path
-import Part
 import Mesh
+import Part
+import Path
+import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLog as PathLog
 import PathSimulator
 import math
+import os
+
 from FreeCAD import Vector, Base
-import PathScripts.PathLog as PathLog
-from PathScripts.PathGeom import PathGeom
-import PathScripts.PathDressup as PathDressup
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 

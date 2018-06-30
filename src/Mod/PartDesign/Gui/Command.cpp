@@ -454,8 +454,13 @@ void CmdPartDesignClone::activated(int iMsg)
         FCMD_OBJ_CMD(Feat,"BaseFeature = " << objCmd);
         FCMD_OBJ_CMD(Feat,"Placement = " << objCmd << ".Placement");
         FCMD_OBJ_CMD(Feat,"setEditorMode('Placement',0)");
-        commitCommand();
         updateActive();
+        copyVisual(Feat, "ShapeColor", obj);
+        copyVisual(Feat, "LineColor", obj);
+        copyVisual(Feat, "PointColor", obj);
+        copyVisual(Feat, "Transparency", obj);
+        copyVisual(Feat, "DisplayMode", obj);
+        commitCommand();
     }
 }
 

@@ -591,7 +591,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     App::DocumentObject* oldTip = body->Tip.getValue();
     if (oldTip == selFeature) { // it's not generally an error, so print only a console message
-        Base::Console().Message ("%s is already the tip of the body", selFeature->getNameInDocument () );
+        Base::Console().Message ("%s is already the tip of the body\n", selFeature->getNameInDocument () );
         return;
     }
 

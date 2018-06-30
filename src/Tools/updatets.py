@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
 
@@ -91,22 +91,28 @@ PYLUPDATE = ""
 
 def find_tools():
     global QMAKE, LUPDATE, PYLUPDATE
-    if (os.system("qmake-qt4 -version") == 0):
-        QMAKE = "qmake-qt4"
-    elif (os.system("qmake -version") == 0):
+    if (os.system("qmake -version") == 0):
         QMAKE = "qmake"
+    elif (os.system("qmake-qt4 -version") == 0):
+        QMAKE = "qmake-qt4"
+    elif (os.system("qmake-qt5 -version") == 0):
+        QMAKE = "qmake-qt5"
     else:
         raise Exception("Cannot find qmake")
+    if (os.system("lupdate -version") == 0):
+        LUPDATE = "lupdate"
     if (os.system("lupdate-qt4 -version") == 0):
         LUPDATE = "lupdate-qt4"
-    elif (os.system("lupdate -version") == 0):
-        LUPDATE = "lupdate"
+    elif (os.system("lupdate-qt5 -version") == 0):
+        LUPDATE = "lupdate-qt5"
     else:
         raise Exception("Cannot find lupdate")
     if (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
     elif (os.system("pylupdate4 -version") == 0):
         PYLUPDATE = "pylupdate4"
+    elif (os.system("pylupdate5 -version") == 0):
+        PYLUPDATE = "pylupdate5"
     else:
         raise Exception("Cannot find pylupdate")
     print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE)

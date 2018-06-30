@@ -223,6 +223,8 @@ public:
     PYFUNCDEF_S(sUpdateGui);
     PYFUNCDEF_S(sUpdateLocale);
     PYFUNCDEF_S(sGetLocale);
+    PYFUNCDEF_S(sSetLocale);
+    PYFUNCDEF_S(sSupportedLocales);
     PYFUNCDEF_S(sCreateDialog);
     PYFUNCDEF_S(sAddPreferencePage);
 

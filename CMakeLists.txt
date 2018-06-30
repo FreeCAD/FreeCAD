@@ -675,7 +675,7 @@ endif()
         # check which modules are available
         if(UNIX OR WIN32)
             find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
-            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5 vtkFiltersParallelDIY2 vtkRenderingCore vtkInteractionStyle vtkRenderingFreeType vtkRenderingOpenGL2)
             foreach(_module ${VTK_COMPONENTS})
                 list (FIND VTK_MODULES_ENABLED ${_module} _index)
                 if (${_index} GREATER -1)

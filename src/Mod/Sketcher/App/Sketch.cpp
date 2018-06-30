@@ -174,7 +174,7 @@ void Sketch::calculateDependentParametersElements(void)
 {
     for(auto geo : Geoms) {
         std::vector<double *> ownparams;
-        GCS::Curve * pCurve;
+        GCS::Curve * pCurve = nullptr;
 
         switch(geo.type) {
             case Point:

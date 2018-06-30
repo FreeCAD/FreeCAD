@@ -190,8 +190,12 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceY',0,2,4,2,h1))
+            s.renameConstraint(18, 'Frame1')
+            s.renameConstraint(19, 'Frame2')
+            s.renameConstraint(20, 'Frame3')
+            s.renameConstraint(21, 'Frame4')
             s.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
-            return ["OuterFrame","Frame","Wire0,Wire1",str(w1),str(o1)]
+            return ["OuterFrame","Frame","Wire0,Wire1",str(w1-w2)+"+V","0.00+V"]
 
         def doorFrame(s,width,height,h1,w1,o1):
 
@@ -213,12 +217,15 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceY',0,2,4,2,0.0))
             s.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
-            return ["OuterFrame","Frame","Wire0,Wire1",str(w1),str(o1)]
+            s.renameConstraint(18, 'Frame1')
+            s.renameConstraint(19, 'Frame2')
+            s.renameConstraint(20, 'Frame3')
+            return ["OuterFrame","Frame","Wire0,Wire1",str(w1-w2)+"+V","0.00+V"]
 
         if windowtype == "Fixed":
 
             wp = outerFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1+w1/2)])
+            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1/2)+"+V"])
 
         elif windowtype == "Open 1-pane":
 
@@ -240,8 +247,16 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
             s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
             s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
-            wp.extend(["InnerFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
-            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
+            if h2 == h1:
+                s.renameConstraint(39,'Frame5')
+                s.renameConstraint(40,'Frame6')
+                s.renameConstraint(42,'Frame7')
+                s.renameConstraint(41,'Frame8')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Open 2-pane":
 
@@ -280,10 +295,20 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceX',9,1,19,2,tol))
             s.addConstraint(Sketcher.Constraint('PointOnObject',13,2,22))
             s.addConstraint(Sketcher.Constraint('PointOnObject',20,1,12))
-            wp.extend(["LeftFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
-            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
-            wp.extend(["RightFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2)])
-            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2/2)])
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'Frame10')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire4,Wire5",fw,str(o2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Sash 2-pane":
 
@@ -322,10 +347,21 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceY',10,1,16,1,tol))
             s.addConstraint(Sketcher.Constraint('PointOnObject',9,2,17))
             s.addConstraint(Sketcher.Constraint('PointOnObject',16,1,11))
-            wp.extend(["LowerFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2+w2)])
-            wp.extend(["LowerGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2+w2/2)])
-            wp.extend(["UpperFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2)])
-            wp.extend(["UpperGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2/2)])
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'F10')
+                s.setExpression('Constraints.F10','-Constraints.Frame5')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LowerFrame","Frame","Wire2,Wire3",fw,str(o2+w2)+"+V"])
+            wp.extend(["LowerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["UpperFrame","Frame","Wire4,Wire5",fw,str(o2)+"+V"])
+            wp.extend(["UpperGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Sliding 2-pane":
 
@@ -364,10 +400,20 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceX',9,1,19,2,tol))
             s.addConstraint(Sketcher.Constraint('PointOnObject',13,2,22))
             s.addConstraint(Sketcher.Constraint('PointOnObject',12,2,20))
-            wp.extend(["LeftFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
-            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
-            wp.extend(["RightFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2+w2)])
-            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2+w2/2)])
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'Frame10')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire4,Wire5",fw,str(o2+w2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2+w2/2)+"+V"])
 
         elif windowtype == "Sliding 4-pane":
 
@@ -440,19 +486,39 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Equal',14,22))
             s.addConstraint(Sketcher.Constraint('Equal',22,30))
             s.addConstraint(Sketcher.Constraint('Equal',30,38))
-            wp.extend(["LeftMostFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
-            wp.extend(["LeftMostGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
-            wp.extend(["LeftFrame","Frame","Wire4,Wire5",str(w2),str(o1+o2+w2)])
-            wp.extend(["LeftGlass","Glass panel","Wire5",str(w2/gla),str(o1+o2+w2+w2/2)])
-            wp.extend(["RightFrame","Frame","Wire6,Wire7",str(w2),str(o1+o2+w2)])
-            wp.extend(["RightGlass","Glass panel","Wire7",str(w2/gla),str(o1+o2+w2+w2/2)])
-            wp.extend(["RightMostFrame","Frame","Wire8,Wire9",str(w2),str(o1+o2)])
-            wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o1+o2+w2/2)])
+            if h1 == h2:
+                s.renameConstraint(100,'Frame5')
+                s.renameConstraint(101,'Frame6')
+                s.renameConstraint(102,'Frame7')
+                s.renameConstraint(103,'Frame8')
+                s.renameConstraint(104,'Frame9')
+                s.renameConstraint(105,'Frame10')
+                s.renameConstraint(106,'Frame11')
+                s.renameConstraint(107,'Frame12')
+                s.renameConstraint(108,'Frame13')
+                s.renameConstraint(109,'Frame14')
+                s.renameConstraint(110,'Frame15')
+                s.renameConstraint(111,'Frame16')
+                s.renameConstraint(112,'Frame17')
+                s.renameConstraint(113,'Frame18')
+                s.renameConstraint(114,'Frame19')
+                s.renameConstraint(115,'Frame20')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftMostFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftMostGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["LeftFrame","Frame","Wire4,Wire5",fw,str(o2+w2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire6,Wire7",fw,str(o2+w2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire7",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["RightMostFrame","Frame","Wire8,Wire9",fw,str(o2)+"+V"])
+            wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Simple door":
 
             wp = doorFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Door","Solid panel","Wire1",str(w2),str(o1+o2)])
+            wp.extend(["Door","Solid panel","Wire1",str(w2),str(o2)+"+V"])
 
         elif windowtype == "Glass door":
 
@@ -474,8 +540,16 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
             s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
             s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
-            wp.extend(["InnerFrame","Frame","Wire2,Wire3",str(w2),str(o1+o2)])
-            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o1+o2+w2/2)])
+            if h2 == h1:
+                s.renameConstraint(39,'Frame5')
+                s.renameConstraint(40,'Frame6')
+                s.renameConstraint(42,'Frame7')
+                s.renameConstraint(41,'Frame8')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
 
         return (s,wp)
 
@@ -488,6 +562,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
+            obj.Frame = h1
+            obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
                 obj.IfcRole = "Door"
@@ -680,17 +756,21 @@ class _CommandWindow:
             if os.path.exists(librarypath):
                 for wtype in ["Windows","Doors"]:
                     wdir = os.path.join(librarypath,"Architectural Parts",wtype)
-                    for subtype in os.listdir(wdir):
-                        subdir = os.path.join(wdir,subtype)
-                        for subfile in os.listdir(subdir):
-                            if subfile.lower().endswith(".fcstd"):
-                                self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
+                    if os.path.exists(wdir):
+                        for subtype in os.listdir(wdir):
+                            subdir = os.path.join(wdir,subtype)
+                            if os.path.exists(subdir):
+                                for subfile in os.listdir(subdir):
+                                    if subfile.lower().endswith(".fcstd"):
+                                        self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
             else:
                 librarypath = None
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
         valuep = QtGui.QComboBox()
+        valuep.setMinimumContentsLength(6)
+        valuep.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
         valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
         grid.addWidget(labelp,2,0,1,1)
@@ -722,6 +802,12 @@ class _CommandWindow:
                 wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
             elif param == "Height":
                 wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+            elif param == "O1":
+                wid.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+                setattr(self,param,0)
+            elif param == "W1":
+                wid.setText(FreeCAD.Units.Quantity(self.Thickness*2,FreeCAD.Units.Length).UserString)
+                setattr(self,param,self.Thickness*2)
             else:
                 wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
                 setattr(self,param,self.Thickness)
@@ -731,7 +817,6 @@ class _CommandWindow:
             valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
-
         return w
 
     def getValueChanged(self,p):
@@ -835,14 +920,18 @@ class _Window(ArchComponent.Component):
         if not "Subvolume" in lp:
             obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
         if not "Width" in lp:
-            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
+            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"))
         if not "Height" in lp:
-            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
+            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"))
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         if not "Preset" in lp:
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"))
             obj.setEditorMode("Preset",2)
+        if not "Frame" in lp:
+            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"))
+        if not "Offset" in lp:
+            obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"))
         if not "Area" in lp:
             obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
         if not "LouvreWidth" in lp:
@@ -888,26 +977,23 @@ class _Window(ArchComponent.Component):
                     for host in obj.Hosts:
                         # mark host to recompute so it can detect this object
                         host.touch()
-            if prop in ["Width","Height"]:
-                if obj.Preset != 0:
-                    if obj.Base:
-                        try:
-                            if prop == "Height":
-                                if obj.Height.Value > 0:
-                                    try:
-                                        obj.Base.setDatum("Height",obj.Height.Value)
-                                    except:
-                                        obj.Base.setDatum(16,obj.Height.Value)
-                            elif prop == "Width":
-                                if obj.Width.Value > 0:
-                                    try:
-                                        obj.Base.setDatum("Width",obj.Width.Value)
-                                    except:
-                                        obj.Base.setDatum(17,obj.Width.Value)
-                        except:
-                            # restoring constraints when loading a file fails
-                            # because of load order, but it doesn't harm...
-                            pass
+            if prop in ["Width","Height","Frame"]:
+                if obj.Base and hasattr(obj.Base,"Constraints"):
+                    if prop == "Height":
+                        if obj.Height.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if c.Name == "Height":
+                                    obj.Base.setDatum(c.Name,obj.Height.Value)
+                    elif prop == "Width":
+                        if obj.Width.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if c.Name == "Width":
+                                    obj.Base.setDatum(c.Name,obj.Width.Value)
+                    elif prop == "Frame":
+                        if obj.Frame.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if "Frame" in c.Name:
+                                    obj.Base.setDatum(c.Name,obj.Frame.Value)
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -1068,8 +1154,12 @@ class _Window(ArchComponent.Component):
                                             pass
                                         elif omode == 10: # -sliding
                                             pass
-
-                                thk = float(obj.WindowParts[(i*5)+3])
+                                V = 0
+                                thk = obj.WindowParts[(i*5)+3]
+                                if "+V" in thk:
+                                    thk = thk[:-2]
+                                    V = obj.Frame.Value
+                                thk = float(thk) + V
                                 if thk:
                                     exv = DraftVecUtils.scaleTo(norm,thk)
                                     shape = shape.extrude(exv)
@@ -1078,7 +1168,12 @@ class _Window(ArchComponent.Component):
                                         f = f.extrude(exv)
                                         shape = shape.cut(f)
                                 if obj.WindowParts[(i*5)+4]:
-                                    zof = float(obj.WindowParts[(i*5)+4])
+                                    V = 0
+                                    zof = obj.WindowParts[(i*5)+4]
+                                    if "+V" in zof:
+                                        zof = zof[:-2]
+                                        V = obj.Offset.Value
+                                    zof = float(zof) + V
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
@@ -1356,15 +1451,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
 
-    def areDifferentColors(self,a,b):
-
-        if len(a) != len(b):
-            return True
-        for i in range(len(a)):
-            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
-                return True
-        return False
-
 
 class _ArchWindowTaskPanel:
 
@@ -1449,6 +1535,8 @@ class _ArchWindowTaskPanel:
         self.field5 = ui.createWidget("Gui::InputField")
         self.field6 = QtGui.QPushButton(self.baseform)
         self.field7 = QtGui.QComboBox(self.baseform)
+        self.addp4 = QtGui.QCheckBox(self.baseform)
+        self.addp5 = QtGui.QCheckBox(self.baseform)
         self.createButton = QtGui.QPushButton(self.baseform)
         self.createButton.setObjectName("createButton")
         self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -1460,9 +1548,11 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.new3, 10, 0, 1, 1)
         self.grid.addWidget(self.field3, 10, 2, 1, 5)
         self.grid.addWidget(self.new4, 11, 0, 1, 1)
-        self.grid.addWidget(self.field4, 11, 2, 1, 5)
+        self.grid.addWidget(self.field4, 11, 2, 1, 4)
+        self.grid.addWidget(self.addp4, 11, 6, 1, 1)
         self.grid.addWidget(self.new5, 12, 0, 1, 1)
-        self.grid.addWidget(self.field5, 12, 2, 1, 5)
+        self.grid.addWidget(self.field5, 12, 2, 1, 4)
+        self.grid.addWidget(self.addp5, 12, 6, 1, 1)
         self.grid.addWidget(self.new6, 13, 0, 1, 1)
         self.grid.addWidget(self.field6, 13, 2, 1, 5)
         self.grid.addWidget(self.new7, 14, 0, 1, 1)
@@ -1486,6 +1576,8 @@ class _ArchWindowTaskPanel:
         self.field5.setVisible(False)
         self.field6.setVisible(False)
         self.field7.setVisible(False)
+        self.addp4.setVisible(False)
+        self.addp5.setVisible(False)
         for t in WindowOpeningModes:
             self.field7.addItem("")
         self.createButton.setVisible(False)
@@ -1614,6 +1706,8 @@ class _ArchWindowTaskPanel:
         self.field3.setText('')
         self.field4.setText('')
         self.field5.setText('')
+        self.addp4.setChecked(False)
+        self.addp5.setChecked(False)
         self.newtitle.setVisible(True)
         self.new1.setVisible(True)
         self.new2.setVisible(True)
@@ -1629,6 +1723,8 @@ class _ArchWindowTaskPanel:
         self.field5.setVisible(True)
         self.field6.setVisible(True)
         self.field7.setVisible(True)
+        self.addp4.setVisible(True)
+        self.addp5.setVisible(True)
         self.createButton.setVisible(True)
         self.addButton.setEnabled(False)
         self.editButton.setEnabled(False)
@@ -1679,6 +1775,17 @@ class _ArchWindowTaskPanel:
                                 f.setText(",".join(wires))
 
                         elif i in [3,4]:
+                            if "+V" in t:
+                                t = t[:-2]
+                                if i == 3:
+                                    self.addp4.setChecked(True)
+                                else:
+                                    self.addp5.setChecked(True)
+                            else:
+                                if i == 3:
+                                    self.addp4.setChecked(False)
+                                else:
+                                    self.addp5.setChecked(False)
                             f.setProperty("text",FreeCAD.Units.Quantity(float(t),FreeCAD.Units.Length).UserString)
                         else:
                             f.setText(t)
@@ -1691,14 +1798,14 @@ class _ArchWindowTaskPanel:
         ok = True
         ar = []
         for i in range(5):
-            if i == 1:
+            if i == 1: # type (1)
                 n = getattr(self,"field"+str(i+1)).currentIndex()
                 if n in range(len(WindowPartTypes)):
                     t = WindowPartTypes[n]
                 else:
                     # if type was not specified or is invalid, we set a default
                     t = WindowPartTypes[0]
-            else:
+            else: # name (0)
                 t = str(getattr(self,"field"+str(i+1)).property("text"))
                 if t in WindowPartTypes:
                     t = t + "_" # avoiding part names similar to types
@@ -1706,13 +1813,19 @@ class _ArchWindowTaskPanel:
                 if not(i in [1,5]):
                     ok = False
             else:
-                if i > 2:
+                if i > 2: # thickness (3), offset (4)
                     try:
                         q = FreeCAD.Units.Quantity(t)
                         t = str(q.Value)
+                        if i == 3:
+                            if self.addp4.isChecked():
+                                t += "+V"
+                        if i == 4:
+                            if self.addp5.isChecked():
+                                t += "+V"
                     except (ValueError,TypeError):
                         ok = False
-                if i == 2:
+                elif i == 2:
                     # check additional opening parameters
                     hinge = self.field6.property("text")
                     n = self.field7.currentIndex()
@@ -1749,6 +1862,8 @@ class _ArchWindowTaskPanel:
         self.field5.setVisible(False)
         self.field6.setVisible(False)
         self.field7.setVisible(False)
+        self.addp4.setVisible(False)
+        self.addp5.setVisible(False)
         self.createButton.setVisible(False)
         self.addButton.setEnabled(True)
 
@@ -1784,9 +1899,13 @@ class _ArchWindowTaskPanel:
         self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None))
-        self.new5.setText(QtGui.QApplication.translate("Arch", "Z offset", None))
+        self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
         self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
+        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ default", None))
+        self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Frame value of this window will be added to the value entered here", None))
+        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ default", None))
+        self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Offset value of this window will be added to the value entered here", None))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
         for i in range(len(WindowPartTypes)):

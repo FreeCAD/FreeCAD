@@ -46,12 +46,13 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
+    DlgSettingsFemElmerImp.h
     DlgSettingsFemExportAbaqusImp.h
     DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmshImp.h
     DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterialImp.h
     DlgSettingsFemZ88Imp.h
-    DlgSettingsFemElmerImp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
@@ -90,12 +91,13 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
+    DlgSettingsFemElmer.ui
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
+    DlgSettingsFemMaterial.ui
     DlgSettingsFemZ88.ui
-    DlgSettingsFemElmer.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -143,24 +145,27 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemCcxImp.cpp
     DlgSettingsFemCcxImp.h
-    DlgSettingsFemGeneral.ui
-    DlgSettingsFemGeneralImp.cpp
-    DlgSettingsFemGeneralImp.h
+    DlgSettingsFemElmer.ui
+    DlgSettingsFemElmerImp.cpp
+    DlgSettingsFemElmerImp.h
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemExportAbaqusImp.cpp
     DlgSettingsFemExportAbaqusImp.h
+    DlgSettingsFemGeneral.ui
+    DlgSettingsFemGeneralImp.cpp
+    DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmsh.ui
     DlgSettingsFemGmshImp.cpp
     DlgSettingsFemGmshImp.h
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemInOutVtkImp.cpp
     DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterial.ui
+    DlgSettingsFemMaterialImp.cpp
+    DlgSettingsFemMaterialImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
-    DlgSettingsFemElmer.ui
-    DlgSettingsFemElmerImp.cpp
-    DlgSettingsFemElmerImp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h

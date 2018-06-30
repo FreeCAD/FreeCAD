@@ -86,6 +86,8 @@ std::string PropertyPythonObject::toString() const
     Base::PyGILStateLocker lock;
     try {
         Py::Module pickle(PyImport_ImportModule("json"),true);
+        if (pickle.isNull())
+            throw Py::Exception();
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
         if (this->object.hasAttr("__getstate__")) {
@@ -119,6 +121,8 @@ void PropertyPythonObject::fromString(const std::string& repr)
     Base::PyGILStateLocker lock;
     try {
         Py::Module pickle(PyImport_ImportModule("json"),true);
+        if (pickle.isNull())
+            throw Py::Exception();
         Py::Callable method(pickle.getAttr(std::string("loads")));
         Py::Tuple args(1);
         args.setItem(0, Py::String(repr));
@@ -324,6 +328,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
             end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
                 Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
+                if (mod.isNull())
+                    throw Py::Exception();
                 PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
 #if PY_MAJOR_VERSION >= 3
                 if (PyType_Check(cls)) {
@@ -344,6 +350,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 std::string nam = std::string(what[1].first, what[1].second);
                 std::string cls = std::string(what[2].first, what[2].second);
                 Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+                if (mod.isNull())
+                    throw Py::Exception();
 #if PY_MAJOR_VERSION >= 3
                 this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
 #else

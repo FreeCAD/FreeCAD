@@ -24,18 +24,18 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 
 from PySide import QtCore, QtGui
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -427,8 +427,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             item = self.form.baseList.item(i)
             obj = item.data(self.DataObject)
             sub = str(item.data(self.DataObjectSub))
-            base = (obj, sub)
-            newlist.append(base)
+            if sub:
+                base = (obj, sub)
+                newlist.append(base)
         PathLog.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
 
@@ -674,9 +675,9 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def selectionZLevel(self, sel):
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             sub = sel[0].SubObjects[0]
+            if 'Vertex' == sub.ShapeType:
+                return sub.Z
             if PathGeom.isHorizontal(sub):
-                if 'Vertex' == sub.ShapeType:
-                    return sub.Z
                 if 'Edge' == sub.ShapeType:
                     return sub.Vertexes[0].Z
                 if 'Face' == sub.ShapeType:

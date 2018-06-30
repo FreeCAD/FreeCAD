@@ -479,15 +479,22 @@ def meshoponobjs(opname,inobjs):
 def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     import FreeCAD,importDXF
     import os,tempfile
+    # Mantis 3419
+    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+    fn  = params.GetInt('fnForImport',32)
+    fnStr = ",$fn=" + str(fn)
+    #
     dir1=tempfile.gettempdir()
     filenames = []
     for item in ObjList :
         outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
         importDXF.export([item],outputfilename,True,True)
         filenames.append(outputfilename)
-    dxfimports = ' '.join("import(file = \"%s\");" % \
+    # Mantis 3419
+    dxfimports = ' '.join("import(file = \"%s\" %s);" % \
         #filename \
-        os.path.split(filename)[1] for filename in filenames)
+        (os.path.split(filename)[1], fnStr) for filename in filenames)
+    #
     tmpfilename = callopenscadstring('%s(){%s}' % (Operation,dxfimports),'dxf')
     from OpenSCAD2Dgeom import importDXFface
     # TBD: assure the given doc is active

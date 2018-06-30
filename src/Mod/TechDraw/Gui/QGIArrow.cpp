@@ -44,7 +44,9 @@ using namespace TechDrawGui;
 QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
     m_size(5.0),
-    m_style(0)
+    m_style(0),
+    m_dirMode(false),
+    m_dir(Base::Vector3d(1.0,0.0,0.0))
 {
     isFlipped = false;
     m_brush.setStyle(m_fill);
@@ -63,11 +65,23 @@ void QGIArrow::flip(bool state) {
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == 0) {
-        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
+        if (m_dirMode) {
+            path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
+        } else {
+            path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
+        }
     } else if (m_style == 1) {
-        path = makeOpenArrow(m_size,m_size/3.0,isFlipped);          //broad arrow?
+        if (m_dirMode) {
+            path = makeOpenArrow(getDirection(), m_size,m_size/3.0);          //broad arrow?
+        } else {
+            path = makeOpenArrow(m_size,m_size/3.0,isFlipped);
+        }
     } else if (m_style == 2) {
-        path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+        if (m_dirMode) {
+            path = makeHashMark(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
+        } else {
+            path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+        }
     } else if (m_style == 3) {
         path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
     } else if (m_style == 4) {
@@ -100,6 +114,25 @@ QPainterPath QGIArrow::makeFilledTriangle(double length, double width, bool flip
     return path;
 }
 
+QPainterPath QGIArrow::makeFilledTriangle(Base::Vector3d dir, double length, double width)
+{
+//(0,0) is tip of arrow
+// dir is direction arrow points
+    Base::Vector3d negDir = -dir;
+    negDir.Normalize();
+    Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
+    Base::Vector3d barb1 = negDir * length + perp * width;
+    Base::Vector3d barb2 = negDir * length - perp * width;
+    
+    QPainterPath path;
+    path.moveTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
+    path.closeSubpath();
+    m_fill = Qt::SolidPattern;
+    return path;
+}
+
 QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
 {
 //(0,0) is tip of arrow
@@ -115,6 +148,24 @@ QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
     return path;
 }
 
+QPainterPath QGIArrow::makeOpenArrow(Base::Vector3d dir, double length, double width)
+{
+//(0,0) is tip of arrow
+    Base::Vector3d negDir = -dir;
+    negDir.Normalize();
+    Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
+    Base::Vector3d barb1 = negDir * length + perp * width;
+    Base::Vector3d barb2 = negDir * length - perp * width;
+    
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+
 QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)   //Arch tick
 {
     double adjWidth = 1.0;
@@ -126,6 +177,22 @@ QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)  
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(adjWidth * (-width))));
     path.lineTo(QPointF(Rez::guiX(-length),Rez::guiX(adjWidth * width)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+QPainterPath QGIArrow::makeHashMark(Base::Vector3d dir, double length, double width)   //Arch tick
+{
+    double adjWidth = 1.0;
+    Base::Vector3d negDir = -dir;
+    negDir.Normalize();
+    Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
+    Base::Vector3d barb1 = negDir * length - perp * (adjWidth * width);
+    Base::Vector3d barb2 = dir * length + perp * (adjWidth * width);
+    
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
     m_fill = Qt::NoBrush;
     return path;
 }

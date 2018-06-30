@@ -1015,11 +1015,12 @@ PyObject*  TopoShapePy::section(PyObject *args)
     return makeShape(TOPOP_SECTION,*getTopoShapePtr(),args);
 #else
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
+    PyObject *approx = Py_False;
+    if (PyArg_ParseTuple(args, "O!|O!", &(TopoShapePy::Type), &pcObj, &(PyBool_Type), &approx)) {
         TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         try {
             // Let's call algorithm computing a section operation:
-            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape);
+            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(secShape));
         }
         catch (Standard_Failure& e) {
@@ -1035,11 +1036,11 @@ PyObject*  TopoShapePy::section(PyObject *args)
 
     PyErr_Clear();
     double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O!d", &(TopoShapePy::Type), &pcObj, &tolerance)) {
+    if (PyArg_ParseTuple(args, "O!d|O!", &(TopoShapePy::Type), &pcObj, &tolerance, &(PyBool_Type), &approx)) {
         std::vector<TopoDS_Shape> shapeVec;
         shapeVec.push_back(static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape());
         try {
-            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance);
+            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(sectionShape));
         }
         catch (Standard_Failure& e) {
@@ -1053,7 +1054,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    if (PyArg_ParseTuple(args, "O|dO!", &pcObj, &tolerance, &(PyBool_Type), &approx)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -1067,7 +1068,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
            }
         }
         try {
-            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance);
+            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(multiSectionShape));
         }
         catch (Standard_Failure& e) {

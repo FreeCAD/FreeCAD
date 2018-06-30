@@ -39,6 +39,7 @@ namespace GCS
     {
     public:
         Point(){x = 0; y = 0;}
+        Point(double *px, double *py) {x=px; y=py;}
         double *x;
         double *y;
     };

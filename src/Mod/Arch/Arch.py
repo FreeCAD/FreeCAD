@@ -62,3 +62,4 @@ from ArchMaterial import *
 from ArchSchedule import *
 from ArchPrecast import *
 from ArchPipe import *
+from ArchBuildingPart import *

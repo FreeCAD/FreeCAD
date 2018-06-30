@@ -255,6 +255,7 @@ namespace GCS
         inline double* p1y() { return pvec[3]; }
         inline double* p2x() { return pvec[4]; }
         inline double* p2y() { return pvec[5]; }
+        void errorgrad(double *err, double *grad, double *param);
     public:
         ConstraintPointOnPerpBisector(Point &p, Line &l);
         ConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2);
@@ -263,6 +264,7 @@ namespace GCS
         #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
+
         virtual double error();
         virtual double grad(double *);
     };

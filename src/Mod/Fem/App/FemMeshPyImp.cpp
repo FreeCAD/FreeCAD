@@ -929,7 +929,7 @@ PyObject* FemMeshPy::getGroupName(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 #if PY_MAJOR_VERSION >= 3
-    return PyBytes_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
+    return PyUnicode_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
 #else
     return PyString_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
 #endif
@@ -954,7 +954,7 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
         default                     : typeString = "Unknown"; break;
     }
 #if PY_MAJOR_VERSION >= 3
-    return PyBytes_FromString(typeString);
+    return PyUnicode_FromString(typeString);
 #else
     return PyString_FromString(typeString);
 #endif

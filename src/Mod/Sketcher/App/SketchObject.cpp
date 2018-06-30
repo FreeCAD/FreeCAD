@@ -5904,6 +5904,61 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
     msg = ss.str();
 }
 
+void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap)
+{
+    auto geos = getInternalGeometry();
+
+    GCS::QRAlgorithm curQRAlg = getSolvedSketch().getQRAlgorithm();
+
+    if(curQRAlg == GCS::EigenSparseQR) {
+        getSolvedSketch().setQRAlgorithm(GCS::EigenDenseQR);
+        solve(false);
+    }
+
+    auto addelement = [this,&geometrymap](int geoId, PointPos pos){
+        if(getSolvedSketch().hasDependentParameters(geoId, pos))
+            geometrymap.emplace_back(geoId,pos);
+    };
+
+
+    int geoid = 0;
+
+    for(auto geo : geos) {
+        if(geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            addelement(geoid, Sketcher::start);
+        }
+        else if(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+            geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+
+            addelement(geoid, Sketcher::start);
+            addelement(geoid, Sketcher::end);
+            addelement(geoid, Sketcher::none);
+        }
+        else if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ) {
+
+            addelement(geoid, Sketcher::mid);
+            addelement(geoid, Sketcher::none);
+        }
+        else if(geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+            geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+            geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+
+            addelement(geoid, Sketcher::start);
+            addelement(geoid, Sketcher::end);
+            addelement(geoid, Sketcher::mid);
+            addelement(geoid, Sketcher::none);
+        }
+
+        geoid++;
+    }
+
+    if(curQRAlg == GCS::EigenSparseQR) {
+        getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
+    }
+}
+
 bool SketchObject::evaluateConstraint(const Constraint *constraint) const
 {
     //if requireXXX,  GeoUndef is treated as an error. If not requireXXX,

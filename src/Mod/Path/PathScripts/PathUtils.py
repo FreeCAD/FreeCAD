@@ -29,6 +29,7 @@ import numpy
 import Part
 import Path
 import PathScripts
+import PathScripts.PathGeom as PathGeom
 import TechDraw
 
 from DraftGeomUtils import geomType
@@ -36,7 +37,6 @@ from FreeCAD import Vector
 from PathScripts import PathJob
 from PathScripts import PathJobCmd
 from PathScripts import PathLog
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 from PySide import QtGui
 
