@@ -934,16 +934,16 @@ bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
-            std::vector<App::Document*> docs;
+            std::vector<std::pair<App::Document*,bool> > docs;
             try {
                 for(auto doc : getDocument()->getDependentDocuments()) {
                     auto gdoc = Application::Instance->getDocument(doc);
                     if(gdoc && (gdoc==this || gdoc->isModified()))
-                        docs.push_back(doc);
+                        docs.emplace_back(doc,doc->mustExecute());
                 }
             }catch(const Base::RuntimeError &e) {
                 FC_ERR(e.what());
-                docs.push_back(getDocument());
+                docs.emplace_back(getDocument(),getDocument()->mustExecute());
             }
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
@@ -953,12 +953,16 @@ bool Document::save(void)
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
                     docs.clear();
-                    docs.push_back(getDocument());
+                    docs.emplace_back(getDocument(),getDocument()->mustExecute());
                 }
             }
             Gui::WaitCursor wc;
             // save all documents
-            for(auto doc : docs) {
+            for(auto v : docs) {
+                auto doc = v.first;
+                // Changed 'mustExecute' status may be triggered by saving external document
+                if(!v.second && doc->mustExecute())
+                    Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
                 auto gdoc = Application::Instance->getDocument(doc);
                 if(gdoc) gdoc->setModified(false);
