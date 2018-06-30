@@ -1712,7 +1712,7 @@ private:
 
 #   ifndef FC_NO_ELEMENT_MAP
         const char *op = 0;
-        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!i|s", &pcObj,
+        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!is", &pcObj,
                                               &(PyBool_Type), &psolid,
                                               &(PyBool_Type), &pruled,
                                               &(PyBool_Type), &pclosed,
