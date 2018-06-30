@@ -1707,24 +1707,6 @@ PyObject *PropertyStringList::getPyObject(void)
     return list;
 }
 
-void PropertyStringList::setPyObject(PyObject *value) {
-    if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
-        setValue(PyUnicode_AsUTF8(value));
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        setValue(PyString_AsString(unicode));
-        Py_DECREF(unicode);
-        return;
-    } else if (PyString_Check(value)) {
-        setValue(PyString_AsString(value));
-        return;
-#endif
-    }
-    inherited::setPyObject(value);
-}
-
-
 std::string PropertyStringList::getPyValue(PyObject *item) const {
     std::string ret;
     if (PyUnicode_Check(item)) {
