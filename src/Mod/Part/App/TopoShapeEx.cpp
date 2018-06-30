@@ -402,7 +402,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
                             FC_WARN("hasher mismatch");
                     }else {
                         // throw Base::RuntimeError("hasher mismatch");
-                        FC_ERR("hasher mismatch");
+                        FC_WARN("hasher mismatch");
                     }
                     Hasher = other.Hasher;
                 }
