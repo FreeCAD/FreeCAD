@@ -38,9 +38,13 @@
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
 
+#include <Base/BoundBoxPy.h>
+
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
 #include <Gui/ViewProviderPy.h>
 #include <Gui/ViewProviderPy.cpp>
+#include <Gui/View3DPy.h>
+#include <Gui/View3DInventor.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
@@ -514,6 +518,21 @@ PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
         return NULL;
     getViewProviderPtr()->signalChangeIcon();
     Py_Return;
+}
+
+PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
+    PyObject *transform=Py_True;
+    PyObject *pyView = 0;
+    if (!PyArg_ParseTuple(args, "|OO!", &transform,View3DInventorPy::type_object(),&pyView))
+        return NULL;
+    PY_TRY {
+        View3DInventor *view = 0;
+        if(pyView)
+            view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
+        auto bbox = getViewProviderPtr()->getBoundingBox(PyObject_IsTrue(transform),view);
+        Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
 }
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const

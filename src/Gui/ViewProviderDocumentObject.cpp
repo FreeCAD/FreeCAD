@@ -32,7 +32,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
 # include <Inventor/misc/SoChildList.h>
@@ -357,30 +356,6 @@ bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::
 
 bool ViewProviderDocumentObject::showInTree() const {
     return ShowInTree.getValue();
-}
-
-Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {
-    auto doc = getDocument();
-    if(!doc) 
-        throw Base::RuntimeError("no document");
-    Gui::MDIView* view = doc->getViewOfViewProvider(
-            const_cast<ViewProviderDocumentObject*>(this));
-    if(!view)
-        throw Base::RuntimeError("no view");
-    
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-
-    auto mode = pcModeSwitch->whichChild.getValue();
-    pcModeSwitch->whichChild = getDefaultMode();
-    bboxAction.apply(pcRoot);
-    pcModeSwitch->whichChild = mode;
-
-    auto bbox = bboxAction.getBoundingBox();
-    float minX,minY,minZ,maxX,maxY,maxZ;
-    bbox.getMax().getValue(maxX,maxY,maxZ);
-    bbox.getMin().getValue(minX,minY,minZ);
-    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
 }
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const

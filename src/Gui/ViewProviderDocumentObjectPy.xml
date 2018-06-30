@@ -18,11 +18,6 @@
 				<UserDocu>Update the view representation of the object</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="getBoundingBox">
-            <Documentation>
-                <UserDocu>getBoundingBox(): obtain the bounding box of this view object</UserDocu>
-            </Documentation>
-        </Methode>
 		<Attribute Name="Object" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the associated data object</UserDocu>

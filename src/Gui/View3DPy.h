@@ -28,6 +28,7 @@
 #include <CXX/Extensions.hxx>
 
 class SoEventCallback;
+class SoDragger;
 class QImage;
 
 namespace Gui {
@@ -107,6 +108,8 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
+
+    View3DInventor* getView3DIventorPtr() {return _view;}
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);

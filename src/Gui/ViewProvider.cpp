@@ -36,11 +36,13 @@
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <App/PropertyGeo.h>
 
@@ -872,3 +874,36 @@ void ViewProvider::setRenderCacheMode(int mode) {
         mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
+Base::BoundBox3d ViewProvider::getBoundingBox(bool transform, MDIView *view) const {
+    if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
+        return Base::BoundBox3d();
+
+    if(!view)
+        view  = Application::Instance->activeView();
+    auto iview = dynamic_cast<View3DInventor*>(view);
+    if(!iview)
+        throw Base::RuntimeError("no view");
+
+    View3DInventorViewer* viewer = iview->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+
+    SoTempPath path(3);
+    path.ref();
+    if(!transform) {
+        path.append(pcRoot);
+        path.append(pcModeSwitch);
+        bboxAction.setResetPath(&path,true,SoGetBoundingBoxAction::TRANSFORM);
+    }
+    auto mode = pcModeSwitch->whichChild.getValue();
+    if(mode < 0)
+        pcModeSwitch->whichChild = getDefaultMode();
+    bboxAction.apply(pcRoot);
+    if(mode < 0)
+        pcModeSwitch->whichChild = mode;
+    path.unrefNoDelete();
+    auto bbox = bboxAction.getBoundingBox();
+    float minX,minY,minZ,maxX,maxY,maxZ;
+    bbox.getMax().getValue(maxX,maxY,maxZ);
+    bbox.getMin().getValue(minX,minY,minZ);
+    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
+}

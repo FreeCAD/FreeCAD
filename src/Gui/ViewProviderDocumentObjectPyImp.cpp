@@ -27,7 +27,6 @@
 # include <sstream>
 #endif
 
-#include <Base/BoundBoxPy.h>
 #include "Document.h"
 #include "Gui/ViewProviderDocumentObject.h"
 #include <App/DocumentObject.h>
@@ -56,17 +55,6 @@ PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
         Py_Return;
     } PY_CATCH;
 }
-
-PyObject *ViewProviderDocumentObjectPy::getBoundingBox(PyObject *args) {
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-    PY_TRY {
-        auto bbox = getViewProviderDocumentObjectPtr()->getBoundingBox();
-        Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
-        return Py::new_reference_to(ret);
-    } PY_CATCH;
-}
-
 
 Py::Object ViewProviderDocumentObjectPy::getObject(void) const
 {

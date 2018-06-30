@@ -34,6 +34,7 @@
 #include <App/TransactionalObject.h>
 #include <App/Material.h>
 #include <Base/Vector3D.h>
+#include <Base/BoundBox.h>
 
 class SbVec2s;
 class SbVec3f;
@@ -70,6 +71,7 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+class MDIView;
 
 enum ViewStatus {
     UpdateData = 0,
@@ -170,6 +172,14 @@ public:
         (void)Element;
         return std::vector<Base::Vector3d>();
     }
+
+    /** Return the bound box of this view object
+     *
+     * This method shall work regardless whether the current view object is
+     * visible or not.
+     */
+    Base::BoundBox3d getBoundingBox(bool transform=true, MDIView *view=0) const;
+
     /**
      * Get called if the object is about to get deleted.
      * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
