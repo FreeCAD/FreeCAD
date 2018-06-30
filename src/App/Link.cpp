@@ -391,7 +391,7 @@ Base::Matrix4D LinkBaseExtension::getTransform(bool transform) const {
     return mat;
 }
 
-bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret) const {
+bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
     if(hasElements()) {
         for(auto obj : getElementListValue()) {
             if(obj && obj->getNameInDocument()) {
@@ -406,7 +406,7 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret) co
         DocumentObject *linked = getTrueLinkedObject(true);
         if(linked) {
             if(!getElementCountValue())
-                ret = linked->getSubObjects();
+                ret = linked->getSubObjects(reason);
             else{
                 char index[30];
                 for(int i=0,count=getElementCountValue();i<count;++i) {

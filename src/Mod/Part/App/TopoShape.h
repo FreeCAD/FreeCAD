@@ -361,14 +361,16 @@ public:
     }
 
     TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool checkScale=false);
-    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, bool checkScale=false) const {
-        return TopoShape(Tag,Hasher).makETransform(*this,mat,op,checkScale);
+            const char *op=0, bool checkScale=false, bool copy=false);
+    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
+            bool checkScale=false, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makETransform(*this,mat,op,checkScale,copy);
     }
 
-    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op=0);
-    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0) const {
-        return TopoShape(Tag,Hasher).makETransform(*this,trsf,op);
+    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, 
+            const char *op=0, bool copy=false);
+    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makETransform(*this,trsf,op,copy);
     }
 
     void move(const TopLoc_Location &loc) {
@@ -380,9 +382,10 @@ public:
         return ret;
     }
 
-    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, const char *op=0);
-    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0) const {
-        return TopoShape(Tag,Hasher).makEGTransform(*this,mat,op);
+    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
+            const char *op=0, bool copy=false);
+    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makEGTransform(*this,mat,op,copy);
     }
 
     TopoShape &makECopy(const TopoShape &shape, const char *op=0);

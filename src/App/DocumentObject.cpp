@@ -607,11 +607,11 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
-std::vector<std::string> DocumentObject::getSubObjects() const {
+std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     std::vector<std::string> ret;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : exts) {
-        if(ext->extensionGetSubObjects(ret))
+        if(ext->extensionGetSubObjects(ret,reason))
             return ret;
     }
     // for(auto obj : getOutList(true))

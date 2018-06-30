@@ -495,3 +495,14 @@ PyObject *Body::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+std::vector<std::string> Body::getSubObjects(int reason) const {
+    std::vector<std::string> ret;
+    if(reason==GS_SELECT && !showTip) {
+        for(auto obj : Group.getValues()) {
+            if(obj && obj->getNameInDocument())
+                ret.push_back(std::string(obj->getNameInDocument())+'.');
+        }
+    }
+    return ret;
+}

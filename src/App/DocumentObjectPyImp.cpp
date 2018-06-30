@@ -473,10 +473,11 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
 }
 
 PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
-    if (!PyArg_ParseTuple(args, ""))
+    int reason = 0;
+    if (!PyArg_ParseTuple(args, "|i", &reason))
         return NULL;
 
-    auto names = getDocumentObjectPtr()->getSubObjects();
+    auto names = getDocumentObjectPtr()->getSubObjects(reason);
     Py::Tuple pyObjs(names.size());
     for(size_t i=0;i<names.size();++i)
         pyObjs.setItem(i,Py::String(names[i]));

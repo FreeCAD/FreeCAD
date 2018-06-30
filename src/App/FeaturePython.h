@@ -56,7 +56,7 @@ public:
     bool getSubObject(App::DocumentObject *&ret, const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const;
 
-    bool getSubObjects(std::vector<std::string> &ret) const;
+    bool getSubObjects(std::vector<std::string> &ret, int reason) const;
 
     bool getLinkedObject(App::DocumentObject *&ret, bool recurse, 
             Base::Matrix4D *mat, bool transform, int depth) const;
@@ -140,11 +140,11 @@ public:
         return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
     }
 
-    virtual std::vector<std::string> getSubObjects() const override {
+    virtual std::vector<std::string> getSubObjects(int reason=0) const override {
         std::vector<std::string> ret;
-        if(imp->getSubObjects(ret))
+        if(imp->getSubObjects(ret,reason))
             return ret;
-        return FeatureT::getSubObjects();
+        return FeatureT::getSubObjects(reason);
     }
 
     virtual App::DocumentObject *getLinkedObject(bool recurse, 

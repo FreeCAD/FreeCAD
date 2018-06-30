@@ -86,7 +86,7 @@ referencing subobject.
         </Methode>
         <Methode Name="getSubObjects">
             <Documentation>
-                <UserDocu>getSubObjects(): Return subname reference of all sub-objects</UserDocu>
+                <UserDocu>getSubObjects(reason=0): Return subname reference of all sub-objects</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getLinkedObject" Keyword="true">

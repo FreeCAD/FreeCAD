@@ -98,7 +98,7 @@ bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&,
     return false;
 }
 
-bool DocumentObjectExtension::extensionGetSubObjects(std::vector<std::string>&) const
+bool DocumentObjectExtension::extensionGetSubObjects(std::vector<std::string>&, int) const
 {
     return false;
 }

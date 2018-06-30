@@ -2806,12 +2806,7 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool che
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    TopoShape shape;
-    if(copy)
-        shape = makECopy();
-    else
-        shape = *this;
-    *this = shape.makETransform(rclTrf,0,checkScale);
+    *this = makETransform(rclTrf,0,checkScale,copy);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const

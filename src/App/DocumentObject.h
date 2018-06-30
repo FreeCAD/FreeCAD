@@ -287,7 +287,17 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
+    /// reason of calling getSubObjects()
+    enum GSReason {
+        /// default, mostly for exporting shape objects
+        GS_DEFAULT,
+        /// for element selection
+        GS_SELECT,
+    };
+
     /** Return name reference of all sub-objects
+     *
+     * @param reason: indicate reason of obtaining the sub objects
      *
      * The default implementation returns all object references in
      * PropertyLink, and PropertyLinkList, if any
@@ -300,7 +310,7 @@ public:
      * need special transformation. For example, sub objects of an array type
      * of object.
      */
-    virtual std::vector<std::string> getSubObjects() const;
+    virtual std::vector<std::string> getSubObjects(int reason=0) const;
 
     /** Return the linked object with optional transformation
      * 

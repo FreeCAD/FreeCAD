@@ -328,7 +328,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
     }
 }
 
-bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret) const {
+bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) const {
     Base::PyGILStateLocker lock;
     try {
         Property* proxy = object->getPropertyByName("Proxy");
@@ -336,11 +336,9 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret) const {
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr(std::string("getSubObjects"))) {
                 Py::Callable method(feature.getAttr(std::string("getSubObjects")));
-                Py::Tuple args;
-                if(!feature.hasAttr("__object__")) {
-                    args = Py::Tuple(1);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                }
+                Py::Tuple args(2);
+                args.setItem(0, Py::Object(object->getPyObject(), true));
+                args.setItem(1, Py::Int(reason));
                 Py::Object res(method.apply(args));
                 if(!res.isTrue())
                     return true;

@@ -93,7 +93,7 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    virtual std::vector<std::string> getSubObjects() const override;
+    virtual std::vector<std::string> getSubObjects(int reason=0) const override;
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

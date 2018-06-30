@@ -572,28 +572,30 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
 }
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, 
-        const Base::Matrix4D &rclTrf, const char *op, bool checkScale) 
+        const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale && rclTrf.hasScale(Precision::Confusion())<0)
-        return makEGTransform(shape,rclTrf,op);
-    return makETransform(shape,convert(rclTrf),op);
+        return makEGTransform(shape,rclTrf,op,copy);
+    return makETransform(shape,convert(rclTrf),op,copy);
 }
 
-TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op) {
+TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
     resetElementMap();
     
-    // OCCT checks the ScaleFactor against gp::Resotion() which is DBL_MIN!!!
-    bool mod = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
-      Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
+    if(!copy) {
+        // OCCT checks the ScaleFactor against gp::Resotion() which is DBL_MIN!!!
+        copy = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
+               Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
+    }
     TopoShape tmp(shape);
-    if(mod) {
-        BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_False);
+    if(copy) {
+        BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
         // TODO: calling Moved() is to make sure the shape has some Location,
         // which is necessary for STEP export to work. However, if we reach
-        // here, it means BRepBuilderAPI_Transform has modified underlying
-        // shapes (because of scaleing), it will break compound child parent
-        // relationship anyway. In short, STEP import/export will most likely
-        // break badly if there is any scaling involved
+        // here, it porabably means BRepBuilderAPI_Transform has modified
+        // underlying shapes (because of scaling), it will break compound child
+        // parent relationship anyway. In short, STEP import/export will most
+        // likely break badly if there is any scaling involved
         tmp._Shape = mkTrf.Shape().Moved(gp_Trsf());
     }else
         tmp._Shape.Move(trsf);
@@ -606,7 +608,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
 }
 
 TopoShape &TopoShape::makEGTransform(const TopoShape &shape, 
-        const Base::Matrix4D &rclTrf, const char *op)
+        const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
     if(!op) op = TOPOP_GTRANSFORM;
     gp_GTrsf mat;
@@ -624,7 +626,7 @@ TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
     mat.SetValue(3,4,rclTrf[2][3]);
 
     // geometric transformation
-    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat);
+    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
     return makEShape(mkTrf,shape,op);
 }
 

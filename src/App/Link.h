@@ -224,7 +224,7 @@ public:
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
             PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
-    bool extensionGetSubObjects(std::vector<std::string>&ret) const override;
+    bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
     bool extensionGetLinkedObject(DocumentObject *&ret, 
             bool recurse, Base::Matrix4D *mat, bool transform, int depth) const override;

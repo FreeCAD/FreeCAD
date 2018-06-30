@@ -352,6 +352,7 @@ void ViewProviderBody::updateOriginDatumSize () {
 void ViewProviderBody::onChanged(const App::Property* prop) {
         
     if(prop == &DisplayModeBody) {
+        auto body = dynamic_cast<PartDesign::Body*>(getObject());
     
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because 
@@ -362,8 +363,12 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 overrideMode = mode;
             }
             setDisplayMaskMode("Group");
+            if(body)
+                body->setShowTip(false);
         }
         else {
+            if(body)
+                body->setShowTip(true);
             if(getOverrideMode() == "As Is")
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             else {

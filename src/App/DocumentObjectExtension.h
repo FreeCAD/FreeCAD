@@ -81,7 +81,7 @@ public:
      *
      * @return Return turn if handled, the sub object is returned in \c ret
      */
-    virtual bool extensionGetSubObjects(std::vector<std::string> &ret) const;
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const;
 
     /** Get the linked object
      *  @sa DocumentObject::getLinkedObject()
