@@ -38,7 +38,7 @@ from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -130,7 +130,7 @@ class Tag:
         self.r2 = r1
         height = self.height * 1.01
         radius = 0
-        if self.angle == 90 and height > 0:
+        if PathGeom.isRoughly(90, self.angle) and height > 0:
             # cylinder
             self.isSquare = True
             self.solid = Part.makeCylinder(r1, height)
@@ -158,7 +158,7 @@ class Tag:
             # degenerated case - no tag
             PathLog.debug("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
-        if not R == 0:  # testing is easier if the solid is not rotated
+        if not PathGeom.isRoughly(0, R):  # testing is easier if the solid is not rotated
             angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
             PathLog.debug("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), angle)
@@ -167,7 +167,7 @@ class Tag:
         self.solid.translate(orig)
         radius = min(self.radius, radius)
         self.realRadius = radius
-        if radius != 0:
+        if not PathGeom.isRoughly(0, radius):
             PathLog.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
@@ -560,7 +560,7 @@ class PathData:
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
             PathLog.debug('  %d: %.2f' % (i, edge.Length))
-            if edge.Length == longestEdge.Length:
+            if PathGeom.isRoughly(edge.Length, longestEdge.Length):
                 startIndex = i
                 break
 
@@ -922,7 +922,7 @@ class ObjectTagDressup:
                 if tag.enabled:
                     PathLog.debug("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
                     # debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                    # if tag.angle != 90:
+                    # if not PathGeom.isRoughly(90, tag.angle):
                     #    debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
                     # else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
