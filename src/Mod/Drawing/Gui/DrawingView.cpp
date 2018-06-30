@@ -53,6 +53,8 @@
 # include <cmath>
 #endif
 
+#undef max
+
 #include "DrawingView.h"
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
