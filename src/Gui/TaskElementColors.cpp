@@ -45,6 +45,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -96,7 +97,6 @@ public:
             editSub.clear();
         }
         onTopMode = vpParent->OnTopWhenSelected.getValue();
-        vpParent->OnTopWhenSelected.setValue(3);
         busy = false;
         touched = false;
         int w = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
@@ -315,6 +315,9 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
+    d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
+    if(d->ui->onTop->isChecked()) 
+        d->vpParent->OnTopWhenSelected.setValue(3);
 
     Selection().addSelectionGate(d,0);
 
@@ -339,6 +342,13 @@ void ElementColors::on_recompute_clicked(bool checked) {
     hPart->SetBool("ColorRecompute",checked);
 }
 
+void ElementColors::on_onTop_clicked(bool checked) {
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    hPart->SetBool("ColorOnTop",checked);
+    d->vpParent->OnTopWhenSelected.setValue(checked?3:d->onTopMode);
+}
+
 void ElementColors::slotDeleteDocument(const Document& Doc)
 {
     if (d->vp->getDocument()==&Doc || d->editDoc==Doc.getDocument()->getName())
@@ -354,6 +364,13 @@ void ElementColors::slotDeleteObject(const ViewProvider& obj)
 void ElementColors::on_removeSelection_clicked()
 {
     d->removeItems();
+}
+
+void ElementColors::on_boxSelect_clicked()
+{
+    auto cmd = Application::Instance->commandManager().getCommandByName("Std_BoxElementSelection");
+    if(cmd)
+        cmd->invoke(0);
 }
 
 void ElementColors::on_hideSelection_clicked() {
