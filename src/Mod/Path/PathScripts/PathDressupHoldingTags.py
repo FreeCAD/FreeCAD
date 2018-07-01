@@ -38,7 +38,7 @@ from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -167,7 +167,7 @@ class Tag:
         self.solid.translate(orig)
         radius = min(self.radius, radius)
         self.realRadius = radius
-        if not PathGeom.isRoughly(0, radius):
+        if not PathGeom.isRoughly(0, radius.Value):
             PathLog.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
@@ -352,15 +352,16 @@ class MapWireToTag:
         self.edgesCleanup.append(copy.copy(edges))
         return edges
 
-    def orderAndFlipEdges(self, edges):
+    def orderAndFlipEdges(self, inputEdges):
         PathLog.track("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
         self.edgesOrder = []
         outputEdges = []
         p0 = self.entry
         lastP = p0
+        edges = copy.copy(inputEdges)
         while edges:
             # print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z))
-            for e in edges:
+            for e in copy.copy(edges):
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
                 if PathGeom.pointsCoincide(p1, p0):
@@ -371,7 +372,7 @@ class MapWireToTag:
                     debugEdge(e, ">>>>> no flip")
                     break
                 elif PathGeom.pointsCoincide(p2, p0):
-                    outputEdges.append((e, True))
+                    outputEdges.append((PathGeom.flipEdge(e), True))
                     edges.remove(e)
                     lastP = None
                     p0 = p1
@@ -379,9 +380,13 @@ class MapWireToTag:
                     break
                 else:
                     debugEdge(e, "<<<<< (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z))
+
             if lastP == p0:
                 self.edgesOrder.append(outputEdges)
                 self.edgesOrder.append(edges)
+                print('input edges:')
+                for e in inputEdges:
+                    debugEdge(e, '  ', False)
                 print('ordered edges:')
                 for e, flip in outputEdges:
                     debugEdge(e, '  %c ' % ('<' if flip else '>'), False)
@@ -439,7 +444,7 @@ class MapWireToTag:
                         if rapid:
                             commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                             rapid = None
-                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+                        commands.extend(PathGeom.cmdsForEdge(e, False, False, self.segm))
                 if rapid:
                     commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                     rapid = None
