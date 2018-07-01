@@ -465,16 +465,12 @@ def flipEdge(edge):
     elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
         return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
     elif Part.Circle == type(edge.Curve):
-        r = edge.Curve.Radius
-        c = edge.Curve.Center
-        d = edge.Curve.Axis
-        a = math.degrees(edge.Curve.AngleXU)
-        f = math.degrees(edge.FirstParameter)
-        l = math.degrees(edge.LastParameter)
-        if 0 > d.z:
-            a = a + 180
-        PathLog.track(r, c, d, a, f, l)
-        arc = Part.makeCircle(r, c, -d, -l-a, -f-a)
+        # Create an inverted circle
+        circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)
+        # Rotate the circle appropriately so it starts at edge.valueAt(edge.LastParameter)
+        circle.rotate(FreeCAD.Placement(circle.Center, circle.Axis, 180 - math.degrees(edge.LastParameter + edge.Curve.AngleXU)))
+        # Now the edge always starts at 0 and LastParameter is the value range
+        arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
         return arc
     elif Part.BSplineCurve == type(edge.Curve):
         spline = edge.Curve
