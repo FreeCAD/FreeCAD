@@ -124,20 +124,23 @@ def offsetWire(wire, base, offset, forward):
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
         pass
 
-    offsetWire = wire.makeOffset2D(offset)
+    owire = wire.makeOffset2D(offset)
 
     if wire.isClosed():
-        if not base.isInside(offsetWire.Edges[0].Vertexes[0].Point, offset/2, True):
+        if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            return orientWire(offsetWire, forward)
+            return orientWire(owire, forward)
         PathLog.track('closed - inside')
         try:
-            offsetWire = wire.makeOffset2D(-offset)
+            owire = wire.makeOffset2D(-offset)
         except:
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None
-        return orientWire(offsetWire, forward)
+        # For negative offsets (holes) 'forward' is the other way
+        if forward is None:
+            return orientWire(owire, None)
+        return orientWire(owire, not forward)
 
     # An edge is considered to be inside of shape if the mid point is inside
     # Of the remaining edges we take the longest wire to be the engraving side
@@ -156,7 +159,7 @@ def offsetWire(wire, base, offset, forward):
         if base.isInside(edge.Vertexes[0].Point, offset/2, True) and base.isInside(edge.Vertexes[-1].Point, offset/2, True):
             return True
         return False
-    outside = [e for e in offsetWire.Edges if not isInside(e)]
+    outside = [e for e in owire.Edges if not isInside(e)]
     # discard all edges that are not part of the longest wire
     longestWire = None
     for w in [Part.Wire(el) for el in Part.sortEdges(outside)]:
@@ -184,7 +187,7 @@ def offsetWire(wire, base, offset, forward):
     # an end point (circle centered at one of the end points of the original wire).
     # should we come to an end point and determine that we've already collected the
     # next side, we're done
-    for e in (offsetWire.Edges + offsetWire.Edges):
+    for e in (owire.Edges + owire.Edges):
         if isCircleAt(e, start):
             if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
                 if not collectLeft and leftSideEdges:
