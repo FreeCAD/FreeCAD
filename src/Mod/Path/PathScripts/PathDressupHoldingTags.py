@@ -44,6 +44,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+failures = []
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -209,8 +210,15 @@ class Tag:
         return None
 
     def intersects(self, edge, param):
+        def isDefinitelySmaller(z, zRef):
+            # Eliminate false positives of edges that just brush along the top of the tag
+            return z < zRef and not PathGeom.isRoughly(z, zRef, 0.01)
+
         if self.enabled:
-            if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
+            zFirst = edge.valueAt(edge.FirstParameter).z
+            zLast  = edge.valueAt(edge.LastParameter).z
+            zMax = self.top()
+            if isDefinitelySmaller(zFirst, zMax) or isDefinitelySmaller(zLast, zMax):
                 return self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(param))
         return None
 
@@ -429,6 +437,7 @@ class MapWireToTag:
         return shell.removeShape(filter(lambda f: PathGeom.isRoughly(f.Area, 0), shell.Faces))
 
     def commandsForEdges(self):
+        global failures
         if self.edges:
             try:
                 shape = self.shell().common(self.tag.solid)
@@ -455,6 +464,7 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(PathGeom.cmdsForEdge(e))
+                failures.append(self)
                 return commands
         return []
 
@@ -920,6 +930,8 @@ class ObjectTagDressup:
 
     @waiting_effects
     def processTags(self, obj):
+        global failures
+        failures = []
         tagID = 0
         if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
             for tag in self.tags:
