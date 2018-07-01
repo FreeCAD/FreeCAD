@@ -65,6 +65,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
+        PathLog.track(obj.Label)
         obj.addProperty('App::PropertyDistance',    'Width',      'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The desired width of the chamfer'))
         obj.addProperty('App::PropertyDistance',    'ExtraDepth', 'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The additional depth of the tool path'))
         obj.addProperty('App::PropertyEnumeration', 'Join',       'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'How to join chamfer segments'))
@@ -72,7 +73,9 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         obj.setEditorMode('Join', 2) # hide for now
 
     def opExecute(self, obj):
+        PathLog.track(obj.Label)
         (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
+        PathLog.track(obj.Label, depth, offset)
 
         self.basewires = []
         self.adjusted_basewires = []
@@ -104,6 +107,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         self.buildpathocc(obj, wires, [depth], True)
 
     def opSetDefaultValues(self, obj):
+        PathLog.track(obj.Label)
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'

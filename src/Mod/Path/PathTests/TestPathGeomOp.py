@@ -204,9 +204,9 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
         self.assertTrue(wire.isClosed())
         y = 4  # offset works in both directions
         x = 4 * math.cos(math.pi/6)
-        self.assertLines(wire.Edges, False, [Vector(0, 4, 0), Vector(-x, -2, 0), Vector(x, -2, 0), Vector(0, 4, 0)])
+        self.assertLines(wire.Edges, False, [Vector(0, 4, 0), Vector(x, -2, 0), Vector(-x, -2, 0), Vector(0, 4, 0)])
         f = Part.Face(wire)
-        self.assertCoincide(Vector(0, 0, 1), f.Surface.Axis)
+        self.assertCoincide(Vector(0, 0, -1), f.Surface.Axis)
 
     def test11(self):
         '''Check offsetting hole wire for more than it's size makes hole vanish.'''
@@ -426,7 +426,7 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
         for e in wire.Edges:
             self.assertRoughly(length, e.Length)
         f = Part.Face(wire)
-        self.assertCoincide(Vector(0, 0, +1), f.Surface.Axis)
+        self.assertCoincide(Vector(0, 0, -1), f.Surface.Axis)
 
         # change offset orientation
         wire = PathGeomOp.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
@@ -435,7 +435,7 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
         for e in wire.Edges:
             self.assertRoughly(length, e.Length)
         f = Part.Face(wire)
-        self.assertCoincide(Vector(0, 0, -1), f.Surface.Axis)
+        self.assertCoincide(Vector(0, 0, +1), f.Surface.Axis)
 
     def test28(self):
         '''Check offsetting a shape hole.'''
@@ -452,7 +452,7 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
                 self.assertRoughly(length, e.Length)
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(radius, e.Curve.Radius)
-                self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+                self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
         # change offset orientation
         wire = PathGeomOp.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
@@ -464,7 +464,7 @@ class TestPathGeomOp(PathTestUtils.PathTestBase):
                 self.assertRoughly(length, e.Length)
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(radius, e.Curve.Radius)
-                self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
+                self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
 
 
     def test30(self):
