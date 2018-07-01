@@ -1232,7 +1232,7 @@ PyObject *PropertyFloatList::getPyObject(void)
 double PropertyFloatList::getPyValue(PyObject *item) const {
     if (PyFloat_Check(item)) {
         return PyFloat_AsDouble(item);
-#if PYTHON_VERSION_MAJOR >= 3
+#if PY_MAJOR_VERSION >= 3
     } else if (PyLong_Check(item)) {
         return static_cast<double>(PyLong_AsLong(item));
 #else
@@ -1719,7 +1719,7 @@ std::string PropertyStringList::getPyValue(PyObject *item) const {
     std::string ret;
     if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-        values[i] = PyUnicode_AsUTF8(item);
+        ret = PyUnicode_AsUTF8(item);
 #else
         PyObject* unicode = PyUnicode_AsUTF8String(item);
         ret = PyString_AsString(unicode);
