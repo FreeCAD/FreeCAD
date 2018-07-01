@@ -395,6 +395,7 @@ class TestPathGeom(PathTestBase):
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
         edge = Part.Edge(Part.LineSegment(Vector(4,2,1), Vector(-3, -7, 9)))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
         edge = Part.makeLine(Vector(1,0,3), Vector(3, 2, 1))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
@@ -402,6 +403,7 @@ class TestPathGeom(PathTestBase):
         '''Flip a circle'''
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
@@ -410,10 +412,13 @@ class TestPathGeom(PathTestBase):
         # make sure all 4 quadrants work
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 45, 90)
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 100, 170)
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 200, 250)
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
         edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 300, 340)
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
