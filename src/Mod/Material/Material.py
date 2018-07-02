@@ -101,14 +101,67 @@ def getMaterialAttributeStructure(withSpaces=None):
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
     materialPropertyGroups = (
-        ("Meta", ("CardName", "AuthorAndLicense", "Source")),
-        ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
-        ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "YieldStrength", "Elasticity", "FractureToughness")),
-        ("Thermal", ("ThermalConductivity", "ThermalExpansionCoefficient", "SpecificHeat")),
-        ("Architectural", ("Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass")),
-        ("Rendering", ("DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling")),
-        ("Vector rendering", ("ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth")),
-        ("User defined", ())
+        ("Meta", (
+            "CardName",
+            "AuthorAndLicense",
+            "Source"
+        )),
+        ("General", (
+            "Name",
+            "Father",
+            "Description",
+            "Density",
+            "Vendor",
+            "ProductURL",
+            "SpecificPrice"
+        )),
+        ("Mechanical", (
+            "YoungsModulus",
+            "PoissonRatio",
+            "UltimateTensileStrength",
+            "CompressiveStrength",
+            "YieldStrength",
+            "Elasticity",
+            "FractureToughness"
+        )),
+        ("Thermal", (
+            "ThermalConductivity",
+            "ThermalExpansionCoefficient",
+            "SpecificHeat"
+        )),
+        ("Architectural", (
+            "Model",
+            "ExecutionInstructions",
+            "FireResistanceClass",
+            "StandardCode",
+            "ThermalConductivity",
+            "SoundTransmissionClass",
+            "Color",
+            "Finish",
+            "UnitsPerQuantity",
+            "EnvironmentalEfficiencyClass"
+        )),
+        ("Rendering", (
+            "DiffuseColor",
+            "AmbientColor",
+            "SpecularColor",
+            "Shininess",
+            "EmissiveColor",
+            "Transparency",
+            "VertexShader",
+            "FragmentShader",
+            "TexturePath",
+            "TextureScaling"
+        )),
+        ("Vector rendering", (
+            "ViewColor",
+            "ViewFillPattern",
+            "SectionFillPattern",
+            "ViewLinewidth",
+            "SectionLinewidth"
+        )),
+        ("User defined", (
+        ))
     )
     if withSpaces:
         # on attributes, add a space before a capital letter, will be used for better display in the ui
