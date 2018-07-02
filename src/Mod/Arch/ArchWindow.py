@@ -632,8 +632,10 @@ class _CommandWindow:
                     if host and self.Include:
                         FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
                         siblings = host.Proxy.getSiblings(host)
+                        sibs = [host]
                         for sibling in siblings:
-                            if not sibling in win.Hosts:
+                            if not sibling in sibs:
+                                sibs.append(sibling)
                                 FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
