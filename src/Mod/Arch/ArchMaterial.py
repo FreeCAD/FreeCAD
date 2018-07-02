@@ -46,6 +46,7 @@ __url__ = "http://www.freecadweb.org"
 #  Arch objects
 
 def makeMaterial(name="Material"):
+
     '''makeMaterial(name): makes an Material object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -60,6 +61,7 @@ def makeMaterial(name="Material"):
 
 
 def getMaterialContainer():
+
     '''getMaterialContainer(): returns a group object to put materials in'''
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
@@ -73,6 +75,7 @@ def getMaterialContainer():
 
 
 def makeMultiMaterial(name="MultiMaterial"):
+
     '''makeMultiMaterial(name): makes an Material object'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     obj.Label = name
@@ -84,6 +87,7 @@ def makeMultiMaterial(name="MultiMaterial"):
 
 
 def getDocumentMaterials():
+
     '''getDocumentMaterials(): returns all the arch materials of the document'''
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
@@ -96,14 +100,19 @@ def getDocumentMaterials():
 
 
 class _CommandArchMaterial:
+
+
     "the Arch Material command definition"
+
     def GetResources(self):
+
         return {'Pixmap': 'Arch_Material_Group',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Material","Material"),
                 'Accel': "M, T",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create material"))
         FreeCADGui.addModule("Arch")
@@ -117,6 +126,7 @@ class _CommandArchMaterial:
         FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
+
         if FreeCAD.ActiveDocument:
             return True
         else:
@@ -125,15 +135,18 @@ class _CommandArchMaterial:
 
 class _CommandArchMultiMaterial:
 
+
     "the Arch MultiMaterial command definition"
 
     def GetResources(self):
+
         return {'Pixmap': 'Arch_Material_Multi',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MultiMaterial","Multi-Material"),
                 'Accel': "M, T",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MultiMaterial","Creates or edits multi-materials")}
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create multi-material"))
         FreeCADGui.addModule("Arch")
@@ -148,6 +161,7 @@ class _CommandArchMultiMaterial:
         FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
+
         if FreeCAD.ActiveDocument:
             return True
         else:
@@ -155,6 +169,7 @@ class _CommandArchMultiMaterial:
 
 
 class _ArchMaterialContainer:
+
 
     "The Material Container"
 
@@ -165,8 +180,17 @@ class _ArchMaterialContainer:
     def execute(self,obj):
         return
 
+    def __getstate__(self):
+        if hasattr(self,"Type"):
+            return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
 
 class _ViewProviderArchMaterialContainer:
+
 
     "A View Provider for the Material Container"
 
@@ -213,7 +237,15 @@ class _ViewProviderArchMaterialContainer:
                 else:
                     FreeCAD.Console.PrintMessage("Unable to delete material "+tod.Label+": InList not empty\n")
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+
 class _ArchMaterial:
+
 
     "The Material object"
 
@@ -313,6 +345,14 @@ class _ArchMaterial:
                             if p.Material.Name == obj.Name:
                                 p.ViewObject.ShapeColor = c
         return
+
+    def __getstate__(self):
+        if hasattr(self,"Type"):
+            return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
 
 
 class _ViewProviderArchMaterial:
@@ -511,6 +551,13 @@ class _ArchMultiMaterial:
         obj.addProperty("App::PropertyLinkList","Materials","Arch",QT_TRANSLATE_NOOP("App::Property","The list of layer materials"))
         obj.addProperty("App::PropertyFloatList","Thicknesses","Arch",QT_TRANSLATE_NOOP("App::Property","The list of layer thicknesses"))
 
+    def __getstate__(self):
+        if hasattr(self,"Type"):
+            return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
 
 class _ViewProviderArchMultiMaterial:
 
