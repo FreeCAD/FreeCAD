@@ -122,7 +122,8 @@ def getMaterialAttributeStructure(withSpaces=None):
             "CompressiveStrength",  # https://en.wikipedia.org/wiki/Compressive_strength
             "YieldStrength",  # https://en.wikipedia.org/wiki/Yield_Strength
             "Elasticity",
-            "FractureToughness"  # https://en.wikipedia.org/wiki/Fracture_toughness
+            "FractureToughness",  # https://en.wikipedia.org/wiki/Fracture_toughness
+            "AngleOfFriction"  # https://en.wikipedia.org/wiki/Friction#Angle_of_friction and https://en.m.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
         )),
         ("Thermal", (
             "ThermalConductivity",  # https://en.wikipedia.org/wiki/Thermal_conductivity
