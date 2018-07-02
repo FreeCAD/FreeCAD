@@ -104,7 +104,7 @@ Command = PathOpGui.SetupOperation('Chamfer',
         TaskPanelOpPage,
         'Path-Chamfer',
         QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Chamfer"),
-        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Creates an Engraving Path around a Draft ShapeString"))
+        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Creates a Chamfer Path along Edges or around Faces"))
 
 FreeCAD.Console.PrintLog("Loading PathChamferGui... done\n")
 
