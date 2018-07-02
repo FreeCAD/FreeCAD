@@ -116,18 +116,18 @@ def getMaterialAttributeStructure(withSpaces=None):
             "SpecificPrice"
         )),
         ("Mechanical", (
-            "YoungsModulus",
-            "PoissonRatio",
-            "UltimateTensileStrength",
-            "CompressiveStrength",
-            "YieldStrength",
+            "YoungsModulus",  # https://en.wikipedia.org/wiki/Young%27s_modulus
+            "PoissonRatio",  # https://en.wikipedia.org/wiki/Poisson%27s_ratio
+            "UltimateTensileStrength",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
+            "CompressiveStrength",  # https://en.wikipedia.org/wiki/Compressive_strength
+            "YieldStrength",  # https://en.wikipedia.org/wiki/Yield_Strength
             "Elasticity",
-            "FractureToughness"
+            "FractureToughness"  # https://en.wikipedia.org/wiki/Fracture_toughness
         )),
         ("Thermal", (
-            "ThermalConductivity",
-            "ThermalExpansionCoefficient",
-            "SpecificHeat"
+            "ThermalConductivity",  # https://en.wikipedia.org/wiki/Thermal_conductivity
+            "ThermalExpansionCoefficient",  # https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
+            "SpecificHeat"  # https://en.wikipedia.org/wiki/Heat_capacity
         )),
         ("Architectural", (
             "Model",
