@@ -103,7 +103,8 @@ def getMaterialAttributeStructure(withSpaces=None):
     materialPropertyGroups = (
         ("Meta", ("CardName", "AuthorAndLicense", "Source")),
         ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
-        ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "Elasticity", "FractureToughness")),
+        ("Mechanical", ("YoungsModulus", "PoissonRatio", "UltimateTensileStrength", "CompressiveStrength", "YieldStrength", "Elasticity", "FractureToughness")),
+        ("Thermal", ("ThermalConductivity", "ThermalExpansionCoefficient", "SpecificHeat")),
         ("Architectural", ("Model", "ExecutionInstructions", "FireResistanceClass", "StandardCode", "ThermalConductivity", "SoundTransmissionClass", "Color", "Finish", "UnitsPerQuantity", "EnvironmentalEfficiencyClass")),
         ("Rendering", ("DiffuseColor", "AmbientColor", "SpecularColor", "Shininess", "EmissiveColor", "Transparency", "VertexShader", "FragmentShader", "TexturePath", "TextureScaling")),
         ("Vector rendering", ("ViewColor", "ViewFillPattern", "SectionFillPattern", "ViewLinewidth", "SectionLinewidth")),
