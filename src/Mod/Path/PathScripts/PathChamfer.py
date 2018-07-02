@@ -106,6 +106,10 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         self.wires = wires
         self.buildpathocc(obj, wires, [depth], True)
 
+    def opRejectAddBase(self, obj, base, sub):
+        '''The chamfer op can only deal with features of the base model, all others are rejected.'''
+        return base != self.baseobject
+
     def opSetDefaultValues(self, obj):
         PathLog.track(obj.Label)
         obj.Width = '1 mm'

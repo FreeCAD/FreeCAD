@@ -222,6 +222,11 @@ class ObjectOp(object):
         Should be overwritten by subclasses.'''
         pass
 
+    def opRejectAddBase(self, obj, base, sub):
+        '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
+        Should be overwritten by subclasses.'''
+        return False
+
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
@@ -454,6 +459,9 @@ class ObjectOp(object):
                     PathLog.notice((translate("Path", "Base object %s.%s already in the list")+"\n") % (base.Label, sub))
                     return
 
-            baselist.append((base, sub))
-            obj.Base = baselist
+            if not self.opRejectAddBase(obj, base, sub):
+                baselist.append((base, sub))
+                obj.Base = baselist
+            else:
+                PathLog.notice((translate("Path", "Base object %s.%s rejected by operation")+"\n") % (base.Label, sub))
 
