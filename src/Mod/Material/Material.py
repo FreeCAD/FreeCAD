@@ -97,7 +97,9 @@ def exportFCMat(fileName, matDict):
 
 def getMaterialAttributeStructure(withSpaces=None):
     # material properties
-    # are there any more resources in FreeCAD source code where known material properties are defined except the material cards itself?
+    # see the following resources in the FreeCAD wiki for more informations about the material specific properties:
+    # https://www.freecadweb.org/wiki/Material_data_model
+    # https://www.freecadweb.org/wiki/Material
     materialPropertyGroups = (
         ("Meta", ("CardName", "AuthorAndLicense", "Source")),
         ("General", ("Name", "Father", "Description", "Density", "Vendor", "ProductURL", "SpecificPrice")),
