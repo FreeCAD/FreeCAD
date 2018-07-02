@@ -45,7 +45,6 @@ SET(PathScripts_SRCS
     PathScripts/PathEngraveGui.py
     PathScripts/PathFixture.py
     PathScripts/PathGeom.py
-    PathScripts/PathGeomOp.py
     PathScripts/PathGetPoint.py
     PathScripts/PathGui.py
     PathScripts/PathHelix.py
@@ -61,6 +60,7 @@ SET(PathScripts_SRCS
     PathScripts/PathMillFaceGui.py
     PathScripts/PathOp.py
     PathScripts/PathOpGui.py
+    PathScripts/PathOpTools.py
     PathScripts/PathPocket.py
     PathScripts/PathPocketBase.py
     PathScripts/PathPocketBaseGui.py
@@ -124,8 +124,8 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
-    PathTests/TestPathGeomOp.py
     PathTests/TestPathLog.py
+    PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
