@@ -26,9 +26,9 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
-import PathScripts.PathGeomOp as PathGeomOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
+import PathScripts.PathOpTools as PathOpTools
 import math
 
 from PySide import QtCore
@@ -99,7 +99,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
 
             for w in self.adjustWirePlacement(obj, base, basewires):
                 self.adjusted_basewires.append(w)
-                wire = PathGeomOp.offsetWire(w, base.Shape, offset, True)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
                 if wire:
                     wires.append(wire)
 
