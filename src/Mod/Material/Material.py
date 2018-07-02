@@ -134,7 +134,6 @@ def getMaterialAttributeStructure(withSpaces=None):
             "ExecutionInstructions",
             "FireResistanceClass",
             "StandardCode",
-            "ThermalConductivity",
             "SoundTransmissionClass",
             "Color",
             "Finish",
