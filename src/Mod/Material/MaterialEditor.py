@@ -131,6 +131,12 @@ class MaterialEditor:
             print('  ' + path)
         print('\n')
 
+    def outputCards(self):
+        print('material cards:')
+        for card in self.cards:
+            print('  ' + card + ': ' + self.cards[card])
+        print('\n')
+
     def updateCards(self):
         "updates the contents of the materials combo with existing material cards"
         self.getMaterialResources()
@@ -140,6 +146,7 @@ class MaterialEditor:
                 b, e = os.path.splitext(f)
                 if e.upper() == ".FCMAT":
                     self.cards[b] = p + os.sep + f
+        # self.outputCards()
         if self.cards:
             self.widget.ComboMaterial.clear()
             self.widget.ComboMaterial.addItem("")  # add a blank item first
@@ -147,8 +154,10 @@ class MaterialEditor:
                 self.widget.ComboMaterial.addItem(k)
 
     def updateContents(self, data):
-        "updates the contents of the editor with the given data (can be the name of a card or a dictionary)"
-        #print type(data)
+        '''updates the contents of the editor with the given data, can be:
+           - the name of a card, if material is changed in editors combo box
+           - a dictionary, if the editor was called  with data'''
+        # print type(data)
         if isinstance(data, dict):
             self.clearEditor()
             for k, i in data.items():
