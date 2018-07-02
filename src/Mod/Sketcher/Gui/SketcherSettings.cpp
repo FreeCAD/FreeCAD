@@ -100,6 +100,7 @@ void SketcherSettings::saveSettings()
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
+    ui->checkBoxHideUnits->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxTVHideDependent->onSave();
@@ -123,6 +124,7 @@ void SketcherSettings::loadSettings()
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
+    ui->checkBoxHideUnits->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
