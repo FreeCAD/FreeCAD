@@ -26,7 +26,6 @@
 # include <QDir>
 # include <QFileInfo>
 # include <QLineEdit>
-# include <QTextStream>
 # include <QInputDialog>
 # include <Standard_math.hxx>
 #endif
@@ -40,7 +39,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/SelectionFilter.h>
 
 #include "../App/PartFeature.h"
 #include "../App/TopoShape.h"
@@ -330,11 +328,7 @@ bool CmdPartDefeaturing::isActive(void)
         std::vector<std::string> subnames = it->getSubNames();
         for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
             if (sub->substr(0,4) == "Face") {
-#if OCC_VERSION_HEX < 0x070300
                 return true;
-#else
-                return false;
-#endif
             }
         }
     }
