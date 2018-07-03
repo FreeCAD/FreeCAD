@@ -3351,6 +3351,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     
     ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     
+    // Get parameter group that includes HideUnits option
+    Base::Reference<ParameterGrp> hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+
+    // Get value for HideUnits option
+    bool iHideUnits = hGrpSketcher->GetBool("HideUnits", 0l); // default is false
+
     std::vector<int> bsplineGeoIds;
     
     double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
@@ -4602,7 +4608,19 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+
+			// Strip units if requested. MOVE TO ITS OWN FUNCTION WHEN POSSIBLE. Example code from:
+			// Mod/TechDraw/App/DrawViewDimension.cpp:372
+			QString userStr = Constr->getPresentationValue().getUserString();
+
+			if( iHideUnits )
+			{
+				// Strip units
+				QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
+				userStr.remove(rxUnits);                                //getUserString(defaultDecimals) without units
+
+			}
+			asciiText->string = SbString(userStr.toUtf8().constData());
 
                         if (Constr->Type == Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
