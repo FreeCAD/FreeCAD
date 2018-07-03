@@ -106,6 +106,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_SimpleCopy"
           << "Part_RefineShape"
           << "Part_CheckGeometry"
+          << "Part_Defeaturing"
           << "Separator"
           << bop << join << split << compound
           << "Separator"
@@ -188,6 +189,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_CompJoinFeatures"
             << "Part_CompSplitFeatures"
             << "Part_CheckGeometry"
+            << "Part_Defeaturing"
             << "Part_Section"
             << "Part_CrossSections";
 
