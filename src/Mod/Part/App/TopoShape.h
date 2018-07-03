@@ -237,6 +237,7 @@ public:
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
+    TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
     //@}
 
     /** @name Getting basic geometric entities */
