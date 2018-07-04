@@ -58,10 +58,290 @@ def makeIcon(s):
   print (ba.data())
 */
 
+//DIAMOND_FILLED_11_11
+const int DIAMOND_FILLED11_WIDTH = 11;
+const int DIAMOND_FILLED11_HEIGHT = 11;
+const char diamondFilled11_marker[DIAMOND_FILLED11_WIDTH * DIAMOND_FILLED11_HEIGHT + 1] = {
+"           "
+"     xx    "
+"    xxxx   "
+"   xxxxxx  "
+"  xxxxxxxx "
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+"  xxxxxxxx "
+"   xxxxxx  "
+"    xxxx   "
+"     xx    "};
+
+
+//DIAMOND_FILLED_13_13
+const int DIAMOND_FILLED13_WIDTH = 13;
+const int DIAMOND_FILLED13_HEIGHT = 13;
+const char diamondFilled13_marker[DIAMOND_FILLED13_WIDTH * DIAMOND_FILLED13_HEIGHT + 1] = {
+"             "
+"      xx     "
+"     xxxx    "
+"    xxxxxx   "
+"   xxxxxxxx  "
+"  xxxxxxxxxx "
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+"  xxxxxxxxxx "
+"   xxxxxxxx  "
+"    xxxxxx   "
+"     xxxx    "
+"      xx     "};
+
+
+//DIAMOND_FILLED_15_15
+const int DIAMOND_FILLED15_WIDTH = 15;
+const int DIAMOND_FILLED15_HEIGHT = 15;
+const char diamondFilled15_marker[DIAMOND_FILLED15_WIDTH * DIAMOND_FILLED15_HEIGHT + 1] = {
+"               "
+"       xx      "
+"      xxxx     "
+"     xxxxxx    "
+"    xxxxxxxx   "
+"   xxxxxxxxxx  "
+"  xxxxxxxxxxxx "
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+"  xxxxxxxxxxxx "
+"   xxxxxxxxxx  "
+"    xxxxxxxx   "
+"     xxxxxx    "
+"      xxxx     "
+"       xx      "};
+
+//CROSS_11_11
+const int CROSS11_WIDTH = 11;
+const int CROSS11_HEIGHT = 11;
+const char cross11_marker[CROSS11_WIDTH * CROSS11_HEIGHT + 1] = {
+"           "
+" xx      xx"
+"  xx    xx "
+"   xx  xx  "
+"    xxxx   "
+"     xx    "
+"     xx    "
+"    xxxx   "
+"   xx  xx  "
+"  xx    xx "
+" xx      xx"};
+
+
+//CROSS_13_13
+const int CROSS13_WIDTH = 13;
+const int CROSS13_HEIGHT = 13;
+const char cross13_marker[CROSS13_WIDTH * CROSS13_HEIGHT + 1] = {
+"             "
+" xx        xx"
+"  xx      xx "
+"   xx    xx  "
+"    xx  xx   "
+"     xxxx    "
+"      xx     "
+"      xx     "
+"     xxxx    "
+"    xx  xx   "
+"   xx    xx  "
+"  xx      xx "
+" xx        xx"};
+
+
+//CROSS_15_15
+const int CROSS15_WIDTH = 15;
+const int CROSS15_HEIGHT = 15;
+const char cross15_marker[CROSS15_WIDTH * CROSS15_HEIGHT + 1] = {
+"               "
+" xx          xx"
+"  xx        xx "
+"   xx      xx  "
+"    xx    xx   "
+"     xx  xx    "
+"      xxxx     "
+"       xx      "
+"       xx      "
+"      xxxx     "
+"     xx  xx    "
+"    xx    xx   "
+"   xx      xx  "
+"  xx        xx "
+" xx          xx"};
+
+//SQUARE_LINE_11_11
+const int SQUARE_LINE11_WIDTH = 11;
+const int SQUARE_LINE11_HEIGHT = 11;
+const char squareLine11_marker[SQUARE_LINE11_WIDTH * SQUARE_LINE11_HEIGHT + 1] = {
+"           "
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xx      xx"
+" xx      xx"
+" xx      xx"
+" xx      xx"
+" xx      xx"
+" xx      xx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"};
+
+
+//SQUARE_LINE_13_13
+const int SQUARE_LINE13_WIDTH = 13;
+const int SQUARE_LINE13_HEIGHT = 13;
+const char squareLine13_marker[SQUARE_LINE13_WIDTH * SQUARE_LINE13_HEIGHT + 1] = {
+"             "
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"};
+
+
+//SQUARE_LINE_15_15
+const int SQUARE_LINE15_WIDTH = 15;
+const int SQUARE_LINE15_HEIGHT = 15;
+const char squareLine15_marker[SQUARE_LINE15_WIDTH * SQUARE_LINE15_HEIGHT + 1] = {
+"               "
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"};
+
+//SQUARE_FILLED_11_11
+const int SQUARE_FILLED11_WIDTH = 11;
+const int SQUARE_FILLED11_HEIGHT = 11;
+const char squareFilled11_marker[SQUARE_FILLED11_WIDTH * SQUARE_FILLED11_HEIGHT + 1] = {
+"           "
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"
+" xxxxxxxxxx"};
+
+
+//SQUARE_FILLED_13_13
+const int SQUARE_FILLED13_WIDTH = 13;
+const int SQUARE_FILLED13_HEIGHT = 13;
+const char squareFilled13_marker[SQUARE_FILLED13_WIDTH * SQUARE_FILLED13_HEIGHT + 1] = {
+"             "
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"
+" xxxxxxxxxxxx"};
+
+
+//SQUARE_FILLED_15_15
+const int SQUARE_FILLED15_WIDTH = 15;
+const int SQUARE_FILLED15_HEIGHT = 15;
+const char squareFilled15_marker[SQUARE_FILLED15_WIDTH * SQUARE_FILLED15_HEIGHT + 1] = {
+"               "
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"};
+
+//CIRCLE_LINE_11_11
+const int CIRCLE_LINE11_WIDTH = 11;
+const int CIRCLE_LINE11_HEIGHT = 11;
+const char circleLine11_marker[CIRCLE_LINE11_WIDTH * CIRCLE_LINE11_HEIGHT + 1] = {
+"           "
+"   xxxxxx  "
+"  xxxxxxxx "
+"  xx    xx "
+" xx      xx"
+" xx      xx"
+" xx      xx"
+" xx      xx"
+"  xx    xx "
+"  xxxxxxxx "
+"   xxxxxx  "};
+
+
+//CIRCLE_LINE_13_13
+const int CIRCLE_LINE13_WIDTH = 13;
+const int CIRCLE_LINE13_HEIGHT = 13;
+const char circleLine13_marker[CIRCLE_LINE13_WIDTH * CIRCLE_LINE13_HEIGHT + 1] = {
+"             "
+"    xxxxxx   "
+"   xxxxxxxx  "
+"  xx      xx "
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+" xx        xx"
+"  xx      xx "
+"   xxxxxxxx  "
+"    xxxxxx   "};
+
+
+//CIRCLE_LINE_15_15
+const int CIRCLE_LINE15_WIDTH = 15;
+const int CIRCLE_LINE15_HEIGHT = 15;
+const char circleLine15_marker[CIRCLE_LINE15_WIDTH * CIRCLE_LINE15_HEIGHT + 1] = {
+"               "
+"     xxxxxx    "
+"   xxxxxxxxxx  "
+"  xx        xx "
+"  xx        xx "
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+" xx          xx"
+"  xx        xx "
+"   xx      xxxx"
+"   xxxxxxxxxx  "
+"     xxxxxx    "};
+
 //CIRCLE_FILLED_11_11
-const int CIRCLE11_WIDTH = 11;
-const int CIRCLE11_HEIGHT = 11;
-const char circle11_marker[CIRCLE11_WIDTH * CIRCLE11_HEIGHT + 1] = {
+const int CIRCLE_FILLED11_WIDTH = 11;
+const int CIRCLE_FILLED11_HEIGHT = 11;
+const char circleFilled11_marker[CIRCLE_FILLED11_WIDTH * CIRCLE_FILLED11_HEIGHT + 1] = {
 "           "
 "   xxxxxx  "
 "  xxxxxxxx "
@@ -76,9 +356,9 @@ const char circle11_marker[CIRCLE11_WIDTH * CIRCLE11_HEIGHT + 1] = {
 
 
 //CIRCLE_FILLED_13_13
-const int CIRCLE13_WIDTH = 13;
-const int CIRCLE13_HEIGHT = 13;
-const char circle13_marker[CIRCLE13_WIDTH * CIRCLE13_HEIGHT + 1] = {
+const int CIRCLE_FILLED13_WIDTH = 13;
+const int CIRCLE_FILLED13_HEIGHT = 13;
+const char circleFilled13_marker[CIRCLE_FILLED13_WIDTH * CIRCLE_FILLED13_HEIGHT + 1] = {
 "             "
 "    xxxxxx   "
 "   xxxxxxxx  "
@@ -95,9 +375,9 @@ const char circle13_marker[CIRCLE13_WIDTH * CIRCLE13_HEIGHT + 1] = {
 
 
 //CIRCLE_FILLED_15_15
-const int CIRCLE15_WIDTH = 15;
-const int CIRCLE15_HEIGHT = 15;
-const char circle15_marker[CIRCLE15_WIDTH * CIRCLE15_HEIGHT + 1] = {
+const int CIRCLE_FILLED15_WIDTH = 15;
+const int CIRCLE_FILLED15_HEIGHT = 15;
+const char circleFilled15_marker[CIRCLE_FILLED15_WIDTH * CIRCLE_FILLED15_HEIGHT + 1] = {
 "               "
 "     xxxxxx    "
 "   xxxxxxxxxx  "
@@ -119,9 +399,54 @@ std::map<MarkerBitmaps::Marker, int> MarkerBitmaps::markerIndex;
 void
 MarkerBitmaps::initClass()
 {
-    createBitmap("CIRCLE_FILLED", 11, 11, 11, circle11_marker);
-    createBitmap("CIRCLE_FILLED", 13, 13, 13, circle13_marker);
-    createBitmap("CIRCLE_FILLED", 15, 15, 15, circle15_marker);
+    createBitmap("DIAMOND_FILLED", 11, 11, 11, diamondFilled11_marker);
+    createBitmap("DIAMOND_FILLED", 13, 13, 13, diamondFilled13_marker);
+    createBitmap("DIAMOND_FILLED", 15, 15, 15, diamondFilled15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("DIAMOND_FILLED", 9)] = SoMarkerSet::DIAMOND_FILLED_9_9;
+    markerIndex [std::make_pair("DIAMOND_FILLED", 7)] = SoMarkerSet::DIAMOND_FILLED_7_7;
+    markerIndex [std::make_pair("DIAMOND_FILLED", 5)] = SoMarkerSet::DIAMOND_FILLED_5_5;
+
+    createBitmap("CROSS", 11, 11, 11, cross11_marker);
+    createBitmap("CROSS", 13, 13, 13, cross13_marker);
+    createBitmap("CROSS", 15, 15, 15, cross15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("CROSS", 9)] = SoMarkerSet::CROSS_9_9;
+    markerIndex [std::make_pair("CROSS", 7)] = SoMarkerSet::CROSS_7_7;
+    markerIndex [std::make_pair("CROSS", 5)] = SoMarkerSet::CROSS_5_5;
+
+    createBitmap("SQUARE_LINE", 11, 11, 11, squareLine11_marker);
+    createBitmap("SQUARE_LINE", 13, 13, 13, squareLine13_marker);
+    createBitmap("SQUARE_LINE", 15, 15, 15, squareLine15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("SQUARE_LINE", 9)] = SoMarkerSet::SQUARE_LINE_9_9;
+    markerIndex [std::make_pair("SQUARE_LINE", 7)] = SoMarkerSet::SQUARE_LINE_7_7;
+    markerIndex [std::make_pair("SQUARE_LINE", 5)] = SoMarkerSet::SQUARE_LINE_5_5;
+
+    createBitmap("SQUARE_FILLED", 11, 11, 11, squareFilled11_marker);
+    createBitmap("SQUARE_FILLED", 13, 13, 13, squareFilled13_marker);
+    createBitmap("SQUARE_FILLED", 15, 15, 15, squareFilled15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("SQUARE_FILLED", 9)] = SoMarkerSet::SQUARE_FILLED_9_9;
+    markerIndex [std::make_pair("SQUARE_FILLED", 7)] = SoMarkerSet::SQUARE_FILLED_7_7;
+    markerIndex [std::make_pair("SQUARE_FILLED", 5)] = SoMarkerSet::SQUARE_FILLED_5_5;
+
+    createBitmap("CIRCLE_LINE", 11, 11, 11, circleLine11_marker);
+    createBitmap("CIRCLE_LINE", 13, 13, 13, circleLine13_marker);
+    createBitmap("CIRCLE_LINE", 15, 15, 15, circleLine15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("CIRCLE_LINE", 9)] = SoMarkerSet::CIRCLE_LINE_9_9;
+    markerIndex [std::make_pair("CIRCLE_LINE", 7)] = SoMarkerSet::CIRCLE_LINE_7_7;
+    markerIndex [std::make_pair("CIRCLE_LINE", 5)] = SoMarkerSet::CIRCLE_LINE_5_5;
+
+    createBitmap("CIRCLE_FILLED", 11, 11, 11, circleFilled11_marker);
+    createBitmap("CIRCLE_FILLED", 13, 13, 13, circleFilled13_marker);
+    createBitmap("CIRCLE_FILLED", 15, 15, 15, circleFilled15_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("CIRCLE_FILLED", 9)] = SoMarkerSet::CIRCLE_FILLED_9_9;

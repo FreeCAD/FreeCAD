@@ -246,6 +246,8 @@ public:
 
     PYFUNCDEF_S(sCreateViewer);
 
+    PYFUNCDEF_S(sGetMarkerIndex);
+
     static PyMethodDef    Methods[]; 
 
 private:
