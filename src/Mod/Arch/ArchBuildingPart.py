@@ -370,7 +370,8 @@ class ViewProviderBuildingPart:
                         c = o.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
                         for i in range(len(o.Shape.Faces)):
                             cols.append(c)
-            obj.ViewObject.DiffuseColor = cols
+            if hasattr(obj.ViewObject,"DiffuseColor"):
+                obj.ViewObject.DiffuseColor = cols
 
     def onChanged(self,vobj,prop):
 

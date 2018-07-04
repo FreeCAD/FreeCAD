@@ -434,7 +434,7 @@ class Component:
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
         if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyLink","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not "VerticalArea" in pl:
             obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
             obj.setEditorMode("VerticalArea",1)
