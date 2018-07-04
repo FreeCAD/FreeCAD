@@ -381,7 +381,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     int solidCount = countSolids(support);
     if (solidCount > 1) {
-        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. Check parameters.");
+        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. This is not supported at this time.");
     }
 
     this->Shape.setValue(getSolid(support));
