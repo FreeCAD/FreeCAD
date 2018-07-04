@@ -389,7 +389,7 @@ void QGIViewDimension::draw()
         normExt = Base::Vector3d (-dirExt.y,dirExt.x, 0);         //normal to extension lines (req'd?)
 
         // Get magnitude of angle between dimension line and horizontal
-        double angle = atan2f(dirDim.y,dirDim.x);
+        double angle = atan2(dirDim.y,dirDim.x);
         if (angle < 0.0) {
             angle = 2 * M_PI + angle;          //map to +ve angle
         }
@@ -915,70 +915,79 @@ void QGIViewDimension::draw()
     } else if(strcmp(dimType, "Angle") == 0) {
         // Only use two straight line edeges for angle
         anglePoints pts = dim->getAnglePoints();
+        Base::Vector3d X(1.0,0.0,0.0);
         Base::Vector3d vertex = Rez::guiX(pts.vertex);
         Base::Vector3d legEnd0 = Rez::guiX(pts.ends.first);
         Base::Vector3d legEnd1 = Rez::guiX(pts.ends.second);
-        Base::Vector3d p0 = vertex;
-        Base::Vector3d dir1 = legEnd0 - vertex;
-        Base::Vector3d dir2 = legEnd1 - vertex;
+        Base::Vector3d dir0 = legEnd0 - vertex;
+        Base::Vector3d dir1 = legEnd1 - vertex;
+        Base::Vector3d d0 = dir0;
+        d0.Normalize();
+        Base::Vector3d d1 = dir1;
+        d1.Normalize();
+        Base::Vector3d leg0 = dir0;
+        Base::Vector3d leg1 = dir1;
         // Qt y coordinates are flipped
+        dir0.y *= -1.;
         dir1.y *= -1.;
-        dir2.y *= -1.;
 
-        Base::Vector3d labelVec = (lblCenter - p0);
+        double insideAngle = dir0.GetAngle(dir1);            // [0,PI]
+        double outsideAngle = 2*M_PI - insideAngle;          // [PI,2PI]
+        Base::Vector3d tempCross = d0.Cross(d1);
+        double insideDir = tempCross.z;
+        bool ccwInner = true;
+        if (insideDir > 0.0) {
+            ccwInner = false;
+        }
+
+        Base::Vector3d labelVec = (lblCenter - vertex);   //dir from label to vertex
+        QFontMetrics fm(datumLabel->font());
+        int h = fm.height();
+        double radius = labelVec.Length();
+        radius -= h * 0.6; // Adjust the radius so the label isn't over the line
 
         double labelangle = atan2(-labelVec.y, labelVec.x);    //angle with +X axis on [-PI,+PI]
+        if (labelangle < 0) {                                  //map to [0,2PI)
+            labelangle += 2.0 * M_PI;
+        }
 
-        double startangle = atan2(dir1.y,dir1.x);
-        double range      = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
-                                   dir1.x*dir2.x+dir1.y*dir2.y);
+        QRectF arcRect(vertex.x - radius, vertex.y - radius, 2. * radius, 2. * radius);
+        Base::Vector3d ar0Pos = vertex + d0 * radius;
+        Base::Vector3d ar1Pos = vertex + d1 * radius;
 
-        double endangle = startangle + range;
+        double startangle = atan2(dir0.y,dir0.x);
+        if (startangle < 0) {
+            startangle += 2.0 * M_PI;
+        }
+        double endangle = atan2(dir1.y,dir1.x);
+        if (endangle < 0) {
+            endangle += 2.0 * M_PI;
+        }
 
-        float bbX  = datumLabel->boundingRect().width();
-        float bbY  = datumLabel->boundingRect().height();
-
-        // Get font height
-        QFontMetrics fm(datumLabel->font());
-
-        int h = fm.height();
-        double length = labelVec.Length();
-        length -= h * 0.6; // Adjust the length so the label isn't over the line
-
-        Base::Vector3d p1 = legEnd0;
-        Base::Vector3d p2 = legEnd1;
-
+        Base::Vector3d startExt0 = legEnd0;
+        Base::Vector3d startExt1 = legEnd1;
         // add an offset from the ends
-        p1 += (p1-p0).Normalize() * 5.;
-        p2 += (p2-p0).Normalize() * 5.;
-
-        Base::Vector3d ar1Pos = p0;
-        Base::Vector3d ar2Pos = p0;
-
-        ar1Pos += Base::Vector3d(cos(startangle) * length, -sin(startangle) * length, 0.);
-        ar2Pos += Base::Vector3d(cos(endangle) * length  , -sin(endangle) * length, 0.);
+        double offsetFudge = 5.0;
+        startExt0 += d0 * offsetFudge;
+        startExt1 += d1 * offsetFudge;
 
         // Draw the path
         QPainterPath path;
 
         // Only draw extension lines if outside arc
-        if(length > (p1-p0).Length()) {
-            path.moveTo(p1.x, p1.y);
-            p1 = ar1Pos + (p1-p0).Normalize() * Rez::guiX(5.);    //a bit past arrow head on leg 1
-            path.lineTo(p1.x, p1.y);
+        double extFudge = 5.0;
+        if(radius > (startExt0-vertex).Length()) {
+            path.moveTo(startExt0.x, startExt0.y);
+            Base::Vector3d endExt0 = ar0Pos + d0*Rez::guiX(extFudge); 
+            path.lineTo(endExt0.x, endExt0.y);
         }
 
-        if(length > (p2-p0).Length()) {
-            path.moveTo(p2.x, p2.y);
-            p2 = ar2Pos + (p2-p0).Normalize() * Rez::guiX(5.);    //a bit past leg 2 arrow head on leg 2
-            path.lineTo(p2.x, p2.y);
+        if(radius > (startExt1-vertex).Length()) {
+            path.moveTo(startExt1.x, startExt1.y);
+            Base::Vector3d endExt1 = ar1Pos + d1*Rez::guiX(extFudge); 
+            path.lineTo(endExt1.x, endExt1.y);
         }
 
-
-        bool isOutside = true;        //label is outside angle end-vertex-end?
-
-        // TODO find a better solution for this. Addmitedely not tidy
-        // ###############
         // Treat zero as positive to be consistent for horizontal lines
         if(std::abs(startangle) < FLT_EPSILON)
             startangle = 0;
@@ -986,60 +995,38 @@ void QGIViewDimension::draw()
          if(std::abs(endangle) < FLT_EPSILON)
             endangle = 0;
 
-        if(startangle >= 0 && endangle >= 0) {   //Both are in positive side
-          double langle = labelangle;
-          if(labelangle < 0)
-            langle += M_PI * 2;
-          if(endangle - startangle > 0) {
-              if(langle > startangle && langle < endangle)
-                  isOutside = false;
-          } else {
-              if(langle < startangle && langle > endangle)
-                  isOutside = false;
-          }
-        } else if(startangle < 0 && endangle < 0) {  //both are in negative side
-           double langle = labelangle;
-            if(labelangle > 0)
-                langle -= M_PI * 2;
-            if(endangle - startangle < 0) {
-                if(langle > endangle && langle < startangle)  //clockwise
-                    isOutside = false;
-            } else {
-                if(langle < endangle && langle > startangle)  //anticlockwise
-                    isOutside = false;
-            }
-        } else if(startangle >= 0 && endangle < 0) {
-            if(labelangle < startangle && labelangle > endangle)  //clockwise
-                isOutside = false;
-
-        } else if(startangle < 0 && endangle >= 0) {
-            //Both are in positive side
-
-            if(labelangle > startangle && labelangle < endangle)  //clockwise
-                isOutside = false;
+        //https://stackoverflow.com/questions/13640931/how-to-determine-if-a-vector-is-between-two-other-vectors
+        bool isOutside = true;
+        if ( ((d0.Cross(labelVec)).Dot(d0.Cross(d1)) >= 0.0) &&
+             ((d1.Cross(labelVec)).Dot(d1.Cross(d0)) >= 0.0) ) {
+            isOutside = false;
         }
 
-        QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
-        path.arcMoveTo(arcRect, endangle * 180 / M_PI);
-        double innerAngle = fabs(endangle - startangle) * 180.0/M_PI;
-        double outerAngle = 360.0 - innerAngle;
+        path.arcMoveTo(arcRect, startangle * 180 / M_PI);
+        double actualSweep = 0.0;
         if(isOutside) {
             updateDim(true);
-            if(labelangle > endangle)
-            {
-                path.arcMoveTo(arcRect, endangle * 180 / M_PI);
-                path.arcTo(arcRect, endangle * 180 / M_PI, - outerAngle);
-            } else {
-                path.arcMoveTo(arcRect, startangle * 180 / M_PI);
-                path.arcTo(arcRect, startangle * 180 / M_PI, outerAngle);  
+            if (ccwInner) {              //inner is ccw so outer is cw and sweep is -ve
+                actualSweep = -outsideAngle;
+            } else {                     //inner is cw so outer is ccw and sweep is +ve
+                actualSweep = outsideAngle;
             }
         } else {
             updateDim(false);
-            path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
+            if (ccwInner) {           //inner is ccw and sweep is +ve
+                actualSweep = insideAngle;
+            } else {             //inner is cw and sweep is -ve
+                actualSweep = -insideAngle;
+            }
         }
+        path.arcTo(arcRect, startangle * 180 / M_PI, actualSweep*180.0/M_PI);  
 
         dimLines->setPath(path);
 
+//        aHead1->setDirMode(true);
+//        aHead2->setDirMode(true);
+//        aHead1->setDirection(a1Dir);
+//        aHead2->setDirection(a2Dir);
         aHead1->flip(true);
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
         aHead1->setSize(QGIArrow::getPrefArrowSize());
@@ -1048,26 +1035,25 @@ void QGIViewDimension::draw()
         aHead2->setSize(QGIArrow::getPrefArrowSize());
         aHead2->draw();
 
-        Base::Vector3d norm1 = p1-p0; //(-dir1.y, dir1.x, 0.);
-        Base::Vector3d norm2 = p2-p0; //(-dir2.y, dir2.x, 0.);
+        aHead1->setPos(ar0Pos.x,ar0Pos.y );
+        aHead2->setPos(ar1Pos.x,ar1Pos.y );
 
-        Base::Vector3d avg = (norm1 + norm2) / 2.;
+        Base::Vector3d norm1 = leg0;
+        Base::Vector3d norm2 = leg1;
+        Base::Vector3d avg = (norm1 + norm2) / 2.;   //midline of legs
 
         norm1 = norm1.ProjectToLine(avg, norm1);
         norm2 = norm2.ProjectToLine(avg, norm2);
 
-        aHead1->setPos(ar1Pos.x,ar1Pos.y );
-        aHead2->setPos(ar2Pos.x,ar2Pos.y );
-
-        float ar1angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;
-        float ar2angle = atan2(norm2.y, norm2.x) * 180 / M_PI;
+        float ar0angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;
+        float ar1angle = atan2(norm2.y, norm2.x) * 180 / M_PI;
 
         if(isOutside) {
-            aHead1->setRotation(ar1angle + 180.);
-            aHead2->setRotation(ar2angle + 180.);
+            aHead1->setRotation(ar0angle + 180.);
+            aHead2->setRotation(ar1angle + 180.);
         } else {
-            aHead1->setRotation(ar1angle);
-            aHead2->setRotation(ar2angle);
+            aHead1->setRotation(ar0angle);
+            aHead2->setRotation(ar1angle);
         }
 
         // Set the angle of the dimension text
@@ -1082,8 +1068,9 @@ void QGIViewDimension::draw()
             lAngle += M_PI;               // langle + 180   Flip
         }
 
+        float bbX  = datumLabel->boundingRect().width();
+        float bbY  = datumLabel->boundingRect().height();
         datumLabel->setTransformOriginPoint(bbX / 2., bbY /2.);
-
         datumLabel->setRotation(lAngle * 180 / M_PI);
 
     }  //endif Distance/Diameter/Radius/Angle
