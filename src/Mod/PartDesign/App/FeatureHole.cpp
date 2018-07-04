@@ -1259,7 +1259,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         int solidCount = countSolids(base);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Hole: Result has multiple solids. Check parameters.");
+            return new App::DocumentObjectExecReturn("Hole: Result has multiple solids. This is not supported at this time.");
         }
 
         this->Shape.setValue(base);

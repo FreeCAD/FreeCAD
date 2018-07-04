@@ -158,7 +158,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. Check parameters.");
+                return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
 
             solRes = refineShapeIfActive(solRes);

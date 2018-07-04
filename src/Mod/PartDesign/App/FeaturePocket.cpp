@@ -185,7 +185,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             int prismCount = countSolids(prism);
             if (prismCount > 1) {
-                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. Check parameters.");
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
             }
 
             this->Shape.setValue(getSolid(prism));
@@ -213,7 +213,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. Check parameters.");
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
 
             }
             solRes = refineShapeIfActive(solRes);
