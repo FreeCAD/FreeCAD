@@ -127,7 +127,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Additive: Result has multiple solids. Check parameters.");
+                return new App::DocumentObjectExecReturn("Additive: Result has multiple solids. This is not supported at this time.");
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Subtractive: Result has multiple solids. Check parameters.");
+                return new App::DocumentObjectExecReturn("Subtractive: Result has multiple solids. This is not supported at this time.");
             }
             
             boolOp = refineShapeIfActive(boolOp);
