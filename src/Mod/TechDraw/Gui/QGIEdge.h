@@ -37,7 +37,9 @@ public:
     enum {Type = QGraphicsItem::UserType + 103};
 
     int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
     int getProjIndex() const { return projIndex; }
 

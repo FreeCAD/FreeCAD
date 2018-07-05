@@ -93,6 +93,20 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
     return hidStyle;
 }
 
+QRectF QGIEdge::boundingRect() const
+{
+    return shape().controlPointRect();
+}
+
+QPainterPath QGIEdge::shape() const
+{
+    QPainterPath outline;
+    QPainterPathStroker stroker;
+    stroker.setWidth(2.0);
+    outline = stroker.createStroke(path());
+    return outline;
+}
+
 void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
