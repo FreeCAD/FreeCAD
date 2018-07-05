@@ -175,6 +175,10 @@
 #include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
 
+#if OCC_VERSION_HEX >= 0x070300
+#include <BRepAlgoAPI_Defeaturing.hxx>
+#endif
+
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
@@ -3409,4 +3413,32 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
             meshPoints[it->i] = it->toPoint();
         points.swap(meshPoints);
     }
+}
+
+TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (OCC_VERSION_HEX < 0x070300)
+        throw Base::RuntimeError("Defeaturing is not supported on OCC < 7.3.0.");
+    BRepAlgoAPI_Defeaturing defeat;
+    defeat.SetRunParallel(true);
+    defeat.SetShape(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = s.begin(); it != s.end(); ++it)
+        defeat.AddFaceToRemove(*it);
+    defeat.Build();
+    if (!defeat.IsDone()) {
+        // error treatment
+        Standard_SStream aSStream;
+        defeat.DumpErrors(aSStream);
+        const std::string& resultstr = aSStream.str();
+        const char* cstr2 = resultstr.c_str();
+        throw Base::RuntimeError(cstr2);
+    }
+//     if (defeat.HasWarnings()) {
+//         // warnings treatment
+//         Standard_SStream aSStream;
+//         defeat.DumpWarnings(aSStream);
+//     }
+    return defeat.Shape();
 }

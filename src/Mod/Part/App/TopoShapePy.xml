@@ -561,6 +561,12 @@ The parameter is in the form list of tuples with the two shapes.</UserDocu>
 The parameter is a list of shapes.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="defeaturing" Const="true">
+      <Documentation>
+        <UserDocu>Remove a feature defined by supplied faces and return a new shape.
+The parameter is a list of faces.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="isInside" Const="true">
       <Documentation>
         <UserDocu>Checks whether a point is inside or outside the shape.
