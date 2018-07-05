@@ -70,7 +70,7 @@ class ObjectSurface(PathOp.ObjectOp):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "The library to use to generate the path"))
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
-        obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The Sample Interval.  Small values cause long wait"))
+        obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The Sample Interval. Small values cause long wait times"))
         obj.SampleInterval = (0.04, 0.01, 1.0, 0.01)
 
     def opExecute(self, obj):
@@ -97,7 +97,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 import ocl
             except:
                 FreeCAD.Console.PrintError(
-                        translate("Path_Surface", "This operation requires OpenCamLib to be installed.\n"))
+                        translate("Path_Surface", "This operation requires OpenCamLib to be installed.")+"\n")
                 return
 
         if self.baseobject.TypeId.startswith('Mesh'):
@@ -107,7 +107,7 @@ class ObjectSurface(PathOp.ObjectOp):
             try:
                 deflection = parentJob.GeometryTolerance
             except AttributeError:
-                from PathScripts.PathPreferences import PathPreferences
+                import PathScripts.PathPreferences as PathPreferences
                 deflection = PathPreferences.defaultGeometryTolerance()
             self.baseobject.Shape.tessellate(0.5)
             mesh = MeshPart.meshFromShape(self.baseobject.Shape, Deflection=deflection)

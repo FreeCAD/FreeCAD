@@ -50,7 +50,7 @@
 
 #include "FemMesh.h"
 #ifdef FC_USE_VTK
-    #include "FemVTKTools.h"
+#include "FemVTKTools.h"
 #endif
 
 #include <boost/assign/list_of.hpp>
@@ -61,6 +61,7 @@
 #include <SMDS_MeshGroup.hxx>
 #include <SMESHDS_GroupBase.hxx>
 #include <SMESHDS_Group.hxx>
+#include <SMESHDS_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -89,6 +90,9 @@ using namespace Base;
 using namespace boost;
 
 static int StatCount = 0;
+#if SMESH_VERSION_MAJOR >= 7
+    SMESH_Gen* FemMesh::_mesh_gen = 0;
+#endif
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
@@ -489,7 +493,13 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
+#if SMESH_VERSION_MAJOR < 7
     return SMESH_Gen::get();
+#else
+    if (!FemMesh::_mesh_gen)
+        FemMesh::_mesh_gen = new SMESH_Gen();
+    return FemMesh::_mesh_gen;
+#endif
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -756,7 +766,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     std::set<int> result;
 
     Bnd_Box box;
-    BRepBndLib::Add(face, box);
+    BRepBndLib::Add(face, box, Standard_False);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -1155,11 +1165,13 @@ void FemMesh::read(const char *FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
+#if SMESH_VERSION_MAJOR < 7
     else if (File.hasExtension("dat") ) {
         // read brep-file
     // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
+#endif
     else if (File.hasExtension("bdf") ) {
         // read Nastran-file
         readNastran(File.filePath());
@@ -1333,7 +1345,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     //get faces
     ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1  and elementsMapVol is not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty())) {
-        // for ememParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
+        // for elemParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
         // we're going to fill the elementsMapFac with all faces
         SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
         while (aFaceIter->more()) {
@@ -1371,7 +1383,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     // get edges
     ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1 and either elementMapVol or elementsMapFac are not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty() && elementsMapFac.empty())) {
-        // for ememParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
+        // for elemParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
         // we're going to fill the elementsMapEdg with all edges
         SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
         while (aEdgeIter->more()) {
@@ -1570,21 +1582,26 @@ void FemMesh::write(const char *FileName) const
     Base::FileInfo File(FileName);
 
     if (File.hasExtension("unv") ) {
-        // read UNV file
-         myMesh->ExportUNV(File.filePath().c_str());
+        Base::Console().Log("FEM mesh object will be exported to unv format.\n");
+        // write UNV file
+        myMesh->ExportUNV(File.filePath().c_str());
     }
     else if (File.hasExtension("med") ) {
-         myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
+        Base::Console().Log("FEM mesh object will be exported to med format.\n");
+        myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
     }
     else if (File.hasExtension("stl") ) {
-        // read brep-file
+        Base::Console().Log("FEM mesh object will be exported to stl format.\n");
+        // export to stl file
         myMesh->ExportSTL(File.filePath().c_str(),false);
     }
     else if (File.hasExtension("dat") ) {
-        // read brep-file
+        Base::Console().Log("FEM mesh object will be exported to dat format.\n");
+        // export to dat file
         myMesh->ExportDAT(File.filePath().c_str());
     }
     else if (File.hasExtension("inp") ) {
+        Base::Console().Log("FEM mesh object will be exported to inp format.\n");
         // get Abaqus inp prefs
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
         int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
@@ -1594,12 +1611,13 @@ void FemMesh::write(const char *FileName) const
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+        Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
 #endif
     else{
-        throw Base::Exception("Unknown extension");
+        throw Base::Exception("An unknown file extension was added!");
     }
 }
 

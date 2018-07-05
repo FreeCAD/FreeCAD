@@ -25,13 +25,13 @@ import FreeCAD
 import DraftGeomUtils
 import Part
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 import sys
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -234,7 +234,7 @@ def Create(baseObject, name='DressupTag'):
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     '''
     if not baseObject.isDerivedFrom('Path::Feature'):
-        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path\n'))
+        PathLog.error(translate('Path_DressupTag', 'The selected object is not a path')+'\n')
         return None
 
     if baseObject.isDerivedFrom('Path::FeatureCompoundPython'):

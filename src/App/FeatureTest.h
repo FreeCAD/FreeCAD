@@ -44,7 +44,7 @@ public:
 
   ~FeatureTest();
 
-  // Standard Properties (PorpertyStandard.h)
+  // Standard Properties (PropertyStandard.h)
   App::PropertyInteger      Integer;
   App::PropertyFloat        Float;
   App::PropertyBool         Bool;
@@ -67,7 +67,7 @@ public:
   App::PropertyIntegerConstraint ConstraintInt;
   App::PropertyFloatConstraint   ConstraintFloat;
  
-  // Standard Properties (PorpertyStandard.h)
+  // Standard Properties (PrppertyStandard.h)
   App::PropertyIntegerList IntegerList;
   App::PropertyFloatList   FloatList;
 
@@ -107,7 +107,7 @@ public:
   /// recalculate the Feature
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider
-  //FIXME: Propably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
+  //FIXME: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
   virtual const char* getViewProviderName(void) const {
     return "Gui::ViewProviderFeature";
   }

@@ -331,8 +331,12 @@ void CmdPartDesignClone::activated(int iMsg)
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.Placement = App.ActiveDocument.%s.Placement",
                   objs.front()->getNameInDocument());
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
-        commitCommand();
         updateActive();
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.DiffuseColor = App.ActiveDocument.%s.ViewObject.DiffuseColor",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.Transparency = App.ActiveDocument.%s.ViewObject.Transparency",
+                  objs.front()->getNameInDocument());
+        commitCommand();
     }
 }
 
@@ -678,7 +682,9 @@ bool CmdPartDesignNewSketch::isActive(void)
 //===========================================================================
 
 void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
-       App::DocumentObject* prevSolidFeature = nullptr, const bool hidePrevSolid = true)
+                   App::DocumentObject* prevSolidFeature = nullptr,
+                   const bool hidePrevSolid = true,
+                   const bool updateDocument = true)
 {
     PartDesign::Body *pcActiveBody;
 
@@ -691,7 +697,9 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
     if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
 
-    cmd->updateActive();
+    if (updateDocument)
+        cmd->updateActive();
+
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
     cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s', 0)", FeatName.c_str());
@@ -991,7 +999,7 @@ void CmdPartDesignPad::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* profile, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* profile, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1042,7 +1050,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1089,7 +1097,7 @@ void CmdPartDesignHole::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1135,7 +1143,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1195,7 +1203,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1263,7 +1271,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1313,7 +1321,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1363,7 +1371,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1413,7 +1421,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1838,7 +1846,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
         return;
@@ -1902,7 +1910,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
             return;
@@ -1968,7 +1976,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
             return;
@@ -2025,10 +2033,10 @@ void CmdPartDesignScaled::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
-        return;
+            return;
 
         doCommand(Doc,"App.activeDocument().%s.Factor = 2", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
@@ -2130,7 +2138,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
 
         Gui::Command* cmd = this;
-        auto worker = [this, cmd, pcActiveBody](std::string FeatName, std::vector<App::DocumentObject*> features) {
+        auto worker = [cmd, pcActiveBody](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
             if (features.empty())
                 return;
@@ -2185,7 +2193,10 @@ void CmdPartDesignBoolean::activated(int iMsg)
     openCommand("Create Boolean");
     std::string FeatName = getUniqueObjectName("Boolean");
     doCommand(Doc,"App.activeDocument().%s.newObject('PartDesign::Boolean','%s')", pcActiveBody->getNameInDocument(), FeatName.c_str());
-    
+
+    // If we don't add an object to the boolean group then don't update the body
+    // as otherwise this will fail and it will be marked as invalid
+    bool updateDocument = false;
     if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
@@ -2195,11 +2206,15 @@ void CmdPartDesignBoolean::activated(int iMsg)
                     bodies.push_back(j->getObject());
             }
         }
-        std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-        doCommand(Doc,"App.activeDocument().%s.addObjects(%s)",FeatName.c_str(),bodyString.c_str());
+
+        if (!bodies.empty()) {
+            updateDocument = true;
+            std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
+            doCommand(Doc,"App.activeDocument().%s.addObjects(%s)",FeatName.c_str(),bodyString.c_str());
+        }
     }
 
-    finishFeature(this, FeatName, nullptr, false);
+    finishFeature(this, FeatName, nullptr, false, updateDocument);
 }
 
 bool CmdPartDesignBoolean::isActive(void)

@@ -336,12 +336,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <translation>A bancada de trabalho &lt;b&gt;Design de Arquitetura&lt;/b&gt; está especialmente concebida para trabalhar com elementos de arquitetura tais como paredes ou janelas. Comece por desenhar formas em 2D, e use-as como guias para construir objetos de arquitetura.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started/pt-br</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Abrir um exemplo de uma análise FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>Clique aqui</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>para permitir que o FreeCAD acesse a internet</translation>
     </message>
   </context>
 </TS>

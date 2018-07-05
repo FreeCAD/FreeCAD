@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Monter un profil sélectionné dans d'autres sections de profil</translation>
+      <translation>Lisser un profil sélectionné à travers d'autres sections de profil</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Créer un corps de pièce</translation>
+      <translation>Créer un corps</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>Créer un corps de pièce et l'activer</translation>
+      <translation>Crée un nouveau corps et l'activer</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>Opération booléenne entre deux ou plusieurs corps de pièce</translation>
+      <translation>Opération Booléenne entre deux ou plusieurs corps</translation>
     </message>
   </context>
   <context>
@@ -106,25 +106,25 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Créer un clone</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Crée un nouveau clone</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -154,7 +154,7 @@
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Dupliquer l’objet sélectionné et l’ajouter au corps de pièce actif</translation>
+      <translation>Duplique l’objet sélectionné et l’ajoute au corps actif</translation>
     </message>
   </context>
   <context>
@@ -208,13 +208,13 @@
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>Créer une poche avec l’esquisse sélectionnée</translation>
+      <translation>Créer un perçage à partir de l’esquisse sélectionnée</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -265,8 +265,12 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>Migrer le document vers la nouvelle méthodologie PartDesign</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>Migrer le document vers le nouveau workflow partdesign</translation>
+      <translation>Migrer le document vers la nouvelle méthodologie PartDesign</translation>
     </message>
   </context>
   <context>
@@ -284,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation>Créer une fonctionnalité en miroir</translation>
+      <translation>Créer une fonction de symétrie</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -301,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation>Déplacer vers un autre corps de pièce</translation>
+      <translation>Déplacer vers un autre corps</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation>Déplace l’objet sélectionné vers un autre corps de pièce</translation>
+      <translation>Déplace l’objet sélectionné vers un autre corps</translation>
     </message>
   </context>
   <context>
@@ -319,12 +323,12 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation>Déplacer l'objet après un autre objet</translation>
+      <translation>Déplacer après un autre objet</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Déplacer l’objet sélectionné et l’insérer après un autre objet</translation>
+      <translation>Déplace l’objet sélectionné et l’insère après un autre objet</translation>
     </message>
   </context>
   <context>
@@ -337,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation>Définir objet courant</translation>
+      <translation>Désigner comme fonction résultante</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation>Déplacer la racine du corps de pièce</translation>
+      <translation>Déplacer la fonction résultante du corps</translation>
     </message>
   </context>
   <context>
@@ -374,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -392,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -415,7 +419,7 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation>Créer une pièce</translation>
+      <translation>Crée une pièce</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -425,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -443,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -455,7 +459,7 @@
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Créer une poche avec l’esquisse sélectionnée</translation>
+      <translation>Créer une cavité à partir de l’esquisse sélectionnée</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -465,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -483,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -495,7 +499,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polar pattern feature</source>
-      <translation>Créer un réseau circulaire</translation>
+      <translation>Créer une fonction de répétition circulaire</translation>
     </message>
     <message>
       <source>create a polar pattern feature</source>
@@ -545,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
@@ -563,23 +567,23 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>ConceptionPièce</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>Enlèvement de matière par balayage</translation>
+      <translation>Enlèvement de matière par lissage</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Monter un profil sélectionné à travers d'autres sections de profil et l'enlever du corps</translation>
+      <translation>Lisser un profil sélectionné à travers d'autres sections de profil et soustraire du corps</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Balayer une esquisse sélectionnée sur un chemin ou vers d’autres profils et enlever la matière</translation>
+      <translation>Balayer une esquisse sélectionnée sur un chemin et à travers d’autres profils et soustraire du corps</translation>
     </message>
   </context>
   <context>
@@ -592,12 +596,12 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation>Enlèvement de matière par balayage guidé</translation>
+      <translation>Enlèvement de matière par balayage</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Balayer une esquisse sélectionnée sur un chemin ou vers d’autres profils et enlever la matière</translation>
+      <translation>Balayer une esquisse sélectionnée sur un chemin et à travers d’autres profils et soustraire du corps</translation>
     </message>
   </context>
   <context>
@@ -680,9 +684,13 @@
       <translation>ConceptionPièce</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
+      <translation>Créer une primitive soustractive</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
       <translation>Créer une primitive soustractive</translation>
     </message>
     <message>
@@ -708,7 +716,7 @@
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Ellipse soustractive</translation>
+      <translation>Ellipsoïde soustractif</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -718,12 +726,12 @@
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation>Prism soustractif</translation>
+      <translation>Prisme soustractif</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation>Arrête soustractive</translation>
+      <translation>Cale soustractive</translation>
     </message>
   </context>
   <context>
@@ -736,7 +744,7 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Vous avez sélectionné des éléments geometrique qui ne sont pas dans le corps de piece actif. Si vous ne voulez pas ces références, annulez la commande.</translation>
+      <translation>Vous avez sélectionné des éléments géométriques qui ne font pas partie du corps actif. Veuillez définir comment gérer ces sélections. Si vous ne voulez pas de ces références, annulez la commande.</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -759,7 +767,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="+45"/>
       <source>Valid</source>
-      <translation>Valider</translation>
+      <translation>Valide</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -769,17 +777,17 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Aucun fils dans l'esquisse</translation>
+      <translation>Aucun fil dans l'esquisse</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Sketch déjà utilisé par une autre fonction</translation>
+      <translation>Esquisse déjà utilisée par une autre fonction</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>L 'esquisse appartient à un autre élement du corps de pièce</translation>
+      <translation>L 'esquisse appartient à une fonction sous un autre corps</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -789,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>La Fonction est située après la Fonction Racine</translation>
+      <translation>La fonction est située après la fonction sommet</translation>
     </message>
   </context>
   <context>
@@ -825,7 +833,7 @@
     <message>
       <location line="+20"/>
       <source>Modules:</source>
-      <translation>Modules :</translation>
+      <translation>Module :</translation>
     </message>
     <message>
       <location line="+85"/>
@@ -1119,7 +1127,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>Cette sélection créera une référénce circulaire.</translation>
+      <translation>Cette sélection créera une dépendance circulaire.</translation>
     </message>
   </context>
   <context>
@@ -1142,7 +1150,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation>Fusionner</translation>
+      <translation>Union</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1152,17 +1160,16 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation>Commun</translation>
+      <translation>Intersection</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Section</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation>Paramètres booléens</translation>
+      <translation>Paramètres Booléens</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -1178,8 +1185,7 @@ Please check one or more edge entities first.</source>
       <translation>Paramètres de la primitive</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>Créer une primitive</translation>
     </message>
@@ -1241,12 +1247,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Ajouter une Référence</translation>
+      <translation>Ajouter une référence</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Supprimer Réference</translation>
+      <translation>Supprimer référence</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1268,13 +1274,23 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+72"/>
       <source> parameters</source>
-      <translation>paramètres</translation>
+      <translation> paramètres</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation>Liste de corps vide</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation>La liste de corps ne peut pas être vide</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Accepter: erreur d'entrée</translation>
     </message>
@@ -1291,12 +1307,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation>Combinaison de référence incompatible</translation>
+      <translation>Combinaison de références incompatible</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Il n'y a pas de mode d'attachement qui corresponde a la combinaison de référence actuel. Si vous continuer, la fonction restera la ou elle est et ne bougeras pas si les références changent. Continuer?</translation>
+      <translation>Il n'y a aucun mode d'attachement qui corresponde à la combinaison de références actuelle. Si vous continuez, la fonction restera là où elle est et ne bougera pas si les références changent. Continuer?</translation>
     </message>
   </context>
   <context>
@@ -1309,7 +1325,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -1352,7 +1368,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -1464,12 +1480,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation>Des autres corps de piece de la même pièce</translation>
+      <translation>A partir d'autres corps de la même pièce</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation>De different piece ou de fonctions indépendantes</translation>
+      <translation>De différentes pièces ou de fonctions indépendantes</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1489,7 +1505,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
       <source>Valid</source>
-      <translation>Valider</translation>
+      <translation>Valide</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1499,17 +1515,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Aucun fils dans l'esquisse</translation>
+      <translation>Aucun fil dans l'esquisse</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Sketch déjà utilisé par une autre fonction</translation>
+      <translation>Esquisse déjà utilisée par une autre fonction</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation>Appartient à une autre entité</translation>
+      <translation>Appartient à un autre corps</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1519,7 +1535,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation>N'appartient à aucun corps de pièce</translation>
+      <translation>N'appartient à aucun corps</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
@@ -1533,7 +1549,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation>La fonction est située après la fonction racine</translation>
+      <translation>La fonction est située après la fonction résultante</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1551,12 +1567,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Ajouter une Référence</translation>
+      <translation>Ajouter une référence</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Supprimer Réference</translation>
+      <translation>Supprimer référence</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1655,27 +1671,27 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation>Profile ISO standard</translation>
+      <translation>Filetage métrique ISO à pas standard</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation>Profile fin ISO </translation>
+      <translation>Filetage métrique ISO à pas fin</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation>Profil UTS grossier</translation>
+      <translation>Filetage unifié (UTS) grossier</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation>Profil UTS fin</translation>
+      <translation>Filetage unifié (UTS) fin</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation>Profil UTS extra fin</translation>
+      <translation>Filetage unifié (UTS) extra fin</translation>
     </message>
   </context>
   <context>
@@ -1709,7 +1725,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Ajouter une fonctionnalité</translation>
+      <translation>Ajouter une fonction</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1785,7 +1801,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation>Supprimer la section</translation>
+      <translation>Supprimer une section</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -1841,7 +1857,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Ajouter une fonctionnalité</translation>
+      <translation>Ajouter une fonction</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1895,7 +1911,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation>Ajouter une fonctionnalité</translation>
+      <translation>Ajouter une fonction</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1997,8 +2013,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -2013,8 +2029,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Cote</translation>
     </message>
@@ -2056,40 +2072,37 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Paramètres de protrusion</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>Au dernier</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>Au premier</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>Jusqu'à la face</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Deux dimensions</translation>
     </message>
@@ -2163,7 +2176,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
-      <translation>Équivalent curviligne</translation>
+      <translation>Équivalence curviligne</translation>
     </message>
     <message>
       <location line="-5"/>
@@ -2216,7 +2229,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Orientation de la section</translation>
     </message>
@@ -2231,7 +2244,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+11"/>
       <source>Corner Transition</source>
-      <translation>Transition de Coin</translation>
+      <translation>Transition de coin</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2246,7 +2259,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Round Corner</source>
-      <translation>Congé</translation>
+      <translation>Coin arrondi</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2271,7 +2284,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
       <source>Pipe parameters</source>
-      <translation>Paramètres des tubes</translation>
+      <translation>Paramètres de balayage</translation>
     </message>
   </context>
   <context>
@@ -2284,7 +2297,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Transform mode</source>
-      <translation>Mode Transformation</translation>
+      <translation>Mode de transformation</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2304,10 +2317,10 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation>Supprimer la section</translation>
+      <translation>Supprimer une section</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Transformer un élément</translation>
     </message>
@@ -2330,8 +2343,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Cote</translation>
     </message>
@@ -2352,8 +2365,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>2ième longueur</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -2363,12 +2381,12 @@ Please check one or more edge entities first.</source>
       <translation>Réactualiser la vue</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Longueur</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Paramètres de la cavité</translation>
     </message>
@@ -2377,29 +2395,32 @@ Please check one or more edge entities first.</source>
       <translation>Au dernier</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>Au premier</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>À travers tout</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>Jusqu'à la face</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Deux dimensions</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
@@ -2447,7 +2468,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Ajouter une fonctionnalité</translation>
+      <translation>Ajouter une fonction</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2592,7 +2613,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation>Ajouter une fonctionnalité</translation>
+      <translation>Ajouter une fonction</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2656,12 +2677,11 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
@@ -2811,7 +2831,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../ViewProviderBody.cpp" line="+137"/>
       <source>Toggle active body</source>
-      <translation>Activer la pièce</translation>
+      <translation>Activer/désactiver le corps</translation>
     </message>
   </context>
   <context>
@@ -2832,12 +2852,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation>Créer une boîte additionnelle par sa largeur, sa hauteur et sa longueur</translation>
+      <translation>Créer un cube additif par sa largeur, sa hauteur et sa longueur</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Créer une sphère additionnelle par son rayon et divers angles</translation>
+      <translation>Créer une sphère additive par son rayon et divers angles</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2869,51 +2889,83 @@ Please check one or more edge entities first.</source>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation>Créez une boîte soustractive de son avec la hauteur et la longueur</translation>
+      <translation>Créez un cube soustractif par sa largeur, sa hauteur et sa longueur</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation>Créer un cylindre soustracitif par son rayon, sa hauteur et son angle</translation>
+      <translation>Créer un cylindre soustractif par son rayon, sa hauteur et son angle</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
       <translation>Créer une sphère soustractive par son rayon et des angles variés</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation>Créer une boîte soustractive par sa largeur, sa hauteur et sa longueur</translation>
+      <translation>Créer un cube soustractif par sa largeur, sa hauteur et sa longueur</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
       <translation>Créer une sphère soustractive par son rayon et divers angles</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>Créer un cône soustractif</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>Créer un ellipsoïde soustractif</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>Créer un tore soustractif</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>Créer un prisme soustractif</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
-      <translation>Créer un biseau soustractif</translation>
+      <translation>Créer une cale soustractive</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation>Créer un cube soustractif par sa largeur, sa hauteur et sa longueur</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation>Créer un cylindre soustractif par son rayon, sa hauteur et son angle</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation>Créer une sphère soustractive par son rayon et divers angles</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>Créer un cône soustractif</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>Créer un ellipsoïde soustractif</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>Créer un tore soustractif</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>Créer un prisme soustractif</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
+      <translation>Créer une cale soustractive</translation>
     </message>
   </context>
   <context>
@@ -2921,12 +2973,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="+201"/>
       <source>Select body</source>
-      <translation>Sélectionner la pièce</translation>
+      <translation>Sélectionner le corps</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a body from the list</source>
-      <translation>Sélectionner une pièce dans la liste</translation>
+      <translation>Sélectionner un corps dans la liste</translation>
     </message>
   </context>
   <context>
@@ -3075,9 +3127,9 @@ Create the sketch on a face.</source>
       <translation>Modifier le chanfrein</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
-      <translation>sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
@@ -3098,7 +3150,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Pas de corps de pièce actif. Activez le corps de pièce avant d'insérer une référence</translation>
+      <translation>Pas de corps actif. Activez un corps avant d'insérer une référence.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3138,13 +3190,13 @@ Create the sketch on a face.</source>
     <message>
       <location line="+1"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Créez S'il vous plaît un plan d'abord ou choisissez une face pour esquisser sur</translation>
+      <translation>Veuillez d'abord créer un plan, ou choisissez une face sur laquelle appliquer l'esquisse</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3154,8 +3206,8 @@ Create the sketch on a face.</source>
       <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3179,23 +3231,23 @@ Create the sketch on a face.</source>
     <message>
       <location line="+600"/>
       <source>Select an edge, face or body.</source>
-      <translation>Sélectionner une ligne, une face ou une pièce.</translation>
+      <translation>Sélectionner une arête, une face ou un corps.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation>Sélectionnez une arête, une face ou un volume depuis un volume simple.</translation>
+      <translation>Sélectionnez une arête, une face ou un corps depuis un corps unique.</translation>
     </message>
     <message>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation>La sélection n’est pas dans le corps de pièce actif</translation>
+      <translation>La sélection n’est pas dans le corps actif</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>Sélectionnez une arête, une face ou un corps de pièce depuis un un corps de pièce actif.</translation>
+      <translation>Sélectionnez une arête, une face ou un corps depuis un corps actif.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3287,23 +3339,23 @@ Create the sketch on a face.</source>
       <translation>Éditer la révolution</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
-      <translation>La création de la piéce a échoué</translation>
+      <translation>La création de la pièce a échoué</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Failed to create a part object.</source>
-      <translation>Impossible de créer un objet partiel.</translation>
+      <translation>Impossible de créer un objet pièce.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation>Mauvaise base</translation>
+      <translation>Mauvaise fonction de base</translation>
     </message>
     <message>
       <location line="-68"/>
@@ -3313,21 +3365,21 @@ Create the sketch on a face.</source>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 appartient déjà à un corps, ne peut pas être utilisé comme élément de base pour un autre objet.</translation>
+      <translation>%1 appartient déjà à un corps, ne peut pas être utilisé comme fonction de base pour un autre corps.</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
-      <translation>L'objet ne peut pas être basé sur un autre objet.</translation>
+      <translation>Le corps ne peut pas être basé sur un autre corps.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Body can't be based on another body.</source>
-      <translation>L'objet ne peut pas être basé sur un autre objet.</translation>
+      <translation>Le corps ne peut pas être basé sur un autre corps.</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>La fonction de base (%1) appartient à une autre partie.</translation>
+      <translation>La fonction de base (%1) appartient à une autre pièce.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
@@ -3337,44 +3389,40 @@ Create the sketch on a face.</source>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>La forme sélectionnée se compose de plusieurs solides. Cela peut conduire à des résultats inattendus.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>La forme sélectionnée se compose de plusieurs coques. Cela peut conduire à des résultats inattendus.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>La forme sélectionnée se compose de seulement une coque. Cela peut conduire à des résultats inattendus.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>La forme sélectionnée se compose de plusieurs solides ou de coques. Cela peut conduire à des résultats inattendus.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Fonction de base</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Le corps ne peut pas être basé sur plus d'une caractéristique.</translation>
+      <translation>Le corps ne peut être basé que sur une seule fonction.</translation>
     </message>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation>Il n'y a rien à importer</translation>
+      <translation>Rien à migrer</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3384,7 +3432,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+148"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation>Le plan d'esquisse ne peut pas être importé</translation>
+      <translation>Le plan d'esquisse ne peut pas être migré</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3417,7 +3465,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Seule une fonction solide peut être la pointe d'un corps.</translation>
+      <translation>Seule une fonction solide peut être la fonction résultante d'un corps.</translation>
     </message>
     <message>
       <location line="+116"/>
@@ -3434,7 +3482,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation>Seules les caractéristiques d'un seul corps source peuvent être déplacées</translation>
+      <translation>Seules les fonctions d'un seul corps source peuvent être déplacées</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3484,7 +3532,7 @@ This may lead to unexpected results.</translation>
       <translation>%1 ligne de construction</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3495,36 +3543,36 @@ This may lead to unexpected results.</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation>Afin d’utiliser PartDesign, vous avez besoin d’un corps de pièce actif dans le document. Veuillez activer un corps (par double clic) ou en créer un. Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez la fonction de migration sous PartDesign pour les inclure dans un corps.</translation>
+      <translation>Afin d’utiliser PartDesign, vous avez besoin d’un corps actif dans le document. Veuillez activer un corps (par double clic) ou en créer un. Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez la fonction de migration sous PartDesign pour les inclure dans un corps.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation>Pour utiliser PartDesign, vous avez besoin d'un objet corps actif dans le document. Veuillez en activer un (double clic) ou en créer un.
+      <translation>Pour utiliser PartDesign, vous avez besoin d'un corps actif dans le document. Veuillez en activer un (par double clic) ou en créer un.
 
-Si vous avez un document hérité avec des objets PartDesign sans corps, utilisez la fonction de transfert dans PartDesign pour les mettre dans un corps.</translation>
+Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez la fonction de migration sous PartDesign pour les inclure dans un corps.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation>Corps de pièce actif requis</translation>
+      <translation>Corps actif requis</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Pour créer un nouvel objet de PartDesign, il doit y avoir un corps de pièce actif dans le document. Veuillez en activer un (double clic) ou créer un nouveau corps de pièce.</translation>
+      <translation>Pour créer un nouvel objet de PartDesign, il doit y avoir un corps actif dans le document. Veuillez en activer un (par double clic) ou créer un nouveau corps.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation>La fonction ne fait pas partie d'un corps</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>Pour utiliser cette fonction, elle doit appartenir à un corps de pièce dans le document.</translation>
+      <translation>Pour utiliser cette fonction, elle doit appartenir à un corps dans le document.</translation>
     </message>
     <message>
       <location line="+32"/>
@@ -3581,7 +3629,7 @@ Si vous avez un document hérité avec des objets PartDesign sans corps, utilise
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Editer %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3625,9 +3673,9 @@ Cette fonction est cassée et ne peut pas être modifiée.</translation>
       <translation>Voulez-vous appliquer la migration afin d'utiliser les fonctions modernes PartDesign ?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Le document « %1 » semble être au milieu du processus de migration de PartDesign ou a une structure légèrement cassée.</translation>
+      <translation>Le document « %1 » semble soit être au milieu du processus de migration de PartDesign ou a une structure légèrement cassée.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3663,7 +3711,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Editer la primitive</translation>
     </message>
   </context>
   <context>
@@ -3762,7 +3810,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+62"/>
       <source> Custom thread length</source>
-      <translation> Longueur de filetage personnalisé</translation>
+      <translation> Longueur de filetage personnalisée</translation>
     </message>
     <message>
       <location line="+24"/>

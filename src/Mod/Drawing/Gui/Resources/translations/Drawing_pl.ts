@@ -288,11 +288,18 @@
       <translation>Eksport PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Drukarka używa inną orientację strony niż rysunek.
+Czy chcesz kontynuować?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>Plik PDF (*. pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>Plik PDF</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>Inna orientacja</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Drukarka używa inną orientacje strony niż rysunek. Czy chcesz kontynuować?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Inny rozmiar papieru</translation>
@@ -395,19 +401,31 @@ Do you want to continue?</source>
       <translation>Lewy górny x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Odstęp dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Oś na zewnątrz i prawo</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Pionowe pochylenie</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Odstępy dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Oś na zewnątrz i prawo</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Pionowe pochylenie</translation>
     </message>
     <message>
       <location line="+11"/>

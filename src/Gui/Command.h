@@ -508,21 +508,21 @@ public:
     bool addTo(const char* Name, QWidget* pcWidget);
 
     /** Returns all commands of a special App Module
-     *  delivers a vector of all comands in the given application module. When no 
+     *  delivers a vector of all commands in the given application module. When no 
      *  name is given the standard commands (build in ) are returned.
      *  @see Command
      */
     std::vector <Command*> getModuleCommands(const char *sModName) const;
 
     /** Returns all commands registered in the manager
-     *  delivers a vector of all comands. If you intereted in commands of
+     *  delivers a vector of all commands. If you intereted in commands of
      *  of a special app module use GetModuleCommands()
      *  @see Command
      */
     std::vector <Command*> getAllCommands(void) const;
 
     /** Returns all commands of a group
-     *  delivers a vector of all comands in the given group.
+     *  delivers a vector of all commands in the given group.
      */
     std::vector <Command*> getGroupCommands(const char *sGrpName) const;
 

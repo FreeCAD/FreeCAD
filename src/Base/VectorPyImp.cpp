@@ -613,7 +613,7 @@ void  VectorPy::setLength(Py::Float arg)
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     double len = ptr->Length();
     if (len < 1.0e-6) {
-        throw Py::Exception(std::string("Cannot set length of null vector"));
+        throw Py::RuntimeError(std::string("Cannot set length of null vector"));
     }
 
     double val = (double)arg/len;

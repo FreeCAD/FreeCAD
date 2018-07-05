@@ -40,6 +40,8 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 
+#include "LineGroup.h"
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 
 namespace TechDraw
@@ -72,7 +74,14 @@ class TechDrawExport DrawUtil {
                                         Base::Vector3d axis,
                                         Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
         static Base::Vector3d closestBasis(Base::Vector3d v);
-
+        static double getDefaultLineWeight(std::string s);
+        static Base::Vector3d vector23(const Base::Vector2d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }
+        static Base::Vector2d vector32(const Base::Vector3d& v3) { return Base::Vector2d(v3.x,v3.y); }
+        //! is pt between end1 and end2?
+        static bool isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2);
+        //! find intersection in 2d for 2 lines in point+direction form
+        static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
+                                   Base::Vector3d p2, Base::Vector3d d2);
 
 
         //debugging routines

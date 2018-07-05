@@ -3,8 +3,8 @@ project(FreeCAD_trunk)
 set(PACKAGE_NAME "FreeCAD")
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
-set(PACKAGE_VERSION_MINOR "17")
-set(PACKAGE_VERSION_PATCH "10000")
+set(PACKAGE_VERSION_MINOR "18")
+set(PACKAGE_VERSION_PATCH "13500")
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
@@ -149,7 +149,7 @@ endif(WIN32)
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
-# Don't set it without manual adaption of LibDir variable in src/App/FreeCADInit.py
+# Don't set it without manual adoption of LibDir variable in src/App/FreeCADInit.py
 SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 
 if(NOT WIN32)
@@ -192,7 +192,6 @@ endif(MSVC)
 
 # Switch to build FreeCAD with Qt5
 OPTION(BUILD_QT5 "Build with Qt5." OFF)
-OPTION(BUILD_QT5_WEBKIT "Build with Qt5." ON)
 OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is built." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
@@ -200,6 +199,8 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(BUILD_WITH_CONDA "Set ON if you build freecad with conda" OFF)
+OPTION(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)
 if (WIN32 OR APPLE)
     OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
 else()
@@ -262,6 +263,7 @@ OPTION(BUILD_JTREADER "Build the FreeCAD jt reader module" OFF)
 OPTION(BUILD_MATERIAL "Build the FreeCAD material module" ON)
 OPTION(BUILD_MESH "Build the FreeCAD mesh module" ON)
 OPTION(BUILD_MESH_PART "Build the FreeCAD mesh part module" ON)
+OPTION(BUILD_FLAT_MESH "Build the FreeCAD flat mesh module" OFF)
 OPTION(BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
 OPTION(BUILD_PART "Build the FreeCAD part module" ON)
 OPTION(BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
@@ -343,6 +345,7 @@ REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
 REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
 REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
 REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH BUILD_SMESH)
+REQUIRES_MODS(BUILD_FLAT_MESH          BUILD_MESH_PART)
 REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
 REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
 REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
@@ -448,7 +451,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 set(Python_ADDITIONAL_VERSIONS "2.7")
 
 # For building on OS X
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
 
     # If the user doesn't tell us which package manager they're using
     if(NOT DEFINED MACPORTS_PREFIX AND NOT DEFINED HOMEBREW_PREFIX)
@@ -558,7 +561,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(NOT DEFINED PYTHON_LIBRARY)
 
 
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
 
     find_package(PythonInterp REQUIRED)
     set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
@@ -588,13 +591,24 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-
+    
+# -------------------------------- PyBind11 -----------------------------
+# necessary for flat-mesh feature
+OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
+if (FREECAD_USE_PYBIND11)
+    find_package(pybind11 REQUIRED)
+endif()
 # -------------------------------- Boost --------------------------------
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+
+    if(UNIX AND NOT APPLE)
+        # Boost.Thread 1.67+ headers reference pthread_condattr_*
+        list(APPEND Boost_LIBRARIES pthread)
+    endif()
 
     IF(NOT Boost_FOUND)
         MESSAGE(FATAL_ERROR "========================================\n"
@@ -638,6 +652,12 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
+        # set the internal smesh version:
+        set(SMESH_VERSION_MAJOR 5)  # in src/3rdParty it says smesh is version 5.*, is this true?
+        set(SMESH_VERSION_MINOR 1)
+        set(SMESH_VERSION_PATCH 2)
+        set(SMESH_VERSION_TWEAK 2)
+
         #if we use smesh we definitely also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
             vtkCommonCore
@@ -655,7 +675,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         # check which modules are available
         if(UNIX OR WIN32)
             find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
-            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5 vtkFiltersParallelDIY2 vtkRenderingCore vtkInteractionStyle vtkRenderingFreeType vtkRenderingOpenGL2)
             foreach(_module ${VTK_COMPONENTS})
                 list (FIND VTK_MODULES_ENABLED ${_module} _index)
                 if (${_index} GREATER -1)
@@ -724,8 +744,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-        else()
-            find_package(SMESH)
+
+        else(NOT FREECAD_USE_EXTERNAL_SMESH)
+            find_package(SMESH CONFIG)
+            set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
+            SET(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
                               "SMESH not found.\n"
@@ -733,7 +756,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
+
         set(SMESH_FOUND TRUE)
+        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
     ENDIF(BUILD_SMESH)
 
 # -------------------------------- Netgen --------------------------------
@@ -765,6 +790,12 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 "Eigen3 not found.\n"
                 "=================\n")
     ENDIF(NOT EIGEN3_FOUND)
+
+    if (${EIGEN3_VERSION} VERSION_LESS "3.3.1")
+        message(WARNING "Disable module flatmesh because it requires "
+                        "minimum Eigen3 version 3.3.1 but version ${EIGEN3_VERSION} was found")
+        set (BUILD_FLAT_MESH OFF)
+    endif()
 
 # -------------------------------- Qt --------------------------------
 
@@ -838,7 +869,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(Qt5UiTools)
             find_package(Qt5Network)
             find_package(Qt5Concurrent)
-            if (BUILD_QT5_WEBKIT)
+            if (BUILD_WEB)
                 find_package(Qt5WebKitWidgets)
             endif()
         endif(BUILD_GUI)
@@ -936,21 +967,26 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
-        find_package(Shiboken2)# REQUIRED
+        find_package(Shiboken2 QUIET)# REQUIRED
         if(NOT SHIBOKEN_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "====================\n"
-                                "shiboken2 not found.\n"
-                                "====================\n")
+            MESSAGE("====================\n"
+                    "shiboken2 not found.\n"
+                    "====================\n")
         endif(NOT SHIBOKEN_INCLUDE_DIR)
 
-        find_package(PySide2)# REQUIRED
+        find_package(PySide2 QUIET)# REQUIRED
         if(NOT PYSIDE_INCLUDE_DIR)
-            MESSAGE(FATAL_ERROR "==================\n"
-                                "PySide2 not found.\n"
-                                "==================\n")
+            MESSAGE("==================\n"
+                    "PySide2 not found.\n"
+                    "==================\n")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
-        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        find_package(PySide2Tools QUIET) #REQUIRED # PySide2 utilities (pyside2-uic & pyside2-rcc)
+        if(NOT PYSIDE2_TOOLS_FOUND)
+            MESSAGE("=======================\n"
+                    "PySide2Tools not found.\n"
+                    "=======================\n")
+        endif(NOT PYSIDE2_TOOLS_FOUND)
 
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
@@ -1073,7 +1109,7 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 IF(MSVC)
 	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa /Zm128")
 	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
@@ -1232,6 +1268,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+
 
 # Print message to start build process
 if (${CMAKE_BUILD_TOOL} MATCHES "make")

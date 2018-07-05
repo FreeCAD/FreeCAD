@@ -64,11 +64,11 @@ def getIndices(shape,offset):
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
                         curves = shape.tessellate(1)
-                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating").decode('utf8')+"\n")
                         break
             except: # unimplemented curve type
                 curves = shape.tessellate(1)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating").decode('utf8')+"\n")
                 break
     elif isinstance(shape,Mesh.Mesh):
         curves = shape.Topology
@@ -113,7 +113,8 @@ def getIndices(shape,offset):
 
 def export(exportList,filename):
     "called when freecad exports a file"
-    outfile = pythonopen(filename,"wb")
+    import codecs
+    outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
@@ -185,8 +186,8 @@ def export(exportList,filename):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8')+filename+"\n")
-    if materials:
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written").decode('utf8') + " " + filename + "\n")
+    if materials: 
         outfile = pythonopen(filenamemtl,"wb")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
         outfile.write("# http://www.freecadweb.org\n")
@@ -208,7 +209,7 @@ def export(exportList,filename):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","successfully written") + ' ' + filenamemtl + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
 
 
 def decode(name):

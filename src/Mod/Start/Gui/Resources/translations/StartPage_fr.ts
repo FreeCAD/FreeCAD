@@ -266,7 +266,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation>Nouvelle version de FreeCAD disponible.</translation>
+      <translation>Une nouvelle version de FreeCAD est disponible.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
       <source>Load an FEM 3D example analysis</source>
-      <translation>Charger un exemple de simulation de MÉF 3D</translation>
+      <translation>Charger un exemple de simulation 3D</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
       <source>Load an FEM 2D example analysis</source>
-      <translation>Charger un exemple de simulation de MÉF 2D</translation>
+      <translation>Charger un exemple de simulation 2D</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
@@ -342,6 +342,21 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>http://www.freecadweb.org/wiki/Démarrage</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Charger un nouvel example de solver FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>Cliquez ici</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>pour permettre à FreeCAD d'accéder à Internet</translation>
     </message>
   </context>
 </TS>

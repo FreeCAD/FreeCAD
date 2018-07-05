@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>スプレッドシートを表示</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>セルの前景色を設定</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>スプレッドシートのセルの前景色を設定</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>セルの背景色を設定</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>スプレッドシートのセルの背景色を設定</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

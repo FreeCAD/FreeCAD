@@ -187,6 +187,9 @@ def decodeName(name):
         except UnicodeDecodeError:
                 print("dxf: error: couldn't determine character encoding")
                 decodedName = name
+    except AttributeError:
+        # this is python3 (nothing to do)
+        decodedName = name
     return decodedName
 
 def deformat(text):
@@ -1567,8 +1570,8 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         FreeCAD.setActiveDocument(doc.Name)
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def insert(filename,docname):
     "called when freecad imports a file"
@@ -1594,8 +1597,8 @@ def insert(filename,docname):
         else:
             errorDXFLib(gui)
     else:
-        import DraftUtils
-        DraftUtils.readDXF(filename)
+        import Import
+        Import.readDXF(filename)
 
 def getShapes(filename):
     "reads a dxf file and returns a list of shapes from its contents"
@@ -1907,7 +1910,7 @@ def getStrGroup(ob):
                 # fallback
                 return l.encode("ascii",errors="replace")
             else:
-                # better encoding, replaces accented latin characters with corrsponding ascii letter
+                # better encoding, replaces accented latin characters with corresponding ascii letter
                 return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
     return l
 

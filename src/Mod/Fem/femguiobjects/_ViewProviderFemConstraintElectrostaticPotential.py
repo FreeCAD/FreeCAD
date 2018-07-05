@@ -21,17 +21,18 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer Solver Object"
+__title__ = "view provider for constraint electrostatic potential object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD as App
-import femtools.femutils as FemUtils
+import FreeCAD
+import FreeCADGui
 from . import ViewProviderFemConstraint
-from FreeCAD import Units
 
-import FreeCADGui as Gui
+# for the panel
+import femtools.femutils as FemUtils
+from FreeCAD import Units
 from . import FemSelectionWidgets
 
 
@@ -41,16 +42,17 @@ class ViewProxy(ViewProviderFemConstraint.ViewProxy):
         return ":/icons/fem-constraint-electrostatic-potential.svg"
 
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         task = _TaskPanel(vobj.Object)
-        Gui.Control.showDialog(task)
+        FreeCADGui.Control.showDialog(task)
+        return True
 
     def unsetEdit(self, vobj, mode=0):
-        Gui.Control.closeDialog()
-
-    def doubleClicked(self, vobj):
-        if Gui.Control.activeDialog():
-            Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        FreeCADGui.Control.closeDialog()
         return True
 
 
@@ -60,8 +62,8 @@ class _TaskPanel(object):
         self._obj = obj
         self._refWidget = FemSelectionWidgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
-        self._paramWidget = Gui.PySideUic.loadUi(
-            App.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui")
+        self._paramWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui")
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)
@@ -79,6 +81,7 @@ class _TaskPanel(object):
 
     def reject(self):
         self._restoreVisibility()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def accept(self):
@@ -86,6 +89,7 @@ class _TaskPanel(object):
             self._obj.References = self._refWidget.references()
         self._applyWidgetChanges()
         self._obj.Document.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True
 

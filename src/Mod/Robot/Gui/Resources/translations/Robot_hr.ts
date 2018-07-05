@@ -29,7 +29,7 @@
     <message>
       <location line="+1"/>
       <source>Place robot...</source>
-      <translation>Mjesto robota ...</translation>
+      <translation>Postavi robota...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -228,7 +228,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Move to home</source>
-      <translation>Premjesti u kući</translation>
+      <translation>Pomakni na početak (home)</translation>
     </message>
   </context>
   <context>
@@ -327,12 +327,12 @@
     <message>
       <location line="+1"/>
       <source>Dress-up trajectory...</source>
-      <translation type="unfinished">Dress-up trajectory...</translation>
+      <translation>Odijevanje putanje...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+      <translation>Napravite odjevni objekt koji mijenja neke značajke putanje</translation>
     </message>
     <message>
       <source>Dress up trajectory...</source>
@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Izaberite jednog robota za postavljanje početne pozicije</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -414,13 +414,13 @@
       <location filename="../../CommandExport.cpp" line="-40"/>
       <location line="+62"/>
       <source>KRL file</source>
-      <translation type="unfinished">KRL file</translation>
+      <translation>KRL datoteka</translation>
     </message>
     <message>
       <location line="-61"/>
       <location line="+62"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="-61"/>

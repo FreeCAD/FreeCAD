@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Evaluar y reparar malla...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Evaluar y reparar malla...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Escala de...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Escalar Mallas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1458,11 +1462,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Escalado</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Introduzca el factor de escala:</translation>
     </message>
   </context>
   <context>

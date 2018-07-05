@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *  
+#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,6 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-# import for the FreeCAD Material card
-FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)","importFCMat")
 
+import FreeCAD
+
+
+# import for the FreeCAD Material card
+FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)", "importFCMat")

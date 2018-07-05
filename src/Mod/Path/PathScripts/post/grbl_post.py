@@ -261,7 +261,7 @@ def parse(pathobj):
                 if param in c.Parameters:
                     if param == 'F':
                         if command not in RAPID_MOVES:
-                            outstring.append(param + format(c.Parameters['F'], '.2f'))
+                            outstring.append(param + format(c.Parameters['F'] * 60, '.2f'))
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:

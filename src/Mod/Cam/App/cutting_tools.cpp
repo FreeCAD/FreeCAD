@@ -828,7 +828,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //
 // //  outfile << projectedPoint.X() <<","<<projectedPoint.Y()<<","<<projectedPoint.Z()<<std::endl;
 //   //Jetzt die aktuelle Kurve als BSpline interpolieren
-//  //check for intersections due to wrong offseted points
+//  //check for intersections due to wrong offsetted points
 //  checkPointIntersection(finalPoints);
 //  std::vector<gp_Pnt> finalPointscorrected;
 //  finalPointscorrected.clear();

@@ -50,33 +50,23 @@
 using namespace TechDraw;
 using namespace std;
 
-App::PropertyFloatConstraint::Constraints DrawHatch::scaleRange = {Precision::Confusion(),
-                                                                  std::numeric_limits<double>::max(),
-                                                                  pow(10,- Base::UnitsApi::getDecimals())};
-
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
 
 
 DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
 
     ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
-    ADD_PROPERTY_TYPE(HatchColor,(fcColor),vgroup,App::Prop_None,"The color of the hatch pattern");
-    ADD_PROPERTY_TYPE(HatchScale,(1.0),vgroup,App::Prop_None,"Hatch pattern size adjustment");
-    HatchScale.setConstraints(&scaleRange);
+
     DirProjection.setStatus(App::Property::ReadOnly,true);
 
-    hGrp = App::GetApplication().GetUserParameter()
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
     QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
@@ -94,10 +84,8 @@ DrawHatch::~DrawHatch()
 
 void DrawHatch::onChanged(const App::Property* prop)
 {
-    if (prop == &Source         ||
-        prop == &HatchPattern  ||              //sb VP property?
-        prop == &HatchScale  ||
-        prop == &HatchColor) {
+    if ((prop == &Source)         ||
+        (prop == &HatchPattern)) {
         if (!isRestoring()) {
               DrawHatch::execute();
           }

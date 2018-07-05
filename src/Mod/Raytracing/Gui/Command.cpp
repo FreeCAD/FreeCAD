@@ -647,7 +647,7 @@ void CmdRaytracingRender::activated(int)
             std::stringstream h;
             h << height;
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
-            doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
+            doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'rb')",Sel[0].getFeatName());
             doCommand(Doc,"import os,subprocess,tempfile");
             doCommand(Doc,"fd, TempFile = tempfile.mkstemp(suffix='.pov')");
             doCommand(Doc,"f = open(TempFile,'wb')");
@@ -675,7 +675,7 @@ void CmdRaytracingRender::activated(int)
         }
 
         openCommand("Render project");
-        doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
+        doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'rb')",Sel[0].getFeatName());
         doCommand(Doc,"import subprocess,tempfile");
         doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.lxs')[1]");
         doCommand(Doc,"f = open(TempFile,'wb')");

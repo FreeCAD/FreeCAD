@@ -61,6 +61,8 @@ def read_fenics_mesh_xml(xmlfilename):
         print("Mesh dimension: %d" % (dim,))
         print("Mesh cell type: %s" % (cell_type,))
 
+        # every cell type contains a dict with key=dimension and value=number
+
         cells_parts_dim = {'point': {0: 1},
                            'interval': {0: 2, 1: 1},
                            'triangle': {0: 3, 1: 3, 2: 1},
@@ -178,6 +180,10 @@ def read_fenics_mesh_xml(xmlfilename):
                            'hexahedron': ['quadrilateral', 'interval'],
                            'quadrilateral': ['interval']}
 
+        # generate cell list from file
+        # read vertex list from cells
+        # generate lower dimensional objects in mesh from cell
+
         for (cell_index, cell) in list(cell_dict.items()):
             cell_lower_dims = lower_dims_dict[cell_type]
             element_counter[cell_type] += 1
@@ -189,18 +195,25 @@ def read_fenics_mesh_xml(xmlfilename):
                         vertextuple,
                         element_counter[ld])
 
-        length_counter = len(nodes)
+        length_counter = len(nodes)  # maintain distinct counting values
+        # print("nodes")
+        # print("len & len counter", length_counter)
         for (key, val_dict) in list(element_dict.items()):
             # to ensure distinct indices for FreeCAD
+            # print('key: ', key)
             for (vkey, it) in list(val_dict.items()):
-                val_dict[vkey] = it + length_counter
-            length_counter += len(val_dict)
+                val_dict[vkey] = it + length_counter  # maintain distinct element numbers
+            len_val_dict = len(val_dict)
+            if len_val_dict > 0:
+                length_counter += len_val_dict + 1  # only if preceding list is not empty
+            # print('len: ', len_val_dict)
+            # print('lencounter: ', length_counter)
             # inverse of the dict (dict[key] = val -> dict[val] = key)
             element_dict[key] = invertdict(val_dict)
 
-        correct_volume_det(element_dict)
+        correct_volume_det(element_dict)  # corrects negative determinants
 
-        return element_dict
+        return element_dict  # returns complete element dictionary
 
     nodes = {}
     element_dict = {}
@@ -219,6 +232,11 @@ def read_fenics_mesh_xml(xmlfilename):
         print("Mesh found")
         (nodes, cells_dict, cell_type, dim) = read_mesh_block(find_mesh)
         element_dict = generate_lower_dimensional_structures(nodes, cells_dict, cell_type, dim)
+        print("Show min max element dict")
+        for (elm, numbers) in list(element_dict.items()):
+            lst = sorted(list(numbers.items()), key=lambda x: x[0])
+            if lst != []:
+                print(elm, " min: ", lst[0], " max: ", lst[-1])
     else:
         print("No mesh found")
 

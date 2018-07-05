@@ -32,5 +32,9 @@
         <file>translations/StartPage_gl.qm</file>
         <file>translations/StartPage_kab.qm</file>
         <file>translations/StartPage_ko.qm</file>
+        <file>translations/StartPage_fil.qm</file>
+        <file>translations/StartPage_id.qm</file>
+        <file>translations/StartPage_lt.qm</file>
+        <file>translations/StartPage_val-ES.qm</file>
     </qresource>
 </RCC>

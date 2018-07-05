@@ -27,6 +27,11 @@ __url__ = "http://www.freecadweb.org"
 ## @package ViewProviderFemMaterialMechanicalNonLinear
 #  \ingroup FEM
 
+import FreeCAD
+import FreeCADGui
+import FemGui  # needed to display the icons in TreeView
+False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
+
 from pivy import coin
 
 
@@ -42,19 +47,35 @@ class _ViewProviderFemMaterialMechanicalNonlinear:
         self.ViewObject = vobj
         self.Object = vobj.Object
         self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
+        vobj.addDisplayMode(self.standard, "Default")
 
     def getDisplayModes(self, obj):
-        return ["Standard"]
+        return ["Default"]
 
     def getDefaultDisplayMode(self):
-        return "Standard"
+        return "Default"
 
     def updateData(self, obj, prop):
         return
 
     def onChanged(self, vobj, prop):
         return
+
+    def setEdit(self, vobj, mode=0):
+        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        return False
+
+    def doubleClicked(self, vobj):
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
+        else:
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
+        return True
 
     def __getstate__(self):
         return None

@@ -48,7 +48,7 @@ TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 //**************************************************************************
 // Construction/Destruction
 
-// here the implemataion! description should take place in the header file!
+// Here's the implementation! Description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
     propertyData.parentPropertyData = 0;
@@ -300,7 +300,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 
@@ -321,6 +321,7 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
     PropertySpec temp;
     temp.Name   = PropName;
     temp.Offset = offsetBase.getOffsetTo(Prop);
+    assert(temp.Offset>=0);
     temp.Group  = PropertyGroup;
     temp.Type   = Type;
     temp.Docu   = PropertyDocu;
@@ -343,6 +344,8 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
 const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const Property* prop) const
 {
   const int diff = offsetBase.getOffsetTo(prop);
+  if(diff<0)
+      return 0;
 
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(diff == It->Offset)

@@ -23,11 +23,11 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
-import Preview
-import Tools
-import Instance
+from . import Preview
+from . import Tools
+import Instance  # from ship
 from shipUtils import Paths
 import shipUtils.Units as USys
 import shipUtils.Locale as Locale
@@ -107,7 +107,7 @@ class TaskPanel:
             self.onData)
 
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i
@@ -248,7 +248,7 @@ class TaskPanel:
 
         Keyword arguments:
         value -- Edited value. This parameter is required in order to use this
-        method as a callback function, but it is unuseful.
+        method as a callback function, but it is not useful.
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")

@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
+#include <boost/signals2.hpp> 
+
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
@@ -49,6 +51,7 @@ public:
     /// destructor
     virtual ~ViewProviderDrawingView();
 
+    App::PropertyBool  KeepLabel;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -77,7 +80,7 @@ public:
     virtual TechDraw::DrawView* getViewObject() const;
     
     void onGuiRepaint(const TechDraw::DrawView* dv); 
-    typedef boost::signals::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
     
 

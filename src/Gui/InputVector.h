@@ -105,7 +105,7 @@ private:
  * .ui file.
  * This class might be very useful for dialogs where a combo box is used to
  * define a direction vector by the user. For such classes the programmer don't
- * to write a subclass to implement the appropriate singals/slots. Instead it's
+ * to write a subclass to implement the appropriate signals/slots. Instead it's
  * possible to omit this further class and use LocationInterface parametrized
  * with the generated Ui class.
  * @author Werner Mayer

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>396</width>
-    <height>834</height>
+    <height>882</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,16 +42,37 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cb_materials">
-        <item>
-         <property name="text">
-          <string>choose...</string>
-         </property>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_materials">
+          <item>
+           <property name="text">
+            <string>choose...</string>
+           </property>
+          </item>
+         </widget>
         </item>
-       </widget>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Material card</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Materaial name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="l_mat_name">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QLabel" name="l_mat_description">
@@ -67,51 +88,42 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_references">
-     <property name="title">
-      <string>References</string>
+    <widget class="QGroupBox" name="groupBox_basic_2">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="title">
+      <string>Editing material</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_28">
       <item>
-       <widget class="QLabel" name="l_label_text_1">
-        <property name="text">
-         <string>Leave blank to choose all remaining shapes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_Reference">
-        <property name="text">
-         <string>Add reference</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="list_References"/>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="1">
-         <widget class="QRadioButton" name="rb_standard">
+         <widget class="QPushButton" name="pushButton_editMat">
           <property name="text">
-           <string>Face, Edge</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>use FreeCAD material editor</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QRadioButton" name="rb_solid">
-          <property name="text">
-           <string>Body (3D)</string>
+         <widget class="QCheckBox" name="chbu_allow_edit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="l_label_text_5">
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>use this task panel</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -555,33 +567,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_external">
-     <property name="maximumSize">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
-       <width>16777215</width>
-       <height>1677215</height>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
-     <property name="title">
-      <string>External material resources</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_6">
-      <item>
-       <widget class="QPushButton" name="pushButton_saveas">
-        <property name="text">
-         <string>save customed material</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_MatWeb">
-        <property name="text">
-         <string>MatWeb database...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>

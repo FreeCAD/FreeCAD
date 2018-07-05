@@ -106,7 +106,7 @@ class Overlappingfaces():
 
     @staticmethod
     def hasnoparentstatic(isinsidedict,faceindex):
-        for smalllist in isinsidedict.itervalues():
+        for smalllist in isinsidedict.values():
             if faceindex in smalllist:
                 return False
         return True
@@ -124,7 +124,7 @@ class Overlappingfaces():
         dchildren=[]
         for child in isinsidedict.get(parent,[]):
             direct = True
-            for key, value in isinsidedict.iteritems():
+            for key, value in isinsidedict.items():
                 if key != parent and child in value and parent not in value:
                     direct = False
             if direct:
@@ -190,14 +190,14 @@ class Overlappingfaces():
                 #del faces[tfi]
                 if tfi in isinsidedict:
                     del isinsidedict[tfi]
-                for key,value in isinsidedict.iteritems():
+                for key,value in isinsidedict.items():
                     if tfi in value:
                         newlist=value[:] #we work on a shallow copy of isinsidedict
                         newlist.remove(tfi)
                         isinsidedict[key]=newlist
 
         def hasnoparent(faceindex):
-            for smalllist in self.isinsidedict.itervalues():
+            for smalllist in self.isinsidedict.values():
                 if faceindex in smalllist:
                     return False
             return True

@@ -41,7 +41,6 @@
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgo_Fuse.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
@@ -153,6 +152,9 @@
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
+#if OCC_VERSION_HEX < 0x070300
+# include <BRepAlgo_Fuse.hxx>
+#endif
 #endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
@@ -1420,7 +1422,54 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
 
 bool TopoShape::isClosed() const
 {
-    return BRep_Tool::IsClosed(this->_Shape) ? true : false;
+    if (this->_Shape.IsNull())
+        return false;
+    bool closed = false;
+    switch (this->_Shape.ShapeType()) {
+    case TopAbs_SHELL:
+    case TopAbs_WIRE:
+    case TopAbs_EDGE:
+        closed = BRep_Tool::IsClosed(this->_Shape) ? true : false;
+        break;
+    case TopAbs_COMPSOLID:
+    case TopAbs_SOLID:
+        {
+            closed = true;
+            TopExp_Explorer xp(this->_Shape, TopAbs_SHELL);
+            while (xp.More()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+                xp.Next();
+            }
+        }
+        break;
+    case TopAbs_COMPOUND:
+        {
+            closed = true;
+            TopExp_Explorer xp;
+            for (xp.Init(this->_Shape, TopAbs_SHELL); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+            for (xp.Init(this->_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+                closed &= BRep_Tool::IsClosed(xp.Current()) ? true : false;
+            }
+        }
+        break;
+    case TopAbs_FACE:
+    case TopAbs_VERTEX:
+    case TopAbs_SHAPE:
+        closed = BRep_Tool::IsClosed(this->_Shape) ? true : false;
+        break;
+    }
+    return closed;
 }
 
 TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
@@ -1580,31 +1629,49 @@ TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
+#if OCC_VERSION_HEX < 0x070300
     BRepAlgo_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
+#else
+    throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
+#endif
 }
 
-TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
+TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
+#if OCC_VERSION_HEX < 0x060900
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
+#else
+    BRepAlgoAPI_Section mkSection;
+    mkSection.Init1(this->_Shape);
+    mkSection.Init2(shape);
+    mkSection.Approximation(approximate);
+    mkSection.Build();
+#endif
+    if (!mkSection.IsDone())
+        throw Base::RuntimeError("Section failed");
     return mkSection.Shape();
 }
 
-TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
+                                Standard_Real tolerance,
+                                Standard_Boolean approximate) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
+    (void)approximate;
     throw Base::RuntimeError("Multi section is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_Section mkSection;
     mkSection.SetRunParallel(true);
+    mkSection.Approximation(approximate);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {

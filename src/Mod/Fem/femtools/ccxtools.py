@@ -71,7 +71,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             if self.solver:
-                self.set_analysis_type()
                 self.setup_working_dir()
             else:
                 raise Exception('FEM: No solver found!')
@@ -192,12 +191,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.solver = None
                     # another solver was found --> We have more than one solver
                     # we do not know which one to use, so we use none !
-                    # print('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!')
+                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!\n')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
                 else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
+                    message = 'FEM: Multiple mesh in analysis not yet supported!'
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                    raise Exception(message + '\n')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
@@ -274,8 +276,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # analysis
         if not self.analysis:
             message += "No active Analysis\n"
-        if self.analysis_type not in self.known_analysis_types:
-            message += "Unknown analysis type: {}\n".format(self.analysis_type)
         if not self.working_dir:
             message += "Working directory not set\n"
         import os
@@ -285,7 +285,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if not self.solver:
             message += "No solver object defined in the analysis\n"
         else:
-            if self.analysis_type == "frequency":
+            if self.solver.AnalysisType not in self.known_analysis_types:
+                message += "Unknown analysis type: {}\n".format(self.solver.AnalysisType)
+            if self.solver.AnalysisType == "frequency":
                 if not hasattr(self.solver, "EigenmodeHighLimit"):
                     message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
                 elif not hasattr(self.solver, "EigenmodeLowLimit"):
@@ -336,10 +338,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "No YoungsModulus defined for at least one material.\n"
                 if 'PoissonRatio' not in mat_map:
                     message += "No PoissonRatio defined for at least one material.\n"  # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
-            if self.analysis_type == "frequency" or self.selfweight_constraints:
+            if self.solver.AnalysisType == "frequency" or self.selfweight_constraints:
                 if 'Density' not in mat_map:
                     message += "No Density defined for at least one material.\n"
-            if self.analysis_type == "thermomech":
+            if self.solver.AnalysisType == "thermomech":
                 if 'ThermalConductivity' in mat_map:
                     if not Units.Quantity(mat_map['ThermalConductivity']).Value:
                         message += "Value of ThermalConductivity is set to 0.0.\n"
@@ -359,10 +361,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
         # which analysis needs which constraints
         # no check in the regard of loads existence (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
-        if self.analysis_type == "static":
+        if self.solver.AnalysisType == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
-        if self.analysis_type == "thermomech":
+        if self.solver.AnalysisType == "thermomech":
             if not self.initialtemperature_constraints:
                 if not self.fluid_sections:
                     message += "Thermomechanical analysis: No initial temperature defined.\n"
@@ -455,7 +457,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.fluid_sections:
             if not self.selfweight_constraints:
                 message += "A fluid network analysis requires self weight constraint to be applied"
-            if self.analysis_type != "thermomech":
+            if self.solver.AnalysisType != "thermomech":
                 message += "A fluid network analysis can only be done in a thermomech analysis"
             has_no_references = False
             for f in self.fluid_sections:
@@ -493,19 +495,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             # self.working_dir does have a slash at the end
             self.inp_file_name = self.working_dir + self.base_name + '.inp'
 
-    ## Sets analysis type.
-    #  @param self The python object self
-    #  @param analysis_type type of the analysis.
-    def set_analysis_type(self, analysis_type=None):
-        if analysis_type is not None:
-            self.analysis_type = analysis_type
-        else:
-            try:
-                self.analysis_type = self.solver.AnalysisType
-            except:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-                self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
-
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
     #  @working_dir directory to be used for writing solver input file or files and executing solver
@@ -520,14 +509,14 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 try:
                     self.working_dir = self.fem_prefs.GetString("WorkingDir")
                 except:
-                    print('Could not set working directory to FEM Preferences working directory.')
+                    FreeCAD.Console.PrintError('Could not set working directory to FEM Preferences working directory.\n')
             else:
-                print('FEM preferences working dir is not set, the solver working directory is used.')
+                FreeCAD.Console.PrintMessage('FEM preferences working dir is not set, the solver working directory is used.\n')
                 if self.solver.WorkingDir:
                     try:
                         self.working_dir = self.solver.WorkingDir
                     except:
-                        print('Could not set working directory to solver working directory.')
+                        FreeCAD.Console.PrintError('Could not set working directory to solver working directory.\n')
 
         # check working_dir has a slash at the end, if not add one
         self.working_dir = os.path.join(self.working_dir, '')
@@ -536,11 +525,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             try:
                 os.makedirs(self.working_dir)
             except:
-                print("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                FreeCAD.Console.PrintError("Dir \'{}\' doesn't exist and cannot be created.\n".format(self.working_dir))
                 import tempfile
                 self.working_dir = tempfile.gettempdir()
-                print("Dir \'{}\' will be used instead.".format(self.working_dir))
-        print('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir)
+                FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
+        FreeCAD.Console.PrintMessage('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir + '\n')
         # Update inp file name
         self.set_inp_file_name()
 
@@ -557,10 +546,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
                 self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
-                self.analysis_type, self.working_dir)
+                self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
-            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
+            FreeCAD.Console.PrintError("Unexpected error when writing CalculiX input file: {}\n".format(sys.exc_info()[0]))
             raise
 
     ## Sets CalculiX ccx binary path and validates if the binary can be executed
@@ -630,7 +619,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(str(e))
-            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
             raise Exception(error_message)
@@ -695,21 +684,24 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             ret_code = self.start_ccx()
             self.finished.emit(ret_code)
             progress_bar.stop()
+            if ret_code or self.ccx_stderr:
+                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                self.has_for_nonpositive_jacobians()
+                FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+            else:
+                FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
-            print("Running analysis failed! {}".format(message))
-        if ret_code or self.ccx_stderr:
-            print("Analysis failed with exit code {}".format(ret_code))
-            print("--------start of stderr-------")
-            print(self.ccx_stderr)
-            print("--------end of stderr---------")
-            print("--------start of stdout-------")
-            print(self.ccx_stdout)
-            self.has_for_nonpositive_jacobians()
-            print("--------end of stdout---------")
+            FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
+            # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
-            print('CalculiX returned an error due to nonpositive jacobian elements.')
+            FreeCAD.Console.PrintError('CalculiX returned an error due to nonpositive jacobian elements.\n')
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
@@ -727,10 +719,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = 'nonpositive_jacobian_elenodes = ' + str(nonpositive_jacobian_elenodes)
             command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = nonpositive_jacobian_elenodes"
-            print('nonpositive_jacobian_elements = ' + str(nonpositive_jacobian_elements))
-            print(command_for_nonposjacnodes)
-            print(command_to_highlight)
-            print('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n')  # command to reset the Highlighted Nodes
+            FreeCAD.Console.PrintMessage('nonpositive_jacobian_elements = {}\n'.format(nonpositive_jacobian_elements))
+            FreeCAD.Console.PrintMessage(command_for_nonposjacnodes + '\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             if FreeCAD.GuiUp:
                 import FreeCADGui
                 FreeCADGui.doCommand(command_for_nonposjacnodes)
@@ -795,10 +787,10 @@ def get_refshape_type(fem_doc_object):
         first_ref_obj = fem_doc_object.References[0]
         first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
-        print(fem_doc_object.Name + ' has ' + st + ' reference shapes.')
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
         return st
     else:
-        print(fem_doc_object.Name + ' has empty References.')
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
         return ''
 
 ##  @}

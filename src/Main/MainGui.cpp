@@ -71,6 +71,29 @@ const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2
 void InitMiniDumpWriter(const std::string&);
 #endif
 
+class Redirection
+{
+public:
+    Redirection(FILE* f)
+        : fi(Base::FileInfo::getTempFileName()), file(f)
+    {
+#ifdef WIN32
+        _wfreopen(fi.toStdWString().c_str(),L"w",file);
+#else
+        freopen(fi.filePath().c_str(),"w",file);
+#endif
+    }
+    ~Redirection()
+    {
+        fclose(file);
+        fi.deleteFile();
+    }
+
+private:
+    Base::FileInfo fi;
+    FILE* file;
+};
+
 #if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
 QString myDecoderFunc(const QByteArray &localFileName)
 {
@@ -132,6 +155,13 @@ int main( int argc, char ** argv )
         argv_.push_back(0); // 0-terminated string
     }
 #endif
+
+#if PY_MAJOR_VERSION >= 3
+#if defined(_MSC_VER) && _MSC_VER <= 1800
+    // See InterpreterSingleton::init
+    Redirection out(stdout), err(stderr), inp(stdin);
+#endif
+#endif // PY_MAJOR_VERSION
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
@@ -357,7 +387,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     stMDEI.ThreadId = GetCurrentThreadId(); 
     stMDEI.ExceptionPointers = pEx; 
     stMDEI.ClientPointers = true; 
-    // try to create an miniDump: 
+    // try to create a miniDump: 
     if (s_pMDWD( 
       GetCurrentProcess(), 
       GetCurrentProcessId(), 

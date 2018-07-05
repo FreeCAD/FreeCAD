@@ -29,6 +29,7 @@ import numpy
 import Part
 import Path
 import PathScripts
+import PathScripts.PathGeom as PathGeom
 import TechDraw
 
 from DraftGeomUtils import geomType
@@ -36,7 +37,6 @@ from FreeCAD import Vector
 from PathScripts import PathJob
 from PathScripts import PathJobCmd
 from PathScripts import PathLog
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 from PySide import QtGui
 
@@ -397,22 +397,6 @@ def reverseEdge(e):
         newedge = Part.makeLine(endpt, stpt)
 
     return newedge
-
-
-def changeTool(obj, job):
-    tlnum = 0
-    for p in job.Group:
-        if not hasattr(p, "Group"):
-            if isinstance(p.Proxy, PathScripts.PathToolController.ToolController) and p.ToolNumber > 0:
-                tlnum = p.ToolNumber
-            if p == obj:
-                return tlnum
-        elif hasattr(p, "Group"):
-            for g in p.Group:
-                if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
-                    tlnum = g.ToolNumber
-                if g == obj:
-                    return tlnum
 
 
 def getToolControllers(obj):
@@ -781,14 +765,14 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
         return 0.0
     else:
-        if tool.CuttingEdgeAngle < 0 or tool.CuttingEdgeAngle >= 90:
-            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be <90° and >=0°") % tool.CuttingEdgeAngle)
+        if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
+            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
             return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter/2) / math.tan(theta) 
+        length = (tool.Diameter/2) / math.tan(theta/2) 
         if length < 0:
             PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
             return 0.0

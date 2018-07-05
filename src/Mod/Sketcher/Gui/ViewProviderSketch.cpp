@@ -218,6 +218,7 @@ struct EditData {
     std::set<int> SelCurvSet; // also holds cross axes at -1 and -2
     std::set<int> SelConstraintSet;
     std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
+    std::vector<int> PointIdToGeoId; // conversion of SoCoordinate3 index to GeoId
 
     // helper data structures for the constraint rendering
     std::vector<ConstraintType> vConstrType;
@@ -309,9 +310,11 @@ ViewProviderSketch::ViewProviderSketch()
     zHighLines=0.007f;  // Lines that are somehow selected to be in the high position (higher than other line categories)
     zHighLine=0.008f;   // highlighted line (of any group)
     zConstr=0.009f; // constraint not construction
-    zPoints=0.010f;
-    zHighlight=0.011f;
-    zText=0.011f;
+    //zPoints=0.010f;
+    zLowPoints = 0.010f;
+    zHighPoints = 0.011f;
+    zHighlight=0.012f;
+    zText=0.012f;
     
 
     xInit=0;
@@ -2498,6 +2501,18 @@ void ViewProviderSketch::updateColor(void)
     
     SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
   //int32_t *index = edit->CurveSet->numVertices.startEditing();
+    SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+    
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    
+    // 1->Normal Geometry, 2->Construction, 3->External
+    int topid = hGrpp->GetInt("TopRenderGeometryId",1);
+    int midid = hGrpp->GetInt("MidRenderGeometryId",2);
+    
+    float zNormPoint = (topid==1?zHighPoints:(midid==1 && topid!=2)?zHighPoints:zLowPoints);
+    float zConstrPoint = (topid==2?zHighPoints:(midid==2 && topid!=1)?zHighPoints:zLowPoints);
+
+    float x,y,z;
     
     // colors of the point set
     if (edit->FullyConstrained) {
@@ -2508,6 +2523,18 @@ void ViewProviderSketch::updateColor(void)
         for (int  i=0; i < PtNum; i++)
             pcolor[i] = VertexColor;
     }
+    
+    for (int  i=0; i < PtNum; i++) { // 0 is the origin
+        pverts[i].getValue(x,y,z);
+        const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
+        if(tmp && z < zHighlight) {
+            if(tmp->Construction)
+                pverts[i].setValue(x,y,zConstrPoint);
+            else
+                pverts[i].setValue(x,y,zNormPoint);
+        }
+    }
+    
 
     if (edit->PreselectCross == 0) {
         pcolor[0] = PreselectColor;
@@ -2527,19 +2554,14 @@ void ViewProviderSketch::updateColor(void)
     // colors of the curves
   //int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
   //int extGeoCount = getSketchObject()->getExternalGeometryCount();
-    
-    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    
-    // 1->Normal Geometry, 2->Construction, 3->External
-    int topid = hGrpp->GetInt("TopRenderGeometryId",1);
-    int midid = hGrpp->GetInt("MidRenderGeometryId",2);
-    //int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
+       
+
     
     float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
     
-    float x,y,z;
+    
     
     int j=0; // vertexindex
     
@@ -3172,7 +3194,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 }
 
 
-/// Note: labels, labelColors, and boundignBoxes are all
+/// Note: labels, labelColors, and boundingBoxes are all
 /// assumed to be the same length.
 QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                                             const QColor &iconColor,
@@ -3312,6 +3334,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     assert(int(geomlist->size()) >= 2);
 
     edit->CurvIdToGeoId.clear();
+    edit->PointIdToGeoId.clear();
+    
+    edit->PointIdToGeoId.push_back(-1); // root point
     
     // information layer
     if(rebuildinformationlayer) {
@@ -3345,6 +3370,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) { // add a point
             const Part::GeomPoint *point = static_cast<const Part::GeomPoint *>(*it);
             Points.push_back(point->getPoint());
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
             const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(*it);
@@ -3355,6 +3381,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(lineSeg->getEndPoint());
             Index.push_back(2);
             edit->CurvIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
@@ -3374,6 +3402,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { // add an ellipse
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
@@ -3393,6 +3422,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) { // add an arc
             const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(*it);
@@ -3426,6 +3456,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { // add an arc
             const Part::GeomArcOfEllipse *arc = static_cast<const Part::GeomArcOfEllipse *>(*it);
@@ -3459,6 +3492,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) { 
             const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(*it);
@@ -3492,6 +3528,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
         } 
         else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) { 
             const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(*it);
@@ -3525,6 +3564,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             bsplineGeoIds.push_back(GeoId);
@@ -3557,6 +3599,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(startp);
             Points.push_back(endp);
+            edit->PointIdToGeoId.push_back(GeoId);
+            edit->PointIdToGeoId.push_back(GeoId);
             
             //***************************************************************************************************************
             // global information gathering for geometry information layer
@@ -3990,7 +4034,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     i=0; // setting up the point set
     for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++)
-        pverts[i].setValue(it->x,it->y,zPoints);
+        pverts[i].setValue(it->x,it->y,zLowPoints);
 
     edit->CurvesCoordinate->point.finishEditing();
     edit->CurveSet->numVertices.finishEditing();
@@ -5502,9 +5546,9 @@ void ViewProviderSketch::UpdateSolverInformation()
             }
             else if (!hasRedundancies) {
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with 1 degree of freedom"));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">1 degree</span></a> of freedom"));
                 else
-                    signalSetUp(tr("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">%1 degrees</span></a> of freedom").arg(dofs));
             }
             
             signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
@@ -5850,7 +5894,7 @@ void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
             edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
             // send to background
             pverts[oldPtId].getValue(x,y,z);
-            pverts[oldPtId].setValue(x,y,zPoints);
+            pverts[oldPtId].setValue(x,y,zLowPoints);
         }
         // bring to foreground
         pverts[newPtId].getValue(x,y,z);
@@ -5874,7 +5918,7 @@ void ViewProviderSketch::resetPreselectPoint(void)
             SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
             float x,y,z;
             pverts[oldPtId].getValue(x,y,z);
-            pverts[oldPtId].setValue(x,y,zPoints);
+            pverts[oldPtId].setValue(x,y,zLowPoints);
             edit->PointsCoordinate->point.finishEditing();
         }
         edit->PreselectPoint = -1;
@@ -5903,7 +5947,7 @@ void ViewProviderSketch::removeSelectPoint(int SelectPoint)
         // send to background
         float x,y,z;
         pverts[PtId].getValue(x,y,z);
-        pverts[PtId].setValue(x,y,zPoints);
+        pverts[PtId].setValue(x,y,zLowPoints);
         edit->SelPointSet.erase(PtId);
         edit->PointsCoordinate->point.finishEditing();
     }
@@ -5918,7 +5962,7 @@ void ViewProviderSketch::clearSelectPoints(void)
         for (std::set<int>::const_iterator it=edit->SelPointSet.begin();
              it != edit->SelPointSet.end(); ++it) {
             pverts[*it].getValue(x,y,z);
-            pverts[*it].setValue(x,y,zPoints);
+            pverts[*it].setValue(x,y,zLowPoints);
         }
         edit->PointsCoordinate->point.finishEditing();
         edit->SelPointSet.clear();

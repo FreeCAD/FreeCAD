@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>Complex Part</source>
-      <translation>Сложная часть</translation>
+      <translation>Сложная Деталь</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
@@ -331,7 +331,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
       <source>License</source>
-      <translation>Лицензионное соглашение</translation>
+      <translation>Лицензия</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
@@ -342,6 +342,21 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>https://www.freecadweb.org/wiki/Getting_started/ru</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Загрузить пример анализа нового решателя FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

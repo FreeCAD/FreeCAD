@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Zeige Kalkulationstabelle</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Stellt die Vordergrundfarbe der Zelle(n) ein</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Stellt die Vordergrundfarbe der Tabellen Zelle(n) ein</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Stellt die Hintergrundfarbe der Zelle(n) ein</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Stellt die Hintergrundfarbe der Tabellen Zelle(n) ein</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

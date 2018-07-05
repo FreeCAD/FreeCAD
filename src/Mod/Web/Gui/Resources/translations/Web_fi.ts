@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="78"/>
       <source>Go back to the previous page</source>
-      <translation>Siirry takaisin edelliselle sivulle</translation>
+      <translation>Edellinen sivu</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>Päivitä web-sivu</translation>
+      <translation>Päivitä sivu</translation>
     </message>
   </context>
   <context>
@@ -61,12 +61,12 @@
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>Stop loading</source>
-      <translation>Lopeta lataaminen</translation>
+      <translation>Lopeta lataus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Stop the current loading</source>
-      <translation>Lopeta nykyinen lataaminen</translation>
+      <translation>Lopeta lataus</translation>
     </message>
   </context>
   <context>
@@ -79,7 +79,7 @@
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Zoom in</source>
-      <translation>Lähennä</translation>
+      <translation>Suurenna kokoa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Zoom out</source>
-      <translation>Loitonna</translation>
+      <translation>Pienennä kokoa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="223"/>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Avaa sivusto...</translation>
+      <translation>Avaa sivu...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Avaa FreeCADin Web-sivun</translation>
+      <translation>Avaa Web-sivun FreeCADissa</translation>
     </message>
   </context>
   <context>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Lähetä</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>

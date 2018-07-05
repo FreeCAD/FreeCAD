@@ -451,7 +451,7 @@ private:
 /** Float properties
  * This is the father of all properties handling floats.
  * Use this type only in rare cases. Mostly you want to 
- * use the more specialized types like e.g. PropertyLenth.
+ * use the more specialized types like e.g. PropertyLength.
  * These properties also fulfill the needs of the unit system.
  * See PropertyUnits.h for all properties with units.
  */

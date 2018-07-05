@@ -626,12 +626,16 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
     if (input.IsNull()) {
         return transShape;
     }
-    
     try {
         // Make tempTransform scale the object around it's centre point and
         // mirror about the Y axis
         gp_Trsf tempTransform;
-        tempTransform.SetScale(inputCenter, scale);
+        //BRepBuilderAPI_Transform will loop forever if asked to use 0.0 as scale
+        if (!(scale > 0.0)) {
+            tempTransform.SetScale(inputCenter, 1.0);
+        } else {
+            tempTransform.SetScale(inputCenter, scale);
+        }
         gp_Trsf mirrorTransform;
         mirrorTransform.SetMirror( gp_Ax2(inputCenter, gp_Dir(0, -1, 0)) );
         tempTransform.Multiply(mirrorTransform);

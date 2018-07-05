@@ -166,7 +166,7 @@ private:
 };
 
 /**
- * The DocumentObjectObserver class checks for a list of ojects
+ * The DocumentObjectObserver class checks for a list of objects
  * which of them get removed.
  *
  * @author Werner Mayer

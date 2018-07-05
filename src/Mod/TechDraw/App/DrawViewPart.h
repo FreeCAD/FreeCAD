@@ -100,17 +100,6 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    App::PropertyFloat  LineWidth;
-    App::PropertyFloat  HiddenWidth;
-    App::PropertyFloat  IsoWidth;
-    App::PropertyFloat  ExtraWidth;
-    App::PropertyBool   ArcCenterMarks;
-    App::PropertyFloat  CenterScale;
-    App::PropertyBool   HorizCenterLine;
-    App::PropertyBool   VertCenterLine;
-    App::PropertyBool   ShowSectionLine;
-
-
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
@@ -168,6 +157,7 @@ public:
     virtual TopoDS_Shape getSourceShape(void) const; 
     virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; 
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
+    bool isIso(void) const;
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
@@ -186,7 +176,7 @@ protected:
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
     void getRunControl(void);
-
+    
     bool m_sectionEdges;
     bool m_handleFaces;
 

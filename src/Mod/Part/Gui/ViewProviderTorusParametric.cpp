@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderTorusParametric.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;

@@ -127,7 +127,7 @@
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
           <property name="toolTip">
-           <string>deugging option</string>
+           <string>Debugging option</string>
           </property>
           <property name="text">
            <string>Show Section Edges</string>
@@ -156,29 +156,6 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="lbl_TemplateDot">
-          <property name="text">
-           <string>Template Dot Size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_TemplateDot">
-          <property name="toolTip">
-           <string>EditableText Dot Size in mm</string>
-          </property>
-          <property name="value">
-           <double>3.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TemplateDotSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
@@ -603,33 +580,14 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,0">
-        <item row="1" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_LabelSize">
-          <property name="toolTip">
-           <string>Label height in millimeters</string>
-          </property>
-          <property name="minimum">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>LabelSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Labels</cstring>
-          </property>
-         </widget>
-        </item>
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0" columnstretch="0,0,0">
         <item row="0" column="1">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -646,23 +604,93 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefLineEdit" name="le_LabelFont">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>osifont</string>
+           <string>Label Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefFontBox" name="pfb_LabelFont">
+          <property name="toolTip">
+           <string>Font for View Labels</string>
+          </property>
+          <property name="currentFont">
+           <font>
+            <family>osifont</family>
+           </font>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelFont</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Labels</cstring>
+           <cstring>/Mod/TechDraw/Labels</cstring>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_6">
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_TemplateDot">
           <property name="text">
-           <string>Label Size</string>
+           <string>Template Dot Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize">
+          <property name="toolTip">
+           <string>View Label size in units</string>
+          </property>
+          <property name="value">
+           <double>3.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LabelSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Labels</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_TemplateDot">
+          <property name="toolTip">
+           <string>Green edit dot size in units</string>
+          </property>
+          <property name="value">
+           <double>3.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TemplateDotSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
@@ -706,6 +734,11 @@
    <header>Gui/FileDialog.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
@@ -736,8 +769,13 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -1100,7 +1100,7 @@ CmdMeshEvaluation::CmdMeshEvaluation()
     sAppModule    = "Mesh";
     sGroup        = QT_TR_NOOP("Mesh");
     // needs two ampersands to display one
-    sMenuText     = QT_TR_NOOP("Evaluate && Repair mesh...");
+    sMenuText     = QT_TR_NOOP("Evaluate and repair mesh...");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to analyze and repair a mesh");
     sWhatsThis    = "Mesh_Evaluation";
     sStatusTip    = QT_TR_NOOP("Opens a dialog to analyze and repair a mesh");

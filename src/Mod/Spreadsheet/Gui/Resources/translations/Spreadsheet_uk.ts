@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Показати таблицю</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation type="unfinished">Set cell(s) foreground color</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Встановити фоновий колір клітинки(ок)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Встановити фоновий колір клітинки(ок) таблиці</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

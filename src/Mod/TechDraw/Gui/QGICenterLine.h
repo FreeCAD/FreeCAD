@@ -48,6 +48,8 @@ public:
     void setBounds(double x1,double y1,double x2,double y2);
     virtual void draw();
 
+    void setIntersection(bool isIntersecting);
+
 protected:
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();
@@ -58,6 +60,7 @@ private:
     QGraphicsPathItem* m_line;           //primpath?
     QPointF            m_start;
     QPointF            m_end;
+    bool               m_isintersection;
 };
 
 }

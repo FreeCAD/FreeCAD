@@ -83,6 +83,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i6=0;
     int i7=0;
     int i8=0;
+    PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
         if (f != DOUBLE_MAX) {
             *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
@@ -182,9 +183,9 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         PyErr_Clear();
         char* string;
         if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
-        QString qstr = QString::fromUtf8(string);
-        PyMem_Free(string);
-        quant = Quantity::parse(qstr);
+            QString qstr = QString::fromUtf8(string);
+            PyMem_Free(string);
+            quant = Quantity::parse(qstr);
         }
     }
 

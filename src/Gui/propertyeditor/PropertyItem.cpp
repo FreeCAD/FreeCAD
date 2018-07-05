@@ -2178,6 +2178,7 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+    text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
     return QVariant(text);
 }
@@ -2204,7 +2205,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
     QTextStream str(&data);
     str << "[";
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << "unicode('" << *it << "', 'utf-8'),";
+        QString text(*it);
+        text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
+        str << "unicode('" << text << "', 'utf-8'),";
     }
     str << "]";
     setPropertyValue(data);

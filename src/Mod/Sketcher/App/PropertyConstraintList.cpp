@@ -151,7 +151,7 @@ void PropertyConstraintList::setValue(const Constraint* lValue)
         if (renamed.size() > 0)
             signalConstraintsRenamed(renamed);
 
-        /* Collect infor about removals */
+        /* Collect info about removals */
         for (unsigned int i = start; i < _lValueList.size(); i++) {
             valueMap.erase(_lValueList[i]->tag);
             removed.insert(makePath(i, _lValueList[i]));

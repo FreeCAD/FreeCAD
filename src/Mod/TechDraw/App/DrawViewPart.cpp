@@ -118,14 +118,12 @@ PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
     static const char *group = "Projection";
-    static const char *fgroup = "Format";
-    static const char *lgroup = "Lines";
-    static const char *sgroup = "Show";
+    static const char *sgroup = "HLR Parameters";
     nowUnsetting = false;
+
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
-    bool coarseView = hGrp->GetBool("CoarseView", false);
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -134,7 +132,8 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
-    //properties that affect Appearance
+    //properties that control HLR algoaffect Appearance
+    bool coarseView = hGrp->GetBool("CoarseView", false);
     ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
     //visible outline
     ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
@@ -145,33 +144,9 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
-    
-    //default line weights
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = LineGroup::lineGroupFactory(lgName);
-    double weight = lg->getWeight("Thick");
-    ADD_PROPERTY_TYPE(LineWidth,(weight),lgroup,App::Prop_None,"The thickness of visible lines");
-    weight = lg->getWeight("Thin");
-    ADD_PROPERTY_TYPE(HiddenWidth,(weight),lgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    weight = lg->getWeight("Graphic");
-    ADD_PROPERTY_TYPE(IsoWidth,(weight),lgroup,App::Prop_None,"The thickness of isoparameter/center/section lines, if enabled");
-    weight = lg->getWeight("Extra");
-    ADD_PROPERTY_TYPE(ExtraWidth,(weight),lgroup,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
-
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),lgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),lgroup,App::Prop_None,"Show a vertical centerline through view");
-
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),sgroup,App::Prop_None,"Center marks on/off");
-    ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
-
-    //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup,App::Prop_None,"Show/hide section line if applicable");
 
     geometryObject = nullptr;
     getRunControl();
-    delete lg;
 }
 
 DrawViewPart::~DrawViewPart()
@@ -306,7 +281,18 @@ short DrawViewPart::mustExecute() const
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
                     Scale.isTouched() ||
-                    ScaleType.isTouched());
+                    ScaleType.isTouched() ||
+                    Perspective.isTouched() ||
+                    Focus.isTouched() ||
+                    SmoothVisible.isTouched() ||
+                    SeamVisible.isTouched() ||
+                    IsoVisible.isTouched() ||
+                    HardHidden.isTouched() ||
+                    SmoothHidden.isTouched() ||
+                    SeamHidden.isTouched() ||
+                    IsoHidden.isTouched() ||
+                    IsoCount.isTouched() ||
+                    CoarseView.isTouched());
     }
 
     if (result) {
@@ -821,6 +807,17 @@ void DrawViewPart::unsetupObject()
 
 }
 
+//! is this an Isometric projection?
+bool DrawViewPart::isIso(void) const
+{
+    bool result = false;
+    Base::Vector3d dir = Direction.getValue();
+    if ( DrawUtil::fpCompare(fabs(dir.x),fabs(dir.y))  &&
+         DrawUtil::fpCompare(fabs(dir.x),fabs(dir.z)) ) {
+        result = true;
+    }
+    return result;
+}
 
 PyObject *DrawViewPart::getPyObject(void)
 {

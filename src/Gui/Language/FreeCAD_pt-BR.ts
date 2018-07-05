@@ -127,11 +127,6 @@
       <translation>Movimento do Spaceball</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensibilidade global:
-</translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Modo dominante</translation>
     </message>
@@ -162,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Inverter</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilidade global:</translation>
     </message>
   </context>
   <context>
@@ -392,7 +391,22 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD não chegaria a lado nenhum sem os seus esforços:</translation>
+      <translation>FreeCAD não chegaria em lugar nenhum sem os esforços deles:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licença</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliotecas</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Este software utiliza componentes de código aberto, cujos direitos autorais e outros direitos proprietários pertencem a seus respectivos proprietários:</translation>
     </message>
     <message>
       <source>License</source>
@@ -576,7 +590,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>CheckBox</source>
-      <translation>Caixa de verificação</translation>
+      <translation>Caixa de seleção</translation>
     </message>
   </context>
   <context>
@@ -1243,7 +1257,7 @@ Defina outro atalho.</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>Permitir quebra de linha</translation>
     </message>
   </context>
   <context>
@@ -1254,23 +1268,23 @@ Defina outro atalho.</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
-      <translation type="unfinished">Small (%1px)</translation>
+      <translation>Pequeno (%1px)</translation>
     </message>
     <message>
       <source>Medium (%1px)</source>
-      <translation type="unfinished">Medium (%1px)</translation>
+      <translation>Médio (%1px)</translation>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation type="unfinished">Large (%1px)</translation>
+      <translation>Grande (%1px)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation type="unfinished">Extra large (%1px)</translation>
+      <translation>Extra grande (%1px)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation type="unfinished">Custom (%1px)</translation>
+      <translation>Personalizado (%1px)</translation>
     </message>
   </context>
   <context>
@@ -1384,27 +1398,25 @@ Este arquivo já existe.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Renomear um arquivo de Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Digite o novo nome:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' já existe.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Falha ao renomear</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Falha ao renomear para '%1'. Talvez um erro de permissão de arquivo?</translation>
     </message>
   </context>
   <context>
@@ -1767,11 +1779,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Uma expressão de pesquisa para filtrar os resultados acima</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Nenhum (remove o vinculo)</translation>
     </message>
   </context>
   <context>
@@ -1980,7 +1992,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <translation>Usar o OpenGL Vertex Buffer Object (experimental)</translation>
     </message>
   </context>
   <context>
@@ -2136,8 +2148,8 @@ Por favor especifique outro diretório.</translation>
       <translation>Salvar miniatura no arquivo quando salvar um documento </translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Criar arquivos de backup ao salvar o documento</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Número máximo de arquivos de backup a manter quando salvar novamente o documento</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2245,11 +2257,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Adicionar o logotipo do programa à miniatura gerada</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Uma URL onde o usuário pode encontrar mais detalhes sobre a licença</translation>
     </message>
   </context>
   <context>
@@ -2507,11 +2519,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation type="unfinished">Transparent</translation>
+      <translation>Transparente</translation>
     </message>
     <message>
       <source>Add watermark</source>
-      <translation type="unfinished">Add watermark</translation>
+      <translation>Adicionar marca d'água</translation>
     </message>
   </context>
   <context>
@@ -2609,15 +2621,15 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation>Edifício Euro (cm ³/m ²/m)</translation>
+      <translation>Construção Euro (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>Edifício US (ft-in/sqft/cuft)</translation>
+      <translation>Construção US (ft-in/sqft/cuft)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Peças pequenas métricas &amp; CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2659,8 +2671,8 @@ Por favor especifique outro diretório.</translation>
       <translation>Raio do Ponteiro (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Define a área de confusão para escolher elementos na vista 3D. Valores maiores facilitam a escolha, mas alguns recursos (objetos) mais pequenos podem não ser possíveis de selecionar.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Define a área de confusão para escolher elementos na vista 3D. Valores maiores facilitam a escolha, mas alguns objetos menores podem não ser possíveis de selecionar.</translation>
     </message>
   </context>
   <context>
@@ -2838,35 +2850,33 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+      <translation>Tem certeza que deseja excluir os diretórios temporários selecionados?</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Ao excluir o diretório temporário selecionado, não será mais possível recuperar os arquivos contidos nele depois.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>Tem certeza que deseja excluir todos os diretórios temporários?</translation>
     </message>
     <message>
       <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Ao excluir o diretório temporário selecionado, não será mais possível recuperar os arquivos contidos nele depois.</translation>
     </message>
     <message>
       <source>Finished</source>
-      <translation type="unfinished">Finished</translation>
+      <translation>Concluído</translation>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>Diretórios temporários excluídos.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
-
-The 'Status' column shows whether the document could be recovered.</translation>
+      <translation>Pressione 'Iniciar recuperação' para iniciar o processo de recuperação do documento listado abaixo. A coluna 'Estado' mostra se o documento pode ser recuperado.</translation>
     </message>
   </context>
   <context>
@@ -2885,7 +2895,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Erro ao abrir o arquivo salvo: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
@@ -3233,7 +3243,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Utilizar o centro de massa</translation>
     </message>
   </context>
   <context>
@@ -3347,10 +3357,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Vista Combinada</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projeto</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3482,27 +3488,27 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Marcar para recalcular</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Marcar este objeto para ser recalculado</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Vista de Seleção</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Número de elementos selecionados</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Duplicar subelemento</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Cria uma cópia independente deste subelemento no documento</translation>
     </message>
   </context>
   <context>
@@ -3683,15 +3689,15 @@ Deseja salvar as alterações?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Não foi possível encontrar o Graphviz em seu sistema.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Leia mais sobre isso.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Deseja especificar seu caminho de instalação, caso já esteja instalado?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -4020,14 +4026,14 @@ Deseja prosseguir?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Mudar o objeto vinculado</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Mudar os objetos vinculados</translation>
     </message>
   </context>
   <context>
@@ -4283,15 +4289,15 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation type="unfinished">Increments</translation>
+      <translation>Incrementos</translation>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <translation>Incremento de deslocamento: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <translation>Incremento de rotação: </translation>
     </message>
   </context>
   <context>
@@ -4354,15 +4360,15 @@ Do you want to specify another directory?</source>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Texto actualizado</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>O texto do objeto incluído mudou. Cancelar mudanças e recarregar o texto do objeto?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Sim, recarregar.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4370,7 +4376,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Deseja salvar suas alterações antes de fechar?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -4451,23 +4457,23 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation type="unfinished">Skip recomputes</translation>
+      <translation>Pular recálculos</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation type="unfinished">Enable or disable recomputations of document</translation>
+      <translation>Ativa/desativa o recálculo automático do documento</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Marcar para recalcular</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Marcar este objeto para ser recalculado</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, Nome interno: %2</translation>
     </message>
   </context>
   <context>
@@ -4500,27 +4506,27 @@ Do you want to specify another directory?</source>
     <name>MAC_APPLICATION_MENU</name>
     <message>
       <source>Services</source>
-      <translation type="unfinished">Services</translation>
+      <translation>Serviços</translation>
     </message>
     <message>
       <source>Hide %1</source>
-      <translation type="unfinished">Hide %1</translation>
+      <translation>Ocultar %1</translation>
     </message>
     <message>
       <source>Hide Others</source>
-      <translation type="unfinished">Hide Others</translation>
+      <translation>Ocultar outros</translation>
     </message>
     <message>
       <source>Show All</source>
-      <translation type="unfinished">Show All</translation>
+      <translation>Mostrar tudo</translation>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation type="unfinished">Preferences...</translation>
+      <translation>Preferências...</translation>
     </message>
     <message>
       <source>Quit %1</source>
-      <translation type="unfinished">Quit %1</translation>
+      <translation>Encerrar %1</translation>
     </message>
     <message>
       <source>About %1</source>
@@ -4664,7 +4670,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>DAG View</source>
-      <translation type="unfinished">DAG View</translation>
+      <translation>Vista DAG</translation>
     </message>
   </context>
   <context>
@@ -5021,34 +5027,38 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
+      <translation> %1.%2.%3 </translation>
     </message>
     <message>
       <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
+      <translation>Deslocamento: </translation>
     </message>
     <message>
       <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
+      <translation>Rotação: </translation>
     </message>
     <message>
       <source>Delete group content?</source>
-      <translation type="unfinished">Delete group content?</translation>
+      <translation>Excluir conteúdo do grupo?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 não está vazio. Excluir seu conteúdo também?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exportação falhou</translation>
     </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
       <source>Not allowed:</source>
-      <translation type="unfinished">Not allowed:</translation>
+      <translation>Não é permitido:</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>Seleção não permitida pelo filtro</translation>
     </message>
   </context>
   <context>
@@ -5596,11 +5606,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Criar grupo</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Criar um grupo novo para ordenar objetos</translation>
     </message>
   </context>
   <context>
@@ -6156,11 +6166,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation type="unfinished">Select visible objects</translation>
+      <translation>Selecionar objetos visíveis</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation type="unfinished">Select visible objects in the active document</translation>
+      <translation>Selecionar objetos visíveis no documento ativo</translation>
     </message>
   </context>
   <context>
@@ -6485,8 +6495,8 @@ Be aware the point where you click matters.</source>
       <translation>Criar uma nova vista</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Cria uma nova janela de exibição para o documento ativo</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Criar uma nova vista para o documento ativo</translation>
     </message>
   </context>
   <context>
@@ -6842,7 +6852,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Exibir a janela principal em tela cheia</translation>
     </message>
   </context>
   <context>
@@ -6995,9 +7005,9 @@ Be aware the point where you click matters.</source>
 Are you sure you want to continue?
 
 </source>
-      <translation type="unfinished">The following, referencing objects might break.
+      <translation>Os seguintes objetos referenciados podem quebrar. 
 
-Are you sure you want to continue?
+Tem certeza que deseja continuar?
 
 </translation>
     </message>
@@ -7046,19 +7056,19 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>Linha oculta</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>Modo de linha oculta</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Sem sombreamento</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Modo sem sombreamento</translation>
     </message>
   </context>
   <context>
@@ -7095,7 +7105,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Revert document</source>
-      <translation type="unfinished">Revert document</translation>
+      <translation>Reverter o documento</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>

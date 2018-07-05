@@ -45,6 +45,7 @@
 # include <QTimer>
 # include <boost/signal.hpp>
 # include <boost/bind.hpp>
+# include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif

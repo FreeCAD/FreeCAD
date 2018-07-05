@@ -30,7 +30,8 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-
+import FemGui  # needed to display the icons in TreeView
+False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 import FemGui
@@ -63,13 +64,15 @@ class _ViewProviderFemResultMechanical:
         return
 
     def doubleClicked(self, vobj):
-        if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-            FreeCADGui.activateWorkbench("FemWorkbench")
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def setEdit(self, vobj, mode=0):
@@ -91,7 +94,7 @@ class _ViewProviderFemResultMechanical:
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         self.Object.Mesh.ViewObject.hide()  # hide the mesh after result viewing is finished, but do not reset the coloring
-        return
+        return True
 
     def __getstate__(self):
         return None
@@ -252,7 +255,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.StressValues)
         (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def max_shear_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "MaxShear"
@@ -261,7 +264,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.MaxShear)
         (minm, avg, maxm) = self.get_result_stats("MaxShear")
         self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def max_prin_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "MaxPrin"
@@ -270,7 +273,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.PrincipalMax)
         (minm, avg, maxm) = self.get_result_stats("MaxPrin")
         self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def temperature_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Temp"
@@ -279,7 +282,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Temperature)
         (minm, avg, maxm) = self.get_result_stats("Temp")
         self.set_result_stats("K", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def massflowrate_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "MFlow"
@@ -288,7 +291,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.MassFlowRate)
         (minm, avg, maxm) = self.get_result_stats("MFlow")
         self.set_result_stats("kg/s", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def networkpressure_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "NPress"
@@ -297,7 +300,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.NetworkPressure)
         (minm, avg, maxm) = self.get_result_stats("NPress")
         self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def min_prin_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "MinPrin"
@@ -306,7 +309,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.PrincipalMin)
         (minm, avg, maxm) = self.get_result_stats("MinPrin")
         self.set_result_stats("MPa", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def peeq_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Peeq"
@@ -315,7 +318,7 @@ class _TaskPanelFemResultShow:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.Peeq)
         (minm, avg, maxm) = self.get_result_stats("Peeq")
         self.set_result_stats("", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
@@ -357,7 +360,7 @@ class _TaskPanelFemResultShow:
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, UserDefinedFormula)
         self.set_result_stats("", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
         del x, y, z, T, Von, Peeq, P1, P2, P3, sx, sy, sz, ex, ey, ez, MF, NP  # Dummy use of the variables to get around flake8 error
 
     def select_displacement_type(self, disp_type):
@@ -367,13 +370,13 @@ class _TaskPanelFemResultShow:
                 self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, self.result_obj.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
-            d = zip(*self.result_obj.DisplacementVectors)
+            d = list(zip(*self.result_obj.DisplacementVectors))  # list is needed, as zib-object is not subscriptable in py3
             displacements = list(d[match[disp_type]])
             if self.suitable_results:
                 self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, displacements)
         (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def set_result_stats(self, unit, minm, avg, maxm):
         self.form.le_min.setProperty("unit", unit)
@@ -401,7 +404,7 @@ class _TaskPanelFemResultShow:
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeDisplacementByVectors(self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors)
         self.update_displacement()
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
         self.form.sb_displacement_factor.setValue(value)
@@ -473,12 +476,12 @@ class _TaskPanelFemResultShow:
     def reset_mesh_color(self):
         self.mesh_obj.ViewObject.NodeColor = {}
         self.mesh_obj.ViewObject.ElementColor = {}
-        node_numbers = self.mesh_obj.FemMesh.Nodes.keys()
+        node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
         zero_values = [0] * len(node_numbers)
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()  # if the taks panell is called from Command obj is not in edit mode thus reset edit does not cleses the dialog, may be do not call but set in edit instead
+        FreeCADGui.Control.closeDialog()  # if the tasks panel is called from Command obj is not in edit mode thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.ActiveDocument.resetEdit()
 
 

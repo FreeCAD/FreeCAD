@@ -155,8 +155,9 @@
         <file>icons/Sketcher_MapSketch.svg</file>
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
+        <file>icons/Sketcher_Move.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
+	<file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
@@ -164,6 +165,7 @@
         <file>icons/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/Sketcher_SelectConstraints.svg</file>
         <file>icons/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
+        <file>icons/Sketcher_SelectElementsWithDoFs.svg</file>
         <file>icons/Sketcher_SelectHorizontalAxis.svg</file>
         <file>icons/Sketcher_SelectOrigin.svg</file>
         <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
@@ -177,6 +179,7 @@
         <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
         <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
+        <file>icons/Sketcher_ViewSection.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
         <file>icons/small/Constraint_Block_sm.xpm</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
@@ -211,14 +214,17 @@
         <file>translations/Sketcher_es-ES.qm</file>
         <file>translations/Sketcher_eu.qm</file>
         <file>translations/Sketcher_fi.qm</file>
+        <file>translations/Sketcher_fil.qm</file>
         <file>translations/Sketcher_fr.qm</file>
         <file>translations/Sketcher_gl.qm</file>
         <file>translations/Sketcher_hr.qm</file>
         <file>translations/Sketcher_hu.qm</file>
+        <file>translations/Sketcher_id.qm</file>
         <file>translations/Sketcher_it.qm</file>
         <file>translations/Sketcher_ja.qm</file>
         <file>translations/Sketcher_kab.qm</file>
         <file>translations/Sketcher_ko.qm</file>
+        <file>translations/Sketcher_lt.qm</file>
         <file>translations/Sketcher_nl.qm</file>
         <file>translations/Sketcher_no.qm</file>
         <file>translations/Sketcher_pl.qm</file>
@@ -232,6 +238,7 @@
         <file>translations/Sketcher_sv-SE.qm</file>
         <file>translations/Sketcher_tr.qm</file>
         <file>translations/Sketcher_uk.qm</file>
+        <file>translations/Sketcher_val-ES.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
     </qresource>

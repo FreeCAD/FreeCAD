@@ -28,15 +28,23 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Približno površini sa krivuljom B-spline...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Približno površini sa krivuljom B-spline</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <translation>Približno površini sa krivuljom B-spline...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
       <translation>Aproksimiraj površinu ...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Aproksimiraj savijena površina</translation>
     </message>
@@ -51,12 +59,12 @@
     <message>
       <location line="+1"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poissonova raspodjela...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Poissonova rekonstrukcija površine</translation>
     </message>
   </context>
   <context>
@@ -69,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Strukturirani točka oblaci</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Triangulacija strukturiranih točka oblaka</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -85,31 +93,35 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
+      <translation>Podesi površinu krivuljom B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>Podesi površinu krivuljom B-spline</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-smjer</translation>
     </message>
     <message>
       <location line="+6"/>
       <location line="+67"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Stupanj</translation>
     </message>
     <message>
       <location line="-38"/>
       <location line="+67"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>Kontrolne točke</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-smjer</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -119,12 +131,12 @@
     <message>
       <location line="+6"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Ponavljanje</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Faktor veličine</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -134,27 +146,27 @@
     <message>
       <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Ukupna težina</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Duljina prijelaza</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Energija savijanja</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Varijacija zakrivljenosti</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Korisnički definirani u/v smijerovi</translation>
     </message>
   </context>
   <context>
@@ -167,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Molimo odaberite jedan jedini položaj objekt da dobijete lokalnu orijentaciju.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -180,27 +192,27 @@
     <message>
       <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poissonova raspodjela</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Parametara</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Octree dubina</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Alat za rješavanje podjele</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Uzoraka po čvoru</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
@@ -220,7 +232,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Molimo odaberite jedna točka oblak.</translation>
     </message>
   </context>
   <context>
@@ -228,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Prikaz triangulacija nije uspjelo</translation>
     </message>
   </context>
   <context>

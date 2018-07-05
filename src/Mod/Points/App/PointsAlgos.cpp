@@ -55,7 +55,7 @@ void PointsAlgos::Load(PointKernel &points, const char *FileName)
     if (!File.isReadable())
         throw Base::FileException("File to load not existing or not readable", FileName);
 
-    if (File.extension() == "asc" ||File.extension() == "ASC")
+    if (File.hasExtension("asc"))
         LoadAscii(points,FileName);
     else
         throw Base::RuntimeError("Unknown ending");
@@ -662,7 +662,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
     std::string line, element;
     std::vector<std::string> list;
     std::size_t points = 0;
-    // a pair of numers of elements and the total size of the properties
+    // a pair of numbers of elements and the total size of the properties
     std::vector<std::pair<std::size_t, std::size_t> > count_props;
 
     // read in the first three characters

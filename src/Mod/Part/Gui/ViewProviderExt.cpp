@@ -68,7 +68,7 @@
 # include <TShort_Array1OfShortReal.hxx>
 # include <TShort_HArray1OfShortReal.hxx>
 # include <Precision.hxx>
-
+# include <Python.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>

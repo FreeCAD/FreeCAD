@@ -231,7 +231,7 @@ void showNoConstraintBetweenExternal()
 void showNoConstraintBetweenFixedGeometry()
 {
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                         QObject::tr("Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-Spline knot points."));    
+                         QObject::tr("Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points."));    
 }
 
 bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)

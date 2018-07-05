@@ -246,7 +246,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
     base_geometry = ET.SubElement(base_grid, "Geometry")
 
     # TODO: for the general mesh: write out topology and geometry in grid node
-    # TOOD: for every marked group write own grid node with topology (ref if cells)
+    # TODO: for every marked group write own grid node with topology (ref if cells)
     #       geometry ref, attribute
 
     #####################################

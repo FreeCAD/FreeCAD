@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Počet bodů nástroje pro křivky příčných průřezů</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Instance podmínky zatížení musí být vybrána před použitím tohoto nástroje (nejsou vybrány objekty)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
@@ -355,37 +355,37 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Booleovská operace selhala při pokusu o získání strany pod hladinou. Nástroj znovu zkouší tuto operaci pomocí malého posunu pozice volné plochy</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: selhal výpočet příčné plochy</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Byl zjištěn nulový objem při výpočtu posunutí!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Plovoucí plocha nemůže být vypočtena</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: Byla zjištěna nulová plocha při výpočtu plovoucí plochy!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Plocha hlavního rámce nemůže být vypočtena</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Byla zjištěna nulová plocha při výpočtu koeficientu rámové plochy!</translation>
     </message>
   </context>
   <context>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Výpočet křivky GZ</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
@@ -466,22 +466,22 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Loď bude natočena do rovnovážného úhlu podélného sklonu pro každý příčný náklon, což významně zvýší potřebný výpočtový čas</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>Vybrán nástroj GZ křivky [deg]</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="299"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>Vybrán nástroj GZ křivky pro několik bodů</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="314"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Výběř nástroje GZ křivky pro proměnný podélný sklon</translation>
     </message>
   </context>
   <context>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Jsou vybrány neznámé objekty tvarů</translation>
     </message>
   </context>
 </TS>

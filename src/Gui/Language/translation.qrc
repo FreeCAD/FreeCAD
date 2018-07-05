@@ -42,5 +42,9 @@
         <file>FreeCAD_gl.qm</file>
         <file>FreeCAD_kab.qm</file>
         <file>FreeCAD_ko.qm</file>
+        <file>FreeCAD_fil.qm</file>
+        <file>FreeCAD_id.qm</file>
+        <file>FreeCAD_lt.qm</file>
+        <file>FreeCAD_val-ES.qm</file>
     </qresource>
 </RCC> 

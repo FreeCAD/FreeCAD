@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Évaluer et réparer un maillage...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Évaluer et réparer le maillage...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Échelle ...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Mettre à l'échelle les maillages sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -782,11 +786,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation>Recherche les points non multiples</translation>
+      <translation>Recherche de points libres "non-manifold"</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation>Autorise la recherche de plis sur une surface</translation>
+      <translation>Active la recherche de plis sur une surface</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
@@ -1210,7 +1214,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Sélectionner un plan pour ajuster le maillage.</translation>
+      <translation>Veuillez sélectionner un plan à partir duquel ajuster le maillage.</translation>
     </message>
   </context>
   <context>
@@ -1461,11 +1465,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Mettre à l'échelle</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Entrez le facteur d’échelle :</translation>
     </message>
   </context>
   <context>

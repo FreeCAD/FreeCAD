@@ -208,8 +208,7 @@ void PlanePy::setPosition(Py::Object arg)
         this_surf->SetLocation(loc);
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 
@@ -252,7 +251,7 @@ void PlanePy::setAxis(Py::Object arg)
         this_surf->SetAxis(axis);
     }
     catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
+        throw Py::RuntimeError("cannot set axis");
     }
 }
 

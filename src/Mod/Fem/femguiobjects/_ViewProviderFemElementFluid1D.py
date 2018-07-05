@@ -1,7 +1,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
-# *   Based on the FemElementGeometry1D by Bernd Hahnebach                        *
+# *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
+# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "_ViewProviderFemElementFluid1D"
-__author__ = "Ofentse Kgoa"
+__author__ = "Ofentse Kgoa, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemElementFluid1D
@@ -30,12 +31,14 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-
+import FemGui  # needed to display the icons in TreeView
+False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 from femobjects import _FemElementFluid1D
 from PySide import QtCore
 from PySide import QtGui
+from . import FemSelectionWidgets
 
 
 class _ViewProviderFemElementFluid1D:
@@ -52,13 +55,13 @@ class _ViewProviderFemElementFluid1D:
         self.ViewObject = vobj
         self.Object = vobj.Object
         self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
+        vobj.addDisplayMode(self.standard, "Default")
 
     def getDisplayModes(self, obj):
-        return ["Standard"]
+        return ["Default"]
 
     def getDefaultDisplayMode(self):
-        return "Standard"
+        return "Default"
 
     def updateData(self, obj, prop):
         return
@@ -67,6 +70,11 @@ class _ViewProviderFemElementFluid1D:
         return
 
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
         taskd = _TaskPanelFemElementFluid1D(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
@@ -74,14 +82,18 @@ class _ViewProviderFemElementFluid1D:
 
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def __getstate__(self):
@@ -95,78 +107,75 @@ class _TaskPanelFemElementFluid1D:
     '''The TaskPanel for editing References property of FemElementFluid1D objects'''
 
     def __init__(self, obj):
-        FreeCADGui.Selection.clearSelection()
-        self.sel_server = None
+
         self.obj = obj
-        self.obj_notvisible = []
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
-        QtCore.QObject.connect(self.form.btn_add, QtCore.SIGNAL("clicked()"), self.add_references)
-        QtCore.QObject.connect(self.form.btn_remove, QtCore.SIGNAL("clicked()"), self.remove_reference)
-        QtCore.QObject.connect(self.form.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
-        QtCore.QObject.connect(self.form.cb_liquid_section_type, QtCore.SIGNAL("activated(int)"), self.liquidsectiontype_changed)
-        QtCore.QObject.connect(self.form.if_manning_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_area_changed)
-        QtCore.QObject.connect(self.form.if_manning_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_radius_changed)
-        QtCore.QObject.connect(self.form.sb_manning_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.manning_coefficient_changed)
-        QtCore.QObject.connect(self.form.if_enlarge_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area1_changed)
-        QtCore.QObject.connect(self.form.if_enlarge_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area2_changed)
-        QtCore.QObject.connect(self.form.if_contract_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area1_changed)
-        QtCore.QObject.connect(self.form.if_contract_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area2_changed)
-        QtCore.QObject.connect(self.form.if_inletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_pressure_changed)
-        QtCore.QObject.connect(self.form.if_outletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_pressure_changed)
-        QtCore.QObject.connect(self.form.if_inletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_flowrate_changed)
-        QtCore.QObject.connect(self.form.if_outletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_flowrate_changed)
-        QtCore.QObject.connect(self.form.gb_inletpressure, QtCore.SIGNAL("clicked(bool)"), self.inlet_pressure_active)
-        QtCore.QObject.connect(self.form.gb_outletpressure, QtCore.SIGNAL("clicked(bool)"), self.outlet_pressure_active)
-        QtCore.QObject.connect(self.form.gb_inletflowrate, QtCore.SIGNAL("clicked(bool)"), self.inlet_flowrate_active)
-        QtCore.QObject.connect(self.form.gb_outletflowrate, QtCore.SIGNAL("clicked(bool)"), self.outlet_flowrate_active)
-        QtCore.QObject.connect(self.form.if_entrance_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_pipe_area_changed)
-        QtCore.QObject.connect(self.form.if_entrance_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_area_changed)
-        QtCore.QObject.connect(self.form.if_diaphragm_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_pipe_area_changed)
-        QtCore.QObject.connect(self.form.if_diaphragm_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_area_changed)
-        QtCore.QObject.connect(self.form.if_bend_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bend_pipe_area_changed)
-        QtCore.QObject.connect(self.form.sb_bradius_pdiameter, QtCore.SIGNAL("valueChanged(double)"), self.bradius_pdiameter_changed)
-        QtCore.QObject.connect(self.form.sb_bend_angle, QtCore.SIGNAL("valueChanged(double)"), self.bend_angle_changed)
-        QtCore.QObject.connect(self.form.sb_bend_loss_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.bend_loss_coefficient_changed)
-        QtCore.QObject.connect(self.form.if_gatevalve_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.gatevalve_pipe_area_changed)
-        QtCore.QObject.connect(self.form.sb_gatevalve_closing_coeff, QtCore.SIGNAL("valueChanged(double)"), self.gatevalve_closing_coeff_changed)
-        QtCore.QObject.connect(self.form.if_colebrooke_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_pipe_area_changed)
-        QtCore.QObject.connect(self.form.if_colebrooke_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_radius_changed)
-        QtCore.QObject.connect(self.form.if_colebrooke_grain_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_grain_diameter_changed)
-        QtCore.QObject.connect(self.form.sb_colebrooke_form_factor, QtCore.SIGNAL("valueChanged(double)"), self.colebrooke_form_factor_changed)
-        QtCore.QObject.connect(self.form.tw_pump_characteristics, QtCore.SIGNAL("cellChanged(int, int)"), self.pump_characteristics_changed)
-        self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
-        self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
-        self.form.cb_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_fluid_types)
-        self.form.cb_liquid_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_liquid_types)
-        self.form.cb_gas_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_gas_types)
-        self.form.cb_channel_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_channel_types)
-
+        # parameter widget
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
+        QtCore.QObject.connect(self.parameterWidget.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
+        QtCore.QObject.connect(self.parameterWidget.cb_liquid_section_type, QtCore.SIGNAL("activated(int)"), self.liquidsectiontype_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_manning_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_manning_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.manning_radius_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_manning_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.manning_coefficient_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_enlarge_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area1_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_enlarge_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.enlarge_area2_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_contract_area1, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area1_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_contract_area2, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.contract_area2_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_inletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_pressure_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_outletpressure, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_pressure_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_inletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.inlet_flowrate_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_outletflowrate, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.outlet_flowrate_changed)
+        QtCore.QObject.connect(self.parameterWidget.gb_inletpressure, QtCore.SIGNAL("clicked(bool)"), self.inlet_pressure_active)
+        QtCore.QObject.connect(self.parameterWidget.gb_outletpressure, QtCore.SIGNAL("clicked(bool)"), self.outlet_pressure_active)
+        QtCore.QObject.connect(self.parameterWidget.gb_inletflowrate, QtCore.SIGNAL("clicked(bool)"), self.inlet_flowrate_active)
+        QtCore.QObject.connect(self.parameterWidget.gb_outletflowrate, QtCore.SIGNAL("clicked(bool)"), self.outlet_flowrate_active)
+        QtCore.QObject.connect(self.parameterWidget.if_entrance_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_pipe_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_entrance_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.entrance_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_diaphragm_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_pipe_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_diaphragm_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.diaphragm_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_bend_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bend_pipe_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_bradius_pdiameter, QtCore.SIGNAL("valueChanged(double)"), self.bradius_pdiameter_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_bend_angle, QtCore.SIGNAL("valueChanged(double)"), self.bend_angle_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_bend_loss_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.bend_loss_coefficient_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_gatevalve_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.gatevalve_pipe_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_gatevalve_closing_coeff, QtCore.SIGNAL("valueChanged(double)"), self.gatevalve_closing_coeff_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_pipe_area, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_pipe_area_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_radius, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_radius_changed)
+        QtCore.QObject.connect(self.parameterWidget.if_colebrooke_grain_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.colebrooke_grain_diameter_changed)
+        QtCore.QObject.connect(self.parameterWidget.sb_colebrooke_form_factor, QtCore.SIGNAL("valueChanged(double)"), self.colebrooke_form_factor_changed)
+        QtCore.QObject.connect(self.parameterWidget.tw_pump_characteristics, QtCore.SIGNAL("cellChanged(int, int)"), self.pump_characteristics_changed)
+        self.parameterWidget.cb_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_fluid_types)
+        self.parameterWidget.cb_liquid_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_liquid_types)
+        self.parameterWidget.cb_gas_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_gas_types)
+        self.parameterWidget.cb_channel_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_channel_types)
         self.get_fluidsection_props()
-        self.update()
+        self.updateParameterWidget()
+
+        # geometry selection widget
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Edge'])
+
+        # form made from param and selection widget
+        self.form = [self.parameterWidget, self.selectionWidget]
 
     def accept(self):
-        self.setback_listobj_visibility()
         self.set_fluidsection_props()
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        self.obj.References = self.selectionWidget.references
+        self.recompute_and_set_back_all()
         return True
 
     def reject(self):
-        self.setback_listobj_visibility()
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
-        FreeCADGui.ActiveDocument.resetEdit()
+        self.recompute_and_set_back_all()
         return True
 
+    def recompute_and_set_back_all(self):
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
+        self.selectionWidget.setback_listobj_visibility()
+        if self.selectionWidget.sel_server:
+            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
+        doc.resetEdit()
+
     def get_fluidsection_props(self):
-        self.references = []
-        if self.obj.References:
-            self.tuplereferences = self.obj.References
-            self.get_references()
         self.SectionType = self.obj.SectionType
         self.LiquidSectionType = self.obj.LiquidSectionType
         self.ManningArea = self.obj.ManningArea
@@ -202,7 +211,6 @@ class _TaskPanelFemElementFluid1D:
         self.PumpHeadLoss = self.obj.PumpHeadLoss
 
     def set_fluidsection_props(self):
-        self.obj.References = self.references
         self.obj.LiquidSectionType = self.LiquidSectionType
         self.obj.SectionType = self.SectionType
         self.obj.ManningArea = self.ManningArea
@@ -237,61 +245,60 @@ class _TaskPanelFemElementFluid1D:
         self.obj.PumpFlowRate = self.PumpFlowRate
         self.obj.PumpHeadLoss = self.PumpHeadLoss
 
-    def update(self):
+    def updateParameterWidget(self):
         'fills the widgets'
-        index_sectiontype = self.form.cb_section_type.findText(self.SectionType)
-        self.form.cb_section_type.setCurrentIndex(index_sectiontype)
-        self.form.sw_section_type.setCurrentIndex(index_sectiontype)
-        index_liquidsectiontype = self.form.cb_liquid_section_type.findText(self.LiquidSectionType)
-        self.form.cb_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
-        self.form.sw_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
-        self.form.if_manning_area.setText(self.ManningArea.UserString)
-        self.form.if_manning_radius.setText(self.ManningRadius.UserString)
-        self.form.sb_manning_coefficient.setValue(self.ManningCoefficient)
-        self.form.if_enlarge_area1.setText(self.EnlargeArea1.UserString)
-        self.form.if_enlarge_area2.setText(self.EnlargeArea2.UserString)
-        self.form.if_contract_area1.setText(self.ContractArea1.UserString)
-        self.form.if_contract_area2.setText(self.ContractArea2.UserString)
-        self.form.if_inletpressure.setText(FreeCAD.Units.Quantity(1000 * self.InletPressure, FreeCAD.Units.Pressure).UserString)
-        self.form.if_outletpressure.setText(FreeCAD.Units.Quantity(1000 * self.OutletPressure, FreeCAD.Units.Pressure).UserString)
-        self.form.if_inletflowrate.setText(str(self.InletFlowRate))
-        self.form.if_outletflowrate.setText(str(self.OutletFlowRate))
-        self.form.gb_inletpressure.setChecked(self.InletPressureActive)
-        self.form.gb_outletpressure.setChecked(self.OutletPressureActive)
-        self.form.gb_inletflowrate.setChecked(self.InletFlowRateActive)
-        self.form.gb_outletflowrate.setChecked(self.OutletFlowRateActive)
-        self.form.if_entrance_pipe_area.setText(self.EntrancePipeArea.UserString)
-        self.form.if_entrance_area.setText(self.EntranceArea.UserString)
-        self.form.if_diaphragm_pipe_area.setText(self.DiaphragmPipeArea.UserString)
-        self.form.if_diaphragm_area.setText(self.DiaphragmArea.UserString)
-        self.form.if_bend_pipe_area.setText(self.BendPipeArea.UserString)
-        self.form.sb_bradius_pdiameter.setValue(self.BendRadiusDiameter)
-        self.form.sb_bend_angle.setValue(self.BendAngle)
-        self.form.sb_bend_loss_coefficient.setValue(self.BendLossCoefficient)
-        self.form.if_gatevalve_pipe_area.setText(self.GateValvePipeArea.UserString)
-        self.form.sb_gatevalve_closing_coeff.setValue(self.GateValveClosingCoeff)
-        self.form.if_colebrooke_pipe_area.setText(self.ColebrookeArea.UserString)
-        self.form.if_colebrooke_radius.setText(self.ColebrookeRadius.UserString)
-        self.form.if_colebrooke_grain_diameter.setText(self.ColebrookeGrainDiameter.UserString)
-        self.form.sb_colebrooke_form_factor.setValue(self.ColebrookeFormFactor)
+        index_sectiontype = self.parameterWidget.cb_section_type.findText(self.SectionType)
+        self.parameterWidget.cb_section_type.setCurrentIndex(index_sectiontype)
+        self.parameterWidget.sw_section_type.setCurrentIndex(index_sectiontype)
+        index_liquidsectiontype = self.parameterWidget.cb_liquid_section_type.findText(self.LiquidSectionType)
+        self.parameterWidget.cb_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
+        self.parameterWidget.sw_liquid_section_type.setCurrentIndex(index_liquidsectiontype)
+        self.parameterWidget.if_manning_area.setText(self.ManningArea.UserString)
+        self.parameterWidget.if_manning_radius.setText(self.ManningRadius.UserString)
+        self.parameterWidget.sb_manning_coefficient.setValue(self.ManningCoefficient)
+        self.parameterWidget.if_enlarge_area1.setText(self.EnlargeArea1.UserString)
+        self.parameterWidget.if_enlarge_area2.setText(self.EnlargeArea2.UserString)
+        self.parameterWidget.if_contract_area1.setText(self.ContractArea1.UserString)
+        self.parameterWidget.if_contract_area2.setText(self.ContractArea2.UserString)
+        self.parameterWidget.if_inletpressure.setText(FreeCAD.Units.Quantity(1000 * self.InletPressure, FreeCAD.Units.Pressure).UserString)
+        self.parameterWidget.if_outletpressure.setText(FreeCAD.Units.Quantity(1000 * self.OutletPressure, FreeCAD.Units.Pressure).UserString)
+        self.parameterWidget.if_inletflowrate.setText(str(self.InletFlowRate))
+        self.parameterWidget.if_outletflowrate.setText(str(self.OutletFlowRate))
+        self.parameterWidget.gb_inletpressure.setChecked(self.InletPressureActive)
+        self.parameterWidget.gb_outletpressure.setChecked(self.OutletPressureActive)
+        self.parameterWidget.gb_inletflowrate.setChecked(self.InletFlowRateActive)
+        self.parameterWidget.gb_outletflowrate.setChecked(self.OutletFlowRateActive)
+        self.parameterWidget.if_entrance_pipe_area.setText(self.EntrancePipeArea.UserString)
+        self.parameterWidget.if_entrance_area.setText(self.EntranceArea.UserString)
+        self.parameterWidget.if_diaphragm_pipe_area.setText(self.DiaphragmPipeArea.UserString)
+        self.parameterWidget.if_diaphragm_area.setText(self.DiaphragmArea.UserString)
+        self.parameterWidget.if_bend_pipe_area.setText(self.BendPipeArea.UserString)
+        self.parameterWidget.sb_bradius_pdiameter.setValue(self.BendRadiusDiameter)
+        self.parameterWidget.sb_bend_angle.setValue(self.BendAngle)
+        self.parameterWidget.sb_bend_loss_coefficient.setValue(self.BendLossCoefficient)
+        self.parameterWidget.if_gatevalve_pipe_area.setText(self.GateValvePipeArea.UserString)
+        self.parameterWidget.sb_gatevalve_closing_coeff.setValue(self.GateValveClosingCoeff)
+        self.parameterWidget.if_colebrooke_pipe_area.setText(self.ColebrookeArea.UserString)
+        self.parameterWidget.if_colebrooke_radius.setText(self.ColebrookeRadius.UserString)
+        self.parameterWidget.if_colebrooke_grain_diameter.setText(self.ColebrookeGrainDiameter.UserString)
+        self.parameterWidget.sb_colebrooke_form_factor.setValue(self.ColebrookeFormFactor)
         for i in range(len(self.PumpFlowRate)):
-            self.form.tw_pump_characteristics.setItem(i, 0, QtGui.QTableWidgetItem(str(self.PumpFlowRate[i])))
-            self.form.tw_pump_characteristics.setItem(i, 1, QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i])))
-        self.rebuild_list_References()
+            self.parameterWidget.tw_pump_characteristics.setItem(i, 0, QtGui.QTableWidgetItem(str(self.PumpFlowRate[i])))
+            self.parameterWidget.tw_pump_characteristics.setItem(i, 1, QtGui.QTableWidgetItem(str(self.PumpHeadLoss[i])))
 
     def sectiontype_changed(self, index):
         if index < 0:
             return
-        self.form.cb_section_type.setCurrentIndex(index)
-        self.form.sw_section_type.setCurrentIndex(index)
-        self.SectionType = str(self.form.cb_section_type.itemText(index))  # form returns unicode
+        self.parameterWidget.cb_section_type.setCurrentIndex(index)
+        self.parameterWidget.sw_section_type.setCurrentIndex(index)
+        self.SectionType = str(self.parameterWidget.cb_section_type.itemText(index))  # parameterWidget returns unicode
 
     def liquidsectiontype_changed(self, index):
         if index < 0:
             return
-        self.form.cb_liquid_section_type.setCurrentIndex(index)
-        self.form.sw_liquid_section_type.setCurrentIndex(index)
-        self.LiquidSectionType = str(self.form.cb_liquid_section_type.itemText(index))  # form returns unicode
+        self.parameterWidget.cb_liquid_section_type.setCurrentIndex(index)
+        self.parameterWidget.sw_liquid_section_type.setCurrentIndex(index)
+        self.LiquidSectionType = str(self.parameterWidget.cb_liquid_section_type.itemText(index))  # parameterWidget returns unicode
 
     def manning_area_changed(self, base_quantity_value):
         self.ManningArea = base_quantity_value
@@ -382,92 +389,6 @@ class _TaskPanelFemElementFluid1D:
 
     def pump_characteristics_changed(self, row, column):
         if column == 0:
-            self.PumpFlowRate[row] = float(self.form.tw_pump_characteristics.item(row, column).text())
+            self.PumpFlowRate[row] = float(self.parameterWidget.tw_pump_characteristics.item(row, column).text())
         else:
-            self.PumpHeadLoss[row] = float(self.form.tw_pump_characteristics.item(row, column).text())
-
-    def get_references(self):
-        for ref in self.tuplereferences:
-            for elem in ref[1]:
-                self.references.append((ref[0], elem))
-
-    def references_list_right_clicked(self, QPos):
-        self.form.contextMenu = QtGui.QMenu()
-        menu_item = self.form.contextMenu.addAction("Remove Reference")
-        if not self.references:
-            menu_item.setDisabled(True)
-        self.form.connect(menu_item, QtCore.SIGNAL("triggered()"), self.remove_reference)
-        parentPosition = self.form.list_References.mapToGlobal(QtCore.QPoint(0, 0))
-        self.form.contextMenu.move(parentPosition + QPos)
-        self.form.contextMenu.show()
-
-    def remove_reference(self):
-        if not self.references:
-            return
-        currentItemName = str(self.form.list_References.currentItem().text())
-        for ref in self.references:
-            refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
-            if refname_to_compare_listentry == currentItemName:
-                self.references.remove(ref)
-        self.rebuild_list_References()
-
-    def add_references(self):
-        '''Called if Button add_reference is triggered'''
-        # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
-        # here the addReference button EditTaskPanel has to be triggered to start selection mode
-        self.setback_listobj_visibility()
-        FreeCADGui.Selection.clearSelection()
-        # start SelectionObserver and parse the function to add the References to the widget
-        print_message = "Select Edges by single click on them to add them to the list"
-        if not self.sel_server:
-            # if we do not check, we would start a new SelectionObserver on every click on addReference button
-            # but close only one SelectionObserver on leaving the task panel
-            from . import FemSelectionObserver
-            self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
-
-    def selectionParser(self, selection):
-        # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
-        if hasattr(selection[0], "Shape"):
-            if selection[1]:
-                elt = selection[0].Shape.getElement(selection[1])
-                if elt.ShapeType == 'Edge':
-                    if selection not in self.references:
-                        self.references.append(selection)
-                        self.rebuild_list_References()
-                    else:
-                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
-
-    def rebuild_list_References(self):
-        self.form.list_References.clear()
-        items = []
-        for ref in self.references:
-            item_name = ref[0].Name + ':' + ref[1]
-            items.append(item_name)
-        for listItemName in sorted(items):
-            self.form.list_References.addItem(listItemName)
-
-    def select_clicked_reference_shape(self):
-        self.setback_listobj_visibility()
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
-            self.sel_server = None
-        if not self.sel_server:
-            if not self.references:
-                return
-            currentItemName = str(self.form.list_References.currentItem().text())
-            for ref in self.references:
-                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
-                if refname_to_compare_listentry == currentItemName:
-                    # print( 'found: shape: ' + ref[0].Name + ' element: ' + ref[1])
-                    if not ref[0].ViewObject.Visibility:
-                        self.obj_notvisible.append(ref[0])
-                        ref[0].ViewObject.Visibility = True
-                    FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(ref[0], ref[1])
-
-    def setback_listobj_visibility(self):
-        '''set back Visibility of the list objects
-        '''
-        for obj in self.obj_notvisible:
-            obj.ViewObject.Visibility = False
-        self.obj_notvisible = []
+            self.PumpHeadLoss[row] = float(self.parameterWidget.tw_pump_characteristics.item(row, column).text())

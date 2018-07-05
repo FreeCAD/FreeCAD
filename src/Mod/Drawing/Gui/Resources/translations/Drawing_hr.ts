@@ -49,13 +49,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Draft View</source>
-      <translation type="unfinished">&amp;Draft View</translation>
+      <translation>Prikaz &amp;Crteža</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+      <translation>Umetnite prikaz(e) crteža u aktivni crtež</translation>
     </message>
   </context>
   <context>
@@ -207,13 +207,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>Prikaz &amp;Tabela</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Umetnite prikaz(e) tabele(a) u aktivni crtež</translation>
     </message>
   </context>
   <context>
@@ -226,13 +226,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Symbol</source>
-      <translation type="unfinished">&amp;Symbol</translation>
+      <translation>&amp;Simbol</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+      <translation>Umetni simbol iz SVG dokumenta u aktivni crtež</translation>
     </message>
   </context>
   <context>
@@ -240,32 +240,32 @@
     <message>
       <location filename="../../DrawingView.cpp" line="+211"/>
       <source>&amp;Background</source>
-      <translation>I pozadina</translation>
+      <translation>&amp;Pozadina</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>&amp;Outline</source>
-      <translation>&amp;amp; Potez</translation>
+      <translation>&amp;Vanjski Potez</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>&amp;Native</source>
-      <translation>&amp;amp; Prirodan</translation>
+      <translation>&amp;Prirodan</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>&amp;OpenGL</source>
-      <translation>I OpenGL</translation>
+      <translation>&amp;OpenGL</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>&amp;Image</source>
-      <translation>I slike</translation>
+      <translation>&amp;Slika</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;amp; visko kvalitetno anti prekrivanje</translation>
+      <translation>&amp;Visko kvalitetno zaglađivanje nazubljenosti</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -280,7 +280,7 @@
     <message>
       <location line="+87"/>
       <source>&amp;Renderer</source>
-      <translation>&amp;; Renderer</translation>
+      <translation>&amp;Iscrtavanje</translation>
     </message>
     <message>
       <location line="+105"/>
@@ -288,13 +288,19 @@
       <translation>Izvoz PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Pisač koristi drugu orijentaciju ispisa nego što je u crtežu. Želite li nastaviti?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF datoteke (*. pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF Datoteka</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -334,38 +340,35 @@
     <message>
       <location line="+81"/>
       <source>Different orientation</source>
-      <translation type="unfinished">Different orientation</translation>
+      <translation>Drugačija orijentacija</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+      <translation>Pisač koristi drugu orijentaciju ispisa nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
-      <translation type="unfinished">Different paper size</translation>
+      <translation>Drugačija veličina papira</translation>
     </message>
     <message>
       <location line="-7"/>
       <location line="+8"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+      <translation>Pisač koristi drugu veličinu papra nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Otvaranje dokumenta nije uspjelo</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Ne mogu otvoriti dokument '%1' za ispis.</translation>
     </message>
   </context>
   <context>
@@ -389,108 +392,120 @@ Do you want to continue?</translation>
       <location line="+25"/>
       <location line="+60"/>
       <source>Right click for axonometric settings</source>
-      <translation type="unfinished">Right click for axonometric settings</translation>
+      <translation>Desni klik za aksonometrijske postavke</translation>
     </message>
     <message>
       <location line="+106"/>
       <source>Top left x / y</source>
-      <translation type="unfinished">Top left x / y</translation>
+      <translation>Gore lijevo x / y</translation>
+    </message>
+    <message>
+      <source>Spacing dx / dy   </source>
+      <translation>Razmak dx / dy   </translation>
+    </message>
+    <message>
+      <source> Axis out and right</source>
+      <translation> Os pored desno</translation>
+    </message>
+    <message>
+      <source> Vertical tilt</source>
+      <translation> Okomiti nagib</translation>
     </message>
     <message>
       <location line="+48"/>
-      <source>Spacing dx / dy   </source>
-      <translation type="unfinished">Spacing dx / dy   </translation>
+      <source>Spacing dx / dy</source>
+      <translation>Razmak dx / dy</translation>
     </message>
     <message>
       <location line="+71"/>
-      <source> Axis out and right</source>
-      <translation type="unfinished"> Axis out and right</translation>
+      <source>Axis out and right</source>
+      <translation>Os pored desno</translation>
     </message>
     <message>
       <location line="+7"/>
-      <source> Vertical tilt</source>
-      <translation type="unfinished"> Vertical tilt</translation>
+      <source>Vertical tilt</source>
+      <translation>Okomiti nagib</translation>
     </message>
     <message>
       <location line="+11"/>
       <location line="+200"/>
       <source>X +ve</source>
-      <translation type="unfinished">X +ve</translation>
+      <translation>X + ve</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Y +ve</source>
-      <translation type="unfinished">Y +ve</translation>
+      <translation>Y + ve</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Z +ve</source>
-      <translation type="unfinished">Z +ve</translation>
+      <translation>Z + ve</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+200"/>
       <source>X -ve</source>
-      <translation type="unfinished">X -ve</translation>
+      <translation>X - ve</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Y -ve</source>
-      <translation type="unfinished">Y -ve</translation>
+      <translation>Y - ve</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Z -ve</source>
-      <translation type="unfinished">Z -ve</translation>
+      <translation>Z - ve</translation>
     </message>
     <message>
       <location line="-188"/>
       <source>Isometric</source>
-      <translation type="unfinished">Isometric</translation>
+      <translation>Izometrički</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Dimetric</source>
-      <translation type="unfinished">Dimetric</translation>
+      <translation>Dvometrički</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Trimetric</source>
-      <translation type="unfinished">Trimetric</translation>
+      <translation>Trimetrički</translation>
     </message>
     <message>
       <location line="+8"/>
       <source> Scale</source>
-      <translation type="unfinished"> Scale</translation>
+      <translation> Skaliranje</translation>
     </message>
     <message>
       <location line="+7"/>
       <source> View projection   </source>
-      <translation type="unfinished"> View projection   </translation>
+      <translation> Prikaz projekcije   </translation>
     </message>
     <message>
       <location line="+7"/>
       <source> Axis aligned up</source>
-      <translation type="unfinished"> Axis aligned up</translation>
+      <translation> Os iznad</translation>
     </message>
     <message>
       <location line="+41"/>
       <location line="+23"/>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>Prebaci</translation>
     </message>
     <message>
       <location line="-10"/>
       <source> Trimetric</source>
-      <translation type="unfinished"> Trimetric</translation>
+      <translation> Trimetrički</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -510,12 +525,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+19"/>
       <source>View from:</source>
-      <translation type="unfinished">View from:</translation>
+      <translation>Pogled od:</translation>
     </message>
     <message>
       <location line="+47"/>
       <source>Axis aligned right:</source>
-      <translation type="unfinished">Axis aligned right:</translation>
+      <translation>Os desno:</translation>
     </message>
     <message>
       <source>Primary View</source>
@@ -597,12 +612,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+125"/>
       <source>Show hidden lines</source>
-      <translation type="unfinished">Show hidden lines</translation>
+      <translation>Prikaži skrivene linije</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Show smooth lines</source>
-      <translation type="unfinished">Show smooth lines</translation>
+      <translation>Prikaži glatke linije</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -675,17 +690,17 @@ Do you want to continue?</translation>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>Trenutno nema aktivnog dokumenta za završetak postupka</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Nema aktivnog prikaza</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Trenutno nema aktivnih pogleda za završetak postupka</translation>
     </message>
   </context>
   <context>
@@ -741,32 +756,32 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="-355"/>
       <source>Landscape</source>
-      <translation type="unfinished">Landscape</translation>
+      <translation>Pejzaž</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Portrait</source>
-      <translation type="unfinished">Portrait</translation>
+      <translation>Portret</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>%1%2 %3</source>
-      <translation type="unfinished">%1%2 %3</translation>
+      <translation>%1%2 %3</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Insert new %1%2 %3 drawing</source>
-      <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+      <translation>Umetanje novog %1%2 %3 crteža</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>%1%2 %3 (%4)</source>
-      <translation type="unfinished">%1%2 %3 (%4)</translation>
+      <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
-      <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+      <translation>Umetanje novog %1%2 %3 (%4) crteža</translation>
     </message>
   </context>
   <context>
@@ -816,7 +831,7 @@ Do you want to continue?</translation>
       <location line="+517"/>
       <location line="+53"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>Skalabilna vektorska grafika</translation>
     </message>
     <message>
       <location line="-313"/>
@@ -826,7 +841,7 @@ Do you want to continue?</translation>
       <location line="+45"/>
       <location line="+179"/>
       <source>No page found</source>
-      <translation type="unfinished">No page found</translation>
+      <translation>Stranica nije pronađena</translation>
     </message>
     <message>
       <location line="-431"/>
@@ -836,12 +851,12 @@ Do you want to continue?</translation>
       <location line="+45"/>
       <location line="+179"/>
       <source>Create a page first.</source>
-      <translation type="unfinished">Create a page first.</translation>
+      <translation>Najprije napravite stranicu.</translation>
     </message>
     <message>
       <location line="-362"/>
       <source>Select exactly one Part object.</source>
-      <translation type="unfinished">Select exactly one Part object.</translation>
+      <translation>Odaberite točno jedan Dio-objekt.</translation>
     </message>
     <message>
       <location line="+50"/>
@@ -852,12 +867,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+6"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+      <translation>Odaberite točno jedan objekt tablice.</translation>
     </message>
     <message>
       <source>SVG (*.svg)</source>
@@ -909,19 +924,19 @@ Do you want to continue?</translation>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
       <location line="+926"/>
       <source>Make axonometric...</source>
-      <translation type="unfinished">Make axonometric...</translation>
+      <translation>Napraviti aksonometrijski...</translation>
     </message>
     <message>
       <location line="-925"/>
       <location line="+926"/>
       <source>Edit axonometric settings...</source>
-      <translation type="unfinished">Edit axonometric settings...</translation>
+      <translation>Uređivanje aksonometrijskih postavki...</translation>
     </message>
     <message>
       <location line="-925"/>
       <location line="+926"/>
       <source>Make orthographic</source>
-      <translation type="unfinished">Make orthographic</translation>
+      <translation>Napraviti orografski</translation>
     </message>
   </context>
   <context>

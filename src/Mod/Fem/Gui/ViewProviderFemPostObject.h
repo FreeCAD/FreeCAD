@@ -102,7 +102,7 @@ public:
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
 
       /** @name Selection handling
-      * This group of methodes do the selection handling.
+      * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProvider
       * works.
      */

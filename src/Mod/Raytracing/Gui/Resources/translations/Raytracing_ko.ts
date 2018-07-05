@@ -11,7 +11,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Export project...</source>
-      <translation type="unfinished">&amp;Export project...</translation>
+      <translation>&amp; 프로젝트 내보내기</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -28,7 +28,7 @@
     <message>
       <location line="+207"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -56,7 +56,7 @@
     <message>
       <location line="-341"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -78,7 +78,7 @@
     <message>
       <location line="-100"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <source>New Povray project</source>
@@ -114,12 +114,12 @@
     <message>
       <location line="+196"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Render</source>
-      <translation type="unfinished">&amp;Render</translation>
+      <translation>&amp; 렌더링</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -132,12 +132,12 @@
     <message>
       <location line="+243"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Reset Camera</source>
-      <translation type="unfinished">&amp;Reset Camera</translation>
+      <translation>&amp; 카메라를 재설정</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -150,7 +150,7 @@
     <message>
       <location line="-723"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -180,7 +180,7 @@
     <message>
       <location line="+91"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -239,7 +239,7 @@ Do you want to continue?</translation>
     <message>
       <location line="-2"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
@@ -430,7 +430,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="+14"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>레이트레이싱</translation>
     </message>
     <message>
       <location line="+103"/>
@@ -455,12 +455,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+95"/>
       <source>Directories</source>
-      <translation type="unfinished">Directories</translation>
+      <translation>디렉토리</translation>
     </message>
     <message>
       <location line="+53"/>
       <source>Default Project dir:</source>
-      <translation type="unfinished">Default Project dir:</translation>
+      <translation>기본 프로젝트 경로:</translation>
     </message>
     <message>
       <location line="-26"/>
@@ -475,7 +475,7 @@ Do you want to continue?</translation>
     <message>
       <location line="+57"/>
       <source>Render</source>
-      <translation type="unfinished">Render</translation>
+      <translation>렌더링</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -537,7 +537,7 @@ Do you want to continue?</translation>
     <message>
       <location line="-294"/>
       <source>Mesh export settings</source>
-      <translation type="unfinished">Mesh export settings</translation>
+      <translation>메쉬 내보내기 설정</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
@@ -595,7 +595,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
-      <translation type="unfinished">&amp;Raytracing</translation>
+      <translation>&amp; 레이트레이싱</translation>
     </message>
   </context>
 </TS>

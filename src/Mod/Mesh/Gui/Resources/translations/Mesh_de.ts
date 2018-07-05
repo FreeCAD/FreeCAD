@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Netz auswerten &amp;&amp; reparieren...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Untersuche und repariere das Netz...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>

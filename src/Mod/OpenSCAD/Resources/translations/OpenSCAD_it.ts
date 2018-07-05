@@ -56,7 +56,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
-      <translation>dimensione del frammento massimo</translation>
+      <translation>Dimensione del frammento massimo</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="208"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
-      <translation>convessità</translation>
+      <translation>Convessità</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="341"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Angolo minimo per un frammento</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Dimensione minima di un frammento</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>rimuove la fusione, applica in modo casuale il posizionamento ai figli e il colore</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Rimuove la fusione, applica in modo casuale il posizionamento e il colore ai figli</translation>
     </message>
   </context>
   <context>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Aumenta la caratteristica tolleranza</translation>
+      <translation>Aumenta la tolleranza</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="190"/>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Esporta gli oggetti come mesh e utilizza OpenSCAD per eseguire un'operazione booleana.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Esporta gli oggetti come mesh e utilizza OpenSCAD per eseguire un'operazione booleana</translation>
     </message>
   </context>
   <context>
@@ -339,7 +339,7 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Sostituisce un oggetto nella struttura ad albero. Si prega di selezionare l'oggetto vecchio, il nuovo e il genitore</translation>
     </message>
   </context>

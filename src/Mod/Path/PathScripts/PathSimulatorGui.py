@@ -1,13 +1,15 @@
-import os
 import FreeCAD
-import Path
-import Part
 import Mesh
+import Part
+import Path
+import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLog as PathLog
 import PathSimulator
 import math
+import os
+
 from FreeCAD import Vector, Base
-import PathScripts.PathLog as PathLog
-from PathScripts.PathGeom import PathGeom
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,6 +49,7 @@ class PathSimulation:
         self.numCommands = 0
         self.simperiod = 20
         self.accuracy = 0.1
+        self.resetSimulation = False
 
     def Connect(self, but, sig):
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
@@ -56,6 +59,7 @@ class PathSimulation:
             self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
 
     def Activate(self):
+        self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonStop, self.SimStop)
@@ -80,6 +84,7 @@ class PathSimulation:
         self.firstDrill = True
         self.voxSim = PathSimulator.PathSim()
         self.SimulateMill()
+        self.initdone = True
 
     def SetupSimulation(self):
         form = self.taskForm.form
@@ -91,8 +96,7 @@ class PathSimulation:
                 self.firstDrill = True
                 self.activeOps.append(self.operations[i])
                 self.numCommands += len(self.operations[i].Path.Commands)
-        if len(self.activeOps) == 0:
-            return 0
+
         self.stock = self.job.Stock.Shape
         if (self.isVoxel):
             maxlen = self.stock.BoundBox.XLength
@@ -113,8 +117,13 @@ class PathSimulation:
 
     def SetupOperation(self, itool):
         self.operation = self.activeOps[itool]
-        if hasattr(self.operation, "ToolController"):
-            self.tool = self.operation.ToolController.Tool
+        try:
+            self.tool = PathDressup.toolController(self.operation).Tool
+        except:
+            self.tool = None
+
+        # if hasattr(self.operation, "ToolController"):
+        #     self.tool = self.operation.ToolController.Tool
         if (self.tool is not None):
             toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), self.tool.Diameter / 2.0)
             self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
@@ -161,9 +170,9 @@ class PathSimulation:
         self.resetSimulation = True
         FreeCAD.ActiveDocument.recompute()
 
-    def SkipStep(self):
-        self.skipStep = True
-        self.PerformCut()
+    # def SkipStep(self):
+    #     self.skipStep = True
+    #     self.PerformCut()
 
     def PerformCutBoolean(self):
         if self.resetSimulation:
@@ -278,51 +287,51 @@ class PathSimulation:
             return curpos
         return path.valueAt(path.LastParameter)
 
-    def GetPathSolidOld(self, tool, cmd, curpos):
-        e1 = PathGeom.edgeForCmd(cmd, curpos)
-        # curpos = e1.valueAt(e1.LastParameter)
-        n1 = e1.tangentAt(0)
-        n1[2] = 0.0
-        try:
-            n1.normalize()
-        except:
-            return (None, e1.valueAt(e1.LastParameter))
-        height = self.height
-        rad = tool.Diameter / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
-        if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
-            rad = e1.Curve.Radius - 0.001
-            # return (None, e1.valueAt(e1.LastParameter))
-        xf = n1[0] * rad
-        yf = n1[1] * rad
-        xp = curpos[0]
-        yp = curpos[1]
-        zp = curpos[2]
-        v1 = Vector(yf + xp, -xf + yp, zp)
-        v2 = Vector(yf + xp, -xf + yp, zp + height)
-        v3 = Vector(-yf + xp, xf + yp, zp + height)
-        v4 = Vector(-yf + xp, xf + yp, zp)
-        # vc1 = Vector(xf + xp, yf + yp, zp)
-        # vc2 = Vector(xf + xp, yf + yp, zp + height)
-        l1 = Part.makeLine(v1, v2)
-        l2 = Part.makeLine(v2, v3)
-        # l2 = Part.Edge(Part.Arc(v2, vc2, v3))
-        l3 = Part.makeLine(v3, v4)
-        l4 = Part.makeLine(v4, v1)
-        # l4 = Part.Edge(Part.Arc(v4, vc1, v1))
-        w1 = Part.Wire([l1, l2, l3, l4])
-        w2 = Part.Wire(e1)
-        try:
-            ex1 = w2.makePipeShell([w1], True, True)
-        except:
-            # Part.show(w1)
-            # Part.show(w2)
-            return (None, e1.valueAt(e1.LastParameter))
-        cyl1 = Part.makeCylinder(rad, height, curpos)
-        curpos = e1.valueAt(e1.LastParameter)
-        cyl2 = Part.makeCylinder(rad, height, curpos)
-        ex1s = Part.Solid(ex1)
-        f1 = ex1s.fuse([cyl1, cyl2]).removeSplitter()
-        return (f1, curpos)
+    # def GetPathSolidOld(self, tool, cmd, curpos):
+    #     e1 = PathGeom.edgeForCmd(cmd, curpos)
+    #     # curpos = e1.valueAt(e1.LastParameter)
+    #     n1 = e1.tangentAt(0)
+    #     n1[2] = 0.0
+    #     try:
+    #         n1.normalize()
+    #     except:
+    #         return (None, e1.valueAt(e1.LastParameter))
+    #     height = self.height
+    #     rad = tool.Diameter / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
+    #     if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
+    #         rad = e1.Curve.Radius - 0.001
+    #         # return (None, e1.valueAt(e1.LastParameter))
+    #     xf = n1[0] * rad
+    #     yf = n1[1] * rad
+    #     xp = curpos[0]
+    #     yp = curpos[1]
+    #     zp = curpos[2]
+    #     v1 = Vector(yf + xp, -xf + yp, zp)
+    #     v2 = Vector(yf + xp, -xf + yp, zp + height)
+    #     v3 = Vector(-yf + xp, xf + yp, zp + height)
+    #     v4 = Vector(-yf + xp, xf + yp, zp)
+    #     # vc1 = Vector(xf + xp, yf + yp, zp)
+    #     # vc2 = Vector(xf + xp, yf + yp, zp + height)
+    #     l1 = Part.makeLine(v1, v2)
+    #     l2 = Part.makeLine(v2, v3)
+    #     # l2 = Part.Edge(Part.Arc(v2, vc2, v3))
+    #     l3 = Part.makeLine(v3, v4)
+    #     l4 = Part.makeLine(v4, v1)
+    #     # l4 = Part.Edge(Part.Arc(v4, vc1, v1))
+    #     w1 = Part.Wire([l1, l2, l3, l4])
+    #     w2 = Part.Wire(e1)
+    #     try:
+    #         ex1 = w2.makePipeShell([w1], True, True)
+    #     except:
+    #         # Part.show(w1)
+    #         # Part.show(w2)
+    #         return (None, e1.valueAt(e1.LastParameter))
+    #     cyl1 = Part.makeCylinder(rad, height, curpos)
+    #     curpos = e1.valueAt(e1.LastParameter)
+    #     cyl2 = Part.makeCylinder(rad, height, curpos)
+    #     ex1s = Part.Solid(ex1)
+    #     f1 = ex1s.fuse([cyl1, cyl2]).removeSplitter()
+    #     return (f1, curpos)
 
     # get a solid representation of a tool going along path
     def GetPathSolid(self, tool, cmd, pos):
@@ -383,7 +392,7 @@ class PathSimulation:
         yp = pos[1]
         zp = pos[2]
         h = tool.CuttingEdgeHeight
-        if h <= 0.0: #set default if user fails to avoid freeze
+        if h <= 0.0:  # set default if user fails to avoid freeze
             h = 1.0
             PathLog.error("SET Tool Length")
         # common to all tools
@@ -429,6 +438,7 @@ class PathSimulation:
     def onJobChange(self):
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
+        self.job = j
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
@@ -437,6 +447,8 @@ class PathSimulation:
             listItem.setCheckState(QtCore.Qt.CheckState.Checked)
             self.operations.append(op)
             form.listOperations.addItem(listItem)
+        if  self.initdone:
+          self.SetupSimulation()
 
     def onSpeedBarChange(self):
         form = self.taskForm.form
@@ -470,16 +482,30 @@ class PathSimulation:
         self.iprogress = 0
         self.EndSimulation()
 
+    def InvalidOperation(self):
+        if len(self.activeOps) == 0:
+          return True
+        if (self.tool == None):
+          TSError("No tool assigned for the operation")
+          return True
+        return False
+
     def SimFF(self):
+        if self.InvalidOperation():
+            return
         self.GuiBusy(True)
         self.timer.start(1)
         self.disableAnim = True
 
     def SimStep(self):
+        if self.InvalidOperation():
+            return
         self.disableAnim = False
         self.PerformCut()
 
     def SimPlay(self):
+        if self.InvalidOperation():
+            return
         self.disableAnim = False
         self.GuiBusy(True)
         self.timer.start(self.simperiod)

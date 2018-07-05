@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="+312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Any</translation>
+      <translation>Jakýkoli</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -37,7 +37,7 @@
       <location line="+1"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Curve</translation>
+      <translation>Křivka</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -49,7 +49,7 @@
       <location line="+1"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Conic</translation>
+      <translation>Kuželosečky</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -61,13 +61,13 @@
       <location line="+1"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Parabola</translation>
+      <translation>Parabola</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Hyperbola</translation>
+      <translation>Hyperbola</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -109,7 +109,7 @@
       <location line="+2"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -130,95 +130,95 @@
       <location line="-65"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivováno</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Point can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. Bod může být přesunut pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Object's origin</translation>
+      <translation>Počátek objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Bod je umístěn na Placement.Position objektu. Funguje na objektech s umístěním a hranách elipsy/paraboly/hyperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus1</translation>
+      <translation>Ohnisko1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Focus of ellipse, parabola, hyperbola.</translation>
+      <translation>Ohnisko elipsy, paraboly, hyperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus2</translation>
+      <translation>Ohnisko2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Second focus of ellipse and hyperbola.</translation>
+      <translation>Druhé ohnisko elipsy a hyperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">On edge</translation>
+      <translation>Na hraně</translation>
     </message>
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Bod je umístěn na hranu podle MapPathParametr. Navíc může být připojený vrchol pro vytvoření projekce.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of curvature</translation>
+      <translation>Střed křivosti</translation>
     </message>
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+      <translation>Střed oskulační kružnice hrany, kde je definovaný volitelný vrchol.</translation>
     </message>
     <message>
       <location line="-2"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Bod je umístěn na hranu podle MapPathParameter. Navíc může být připojený vrchol pro vytvoření projekce.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Střed oskulační kružnice hrany, kde je definovaný volitelný vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>Těžiště</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>Těžiště všech referencí (předpokládá shodné hustoty).</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -230,7 +230,7 @@
       <location line="+1"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Not implemented</translation>
+      <translation>Není implementováno</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -242,31 +242,31 @@
       <location line="+1"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Umístěte pomocný bod shodně s jiným vrcholem.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Blízký bod 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Ukažte na první referenci, která je neblíže druhé referenci.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Blízký bod 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Ukažte na druhou referenci, která je neblíže první referenci.</translation>
     </message>
   </context>
   <context>
@@ -275,104 +275,104 @@
       <location line="-100"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivováno</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. Čára může být přesunuta pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>X objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+6"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Čára je zarovnaná podél lokální osy X objektu. Funguje na objektech s umístěním a na hranách elipsy/paraboly/hybperboly.</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>Y objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Čára je zarovnaná podél lokální osy Y objektu. Funguje na objektech s umístěním a na hranách elipsy/paraboly/hybperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>Z objektu</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Axis of curvature</translation>
+      <translation>Osa křivosti</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Čára, která je osou oskulační kružnice zakřivené hrany. Zde je definovaný volitelný vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Řídící přímka 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Řídící příjmka pro elipsu, parabolu, hyperbolu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Řídící přímka 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Druhá řídící přímka pro elipsu a hyperbolu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote1</translation>
+      <translation>Asymptota1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Asymptote of a hyperbola.</translation>
+      <translation>Asymptota hyperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote2</translation>
+      <translation>Asymptota2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second asymptote of hyperbola.</translation>
+      <translation>Druhá asymptota hyperboly.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -384,25 +384,25 @@
       <location line="+1"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Tečna na hranu. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Normála ke hraně</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normála k povrchu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Čára kolmá na povrch v bodě určeném vrcholem.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -413,50 +413,50 @@
       <location line="-30"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte vektor N Frenetova-Serretova souřadnicového systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormála</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte vektor B Frenetova-Serretova souřadnicového systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (U)</translation>
+      <translation>Tečné k povrchu (U)</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+3"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+      <translation>Tečné k povrchu podél parametru U. Zde je definován vrchol. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="-1"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Tečné k povrchu (V)</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Through two points</translation>
+      <translation>Skrz dva body</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that passes through two vertices.</translation>
+      <translation>Čára, která prochází dvěma vrcholy.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -468,55 +468,55 @@
       <location line="+1"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Not implemented.</translation>
+      <translation>Není implementováno.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Čára blízkosti</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Čára, která spojuje nejkratší vzdálenosti mezi útvary.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">1st principal axis</translation>
+      <translation>1. hlavní osa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+      <translation>Čára daná první hlavní osou setrvačnosti.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">2nd principal axis</translation>
+      <translation>2. hlavní osa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+      <translation>Čára daná druhou hlavní osou setrvačnosti.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">3rd principal axis</translation>
+      <translation>3. hlavní osa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+      <translation>Čára daná třetí hlavní osou setrvačnosti.</translation>
     </message>
   </context>
   <context>
@@ -525,108 +525,108 @@
       <location line="-133"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivováno</translation>
     </message>
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Plane can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. Rovina může být přesunuta pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. Objekt může být přesunut pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Přesunout počátek</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Počátek je zarovnán pomocí vrcholu. Orientace je určena vlastností Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>XY objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>Rovina je zarovnaná k lokální rovině XY provázaného objektu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>XZ objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>Rovina je zarovnaná k lokální rovině XZ provázaného objektu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's  YZ</translation>
+      <translation>YZ objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>Rovina je zarovnaná k lokální rovině YZ provázaného objektu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Plocha roviny</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Rovina je zarovnaná ke shodné ploše roviny.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Tečné k povrchu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Rovina je tečná k povrchu v bodě.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Normála ke hraně</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Rovina je tečná na hranu. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -634,96 +634,96 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte k Frenetovu-Serretovu souřadnicovému systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Spistředný</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte rovinu k oskulační kružnici hrany. Počátek je zarovnaný k bodu křivosti. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Otočení sekce</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Rovina je kolmá na hranu a osa Y je zarovnaná s osou oskulační kružnice. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Rovina je kolmá na hranu a osa Y je zarovnaná s osou oskulační kružnice. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Rovina pomocí 3 bodů</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Zarovnejte rovinu, aby procházela třemi vrcholy.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Normála ke 3 bodům</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Rovina bude procházet prvními dvěma vrcholy a kolmo k rovině procházející skrz tři vrcholy.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Skládání</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Speciální mód pro skládání mnohostěnu. Vyberte 4 hrany v pořadí: sklopná hrana, ohybová čára, další ohybová čára, další sklopná hrana. Rovina bude zarovnána ke složení první hrany.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Inertia 2-3</translation>
+      <translation>Setrvačnost 2-3</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>Rovina zkonstruovaná na druhé a třetí hlavní ose setrvačnosti (procházející skrz těžiště).</translation>
     </message>
   </context>
   <context>
@@ -732,108 +732,108 @@
       <location line="-124"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktivováno</translation>
     </message>
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. CS can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. SS může být přesunut pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Připojení je vypnuté. Objekt může být přesunut pomocí editace vlastnosti Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Přesunout počátek</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Počátek je zarovnán pomocí vrcholu. Orientace je určena vlastností Umístění.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Y Z</translation>
+      <translation>X Y Z objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>Umístění je stejné jako Umístění připojeného objektu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Z-Y</translation>
+      <translation>X Z-Y objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>Osy X', Y', Z' jsou zarovanné s lokálními osami objeku X, Z, -Y.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  Y Z X</translation>
+      <translation>Y Z X objektu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>Osy X', Y', Z' jsou zarovanné s lokálními osami objeku Y, Z, X.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY v rovině</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
+      <translation>Rovina X' Y' je zarovnaná, aby se shodovala s rovinnou plochou.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>XY tečné k povrchu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>Rovina X' Y' je nastavena jako tečná k porvhu ve vrcholu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z tečná na hranu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Osa Z' je zarovnaná tečně ke hraně. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -841,225 +841,225 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte k Frenetovu-Serretovu souřadnicovému systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Spistředný</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte rovinu XY ke středu oskulační kružnice hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Otočení sekce</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Zarovnejte osu Y' k ose oskulační kružnice hrany. Zde je definovaný připojený vrchol.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>Rovina XY pomocí 3 bodů</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+      <translation>Zarovnejte rovinu XY, aby procházela třemi vrcholy.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>Rovina XZ pomocí 3 bodů</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>Zarovnejte rovinu XZ, aby procházela skrz 3 body; osa X bude procházet skrz první dva body.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Skládání</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>Speciální mód pro skládání mnohostěnu. Vyberte 4 hrany v pořadí: sklopná hrana, ohybová čára, další ohybová čára, další sklopná hrana. Rovina XY bude zarovnána ke složení první hrany.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Inertial CS</translation>
+      <translation>Inerciální SS</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>Inerciální souřadnicový systém daný hlavními osami setrvačnosti a těžištěm.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Zarovnat O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy Z' a X' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Zarovnat O-Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy Z' a Y' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Zarovnat O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy X' a Y' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Zarovnat O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy X' a Z' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Zarovnat O-Y-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy Y' a Z' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Zarovnat O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte osy Y' a X' s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Zarovnat O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte normálu a horizontální osu roviny s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Zarovnat O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte normálu a vertikální osu roviny s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte horizontální a vertikální osy roviny s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Zarovnat O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte horizontální osu roviny a normálu s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Zarovnat O-Y-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte vertikální osu roviny a normálu s vrcholem nebo podél čáry.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Umístěte počátek do prvního vrcholu. Zarovnejte vertikální a horizontální osy roviny s vrcholem nebo podél čáry.</translation>
     </message>
   </context>
   <context>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1478,25 +1478,25 @@
     <message>
       <location line="+1"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>Nástroje pro odsazení tvarů (vytvoří rovnobětné tvary)</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Split objects...</source>
-      <translation type="unfinished">Split objects...</translation>
+      <translation>Rozdělit objekty...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Nástroje na rozdělení tvaru. Nástroje tvorby složeného tělesa. Je potřeba OCC 6.9.0 nebo novější.</translation>
     </message>
   </context>
   <context>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1733,12 +1733,16 @@
     <message>
       <location line="+1"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>Vytvořit plochu z drátů</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Vytvoří plochu z množiny drátů (např. z náčrtu)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
-      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
+      <translation>Part_MakeFace: Vytvoří plochu z množiny drátů (např. z náčrtu).</translation>
     </message>
     <message>
       <source>Make face from sketch</source>
@@ -1795,12 +1799,12 @@
     <message>
       <location line="+1"/>
       <source>3D Offset...</source>
-      <translation type="unfinished">3D Offset...</translation>
+      <translation>3D odsazení...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Part_Offset: Utility to offset in 3D</source>
-      <translation type="unfinished">Part_Offset: Utility to offset in 3D</translation>
+      <translation>Part_Offset: Nástroj pro odsazení ve 3D</translation>
     </message>
     <message>
       <source>Offset...</source>
@@ -1821,18 +1825,18 @@
     <message>
       <location line="+1"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D odsazení...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Part_Offset2D: Utility to offset planar shapes</source>
-      <translation type="unfinished">Part_Offset2D: Utility to offset planar shapes</translation>
+      <translation>Part_Offset2D: Nástroj pro odsazení rovinných útvarů</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Díl</translation>
     </message>
@@ -2144,42 +2148,50 @@
     <message>
       <location line="+6"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Výběr přijat</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Reference 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Reference 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Reference 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Reference 4</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Mód připojení:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Vlastnost AttachmentOffset. Umístění je určeno v lokálním prostoru připojeného objektu.</translation>
     </message>
     <message>
       <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Odsazení připojení:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Zrcadlení vlastnosti superPlacement. Extra umístění je určeno v lokálním prostoru připojeného objektu.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
-      <translation type="unfinished">Extra placement:</translation>
+      <translation>Extra připojení:</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -2214,7 +2226,7 @@
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Otočit strany</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Sražené hrany</translation>
     </message>
@@ -2405,7 +2417,7 @@
     <message>
       <location line="+6"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
+      <translation>Je-li zaškrtnuto, směr vysunutí je obrácený.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2415,17 +2427,17 @@
     <message>
       <location line="+7"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Určete směr ručně pomocí hodnot X, Y, Z.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Custom direction:</source>
-      <translation type="unfinished">Custom direction:</translation>
+      <translation>Uživatelský směr:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+      <translation>Vysunout kolmo na rovinu vstupního tvaru.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2457,7 +2469,7 @@
     <message>
       <location line="-211"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Klikněte pro začátek výběru hrany ve 3d zobrazení.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2468,12 +2480,12 @@
     <message>
       <location line="+10"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Nastavit směr odpodíající směru přímé hrany. Tip: pro současné zohlednění délky hrany nastavte obě délky na nulu.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Podél hrany:</translation>
     </message>
     <message>
       <location line="+98"/>
@@ -2483,43 +2495,43 @@
     <message>
       <location line="+6"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>Podél:</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Délky vysunutí podél hrany (může být negativní). Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Against:</source>
-      <translation type="unfinished">Against:</translation>
+      <translation>Proti:</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>Délka vysunutí proti směru (může být negativní).</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>Distribuovat délku vysunutí rovnoměrně v obou směrech.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>Symetrické</translation>
     </message>
     <message>
       <location line="+25"/>
       <location line="+25"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Použít sklon (zkosení) k vysunutí postranních ploch.</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+      <translation>Je-li zaškrtnuto, vysunutím uzavřených drázů se vytvoří tělesa, ne skořepiny.</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -2552,7 +2564,7 @@
     <message>
       <location filename="../../DlgExtrusion.cpp" line="-26"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Vybírání...</translation>
     </message>
     <message>
       <location line="+241"/>
@@ -2565,52 +2577,52 @@
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>Vysunování selhalo.
 
 %1</translation>
     </message>
     <message>
       <location line="+67"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Objekt nebyl nalezen. %1</translation>
     </message>
     <message>
       <location line="+62"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>Nejsou vybrané útvary pro vysunutí. Nejprve nějaké vyberte.</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Neplatný odkaz na osu rotace.
 
 %1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>Mód směru je použitelný na hranu, ale hrana není připojená.</translation>
     </message>
     <message>
       <location line="+23"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>Nelze rozeznat normálový vektor útvaru pro vysunutí. Prosím vyberte jiný mód.
 
 (%1)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>Směr vysunutí má nulovou délku. Musí být nenulový.</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>Celková dálka vysunutí je nulová (délka1 == -délka2). Musí být nenulová.</translation>
     </message>
     <message>
       <source>Succeeded</source>
@@ -2684,7 +2696,7 @@
       <translation>Žádný výběr</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Délka:</translation>
     </message>
@@ -2705,12 +2717,12 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Počáteční délka</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Koncová délka</translation>
     </message>
@@ -2721,17 +2733,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Počáteční rádius</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Koncový rádius</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
@@ -2762,13 +2774,13 @@ Please check one or more edge entities first.</source>
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Hrana%1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Není vybrán útvar</translation>
     </message>
@@ -2869,7 +2881,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
@@ -2901,10 +2913,25 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+26"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>Vypsat křivky v parametrickém prostoru povrchu</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Import</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>Je-li zaškrtnuto, při čtení souboru nebou vytvářeny složeniny (pomalejší ale s podrobnějšími detaily).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>Dovolit vytváření složenin STEPu</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Hlavička</translation>
     </message>
@@ -3577,69 +3604,69 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</translation>
+      <translation>Je-li zaškrtnuto, z rotovaný drátů vznikne těleso. Není-li zaškrtnuto, rotovaný drát vytvoří skořepinu.</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
+      <translation>Je-li zaškrtnuto, z rotovaný drátů vznikne těleso. Není-li zaškrtnuto, rotovaný drát vytvoří skořepinu.</translation>
     </message>
     <message>
       <location line="+79"/>
       <source>Revolution axis</source>
-      <translation type="unfinished">Revolution axis</translation>
+      <translation>Osa rotace</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Center X:</source>
-      <translation type="unfinished">Center X:</translation>
+      <translation>Střed X:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Y:</source>
-      <translation type="unfinished">Center Y:</translation>
+      <translation>Střed Y:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Z:</source>
-      <translation type="unfinished">Center Z:</translation>
+      <translation>Střed Z:</translation>
     </message>
     <message>
       <location line="+42"/>
       <location line="+41"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Klikněte pro výběr tohoto jako osy</translation>
     </message>
     <message>
       <location line="-38"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>Směr X:</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Směr Y:</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Směr Z:</translation>
     </message>
     <message>
       <location line="+22"/>
       <location filename="../../DlgRevolution.cpp" line="+440"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Vybrat referenci</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Je-li zaškrtnuto, rotace se roztáhne dopředu a dozadu o polovinu úhlu.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Symmetric angle</source>
-      <translation type="unfinished">Symmetric angle</translation>
+      <translation>Symetrický úhel</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -3679,7 +3706,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="-268"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Objekt nebyl nalezen. %1</translation>
     </message>
     <message>
       <location line="+81"/>
@@ -3693,19 +3720,19 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Neplatný odkaz na osu rotace.
 
 %1</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Osa rotace má nulovou délku. Musí být nenulová.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Rozpětí úhlu rotace je nulové. Musí být nenulové.</translation>
     </message>
     <message>
       <location line="+122"/>
@@ -3713,14 +3740,14 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation type="unfinished">Creating Revolve failed.
+      <translation>Selhalo vytvoření rotace.
 
 %1</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Selecting... (line or arc)</source>
-      <translation type="unfinished">Selecting... (line or arc)</translation>
+      <translation>Vybírání... (čára nebo oblouk)</translation>
     </message>
   </context>
   <context>
@@ -4006,12 +4033,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Dostupné profily</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Vybrané profily</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -4223,12 +4250,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Dostupné profily</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Vybrané profily</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4287,43 +4314,51 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+6"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Výběr přijat</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Reference 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Reference 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Reference 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Reference 4</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Mód připojení:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Vlastnost AttachmentOffset. Umístění je určeno v lokálním prostoru připojeného objektu.</translation>
     </message>
     <message>
       <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Odsazení připojení:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Zrcadlení vlastnosti superPlacement. Extra umístění je určeno v lokálním prostoru připojeného objektu.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
-      <translation type="unfinished">Extra placement:</translation>
+      <translation>Extra připojení:</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -4358,40 +4393,49 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Otočit strany</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="-17"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>OCC chyba: %1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>neznámá chyba</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Mód připojení selhal: %1</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Není připojeno</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Připojené v módu %1</translation>
     </message>
     <message>
       <location line="+4"/>
-      <source>Extra placement (inactive - not attached):</source>
-      <translation type="unfinished">Extra placement (inactive - not attached):</translation>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>Není editovatelné, protože rotovaná součást připojená s odsazením je omezena výrazy.</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>Extra umístění (neaktivní - není připojené):</translation>
+    </message>
+    <message>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
@@ -4408,50 +4452,49 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+59"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Vybírání...</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>Reference%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
+      <translation>Není editovatelné, protože rotovaná součást superumístění je omezena výrazy.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Kombinace referencí:
 </translation>
     </message>
     <message>
       <source>Reference combinations:
 </source>
-      <translation type="unfinished">Reference combinations:
+      <translation>Kombinace referencí:
 </translation>
     </message>
     <message>
       <location line="+17"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (přidat %2)</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (přidat více referencí)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Obsah tvaru</translation>
     </message>
@@ -4459,7 +4502,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Zkontrolovat geometrii</translation>
     </message>
@@ -4632,7 +4675,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskAttacher.cpp" line="+217"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>Dialog hodnoty: Chyba vstupu</translation>
     </message>
   </context>
   <context>
@@ -4905,64 +4948,64 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="+172"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Jednoduchý</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Vytvoří samostatnou rovinnou plochu z každého drátu. Bez podpory otvorů; dráty mohou ležet v různých rovinách.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Terčové tvoření plochy</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <translation>Podporuje vytváření rovinných ploch s dírami a ostrovy.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Sýrové tvoření plochy</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>Podporuje vytváření rovinných ploch s dírami, ale bez ostrovů v dírách.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Vysunovací tvoření plochy</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Podporuje vytváření ploch s dírami, nepodporuje vnořování.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Vyber dva útvary prosím.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4980,15 +5023,15 @@ Chcete pokračovat?</translation>
     <message>
       <location line="-118"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Vyberte prosím dva tvary nebo více. Nebo vyberte jednu složeninu složenou ze dvou nebo více tvarů pro výpočet společného mezi nimi.</translation>
     </message>
     <message>
       <location line="+102"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Vyberte prosím dva tvary nebo více. Nebo vyberte jednu složeninu složenou ze dvou nebo více tvarů ke sloučení.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Vyberte prosím jeden nebo více tvarů.</translation>
     </message>
@@ -5088,7 +5131,7 @@ Chcete pokračovat?</translation>
       <translation>Upravit hrny zaoblení</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Nastavení barev...</translation>
     </message>
@@ -5113,7 +5156,7 @@ Chcete pokračovat?</translation>
       <translation>Skořepina</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Plocha</translation>
@@ -5127,7 +5170,7 @@ Chcete pokračovat?</translation>
       <location filename="../../TaskAttacher.cpp" line="-9"/>
       <location line="+33"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Není vybrána reference</translation>
     </message>
     <message>
       <location line="-21"/>
@@ -5379,7 +5422,7 @@ Chcete pokračovat?</translation>
     <message>
       <location line="+1"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
     </message>
     <message>
       <location line="+1"/>

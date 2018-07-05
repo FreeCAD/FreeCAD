@@ -11,12 +11,12 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/Hide B-spline curvature comb</translation>
+      <translation>Pokaži/Sakrij češalj zakrivljenosti B-spline krive</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja češlja zakrivljenosti za sve (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Pokaži/Sakrij B-spline stupnjevi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja intenziteta za sve (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/Hide B-spline knot multiplicity</translation>
+      <translation>Pokaži/Sakrij B-spline čvor mnogostrukost</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the knot multiplicity for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja za višestrukost čvora (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -65,36 +65,36 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline control polygon</source>
-      <translation type="unfinished">Show/Hide B-spline control polygon</translation>
+      <translation>Pokaži/Sakrij kontrolu B-spline poligona</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control polygons for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja kontrolnog poligona (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>CarbonCopy</source>
-      <translation type="unfinished">CarbonCopy</translation>
+      <translation>CarbonCopy</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Copies the geometry of another sketch</source>
-      <translation type="unfinished">Copies the geometry of another sketch</translation>
+      <translation>Kopira geometriju drugu skicu</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -106,25 +106,25 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara klon geometrije uzimajući kao referencu zadnje odabranu točku</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Close Shape</source>
-      <translation type="unfinished">Close Shape</translation>
+      <translation>Zatvorite Oblik</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Produce closed shape by Link end point of element with next elements' starting point</source>
-      <translation type="unfinished">Produce closed shape by Link end point of element with next elements' starting point</translation>
+      <translation>Proizvodi zatvoreni oblik sa povezivanjem krajnje točke elementa sa polazišnom točkom sljedećeg elementa</translation>
     </message>
   </context>
   <context>
@@ -138,33 +138,33 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Show/hide B-spline information layer</source>
-      <translation type="unfinished">Show/hide B-spline information layer</translation>
+      <translation>Pokaži/Sakrij B-spline Sloj Informacije</translation>
     </message>
     <message>
       <location line="+69"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Pokaži/Sakrij B-spline stupnjevi</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline control polygon</source>
-      <translation type="unfinished">Show/Hide B-spline control polygon</translation>
+      <translation>Pokaži/Sakrij kontrolu B-spline poligona</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/Hide B-spline curvature comb</translation>
+      <translation>Pokaži/Sakrij češalj zakrivljenosti B-spline krive</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/Hide B-spline knot multiplicity</translation>
+      <translation>Pokaži/Sakrij B-spline čvor mnogostrukost</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -176,13 +176,13 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara klon geometrije uzimajući kao referencu zadnje odabranu točku</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4764"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -194,41 +194,41 @@
     <message>
       <location line="+1"/>
       <source>Create an arc in the sketcher</source>
-      <translation type="unfinished">Create an arc in the sketcher</translation>
+      <translation>Stvaranje luka u skici</translation>
     </message>
     <message>
       <location line="+77"/>
       <source>Center and end points</source>
-      <translation type="unfinished">Center and end points</translation>
+      <translation>Centar i krajnje točke</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>End points and rim point</source>
-      <translation type="unfinished">End points and rim point</translation>
+      <translation>Krajnje točke i rubna točka</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2804"/>
+      <location line="+2831"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a B-spline</source>
-      <translation type="unfinished">Create a B-spline</translation>
+      <translation>Stvaranje B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a B-spline in the sketch</source>
-      <translation type="unfinished">Create a B-spline in the sketch</translation>
+      <translation>Stvaranje B-spline skice</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location line="+357"/>
+      <location line="+358"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -240,108 +240,117 @@
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketcher</source>
-      <translation type="unfinished">Create a circle in the sketcher</translation>
+      <translation>Stvaranje kruga u skici</translation>
     </message>
     <message>
       <location line="+77"/>
       <source>Center and rim point</source>
-      <translation type="unfinished">Center and rim point</translation>
+      <translation>Centar i rubna točka</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>3 rim points</source>
-      <translation type="unfinished">3 rim points</translation>
+      <translation>3 rubne točke</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1053"/>
+      <location line="-1076"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a conic</source>
-      <translation type="unfinished">Create a conic</translation>
+      <translation>Stvori konusnu krivulju</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a conic in the sketch</source>
-      <translation type="unfinished">Create a conic in the sketch</translation>
+      <translation>Stvaranje konusne krivulje u skici</translation>
     </message>
     <message>
       <location line="+105"/>
       <source>Ellipse by center, major radius, point</source>
-      <translation type="unfinished">Ellipse by center, major radius, point</translation>
+      <translation>Elipsa od: točke centra, točaka glavnih radijusa</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-      <translation type="unfinished">Ellipse by Periapsis, apoapsis, minor radius</translation>
+      <translation>Elipsa od periapsis, apoapsis, manjeg polumjera</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
-      <translation type="unfinished">Arc of ellipse by center, major radius, endpoints</translation>
+      <translation>Luk elipse od centra, velikog radijusa, krajnje točke</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
-      <translation type="unfinished">Arc of hyperbola by center, major radius, endpoints</translation>
+      <translation>Luk hiperbole od centra, velikog radijusa, krajnje točke</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
-      <translation type="unfinished">Arc of parabola by focus, vertex, endpoints</translation>
+      <translation>Luk parabole od fokusa, tjemene točke, krajnje točke</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3033"/>
+      <location line="+3091"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create regular polygon</source>
-      <translation type="unfinished">Create regular polygon</translation>
+      <translation>Stvorite pravilan poligon</translation>
+    </message>
+    <message>
+      <source>Create an regular polygon in the sketcher</source>
+      <translation>Stvorite jedan pravilan poligon u skici</translation>
     </message>
     <message>
       <location line="+1"/>
-      <source>Create an regular polygon in the sketcher</source>
-      <translation type="unfinished">Create an regular polygon in the sketcher</translation>
+      <source>Create a regular polygon in the sketcher</source>
+      <translation>Stvorite pravilan poligon u skici</translation>
     </message>
     <message>
-      <location line="+103"/>
+      <location line="+118"/>
       <source>Triangle</source>
-      <translation type="unfinished">Triangle</translation>
+      <translation>Trokut</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Square</source>
-      <translation type="unfinished">Square</translation>
+      <translation>Kvadrat</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Pentagon</source>
-      <translation type="unfinished">Pentagon</translation>
+      <translation>Peterokut</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Hexagon</source>
-      <translation type="unfinished">Hexagon</translation>
+      <translation>Šesterokut</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Heptagon</source>
-      <translation type="unfinished">Heptagon</translation>
+      <translation>Sedmerokut</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Octagon</source>
-      <translation type="unfinished">Octagon</translation>
+      <translation>Osmerokut</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Regular Polygon</source>
+      <translation>Pravilan poligon</translation>
     </message>
   </context>
   <context>
@@ -354,46 +363,46 @@
     <message>
       <location line="+1"/>
       <source>Modify knot multiplicity</source>
-      <translation type="unfinished">Modify knot multiplicity</translation>
+      <translation>Izmijeniti višestrukost čvora</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Modifies the multiplicity of the selected knot of a B-spline</translation>
+      <translation>Mijenja umnožak odabranoga čvora B-spline krive</translation>
     </message>
     <message>
       <location line="+62"/>
       <source>Increase knot multiplicity</source>
-      <translation type="unfinished">Increase knot multiplicity</translation>
+      <translation>Povećanje višestrukosti čvora</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Decrease knot multiplicity</source>
-      <translation type="unfinished">Decrease knot multiplicity</translation>
+      <translation>Smanjenje višestrukosti čvora</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Connect Edges</source>
-      <translation type="unfinished">Connect Edges</translation>
+      <translation>Povezivanje rubova</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Link end point of element with next elements' starting point</source>
-      <translation type="unfinished">Link end point of element with next elements' starting point</translation>
+      <translation>Povezivanje krajnje točke elementa sa polazišnom točkom sljedećeg elementa</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+4971"/>
+      <location filename="../../CommandConstraints.cpp" line="+5429"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -409,9 +418,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainBlock</name>
+    <message>
+      <location line="-3501"/>
+      <source>Sketcher</source>
+      <translation>Skica</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain Block</source>
+      <translation>Blok ograničenja</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create a Block constraint on the selected item</source>
+      <translation>Stvaranje bloka ograničenja na odabrane stavke</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location line="-3074"/>
+      <location line="+307"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -429,7 +456,7 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+139"/>
+      <location line="+190"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -447,7 +474,7 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location line="+556"/>
+      <location line="+568"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -469,7 +496,7 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location line="+242"/>
+      <location line="+248"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -491,7 +518,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2640"/>
+      <location line="+2689"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -509,7 +536,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4389"/>
+      <location line="-4776"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -527,25 +554,25 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+4968"/>
+      <location line="+5376"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain InternalAlignment</source>
-      <translation type="unfinished">Constrain InternalAlignment</translation>
+      <translation>Ograničavanje unutrašnjeg poravnavanja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
-      <translation type="unfinished">Constrains an element to be aligned with the internal geometry of another element</translation>
+      <translation>Ograničava element da bude poravnat s unutarnjom geometrijom drugog elementa</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4512"/>
+      <location line="-4886"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -563,7 +590,7 @@
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location line="+1563"/>
+      <location line="+1871"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -581,7 +608,7 @@
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location line="+185"/>
+      <location line="+190"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -593,7 +620,7 @@
     <message>
       <location line="+1"/>
       <source>Create a perpendicular constraint between two lines</source>
-      <translation type="unfinished">Create a perpendicular constraint between two lines</translation>
+      <translation>Stvara okomito ograničenje između dvije linije</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
@@ -603,7 +630,7 @@
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location line="-900"/>
+      <location line="-915"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -621,7 +648,7 @@
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location line="+2097"/>
+      <location line="+2142"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -639,25 +666,25 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1402"/>
+      <location line="+1433"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain refraction (Snell's law')</source>
-      <translation type="unfinished">Constrain refraction (Snell's law')</translation>
+      <translation>Ograniči lom (Snell's zakon ')</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.</translation>
+      <translation>Stvaranje zakona loma svijetla (Snell's law) ograničenje između dvije krajnje točke zrake i ruba kao sučelja.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location line="-260"/>
+      <location line="-275"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -669,7 +696,7 @@
     <message>
       <location line="+1"/>
       <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points with respect to a line or a third point</translation>
+      <translation>Stvoriti simerično ograničenje između dvije točke u odnosu na liniju ili treću točku</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
@@ -679,7 +706,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1734"/>
+      <location line="-1774"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -697,7 +724,7 @@
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location line="-2599"/>
+      <location line="-2935"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -722,18 +749,18 @@
     <message>
       <location line="+1"/>
       <source>Convert Geometry to B-spline</source>
-      <translation type="unfinished">Convert Geometry to B-spline</translation>
+      <translation>Pretvoriti geometriju u B-spline krivu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Converts the given Geometry to a B-spline</source>
-      <translation type="unfinished">Converts the given Geometry to a B-spline</translation>
+      <translation>Pretvara zadane geometrije u B-spline krive</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -745,61 +772,61 @@
     <message>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara jednostavnu kopiju geometrije uzimajući kao referencu zadnje odabranu točku</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5584"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create arc by three points</source>
-      <translation type="unfinished">Create arc by three points</translation>
+      <translation>Stvori luk kroz tri točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+      <translation>Stvaranje luka od svojih završnih točki i točke na luku</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3244"/>
+      <location line="+3272"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create circle by three points</source>
-      <translation type="unfinished">Create circle by three points</translation>
+      <translation>Stvori krug kroz tri točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a circle by 3 perimeter points</source>
-      <translation type="unfinished">Create a circle by 3 perimeter points</translation>
+      <translation>Stvori krug kroz tri obodne točke</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3559"/>
+      <location line="-3588"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create arc by center</source>
-      <translation type="unfinished">Create arc by center</translation>
+      <translation>Stvori luk od središta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+      <translation>Stvaranje luka od njegovog središta i njegovih krajnjih točaka</translation>
     </message>
     <message>
       <source>Create arc</source>
@@ -813,79 +840,79 @@
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location line="+1853"/>
+      <location line="+1857"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse</source>
-      <translation type="unfinished">Create an arc of ellipse</translation>
+      <translation>Stvaranje luka elipse</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation type="unfinished">Create an arc of ellipse in the sketch</translation>
+      <translation>Stvaranje luka elipse u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location line="+381"/>
+      <location line="+382"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of hyperbola</source>
-      <translation type="unfinished">Create an arc of hyperbola</translation>
+      <translation>Stvaranje luka hiperbole</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation type="unfinished">Create an arc of hyperbola in the sketch</translation>
+      <translation>Stvaranje luka hiperbole u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location line="+342"/>
+      <location line="+343"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of parabola</source>
-      <translation type="unfinished">Create an arc of parabola</translation>
+      <translation>Stvaranje luka parabole</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation type="unfinished">Create an arc of parabola in the sketch</translation>
+      <translation>Stvaranje luka parabole u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+566"/>
+      <location line="+588"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create B-spline</source>
-      <translation type="unfinished">Create B-spline</translation>
+      <translation>Stvaranje B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a B-spline via control point in the sketch.</source>
-      <translation type="unfinished">Create a B-spline via control point in the sketch.</translation>
+      <translation>Stvaranje B-spline krive putem kontrole točke u skici.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2539"/>
+      <location line="-2565"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -903,7 +930,7 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3246"/>
+      <location line="+3274"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -921,19 +948,19 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2380"/>
+      <location line="-2407"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create ellipse by 3 points</source>
-      <translation type="unfinished">Create ellipse by 3 points</translation>
+      <translation>Stvaranje elipse s 3 točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation type="unfinished">Create an ellipse by 3 points in the sketch</translation>
+      <translation>Stvaranje elipse od 3 točke u skici</translation>
     </message>
   </context>
   <context>
@@ -946,18 +973,18 @@
     <message>
       <location line="+1"/>
       <source>Create ellipse by center</source>
-      <translation type="unfinished">Create ellipse by center</translation>
+      <translation>Stvaranje elipse od centra</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation type="unfinished">Create an ellipse by center in the sketch</translation>
+      <translation>Stvaranje elipse od središta u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2693"/>
+      <location line="+2721"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -979,19 +1006,19 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1566"/>
+      <location line="+1574"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create heptagon</source>
-      <translation type="unfinished">Create heptagon</translation>
+      <translation>Stvaranje sedmerokuta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a heptagon in the sketch</source>
-      <translation type="unfinished">Create a heptagon in the sketch</translation>
+      <translation>Stvaranje sedmerokuta u skici</translation>
     </message>
   </context>
   <context>
@@ -1004,18 +1031,18 @@
     <message>
       <location line="+1"/>
       <source>Create hexagon</source>
-      <translation type="unfinished">Create hexagon</translation>
+      <translation>Stvaranje šesterokut</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hexagon in the sketch</source>
-      <translation type="unfinished">Create a hexagon in the sketch</translation>
+      <translation>Stvaranje šestero kuta u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6907"/>
+      <location line="-6951"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1033,19 +1060,19 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6955"/>
+      <location line="+6999"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create octagon</source>
-      <translation type="unfinished">Create octagon</translation>
+      <translation>Stvaranje osmerokuta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an octagon in the sketch</source>
-      <translation type="unfinished">Create an octagon in the sketch</translation>
+      <translation>Stvaranje osmero kuta u skici</translation>
     </message>
   </context>
   <context>
@@ -1058,36 +1085,36 @@
     <message>
       <location line="+1"/>
       <source>Create pentagon</source>
-      <translation type="unfinished">Create pentagon</translation>
+      <translation>Stvaranje peterokuta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a pentagon in the sketch</source>
-      <translation type="unfinished">Create a pentagon in the sketch</translation>
+      <translation>Stvaranje petero kuta u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2471"/>
+      <location line="-2482"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create periodic B-spline</source>
-      <translation type="unfinished">Create periodic B-spline</translation>
+      <translation>Napravite periodične B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a periodic B-spline via control point in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline via control point in the sketch.</translation>
+      <translation>Napravite periodične B-spline putem kontrolne točke u skici.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location line="+608"/>
+      <location line="+610"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1105,7 +1132,7 @@
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4091"/>
+      <location line="-4122"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1117,7 +1144,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation type="unfinished">Create a polyline in the sketch. 'M' Key cycles behaviour</translation>
+      <translation>Stvaranje i izlomljene crte u skici. 'M ' tipka mijenja ponašanje ciklusa</translation>
     </message>
     <message>
       <source>Create a polyline in the sketch</source>
@@ -1127,7 +1154,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-694"/>
+      <location line="-697"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1143,45 +1170,63 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCreateRegularPolygon</name>
+    <message>
+      <location line="+6786"/>
+      <source>Sketcher</source>
+      <translation>Skica</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create regular polygon</source>
+      <translation>Stvorite pravilan poligon</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Create a regular polygon in the sketch</source>
+      <translation>Stvorite pravilan poligon u skici</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location line="+6354"/>
+      <location line="-392"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create slot</source>
-      <translation type="unfinished">Create slot</translation>
+      <translation>Napravite utor</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a slot in the sketch</source>
-      <translation type="unfinished">Create a slot in the sketch</translation>
+      <translation>Stvorite otvor u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location line="+256"/>
+      <location line="+257"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create square</source>
-      <translation type="unfinished">Create square</translation>
+      <translation>Stvaranje kvadrata</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a square in the sketch</source>
-      <translation type="unfinished">Create a square in the sketch</translation>
+      <translation>Stvaranje kvadrata u skici</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1806"/>
+      <location line="-1815"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1199,19 +1244,19 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1776"/>
+      <location line="+1785"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create equilateral triangle</source>
-      <translation type="unfinished">Create equilateral triangle</translation>
+      <translation>Stvaranje istostraničnog trokuta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation type="unfinished">Create an equilateral triangle in the sketch</translation>
+      <translation>Stvaranje jednostraničnih trokuta u skici</translation>
     </message>
   </context>
   <context>
@@ -1224,12 +1269,30 @@
     <message>
       <location line="+1"/>
       <source>Decrease multiplicity</source>
-      <translation type="unfinished">Decrease multiplicity</translation>
+      <translation>Smanjenje umnožavanja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Decreases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>Smanjuje umnožak odabranoga čvora B-spline krive</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherDeleteAllGeometry</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <source>Sketcher</source>
+      <translation>Skica</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Geometry</source>
+      <translation>Izbrisati sve geometrije</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the geometry and constraints but external geometry</source>
+      <translation>Briše sve geometrije i ograničenja osim vanjskih geometrija</translation>
     </message>
   </context>
   <context>
@@ -1247,31 +1310,31 @@
     <message>
       <location line="+1"/>
       <source>Edit the selected sketch</source>
-      <translation type="unfinished">Edit the selected sketch</translation>
+      <translation>Uređivanje odabrane skice</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-949"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Extend edge</source>
-      <translation type="unfinished">Extend edge</translation>
+      <translation>Vanjski rub</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation type="unfinished">Extend an edge with respect to the picked position</translation>
+      <translation>Proširiti rub u odnosu na pokupljenu poziciju</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+222"/>
+      <location line="+223"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1296,12 +1359,12 @@
     <message>
       <location line="+1"/>
       <source>Increase degree</source>
-      <translation type="unfinished">Increase degree</translation>
+      <translation>Povećati stupnjeve</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Increases the degree of the B-spline</source>
-      <translation type="unfinished">Increases the degree of the B-spline</translation>
+      <translation>Povećava stupnjeve B-spline krive</translation>
     </message>
   </context>
   <context>
@@ -1314,12 +1377,12 @@
     <message>
       <location line="+1"/>
       <source>Increase degree</source>
-      <translation type="unfinished">Increase degree</translation>
+      <translation>Povećati stupnjeve</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Increases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>Povećati mnoštvo odabranoga čvora B-spline krive</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1423,7 @@
     <message>
       <location line="+50"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</translation>
+      <translation>Neke od odabranih objekata ovise o skici koja je mapirana. Kružne ovisnosti nisu dopuštene!</translation>
     </message>
   </context>
   <context>
@@ -1374,7 +1437,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Merge sketches</source>
-      <translation type="unfinished">Merge sketches</translation>
+      <translation>Spajanje skica</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1384,7 +1447,7 @@
     <message>
       <location line="+1"/>
       <source>Select at least two sketches, please.</source>
-      <translation type="unfinished">Select at least two sketches, please.</translation>
+      <translation>Odaberite najmanje dvije skice.</translation>
     </message>
   </context>
   <context>
@@ -1398,7 +1461,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Mirror sketch</source>
-      <translation type="unfinished">Mirror sketch</translation>
+      <translation>Zrcaljenje skice</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1408,7 +1471,7 @@
     <message>
       <location line="+1"/>
       <source>Select one or more sketches, please.</source>
-      <translation type="unfinished">Select one or more sketches, please.</translation>
+      <translation>Molimo, odaberite jednu ili više skica.</translation>
     </message>
   </context>
   <context>
@@ -1451,19 +1514,19 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+315"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>Pravokutno polje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates an rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara uzorak geometrije u pravokutnom polju uzimajući kao referencu zadnje odabrane točke</translation>
     </message>
   </context>
   <context>
@@ -1476,30 +1539,30 @@
     <message>
       <location line="+1"/>
       <source>Reorient sketch...</source>
-      <translation type="unfinished">Reorient sketch...</translation>
+      <translation>Preusmjeravanjem skica...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Reorient the selected sketch</source>
-      <translation type="unfinished">Reorient the selected sketch</translation>
+      <translation>Preusmjeruje odabrane skice</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Show/hide internal geometry</source>
-      <translation type="unfinished">Show/hide internal geometry</translation>
+      <translation>Pokaži/Sakrij unutarnju geometriju</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Show all internal geometry / hide unused internal geometry</source>
-      <translation type="unfinished">Show all internal geometry / hide unused internal geometry</translation>
+      <translation>Pokaži sve unutarnje geometrije / Sakri ne korištene unutarnje geometrije</translation>
     </message>
   </context>
   <context>
@@ -1513,7 +1576,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Select Conflicting Constraints</source>
-      <translation type="unfinished">Select Conflicting Constraints</translation>
+      <translation>Odaberite sukobljena ograničenja</translation>
     </message>
   </context>
   <context>
@@ -1526,12 +1589,12 @@
     <message>
       <location line="+1"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Odaberite ograničenja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the constraints associated to the selected elements</source>
-      <translation type="unfinished">Select the constraints associated to the selected elements</translation>
+      <translation>Odaberite ograničenja povezana s odabranim elementima</translation>
     </message>
   </context>
   <context>
@@ -1545,7 +1608,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Select Elements associated with constraints</source>
-      <translation type="unfinished">Select Elements associated with constraints</translation>
+      <translation>Odaberite elemente povezane s ograničenjima</translation>
     </message>
   </context>
   <context>
@@ -1558,12 +1621,12 @@
     <message>
       <location line="+1"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Odaberite vodoravne osi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the horizontal axis</source>
-      <translation type="unfinished">Select the horizontal axis</translation>
+      <translation>Odaberite vodoravne osi</translation>
     </message>
   </context>
   <context>
@@ -1576,12 +1639,12 @@
     <message>
       <location line="+1"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Odaberite izvor</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the origin point</source>
-      <translation type="unfinished">Select the origin point</translation>
+      <translation>Odaberite točku podrijetla</translation>
     </message>
   </context>
   <context>
@@ -1595,7 +1658,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Select Redundant Constraints</source>
-      <translation type="unfinished">Select Redundant Constraints</translation>
+      <translation>Odaberite suvišna ograničenja</translation>
     </message>
   </context>
   <context>
@@ -1608,30 +1671,48 @@
     <message>
       <location line="+1"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Odaberite okomitu Os</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the vertical axis</source>
-      <translation type="unfinished">Select the vertical axis</translation>
+      <translation>Odaberite vodoravnu Os</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherSwitchVirtualSpace</name>
+    <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="+97"/>
+      <source>Sketcher</source>
+      <translation>Skica</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switch virtual space</source>
+      <translation>Pređi na virtualni prostor</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches the selected constraints or the view to the other virtual space</source>
+      <translation>Pređi na odabrana ograničenja ili prikaz u drugom virtualnom prostoru</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Symmetry</source>
-      <translation type="unfinished">Symmetry</translation>
+      <translation>Simetrija</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
-      <translation type="unfinished">Creates symmetric geometry with respect to the last selected line or point</translation>
+      <translation>Stvara simetrične geometrije u odnosu na zadnju odabranu liniju ili točku</translation>
     </message>
   </context>
   <context>
@@ -1644,12 +1725,12 @@
     <message>
       <location line="+1"/>
       <source>Toggle construction geometry</source>
-      <translation type="unfinished">Toggle construction geometry</translation>
+      <translation>Uključivanje/isključivanje konstrukcijske geometrije</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-      <translation type="unfinished">Toggles the toolbar or selected geometry to/from construction mode</translation>
+      <translation>Prebacuje alatnu traku ili odabranu geometriju u/iz konstrukcijski način korištenja</translation>
     </message>
     <message>
       <source>Toggle construction line</source>
@@ -1663,25 +1744,25 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5154"/>
+      <location filename="../../CommandConstraints.cpp" line="+5545"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggle reference/driving constraint</source>
-      <translation type="unfinished">Toggle reference/driving constraint</translation>
+      <translation>Prebacuje referenca/ ograničenje promjene</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-      <translation type="unfinished">Toggles the toolbar or selected constraints to/from reference mode</translation>
+      <translation>Prebacuje alatnu traku ili odabrana ograničenja u/iz referenca način korištenja</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-580"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -1710,12 +1791,12 @@
     <message>
       <location line="+1"/>
       <source>Validate sketch...</source>
-      <translation type="unfinished">Validate sketch...</translation>
+      <translation>Provjera skice...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Validate sketch</source>
-      <translation type="unfinished">Validate sketch</translation>
+      <translation>Provjera skice</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -1725,7 +1806,7 @@
     <message>
       <location line="+1"/>
       <source>Select one sketch, please.</source>
-      <translation type="unfinished">Select one sketch, please.</translation>
+      <translation>Molimo, odaberite jednu skicu.</translation>
     </message>
   </context>
   <context>
@@ -1749,46 +1830,46 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4100"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
-      <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
+      <translation>Ova verzija ocean i/OCC ne podržava čvor operacije. Trebaš verziju 6.9.0 ili više
 </translation>
     </message>
     <message>
       <location line="+4"/>
       <source>BSpline GeoId is out of bounds.</source>
-      <translation type="unfinished">BSpline GeoId is out of bounds.</translation>
+      <translation>BSpline GeoId kriva je izvan granica.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation type="unfinished">You are requesting no change in knot multiplicity.</translation>
+      <translation>Vi zahtijevate: bez promjena u mnoštvu čvorova.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>The GeoId provided is not a B-spline curve.</source>
-      <translation type="unfinished">The GeoId provided is not a B-spline curve.</translation>
+      <translation>GeoId nije B-spline krivulja.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
-      <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
+      <translation>Čvor indeks je izvan granica. Imajte na umu da u skladu s OCC notacijom, prvi čvor ima indeks 1 a ne nula.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The multiplicity cannot be increased beyond the degree of the b-spline.</source>
-      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the b-spline.</translation>
+      <translation>Mnoštvo ne može povećavati iznad stupanja mnoštva b-spline krive.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation type="unfinished">The multiplicity cannot be decreased beyond zero.</translation>
+      <translation>Mnoštvo se ne može smanjiti ispod nule.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
-      <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
+      <translation>OCC je uspio smanjiti mnoštvo unutar maksimalne tolerancije.</translation>
     </message>
   </context>
   <context>
@@ -1804,44 +1885,48 @@
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6258"/>
-      <location line="+900"/>
-      <location line="+230"/>
-      <location line="+229"/>
+      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location line="+6"/>
+      <location line="+965"/>
+      <location line="+247"/>
+      <location line="+246"/>
       <location line="+23"/>
       <location line="+4"/>
-      <location line="+317"/>
+      <location line="+241"/>
+      <location line="+27"/>
+      <location line="+4"/>
+      <location line="+280"/>
       <location line="+11"/>
       <location line="+10"/>
-      <location line="+121"/>
+      <location line="+174"/>
       <location line="+11"/>
-      <location line="+93"/>
-      <location line="+30"/>
-      <location line="+85"/>
+      <location line="+95"/>
+      <location line="+32"/>
+      <location line="+91"/>
       <location line="+154"/>
       <location line="+40"/>
       <location line="+16"/>
       <location line="+7"/>
-      <location line="+46"/>
-      <location line="+18"/>
-      <location line="+57"/>
+      <location line="+47"/>
+      <location line="+17"/>
+      <location line="+58"/>
       <location line="+11"/>
       <location line="+27"/>
-      <location line="+47"/>
-      <location line="+26"/>
+      <location line="+49"/>
+      <location line="+29"/>
       <location line="+29"/>
       <location line="+104"/>
       <location line="+11"/>
       <location line="+25"/>
-      <location line="+48"/>
-      <location line="+26"/>
+      <location line="+50"/>
+      <location line="+28"/>
       <location line="+29"/>
       <location line="+142"/>
       <location line="+13"/>
       <location line="+14"/>
       <location line="+16"/>
       <location line="+39"/>
-      <location line="+123"/>
+      <location line="+128"/>
       <location line="+13"/>
       <location line="+81"/>
       <location line="+38"/>
@@ -1849,20 +1934,20 @@
       <location line="+25"/>
       <location line="+9"/>
       <location line="+133"/>
-      <location line="+29"/>
+      <location line="+35"/>
       <location line="+9"/>
       <location line="+267"/>
       <location line="+13"/>
-      <location line="+80"/>
-      <location line="+38"/>
+      <location line="+82"/>
+      <location line="+21"/>
       <location line="+9"/>
       <location line="+25"/>
-      <location line="+109"/>
-      <location line="+30"/>
+      <location line="+142"/>
+      <location line="+36"/>
       <location line="+134"/>
       <location line="+130"/>
       <location line="+11"/>
-      <location line="+41"/>
+      <location line="+51"/>
       <location line="+237"/>
       <location line="+185"/>
       <location line="+12"/>
@@ -1875,17 +1960,16 @@
       <location line="+16"/>
       <location line="+16"/>
       <location line="+9"/>
-      <location line="+105"/>
+      <location line="+111"/>
       <location line="+12"/>
+      <location line="+24"/>
       <location line="+21"/>
-      <location line="+21"/>
-      <location line="+18"/>
-      <location line="+12"/>
+      <location line="+29"/>
       <location line="+36"/>
       <location line="+22"/>
-      <location line="+18"/>
+      <location line="+27"/>
       <location line="+16"/>
-      <location line="+118"/>
+      <location line="+122"/>
       <location line="+97"/>
       <location line="+11"/>
       <location line="+20"/>
@@ -1918,10 +2002,14 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
+      <location line="+8"/>
+      <location line="+24"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
@@ -1932,49 +2020,62 @@
       <translation>Odaberite rub(ove) iz skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5428"/>
-      <location line="+230"/>
+      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Odaberite rub skice.</translation>
     </message>
     <message>
-      <location line="-196"/>
-      <location line="+82"/>
-      <location line="+148"/>
-      <location line="+87"/>
+      <location line="-213"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+98"/>
+      <location line="+422"/>
+      <location line="+50"/>
       <source>Double constraint</source>
       <translation>Ograničenje dvaput</translation>
     </message>
     <message>
-      <location line="-316"/>
-      <location line="+82"/>
-      <location line="+230"/>
+      <location line="-816"/>
+      <location line="+93"/>
+      <location line="+247"/>
       <source>The selected edge has already a horizontal constraint!</source>
       <translation>Odabrani rub već ima vodoravno ograničenje!</translation>
     </message>
     <message>
-      <location line="-322"/>
+      <location line="-350"/>
       <location line="+14"/>
+      <location line="+6"/>
       <location line="+19"/>
-      <location line="+49"/>
+      <location line="+27"/>
+      <location line="+27"/>
       <location line="+14"/>
+      <location line="+6"/>
       <location line="+134"/>
       <location line="+14"/>
-      <location line="+19"/>
-      <location line="+49"/>
+      <location line="+6"/>
+      <location line="+18"/>
+      <location line="+27"/>
+      <location line="+28"/>
       <location line="+9"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location line="+11"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Nemoguće ograničenje</translation>
     </message>
     <message>
-      <location line="-1246"/>
+      <location line="-1356"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>Nemoguće dodavanje ograničenja među vanjskim geometrijama!</translation>
     </message>
     <message>
-      <location line="+455"/>
+      <location line="+6"/>
+      <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
+      <translation>Nije moguće dodati ograničenje između dvije fiksne geometrije! Fiksne geometrije uključuju vanjske geometrije, blokiranu geometriju ili posebne točke kao B-spline točke čvorova.</translation>
+    </message>
+    <message>
+      <location line="+520"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -1987,32 +2088,48 @@
     </message>
     <message>
       <location line="+439"/>
-      <location line="+82"/>
-      <location line="+148"/>
-      <location line="+82"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
       <source>The selected edge is not a line segment</source>
       <translation>Odabrani rub nije linija</translation>
     </message>
     <message>
-      <location line="-298"/>
-      <location line="+82"/>
-      <location line="+143"/>
-      <location line="+87"/>
+      <location line="-326"/>
+      <location line="+93"/>
+      <location line="+149"/>
+      <location line="+98"/>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Odabrani rub već ima okomito ograničenje!</translation>
     </message>
     <message>
-      <location line="-293"/>
+      <location line="-334"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
+      <location line="+416"/>
+      <location line="+50"/>
+      <source>The selected edge has already a Block constraint!</source>
+      <translation>Odabrani rub već ima blok ograničenja!</translation>
+    </message>
+    <message>
+      <location line="-787"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>Odabrani objekt(i) ne mogu prihvatiti horizontalno ograničenje!</translation>
     </message>
     <message>
-      <location line="+211"/>
-      <source>The selected edge has already a horizontral constraint!</source>
-      <translation type="unfinished">The selected edge has already a horizontral constraint!</translation>
+      <location line="+27"/>
+      <location line="+246"/>
+      <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
+      <translation>Odabrano više od jedne fiksne točke. Odaberite najviše jednu fiksnu točku!</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="-51"/>
+      <source>The selected edge has already a horizontral constraint!</source>
+      <translation>Odabrani rub već ima vodoravno ograničenje!</translation>
+    </message>
+    <message>
+      <location line="+24"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
       <translation>Odabrani objekt(i) ne mogu prihvatiti vertikalno ograničenje!</translation>
     </message>
@@ -2029,7 +2146,7 @@
       <translation>Odaberite jedan vrh sa skice.</translation>
     </message>
     <message>
-      <location line="+656"/>
+      <location line="+956"/>
       <source>Select vertexes from the sketch.</source>
       <translation>Odaberite vrhove sa skice.</translation>
     </message>
@@ -2038,65 +2155,101 @@
       <translation type="unfinished">Cannot add a fixed x-coordinate constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="+642"/>
+      <location line="+655"/>
       <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the root point!</translation>
+      <translation>Nije moguće dodati fiksno ograničenje X koordinate na izvornu točku!</translation>
     </message>
     <message>
       <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
       <translation type="unfinished">Cannot add a fixed y-coordinate constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="-1105"/>
+      <location line="-1406"/>
       <source>Select one vertex from the sketch other than the origin.</source>
-      <translation type="unfinished">Select one vertex from the sketch other than the origin.</translation>
+      <translation>Odaberite jednu vrh točku iz skice koja nije u ishodištu.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation type="unfinished">Select only vertices from the sketch. The last selected vertex may be the origin.</translation>
+      <translation>Odaberite samo krajnje točke skice. Posljednje odabrana tjemena točka je možda ishodište.</translation>
     </message>
     <message>
-      <location line="+872"/>
-      <location line="+69"/>
+      <location line="+252"/>
+      <source>Wrong solver status</source>
+      <translation>Pogrešan status alata za rješavanje (solver)</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
+      <translation>Blok ograničenja može biti dodan ako skica nije riješena ili postoje redundantna i/ili proturječna ograničenja.</translation>
+    </message>
+    <message>
+      <location line="+15"/>
+      <source>Select one edge from the sketch.</source>
+      <translation>Odaberite jedan rub skice.</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Select only edges from the sketch.</source>
+      <translation>Odaberite samo rubove sa skice.</translation>
+    </message>
+    <message>
+      <location line="+355"/>
+      <location line="+2231"/>
+      <source>Constraint Substitution</source>
+      <translation>Zamjena ograničenja</translation>
+    </message>
+    <message>
+      <location line="-2230"/>
+      <source>Endpoint to endpoint tangency was applied instead.</source>
+      <translation>Tangenta od krajnje točka do krajnje točke je primijenjena umjesto toga.</translation>
+    </message>
+    <message>
+      <location line="+542"/>
+      <location line="+70"/>
       <source>Point on B-spline edge currently unsupported.</source>
-      <translation type="unfinished">Point on B-spline edge currently unsupported.</translation>
+      <translation>Točka na rubu B-spline krive trenutno nije podržana.</translation>
     </message>
     <message>
-      <location line="-53"/>
+      <location line="-54"/>
       <location line="+71"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
-      <translation type="unfinished">None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</translation>
+      <translation>Nijedna od odabranih točaka nije bila je ograničena na dotične krivulje, ili su dijelovi isti element, ili su oba vanjske geometrije.</translation>
     </message>
     <message>
       <location line="-64"/>
       <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</translation>
+      <translation>Odaberite ili jednu točku i nekoliko krivulja, ili jednu krivulju i nekoliko točaka. Odabrali ste %1 krivulja i %2 točaka.</translation>
     </message>
     <message>
-      <location line="+449"/>
+      <location line="+457"/>
       <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
-      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the root point!</translation>
+      <translation>Nije moguće dodati fiksno ograničenje X koordinate na izvornu točku!</translation>
     </message>
     <message>
-      <location line="+543"/>
+      <location line="+550"/>
       <location line="+34"/>
-      <location line="+171"/>
+      <location line="+177"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
-      <translation type="unfinished">Perpendicular to B-spline edge currently unsupported.</translation>
+      <translation>Okomito na rub B-spline krive trenutno nije podržano.</translation>
     </message>
     <message>
-      <location line="+407"/>
+      <location line="+392"/>
       <location line="+25"/>
-      <location line="+139"/>
+      <location line="+178"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation type="unfinished">Tangency to B-spline edge currently unsupported.</translation>
+      <translation>Tangencijalno na rub B-Spline krive trenutno nije podržano.</translation>
     </message>
     <message>
-      <location line="+275"/>
-      <location line="+41"/>
+      <location line="-147"/>
+      <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
+      <translation>Primijenjena je tangenta krajnja točka do krajnje točke. Podudarna ograničenja su izbrisana.</translation>
+    </message>
+    <message>
+      <location line="+422"/>
+      <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
-      <translation type="unfinished">Select one or more arcs or circles from the sketch.</translation>
+      <translation>Odaberite jedan ili više lukova ili krugovima iz skice.</translation>
     </message>
     <message>
       <location line="+52"/>
@@ -2106,131 +2259,132 @@
     <message>
       <location line="+1"/>
       <source>Do you want to share the same radius for all selected elements?</source>
-      <translation type="unfinished">Do you want to share the same radius for all selected elements?</translation>
+      <translation>Želite li staviti isti polumjer za sve odabrane elemente?</translation>
     </message>
     <message>
       <source>Select only entities from the sketch.</source>
-      <translation type="unfinished">Select only entities from the sketch.</translation>
+      <translation>Odaberite samo objekte sa skice.</translation>
     </message>
     <message>
-      <location line="-3059"/>
+      <location line="-3412"/>
+      <location line="+268"/>
       <source>Select vertices from the sketch.</source>
-      <translation type="unfinished">Select vertices from the sketch.</translation>
+      <translation>Odaberite samo vrhove sa skice.</translation>
     </message>
     <message>
-      <location line="+344"/>
+      <location line="+311"/>
       <source>Select two or more points from the sketch.</source>
-      <translation type="unfinished">Select two or more points from the sketch.</translation>
+      <translation>Odaberite dvije ili više točaka na skici.</translation>
     </message>
     <message>
-      <location line="+361"/>
+      <location line="+424"/>
       <source>This constraint does not make sense for non-linear curves</source>
-      <translation type="unfinished">This constraint does not make sense for non-linear curves</translation>
+      <translation>Ovo ograničenje nema smisla za nelinearne krivulje</translation>
     </message>
     <message>
       <location line="+154"/>
-      <location line="+184"/>
-      <location line="+244"/>
-      <location line="+1667"/>
-      <location line="+474"/>
+      <location line="+185"/>
+      <location line="+249"/>
+      <location line="+1706"/>
+      <location line="+484"/>
       <source>Select the right things from the sketch.</source>
-      <translation type="unfinished">Select the right things from the sketch.</translation>
+      <translation>Odaberite prave stvari sa skice.</translation>
     </message>
     <message>
       <source>Point on BSpline edge currently unsupported.</source>
-      <translation type="unfinished">Point on BSpline edge currently unsupported.</translation>
+      <translation>Točka na rubu B-spline krive trenutno nije podržana.</translation>
     </message>
     <message>
-      <location line="-2245"/>
-      <location line="+243"/>
+      <location line="-2294"/>
+      <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
-      <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points</translation>
+      <translation>Ovo ograničenje samo ima smisla na segmentu crte ili paru točaka</translation>
     </message>
     <message>
       <source>Perpendicular to BSpline edge currently unsupported.</source>
-      <translation type="unfinished">Perpendicular to BSpline edge currently unsupported.</translation>
+      <translation>Okomito na rub BSpline krive trenutno nije podržano.</translation>
     </message>
     <message>
-      <location line="+938"/>
+      <location line="+949"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation type="unfinished">There are a number of ways this constraint can be applied.
+      <translation>Postoji nekoliko načina za primjenu ovoga ograničenja.
 
-Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</translation>
+Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije krajnje točke; dvije krivulje i točka.</translation>
     </message>
     <message>
       <source>Tangency to BSpline edge currently unsupported.</source>
-      <translation type="unfinished">Tangency to BSpline edge currently unsupported.</translation>
+      <translation>Tangencijalno na rub BSpline krive trenutno nije podržano.</translation>
     </message>
     <message>
-      <location line="+879"/>
+      <location line="+913"/>
       <source>Constraint only applies to arcs or circles.</source>
-      <translation type="unfinished">Constraint only applies to arcs or circles.</translation>
+      <translation>Ograničenje se odnosi samo na lukove i krugove.</translation>
     </message>
     <message>
       <location line="+197"/>
       <location line="+236"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-      <translation type="unfinished">Select one or two lines from the sketch. Or select two edges and a point.</translation>
+      <translation>Odaberite jednu ili dvije linije na skici. Ili odaberite dva ruba i točku.</translation>
     </message>
     <message>
       <location line="-90"/>
       <location line="+168"/>
       <source>Parallel lines</source>
-      <translation type="unfinished">Parallel lines</translation>
+      <translation>Paralelne linije</translation>
     </message>
     <message>
       <location line="-167"/>
       <location line="+168"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
-      <translation type="unfinished">An angle constraint cannot be set for two parallel lines.</translation>
+      <translation>Kut ograničenje ne može se postaviti za dvije paralelne linije.</translation>
     </message>
     <message>
       <source>Equality for BSpline edge currently unsupported.</source>
-      <translation type="unfinished">Equality for BSpline edge currently unsupported.</translation>
+      <translation>Izjednačavanje na rub B-Spline krive trenutno nije podržano.</translation>
     </message>
     <message>
-      <location line="+585"/>
+      <location line="+606"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</translation>
+      <translation>Odaberite dvije krajnje točke linije kao zrake, a rub predstavlja granicu. Prva odabrana točka odgovara indeksu n1, druga indeksu n2 i podatak vrijednosti postavlja omjer n2/n1.</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Selected objects are not just geometry from one sketch.</source>
-      <translation type="unfinished">Selected objects are not just geometry from one sketch.</translation>
+      <translation>Odabrani objekti nisu samo geometrije iz jedne skice.</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Number of selected objects is not 3 (is %1).</source>
-      <translation type="unfinished">Number of selected objects is not 3 (is %1).</translation>
+      <translation>Broj odabranih objekata nije 3 (nego %1).</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Can not create constraint with external geometry only!!</source>
-      <translation type="unfinished">Can not create constraint with external geometry only!!</translation>
+      <translation>Ne možete stvoriti ograničenja samo s vanjskom geometrijom!!</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Incompatible geometry is selected!</source>
-      <translation type="unfinished">Incompatible geometry is selected!</translation>
+      <translation>Nespojiva geometrije je odabrana!</translation>
     </message>
     <message>
       <source>SnellsLaw on BSpline edge currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on BSpline edge currently unsupported.</translation>
+      <translation>SnellsLaw na rubu B-Spline trenutno nije podržano.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>SnellsLaw on B-spline edge currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on B-spline edge currently unsupported.</translation>
+      <translation>SnellsLaw na B-spline trenutno nije podržano.</translation>
     </message>
     <message>
       <location line="+97"/>
       <location line="+11"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
-      <translation type="unfinished">Select at least one ellipse and one edge from the sketch.</translation>
+      <translation>Odaberite barem jednu elipsu i jedan rub od skice.</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -2246,19 +2400,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+6"/>
       <location line="+159"/>
       <source>Maximum 2 points are supported.</source>
-      <translation type="unfinished">Maximum 2 points are supported.</translation>
+      <translation>Maksimalno 2 točke su podržane.</translation>
     </message>
     <message>
       <location line="-153"/>
       <location line="+159"/>
       <source>Maximum 2 lines are supported.</source>
-      <translation type="unfinished">Maximum 2 lines are supported.</translation>
+      <translation>Maksimalno 2 linije su podržane.</translation>
     </message>
     <message>
       <location line="-122"/>
       <location line="+159"/>
       <source>Nothing to constraint</source>
-      <translation type="unfinished">Nothing to constraint</translation>
+      <translation>Nema ništa za ograničiti</translation>
     </message>
     <message>
       <location line="-158"/>
@@ -2271,24 +2425,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+151"/>
       <location line="+8"/>
       <source>Extra elements</source>
-      <translation type="unfinished">Extra elements</translation>
+      <translation>Dodatni elementi</translation>
     </message>
     <message>
       <location line="-166"/>
       <location line="+8"/>
       <location line="+151"/>
       <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
-      <translation type="unfinished">More elements than possible for the given ellipse were provided. These were ignored.</translation>
+      <translation>Dostavljeno je više elemenata nego je moguće za danu elipsu. Oni će biti zanemareni.</translation>
     </message>
     <message>
       <location line="-138"/>
       <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
-      <translation type="unfinished">You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</translation>
+      <translation>Ne možete interno ograničiti luk elipse na drugi luk elipse. Odaberite samo jedan luk elipse.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-      <translation type="unfinished">You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
+      <translation>Ne možete interno ograničiti elipsu na luk elipse. Odaberite samo jedno, elipsu ili luk elipse.</translation>
     </message>
     <message>
       <location line="+50"/>
@@ -2298,7 +2452,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+90"/>
       <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
-      <translation type="unfinished">More elements than possible for the given arc of ellipse were provided. These were ignored.</translation>
+      <translation>Dostavljeno je više elemenata nego je moguće za dani luk elipse. Oni će biti zanemareni.</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2309,22 +2463,25 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+53"/>
       <location line="+8"/>
       <location line="+30"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
+      <location line="+8"/>
+      <location line="+24"/>
       <source>Select constraint(s) from the sketch.</source>
-      <translation type="unfinished">Select constraint(s) from the sketch.</translation>
+      <translation>Odaberite objekt(e) sa skice.</translation>
     </message>
     <message>
       <source>Select exactly two vertexes from the sketch.</source>
       <translation>Odaberite točno dva vrha iz skice.</translation>
     </message>
     <message>
-      <location line="-4615"/>
+      <location line="-4754"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
-      <translation type="unfinished">Select two or more vertexes from the sketch.</translation>
+      <translation>Odaberite dva ili više tjemenih točaka na skici.</translation>
     </message>
     <message>
-      <location line="+132"/>
-      <location line="+123"/>
+      <location line="+185"/>
+      <location line="+127"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Odaberite točno jednu liniju ili jednu točku i jednu liniju ili dvije točke iz skice.</translation>
     </message>
@@ -2333,7 +2490,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
     </message>
     <message>
-      <location line="-30"/>
+      <location line="-32"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Ne možete dodati ograničenje duljine na osi!</translation>
     </message>
@@ -2342,10 +2499,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Odaberite točno jednu točku i jedan objekt iz skice.</translation>
     </message>
     <message>
-      <location line="+464"/>
-      <location line="+100"/>
+      <location line="+473"/>
+      <location line="+105"/>
       <location line="+144"/>
-      <location line="+99"/>
+      <location line="+103"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Odaberite točno jednu liniju ili do dvije točke iz skice.</translation>
     </message>
@@ -2354,7 +2511,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nemoguće dodavanje vodoravnog ograničenja na vanjsku geometriju!</translation>
     </message>
     <message>
-      <location line="-316"/>
+      <location line="-325"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Nemoguće je dodati ograničenje duljine na os!</translation>
     </message>
@@ -2371,7 +2528,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
     </message>
     <message>
-      <location line="+242"/>
+      <location line="+247"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Nemoguće je dodati ograničenje duljine na os!</translation>
     </message>
@@ -2384,18 +2541,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nemoguće je fiksirati koordinatu ishodišta!</translation>
     </message>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Odaberite dvije ili više linija iz skice.</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2360"/>
+      <location line="+2405"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Odaberite barem dvije linije iz skice.</translation>
     </message>
     <message>
-      <location line="-2346"/>
+      <location line="-2391"/>
       <source>Select a valid line</source>
       <translation>Odaberite valjanu liniju</translation>
     </message>
@@ -2406,7 +2563,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Odabrani rub nije valjana linija</translation>
     </message>
     <message>
-      <location line="+100"/>
+      <location line="+105"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2419,33 +2576,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+20"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
-      <translation type="unfinished">Select some geometry from the sketch.</translation>
+      <translation>Odaberite neke geometrije sa skice.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Wrong number of selected objects!</source>
       <comment>perpendicular constraint</comment>
-      <translation type="unfinished">Wrong number of selected objects!</translation>
+      <translation>Pogrešan broj odabranih objekata!</translation>
     </message>
     <message>
-      <location line="+59"/>
-      <location line="+459"/>
-      <location line="+154"/>
-      <location line="+432"/>
-      <location line="+1576"/>
+      <location line="-1767"/>
+      <location line="+46"/>
+      <location line="+1780"/>
+      <location line="+465"/>
+      <location line="+156"/>
+      <location line="+454"/>
+      <location line="+1607"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
     <message>
-      <location line="-2605"/>
-      <location line="+612"/>
+      <location line="-2666"/>
+      <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
-      <translation type="unfinished">With 3 objects, there must be 2 curves and 1 point.</translation>
+      <translation>Sa 3 objekta, ondje mora biti 2 krivulje i 1 točka.</translation>
     </message>
     <message>
-      <location line="-603"/>
+      <location line="-611"/>
       <location line="+38"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Nemoguće je postaviti okomicu na nepovezanoj točki!</translation>
@@ -2464,7 +2623,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+34"/>
-      <location line="+171"/>
+      <location line="+177"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Jedan od doabranih rubova bi trebala biti linija.</translation>
     </message>
@@ -2481,18 +2640,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+273"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
-      <translation type="unfinished">Select some geometry from the sketch.</translation>
+      <translation>Odaberite neke geometrije sa skice.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Wrong number of selected objects!</source>
       <comment>tangent constraint</comment>
-      <translation type="unfinished">Wrong number of selected objects!</translation>
+      <translation>Pogrešan broj odabranih objekata!</translation>
     </message>
     <message>
-      <location line="+83"/>
-      <location line="+38"/>
-      <location line="+307"/>
+      <location line="+85"/>
+      <location line="+21"/>
+      <location line="+346"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Nemoguće je postaviti tangentu u nepovezanoj točki!</translation>
     </message>
@@ -2509,7 +2668,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nemoguće dodavanje ograničenja kuta vanjskoj geometriji!</translation>
     </message>
     <message>
-      <location line="+796"/>
+      <location line="+806"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Nemoguće je dodati ograničenje kuta osi!</translation>
     </message>
@@ -2528,19 +2687,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+28"/>
-      <location line="+597"/>
+      <location line="+618"/>
       <source>Select two or more compatible edges</source>
       <translation>Odaberite dva kompatibilna ruba</translation>
     </message>
     <message>
-      <location line="-591"/>
+      <location line="-612"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Koordinatne osi skice se ne mogu koristiti sa ograničenjem izjednačenja duljine</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation type="unfinished">Equality for B-spline edge currently unsupported.</translation>
+      <translation>Izjednačavanje na rub B-Spline krive trenutno nije podržano.</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -2549,24 +2708,23 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Odaberite dva ili više ruba sličnog tipa</translation>
     </message>
     <message>
-      <location line="+105"/>
+      <location line="+111"/>
       <location line="+12"/>
-      <location line="+42"/>
-      <location line="+66"/>
-      <location line="+56"/>
+      <location line="+45"/>
+      <location line="+65"/>
+      <location line="+65"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</translation>
+      <translation>Odaberite dvije točke i liniju simetrije, dvije točke i točku simetrije ili liniju i točku simetrije iz skice.</translation>
     </message>
     <message>
-      <location line="-104"/>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Nemoguće dodavanje ograničenja među vanjskim geometrijama!</translation>
     </message>
     <message>
-      <location line="-39"/>
-      <location line="+51"/>
+      <location line="-151"/>
+      <location line="+50"/>
       <location line="+58"/>
-      <location line="+18"/>
+      <location line="+27"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Nemoguće je postaviti simetriju između linije i njenih vrhova!</translation>
     </message>
@@ -2653,8 +2811,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Nije dopušteno mijenjati podatak, jer skica sadrži proturječna ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5680"/>
-      <location line="+4599"/>
+      <location filename="../../CommandConstraints.cpp" line="-6155"/>
+      <location line="+5057"/>
       <location line="+133"/>
       <location filename="../../EditDatumDialog.cpp" line="+93"/>
       <source>Dimensional constraint</source>
@@ -2670,18 +2828,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+99"/>
       <location line="+8"/>
       <source>Select at least two edges from the sketch.</source>
-      <translation type="unfinished">Select at least two edges from the sketch.</translation>
+      <translation>Odaberite najmanje dva ruba iz skice.</translation>
     </message>
     <message>
       <location line="-75"/>
       <location line="+99"/>
       <source>One selected edge is not connectable</source>
-      <translation type="unfinished">One selected edge is not connectable</translation>
+      <translation>Jedan odabrani rub nije poveziv</translation>
     </message>
     <message>
       <location line="-89"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
-      <translation type="unfinished">Closing a shape formed by exactly two lines makes no sense.</translation>
+      <translation>Zatvaranje oblika stvorenoga od točno dvije linije nema nikakvog smisla.</translation>
     </message>
     <message>
       <location line="+140"/>
@@ -2689,27 +2847,38 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
-      <translation type="unfinished">Select elements from a single sketch.</translation>
+      <translation>Odaberite elemente iz jedne skice.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
-      <translation type="unfinished">No constraint selected</translation>
+      <translation>Nema odabranoga ograničenja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>At least one constraint must be selected</source>
-      <translation type="unfinished">At least one constraint must be selected</translation>
+      <translation>Morate odabrati barem jedno ograničenje</translation>
+    </message>
+    <message>
+      <location line="+1065"/>
+      <source>Delete All Geometry</source>
+      <translation>Izbrisati sve geometrije</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the geometry and constraints?</source>
+      <translation>Jesi li zaista sigurni da želite izbrisati sve geometrije i ograničenja?</translation>
     </message>
     <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-      <translation type="unfinished">Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</translation>
+      <translation>Trenutno interna geometrija je podržana samo za elipsu i luk elipse. Posljednji odabrani element mora biti elipsa ili luk elipse.</translation>
     </message>
     <message>
-      <location line="+246"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation type="unfinished">A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</translation>
     </message>
@@ -2719,7 +2888,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">The last element must be a point or a line serving as reference for the symmetry construction.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation type="unfinished">A copy requires at least one selected non-external geometric element</translation>
@@ -2738,7 +2907,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+3"/>
       <location line="+9"/>
       <source>Unexpected error</source>
-      <translation type="unfinished">Unexpected error</translation>
+      <translation>Neočekivana greška</translation>
     </message>
     <message>
       <location line="-5"/>
@@ -2753,12 +2922,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+41"/>
       <source>Sketch mapping</source>
-      <translation type="unfinished">Sketch mapping</translation>
+      <translation>Preslikavanje skice</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Can't map the sketch to selected object. %1.</source>
-      <translation type="unfinished">Can't map the sketch to selected object. %1.</translation>
+      <translation>Nije moguće preslikati skicu na odabrani objekt. %1.</translation>
     </message>
     <message>
       <source>Can't map the skecth to selected object. %1.</source>
@@ -2768,10 +2937,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+7"/>
       <location line="+351"/>
       <source>Don't attach</source>
-      <translation type="unfinished">Don't attach</translation>
+      <translation>Nemoj pridodati</translation>
     </message>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="+121"/>
+      <location filename="../../AppSketcherGui.cpp" line="+123"/>
       <location line="+1"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
@@ -2779,41 +2948,41 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="-319"/>
       <source>None of the selected elements is an edge.</source>
-      <translation type="unfinished">None of the selected elements is an edge.</translation>
+      <translation>Nijedan odabrani element nije jedan rub.</translation>
     </message>
     <message>
       <location line="+100"/>
       <location line="+160"/>
       <source>Wrong OCE/OCC version</source>
-      <translation type="unfinished">Wrong OCE/OCC version</translation>
+      <translation>Pogrešna ocean i/OCC verzija</translation>
     </message>
     <message>
       <location line="-159"/>
       <location line="+160"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
-      <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</translation>
+      <translation>Ova verzija ocean i/OCC ne podržava čvor operacije. Trebaš verziju 6.9.0 ili više</translation>
     </message>
     <message>
       <location line="-142"/>
       <location line="+160"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
-      <translation type="unfinished">The selection comprises more than one item. Please select just one knot.</translation>
+      <translation>Izbor se sastoji od više od jedne stavke. Odaberite samo jedan čvor.</translation>
     </message>
     <message>
       <location line="-118"/>
       <source>CAD Kernel Error</source>
-      <translation type="unfinished">CAD Kernel Error</translation>
+      <translation>CAD Kernel greška</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Input Error</source>
-      <translation type="unfinished">Input Error</translation>
+      <translation>Ulazna greška</translation>
     </message>
     <message>
       <location line="+17"/>
       <location line="+147"/>
       <source>None of the selected elements is a knot of a B-spline</source>
-      <translation type="unfinished">None of the selected elements is a knot of a B-spline</translation>
+      <translation>Nijedan od odabranih elemenata nije čvor od B-spline krive</translation>
     </message>
   </context>
   <context>
@@ -2850,24 +3019,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+622"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation type="unfinished">Carbon copy would cause a circular dependency.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object is in another document.</source>
-      <translation type="unfinished">This object is in another document.</translation>
+      <translation>Ovaj objekt je u drugom dokumentu.</translation>
+    </message>
+    <message>
+      <source>This object belongs to another body.</source>
+      <translation>Ovaj objekt pripada drugom tijelu.</translation>
     </message>
     <message>
       <location line="+3"/>
-      <source>This object belongs to another body.</source>
-      <translation type="unfinished">This object belongs to another body.</translation>
+      <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
+      <translation>Ovaj objekt pripada drugom tijelu. Držite Ctrl kako bi se omogućile unakrsne reference.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object belongs to another part.</source>
-      <translation type="unfinished">This object belongs to another part.</translation>
+      <translation>Ovaj objekt pripada drugom dijelu.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2888,9 +3061,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+400"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
       <source>Toggle to/from reference</source>
-      <translation type="unfinished">Toggle to/from reference</translation>
+      <translation>Prebaci u/iz referencu/e</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -2898,14 +3071,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Promjena vrijednosti</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+8"/>
+      <source>Show constraints</source>
+      <translation>Pokaži ograničenja</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Hide constraints</source>
+      <translation>Sakrij ograničenja</translation>
+    </message>
+    <message>
+      <location line="+6"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Center sketch</source>
-      <translation type="unfinished">Center sketch</translation>
+      <translation>Centriraj skicu</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2915,26 +3098,26 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+4"/>
       <source>Swap constraint names</source>
-      <translation type="unfinished">Swap constraint names</translation>
+      <translation>Zamjeni imena ograničenja</translation>
     </message>
     <message>
-      <location line="+70"/>
+      <location line="+88"/>
       <source>Unnamed constraint</source>
-      <translation type="unfinished">Unnamed constraint</translation>
+      <translation>Bezimeno ograničenje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Only the names of named constraints can be swapped.</source>
-      <translation type="unfinished">Only the names of named constraints can be swapped.</translation>
+      <translation>Samo imena imenovanih ograničenja mogu biti zamijenjena.</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-4796"/>
+      <location filename="../../CommandConstraints.cpp" line="-5254"/>
       <location filename="../../EditDatumDialog.cpp" line="-77"/>
       <source>Insert angle</source>
-      <translation type="unfinished">Insert angle</translation>
+      <translation>Umetni kut</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -2946,7 +3129,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+4"/>
       <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Insert radius</source>
-      <translation type="unfinished">Insert radius</translation>
+      <translation>Umetni polumjer</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2960,37 +3143,37 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../EditDatumDialog.cpp" line="+1"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Ratio n2/n1:</translation>
+      <translation>Omjer n2/n1:</translation>
     </message>
     <message>
-      <location line="+4598"/>
+      <location line="+5056"/>
       <location line="+145"/>
       <source>Change radius</source>
-      <translation type="unfinished">Change radius</translation>
+      <translation>Promjeni polumjer</translation>
     </message>
     <message>
-      <location line="-4748"/>
-      <location line="+4604"/>
+      <location line="-5206"/>
+      <location line="+5062"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="-5"/>
       <source>Radius:</source>
       <translation>Polumjer:</translation>
     </message>
     <message>
-      <location line="+1132"/>
+      <location line="+1153"/>
       <source>Refractive index ratio</source>
       <translation type="unfinished">Refractive index ratio</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Ratio n2/n1:</source>
-      <translation type="unfinished">Ratio n2/n1:</translation>
+      <translation>Omjer n2/n1:</translation>
     </message>
     <message>
-      <location line="-5873"/>
+      <location line="-6352"/>
       <location filename="../../EditDatumDialog.cpp" line="+9"/>
       <source>Insert length</source>
-      <translation type="unfinished">Insert length</translation>
+      <translation>Unesite dužinu</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -3010,28 +3193,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
       <source>Linking this will cause circular dependency.</source>
-      <translation type="unfinished">Linking this will cause circular dependency.</translation>
+      <translation>Povezivanjem će te izazvati kružnu ovisnost.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object is in another document.</source>
-      <translation type="unfinished">This object is in another document.</translation>
+      <translation>Ovaj objekt je u drugom dokumentu.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation type="unfinished">This object belongs to another body, can't link.</translation>
+      <translation>Ovaj objekt pripada drugom tijelu, ne može se povezati.</translation>
     </message>
     <message>
       <source>This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.</source>
-      <translation type="unfinished">This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.</translation>
+      <translation>Ovaj objekt pripada drugom tijelu, ne može se povezati. Držite Ctrl kako bi se omogućile unakrsne reference.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object belongs to another part, can't link.</source>
-      <translation type="unfinished">This object belongs to another part, can't link.</translation>
+      <translation>Ovaj objekt pripada drugom djelu, ne može se povezati.</translation>
     </message>
   </context>
   <context>
@@ -3049,13 +3232,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+17"/>
       <source>Name (optional)</source>
-      <translation type="unfinished">Name (optional)</translation>
+      <translation>Ime (nije obavezno)</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+124"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
+      <location line="+52"/>
       <source>Unnamed</source>
       <translation type="unfinished">Unnamed</translation>
     </message>
@@ -3066,22 +3250,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="+14"/>
       <location line="+6"/>
       <source>Select Mirror Axis/Point</source>
-      <translation type="unfinished">Select Mirror Axis/Point</translation>
+      <translation>Odaberite os/točku zrcaljenja</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>X-Axis</source>
-      <translation type="unfinished">X-Axis</translation>
+      <translation>X - Os</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Y-Axis</source>
-      <translation type="unfinished">Y-Axis</translation>
+      <translation>Y - Os</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Izvornik</translation>
     </message>
   </context>
   <context>
@@ -3127,27 +3311,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
       <source>Create array</source>
-      <translation type="unfinished">Create array</translation>
+      <translation>Stvori matricu</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Columns:</source>
-      <translation type="unfinished">Columns:</translation>
+      <translation>Stupci:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Number of columns of the linear array</source>
-      <translation type="unfinished">Number of columns of the linear array</translation>
+      <translation>Broj stupaca na linearnoj matrici</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Rows:</source>
-      <translation type="unfinished">Rows:</translation>
+      <translation>Redovi:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Number of rows of the linear array</source>
-      <translation type="unfinished">Number of rows of the linear array</translation>
+      <translation>Broj redova na linearnoj matrici</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3191,57 +3375,75 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Normalna Geometrija</translation>
     </message>
     <message>
       <location line="-10"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Construction Geometry</source>
-      <translation type="unfinished">Construction Geometry</translation>
+      <translation>Konstrukcijska Geometrija</translation>
     </message>
     <message>
       <location line="-10"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Vanjska Geometrija</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketcherRegularPolygonDialog</name>
+    <message>
+      <location filename="../../SketcherRegularPolygonDialog.ui" line="+17"/>
+      <source>Create array</source>
+      <translation>Stvori matricu</translation>
+    </message>
+    <message>
+      <location line="+8"/>
+      <source>Number of Sides:</source>
+      <translation>Broj strana:</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Number of columns of the linear array</source>
+      <translation>Broj stupaca na linearnoj matrici</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+188"/>
+      <location filename="../../SketcherSettings.cpp" line="+192"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <source>Sketcher colors</source>
-      <translation type="unfinished">Sketcher colors</translation>
+      <translation>Boje skice</translation>
     </message>
     <message>
       <source>Default edge color</source>
-      <translation type="unfinished">Default edge color</translation>
+      <translation>Zadana boja ruba</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
-      <translation type="unfinished">The color of edges being edited</translation>
+      <translation>Boja rubova koji se uređuju</translation>
     </message>
     <message>
       <source>Default vertex color</source>
-      <translation type="unfinished">Default vertex color</translation>
+      <translation>Zadana boja vrha</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation type="unfinished">The color of vertices being edited</translation>
+      <translation>Boja točaka vrhova koji se uređuju</translation>
     </message>
     <message>
       <source>Edit edge color</source>
-      <translation type="unfinished">Edit edge color</translation>
+      <translation>Uredi boju ruba</translation>
     </message>
     <message>
       <source>Edit vertex color</source>
-      <translation type="unfinished">Edit vertex color</translation>
+      <translation>Uredi boju tjemenih točka</translation>
     </message>
     <message>
       <source>Construction geometry</source>
@@ -3249,7 +3451,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>The color of construction geometry in edit mode</source>
-      <translation type="unfinished">The color of construction geometry in edit mode</translation>
+      <translation>Boja konstrukcijske geometrije u modu uređivanja</translation>
     </message>
     <message>
       <source>External geometry</source>
@@ -3286,7 +3488,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+43"/>
       <source>Visibility automation</source>
-      <translation type="unfinished">Visibility automation</translation>
+      <translation>Automatizacija vidljivosti</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3306,7 +3508,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Show objects used for external geometry</source>
-      <translation type="unfinished">Show objects used for external geometry</translation>
+      <translation>Prikaži objekte korištene za vanjske geometrije</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3316,7 +3518,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Show object(s) sketch is attached to</source>
-      <translation type="unfinished">Show object(s) sketch is attached to</translation>
+      <translation>Prikaži objekt(e) kojima je skica pridružena</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3341,20 +3543,49 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Apply to existing sketches</source>
-      <translation type="unfinished">Apply to existing sketches</translation>
+      <translation>Primijeni na postojeće skice</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Segments per geometry</source>
-      <translation type="unfinished">Segments per geometry</translation>
-    </message>
-    <message>
-      <location line="+39"/>
-      <source>Sketch Solver</source>
-      <translation type="unfinished">Sketch Solver</translation>
+      <location line="+37"/>
+      <source>Notifications</source>
+      <translation>Obavijesti</translation>
     </message>
     <message>
       <location line="+6"/>
+      <source>Notify automatic constraint substitutions.</source>
+      <translation>Obavijesti automatski zamjene ograničenja.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Notify automatic constraint substitutions</source>
+      <translation>Obavijesti automatski zamjene ograničenja</translation>
+    </message>
+    <message>
+      <location line="+19"/>
+      <source>Segments per geometry</source>
+      <translation>Segmenata po geometriji</translation>
+    </message>
+    <message>
+      <location line="+26"/>
+      <source>Sketcher Solver</source>
+      <translation>Alat rješavač skice</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Dragging Performance</source>
+      <translation type="unfinished">Dragging Performance</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Improve solving while dragging (requires to re-enter edit mode to take effect)</source>
+      <translation type="unfinished">Improve solving while dragging (requires to re-enter edit mode to take effect)</translation>
+    </message>
+    <message>
+      <source>Sketch Solver</source>
+      <translation>Rješavač skice</translation>
+    </message>
+    <message>
+      <location line="-22"/>
       <source>Show Advanced Solver Control in the Task bar</source>
       <translation type="unfinished">Show Advanced Solver Control in the Task bar</translation>
     </message>
@@ -3364,28 +3595,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>Constraint color</source>
-      <translation type="unfinished">Constraint color</translation>
+      <translation>Boja ograničenja</translation>
     </message>
     <message>
       <source>Datum color</source>
-      <translation type="unfinished">Datum color</translation>
+      <translation>Boja podatka</translation>
     </message>
     <message>
       <source>Datum text size</source>
-      <translation type="unfinished">Datum text size</translation>
+      <translation>Veličina teksta podatka</translation>
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>Zadana debljina linije za nove forme</translation>
     </message>
     <message>
-      <location line="-292"/>
+      <location line="-334"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <source>Default vertex size</source>
-      <translation type="unfinished">Default vertex size</translation>
+      <translation>Zadana veličina vrha</translation>
     </message>
     <message>
       <source>Default line width</source>
@@ -3393,7 +3624,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>Cursor text color</source>
-      <translation type="unfinished">Cursor text color</translation>
+      <translation>Boja teksta pokazivača</translation>
     </message>
     <message>
       <source>Non-driving Datum color</source>
@@ -3401,7 +3632,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>The color of driving constraints in edit mode</source>
-      <translation type="unfinished">The color of driving constraints in edit mode</translation>
+      <translation>Boja crtanja ograničenja u načinu uređivanja</translation>
     </message>
     <message>
       <source>The color of non-driving constrains or dimensions in edit mode</source>
@@ -3410,12 +3641,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-19"/>
       <source>Sketch editing</source>
-      <translation type="unfinished">Sketch editing</translation>
+      <translation>Skica za uređivanje</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Veličina Pisma</translation>
     </message>
     <message>
       <location line="+65"/>
@@ -3430,12 +3661,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketcherSettings.cpp" line="-51"/>
       <source>%1 px</source>
-      <translation type="unfinished">%1 px</translation>
+      <translation>%1 px</translation>
     </message>
     <message>
       <location line="+48"/>
       <source>Unexpected C++ exception</source>
-      <translation type="unfinished">Unexpected C++ exception</translation>
+      <translation>Neočekivani C++ izuzetak</translation>
     </message>
   </context>
   <context>
@@ -3448,39 +3679,44 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+6"/>
       <source>Sketcher colors</source>
-      <translation type="unfinished">Sketcher colors</translation>
+      <translation>Boje skice</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Default edge color</source>
-      <translation type="unfinished">Default edge color</translation>
+      <translation>Zadana boja ruba</translation>
     </message>
     <message>
       <location line="+7"/>
-      <location line="+66"/>
+      <location line="+96"/>
       <source>The color of edges being edited</source>
-      <translation type="unfinished">The color of edges being edited</translation>
+      <translation>Boja rubova koji se uređuju</translation>
     </message>
     <message>
-      <location line="-40"/>
+      <location line="-70"/>
       <source>Default vertex color</source>
-      <translation type="unfinished">Default vertex color</translation>
+      <translation>Zadana boja vrha</translation>
     </message>
     <message>
       <location line="+7"/>
-      <location line="+66"/>
+      <location line="+96"/>
       <source>The color of vertices being edited</source>
-      <translation type="unfinished">The color of vertices being edited</translation>
+      <translation>Boja točaka vrhova koji se uređuju</translation>
     </message>
     <message>
-      <location line="-40"/>
+      <location line="-70"/>
+      <source>Making line color</source>
+      <translation>Stvaranje boje crte</translation>
+    </message>
+    <message>
+      <location line="+30"/>
       <source>Edit edge color</source>
-      <translation type="unfinished">Edit edge color</translation>
+      <translation>Uredi boju ruba</translation>
     </message>
     <message>
       <location line="+33"/>
       <source>Edit vertex color</source>
-      <translation type="unfinished">Edit vertex color</translation>
+      <translation>Uredi boju tjemenih točka</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -3488,22 +3724,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Geometrija za konstrukciju</translation>
     </message>
     <message>
-      <location line="+106"/>
+      <location line="+73"/>
       <source>The color of fully constrained geometry in edit mode</source>
       <translation type="unfinished">The color of fully constrained geometry in edit mode</translation>
     </message>
     <message>
-      <location line="-79"/>
-      <source>The color of construction geometry in edit mode</source>
-      <translation type="unfinished">The color of construction geometry in edit mode</translation>
+      <location line="+281"/>
+      <source>Cursor crosshair color</source>
+      <translation>Boja kursora vizirna nit</translation>
     </message>
     <message>
-      <location line="-20"/>
+      <location line="-347"/>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Boja konstrukcijske geometrije u modu uređivanja</translation>
+    </message>
+    <message>
+      <location line="+186"/>
       <source>The color of the datum portion of a driving constraint</source>
       <translation type="unfinished">The color of the datum portion of a driving constraint</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="-160"/>
       <source>External geometry</source>
       <translation>Vanjska geometrija</translation>
     </message>
@@ -3518,56 +3759,66 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Fully constrained geometry</translation>
     </message>
     <message>
-      <location line="+13"/>
-      <source>Constraint color</source>
-      <translation type="unfinished">Constraint color</translation>
-    </message>
-    <message>
       <location line="+33"/>
-      <source>Datum color</source>
-      <translation type="unfinished">Datum color</translation>
+      <source>Constraint color</source>
+      <translation>Boja ograničenja</translation>
     </message>
     <message>
-      <location line="+13"/>
-      <source>Datum text size</source>
-      <translation type="unfinished">Datum text size</translation>
-    </message>
-    <message>
-      <location line="+13"/>
-      <source>Default vertex size</source>
-      <translation type="unfinished">Default vertex size</translation>
+      <location line="+54"/>
+      <source>Expression dependent constraint color</source>
+      <translation type="unfinished">Expression dependent constraint color</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>The color of expression dependent datum constraints in edit mode</source>
+      <translation type="unfinished">The color of expression dependent datum constraints in edit mode</translation>
+    </message>
+    <message>
+      <location line="+26"/>
+      <source>Datum color</source>
+      <translation>Boja podatka</translation>
+    </message>
+    <message>
+      <location line="+33"/>
+      <source>Datum text size</source>
+      <translation>Veličina teksta podatka</translation>
+    </message>
+    <message>
       <location line="+35"/>
-      <location line="+52"/>
+      <source>Default vertex size</source>
+      <translation>Zadana veličina vrha</translation>
+    </message>
+    <message>
+      <location line="-28"/>
+      <location line="+35"/>
+      <location line="+35"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>Zadana debljina linije za nove forme</translation>
     </message>
     <message>
-      <location line="-84"/>
+      <location line="-67"/>
       <location line="+35"/>
-      <location line="+52"/>
+      <location line="+35"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
-      <location line="-62"/>
+      <location line="-10"/>
       <source>Default line width</source>
       <translation type="unfinished">Default line width</translation>
     </message>
     <message>
       <location line="+35"/>
       <source>Cursor text color</source>
-      <translation type="unfinished">Cursor text color</translation>
+      <translation>Boja teksta pokazivača</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="-198"/>
       <source>Reference Constraint color</source>
       <translation type="unfinished">Reference Constraint color</translation>
     </message>
     <message>
-      <location line="+27"/>
+      <location line="+7"/>
       <source>The color of reference constrains and datum in edit mode</source>
       <translation type="unfinished">The color of reference constrains and datum in edit mode</translation>
     </message>
@@ -3576,9 +3827,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Non-driving Datum color</translation>
     </message>
     <message>
-      <location line="-20"/>
+      <location line="-27"/>
       <source>The color of driving constraints in edit mode</source>
-      <translation type="unfinished">The color of driving constraints in edit mode</translation>
+      <translation>Boja crtanja ograničenja u načinu uređivanja</translation>
     </message>
     <message>
       <source>The color of non-driving constrains or dimensions in edit mode</source>
@@ -3588,7 +3839,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+325"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
       <source>No missing coincidences</source>
       <translation type="unfinished">No missing coincidences</translation>
     </message>
@@ -3600,7 +3851,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+5"/>
       <source>Missing coincidences</source>
-      <translation type="unfinished">Missing coincidences</translation>
+      <translation>Nema podudaranja</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3608,24 +3859,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">%1 missing coincidences found</translation>
     </message>
     <message>
-      <location line="+60"/>
+      <location line="+66"/>
       <source>No invalid constraints</source>
-      <translation type="unfinished">No invalid constraints</translation>
+      <translation>Nema neispravnih ograničenja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No invalid constraints found</source>
-      <translation type="unfinished">No invalid constraints found</translation>
+      <translation>Nisu pronađena neispravna ograničenja</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Invalid constraints</source>
-      <translation type="unfinished">Invalid constraints</translation>
+      <translation>Neispravna ograničenja</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid constraints found</source>
-      <translation type="unfinished">Invalid constraints found</translation>
+      <translation>Pronađena neispravna ograničenja</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -3633,7 +3884,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+7"/>
       <location line="+11"/>
       <source>Reversed external geometry</source>
-      <translation type="unfinished">Reversed external geometry</translation>
+      <translation>Obrnuta vanjska geometrija</translation>
     </message>
     <message>
       <location line="-28"/>
@@ -3740,7 +3991,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+10"/>
       <source>Hide Internal Aligment</source>
-      <translation type="unfinished">Hide Internal Aligment</translation>
+      <translation>Sakriti Interno Poravnanje</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
@@ -3748,7 +3999,8 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Ograničenja</translation>
     </message>
     <message>
-      <location line="+190"/>
+      <location line="+199"/>
+      <location line="+17"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -3773,41 +4025,41 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+5"/>
       <source>Starting Point</source>
-      <translation type="unfinished">Starting Point</translation>
+      <translation>Početna točka</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>End Point</source>
-      <translation type="unfinished">End Point</translation>
+      <translation>Krajnja točka</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Center Point</source>
-      <translation type="unfinished">Center Point</translation>
+      <translation>Točka Središta</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Extended Naming</source>
-      <translation type="unfinished">Extended Naming</translation>
+      <translation>Prošireno Imenovanje</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Auto-switch to Edge</source>
-      <translation type="unfinished">Auto-switch to Edge</translation>
+      <translation>Automatsko prebacivanje na rub</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: Višestruki odabir&lt;/p&gt; &lt;p&gt;&amp;quot;Z&amp;quot;: Prebaci na slijedeći valjani tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="+68"/>
       <source>Elements</source>
-      <translation type="unfinished">Elements</translation>
+      <translation>Elementi</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: Višestruki odabir &lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: Prebaci na slijedeći valjani tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+463"/>
@@ -3868,7 +4120,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location line="+76"/>
       <location line="+1"/>
       <source>Elliptical Arc</source>
-      <translation type="unfinished">Elliptical Arc</translation>
+      <translation>Eliptični luk</translation>
     </message>
     <message>
       <location line="-75"/>
@@ -3876,7 +4128,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location line="+75"/>
       <location line="+1"/>
       <source>Hyperbolic Arc</source>
-      <translation type="unfinished">Hyperbolic Arc</translation>
+      <translation>Hiperbolni luk</translation>
     </message>
     <message>
       <location line="-74"/>
@@ -3884,7 +4136,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location line="+74"/>
       <location line="+1"/>
       <source>Parabolic Arc</source>
-      <translation type="unfinished">Parabolic Arc</translation>
+      <translation>Parabolični luk</translation>
     </message>
     <message>
       <location line="-73"/>
@@ -3900,7 +4152,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location line="+72"/>
       <location line="+1"/>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Drugo</translation>
     </message>
   </context>
   <context>
@@ -3913,7 +4165,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+6"/>
       <source>Show grid</source>
-      <translation type="unfinished">Show grid</translation>
+      <translation>Pokaži rešetku</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -3928,12 +4180,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+20"/>
       <source>Avoid redundant auto constraints</source>
-      <translation type="unfinished">Avoid redundant auto constraints</translation>
+      <translation>Izbjegavajte suvišna automatska ograničenja</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Rendering order:</source>
-      <translation type="unfinished">Rendering order:</translation>
+      <translation>Redoslijed iscrtavanja:</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -4039,7 +4291,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
       <source>Advanced solver control</source>
-      <translation type="unfinished">Advanced solver control</translation>
+      <translation>Napredna kontrola alata za rješavanje</translation>
     </message>
   </context>
   <context>
@@ -4057,7 +4309,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+10"/>
       <source>Missing coincidences</source>
-      <translation type="unfinished">Missing coincidences</translation>
+      <translation>Nema podudaranja</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -4067,17 +4319,22 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+24"/>
       <source>Highlight open vertexes</source>
-      <translation type="unfinished">Highlight open vertexes</translation>
+      <translation>Istaknuti tjemene točke</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+7"/>
+      <source>Ignore construction geometry</source>
+      <translation>Zanemari geometriju konstrukcije</translation>
+    </message>
+    <message>
+      <location line="+13"/>
       <source>Reversed external geometry</source>
-      <translation type="unfinished">Reversed external geometry</translation>
+      <translation>Obrnuta vanjska geometrija</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Swap endpoints in constraints</source>
-      <translation type="unfinished">Swap endpoints in constraints</translation>
+      <translation>Zamijeni krajnje točke u ograničenju</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -4087,38 +4344,38 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+6"/>
       <source>Enable/Update</source>
-      <translation type="unfinished">Enable/Update</translation>
+      <translation>Omogući/Ažuriranje</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Disable</source>
-      <translation type="unfinished">Disable</translation>
+      <translation>Onemogući</translation>
     </message>
     <message>
-      <location line="-93"/>
+      <location line="-103"/>
       <location line="+40"/>
-      <location line="+23"/>
+      <location line="+33"/>
       <source>Find</source>
-      <translation type="unfinished">Find</translation>
+      <translation>Pronađi</translation>
     </message>
     <message>
-      <location line="-70"/>
+      <location line="-80"/>
       <location line="+37"/>
       <source>Fix</source>
-      <translation type="unfinished">Fix</translation>
+      <translation>Popravi</translation>
     </message>
     <message>
       <location line="-43"/>
       <source>Invalid constraints</source>
-      <translation type="unfinished">Invalid constraints</translation>
+      <translation>Neispravna ograničenja</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5110"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
       <source>Invalid sketch</source>
-      <translation type="unfinished">Invalid sketch</translation>
+      <translation>Neispravna skica</translation>
     </message>
     <message>
       <source>The sketch is invalid and cannot be edited.
@@ -4144,15 +4401,15 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+15"/>
       <source>Do you want to open the sketch validation tool?</source>
-      <translation type="unfinished">Do you want to open the sketch validation tool?</translation>
+      <translation>Želite li otvoriti alat provjera valjanosti skice?</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The sketch is invalid and cannot be edited.</source>
-      <translation type="unfinished">The sketch is invalid and cannot be edited.</translation>
+      <translation>Skica je neispravna i ne može se uređivati.</translation>
     </message>
     <message>
-      <location line="+141"/>
+      <location line="+156"/>
       <source>Please remove the following constraint:</source>
       <translation>Molim uklonite sljedeće ograničenje:</translation>
     </message>
@@ -4179,24 +4436,24 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+7"/>
       <source>Over-constrained sketch </source>
-      <translation type="unfinished">Over-constrained sketch </translation>
+      <translation>Iznad -Ograničena skica </translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+7"/>
       <location line="+8"/>
       <source>(click to select)</source>
-      <translation type="unfinished">(click to select)</translation>
+      <translation>(klikni za odabir)</translation>
     </message>
     <message>
       <location line="-9"/>
       <source>Sketch contains conflicting constraints </source>
-      <translation type="unfinished">Sketch contains conflicting constraints </translation>
+      <translation>Skica sadrži proturječna ograničenja </translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Sketch contains redundant constraints </source>
-      <translation type="unfinished">Sketch contains redundant constraints </translation>
+      <translation>Skica sadrži suvišna ograničenja </translation>
     </message>
     <message>
       <source>Over-constrained sketch</source>
@@ -4242,7 +4499,7 @@ Use the sketch validation tool.</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="-416"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja češlja zakrivljenosti za sve (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -4251,7 +4508,7 @@ Use the sketch validation tool.</translation>
       <location line="+544"/>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Decreases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>Smanjuje umnožak odabranoga čvora B-spline krive</translation>
     </message>
   </context>
   <context>
@@ -4260,7 +4517,7 @@ Use the sketch validation tool.</translation>
       <location line="-554"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja intenziteta za sve (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -4269,7 +4526,7 @@ Use the sketch validation tool.</translation>
       <location line="+548"/>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Increases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>Povećati mnoštvo odabranoga čvora B-spline krive</translation>
     </message>
   </context>
   <context>
@@ -4278,7 +4535,7 @@ Use the sketch validation tool.</translation>
       <location line="-538"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the knot multiplicity for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja za višestrukost čvora (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -4287,7 +4544,7 @@ Use the sketch validation tool.</translation>
       <location line="-9"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control polygons for all B-splines</translation>
+      <translation>Prijelaz između pokazivanja i skrivanja kontrolnog poligona (B-splines) zakrivljene linije</translation>
     </message>
   </context>
   <context>
@@ -4296,7 +4553,7 @@ Use the sketch validation tool.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="-275"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara klon geometrije uzimajući kao referencu zadnje odabranu točku</translation>
     </message>
   </context>
   <context>
@@ -4318,43 +4575,43 @@ Use the sketch validation tool.</translation>
       <location line="+1"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
+      <translation>Stvara jednostavnu kopiju geometrije uzimajući kao referencu zadnje odabranu točku</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4291"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+      <translation>Stvaranje luka od svojih završnih točki i točke na luku</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3245"/>
+      <location line="+3273"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
-      <translation type="unfinished">Create a circle by 3 rim points</translation>
+      <translation>Stvori krug kroz tri točke</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3251"/>
+      <location line="-3279"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+      <translation>Stvaranje luka od njegovog središta i njegovih krajnjih točaka</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location line="+2311"/>
+      <location line="+2316"/>
       <location line="+1"/>
       <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-      <translation type="unfinished">Create an arc of ellipse by its center, major radius, endpoints</translation>
+      <translation>Stvaranje luka elipsa iz njegovog centra, velikog radijusa i krajnjih točaka</translation>
     </message>
   </context>
   <context>
@@ -4363,7 +4620,7 @@ Use the sketch validation tool.</translation>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create an arc of hyperbola by its center, major radius, endpoints</source>
-      <translation type="unfinished">Create an arc of hyperbola by its center, major radius, endpoints</translation>
+      <translation>Stvaranje luka hiperbole iz njegovog centra, velikog radijusa i krajnjih točaka</translation>
     </message>
   </context>
   <context>
@@ -4372,44 +4629,44 @@ Use the sketch validation tool.</translation>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create an arc of parabola by its focus, vertex, endpoints</source>
-      <translation type="unfinished">Create an arc of parabola by its focus, vertex, endpoints</translation>
+      <translation>Stvarane luka parabole iz fokusa, tjemene točke i krajnjih točaka</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
       <source>B-spline by control points or poles</source>
-      <translation type="unfinished">B-spline by control points or poles</translation>
+      <translation>B-spline kriva kroz kontrolne točke ili polove</translation>
     </message>
     <message>
       <source>Create a B-spline by control points or poles</source>
-      <translation type="unfinished">Create a B-spline by control points or poles</translation>
+      <translation>Stvaranje B-splinekrive kroz kontrolne točke ili polove</translation>
     </message>
     <message>
-      <location line="+572"/>
+      <location line="+594"/>
       <source>B-spline by control points</source>
-      <translation type="unfinished">B-spline by control points</translation>
+      <translation>B-spline kriva kroz kontrolne točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a B-spline by control points</source>
-      <translation type="unfinished">Create a B-spline by control points</translation>
+      <translation>Stvaranje B-splinekrive kroz kontrolne točke</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location line="+351"/>
+      <location line="+352"/>
       <location line="+1"/>
       <source>Create a circle by its center and by a rim point</source>
-      <translation type="unfinished">Create a circle by its center and by a rim point</translation>
+      <translation>Stvaranje kruga od njegovog središta i njegovih točaka</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-939"/>
+      <location line="-962"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation type="unfinished">Create a ellipse by periapsis, apoapsis, and minor radius</translation>
@@ -4427,7 +4684,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3169"/>
+      <location line="+3242"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation type="unfinished">Create a heptagon by its center and by one corner</translation>
@@ -4439,7 +4696,7 @@ Use the sketch validation tool.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation type="unfinished">Create a hexagon by its center and by one corner</translation>
+      <translation>Stvaranje heksagona iz središta i jednog ugla</translation>
     </message>
   </context>
   <context>
@@ -4448,16 +4705,22 @@ Use the sketch validation tool.</translation>
       <location line="+7"/>
       <location line="+1"/>
       <source>Create an octagon by its center and by one corner</source>
-      <translation type="unfinished">Create an octagon by its center and by one corner</translation>
+      <translation>Stvaranje oktagona iz središta i jednog ugla</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location line="+1"/>
+      <source>Create a regular polygon by its center and by one corner</source>
+      <translation>Stvaranje pravilnog poligona iz središta i jednog ugla</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location line="-13"/>
+      <location line="-17"/>
       <location line="+1"/>
       <source>Create a pentagon by its center and by one corner</source>
-      <translation type="unfinished">Create a pentagon by its center and by one corner</translation>
+      <translation>Stvaranje pentagona iz središta i jednog ugla</translation>
     </message>
   </context>
   <context>
@@ -4466,7 +4729,7 @@ Use the sketch validation tool.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create a square by its center and by one corner</source>
-      <translation type="unfinished">Create a square by its center and by one corner</translation>
+      <translation>Stvaranje kvadrata iz središta i jednog ugla</translation>
     </message>
   </context>
   <context>
@@ -4489,15 +4752,15 @@ Use the sketch validation tool.</translation>
       <translation type="unfinished">Create a periodic B-spline by control points or poles</translation>
     </message>
     <message>
-      <location line="-2562"/>
+      <location line="-2613"/>
       <source>Periodic B-spline by control points</source>
-      <translation type="unfinished">Periodic B-spline by control points</translation>
+      <translation>Periodična B-spline kriva kroz kontrolne točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation type="unfinished">Create a periodic B-spline by control points</translation>
+      <translation>Stvaranje B-spline krive kroz kontrolne točke</translation>
     </message>
   </context>
   <context>
@@ -4505,27 +4768,27 @@ Use the sketch validation tool.</translation>
     <message>
       <location filename="../../Command.cpp" line="-56"/>
       <source>No sketch found</source>
-      <translation type="unfinished">No sketch found</translation>
+      <translation>Nema skice</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The document doesn't have a sketch</source>
-      <translation type="unfinished">The document doesn't have a sketch</translation>
+      <translation>Dokument nema skicu</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Select sketch</source>
-      <translation type="unfinished">Select sketch</translation>
+      <translation>Odaberite skicu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a sketch from the list</source>
-      <translation type="unfinished">Select a sketch from the list</translation>
+      <translation>Odabir skica s popisa</translation>
     </message>
     <message>
       <location line="+53"/>
       <source> (incompatible with selection)</source>
-      <translation type="unfinished"> (incompatible with selection)</translation>
+      <translation> (nije u skladu sa odabirom)</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -4535,12 +4798,12 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+7"/>
       <source> (suggested)</source>
-      <translation type="unfinished"> (suggested)</translation>
+      <translation> (predložen)</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Sketch attachment</source>
-      <translation type="unfinished">Sketch attachment</translation>
+      <translation>Privitak skici</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -4555,13 +4818,13 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+35"/>
       <source>Map sketch</source>
-      <translation type="unfinished">Map sketch</translation>
+      <translation>Preslikajte skicu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation type="unfinished">Can't map a sketch to support:
+      <translation>Nije moguće preslikati skicu za podršku:
 %1</translation>
     </message>
   </context>
@@ -4570,7 +4833,7 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="-406"/>
       <source>Sketch attachment</source>
-      <translation type="unfinished">Sketch attachment</translation>
+      <translation>Privitak skici</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4583,14 +4846,14 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+192"/>
       <source>Sketch has support</source>
-      <translation type="unfinished">Sketch has support</translation>
+      <translation>Skica je dodana površini</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation type="unfinished">Sketch with a support face cannot be reoriented.
-Do you want to detach it from the support?</translation>
+      <translation>Skica na naličju ne može biti preusmjerena.
+Želite li je odvojiti od podloge?</translation>
     </message>
   </context>
   <context>
@@ -4639,7 +4902,7 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Auto Update</source>
-      <translation type="unfinished">Auto Update</translation>
+      <translation>Automatski ažuriraj</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -4649,7 +4912,7 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Update</source>
-      <translation type="unfinished">Update</translation>
+      <translation>Ažuriraj</translation>
     </message>
   </context>
   <context>
@@ -4667,95 +4930,95 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Default Solver:</source>
-      <translation type="unfinished">Default Solver:</translation>
+      <translation>Zadani alat za rješavanje:</translation>
     </message>
     <message>
       <location line="+17"/>
       <location line="+322"/>
       <source>BFGS</source>
-      <translation type="unfinished">BFGS</translation>
+      <translation>BFGS</translation>
     </message>
     <message>
       <location line="-317"/>
       <location line="+322"/>
       <source>LevenbergMarquardt</source>
-      <translation type="unfinished">LevenbergMarquardt</translation>
+      <translation>LevenbergMarquardt</translation>
     </message>
     <message>
       <location line="-317"/>
       <location line="+322"/>
       <source>DogLeg</source>
-      <translation type="unfinished">DogLeg</translation>
+      <translation>DogLeg</translation>
     </message>
     <message>
       <location line="-310"/>
       <source>Type of function to apply in DogLeg for the Gauss step</source>
-      <translation type="unfinished">Type of function to apply in DogLeg for the Gauss step</translation>
+      <translation>Tip funkcije za DogLeg rješavać, dodavanje na Gaus korak</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>DogLeg Gauss step:</source>
-      <translation type="unfinished">DogLeg Gauss step:</translation>
+      <translation>DogLeg Gauss korak:</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>FullPivLU</source>
-      <translation type="unfinished">FullPivLU</translation>
+      <translation>FullPivLU</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>LeastNorm-FullPivLU</source>
-      <translation type="unfinished">LeastNorm-FullPivLU</translation>
+      <translation>LeastNorm-FullPivLU</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>LeastNorm-LDLT</source>
-      <translation type="unfinished">LeastNorm-LDLT</translation>
+      <translation>LeastNorm-LDLT</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Maximum number of iterations of the default algorithm</source>
-      <translation type="unfinished">Maximum number of iterations of the default algorithm</translation>
+      <translation>Najveći broj ponavljanja zadanog algoritma</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Maximum Iterations:</source>
-      <translation type="unfinished">Maximum Iterations:</translation>
+      <translation>Najveći broj ponavljanja:</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
-      <translation type="unfinished">If selected, the Maximum iterations value is multiplied by the sketch size</translation>
+      <translation>Ako je odabran, najveći broj ponavljanja je umnožen sa veličinom skice</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Sketch size multiplier:</source>
-      <translation type="unfinished">Sketch size multiplier:</translation>
+      <translation>Množitelj veličine skice:</translation>
     </message>
     <message>
       <location line="+33"/>
       <source>Error threshold under which convergence is reached</source>
-      <translation type="unfinished">Error threshold under which convergence is reached</translation>
+      <translation>Prag pogreške, kod kojeg je dostignuta konvergencija</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Convergence:</source>
-      <translation type="unfinished">Convergence:</translation>
+      <translation>Konvergencija:</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Param1</source>
-      <translation type="unfinished">Param1</translation>
+      <translation>Parametar1</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Param2</source>
-      <translation type="unfinished">Param2</translation>
+      <translation>Parametar2</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Param3</source>
-      <translation type="unfinished">Param3</translation>
+      <translation>Parametar3</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -4765,27 +5028,27 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>QR Algorithm:</source>
-      <translation type="unfinished">QR Algorithm:</translation>
+      <translation>QR algoritam:</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Eigen Dense QR</source>
-      <translation type="unfinished">Eigen Dense QR</translation>
+      <translation>Eigen Dense QR</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Eigen Sparse QR</source>
-      <translation type="unfinished">Eigen Sparse QR</translation>
+      <translation>Eigen Sparse QR</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Pivot threshold</source>
-      <translation type="unfinished">Pivot threshold</translation>
+      <translation>Pivot prag</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>1E-13</source>
-      <translation type="unfinished">1E-13</translation>
+      <translation>1E-13</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -4795,7 +5058,7 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Redundant Solver:</source>
-      <translation type="unfinished">Redundant Solver:</translation>
+      <translation>Redundantni alat za rješavanje:</translation>
     </message>
     <message>
       <location line="+39"/>
@@ -4815,7 +5078,7 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Red. Sketch size multiplier:</source>
-      <translation type="unfinished">Red. Sketch size multiplier:</translation>
+      <translation>Red. Množitelj veličine skice:</translation>
     </message>
     <message>
       <location line="+27"/>
@@ -4825,27 +5088,27 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Red. Convergence</source>
-      <translation type="unfinished">Red. Convergence</translation>
+      <translation>Red. Konvergencija</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>1E-10</source>
-      <translation type="unfinished">1E-10</translation>
+      <translation>1E-10</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Red. Param1</source>
-      <translation type="unfinished">Red. Param1</translation>
+      <translation>Red. Parametar1</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Red. Param2</source>
-      <translation type="unfinished">Red. Param2</translation>
+      <translation>Red. Parametar2</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Red. Param3</source>
-      <translation type="unfinished">Red. Param3</translation>
+      <translation>Red. Parametar3</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -4855,11 +5118,11 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Console Debug mode:</source>
-      <translation type="unfinished">Console Debug mode:</translation>
+      <translation>Konzola, Mod ispravljanja pogreški:</translation>
     </message>
     <message>
       <source>Console  Debug mode:</source>
-      <translation type="unfinished">Console  Debug mode:</translation>
+      <translation>Konzola, Mod ispravljanja pogreški:</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -4874,12 +5137,12 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+5"/>
       <source>Iteration Level</source>
-      <translation type="unfinished">Iteration Level</translation>
+      <translation>Nivo ponavljanja (iteracije)</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Solve</source>
-      <translation type="unfinished">Solve</translation>
+      <translation>Riješi</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4889,7 +5152,7 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+3"/>
       <source>Restore Defaults</source>
-      <translation type="unfinished">Restore Defaults</translation>
+      <translation>Vrati Zadano</translation>
     </message>
   </context>
   <context>
@@ -4907,14 +5170,19 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+2"/>
       <source>Sketcher tools</source>
-      <translation type="unfinished">Sketcher tools</translation>
+      <translation>Alati Skice</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Sketcher virtual space</source>
+      <translation>Virtualni prostor crtača</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>
       <translation>Geometrije skice</translation>
     </message>
     <message>
-      <location line="-1"/>
+      <location line="-2"/>
       <source>Sketcher constraints</source>
       <translation>Ograničenja u skici</translation>
     </message>

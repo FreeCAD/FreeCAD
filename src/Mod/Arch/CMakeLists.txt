@@ -40,6 +40,7 @@ SET(Arch_SRCS
     importSH3D.py
     ArchPipe.py
     ArchNesting.py
+    ArchBuildingPart.py
 )
 
 SET(Dice3DS_SRCS
@@ -59,7 +60,7 @@ ADD_CUSTOM_TARGET(Arch ALL
 )
 
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch/Dice3DS" ${Dice3DS_SRCS})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
 
 fc_target_copy_resource(Arch
     ${CMAKE_SOURCE_DIR}/src/Mod/Arch

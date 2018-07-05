@@ -30,158 +30,139 @@ import PathScripts.PathLog as PathLog
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule()
 
-class PathPreferences:
-    DefaultFilePath           = "DefaultFilePath"
-    DefaultJobTemplate        = "DefaultJobTemplate"
-    DefaultStockTemplate      = "DefaultStockTemplate"
+DefaultFilePath           = "DefaultFilePath"
+DefaultJobTemplate        = "DefaultJobTemplate"
+DefaultStockTemplate      = "DefaultStockTemplate"
+DefaultTaskPanelLayout    = "DefaultTaskPanelLayout"
 
-    PostProcessorDefault      = "PostProcessorDefault"
-    PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
-    PostProcessorBlacklist    = "PostProcessorBlacklist"
-    PostProcessorOutputFile   = "PostProcessorOutputFile"
-    PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+PostProcessorDefault      = "PostProcessorDefault"
+PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
+PostProcessorBlacklist    = "PostProcessorBlacklist"
+PostProcessorOutputFile   = "PostProcessorOutputFile"
+PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
-    # Linear tolerance to use when generating Paths, eg when tessellating geometry
-    GeometryTolerance       = "GeometryTolerance"
-    LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
+# Linear tolerance to use when generating Paths, eg when tessellating geometry
+GeometryTolerance       = "GeometryTolerance"
+LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
 
-    EnableExperimentalFeatures = "EnableExperimentalFeatures"
-
-
-    @classmethod
-    def preferences(cls):
-        return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-
-    @classmethod
-    def pathScriptsSourcePath(cls):
-        return FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
-
-    @classmethod
-    def pathScriptsPostSourcePath(cls):
-        return cls.pathScriptsSourcePath() + ("/post/")
-
-    @classmethod
-    def allAvailablePostProcessors(cls):
-        allposts = []
-        for path in cls.searchPaths():
-            posts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in glob.glob(path + '/*_post.py')]
-            allposts.extend(posts)
-        allposts.sort()
-        return allposts
-
-    @classmethod
-    def allEnabledPostProcessors(cls, include = None):
-        blacklist = cls.postProcessorBlacklist()
-        enabled = [processor for processor in cls.allAvailablePostProcessors() if not processor in blacklist]
-        if include:
-            l = list(set(include + enabled))
-            l.sort()
-            return l
-        return enabled
+EnableExperimentalFeatures = "EnableExperimentalFeatures"
 
 
-    @classmethod
-    def defaultPostProcessor(cls):
-        pref = cls.preferences()
-        return pref.GetString(cls.PostProcessorDefault, "")
+def preferences():
+    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
 
-    @classmethod
-    def defaultPostProcessorArgs(cls):
-        pref = cls.preferences()
-        return pref.GetString(cls.PostProcessorDefaultArgs, "")
+def pathScriptsSourcePath():
+    return FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
 
-    @classmethod
-    def defaultGeometryTolerance(cls):
-        return cls.preferences().GetFloat(cls.GeometryTolerance, 0.01)
+def pathScriptsPostSourcePath():
+    return pathScriptsSourcePath() + ("/post/")
 
-    @classmethod
-    def defaultLibAreaCurveAccuracy(cls):
-        return cls.preferences().GetFloat(cls.LibAreaCurveAccuracy, 0.01)
+def allAvailablePostProcessors():
+    allposts = []
+    for path in searchPaths():
+        posts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in glob.glob(path + '/*_post.py')]
+        allposts.extend(posts)
+    allposts.sort()
+    return allposts
 
-    @classmethod
-    def defaultFilePath(cls):
-        return cls.preferences().GetString(cls.DefaultFilePath)
-
-    @classmethod
-    def filePath(cls):
-        path = cls.defaultFilePath()
-        if not path:
-            path = cls.macroFilePath()
-        return path
-
-    @classmethod
-    def macroFilePath(cls):
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        return grp.GetString("MacroPath", FreeCAD.getUserMacroDir())
-
-    @classmethod
-    def searchPaths(cls):
-        paths = []
-        p = cls.defaultFilePath()
-        if p:
-            paths.append(p)
-        paths.append(cls.macroFilePath())
-        paths.append(cls.pathScriptsPostSourcePath())
-        paths.append(cls.pathScriptsSourcePath())
-        return paths
-
-    @classmethod
-    def defaultJobTemplate(cls):
-        template = cls.preferences().GetString(cls.DefaultJobTemplate)
-        if 'xml' not in template:
-            return template
-        return ''
-
-    @classmethod
-    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance, curveAccuracy):
-        PathLog.track("(%s='%s', %s, %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance, curveAccuracy))
-        pref = cls.preferences()
-        pref.SetString(cls.DefaultFilePath, filePath)
-        pref.SetString(cls.DefaultJobTemplate, jobTemplate)
-        pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
-        pref.SetFloat(cls.LibAreaCurveAccuracy, curveAccuracy)
-
-    @classmethod
-    def postProcessorBlacklist(cls):
-        pref = cls.preferences()
-        blacklist = pref.GetString(cls.PostProcessorBlacklist, "")
-        if not blacklist:
-            return []
-        return eval(blacklist)
-
-    @classmethod
-    def setPostProcessorDefaults(cls, processor, args, blacklist):
-        pref = cls.preferences()
-        pref.SetString(cls.PostProcessorDefault, processor)
-        pref.SetString(cls.PostProcessorDefaultArgs, args)
-        pref.SetString(cls.PostProcessorBlacklist, "%s" % (blacklist))
+def allEnabledPostProcessors(include = None):
+    blacklist = postProcessorBlacklist()
+    enabled = [processor for processor in allAvailablePostProcessors() if not processor in blacklist]
+    if include:
+        l = list(set(include + enabled))
+        l.sort()
+        return l
+    return enabled
 
 
-    @classmethod
-    def setOutputFileDefaults(cls, file, policy):
-        pref = cls.preferences()
-        pref.SetString(cls.PostProcessorOutputFile, file)
-        pref.SetString(cls.PostProcessorOutputPolicy, policy)
+def defaultPostProcessor():
+    pref = preferences()
+    return pref.GetString(PostProcessorDefault, "")
 
-    @classmethod
-    def defaultOutputFile(cls):
-        pref = cls.preferences()
-        return pref.GetString(cls.PostProcessorOutputFile, "")
+def defaultPostProcessorArgs():
+    pref = preferences()
+    return pref.GetString(PostProcessorDefaultArgs, "")
 
-    @classmethod
-    def defaultOutputPolicy(cls):
-        pref = cls.preferences()
-        return pref.GetString(cls.PostProcessorOutputPolicy, "")
+def defaultGeometryTolerance():
+    return preferences().GetFloat(GeometryTolerance, 0.01)
 
-    @classmethod
-    def defaultStockTemplate(cls):
-        return cls.preferences().GetString(cls.DefaultStockTemplate, "")
-    @classmethod
-    def setDefaultStockTemplate(cls, template):
-        cls.preferences().SetString(cls.DefaultStockTemplate, template)
+def defaultLibAreaCurveAccuracy():
+    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01)
+
+def defaultFilePath():
+    return preferences().GetString(DefaultFilePath)
+
+def filePath():
+    path = defaultFilePath()
+    if not path:
+        path = macroFilePath()
+    return path
+
+def macroFilePath():
+    grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+    return grp.GetString("MacroPath", FreeCAD.getUserMacroDir())
+
+def searchPaths():
+    paths = []
+    p = defaultFilePath()
+    if p:
+        paths.append(p)
+    paths.append(macroFilePath())
+    paths.append(pathScriptsPostSourcePath())
+    paths.append(pathScriptsSourcePath())
+    return paths
+
+def defaultJobTemplate():
+    template = preferences().GetString(DefaultJobTemplate)
+    if 'xml' not in template:
+        return template
+    return ''
+
+def setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy):
+    PathLog.track("(%s='%s', %s, %s, %s)" % (DefaultFilePath, filePath, jobTemplate, geometryTolerance, curveAccuracy))
+    pref = preferences()
+    pref.SetString(DefaultFilePath, filePath)
+    pref.SetString(DefaultJobTemplate, jobTemplate)
+    pref.SetFloat(GeometryTolerance, geometryTolerance)
+    pref.SetFloat(LibAreaCurveAccuracy, curveAccuracy)
+
+def postProcessorBlacklist():
+    pref = preferences()
+    blacklist = pref.GetString(PostProcessorBlacklist, "")
+    if not blacklist:
+        return []
+    return eval(blacklist)
+
+def setPostProcessorDefaults(processor, args, blacklist):
+    pref = preferences()
+    pref.SetString(PostProcessorDefault, processor)
+    pref.SetString(PostProcessorDefaultArgs, args)
+    pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
 
 
-    @classmethod
-    def experimentalFeaturesEnabled(cls):
-        return cls.preferences().GetBool(cls.EnableExperimentalFeatures, False)
+def setOutputFileDefaults(file, policy):
+    pref = preferences()
+    pref.SetString(PostProcessorOutputFile, file)
+    pref.SetString(PostProcessorOutputPolicy, policy)
+
+def defaultOutputFile():
+    pref = preferences()
+    return pref.GetString(PostProcessorOutputFile, "")
+
+def defaultOutputPolicy():
+    pref = preferences()
+    return pref.GetString(PostProcessorOutputPolicy, "")
+
+def defaultStockTemplate():
+    return preferences().GetString(DefaultStockTemplate, "")
+def setDefaultStockTemplate(template):
+    preferences().SetString(DefaultStockTemplate, template)
+
+def defaultTaskPanelLayout():
+    return preferences().GetInt(DefaultTaskPanelLayout, 0)
+def setDefaultTaskPanelLayout(style):
+    preferences().SetInt(DefaultTaskPanelLayout, style)
+
+def experimentalFeaturesEnabled():
+    return preferences().GetBool(EnableExperimentalFeatures, False)
 

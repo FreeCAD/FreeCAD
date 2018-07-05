@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Yaklaşık B-Spline yüzeyi...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>B-spline yüzeyinin yaklaşık değeri</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>Yaklaşık B-Spline yüzeyi...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Yaklaşık yüzey ...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Yaklaşık olarak bir B-Spline yüzeyi hesaplamak</translation>
     </message>
@@ -85,9 +93,13 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
       <translation>B-Spline yüzeyi sabitleme</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>B-spline yüzeyini sığdır</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -162,7 +174,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="+146"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -214,7 +226,7 @@
       <location filename="../../Command.cpp" line="-159"/>
       <location line="+135"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <location line="-134"/>

@@ -55,7 +55,7 @@ public:
 	void step(double tick);
     void setToWaypoint(unsigned int n);
     void setToTime(float t);
-    // apply the start axis angles and set to time 0. Restors the exact start position
+    // apply the start axis angles and set to time 0. Restores the exact start position
     void reset(void);
 
 	double Pos;

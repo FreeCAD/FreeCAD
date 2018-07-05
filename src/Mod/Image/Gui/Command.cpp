@@ -103,7 +103,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
     sWhatsThis      = "Image_CreateImagePlane";
     sStatusTip      = sToolTipText;
-    sPixmap         = "image-import";
+    sPixmap         = "image-import-to-plane";
 }
 
 void CmdCreateImagePlane::activated(int iMsg)
@@ -155,6 +155,7 @@ void CmdCreateImagePlane::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),nHeight);
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
                      ,FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        doCommand(Doc,"Gui.SendMsgToActiveView('ViewFit')");
         commitCommand();
     }
 }
@@ -162,6 +163,28 @@ void CmdCreateImagePlane::activated(int iMsg)
 bool CmdCreateImagePlane::isActive()
 {
     return App::GetApplication().getActiveDocument();
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+DEF_STD_CMD(CmdImageScaling);
+
+CmdImageScaling::CmdImageScaling()
+  : Command("Image_Scaling")
+{
+    sAppModule      = "Image";
+    sGroup          = QT_TR_NOOP("Image");
+    sMenuText       = QT_TR_NOOP("Scale...");
+    sToolTipText    = QT_TR_NOOP("Image Scaling");
+    sWhatsThis      = "Image_Scaling";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "image-scale";
+}
+
+void CmdImageScaling::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // To Be Defined
+
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

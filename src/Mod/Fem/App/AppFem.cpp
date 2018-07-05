@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 
+#include <SMESH_Version.h>
 #include "FemMeshPy.h"
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
@@ -119,7 +120,9 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_SegmentAroundVertex_0DPy    ::init_type(femModule);
     Fem::StdMeshers_SegmentLengthAroundVertexPy ::init_type(femModule);
     Fem::StdMeshers_StartEndLengthPy            ::init_type(femModule);
+#if SMESH_VERSION_MAJOR < 7
     Fem::StdMeshers_TrianglePreferencePy        ::init_type(femModule);
+#endif
     Fem::StdMeshers_Hexa_3DPy                   ::init_type(femModule);
 
     // Add Types to module

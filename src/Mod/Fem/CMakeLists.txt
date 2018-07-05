@@ -108,9 +108,18 @@ SET(FemSolverZ88_SRCS
     femsolver/z88/writer.py
 )
 
+SET(FemSolverFenics_SRCS
+    femsolver/fenics/__init__.py
+    femsolver/fenics/fenics_tools.py
+)
+
 SET(FemTests_SRCS
     femtest/__init__.py
-    femtest/testfemcommon.py
+    femtest/testccxtools.py
+    femtest/testcommon.py
+    femtest/testmesh.py
+    femtest/testsolverframework.py
+    femtest/testtools.py
 )
 
 SET(FemTestsFiles_SRCS
@@ -129,6 +138,8 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/cube_static.frd
     femtest/testfiles/ccx/cube_static_expected_values
     femtest/testfiles/ccx/cube.fcstd
+    femtest/testfiles/ccx/multimat.inp
+    femtest/testfiles/ccx/multimat_mesh.py
     femtest/testfiles/ccx/spine_mesh.py
     femtest/testfiles/ccx/spine_thermomech.inp
     femtest/testfiles/ccx/spine_thermomech.dat
@@ -149,6 +160,12 @@ SET(FemTestsElmer_SRCS
     femtest/testfiles/elmer/case.sif
     femtest/testfiles/elmer/group_mesh.geo
     femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
+)
+
+SET(FemTestsMesh_SRCS
+    femtest/testfiles/mesh/__init__.py
+    femtest/testfiles/mesh/tetra10_mesh.inp
+    femtest/testfiles/mesh/tetra10_mesh.unv
 )
 
 SET(FemTools_SRCS
@@ -191,10 +208,12 @@ SET(FemAllScripts
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverZ88_SRCS}
+    ${FemSolverFenics_SRCS}
     ${FemTests_SRCS}
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
+    ${FemTestsMesh_SRCS}
     ${FemTools_SRCS}
     ${FemObjectsScripts_SRCS}
 )
@@ -218,10 +237,12 @@ INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
+INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/testfiles/elmer)
+INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/testfiles/mesh)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 
@@ -249,7 +270,6 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemMeshResult.py
     femguiobjects/_ViewProviderFemResultMechanical.py
     femguiobjects/_ViewProviderFemSolverCalculix.py
-    femguiobjects/FemSelectionObserver.py
     femguiobjects/FemSelectionWidgets.py
     femguiobjects/ViewProviderFemConstraint.py
 )

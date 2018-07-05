@@ -400,6 +400,9 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
 double DrawUtil::sensibleScale(double working_scale)
 {
     double result = 1.0;
+    if (!(working_scale > 0.0)) {
+        return result;
+    }
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
 
@@ -419,6 +422,57 @@ double DrawUtil::sensibleScale(double working_scale)
 
     //now have the appropriate scale, reapply the *10^b
     result = valid_scales[(exponent >= 0)][i] * pow(10, exponent);
+    return result;
+}
+
+double DrawUtil::getDefaultLineWeight(std::string lineType)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = LineGroup::lineGroupFactory(lgName);
+    
+    double weight = lg->getWeight(lineType);
+    delete lg;                                    //Coverity CID 174671
+    return weight;
+}
+
+bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2)
+{
+    bool result = false;
+    double segLength = (end2 - end1).Length();
+    double l1        = (pt - end1).Length();
+    double l2        = (pt - end2).Length();
+    if (fpCompare(segLength,l1 + l2)) {
+        result = true;
+    }
+    return result;
+}
+
+Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
+                                     Base::Vector3d p2, Base::Vector3d d2)
+{
+    Base::Vector3d result(0,0,0);
+    Base::Vector3d p12(p1.x+d1.x, p1.y+d1.y, 0.0);
+    double A1 = d1.y;
+    double B1 = -d1.x;
+    double C1 = A1*p1.x + B1*p1.y;
+
+    Base::Vector3d p22(p2.x+d2.x, p2.y+d2.y, 0.0);
+    double A2 = d2.y;
+    double B2 = -d2.x;
+    double C2 = A2*p2.x + B2*p2.y;
+
+    double det = A1*B2 - A2*B1;
+    if(det == 0){
+        Base::Console().Message("Lines are parallel\n");
+    }else{
+        double x = (B2*C1 - B1*C2)/det;
+        double y = (A1*C2 - A2*C1)/det;
+        result.x = x;
+        result.y = y;
+    }
+
     return result;
 }
 

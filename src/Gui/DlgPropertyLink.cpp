@@ -141,7 +141,6 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
 
                 // get the direct base class of App::DocumentObject which 'obj' is derived from
                 while (!objType.isBad()) {
-                    std::string name = objType.getName();
                     Base::Type parType = objType.getParent();
                     if (parType == baseType) {
                         baseType = objType;
@@ -152,15 +151,32 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
             }
         }
 
-        std::vector<App::DocumentObject*> outList;
+        // build list of objects names already in property so we can mark them as selected later on
+        std::vector<const char *> selectedNames;
+
+        // build ignore list
+        std::vector<App::DocumentObject*> ignoreList;
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
+        App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
         if (par) {
             // for multi-selection we need all objects
             if (isSingleSelection) {
-                App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
-                outList = par->getOutListOfProperty(prop);
+                ignoreList = par->getOutListOfProperty(prop);
+            } else {
+                // gather names of objects currently in property
+                if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+                    const App::PropertyLinkList* propll = static_cast<const App::PropertyLinkList*>(prop);
+                    std::vector<App::DocumentObject*> links = propll->getValues();
+                    for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
+                        selectedNames.push_back((*it)->getNameInDocument());
+                    }
+                }
             }
-            outList.push_back(par);
+
+            // add the inlist to the ignore list to avoid dependency loops
+            std::vector<App::DocumentObject*> inList = par->getInListRecursive();
+            ignoreList.insert(ignoreList.end(), inList.begin(), inList.end());
+            ignoreList.push_back(par);
         }
 
         // Add a "None" entry on top
@@ -180,12 +196,19 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
             }
             if (vp && nameOk) {
                 // filter out the objects
-                if (std::find(outList.begin(), outList.end(), *it) == outList.end()) {
+                if (std::find(ignoreList.begin(), ignoreList.end(), *it) == ignoreList.end()) {
                     QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
                     item->setIcon(vp->getIcon());
                     item->setText(QString::fromUtf8((*it)->Label.getValue()));
                     QByteArray ba((*it)->getNameInDocument());
                     item->setData(Qt::UserRole, ba);
+                    // mark items as selected if needed
+                    for (std::vector<const char *>::iterator nit = selectedNames.begin(); nit != selectedNames.end(); ++nit) {
+                        if (strcmp(*nit,(*it)->getNameInDocument()) == 0) {
+                            item->setSelected(true);
+                            break;
+                        }
+                    }
                 }
             }
         }

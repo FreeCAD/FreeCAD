@@ -382,7 +382,7 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
 
             nv--;
 
-            /* resest error detection counter */
+            /* reset error detection counter */
             count = 2*nv;
         }
     }

@@ -103,7 +103,7 @@ void View3DInventorRiftViewer::setSceneGraph(SoNode *sceneGraph)
 void View3DInventorRiftViewer::keyPressEvent(QKeyEvent *event)
 {
     static const float increment = 0.02; // move two centimeter per key
-    static const float rotIncrement = M_PI/4; // move two 90°  per key
+    static const float rotIncrement = M_PI/4; // move two 90° per key
 
 
     if (event->key() == Qt::Key_Plus) {

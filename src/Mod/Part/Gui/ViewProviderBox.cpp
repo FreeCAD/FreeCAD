@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderBox.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;

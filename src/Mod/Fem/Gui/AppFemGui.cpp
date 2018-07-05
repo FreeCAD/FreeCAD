@@ -33,12 +33,14 @@
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include "PropertyFemMeshItem.h"
-#include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemCcxImp.h"
-#include "DlgSettingsFemExportAbaqusImp.h"
-#include "DlgSettingsFemGmshImp.h"
-#include "DlgSettingsFemZ88Imp.h"
 #include "DlgSettingsFemElmerImp.h"
+#include "DlgSettingsFemExportAbaqusImp.h"
+#include "DlgSettingsFemGeneralImp.h"
+#include "DlgSettingsFemGmshImp.h"
+#include "DlgSettingsFemInOutVtkImp.h"
+#include "DlgSettingsFemMaterialImp.h"
+#include "DlgSettingsFemZ88Imp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -157,15 +159,17 @@ PyMOD_INIT_FUNC(FemGui)
 #endif
 
 
-    // register preferences pages on FEM
+    // register preferences pages on FEM, the order here will be the order of the tabs in pref widget
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
     // register preferences pages on Import-Export
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemInOutVtkImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
 
      // add resources and reloads the translators
     loadFemResource();

@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+191"/>
+      <location filename="../../Command.cpp" line="+187"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -15,16 +15,15 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
-      <translation>将转换为点</translation>
+      <translation>转换为点</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location line="-82"/>
+      <location line="-80"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>导出点云</translation>
     </message>
@@ -44,19 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location line="-53"/>
+      <location line="-51"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Import points...</source>
-      <translation>输入点...</translation>
+      <translation>导入点群...</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>导入点云</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+245"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>将几个点云合并为一个</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>剪切多边形选择框中的点云</translation>
     </message>
@@ -104,19 +99,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Transform Points</source>
-      <translation>变换点</translation>
+      <translation>变换点群</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>变换点云测试</translation>
     </message>
@@ -126,7 +120,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="+14"/>
       <source>ASCII points import</source>
-      <translation>ASCII点导入</translation>
+      <translation>导入ASCII点</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -141,7 +135,7 @@
     <message>
       <location line="+42"/>
       <source>First line:</source>
-      <translation>首行:</translation>
+      <translation>第一行</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -273,19 +267,23 @@
       <translation>Ascii 点(*.asc),所有文件 (*.*）</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-80"/>
-      <location line="+51"/>
       <source>Ascii Points</source>
       <translation>Ascii 点</translation>
     </message>
     <message>
-      <location line="-51"/>
-      <location line="+51"/>
+      <location filename="../../Command.cpp" line="-76"/>
+      <location line="+50"/>
       <source>All Files</source>
       <translation>所有文件</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="-50"/>
+      <location line="+50"/>
+      <source>Point formats</source>
+      <translation>点格式</translation>
+    </message>
+    <message>
+      <location line="+71"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
@@ -305,7 +303,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Points</source>
-      <translation>点(&amp;P)</translation>
+      <translation>&amp;点</translation>
     </message>
   </context>
 </TS>

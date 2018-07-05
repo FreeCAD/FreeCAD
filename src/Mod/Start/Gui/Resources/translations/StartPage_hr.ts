@@ -251,52 +251,52 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Architectural Design</source>
-      <translation type="unfinished">Architectural Design</translation>
+      <translation>Arhitektonski dizajn</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+      <translation>Odjeljak FreeCAD web-stranice namjenjen je python skriptu sa primjerima, objašnjenjima i API naredbama.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Your version of FreeCAD is up to date.</source>
-      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+      <translation>Vaša verzija FreeCAD-a je aktualna.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
+      <translation>Dostupno je novo izdanje FreeCAD-a.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Zadnje poslano</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Nabavite razvojnu verziju FreeCAD-a</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Razvojne verzije&lt;/b&gt; su dostupne zajednici članova s vremena na vrijeme i obično sadrže najnovije promjene, ali je više vjerojatno da će sadržavati i greške u programu.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Pogledajte sve obveze</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
       <source>Load an FEM 3D example analysis</source>
-      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+      <translation>Učitaj jedan FEM 3D primjer analize</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
       <source>Load an FEM 2D example analysis</source>
-      <translation type="unfinished">Load an FEM 2D example analysis</translation>
+      <translation>Učitaj jedan FEM 2D primjer analize</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
@@ -316,32 +316,47 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
       <source>FreeCAD Standard File</source>
-      <translation type="unfinished">FreeCAD Standard File</translation>
+      <translation>FreeCAD standardna datoteka</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Autor</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Tvrtka</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Licenca</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <translation>Radna površina &lt;b&gt;Arhitektonski dizajn&lt;/b&gt; je posebno dizajnirana za rad sa arhitektonskim elementima kao što su zidovi ili prozori. Započnite crtanje 2D oblika, i koristiti ih kao vodiče za izgradnju arhitektonskih objekata.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Učitaj jedan FEM 3D primjer analize novog alata za rješavanje</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

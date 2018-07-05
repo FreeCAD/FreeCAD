@@ -69,7 +69,7 @@ namespace geoff_geometry {
 		bool bClosed = Closed();
 		int nspans = nSpans();
 		if(bClosed) {
-			Get(nspans, curSpan, true);						// assign previus span for closed
+			Get(nspans, curSpan, true);						// assign previous span for closed
 
 			prevSpanOff = curSpan.Offset(offset);
 			nspans++; // read first again

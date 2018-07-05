@@ -63,9 +63,9 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("seekToPoint",&View3DInventorViewerPy::seekToPoint,"seekToPoint(tuple) -> None\n"
      "Initiate a seek action towards the 3D intersection of the scene and the\n"
      "ray from the screen coordinate's point and in the same direction as the\n"
-     "camera is pointing. If the tuple has two entries it is interpretet as the\n"
+     "camera is pointing. If the tuple has two entries it is interpreted as the\n"
      "screen coordinates xy and the intersection point with the scene is\n"
-     "calculated. If three entries are given it is interpretet as the intersection\n"
+     "calculated. If three entries are given it is interpreted as the intersection\n"
      "point xyz and the seek is done towards this point"
     );
     add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
@@ -107,13 +107,13 @@ PyObject *View3DInventorViewerPy::method_varargs_ext_handler(PyObject *_self_and
         return pycxx_handler(_self_and_name_tuple, _args);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -162,7 +162,7 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -179,7 +179,7 @@ Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -197,7 +197,7 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -213,7 +213,7 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
 }
 
@@ -265,13 +265,13 @@ Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
         throw; // re-throw
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
     
     return Py::None();
@@ -287,13 +287,13 @@ Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
         return Py::Float(d);
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
@@ -311,7 +311,7 @@ Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception&) {
         throw;
@@ -342,12 +342,12 @@ Py::Object View3DInventorViewerPy::setPickRadius(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch (const std::exception& e) {
-        throw Py::Exception(e.what());
+        throw Py::RuntimeError(e.what());
     }
     catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+        throw Py::RuntimeError("Unknown C++ exception");
     }
 }

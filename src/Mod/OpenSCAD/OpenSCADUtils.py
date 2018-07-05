@@ -25,7 +25,7 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This Script includes various pyhton helper functions that are shared across
+This Script includes various python helper functions that are shared across
 the module
 '''
 
@@ -85,7 +85,10 @@ def searchforopenscadexe():
     else: #unix
         p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
         if p1.wait() == 0:
-            opath=p1.stdout.read().split('\n')[0]
+            output = p1.stdout.read()
+            if sys.version_info.major >= 3:
+                output = output.decode("utf-8")
+            opath = output.split('\n')[0]
             return opath
 
 def workaroundforissue128needed():
@@ -217,7 +220,7 @@ def multiplymat(l,r):
     return mat
 
 def isorthogonal(submatrix,precision=4):
-    """checking if 3x3 Matrix is ortogonal (M*Transp(M)==I)"""
+    """checking if 3x3 Matrix is orthogonal (M*Transp(M)==I)"""
     prod=multiplymat(submatrix,zip(*submatrix))
     return [[round(f,precision) for f in line] \
         for line in prod]==[[1,0,0],[0,1,0],[0,0,1]]
@@ -476,15 +479,22 @@ def meshoponobjs(opname,inobjs):
 def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     import FreeCAD,importDXF
     import os,tempfile
+    # Mantis 3419
+    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+    fn  = params.GetInt('fnForImport',32)
+    fnStr = ",$fn=" + str(fn)
+    #
     dir1=tempfile.gettempdir()
     filenames = []
     for item in ObjList :
         outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
         importDXF.export([item],outputfilename,True,True)
         filenames.append(outputfilename)
-    dxfimports = ' '.join("import(file = \"%s\");" % \
+    # Mantis 3419
+    dxfimports = ' '.join("import(file = \"%s\" %s);" % \
         #filename \
-        os.path.split(filename)[1] for filename in filenames)
+        (os.path.split(filename)[1], fnStr) for filename in filenames)
+    #
     tmpfilename = callopenscadstring('%s(){%s}' % (Operation,dxfimports),'dxf')
     from OpenSCAD2Dgeom import importDXFface
     # TBD: assure the given doc is active

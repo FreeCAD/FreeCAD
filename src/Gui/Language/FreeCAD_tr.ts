@@ -64,7 +64,7 @@
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation type="unfinished">Visual size of the feature</translation>
+      <translation>Özelliklerin görsel boyutu</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
@@ -117,18 +117,14 @@
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation type="unfinished">Toggle measurement</translation>
+      <translation>Ölçümü aç / kapat</translation>
     </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation type="unfinished">Spaceball Motion</translation>
-    </message>
-    <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Genel hassasiyet:  </translation>
+      <translation>Uzaybol Hareketi</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
@@ -136,7 +132,7 @@
     </message>
     <message>
       <source>Flip Y/Z</source>
-      <translation type="unfinished">Flip Y/Z</translation>
+      <translation>Y/Z çevir</translation>
     </message>
     <message>
       <source>Enable Translations</source>
@@ -162,20 +158,24 @@
       <source>Reverse</source>
       <translation>Ters çevir</translation>
     </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Küresel hassasiyet:</translation>
+    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
     <message>
       <source>Formula editor</source>
-      <translation type="unfinished">Formula editor</translation>
+      <translation>Formül Düzenleyicisi</translation>
     </message>
     <message>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>Sonuç:</translation>
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation type="unfinished">&amp;Discard</translation>
+      <translation>Çıkart</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -190,11 +190,11 @@
     </message>
     <message>
       <source>Ico</source>
-      <translation type="unfinished">Ico</translation>
+      <translation>Ico</translation>
     </message>
     <message>
       <source>Filename</source>
-      <translation type="unfinished">Filename</translation>
+      <translation>Dosya adı</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation type="unfinished">%1 help files not found (%2). You might need to install the %1 documentation package.</translation>
+      <translation>% 1 yardım dosyası bulunamadı (% 2). % 1 belge paketini kurmanız gerekebilir.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -261,7 +261,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation type="unfinished">Please wait until the AutoRecovery file has been saved...</translation>
+      <translation>Otomatik Kurtarma dosyası kaydedilene kadar bekleyin...</translation>
     </message>
   </context>
   <context>
@@ -295,13 +295,13 @@
     </message>
     <message>
       <source>Press middle and left or right mouse button</source>
-      <translation type="unfinished">Press middle and left or right mouse button</translation>
+      <translation>Orta ve sol veya sağ fare düğmesine basın</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Orta fare düğmesini kaydırın veya orta düğmeyi basılı tutun
+sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</translation>
     </message>
   </context>
   <context>
@@ -384,19 +384,34 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Word size</source>
-      <translation type="unfinished">Word size</translation>
+      <translation>Kelime boyutu</translation>
     </message>
     <message>
       <source>Credits</source>
-      <translation type="unfinished">Credits</translation>
+      <translation>Ekip</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+      <translation>FreeCAD çabaları olmadan hiçbir yerde olamazdı:</translation>
     </message>
     <message>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Lisans</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Kütüphaneler</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Bu yazılım telif hakkı ve diğer fikri mülkiyet hakları ilgili sahiplerine ait açık kaynak bileşenleri kullanır:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Lisans</translation>
     </message>
   </context>
   <context>
@@ -414,15 +429,15 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation type="unfinished">Clipping</translation>
+      <translation>Kırpma</translation>
     </message>
     <message>
       <source>Clipping X</source>
-      <translation type="unfinished">Clipping X</translation>
+      <translation>Kırpma X</translation>
     </message>
     <message>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>Çevir</translation>
     </message>
     <message>
       <source>Offset</source>
@@ -430,15 +445,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Clipping Y</source>
-      <translation type="unfinished">Clipping Y</translation>
+      <translation>Kırpma Y</translation>
     </message>
     <message>
       <source>Clipping Z</source>
-      <translation type="unfinished">Clipping Z</translation>
+      <translation>Kırpma Z</translation>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation type="unfinished">Clipping custom direction</translation>
+      <translation>Özel yönü kırpma</translation>
     </message>
     <message>
       <source>View</source>
@@ -446,7 +461,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation type="unfinished">Adjust to view direction</translation>
+      <translation>Yönü ayarlamak için ayarla</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -553,15 +568,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Username:</source>
-      <translation type="unfinished">Username:</translation>
+      <translation>Kullanıcı Adı:</translation>
     </message>
     <message>
       <source>Site:</source>
-      <translation type="unfinished">Site:</translation>
+      <translation>Site:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
-      <translation type="unfinished">%1 at %2</translation>
+      <translation>%2 de %1</translation>
     </message>
   </context>
   <context>
@@ -576,7 +591,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>CheckBox</source>
-      <translation type="unfinished">CheckBox</translation>
+      <translation>Onay Kutusu</translation>
     </message>
   </context>
   <context>
@@ -587,7 +602,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Icon folders...</source>
-      <translation type="unfinished">Icon folders...</translation>
+      <translation>Simge klasörleri...</translation>
     </message>
   </context>
   <context>
@@ -939,7 +954,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation type="unfinished">Spaceball Motion</translation>
+      <translation>Uzaybol Hareketi</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
@@ -966,7 +981,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Spaceball Buttons</source>
-      <translation type="unfinished">Spaceball Buttons</translation>
+      <translation>Uzaybol Hareketi</translation>
     </message>
   </context>
   <context>
@@ -1040,79 +1055,79 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Aluminium</source>
-      <translation type="unfinished">Aluminium</translation>
+      <translation>Alüminyum</translation>
     </message>
     <message>
       <source>Brass</source>
-      <translation type="unfinished">Brass</translation>
+      <translation>Bulgur</translation>
     </message>
     <message>
       <source>Bronze</source>
-      <translation type="unfinished">Bronze</translation>
+      <translation>Bronz</translation>
     </message>
     <message>
       <source>Copper</source>
-      <translation type="unfinished">Copper</translation>
+      <translation>Bakır</translation>
     </message>
     <message>
       <source>Chrome</source>
-      <translation type="unfinished">Chrome</translation>
+      <translation>Chrome</translation>
     </message>
     <message>
       <source>Emerald</source>
-      <translation type="unfinished">Emerald</translation>
+      <translation>Zümrüt</translation>
     </message>
     <message>
       <source>Gold</source>
-      <translation type="unfinished">Gold</translation>
+      <translation>Altın</translation>
     </message>
     <message>
       <source>Jade</source>
-      <translation type="unfinished">Jade</translation>
+      <translation>Yeşim taşı</translation>
     </message>
     <message>
       <source>Metalized</source>
-      <translation type="unfinished">Metalized</translation>
+      <translation>Metalleşmiş</translation>
     </message>
     <message>
       <source>Neon GNC</source>
-      <translation type="unfinished">Neon GNC</translation>
+      <translation>Neon GNC</translation>
     </message>
     <message>
       <source>Neon PHC</source>
-      <translation type="unfinished">Neon PHC</translation>
+      <translation>Neon PHC</translation>
     </message>
     <message>
       <source>Obsidian</source>
-      <translation type="unfinished">Obsidian</translation>
+      <translation>Obsidyen</translation>
     </message>
     <message>
       <source>Pewter</source>
-      <translation type="unfinished">Pewter</translation>
+      <translation>Kalay</translation>
     </message>
     <message>
       <source>Plaster</source>
-      <translation type="unfinished">Plaster</translation>
+      <translation>Alçı</translation>
     </message>
     <message>
       <source>Plastic</source>
-      <translation type="unfinished">Plastic</translation>
+      <translation>Plastik</translation>
     </message>
     <message>
       <source>Ruby</source>
-      <translation type="unfinished">Ruby</translation>
+      <translation>Yakut</translation>
     </message>
     <message>
       <source>Satin</source>
-      <translation type="unfinished">Satin</translation>
+      <translation>Saten</translation>
     </message>
     <message>
       <source>Shiny plastic</source>
-      <translation type="unfinished">Shiny plastic</translation>
+      <translation>Parlak plastik</translation>
     </message>
     <message>
       <source>Silver</source>
-      <translation type="unfinished">Silver</translation>
+      <translation>Gümüş</translation>
     </message>
     <message>
       <source>Steel</source>
@@ -1120,7 +1135,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Stone</source>
-      <translation type="unfinished">Stone</translation>
+      <translation>Taş</translation>
     </message>
   </context>
   <context>
@@ -1230,11 +1245,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enable tiled background</source>
-      <translation type="unfinished">Enable tiled background</translation>
+      <translation>Kiremitli arka plan etkinleştirmek</translation>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation type="unfinished">Style sheet:</translation>
+      <translation>Stil Sayfası:</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -1242,34 +1257,34 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>Sözcük kaydırmayı etkinleştir</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>No style sheet</source>
-      <translation type="unfinished">No style sheet</translation>
+      <translation>Stil Sayfası</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
-      <translation type="unfinished">Small (%1px)</translation>
+      <translation>Küçük (%1 x %1)</translation>
     </message>
     <message>
       <source>Medium (%1px)</source>
-      <translation type="unfinished">Medium (%1px)</translation>
+      <translation>Orta (%1px)</translation>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation type="unfinished">Large (%1px)</translation>
+      <translation>Büyük (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation type="unfinished">Extra large (%1px)</translation>
+      <translation>Çok büyük (%1 x %1)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation type="unfinished">Custom (%1px)</translation>
+      <translation>Özel (%1px)</translation>
     </message>
   </context>
   <context>
@@ -1322,15 +1337,15 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>User macros</source>
-      <translation type="unfinished">User macros</translation>
+      <translation>Kullanıcı makroları</translation>
     </message>
     <message>
       <source>System macros</source>
-      <translation type="unfinished">System macros</translation>
+      <translation>Sistem makroları</translation>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation type="unfinished">User macros location:</translation>
+      <translation>Kullanıcı Makro yeri:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1379,31 +1394,29 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Read-only</source>
-      <translation type="unfinished">Read-only</translation>
+      <translation>Salt okunur</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Makro dosya yeniden adlandırma</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Yeni adı gir:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>%1 zaten mevcut.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Yeniden adlandırma başarısız oldu</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>'%1' yeniden adlandıramadı. Belki de bir dosya yetki hatası?</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1478,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+      <translation>Dizin için yazma izniniz yok. Lütfen başka birini seçiniz.</translation>
     </message>
   </context>
   <context>
@@ -1538,7 +1551,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>HTML files</source>
-      <translation type="unfinished">HTML files</translation>
+      <translation>HTML Dosyaları</translation>
     </message>
   </context>
   <context>
@@ -1614,15 +1627,15 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation type="unfinished">Clear user settings</translation>
+      <translation>Açık kullanıcı ayarları</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation type="unfinished">Do you want to clear all your user settings?</translation>
+      <translation>Tüm kullanıcı ayarlarınızı temizlemek istiyor musunuz?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+      <translation>Kabul ederseniz tüm ayarları temizlenir.</translation>
     </message>
   </context>
   <context>
@@ -1673,19 +1686,19 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>UUID:</source>
-      <translation type="unfinished">UUID:</translation>
+      <translation>UUID:</translation>
     </message>
     <message>
       <source>License information:</source>
-      <translation type="unfinished">License information:</translation>
+      <translation>Lisans Bildirgesi:</translation>
     </message>
     <message>
       <source>License URL</source>
-      <translation type="unfinished">License URL</translation>
+      <translation>Lisans URL (Automatic Translation)</translation>
     </message>
     <message>
       <source>Open in browser</source>
-      <translation type="unfinished">Open in browser</translation>
+      <translation>Tarayıcıda aç</translation>
     </message>
   </context>
   <context>
@@ -1740,18 +1753,18 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Project file</source>
-      <translation type="unfinished">Project file</translation>
+      <translation>Proje dosyası</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
-      <translation type="unfinished">Link</translation>
+      <translation>Link</translation>
     </message>
     <message>
       <source>Show all object types</source>
-      <translation type="unfinished">Show all object types</translation>
+      <translation>Tüm belge tiplerini göster</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -1759,19 +1772,19 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Please select an object from the list</source>
-      <translation type="unfinished">Please select an object from the list</translation>
+      <translation>Lütfen listeden bir öğe seçin</translation>
     </message>
     <message>
       <source>Search</source>
-      <translation type="unfinished">Search</translation>
+      <translation>Ara</translation>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Dizin için yazma izniniz yok. Lütfen başka birini seçiniz</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Hiçbiri (bağlantıyı Kaldır)</translation>
     </message>
   </context>
   <context>
@@ -1830,7 +1843,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Python interpreter</source>
-      <translation type="unfinished">Python interpreter</translation>
+      <translation>Python yorumlayıcı</translation>
     </message>
   </context>
   <context>
@@ -1948,7 +1961,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
-      <translation type="unfinished">Anti-Aliasing</translation>
+      <translation>Kenar Yumuşatma</translation>
     </message>
     <message>
       <source>None</source>
@@ -1956,42 +1969,43 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Line Smoothing</source>
-      <translation type="unfinished">Line Smoothing</translation>
+      <translation>Yumuşatma Yok</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
-      <translation type="unfinished">MSAA 2x</translation>
+      <translation>MSAA 2 x</translation>
     </message>
     <message>
       <source>MSAA 4x</source>
-      <translation type="unfinished">MSAA 4x</translation>
+      <translation>MSAA 4 x</translation>
     </message>
     <message>
       <source>MSAA 8x</source>
-      <translation type="unfinished">MSAA 8x</translation>
+      <translation>MSAA 8 x</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation type="unfinished">Or&amp;thographic rendering</translation>
+      <translation>Ortografik işleme</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation type="unfinished">Perspective renderin&amp;g</translation>
+      <translation>Perspektif işleme</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <translation>OpenGL Vertex Arabellek Nesnesi'ni kullanın (deneysel)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>Anti-aliasing</source>
-      <translation type="unfinished">Anti-aliasing</translation>
+      <translation>Kenar Yumuşatma</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation type="unfinished">Open a new viewer or restart %1 to apply anti-aliasing changes.</translation>
+      <translation>92/5000
+Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici açın veya% 1'i yeniden başlatın.</translation>
     </message>
   </context>
   <context>
@@ -2137,8 +2151,8 @@ Lütfen başka bir dizin belirtin.</translation>
       <translation>Belgeyi kaydederken küçük resmini proje dosyası içine kaydet</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Dökümanı tekrar kaydederken yedek dosyalarına kaydet</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Belgeyi yeniden kaydederken saklanacak maksimum yedek dosya sayısı</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2158,99 +2172,99 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Authoring and License</source>
-      <translation type="unfinished">Authoring and License</translation>
+      <translation>Yazarlık ve Lisans</translation>
     </message>
     <message>
       <source>Author name</source>
-      <translation type="unfinished">Author name</translation>
+      <translation>Yazar Adı</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Belge oluşturma üzerinde kullanılacak adı.&lt;/p&gt; &lt;p&gt;İçin boş bırakın adsız.&lt;/p&gt; &lt;p&gt;Formunu da kullanabilirsiniz:&lt;/p&gt; &lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation type="unfinished">If this is checked, the "Last modified by" field will be set when saving the file</translation>
+      <translation>Seçiliyse, "Son değiştiren" alanı dosya kaydederken ayarlanır</translation>
     </message>
     <message>
       <source>Set on save</source>
-      <translation type="unfinished">Set on save</translation>
+      <translation>Üzerinde ayarlama Kaydet</translation>
     </message>
     <message>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Şirket</translation>
     </message>
     <message>
       <source>Default license</source>
-      <translation type="unfinished">Default license</translation>
+      <translation>Varsayılan Lisans</translation>
     </message>
     <message>
       <source>The default license for new documents</source>
-      <translation type="unfinished">The default license for new documents</translation>
+      <translation>Yeni pencerelerin varsayılan genişliği</translation>
     </message>
     <message>
       <source>All rights reserved</source>
-      <translation type="unfinished">All rights reserved</translation>
+      <translation>Her hakkı saklıdır</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution</source>
-      <translation type="unfinished">CreativeCommons Attribution</translation>
+      <translation>CreativeCommons özelliği</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
+      <translation>Creative Commons Atıf-LisansDevam</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
+      <translation>Creative Commons Atıf-Türetilemez</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
+      <translation>Creative Commons Atıf-Gayriticari</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Creative Commons Atıf-Gayriticari-LisansDevam</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Creative Commons Atıf-Gayriticari-Türetilemez</translation>
     </message>
     <message>
       <source>Public Domain</source>
-      <translation type="unfinished">Public Domain</translation>
+      <translation>Halka Açık Alan</translation>
     </message>
     <message>
       <source>FreeArt</source>
-      <translation type="unfinished">FreeArt</translation>
+      <translation>ÖzgürSanat</translation>
     </message>
     <message>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Diğer</translation>
     </message>
     <message>
       <source>License URL</source>
-      <translation type="unfinished">License URL</translation>
+      <translation>Lisans URL (Automatic Translation)</translation>
     </message>
     <message>
       <source>The default company to use for new files</source>
-      <translation type="unfinished">The default company to use for new files</translation>
+      <translation>Yeni dosyalar için kullanılacak varsayılan şirket</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
-      <translation type="unfinished">Run AutoRecovery at startup</translation>
+      <translation>Otomatik Kurtarmayı başlangıçta çalıştır</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation type="unfinished">Save AutoRecovery information every</translation>
+      <translation>Otomatik Arşiv bilgilerini her biri için kaydedin</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Oluşturulan minik resme program logosunu ekleyin</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Kullanıcının lisans hakkında daha fazla ayrıntı bulabileceği bir URL</translation>
     </message>
   </context>
   <context>
@@ -2508,11 +2522,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation type="unfinished">Transparent</translation>
+      <translation>Saydam</translation>
     </message>
     <message>
       <source>Add watermark</source>
-      <translation type="unfinished">Add watermark</translation>
+      <translation>Metin filigranı</translation>
     </message>
   </context>
   <context>
@@ -2598,27 +2612,27 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
-      <translation type="unfinished">US customary (in/lb)</translation>
+      <translation>ABD alışılmış (/ lb cinsinden)</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
-      <translation type="unfinished">Number of decimals:</translation>
+      <translation>Ondalık basamak sayısı:</translation>
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
-      <translation type="unfinished">Imperial decimal (in/lb)</translation>
+      <translation>İmparatorluk ondalığı (in / lb)</translation>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+      <translation>Building Euro (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
+      <translation>ABD bina (ft-in / sqft / cuft)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Metrik küçük parçalar ve CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2657,11 +2671,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
-      <translation type="unfinished">Pick radius (px):</translation>
+      <translation>Radius (px) seçin:</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>3D görünümünde öğeleri seçmek için karışıklık alanını ayarlar. Bu değerin arttırılması öğelerin seçimini kolaylaştırır, fakat diğer taraftan bazı küçük unsurların seçimini imkansız hale getirir.</translation>
     </message>
   </context>
   <context>
@@ -2675,23 +2689,23 @@ Lütfen başka bir dizin belirtin.</translation>
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <source>Units calculator</source>
-      <translation type="unfinished">Units calculator</translation>
+      <translation>Birimleri hesap makinesi</translation>
     </message>
     <message>
       <source>as:</source>
-      <translation type="unfinished">as:</translation>
+      <translation>olarak:</translation>
     </message>
     <message>
       <source>=&gt;</source>
-      <translation type="unfinished">=&gt;</translation>
+      <translation>=&gt;</translation>
     </message>
     <message>
       <source>Quantity:</source>
-      <translation type="unfinished">Quantity:</translation>
+      <translation>Miktar:</translation>
     </message>
     <message>
       <source>Units:</source>
-      <translation type="unfinished">Units:</translation>
+      <translation>Birimler:</translation>
     </message>
     <message>
       <source>Help</source>
@@ -2710,22 +2724,22 @@ Lütfen başka bir dizin belirtin.</translation>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
       <source>Unit mismatch</source>
-      <translation type="unfinished">Unit mismatch</translation>
+      <translation>Varlıklar uyuşmuyor</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation type="unfinished">Workbenches</translation>
+      <translation>Tezgah</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation type="unfinished">Enabled workbenches</translation>
+      <translation>Etkin iş tezgahları</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation type="unfinished">Disabled workbenches</translation>
+      <translation>Etkin iş tezgahları</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -2733,7 +2747,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Seçili öğeyi aşağı taşı.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Öğe taşınır&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -2741,7 +2755,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Kaldır Seçili tezgah etkin iş tezgahları üzerinden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -2749,15 +2763,15 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Kaldır Seçili tezgah etkin iş tezgahları üzerinden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation type="unfinished">Sort enabled workbenches</translation>
+      <translation>Etkin iş tezgahları</translation>
     </message>
     <message>
       <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>Etkin iş tezgahları</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2765,15 +2779,15 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Seçili öğeyi aşağı taşı.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Öğe taşınır&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Not:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; değişiklikleri, FreeCAD sonraki açışınızda etkinleşir &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation type="unfinished">Add all to enabled workbenches</translation>
+      <translation>Etkin iş tezgahları</translation>
     </message>
   </context>
   <context>
@@ -2787,39 +2801,39 @@ Lütfen başka bir dizin belirtin.</translation>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
       <source>Document Recovery</source>
-      <translation type="unfinished">Document Recovery</translation>
+      <translation>Belgeyi Kurtarma</translation>
     </message>
     <message>
       <source>Status of recovered documents:</source>
-      <translation type="unfinished">Status of recovered documents:</translation>
+      <translation>Kurtarılan belge durumu:</translation>
     </message>
     <message>
       <source>Document Name</source>
-      <translation type="unfinished">Document Name</translation>
+      <translation>Belge adı</translation>
     </message>
     <message>
       <source>Status</source>
-      <translation type="unfinished">Status</translation>
+      <translation>Durum</translation>
     </message>
     <message>
       <source>Start Recovery</source>
-      <translation type="unfinished">Start Recovery</translation>
+      <translation>Kurtarmayı Başlat</translation>
     </message>
     <message>
       <source>Not yet recovered</source>
-      <translation type="unfinished">Not yet recovered</translation>
+      <translation>Henüz cevaplanmadı</translation>
     </message>
     <message>
       <source>Unknown problem occurred</source>
-      <translation type="unfinished">Unknown problem occurred</translation>
+      <translation>Bilinmeyen bir hata oluştu</translation>
     </message>
     <message>
       <source>Failed to recover</source>
-      <translation type="unfinished">Failed to recover</translation>
+      <translation>Kurtarmak başarısız oldu</translation>
     </message>
     <message>
       <source>Successfully recovered</source>
-      <translation type="unfinished">Successfully recovered</translation>
+      <translation>%s başarıyla kurtarıldı</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -2827,7 +2841,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation type="unfinished">Cleanup...</translation>
+      <translation>Temizleyen...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -2835,155 +2849,155 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Cleanup</source>
-      <translation type="unfinished">Cleanup</translation>
+      <translation>Temizleyen</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+      <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Ne zaman seçilen geçici dizin silme herhangi bir dosya daha sonra kurtarmak mümkün olmayacaktır.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Ne zaman seçilen geçici dizin silme herhangi bir dosya daha sonra kurtarmak mümkün olmayacaktır.</translation>
     </message>
     <message>
       <source>Finished</source>
-      <translation type="unfinished">Finished</translation>
+      <translation>Tamamlandı</translation>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>Geçici dizinler silinir.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Aşağıda listelenen belgenin kurtarma işlemini başlatmak için 'Kurtarmayı Başlat' düğmesine basın.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+'Statü' sütunu, dokümanın kurtarılıp kurtarılmayacağını gösterir.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
       <source>Save File</source>
-      <translation type="unfinished">Save File</translation>
+      <translation>Dosyayı kaydet</translation>
     </message>
     <message>
       <source>Download canceled: %1</source>
-      <translation type="unfinished">Download canceled: %1</translation>
+      <translation>Karşıdan yükleme iptal edildi</translation>
     </message>
     <message>
       <source>Open containing folder</source>
-      <translation type="unfinished">Open containing folder</translation>
+      <translation>İçeren klasörü aç</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Toplu iş kütüğünü açma yanlışlığı\n</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
-      <translation type="unfinished">Error saving: %1</translation>
+      <translation>Not kaydedilirken hata</translation>
     </message>
     <message>
       <source>Network Error: %1</source>
-      <translation type="unfinished">Network Error: %1</translation>
+      <translation>Ağ hatası</translation>
     </message>
     <message>
       <source>seconds</source>
-      <translation type="unfinished">seconds</translation>
+      <translation>saniye</translation>
     </message>
     <message>
       <source>minutes</source>
-      <translation type="unfinished">minutes</translation>
+      <translation>dakika</translation>
     </message>
     <message>
       <source>- %4 %5 remaining</source>
-      <translation type="unfinished">- %4 %5 remaining</translation>
+      <translation>-kalan %4 %5</translation>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+      <translation>%2 (%3/sn) %4 %1</translation>
     </message>
     <message>
       <source>?</source>
-      <translation type="unfinished">?</translation>
+      <translation>?</translation>
     </message>
     <message>
       <source>%1 of %2 - Stopped</source>
-      <translation type="unfinished">%1 of %2 - Stopped</translation>
+      <translation>Durdu %2 - %1</translation>
     </message>
     <message>
       <source>bytes</source>
-      <translation type="unfinished">bytes</translation>
+      <translation>bayt</translation>
     </message>
     <message>
       <source>kB</source>
-      <translation type="unfinished">kB</translation>
+      <translation>kB</translation>
     </message>
     <message>
       <source>MB</source>
-      <translation type="unfinished">MB</translation>
+      <translation>MB</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
       <source>Downloads</source>
-      <translation type="unfinished">Downloads</translation>
+      <translation>İndirmeler</translation>
     </message>
     <message>
       <source>Clean up</source>
-      <translation type="unfinished">Clean up</translation>
+      <translation>Temizlik</translation>
     </message>
     <message>
       <source>0 Items</source>
-      <translation type="unfinished">0 Items</translation>
+      <translation>0 öge</translation>
     </message>
     <message>
       <source>Download Manager</source>
-      <translation type="unfinished">Download Manager</translation>
+      <translation>İndirme Yöneticisi</translation>
     </message>
     <message>
       <source>1 Download</source>
-      <translation type="unfinished">1 Download</translation>
+      <translation>İndir</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation type="unfinished">%1 Downloads</translation>
+      <translation>İndir</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Icon folders</source>
-      <translation type="unfinished">Icon folders</translation>
+      <translation>Simge klasörleri</translation>
     </message>
     <message>
       <source>Add icon folder</source>
-      <translation type="unfinished">Add icon folder</translation>
+      <translation>Simgesini klasör ekle</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation type="unfinished">Add or remove custom icon folders</translation>
+      <translation>Özel simge klasörleri ekleyebilir ve kaldırabilirsiniz</translation>
     </message>
     <message>
       <source>Remove folder</source>
-      <translation type="unfinished">Remove folder</translation>
+      <translation>Klasörü Kaldır</translation>
     </message>
     <message>
       <source>Removing a folder only takes effect after an application restart.</source>
-      <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+      <translation>Bir klasörü kaldırmak, yalnızca bir uygulamanın yeniden başlatılmasından sonra etkili olur.</translation>
     </message>
   </context>
   <context>
@@ -3186,7 +3200,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation type="unfinished">Pitch:</translation>
+      <translation>Saha:</translation>
     </message>
     <message>
       <source>Roll:</source>
@@ -3222,19 +3236,19 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Incorrect quantity</source>
-      <translation type="unfinished">Incorrect quantity</translation>
+      <translation>Hatalı miktar</translation>
     </message>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+      <translation>Yanlış girişi olan girdi alanları var, lütfen geçerli yerleşim değerlerini sağlayın!</translation>
     </message>
     <message>
       <source>Euler angles (XY'Z'')</source>
-      <translation type="unfinished">Euler angles (XY'Z'')</translation>
+      <translation>Euler açıları (XY'Z'')</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Kitlesel merkez kullanın</translation>
     </message>
   </context>
   <context>
@@ -3350,16 +3364,12 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation>Hepsı bir arada görünüm</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Proje</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Görevler</translation>
     </message>
     <message>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation>Model</translation>
     </message>
   </context>
   <context>
@@ -3413,7 +3423,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Plain Text Files</source>
-      <translation type="unfinished">Plain Text Files</translation>
+      <translation>Yalın Yazı Düzenleyicisi</translation>
     </message>
   </context>
   <context>
@@ -3431,23 +3441,23 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
       <source>Search</source>
-      <translation type="unfinished">Search</translation>
+      <translation>Ara</translation>
     </message>
     <message>
       <source>Searches object labels</source>
-      <translation type="unfinished">Searches object labels</translation>
+      <translation>Nesne etiketlerini arar</translation>
     </message>
     <message>
       <source>Clears the search field</source>
-      <translation type="unfinished">Clears the search field</translation>
+      <translation>Arama alanını siler</translation>
     </message>
     <message>
       <source>Select only</source>
-      <translation type="unfinished">Select only</translation>
+      <translation>Yalnızca seçili</translation>
     </message>
     <message>
       <source>Selects only this object</source>
-      <translation type="unfinished">Selects only this object</translation>
+      <translation>Sadece bu nesneyi seçer</translation>
     </message>
     <message>
       <source>Deselect</source>
@@ -3455,15 +3465,15 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Deselects this object</source>
-      <translation type="unfinished">Deselects this object</translation>
+      <translation>Bu nesneyi sil</translation>
     </message>
     <message>
       <source>Zoom fit</source>
-      <translation type="unfinished">Zoom fit</translation>
+      <translation>Uzaklaştır</translation>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
-      <translation type="unfinished">Selects and fits this object in the 3D window</translation>
+      <translation>Bu nesneyi ağaç görünümünde seçer ve bulur</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -3471,39 +3481,39 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation type="unfinished">Selects and locates this object in the tree view</translation>
+      <translation>Bu nesneyi ağaç görünümünde seçer ve bulur</translation>
     </message>
     <message>
       <source>To python console</source>
-      <translation type="unfinished">To python console</translation>
+      <translation>Python konsolu</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
+      <translation>Bu nesneyi ve alt öğelerini python konsolunda gösterir.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Mark tablosunu yeniden oluştur</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Recomputed için bu nesneyi işaretlemek</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Seçim görünümü</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Seçili öğelerin toplamı</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Yinelenen şekleAlt şekli çoğalt</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Belgede bu alt şablonun bağımsız bir kopyasını oluşturur</translation>
     </message>
   </context>
   <context>
@@ -3564,11 +3574,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>FreeCAD macro</source>
-      <translation type="unfinished">FreeCAD macro</translation>
+      <translation>FreeCAD makro</translation>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF dosyası</translation>
     </message>
   </context>
   <context>
@@ -3631,50 +3641,50 @@ Do you want to save your changes?</source>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <translation>Dokunun. Ya da sol fare düğmesini tıklatın.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+      <translation>İki parmağıyla ekranı sürükleyin. Veya sağ fare düğmesine basın.</translation>
     </message>
     <message>
       <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Ekranı bir parmakla sürükleyin. Ya da sol fare düğmesine basın. Sketcher ve diğer düzenleme modlarında Ek olarak Alt tuşunu basılı tutun.</translation>
     </message>
     <message>
       <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <translation>Çimdikleme (iki parmağınızı ekranda tutun ve birbirlerine sürükleyin). Veya orta fare düğmesini kaydırın. Veya klavye üzerinde PgUp / PgDown.</translation>
     </message>
   </context>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
       <source>Export graph</source>
-      <translation type="unfinished">Export graph</translation>
+      <translation>İhracat grafik</translation>
     </message>
     <message>
       <source>PNG format</source>
-      <translation type="unfinished">PNG format</translation>
+      <translation>PNG biçimi</translation>
     </message>
     <message>
       <source>Bitmap format</source>
-      <translation type="unfinished">Bitmap format</translation>
+      <translation>Bit eşlem biçimi</translation>
     </message>
     <message>
       <source>GIF format</source>
-      <translation type="unfinished">GIF format</translation>
+      <translation>PNG biçimi</translation>
     </message>
     <message>
       <source>JPG format</source>
-      <translation type="unfinished">JPG format</translation>
+      <translation>PNG biçimi</translation>
     </message>
     <message>
       <source>SVG format</source>
-      <translation type="unfinished">SVG format</translation>
+      <translation>PNG biçimi</translation>
     </message>
     <message>
       <source>PDF format</source>
-      <translation type="unfinished">PDF format</translation>
+      <translation>PNG biçimi</translation>
     </message>
     <message>
       <source>Graphviz not found</source>
@@ -3682,15 +3692,15 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Graphviz, sisteminizde bulunamadı.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Burada daha fazla bilgi için tıklayın.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Yükleme yolu zaten yüklüyse belirtmek ister misiniz?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -3713,7 +3723,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Save value</source>
-      <translation type="unfinished">Save value</translation>
+      <translation>Değeri kaydetmek</translation>
     </message>
   </context>
   <context>
@@ -3739,7 +3749,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
       <source>List</source>
-      <translation type="unfinished">List</translation>
+      <translation>Liste</translation>
     </message>
   </context>
   <context>
@@ -3796,11 +3806,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Macro file doesn't exist</source>
-      <translation type="unfinished">Macro file doesn't exist</translation>
+      <translation>Makro dosyası yok</translation>
     </message>
     <message>
       <source>No such macro file: '%1'</source>
-      <translation type="unfinished">No such macro file: '%1'</translation>
+      <translation>Böyle bir makro dosya: '%1'</translation>
     </message>
   </context>
   <context>
@@ -3827,13 +3837,12 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Object dependencies</source>
-      <translation type="unfinished">Object dependencies</translation>
+      <translation>Nesne bağımlılıkları</translation>
     </message>
     <message>
       <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-      <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+      <translation>Seçili nesneleri bir bağımlılığı olan seçili olmayan nesneler var. Onları, çok kopyalamak istiyor musunuz?</translation>
     </message>
   </context>
   <context>
@@ -3923,26 +3932,26 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>No point was found on model</source>
-      <translation type="unfinished">No point was found on model</translation>
+      <translation>Model üzerinde hiçbir nokta bulunamadı</translation>
     </message>
   </context>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <translation>Dokunun. Ya da sol fare düğmesini tıklatın.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+      <translation>İki parmağıyla ekranı sürükleyin. Veya sağ fare düğmesine basın.</translation>
     </message>
     <message>
       <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Ekranı bir parmakla sürükleyin. Ya da sol fare düğmesine basın. Sketcher ve diğer düzenleme modlarında Ek olarak Alt tuşunu basılı tutun.</translation>
     </message>
     <message>
       <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <translation>Çimdikleme (iki parmağınızı ekranda tutun ve birbirlerine sürükleyin). Veya orta fare düğmesini kaydırın. Veya klavye üzerinde PgUp / PgDown.</translation>
     </message>
   </context>
   <context>
@@ -3961,11 +3970,11 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Press CTRL and middle mouse button</source>
-      <translation type="unfinished">Press CTRL and middle mouse button</translation>
+      <translation>Sağ ve orta fare düğmesine basma</translation>
     </message>
     <message>
       <source>Press CTRL and right mouse button</source>
-      <translation type="unfinished">Press CTRL and right mouse button</translation>
+      <translation>Sağ ve orta fare düğmesine basma</translation>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
@@ -3980,11 +3989,11 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Save value</source>
-      <translation type="unfinished">Save value</translation>
+      <translation>Değeri kaydetmek</translation>
     </message>
     <message>
       <source>Clear list</source>
-      <translation type="unfinished">Clear list</translation>
+      <translation>Listeyi temizle</translation>
     </message>
   </context>
   <context>
@@ -4021,14 +4030,14 @@ sağ görünümde %2 nokta seçili.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Bağlı nesneyi değiştirme</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Bağlı nesneyi değiştirme</translation>
     </message>
   </context>
   <context>
@@ -4130,11 +4139,11 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Macro Files</source>
-      <translation type="unfinished">Macro Files</translation>
+      <translation>Makro dosyaları</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Tüm Dosyalar</translation>
     </message>
   </context>
   <context>
@@ -4263,11 +4272,11 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Automatic python modules documentation</source>
-      <translation type="unfinished">Automatic python modules documentation</translation>
+      <translation>Otomatik python modülleri belgeleri</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+      <translation>Python modüllerini göstermek için bir internet gezgini açar</translation>
     </message>
   </context>
   <context>
@@ -4288,15 +4297,15 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation type="unfinished">Increments</translation>
+      <translation>Artım</translation>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <translation>Çeviri artışı: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <translation>Çeviri artışı: </translation>
     </message>
   </context>
   <context>
@@ -4359,15 +4368,15 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Metin güncelleştirildi</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Altta yatan nesnenin metni değişti. Değişiklikleri atın ve metni nesneden yeniden yükleyin?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Evet, yeniden yükleyin.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4375,11 +4384,11 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Kapatmadan önce değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation type="unfinished">If you don't save, your changes will be lost.</translation>
+      <translation>Kaydetmezseniz, yaptığınız değişiklikler kaybolacak.</translation>
     </message>
   </context>
   <context>
@@ -4398,7 +4407,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
-      <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+      <translation>CTRL ve SHIFT tuşuna basın düğmeleri</translation>
     </message>
   </context>
   <context>
@@ -4456,23 +4465,23 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation type="unfinished">Skip recomputes</translation>
+      <translation>Yeniden tartışmaları atla</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation type="unfinished">Enable or disable recomputations of document</translation>
+      <translation>Dokümanın yeniden hesaplanmasını etkinleştirir veya devre dışı bırakır</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Mark tablosunu yeniden oluştur</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Recomputed için bu nesneyi işaretlemek</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>% 1, Dahili adı:% 2</translation>
     </message>
   </context>
   <context>
@@ -4483,15 +4492,15 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF dosyası</translation>
     </message>
     <message>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Dosya açılamadı</translation>
     </message>
     <message>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Dosya '%1' yazmak için açılamıyor.</translation>
     </message>
   </context>
   <context>
@@ -4505,27 +4514,27 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>MAC_APPLICATION_MENU</name>
     <message>
       <source>Services</source>
-      <translation type="unfinished">Services</translation>
+      <translation>Hizmetler</translation>
     </message>
     <message>
       <source>Hide %1</source>
-      <translation type="unfinished">Hide %1</translation>
+      <translation>%1 Gizle</translation>
     </message>
     <message>
       <source>Hide Others</source>
-      <translation type="unfinished">Hide Others</translation>
+      <translation>Diğerlerini Gizle</translation>
     </message>
     <message>
       <source>Show All</source>
-      <translation type="unfinished">Show All</translation>
+      <translation>Tümünü Göster</translation>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation type="unfinished">Preferences...</translation>
+      <translation>Ayarlar...</translation>
     </message>
     <message>
       <source>Quit %1</source>
-      <translation type="unfinished">Quit %1</translation>
+      <translation>Çık %1</translation>
     </message>
     <message>
       <source>About %1</source>
@@ -4536,11 +4545,11 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>NetworkAccessManager</name>
     <message>
       <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation type="unfinished">&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;Enter username ve parola için %2, "%1"&lt;/qt&gt;</translation>
     </message>
     <message>
       <source>&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</source>
-      <translation type="unfinished">&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;İçin "%1" proxy kullanarak bağlan:&lt;/qt&gt;</translation>
     </message>
   </context>
   <context>
@@ -4630,7 +4639,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
-      <translation type="unfinished">Input in line %1 is not a number</translation>
+      <translation>Giriş hattı %1 içinde bir sayı değil</translation>
     </message>
   </context>
   <context>
@@ -4669,7 +4678,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>DAG View</source>
-      <translation type="unfinished">DAG View</translation>
+      <translation>DAG görünümü</translation>
     </message>
   </context>
   <context>
@@ -4956,7 +4965,7 @@ In order to load it Qt 4.4 or higher is required.</source>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <source>Only one object selected. Please select two objects.
@@ -4990,23 +4999,23 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document '%1' before closing?</translation>
+      <translation>Kapatmadan önce değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation type="unfinished">If you don't save, your changes will be lost.</translation>
+      <translation>Kaydetmezseniz, yaptığınız değişiklikler kaybolacak.</translation>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation type="unfinished">Save a copy of the document under new filename...</translation>
+      <translation>Dokümanın bir kopyasını yeni dosya adı altında kaydedin...</translation>
     </message>
     <message>
       <source>Frozen views</source>
-      <translation type="unfinished">Frozen views</translation>
+      <translation>Donmuş kez bakıldı</translation>
     </message>
     <message>
       <source>Saving document failed</source>
-      <translation type="unfinished">Saving document failed</translation>
+      <translation>Belge kaydetme başarısız oldu</translation>
     </message>
     <message>
       <source>Document</source>
@@ -5018,42 +5027,46 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
-      <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+      <translation>Sistemde makrolar silmek için izin verilmez</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Orijin</translation>
     </message>
     <message>
       <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
+      <translation> %1%2 %3 </translation>
     </message>
     <message>
       <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
+      <translation>Çeviri: </translation>
     </message>
     <message>
       <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
+      <translation>Dönüş: </translation>
     </message>
     <message>
       <source>Delete group content?</source>
-      <translation type="unfinished">Delete group content?</translation>
+      <translation>İçerik silinsin?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>% 1 boş değil, içerik de silinsin mi?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Dışa aktarılamadı</translation>
     </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
       <source>Not allowed:</source>
-      <translation type="unfinished">Not allowed:</translation>
+      <translation>İzin verilmiyor:</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>Seçime filtre tarafından izin verilmiyor</translation>
     </message>
   </context>
   <context>
@@ -5386,11 +5399,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Panels</source>
-      <translation type="unfinished">Panels</translation>
+      <translation>Panels</translation>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation type="unfinished">List of available dock panels</translation>
+      <translation>Kullanılabilir rıhtım panelleri listesi</translation>
     </message>
   </context>
   <context>
@@ -5499,15 +5512,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD FAQ</source>
-      <translation type="unfinished">FreeCAD FAQ</translation>
+      <translation>FreeCAD Hakkında SSS</translation>
     </message>
     <message>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+      <translation>Sıkça sorulan sorular FreeCAD Web sitesinde</translation>
     </message>
     <message>
       <source>Frequently Asked Questions</source>
-      <translation type="unfinished">Frequently Asked Questions</translation>
+      <translation>Sıkça Sorulan Sorular</translation>
     </message>
   </context>
   <context>
@@ -5518,15 +5531,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD Forum</source>
-      <translation type="unfinished">FreeCAD Forum</translation>
+      <translation>FreeCAD Forum</translation>
     </message>
     <message>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+      <translation>Diğer kullanıcılardan yardım bulabileceğiniz FreeCAD forum</translation>
     </message>
     <message>
       <source>The FreeCAD Forum</source>
-      <translation type="unfinished">The FreeCAD Forum</translation>
+      <translation>FreeCAD Forum</translation>
     </message>
   </context>
   <context>
@@ -5537,15 +5550,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Python scripting documentation</source>
-      <translation type="unfinished">Python scripting documentation</translation>
+      <translation>Python komut dosyası belgeleri</translation>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+      <translation>Python belgelerine FreeCAD Web sitesinde komut dosyası oluşturma</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
-      <translation type="unfinished">PowerUsers documentation</translation>
+      <translation>PowerUsers belgeleri</translation>
     </message>
   </context>
   <context>
@@ -5556,11 +5569,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Users documentation</source>
-      <translation type="unfinished">Users documentation</translation>
+      <translation>Kullanıcı belgeleri</translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+      <translation>FreeCAD Web sitesinde kullanıcılar için belgeler</translation>
     </message>
   </context>
   <context>
@@ -5601,11 +5614,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Grup oluştur</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Nesneleri sipariş vermek için yeni bir grup oluşturmak</translation>
     </message>
   </context>
   <context>
@@ -5684,7 +5697,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Step into</source>
-      <translation type="unfinished">Step into</translation>
+      <translation>Prosedürün içine gir</translation>
     </message>
   </context>
   <context>
@@ -5793,7 +5806,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Adsız</translation>
     </message>
   </context>
   <context>
@@ -5846,11 +5859,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cannot open file</source>
-      <translation type="unfinished">Cannot open file</translation>
+      <translation>Dosya açılamadı</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
-      <translation type="unfinished">Loading the file %1 is not supported</translation>
+      <translation>Büyük boyutlu dosya yükleme desteklenmiyor</translation>
     </message>
   </context>
   <context>
@@ -5861,11 +5874,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Parça oluştur</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Yeni bir parça oluşturma ve aktif hale getirme</translation>
     </message>
   </context>
   <context>
@@ -6071,11 +6084,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Revert</source>
-      <translation type="unfinished">Revert</translation>
+      <translation>Geri al</translation>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
-      <translation type="unfinished">Reverts to the saved version of this file</translation>
+      <translation>Bu dosya kaydedilmiş sürümüne geri döner</translation>
     </message>
   </context>
   <context>
@@ -6116,11 +6129,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation type="unfinished">Save a &amp;Copy...</translation>
+      <translation>Kaydet &amp; Kopyala...</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
-      <translation type="unfinished">Save a copy of the active document under a new file name</translation>
+      <translation>Etkin belgeyi yeni bir dosya adıyla kaydet</translation>
     </message>
   </context>
   <context>
@@ -6161,11 +6174,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation type="unfinished">Select visible objects</translation>
+      <translation>Tüm görünür nesneler</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation type="unfinished">Select visible objects in the active document</translation>
+      <translation>Aktif dökümandaki bir nesneyi dışa çıkart</translation>
     </message>
   </context>
   <context>
@@ -6386,7 +6399,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation type="unfinished">Transform the selected object in the 3d view</translation>
+      <translation>Seçili nesneyi 3d görünümde dönüştürme</translation>
     </message>
   </context>
   <context>
@@ -6427,11 +6440,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation type="unfinished">&amp;Units calculator...</translation>
+      <translation>&amp;Birimleri hesap makinesi...</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation type="unfinished">Start the units calculator</translation>
+      <translation>Birimler hesap makinesini başlat</translation>
     </message>
   </context>
   <context>
@@ -6457,11 +6470,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Axonometric</source>
-      <translation type="unfinished">Axonometric</translation>
+      <translation>Aksonometrik</translation>
     </message>
     <message>
       <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
+      <translation>Axometric görünüme ayarla</translation>
     </message>
   </context>
   <context>
@@ -6490,7 +6503,7 @@ Be aware the point where you click matters.</source>
       <translation>Yeni görünüm oluştur</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
+      <source>Creates a new view window for the active document</source>
       <translation>Etkin belge için yeni bir görünüm penceresi oluşturur</translation>
     </message>
   </context>
@@ -6667,11 +6680,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Stereo red/cyan</source>
-      <translation type="unfinished">Stereo red/cyan</translation>
+      <translation>Stereo Kırmızı/Yeşil</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+      <translation>Stereo görünümü kırmızı/yeşil'e çevir</translation>
     </message>
   </context>
   <context>
@@ -6772,11 +6785,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD-VR</source>
-      <translation type="unfinished">FreeCAD-VR</translation>
+      <translation>FreeCAD-VR</translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
+      <translation>FreeCAD 3D Penceresini bir Oculus Riftine uzatın</translation>
     </message>
   </context>
   <context>
@@ -6847,7 +6860,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Ana pencereyi tam ekran modunda göster</translation>
     </message>
   </context>
   <context>
@@ -6992,7 +7005,7 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>Object dependencies</source>
-      <translation type="unfinished">Object dependencies</translation>
+      <translation>Nesne bağımlılıkları</translation>
     </message>
     <message>
       <source>The following, referencing objects might break.
@@ -7000,9 +7013,9 @@ Be aware the point where you click matters.</source>
 Are you sure you want to continue?
 
 </source>
-      <translation type="unfinished">The following, referencing objects might break.
+      <translation>Aşağıdakiler, nesneleri referans alarak kopabilir.
 
-Are you sure you want to continue?
+Devam etmek istediğine emin misin?
 
 </translation>
     </message>
@@ -7027,19 +7040,19 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Flat lines</source>
-      <translation type="unfinished">Flat lines</translation>
+      <translation>Düz çizgiler</translation>
     </message>
     <message>
       <source>Flat lines mode</source>
-      <translation type="unfinished">Flat lines mode</translation>
+      <translation>Düz çizgiler modu</translation>
     </message>
     <message>
       <source>Shaded</source>
-      <translation type="unfinished">Shaded</translation>
+      <translation>Gölgeli</translation>
     </message>
     <message>
       <source>Shaded mode</source>
-      <translation type="unfinished">Shaded mode</translation>
+      <translation>Gölgeli modu</translation>
     </message>
     <message>
       <source>Points</source>
@@ -7047,36 +7060,36 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Points mode</source>
-      <translation type="unfinished">Points mode</translation>
+      <translation>Nokta Modu</translation>
     </message>
     <message>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>Gizli Dosyalar</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>Gizli çizgi modu</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Gölgelendirme yok</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Gölgeleme modu yok</translation>
     </message>
   </context>
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
       <source>Object dependencies</source>
-      <translation type="unfinished">Object dependencies</translation>
+      <translation>Nesne bağımlılıkları</translation>
     </message>
     <message>
       <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-      <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+      <translation>Seçilen nesnelerin seçilmeyen nesnelere bağımlılıkları vardır.
+Onları çoğaltmak mı istiyorsun?</translation>
     </message>
   </context>
   <context>
@@ -7097,15 +7110,15 @@ Do you want to duplicate them, too?</translation>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation type="unfinished">This will discard all the changes since last file save.</translation>
+      <translation>Bu son dosya kaydettikten sonra yapılan tüm değişiklikleri iptal edecektir.</translation>
     </message>
     <message>
       <source>Revert document</source>
-      <translation type="unfinished">Revert document</translation>
+      <translation>Belgeyi geri al</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
-      <translation type="unfinished">Do you want to continue?</translation>
+      <translation>Devam etmek istiyor musunuz?</translation>
     </message>
   </context>
   <context>

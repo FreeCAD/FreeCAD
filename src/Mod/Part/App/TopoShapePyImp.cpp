@@ -40,6 +40,7 @@
 # include <BRepExtrema_ShapeProximity.hxx>
 #endif
 # include <BRepExtrema_SupportType.hxx>
+# include <BRepBndLib.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
@@ -910,11 +911,12 @@ PyObject*  TopoShapePy::common(PyObject *args)
 PyObject*  TopoShapePy::section(PyObject *args)
 {
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
+    PyObject *approx = Py_False;
+    if (PyArg_ParseTuple(args, "O!|O!", &(TopoShapePy::Type), &pcObj, &(PyBool_Type), &approx)) {
         TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         try {
             // Let's call algorithm computing a section operation:
-            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape);
+            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(secShape));
         }
         catch (Standard_Failure& e) {
@@ -930,11 +932,11 @@ PyObject*  TopoShapePy::section(PyObject *args)
 
     PyErr_Clear();
     double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O!d", &(TopoShapePy::Type), &pcObj, &tolerance)) {
+    if (PyArg_ParseTuple(args, "O!d|O!", &(TopoShapePy::Type), &pcObj, &tolerance, &(PyBool_Type), &approx)) {
         std::vector<TopoDS_Shape> shapeVec;
         shapeVec.push_back(static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape());
         try {
-            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance);
+            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(sectionShape));
         }
         catch (Standard_Failure& e) {
@@ -948,7 +950,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    if (PyArg_ParseTuple(args, "O|dO!", &pcObj, &tolerance, &(PyBool_Type), &approx)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -962,7 +964,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
            }
         }
         try {
-            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance);
+            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
             return new TopoShapePy(new TopoShape(multiSectionShape));
         }
         catch (Standard_Failure& e) {
@@ -2608,6 +2610,43 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         return 0;
     }
     return Py_BuildValue("dOO", minDist, solnPts,solnGeom);
+}
+
+PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
+{
+    PyObject* useT = Py_True;
+    PyObject* useS = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &PyBool_Type, &useT, &useS))
+        return 0;
+
+    try {
+#if OCC_VERSION_HEX >= 0x070200
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        Bnd_Box bounds;
+        BRepBndLib::AddOptimal(shape, bounds,
+                               PyObject_IsTrue(useT) ? Standard_True : Standard_False,
+                               PyObject_IsTrue(useS) ? Standard_True : Standard_False);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        Base::BoundBox3d box;
+        box.MinX = xMin;
+        box.MaxX = xMax;
+        box.MinY = yMin;
+        box.MaxY = yMax;
+        box.MinZ = zMin;
+        box.MaxZ = zMax;
+
+        Py::BoundingBox pybox(box);
+        return Py::new_reference_to(pybox);
+#else
+        throw Py::RuntimeError("Need OCCT 7.2.0 or higher");
+#endif
+    }
+    catch (const Standard_Failure& e) {
+        throw Py::RuntimeError(e.GetMessageString());
+    }
 }
 
 // End of Methods, Start of Attributes

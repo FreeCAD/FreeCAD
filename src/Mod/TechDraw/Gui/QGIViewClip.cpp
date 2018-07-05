@@ -23,22 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QString>
-#include <QTextOption>
-#include <sstream>
 #include <algorithm>    // std::find
+#include <QGraphicsScene>
 #endif
-
-#include <qmath.h>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -90,7 +77,8 @@ void QGIViewClip::updateView(bool update)
         viewClip->isTouched() ||
         viewClip->Height.isTouched() ||
         viewClip->Width.isTouched() ||
-        viewClip->ShowFrame.isTouched()) {
+        viewClip->ShowFrame.isTouched() ||
+        viewClip->Views.isTouched() ) {
 
         draw();
     }

@@ -51,12 +51,13 @@ else:
 #  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
-# presets
-Roles = ["Undefined","Furniture", "Hydro Equipment", "Electric Equipment"]
-
 
 def makeEquipment(baseobj=None,placement=None,name="Equipment"):
+
     "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Equipment(obj)
     if baseobj:
@@ -74,6 +75,7 @@ def makeEquipment(baseobj=None,placement=None,name="Equipment"):
     return obj
 
 def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largestonly=False):
+
     """createMeshView(obj,[direction,outeronly,largestonly]): creates a flat shape that is the
     projection of the given mesh object in the given direction (default = on the XY plane). If
     outeronly is True, only the outer contour is taken into consideration, discarding the inner
@@ -162,17 +164,22 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
 
 
 class _CommandEquipment:
+
     "the Arch Equipment command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Equipment',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
                 'Accel': "E, Q",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         s = FreeCADGui.Selection.getSelection()
         if not s:
             FreeCAD.Console.PrintError(translate("Arch","You must select a base shape object and optionally a mesh object"))
@@ -213,16 +220,21 @@ class _CommandEquipment:
 
 
 class _Command3Views:
+
     "the Arch 3Views command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_3Views',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_3Views","3 views from mesh"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_3Views","Creates 3 views (top, front, side) from a mesh-based object")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         s = FreeCADGui.Selection.getSelection()
         if len(s) != 1:
             FreeCAD.Console.PrintError(translate("Arch","You must select exactly one base object"))
@@ -257,23 +269,41 @@ class _Command3Views:
 
 
 class _Equipment(ArchComponent.Component):
+
     "The Equipment object"
+
     def __init__(self,obj):
+
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyString","Model","Arch",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
-        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
-        obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
-        obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
-        obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
-        self.Type = "Equipment"
-        obj.Role = Roles
-        obj.Role = "Furniture"
         obj.Proxy = self
+        self.setProperties(obj)
+        obj.IfcRole = "Furniture"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Model" in pl:
+            obj.addProperty("App::PropertyString","Model","Equipment",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
+        if not "ProductURL" in pl:
+            obj.addProperty("App::PropertyString","ProductURL","Equipment",QT_TRANSLATE_NOOP("App::Property","The URL of the product page of this equipment"))
+        if not "StandardCode" in pl:
+            obj.addProperty("App::PropertyString","StandardCode","Equipment",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
+        if not "SnapPoints" in pl:
+            obj.addProperty("App::PropertyVectorList","SnapPoints","Equipment",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
+        if not "EquipmentPower" in pl:
+            obj.addProperty("App::PropertyFloat","EquipmentPower","Equipment",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
+        self.Type = "Equipment"
+
+    def onDocumentRestored(self,obj):
+
+        ArchComponent.Component.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def onChanged(self,obj,prop):
+
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -295,12 +325,15 @@ class _Equipment(ArchComponent.Component):
 
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
+
     "A View Provider for the Equipment object"
 
     def __init__(self,vobj):
+
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):
+
         import Arch_rc
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
@@ -309,6 +342,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Equipment_Tree.svg"
 
     def attach(self, vobj):
+
         self.Object = vobj.Object
         from pivy import coin
         sep = coin.SoSeparator()
@@ -321,8 +355,9 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         rn = vobj.RootNode
         rn.addChild(sep)
         ArchComponent.ViewProviderComponent.attach(self,vobj)
-        
+
     def updateData(self, obj, prop):
+
         if prop == "SnapPoints":
             if obj.SnapPoints:
                 self.coords.point.setNum(len(obj.SnapPoints))

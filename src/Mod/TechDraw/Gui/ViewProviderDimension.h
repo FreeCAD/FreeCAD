@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
+#include <App/PropertyUnits.h>
+
 #include "ViewProviderDrawingView.h"
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
@@ -42,6 +44,11 @@ public:
     /// destructor
     virtual ~ViewProviderDimension();
 
+    App::PropertyFont     Font;
+    App::PropertyLength   Fontsize;
+    App::PropertyFloat    LineWidth;
+    App::PropertyColor    Color;
+
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -49,6 +56,7 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property* p);
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 };

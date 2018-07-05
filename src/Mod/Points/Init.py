@@ -28,10 +28,5 @@
 
 
 # Append the open handler
-FreeCAD.addImportType("Point formats (*.asc)","Points")
-FreeCAD.addImportType("PLY points (*.ply)","Points")
-FreeCAD.addImportType("PCD points (*.pcd)","Points")
-
-FreeCAD.addExportType("Point formats (*.asc)","Points")
-FreeCAD.addExportType("PLY points (*.ply)","Points")
-FreeCAD.addExportType("PCD points (*.pcd)","Points")
+FreeCAD.addImportType("Point formats (*.asc *.pcd *.ply)","Points")
+FreeCAD.addExportType("Point formats (*.asc *.pcd *.ply)","Points")

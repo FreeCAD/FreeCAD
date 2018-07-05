@@ -164,9 +164,11 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
             if (c.IsClosed()) {
                 // Edge is a circle or a circular arc (other types are not allowed for drafting)
-                neutralPlane = gp_Pln(p1, c.Circle().Axis().Direction());
-                found = true;
-                break;
+                if (c.GetType() == GeomAbs_Circle) {
+                    neutralPlane = gp_Pln(p1, c.Circle().Axis().Direction());
+                    found = true;
+                    break;
+                }
             } else {
                 // Edge is linear
                 // Find midpoint of edge and create auxiliary plane through midpoint normal to edge

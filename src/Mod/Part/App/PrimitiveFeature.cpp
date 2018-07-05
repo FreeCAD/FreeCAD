@@ -169,7 +169,7 @@ void Primitive::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

@@ -108,6 +108,34 @@ def get_femelement_table(femmesh):
     return femelement_table
 
 
+def get_femelement_volumes_table(femmesh):
+    """ get_femelement_volumes_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    for i in femmesh.Volumes:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
+def get_femelement_faces_table(femmesh, faces_only=None):
+    """ get_femelement_faces_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    if not faces_only:
+        faces_only = femmesh.FacesOnly
+    for i in faces_only:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
+def get_femelement_edges_table(femmesh, edges_only=None):
+    """ get_femelement_edges_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    if not edges_only:
+        edges_only = femmesh.EdgesOnly
+    for i in edges_only:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
 def get_femnodes_ele_table(femnodes_mesh, femelement_table):
     '''the femnodes_ele_table contains for each node its membership in elements
     {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
@@ -129,7 +157,7 @@ def get_femnodes_ele_table(femnodes_mesh, femelement_table):
         for ele_node in ele_list:
             femnodes_ele_table[ele_node].append([ele, pos])
             pos = pos << 1
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     # print('femnodes_ele_table: ', femnodes_ele_table)
     return femnodes_ele_table
 
@@ -146,7 +174,7 @@ def get_copy_of_empty_femelement_table(femelement_table):
 def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     '''Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
     {eleID : [lenEleNodes, binary_position]}
-    see forumpost for a ver good explanation whats really happening
+    see forum post for a very good explanation of what's really happening
     http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
     The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
     the information we are searching for:
@@ -154,7 +182,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     '''
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     print('len node_set: ' + str(len(node_set)))
     # print('node_set: ', node_set)
     bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
@@ -165,7 +193,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     for node in node_set:
         for nList in femnodes_ele_table[node]:
             bit_pattern_dict[nList[0]][1] += nList[1]
-    print('len bit_pattern_dict:' + str(len(bit_pattern_dict)))
+    print('len bit_pattern_dict: ' + str(len(bit_pattern_dict)))
     # print('bit_pattern_dict: ', bit_pattern_dict)
     return bit_pattern_dict
 
@@ -242,7 +270,7 @@ def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_l
         15: 32767,
         20: 1048575}
     # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
     # search
     ele_list = []  # The ele_list contains the result of the search.
@@ -450,6 +478,10 @@ def get_beam_normal(beam_direction, defined_angle):
     else:
         temp_valz = 0
 
+    Dot_product_check_x = None
+    Dot_product_check_y = None
+    Dot_product_check_z = None
+    Dot_product_check_nt = None
     if vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] == 0:
         normal_n = [temp_valx, nx, ny]
         Dot_product_check_x = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
@@ -578,7 +610,7 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             ratio_refedge_lengths = sum_node_lengths / ref_edge.Length
             if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
                 FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                print('  sum_node_lengths:', sum_node_lengths)
+                print('  sum_node_lengths: ', sum_node_lengths)
                 print('  refedge_length:  ', ref_edge.Length)
                 bad_refedge = ref_edge
             sum_ref_edge_node_length += sum_node_lengths
@@ -713,7 +745,7 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             ratio_refface_areas = sum_node_areas / ref_face.Area
             if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
                 FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                print('  sum_node_areas:', sum_node_areas)
+                print('  sum_node_areas: ', sum_node_areas)
                 print('  ref_face_area:  ', ref_face.Area)
             sum_ref_face_node_area += sum_node_areas
 
@@ -884,7 +916,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             index = femelement_table[veID].index(n)
             # print(index)
             face_nodenumber_table[veID].append(index + 1)  # local node number = index + 1
-        # print('VolElement:', veID)
+        # print('VolElement: ', veID)
         # print('  --> ', femelement_table[veID])
         # print('  --> ', face_table[veID])
         # print('  --> ', face_nodenumber_table[veID])
@@ -997,7 +1029,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
     mesh_face_area = 0
     for mf in face_table:
         femmesh_facetype = len(face_table[mf])
-        # nodes in face_table need to be in the right node order for the following calcualtions
+        # nodes in face_table need to be in the right node order for the following calculations
         if femmesh_facetype == 3:  # 3 node femmesh face triangle
             # corner_node_area = mesh_face_area / 3.0
             #      P3
@@ -1384,7 +1416,7 @@ def is_same_geometry(shape1, shape2):
     # the vertexes and the CenterOfMass are compared
     # it is a hack, but I do not know any better !
     # check of Volume and Area before starting with the vertices could be added
-    # BoundBox is possible too, but is BB calcualtions robust?!
+    # BoundBox is possible too, but is BB calculations robust?!
     # print(shape1)
     # print(shape2)
     same_Vertexes = 0
@@ -1417,7 +1449,12 @@ def is_same_geometry(shape1, shape2):
 
 def get_element(part, element):
     if element.startswith('Solid'):
-        return part.Shape.Solids[int(element.lstrip('Solid')) - 1]  # Solid
+        index = int(element.lstrip('Solid')) - 1
+        if index >= len(part.Shape.Solids):
+            FreeCAD.Console.PrintError('Index out of range. This Solid does not exist in the Shape!\n')
+            return None
+        else:
+            return part.Shape.Solids[index]  # Solid
     else:
         return part.Shape.getElement(element)  # Face, Edge, Vertex
 

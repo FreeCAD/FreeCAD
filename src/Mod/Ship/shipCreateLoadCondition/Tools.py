@@ -24,7 +24,7 @@
 
 import FreeCAD as App
 import Spreadsheet
-import Units
+from FreeCAD import Units
 
 
 READ_ONLY_FOREGROUND = (0.5, 0.5, 0.5)

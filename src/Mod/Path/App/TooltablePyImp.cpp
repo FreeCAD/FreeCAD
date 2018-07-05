@@ -223,7 +223,7 @@ PyObject* ToolPy::copy(PyObject * args)
     if (PyArg_ParseTuple(args, "")) {
         return new ToolPy(new Path::Tool(*getToolPtr()));
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::setFromTemplate(PyObject * args)
@@ -276,7 +276,7 @@ PyObject* ToolPy::templateAttrs(PyObject * args)
         PyDict_SetItemString(dict, "cuttingEdgeHeight", PyFloat_FromDouble(getToolPtr()->CuttingEdgeHeight));
         return dict;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::getToolTypes(PyObject * args)
@@ -290,7 +290,7 @@ PyObject* ToolPy::getToolTypes(PyObject * args)
         }
         return list;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* ToolPy::getToolMaterials(PyObject * args)
@@ -304,7 +304,7 @@ PyObject* ToolPy::getToolMaterials(PyObject * args)
         }
         return list;
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 
@@ -391,15 +391,21 @@ void TooltablePy::setTools(Py::Dict arg)
             } else {
               PyErr_Clear();
               Path::Tool *tool = new Path::Tool;
-              Path::ToolPy pyTool(tool);
-              if (!pyTool.setFromTemplate(value)) {
-                PyErr_Print();
-                throw Py::Exception("something went wrong");
+              // The 'pyTool' object must be created on the heap otherwise Python
+              // will fail to properly track the reference counts and aborts
+              // in debug mode.
+              Path::ToolPy* pyTool = new Path::ToolPy(tool);
+              PyObject* success = pyTool->setFromTemplate(value);
+              if (!success) {
+                Py_DECREF(pyTool);
+                throw Py::Exception();
               }
               getTooltablePtr()->setTool(*tool, ckey);
+              Py_DECREF(pyTool);
+              Py_DECREF(success);
             }
         } else {
-            throw Py::Exception("The dictionary can only contain int:tool pairs");
+            throw Py::TypeError("The dictionary can only contain int:tool pairs");
         }
     }
 }
@@ -411,7 +417,7 @@ PyObject* TooltablePy::copy(PyObject * args)
     if (PyArg_ParseTuple(args, "")) {
         return new TooltablePy(new Path::Tooltable(*getTooltablePtr()));
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* TooltablePy::addTools(PyObject * args)
@@ -515,9 +521,13 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
     (void)args;
     PyObject *dict = PyDict_New();
     for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
-        Path::ToolPy tool(new Path::Tool(*i->second));
-        PyObject *attrs = tool.templateAttrs(0);
+        // The 'tool' object must be created on the heap otherwise Python
+        // will fail to properly track the reference counts and aborts
+        // in debug mode.
+        Path::ToolPy* tool = new Path::ToolPy(new Path::Tool(*i->second));
+        PyObject *attrs = tool->templateAttrs(0);
         PyDict_SetItem(dict, PYINT_FROMLONG(i->first), attrs);
+        Py_DECREF(tool);
     }
     return dict;
 }

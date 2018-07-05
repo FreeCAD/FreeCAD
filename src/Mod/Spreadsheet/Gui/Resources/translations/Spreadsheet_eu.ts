@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horizontala</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Bertikala</translation>
     </message>
     <message>
       <source>Top</source>
@@ -337,6 +337,22 @@
     <message>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Ezarri gelaxk(ar)en aurreko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Kalkulu-orriko gelaxk(ar)en aurreko planoaren kolorea ezartzen du</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Ezarri gelaxk(ar)en atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
     </message>
   </context>
   <context>

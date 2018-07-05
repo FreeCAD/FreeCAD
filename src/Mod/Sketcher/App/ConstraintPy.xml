@@ -16,6 +16,12 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>With this object you can handle sketches</UserDocu>
     </Documentation>
+    <Attribute Name="Type" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Get the constraint type</UserDocu>
+        </Documentation>
+        <Parameter Name="Type" Type="String"/>
+    </Attribute>
     <Attribute Name="First" ReadOnly="false">
       <Documentation>
         <UserDocu>First geometry index the Constraint refers to</UserDocu>

@@ -520,7 +520,7 @@ private:
             keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
-            // That stuff is exporting a list of selected oject into FreeCAD Tree
+            // That stuff is exporting a list of selected objects into FreeCAD Tree
             std::vector <TDF_Label> hierarchical_label;
             std::vector <TopLoc_Location> hierarchical_loc;
             std::vector <App::DocumentObject*> hierarchical_part;
@@ -534,7 +534,6 @@ private:
             }
 
             // Free Shapes must have absolute placement and not explicit
-            // Free Shapes must have absolute placement and not explicit
             std::vector <TDF_Label> FreeLabels;
             std::vector <int> part_id;
             ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
@@ -544,18 +543,19 @@ private:
             get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
             ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
+#if OCC_VERSION_HEX >= 0x070200
+            // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+            XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+#endif
+
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
-                //Interface_Static::SetCVal("write.step.schema", "AP214IS");
-                bool optionScheme_214;
-                bool optionScheme_203;
-                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-                optionScheme_214 = hGrp_stp->GetBool("Scheme_214",true);
-                optionScheme_203 = hGrp_stp->GetBool("Scheme_203",false);
-                if (optionScheme_214)
-                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
-                if (optionScheme_203)
+                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
+                std::string scheme = hGrp_stp->GetASCII("Scheme", "AP214IS");
+                if (scheme == "AP203")
                     Interface_Static::SetCVal("write.step.schema", "AP203");
+                else if (scheme == "AP214IS")
+                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
 
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);

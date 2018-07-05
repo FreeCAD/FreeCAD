@@ -30,6 +30,8 @@
 
 #include "DrawView.h"
 
+class TopoDS_Shape;
+
 namespace Measure {
 class Measurement;
 }
@@ -42,7 +44,22 @@ struct DimRef {
     std::string   sub;
 };
 
-class DrawViewPart;
+typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
+
+struct anglePoints {
+    pointPair ends;
+    Base::Vector3d vertex;
+};
+
+struct arcPoints {
+    bool isArc;
+    double radius;
+    Base::Vector3d center;
+    pointPair onCurve;
+    pointPair arcEnds;
+    Base::Vector3d midArc;
+    bool arcCW;
+};
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
@@ -57,13 +74,8 @@ public:
     App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
     App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
-
-    /// Properties for Visualisation
-    App::PropertyFont  Font;
-    App::PropertyFloat   Fontsize;
-    App::PropertyString  FormatSpec;
-    App::PropertyFloat   LineWidth;
-    //App::PropertyBool    CentreLines;
+    App::PropertyString            FormatSpec;
+    App::PropertyBool              Arbitrary;
 
     short mustExecute() const;
     bool has2DReferences(void) const;
@@ -82,7 +94,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void);
 
-    virtual std::string getFormatedValue();
+    virtual std::string getFormatedValue(bool obtuse = false);
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
@@ -92,6 +104,10 @@ public:
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     bool checkReferences2D(void) const;
+    pointPair getLinearPoints(void) {return m_linearPoints; }
+    arcPoints getArcPoints(void) {return m_arcPoints; }
+    anglePoints getAnglePoints(void) {return m_anglePoints; }
+    bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
 protected:
     void onChanged(const App::Property* prop);
@@ -100,6 +116,10 @@ protected:
     bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
+    pointPair getPointsOneEdge();
+    pointPair getPointsTwoEdges();
+    pointPair getPointsTwoVerts();
+    pointPair getPointsEdgeVert();
 
 protected:
     Measure::Measurement *measurement;
@@ -107,10 +127,18 @@ protected:
                      Base::Vector2d e1,
                      Base::Vector2d s2,
                      Base::Vector2d e2) const;
+    pointPair closestPoints(TopoDS_Shape s1,
+                            TopoDS_Shape s2) const;
+
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
     void dumpRefs2D(char* text) const;
+    //Dimension "geometry"
+    pointPair   m_linearPoints;
+    arcPoints   m_arcPoints;
+    anglePoints m_anglePoints;
+    bool        m_hasGeometry;
 };
 
 } //namespace TechDraw

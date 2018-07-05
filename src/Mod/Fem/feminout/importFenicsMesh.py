@@ -150,6 +150,9 @@ def export(objectslist, fileString):
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         if fileExtension.lower() == '.xml':
+            FreeCAD.Console.PrintWarning("XML is not designed to save higher order elements.\n")
+            FreeCAD.Console.PrintWarning("Reducing order for second order mesh.\n")
+            FreeCAD.Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == '.xdmf':
             if importToolsFem.get_FemMeshObjectMeshGroups(obj) is not ():

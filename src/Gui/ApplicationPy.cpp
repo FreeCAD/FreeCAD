@@ -111,6 +111,13 @@ PyMethodDef Application::Methods[] = {
   {"getLocale",            (PyCFunction) Application::sGetLocale,     1,
    "getLocale() -> string\n\n"
    "Returns the locale currently used by FreeCAD"},
+  {"setLocale",            (PyCFunction) Application::sSetLocale,     1,
+   "getLocale(string) -> None\n\n"
+   "Sets the locale used by FreeCAD. You can set it by\n"
+   "top-level domain (e.g. \"de\") or the language name (e.g. \"German\")"},
+  {"supportedLocales", (PyCFunction) Application::sSupportedLocales,     1,
+   "supportedLocales() -> dict\n\n"
+   "Returns a dict of all supported languages/top-level domains"},
   {"createDialog",            (PyCFunction) Application::sCreateDialog,     1,
    "createDialog(string) -- Open a UI file"},
   {"addPreferencePage",       (PyCFunction) Application::sAddPreferencePage,1,
@@ -622,6 +629,42 @@ PyObject* Application::sGetLocale(PyObject * /*self*/, PyObject *args,PyObject *
 #else
     return PyString_FromString(locale.c_str());
 #endif
+}
+
+PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
+
+    std::string cname(name);
+    TStringMap map = Translator::instance()->supportedLocales();
+    map["English"] = "en";
+    for (const auto& it : map) {
+        if (it.first == cname || it.second == cname) {
+            Translator::instance()->activateLanguage(it.first.c_str());
+            break;
+        }
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sSupportedLocales(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    TStringMap map = Translator::instance()->supportedLocales();
+    Py::Dict dict;
+    dict.setItem(Py::String("English"), Py::String("en"));
+    for (const auto& it : map) {
+        Py::String key(it.first);
+        Py::String val(it.second);
+        dict.setItem(key, val);
+    }
+    return Py::new_reference_to(dict);
 }
 
 PyObject* Application::sCreateDialog(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

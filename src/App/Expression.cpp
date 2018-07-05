@@ -897,15 +897,12 @@ Expression * FunctionExpression::evalAggregate() const
                     throw Exception("Invalid property type for aggregate");
             } while (range.next());
         }
-        else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        else {
             std::unique_ptr<Expression> e(args[i]->eval());
             NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
 
             if (n)
                 c->collect(n->getQuantity());
-        }
-        else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
-            c->collect(static_cast<NumberExpression*>(args[i])->getQuantity());
         }
     }
 
@@ -988,7 +985,7 @@ Expression * FunctionExpression::eval() const
               ((s.ElectricCurrent % 2) == 0) &&
               ((s.ThermodynamicTemperature % 2) == 0) &&
               ((s.AmountOfSubstance % 2) == 0) &&
-              ((s.LuminoseIntensity % 2) == 0) &&
+              ((s.LuminousIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
             throw ExpressionError("All dimensions must be even to compute the square root.");
 
@@ -998,7 +995,7 @@ Expression * FunctionExpression::eval() const
                     s.ElectricCurrent / 2,
                     s.ThermodynamicTemperature / 2,
                     s.AmountOfSubstance / 2,
-                    s.LuminoseIntensity / 2,
+                    s.LuminousIntensity / 2,
                     s.Angle);
         break;
     }
@@ -1023,7 +1020,7 @@ Expression * FunctionExpression::eval() const
         if (!v2->getUnit().isEmpty())
             throw ExpressionError("Exponent is not allowed to have a unit.");
 
-        // Compute new unit for exponentation
+        // Compute new unit for exponentiation
         double exponent = v2->getValue();
         if (!v1->getUnit().isEmpty()) {
             if (exponent - boost::math::round(exponent) < 1e-9)
@@ -1589,7 +1586,17 @@ Expression *ConditionalExpression::simplify() const
 
 std::string ConditionalExpression::toString() const
 {
-    return condition->toString() + " ? " + trueExpr->toString() + " : " + falseExpr->toString();
+    std::string cstr = condition->toString();
+    std::string tstr = trueExpr->toString();
+    std::string fstr = falseExpr->toString();
+
+    if (trueExpr->priority() <= priority())
+        tstr = "(" + tstr + ")";
+
+    if (falseExpr->priority() <= priority())
+        fstr = "(" + fstr + ")";
+
+    return cstr + " ? " + tstr + " : " + fstr;
 }
 
 Expression *ConditionalExpression::copy() const
@@ -1599,7 +1606,7 @@ Expression *ConditionalExpression::copy() const
 
 int ConditionalExpression::priority() const
 {
-    return 0;
+    return 2;
 }
 
 void ConditionalExpression::getDeps(std::set<ObjectIdentifier> &props) const
@@ -1869,7 +1876,7 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
   * returned expression. If the parser fails for some reason, and exception is thrown.
   *
   * @param owner  The DocumentObject that will own the expression.
-  * @param buffer The sting buffer to parse.
+  * @param buffer The string buffer to parse.
   *
   * @returns A pointer to an expression.
   *

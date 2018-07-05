@@ -60,6 +60,7 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
+#if 0
 	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
     // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
 	if (body != NULL) {
@@ -73,6 +74,7 @@ bool ViewProvider::doubleClicked(void)
     } else {
         oldTip = NULL;
     }
+#endif
 
     try {
         std::string Msg("Edit ");
@@ -148,13 +150,17 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
+#if 0
         PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+#endif
         Gui::Control().closeDialog();
+#if 0
         if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
+#endif
         oldTip = NULL;
     }
     else {

@@ -49,6 +49,12 @@ currently unsupported: use, image
 import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
 
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
+
 try: import FreeCADGui
 except ImportError: gui = False
 else: gui = True
@@ -1117,7 +1123,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         cx = argsplit[1]
                                         cy = argsplit[2]
                                         m.move(Vector(cx,-cy,0))
-                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotaion
+                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotation
                                 if len(argsplit) >= 3:
                                         m.move(Vector(-cx,cy,0))
                         elif transformation == 'skewX':
@@ -1205,7 +1211,7 @@ def export(exportList,filename):
 
         svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
         if svg_export_style != 0 and svg_export_style != 1:
-            FreeCAD.Console.PrintMessage("unknown svg export style, switching to Translated\n")
+            FreeCAD.Console.PrintMessage(translate("Unknown SVG export style, switching to Translated")+"\n")
             svg_export_style = 0
 
         # finding sheet size

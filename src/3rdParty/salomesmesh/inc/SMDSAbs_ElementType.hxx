@@ -27,12 +27,10 @@
 #ifndef _SMDSAbs_ElementType_HeaderFile
 #define _SMDSAbs_ElementType_HeaderFile
 
-#include <cstddef>
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Type (node, edge, face or volume) of elements
 ///////////////////////////////////////////////////////////////////////////////
-enum SMDSAbs_ElementType : size_t
+enum SMDSAbs_ElementType
   {
     SMDSAbs_All,
     SMDSAbs_Node,
@@ -45,7 +43,7 @@ enum SMDSAbs_ElementType : size_t
   };
 
 /*! enumeration for element geometry type */
-enum SMDSAbs_GeometryType : size_t
+enum SMDSAbs_GeometryType
   {
     // 0D element
     SMDSGeom_POINT,
@@ -69,7 +67,7 @@ enum SMDSAbs_GeometryType : size_t
   };
 
 
-enum SMDSAbs_ElementOrder : size_t
+enum SMDSAbs_ElementOrder
 {
   ORDER_ANY,          /*! entities of any order */
   ORDER_LINEAR,       /*! entities of 1st order */
@@ -79,7 +77,7 @@ enum SMDSAbs_ElementOrder : size_t
 /*!
  * Enumeration of entity type used in mesh info array
  */
-enum SMDSAbs_EntityType : size_t
+enum SMDSAbs_EntityType
 {
   SMDSEntity_Node,
   SMDSEntity_0D,

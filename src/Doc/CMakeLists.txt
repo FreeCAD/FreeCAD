@@ -1,3 +1,33 @@
+
+configure_file(ThirdPartyLibraries.html
+    ${CMAKE_BINARY_DIR}/doc/ThirdPartyLibraries.html COPYONLY)
+
+
+
+if(BUILD_GUI)
+    FILE(GLOB QCH_FILES freecad.qch.part*)
+    list(SORT QCH_FILES)
+    set (DEST_FILE ${CMAKE_BINARY_DIR}/doc/freecad.qch)
+    foreach(SRC_FILE ${QCH_FILES})
+        if(${SRC_FILE} IS_NEWER_THAN ${DEST_FILE})
+            EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/catfiles.py
+                  --outputfile=${DEST_FILE} ${QCH_FILES}
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+            break()
+        endif()
+    endforeach()
+
+    configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/doc/freecad.qhc COPYONLY)
+endif(BUILD_GUI)
+
+INSTALL(FILES
+    freecad.qhc
+    ${CMAKE_BINARY_DIR}/doc/freecad.qch
+    ThirdPartyLibraries.html
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
 

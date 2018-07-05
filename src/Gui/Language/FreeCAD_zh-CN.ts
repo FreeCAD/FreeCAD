@@ -106,7 +106,7 @@
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>清除标注</translation>
+      <translation>清除测量</translation>
     </message>
   </context>
   <context>
@@ -125,10 +125,6 @@
     <message>
       <source>Spaceball Motion</source>
       <translation>三维鼠标动作</translation>
-    </message>
-    <message>
-      <source>Global Sensitivity:  </source>
-      <translation>全局敏感度:</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
@@ -162,6 +158,10 @@
       <source>Reverse</source>
       <translation>反转</translation>
     </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>全局敏感度:</translation>
+    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
@@ -175,7 +175,7 @@
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation>丢弃(&amp;D)</translation>
+      <translation>舍弃(&amp;D)</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 帮助文件未找到 (%2)。您可能需要安装 %1 文件包。</translation>
+      <translation>%1 未找到帮助文件 (%2)。您可能需要安装 %1 文件包。</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD能够在此皆因这些人的贡献：</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>授权许可</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>库</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>该软件使用开放源码组件, 其版权和其他专有权利属于各自的所有者:</translation>
     </message>
     <message>
       <source>License</source>
@@ -710,7 +725,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
       <source>Category</source>
-      <translation>类别</translation>
+      <translation>分类</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -833,7 +848,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; 改动将在你下一次加载工作台时生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; 改动将在您下一次加载工作台时生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -901,7 +916,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>重复命名</translation>
+      <translation>名称重复</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
@@ -1005,7 +1020,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>绘制模式:</translation>
+      <translation>图表模式:</translation>
     </message>
     <message>
       <source/>
@@ -1025,7 +1040,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>颜色出图:</translation>
+      <translation>彩色图表:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -1076,7 +1091,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Neon GNC</source>
-      <translation>霓虹GNC</translation>
+      <translation>Neon GNC</translation>
     </message>
     <message>
       <source>Neon PHC</source>
@@ -1100,7 +1115,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Ruby</source>
-      <translation>Ruby</translation>
+      <translation>红宝石</translation>
     </message>
     <message>
       <source>Satin</source>
@@ -1383,27 +1398,26 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>重命名宏文件</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>输入新的名称：</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>%1：已经存在</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>重命名失败</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>无法重命名为 "%1"。
+可能是文件权限错误？</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1494,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>漫射颜色:</translation>
+      <translation>散射颜色:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -1970,7 +1984,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation type="unfinished">Or&amp;thographic rendering</translation>
+      <translation>图像渲染</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
@@ -2134,8 +2148,8 @@ Specify another directory, please.</source>
       <translation>保存文件时同时保存缩略图到项目文件</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>重新保存文件时创建备份</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>保存文档时要保留的最大备份文件数</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2247,7 +2261,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>一个使用者可以找到更多有关授权说明的网址</translation>
     </message>
   </context>
   <context>
@@ -2314,7 +2328,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Current line highlight</source>
-      <translation>当前行亮显</translation>
+      <translation>当前行高亮显示</translation>
     </message>
   </context>
   <context>
@@ -2657,8 +2671,8 @@ Specify another directory, please.</source>
       <translation>选取半径 (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>设定在3D视图中选取物件的范围, 较大可以使得选取较为方便, 但同时也会使一些较小的特征无法被选取。</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>设置在3D 视图中选取元素的模糊范围。更大的价值选中物体更容易, 但会使一些小特征无法选中。</translation>
     </message>
   </context>
   <context>
@@ -2878,7 +2892,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Open containing folder</source>
-      <translation>打开包含的文件夹</translation>
+      <translation>打开所在文件夹</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
@@ -3344,10 +3358,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>组合视图</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>项目</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -4014,14 +4024,14 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>更改链接的对象</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>更改链接的对象</translation>
     </message>
   </context>
   <context>
@@ -4295,7 +4305,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>绘制模式:</translation>
+      <translation>图表模式:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -4355,7 +4365,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>基础对象的文本已更改。放弃更改并重新加载对象中的文本？</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -4985,7 +4995,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation>在关闭前要储存「%1」档嘛?</translation>
+      <translation>在关闭前要储存「%1」文档嘛?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -5038,6 +5048,10 @@ Be aware the point where you click matters.</source>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 不是空的，一并删除其相关内容吗？</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>导出失败</translation>
     </message>
   </context>
   <context>
@@ -5235,7 +5249,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>复制操作</translation>
+      <translation>复制</translation>
     </message>
   </context>
   <context>
@@ -5250,7 +5264,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>剪出</translation>
+      <translation>剪切</translation>
     </message>
   </context>
   <context>
@@ -5381,7 +5395,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Panels</source>
-      <translation type="unfinished">Panels</translation>
+      <translation>面板</translation>
     </message>
     <message>
       <source>List of available dock panels</source>
@@ -5596,11 +5610,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>创建组</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>创建用于排序对象的新组</translation>
     </message>
   </context>
   <context>
@@ -5860,7 +5874,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>创建新的可编辑实体</translation>
+      <translation>创建新的可编辑零件并激活</translation>
     </message>
   </context>
   <context>
@@ -5875,7 +5889,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Paste operation</source>
-      <translation>粘贴操作</translation>
+      <translation>粘贴</translation>
     </message>
   </context>
   <context>
@@ -6085,7 +6099,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save the active document</source>
-      <translation>保存当前文当</translation>
+      <translation>保存当前文档</translation>
     </message>
   </context>
   <context>
@@ -6485,8 +6499,8 @@ Be aware the point where you click matters.</source>
       <translation>创建新视图</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>为当前文档创建一个新的视图窗口</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>为活动文档创建新的视图窗口</translation>
     </message>
   </context>
   <context>
@@ -6842,7 +6856,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>全屏显示主窗口</translation>
     </message>
   </context>
   <context>
@@ -7044,11 +7058,11 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>隐藏线</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>隐藏线模式</translation>
     </message>
     <message>
       <source>No shading</source>
@@ -7089,7 +7103,7 @@ Do you want to duplicate them, too?</source>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation>这将放弃自上一次保存后的所有更改</translation>
+      <translation>这将会丢弃自上次保存文档后所有的变更</translation>
     </message>
     <message>
       <source>Revert document</source>

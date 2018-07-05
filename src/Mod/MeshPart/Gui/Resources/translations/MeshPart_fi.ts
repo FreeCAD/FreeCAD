@@ -147,12 +147,12 @@
     <message>
       <location line="+26"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Jatkuvuus</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Käyrän enimmäiskulma</translation>
     </message>
     <message>
       <location line="+24"/>

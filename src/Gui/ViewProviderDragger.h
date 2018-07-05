@@ -37,7 +37,7 @@ class View3DInventorViewer;
 class SoFCCSysDragger;
 
 /**
- * The base class for all view providers modifiying the placement
+ * The base class for all view providers modifying the placement
  * of a geometric feature.
  * @author Werner Mayer
  */

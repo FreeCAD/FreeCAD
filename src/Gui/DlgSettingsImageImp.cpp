@@ -99,7 +99,7 @@ void DlgSettingsImageImp::setImageSize( const QSize& s )
 }
 
 /**
- * Returns the currenty set image size.
+ * Returns the currently set image size.
  */
 QSize DlgSettingsImageImp::imageSize() const
 {
@@ -137,6 +137,15 @@ QString DlgSettingsImageImp::comment() const
 int DlgSettingsImageImp::backgroundType() const
 {
     return comboBackground->currentIndex();
+}
+
+/**
+ * Sets the image size to (\a w, \a h).
+ */
+void DlgSettingsImageImp::setBackgroundType(int t)
+{
+    if ( t < comboBackground->count() )
+        comboBackground->setCurrentIndex(t);
 }
 
 bool DlgSettingsImageImp::addWatermark() const

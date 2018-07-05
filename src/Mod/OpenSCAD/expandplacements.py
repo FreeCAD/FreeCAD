@@ -25,8 +25,8 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This Script includes python functions to  shift all placements down the
-feature tree to the most baisc objects
+This Script includes python functions to shift all placements down the
+feature tree to the most basic objects
 '''
 
 import FreeCAD
@@ -78,7 +78,7 @@ def expandplacementsmatrix(obj,matrix):
                 if likeprimitive(outobj.Base,True): #child of is like primtitive
                     outobj.Matrix = newmatrix
                     outobj.Base.Placement=FreeCAD.Placement()
-                else: #remove the MatrixTranformation
+                else: #remove the MatrixTransformation
                     plainobj=outobj.Base
                     for parent in outobj.InList:
                         replaceobj.replaceobj(parent,outobj,plainobj)

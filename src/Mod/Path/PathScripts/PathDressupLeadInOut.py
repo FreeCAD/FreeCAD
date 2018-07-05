@@ -28,12 +28,12 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
 from PySide import QtCore
-from PathScripts.PathGeom import PathGeom
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
@@ -93,7 +93,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
         if obj.Length < 0:
-            PathLog.error(translate("Length/Radius positiv not Null\n"))
+            PathLog.error(translate("Length/Radius positive not Null")+"\n")
             obj.Length = 0.1
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
         obj.Path = self.generateLeadInOutCurve(obj)
@@ -349,11 +349,11 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object\n"))
+            PathLog.error(translate("Please select one path object")+"\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path\n"))
+            PathLog.error(translate("The selected object is not a path")+"\n")
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>FreeCAD Start Center</source>
-      <translation>FreeCAD kezdés központ</translation>
+      <translation>FreeCAD indító központ</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD honlap</translation>
+      <translation>FreeCAD Honlap</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
       <source>Working with Meshes</source>
-      <translation>Munka hálótesttel</translation>
+      <translation>Munka hálótestekkel</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>Work with Meshes</source>
-      <translation>Munka hálótesttel</translation>
+      <translation>Munka hálótestekkel</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Latest videos</source>
-      <translation>Legújabb videó</translation>
+      <translation>Legfrissebb videó</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>A FreeCAD bemutató-blog</translation>
+      <translation>A  FreeCAD bemutató-blog</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
@@ -226,12 +226,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>A FreeCAD csatlakozó részekre osztott a munkafelületeken, amelyek kifejezetten a megfelelő feladathoz lehet alkalmazni. A listában lévő egyik munkafelületen kezdhet, vagy a teljes munkapadon, mely betölti a különböző mukafelületeken legtöbbet használt eszközöket. Kattintson a FreeCAD honlapján lévő munkafelületek további információiért.</translation>
+      <translation>A FreeCAD csatlakozó részekre osztott a munkafelületeken, amelyek kifejezetten a megfelelő feladathoz lehet alkalmazni. A listában lévő egyik munkafelületen kezdhet, vagy a teljes munkapadon, mely betölti a különböző munkafelületeken legtöbbet használt eszközöket. Kattintson a FreeCAD honlapján lévő munkafelületek további információiért.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
       <source>Ship Design</source>
-      <translation>Hajó tervezés</translation>
+      <translation>Hajó tervezése</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
       <source>Obtain a development version</source>
-      <translation>Szerezzen be egy fejlesztői változatot</translation>
+      <translation>Szerezzen be egy fejlesztői verziót</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>&lt;b&gt;Fejlesztői változatokat&lt;/b&gt; a közösség tagjai bocsátják rendelkezésre időről-időre, és általában a legújabb módosításokat tartalmazzák, de több valószínűséggel tartalmazhat hibákat.</translation>
+      <translation>&lt;b&gt;Fejlesztői verziókat&lt;/b&gt; a közösség tagjai bocsátják rendelkezésre időről-időre, és általában a legújabb módosításokat tartalmazzák, de több valószínűséggel tartalmazhat hibákat.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
       <source>FreeCAD Standard File</source>
-      <translation>FreeCAD Standard File</translation>
+      <translation>FreeCAD alapértelmezett fájl</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
@@ -342,6 +342,21 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Betölt egy Végeselemes módszerű 3D-s új példa megoldó analízist</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

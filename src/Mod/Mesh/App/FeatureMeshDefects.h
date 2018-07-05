@@ -248,7 +248,7 @@ public:
 };
 
 /**
- * The RemoveComponents class removes topologic indepentent components up to a certain size from the mesh data structure.
+ * The RemoveComponents class removes topologic independent components up to a certain size from the mesh data structure.
  * @author Werner Mayer
  */
 class MeshExport RemoveComponents : public Mesh::FixDefects

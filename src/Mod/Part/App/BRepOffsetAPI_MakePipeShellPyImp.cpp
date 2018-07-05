@@ -499,6 +499,31 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setForceApproxC1(PyObject *args)
 }
 
 
+PyObject* BRepOffsetAPI_MakePipeShellPy::simulate(PyObject *args)
+{
+    int nbsec;
+    if (!PyArg_ParseTuple(args, "i",&nbsec))
+        return 0;
+
+    try {
+        TopTools_ListOfShape list; 
+        this->getBRepOffsetAPI_MakePipeShellPtr()->Simulate(nbsec, list);
+
+        Py::List shapes;
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(list); it.More(); it.Next()) {
+            const TopoDS_Shape& s = it.Value();
+            shapes.append(Py::asObject(new TopoShapePy(new TopoShape(s))));
+        }
+        return Py::new_reference_to(shapes);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+}
+
+
 PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 {
     return 0;

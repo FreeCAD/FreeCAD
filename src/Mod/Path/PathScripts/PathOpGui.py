@@ -24,30 +24,23 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 
 from PySide import QtCore, QtGui
-from PathScripts.PathGeom import PathGeom
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
-
-# TaskPanelLayout
-#  0 ... existing toolbox layout
-#  1 ... reverse order
-#  2 ... multi panel layout
-#  3 ... multi panel layout reverse
-TaskPanelLayout = 0
-
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -221,7 +214,7 @@ class TaskPanelPage(object):
 
     def pageUpdateData(self, obj, prop):
         '''pageUpdateData(obj, prop) ... internal callback.
-        Do not overwrite, implement updateData(obj) instaed.'''
+        Do not overwrite, implement updateData(obj) instead.'''
         self.updateData(obj, prop)
 
     def setTitle(self, title):
@@ -434,8 +427,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             item = self.form.baseList.item(i)
             obj = item.data(self.DataObject)
             sub = str(item.data(self.DataObjectSub))
-            base = (obj, sub)
-            newlist.append(base)
+            if sub:
+                base = (obj, sub)
+                newlist.append(base)
         PathLog.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
 
@@ -681,9 +675,9 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def selectionZLevel(self, sel):
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             sub = sel[0].SubObjects[0]
+            if 'Vertex' == sub.ShapeType:
+                return sub.Z
             if PathGeom.isHorizontal(sub):
-                if 'Vertex' == sub.ShapeType:
-                    return sub.Z
                 if 'Edge' == sub.ShapeType:
                     return sub.Vertexes[0].Z
                 if 'Face' == sub.ShapeType:
@@ -748,11 +742,13 @@ class TaskPanel(object):
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
 
-        if TaskPanelLayout < 2:
+        taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
+
+        if taskPanelLayout < 2:
             opTitle = opPage.getTitle(obj)
             opPage.setTitle(translate('PathOp', 'Operation'))
             toolbox = QtGui.QToolBox()
-            if TaskPanelLayout == 0:
+            if taskPanelLayout == 0:
                 for page in self.featurePages:
                     toolbox.addItem(page.form, page.getTitle(obj))
                 toolbox.setCurrentIndex(len(self.featurePages)-1)
@@ -765,13 +761,13 @@ class TaskPanel(object):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
 
             self.form = toolbox
-        elif TaskPanelLayout == 2:
+        elif taskPanelLayout == 2:
             forms = []
             for page in self.featurePages:
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
             self.form = forms
-        elif TaskPanelLayout == 3:
+        elif taskPanelLayout == 3:
             forms = []
             for page in reversed(self.featurePages):
                 page.form.setWindowTitle(page.getTitle(obj))

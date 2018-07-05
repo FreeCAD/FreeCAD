@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>显示电子表格</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>设置单元格前景色</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>设置电子表格单元格前景色</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>设置单元格的背景色</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>设置电子表格单元背景色</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

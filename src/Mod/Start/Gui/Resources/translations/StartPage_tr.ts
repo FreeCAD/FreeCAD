@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD Ana sayfa</translation>
+      <translation>FreeCAD Anasayfa</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -36,32 +36,32 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>Schenkel STEP file</source>
-      <translation>Schenkel STEP dosyası</translation>
+      <translation>Schenkel Adım dosyası</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>ParçacıkTasarım örneği yükle</translation>
+      <translation>ParçaTasarım örneği yükle</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>Bir Çizim çıkarma Yükle</translation>
+      <translation>Varolan bir çizim dosyasını yükle</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>Bir Robot benzetim (similasyon) örneği yükle</translation>
+      <translation>Yapay bir simülasyon örneği yükle</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>Projects from the Web</source>
-      <translation>Web'den projeler</translation>
+      <translation>İnternetteki projeler</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
       <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <translation>Schenkel Adım dosyası</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -71,22 +71,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>Close this window after opening or creating a file</source>
-      <translation>Bir dosya açtığınızda veya yaratığınızda bu pencereyi kapatın</translation>
+      <translation>Bir dosya açtığınızda veya oluşturduğunuzda bu pencereyi kapatın</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Don't show me this window again next time</source>
-      <translation>Yeniden başlattığınızda bu pencereyi gösterme</translation>
+      <translation>Bu pencereyi birdaha karşıma çıkarma</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Designing parts</source>
-      <translation>Parça tasarımı</translation>
+      <translation>Tasarım Parçaları</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>&lt;b&gt;Bölüm tasarım&lt;/b&gt; tezgahı, kısıtlara dayalı karmaşık parçaları, 2 boyutlu çizimler halinde oluşturmak için tasarlanmıştır. 2 boyutlu şekiller çizmek, onların öğelerine çeşitli kısıtlar koymak ve onları 3 boyutlu parçalar oluşturacak hale getirmek için kullanılmalıdır.</translation>
+      <translation>Bu&lt;b&gt;Parça Tasarım&lt;/b&gt; atölyesi size karmaşık parçaların konsantre 2 boyutlu taslağını çıkarmaya imkan verir. Bunu 2 boyutlu çizimlere uygulayabilirsiniz, bazı elementlerin sıkıştırmasını yapabilirsiniz yahut 3 boyutlu hal almak üzere çıkarma işlemini kullanabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
@@ -101,37 +101,37 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Designing architectural elements</source>
-      <translation>Mimari elemanların tasarımı</translation>
+      <translation>Mimari öğelerin tasarımı</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
       <source>Working with Meshes</source>
-      <translation>Kafesler ile çalışma</translation>
+      <translation>Modeller ile çalışma</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>&lt;b&gt;Kafes tezgahı&lt;/b&gt; kafes nesneleri ile çalışmak için kullanılır. Kafesler; Parçacık nesnelerinden daha basit 3D nesneleri olmakla birlikte, çoğu zaman diğer uygulamalardan transfer etmek veya göndermek için tercih edilir.</translation>
+      <translation>&lt;b&gt;Model tezgahı&lt;/b&gt; model dosyaları üzerinde çalışmak için kullanılır. Modeller 3 boyutlu birimlerden daha basit olmakla birlikte, diğer uygulamalara aktarmak ya da diğer uygulamalardan dışarı aktarmak adına daha zordurlar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
       <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD size Kafes ve Parçacık nesneleri arasında dönüşümü sağlayan birkaç araç sunar.</translation>
+      <translation>FreeCAD size Model ve Parça nesnelerinin birbirine dönüştürülmesini sağlayan birkaç araç sunar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>Work with Meshes</source>
-      <translation>Kafesler ile çalışmak</translation>
+      <translation>Modeller ile çalışmak</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>The complete workbench</source>
-      <translation>Tam bir tezgah</translation>
+      <translation>Çalışma Atölyesi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
       <source>FreeCAD Complete workbench</source>
-      <translation>FreeCAD Workbench'i Tamamla</translation>
+      <translation>FreeCAD Çalışma Atölyesi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
       <source>creation time:</source>
-      <translation>Oluşturma zamanı:</translation>
+      <translation>oluşturma süresi:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Burası FreeCAD'in ana sayfasıdır. Buradan FreeCAD hakkında bir sürü bilgiye, özel derslere, örneklere ve kullanım kılavuzuna ulaşabilirsiniz.</translation>
+      <translation>Burası FreeCAD'in Anasayfasıdır. Buradan FreeCAD hakkında bir sürü bilgiye, özel derslere, örneklere ve kullanım kılavuzuna ulaşabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>FreeCAD-özel dersler güncesi</translation>
+      <translation>FreeCAD-Rehber Günlüğü</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
@@ -206,17 +206,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Bu belge FreeCAD topluluğu tarafından yazılmış, desteklenmiş ve çevirilmiş FreeCAD'in resmi kullanıcı kılavuzudur.</translation>
+      <translation>Bu belge FreeCAD topluluğu tarafından yazılmış, derlenmiş ve çevirilmiş FreeCAD'in resmi kullanıcı kılavuzudur.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
       <source>The tutorials section on the FreeCAD website</source>
-      <translation>FreeCAD web sayfasındaki özel dersler bölümü</translation>
+      <translation>FreeCAD web sayfasındaki rehberler bölümü</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>FreeCAD öğretmeye adanmış  FreeCAD topluluğunun üyeleri tarafından yazılan bir günlük</translation>
+      <translation>Bu günlük kendini FreeCAD tanıtımına adamış, FreeCAD topluluğu tarafından hazırlanmıştır</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>FreeCAD arayüzü belirli bir göreve uygun takım setleri olan tezgahlara bölünmüştür. Bu listedeki tezgahlardan biriyle veya diğer tezgahlardan toplanan en çok kullanılan araçlardan bazılarını size sunan komple tezgah ile başlayabilirsiniz. FreeCAD web sitesinde, tezgahlar hakkında daha fazla okumak için tıklayın.</translation>
+      <translation>FreeCAD arayüzü atölyeler halinde bölümlere ayrılmıştır, her araç belirli görevleri yerine getirmek üzere işlemektedir. Çok kullanılan bazı araçlara ulaşmak için ya listede bulunan atölyelerden birine giriş yapın ya da tüm atölyeleri seçerek işlemlerinize devam edin. Atölyeler hakkında daha fazla bilgi sahibi olmak için FreeCAD internet sitesine tıklayın.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Architectural Design</source>
-      <translation type="unfinished">Architectural Design</translation>
+      <translation>Mimari Tasarım</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
@@ -321,17 +321,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Yazar</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Şirket</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Lisans</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
@@ -342,6 +342,21 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Bir FEM 3D yeni çözücü örnek analizi yükleyin</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

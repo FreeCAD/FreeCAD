@@ -41,6 +41,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -1099,10 +1100,9 @@ void StdCmdDelete::activated(int iMsg)
                         }
                         break;
                     }
-                }
-            }
-            else {
-                // check if we can delete the object
+                } 
+            } else { 
+                // check if we can delete the object - linked objects
                 std::set<QString> affectedLabels;
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
                     App::DocumentObject* obj = ft->getObject();
@@ -1120,22 +1120,53 @@ void StdCmdDelete::activated(int iMsg)
                         }
                     }
                 }
-
-                if (!autoDeletion) {
+                
+                //check for inactive objects in selection  Mantis #3477
+                std::set<QString> inactiveLabels;
+                App::Application& app = App::GetApplication();
+                App::Document* actDoc = app.getActiveDocument();
+                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                    App::DocumentObject* obj = ft->getObject();
+                    App::Document* objDoc = obj->getDocument();
+                    if (actDoc != objDoc) {
+                        inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
+                        autoDeletion = false;
+                    }
+                }
+    
+                if (!autoDeletion) {   //can't just delete, need to ask
                     QString bodyMessage;
                     QTextStream bodyMessageStream(&bodyMessage);
+
+                    //message for linked items
+                    if (!affectedLabels.empty()) {
+                        bodyMessageStream << qApp->translate("Std_Delete",
+                                                             "These items are linked to items selected for deletion and might break.\n\n");
+                        for (const auto &currentLabel : affectedLabels)
+                          bodyMessageStream << currentLabel << '\n';
+                    }
+
+                    //message for inactive items
+                    if (!inactiveLabels.empty()) {
+                        if (!affectedLabels.empty()) {
+                            bodyMessageStream << "\n";
+                        }
+                        std::string thisDoc = pGuiDoc->getDocument()->getName();
+                        bodyMessageStream << qApp->translate("Std_Delete", 
+                                             "These items are selected for deletion, but are not in the active document. \n\n"); 
+                        for (const auto &currentLabel : inactiveLabels)
+                          bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
+                    }
                     bodyMessageStream << qApp->translate("Std_Delete",
-                                                         "The following, referencing objects might break.\n\n"
-                                                         "Are you sure you want to continue?\n\n");
-                    for (const auto &currentLabel : affectedLabels)
-                      bodyMessageStream << currentLabel << '\n';
+                                                         "\n\nAre you sure you want to continue?");
 
                     int ret = QMessageBox::question(Gui::getMainWindow(),
-                        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+                        qApp->translate("Std_Delete", "Delete Selection Issues"), bodyMessage,
                         QMessageBox::Yes, QMessageBox::No);
                     if (ret == QMessageBox::Yes)
                         autoDeletion = true;
                 }
+
                 if (autoDeletion) {
                     Gui::getMainWindow()->setUpdatesEnabled(false);
                     (*it)->openTransaction("Delete");

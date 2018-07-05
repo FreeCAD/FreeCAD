@@ -482,11 +482,11 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDragKnife", "Please select one path object\n"))
+                translate("Path_DressupDragKnife", "Please select one path object")+"\n")
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDragKnife", "The selected object is not a path\n"))
+                translate("Path_DressupDragKnife", "The selected object is not a path")+"\n")
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(

@@ -668,7 +668,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
     int intersections = 0;
     std::vector<gp_Pnt> intersectionpoints;
 
-    // Note: We need to look at evey edge separately to catch coincident lines
+    // Note: We need to look at every edge separately to catch coincident lines
     for (ex.Init(outerWire, TopAbs_EDGE); ex.More(); ex.Next()) {
         BRepAdaptor_Curve edge(TopoDS::Edge(ex.Current()));
         Extrema_ExtCC intersector(axis, edge);

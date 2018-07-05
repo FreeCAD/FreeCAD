@@ -175,6 +175,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefRadioButton    *>();
     loadPrefWidgets<Gui::PrefSlider         *>();
     loadPrefWidgets<Gui::PrefColorButton    *>();
+    loadPrefWidgets<Gui::PrefUnitSpinBox    *>();
 }
 
 void PreferenceUiForm::saveSettings()
@@ -192,6 +193,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefRadioButton    *>();
     savePrefWidgets<Gui::PrefSlider         *>();
     savePrefWidgets<Gui::PrefColorButton    *>();
+    savePrefWidgets<Gui::PrefUnitSpinBox    *>();
 }
 
 // ----------------------------------------------------------------

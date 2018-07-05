@@ -188,7 +188,7 @@ void ViewProviderProductRef::drop(const std::vector<const App::DocumentObject*> 
         //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
         //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
         //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
-        //        // add to anotation set of the Part object
+        //        // add to annotation set of the Part object
         //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
         //        // add the main body
         //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str());

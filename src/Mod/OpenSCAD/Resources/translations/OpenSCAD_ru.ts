@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Минимальный угол фрагмента</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Минимальный размер фрагмента</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>удалить синтез, случайным образом применить позиционное распределение к детям и к цвету</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Удалить слияние, случайным образом применить позиционное распределение и цвет к потомкам</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Экспортировать объекты как полигональные сети и использовать OpenSCAD, чтобы осуществить булевую операцию.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Экспортировать объекты как полигональные сетки и использовать OpenSCAD, чтобы осуществить булевую операцию</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Заменить объект в Функциональном дереве. Выберите, пожалуйста, старые, новые, родительский объект</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>Заменить объект в Функциональном дереве. Выберите, пожалуйста, старый, новый и родительский объект</translation>
     </message>
   </context>
   <context>

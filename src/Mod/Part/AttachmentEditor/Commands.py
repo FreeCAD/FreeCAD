@@ -24,7 +24,12 @@
 from __future__ import absolute_import 
 
 import FreeCAD as App
-from PySide import QtCore
+
+try:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+except ImportError:
+    def QT_TRANSLATE_NOOP(ctx, msg):
+        return msg
 
 def editAttachment(feature = None, 
                    take_selection = False, 
@@ -72,9 +77,9 @@ class CommandEditAttachment:
     'Command to edit attachment'
     def GetResources(self):
         return {'Pixmap': ':/icons/Part_Attachment.svg',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("AttachmentEditor","Attachment..."),
+                'MenuText': QT_TRANSLATE_NOOP("AttachmentEditor","Attachment..."),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("AttachmentEditor","Edit attachment of selected object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("AttachmentEditor","Edit attachment of selected object.")}
         
     def Activated(self):
         try:

@@ -60,15 +60,15 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation type="unfinished">The displayed size of the origin</translation>
+      <translation>Zobrazená velikost počátku</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation type="unfinished">Visual size of the feature</translation>
+      <translation>Vizuální velikost prvku</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation type="unfinished">&lt;empty&gt;</translation>
+      <translation>&lt;prázdné&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Base</source>
-      <translation>Základna</translation>
+      <translation>Základní</translation>
     </message>
   </context>
   <context>
@@ -127,10 +127,6 @@
       <translation>Pohyby 3D myši</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Globální citlivost:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominantní režim</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Obrátit</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Globální citlivost:</translation>
     </message>
   </context>
   <context>
@@ -295,7 +295,7 @@
     </message>
     <message>
       <source>Press middle and left or right mouse button</source>
-      <translation>Stiskni prostřední a levé nebo pravé tlačítko myši</translation>
+      <translation>Stiskněte prostřední a levé nebo pravé tlačítko myši</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button pressed
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD by zde nebyl bez jejich úsilí:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licence</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Knihovny</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Tento program používá open source komponenty, jejichž autorská a další vlastnická práva patří příslušným vlastníkům:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1241,7 +1256,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>Povolit zalamování řádků</translation>
     </message>
   </context>
   <context>
@@ -1252,23 +1267,23 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Small (%1px)</source>
-      <translation type="unfinished">Small (%1px)</translation>
+      <translation>Malé (%1px)</translation>
     </message>
     <message>
       <source>Medium (%1px)</source>
-      <translation type="unfinished">Medium (%1px)</translation>
+      <translation>Střední (%1px)</translation>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation type="unfinished">Large (%1px)</translation>
+      <translation>Velké (%1px)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation type="unfinished">Extra large (%1px)</translation>
+      <translation>Velmi velké (%1px)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation type="unfinished">Custom (%1px)</translation>
+      <translation>Vlastní (%1px)</translation>
     </message>
   </context>
   <context>
@@ -1382,27 +1397,25 @@ Tento soubor již existuje.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Přejmenovávání souboru makra</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Zadejte nový název:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>"%1" už existuje.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Přejmenování selhalo</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Nepodařilo se přejmenovat na "%1". Chyba oprávnění k souboru?</translation>
     </message>
   </context>
   <context>
@@ -1764,11 +1777,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Vyhledávací vzor pro filtrování výsledků výše</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Žádný (odebrat odkaz)</translation>
     </message>
   </context>
   <context>
@@ -1977,7 +1990,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <translation>Použít OpenGL Vertex Buffer Object (experimentální)</translation>
     </message>
   </context>
   <context>
@@ -2019,7 +2032,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Vditelnost</translation>
+      <translation>Viditelnost</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
@@ -2133,8 +2146,8 @@ Specify another directory, please.</source>
       <translation>Uložit náhled do souboru projektu při ukládání dokumentu</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Vytvořit zálohu souboru, když se přeuloží dokument</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Maximální počet záložních souborů při ukládání dokumentu</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2242,11 +2255,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Přidat logo programu do vygenerovaného náhledu</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>URL, kde může uživatel najít podrobnosti o licenci</translation>
     </message>
   </context>
   <context>
@@ -2606,15 +2619,15 @@ Specify another directory, please.</source>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+      <translation>Stavební Euro (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
+      <translation>Stavební US (ft-in/sqft/cuft)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Metrické malé díly &amp; CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2656,8 +2669,8 @@ Specify another directory, please.</source>
       <translation>Vyberte poloměr (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Nastaví oblast výběru elemenů ve 3D pohledu. Vyšší hodnota zjednoduší vybírání prvků, ale znemožní výběr některých prvků.</translation>
     </message>
   </context>
   <context>
@@ -2861,9 +2874,9 @@ Specify another directory, please.</source>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Stiskem tlačítka "Začni obnovení" spustíte obnovení dokumentu uvedeného níže. 
 
-The 'Status' column shows whether the document could be recovered.</translation>
+Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
   </context>
   <context>
@@ -2882,7 +2895,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Chyba při otevírání uloženého souboru: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
@@ -3230,7 +3243,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Pomocí těžiště</translation>
     </message>
   </context>
   <context>
@@ -3344,10 +3357,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>CombiView</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3487,19 +3496,19 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Zobrazení výběru</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Počet vybraných položek</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Duplikovat části obrazce</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Vytvoří samostatnou kopii této části obrazce v dokumentu</translation>
     </message>
   </context>
   <context>
@@ -3679,15 +3688,15 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Program Graphviz nebyl v systému nalezen.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Další informace zde.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Chcete zadat jeho cestu instalace, i když je už nainstalován?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -4018,14 +4027,14 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Změnit propojený objekt</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Změnit propojené objekty</translation>
     </message>
   </context>
   <context>
@@ -4286,11 +4295,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <translation>Krok posunu: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <translation>Krok otočení: </translation>
     </message>
   </context>
   <context>
@@ -4353,15 +4362,15 @@ Do you want to specify another directory?</source>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Text aktualizován</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Text nižšího objektu se změnil. Zahodit změny a načíst znovu text z objektu?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Ano, znovu načti.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4369,7 +4378,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Chcete uložit změny před zavřením?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -4466,7 +4475,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, vnitřní název: %2</translation>
     </message>
   </context>
   <context>
@@ -5041,7 +5050,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 není prázdný, odstranit jeho obsah také?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Export selhal</translation>
     </message>
   </context>
   <context>
@@ -5600,11 +5613,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Vytvořit skupinu</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Vytvořit novou skupinu pro řazení objektů</translation>
     </message>
   </context>
   <context>
@@ -5860,11 +5873,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Vytvoř díl</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Vytvoř nový díl a aktivuj ho</translation>
     </message>
   </context>
   <context>
@@ -6489,8 +6502,8 @@ Dejte si pozor na místo, kam klikáte.</translation>
       <translation>Vytvořit nový pohled</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Vytvoří nové okno zobrazení pro aktivní dokument.</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Vytvoří nové okno zobrazení pro aktivní dokument</translation>
     </message>
   </context>
   <context>
@@ -6846,7 +6859,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Zobrazit hlavní okno v režimu celé obrazovky</translation>
     </message>
   </context>
   <context>
@@ -6999,9 +7012,9 @@ Dejte si pozor na místo, kam klikáte.</translation>
 Are you sure you want to continue?
 
 </source>
-      <translation type="unfinished">The following, referencing objects might break.
+      <translation>Následující, odkazující objekty se mohou porušit. 
 
-Are you sure you want to continue?
+Opravdu chcete pokračovat?  
 
 </translation>
     </message>
@@ -7050,19 +7063,19 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>Skrytá čára</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>Režim skryté čáry</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Bez stínování</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Režim bez stínování</translation>
     </message>
   </context>
   <context>
@@ -7130,7 +7143,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Vditelnost</translation>
+      <translation>Viditelnost</translation>
     </message>
     <message>
       <source>&amp;View</source>

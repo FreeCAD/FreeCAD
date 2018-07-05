@@ -281,7 +281,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Development versions&lt;/b&gt; sunt puse sporadic la dispoziție de membrii comunității și de obicei conțin ultimele actualizări, dar sunt predispuse să conțină erori.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
@@ -291,32 +291,32 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
       <source>Load an FEM 3D example analysis</source>
-      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+      <translation>Încărcați un exemplu de analiză FEM 3D</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
       <source>Load an FEM 2D example analysis</source>
-      <translation type="unfinished">Load an FEM 2D example analysis</translation>
+      <translation>Încărcați un exemplu de analiză FEM 2D</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
       <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
       <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Tutorials</translation>
+      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
       <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
       <source>FreeCAD Standard File</source>
-      <translation type="unfinished">FreeCAD Standard File</translation>
+      <translation>Fișier standard FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
@@ -336,12 +336,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <translation>Bancul de lucru &lt;b&gt;Design arhitectural&lt;/b&gt; este special conceput pentru a lucra cu elemente arhitecturale, cum ar fi pereţi sau ferestre. Se poate utiliza pentru a desena forme 2D care pot fi folosite apoi ca şi ghidaje pentru a construi obiecte arhitecturale.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Încărcați un solver nou cu exemplu de analiză FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

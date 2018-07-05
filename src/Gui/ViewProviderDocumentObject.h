@@ -24,10 +24,9 @@
 #ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 #define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 
-#include <Inventor/SoType.h>
-
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
+#include <Inventor/SoType.h>
 
 class SoMaterial;
 class SoDrawStyle;

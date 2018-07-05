@@ -40,7 +40,9 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         vertices to be exported. (For second order elements, we have to delete the mid element nodes.)
     """
 
-    # TODO: check for second order elements (what to do? deny export or reduce element order?)
+    # TODO: check for second order elements
+    # (reduce element order would be ok - all elements have at least the first
+    # necessary nodes)
 
     FreeCAD_to_Fenics_dict = {
         "Triangle": "triangle",
@@ -54,6 +56,15 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "Prism": "unknown", "Pyramid": "unknown",
     }
 
+    XML_Number_of_Nodes_dict = {
+        "point": 1,
+        "interval": 2,
+        "triangle": 3,
+        "quadrilateral": 4,
+        "tetrahedron": 4,
+        "hexahedron": 8
+    }
+
     print("Converting " + fem_mesh_obj.Label + " to fenics XML File")
     print("Dimension of mesh: %d" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
@@ -62,6 +73,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
+    num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
     print("Celltype in mesh -> %s and its Fenics name: %s" % (str(celltype_in_mesh), cellname_fenics))
 
     root = ET.Element("dolfin", dolfin="http://fenicsproject.org")
@@ -90,7 +102,8 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
         cell_args = {}
         for (vi, ni) in enumerate(nodeindices):
-            cell_args["v" + str(vi)] = str(ni - 1)
+            if vi < num_verts_cell:  # XML only supports first order meshs
+                cell_args["v" + str(vi)] = str(ni - 1)
         # generate as many v entries in dict as nodes are listed in cell (works only for first order elements)
 
         ET.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)

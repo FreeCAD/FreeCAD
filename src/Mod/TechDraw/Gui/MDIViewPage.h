@@ -55,16 +55,19 @@ public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
     virtual ~MDIViewPage();
 
-    /// Observer message from the Selection
+    /// Observer message from the Tree Selection mechanism
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void preSelectionChanged(const QPoint &pos);
-    void selectFeature(App::DocumentObject *obj, bool state);
-    void clearSelection();
+
+    /// QGraphicsScene seletion routines
+    void selectQGIView(App::DocumentObject *obj, bool state);
+    void clearSceneSelection();
     void blockSelection(bool isBlocked);
 
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);
-    void updateDrawing(bool force = false);
+//    void updateDrawing(bool force = false);
+    void updateDrawing(void);
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
@@ -83,6 +86,7 @@ public:
     bool getFrameState(void) {return m_frameState;};
 
     void setDocumentObject(const std::string&);
+    void setDocumentName(const std::string&);
     PyObject* getPyObject();
 
     QGVPage* getQGVPage(void) {return m_view;};
@@ -95,12 +99,11 @@ public:
     void redrawAllViews(void);
     void redraw1View(TechDraw::DrawView* dv);
 
-
 public Q_SLOTS:
     void setRenderer(QAction *action);
     void viewAll();
     void saveSVG(void);
-    void selectionChanged();
+    void sceneSelectionChanged();
 
 protected:
     void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
@@ -121,6 +124,9 @@ protected:
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectDeletedObject;
 
+    bool compareSelections(std::vector<Gui::SelectionObject>& treeSel,QList<QGraphicsItem*>& sceneSel);
+    void setTreeToSceneSelect(void);
+
 private:
     QAction *m_nativeAction;
     QAction *m_glAction;
@@ -129,6 +135,7 @@ private:
     QAction *m_highQualityAntialiasingAction;
 
     std::string m_objectName;
+    std::string m_documentName;
     bool isSelectionBlocked;
     QGVPage *m_view;
 

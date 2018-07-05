@@ -187,7 +187,8 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    double t=Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "d|d",&u,&t))
         return 0;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
@@ -197,15 +198,17 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     double first = BRepLProp_CurveTool::FirstParameter(adapt);
     double last = BRepLProp_CurveTool::LastParameter(adapt);
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
+        double length = GCPnts_AbscissaPoint::Length(adapt,t);
 
-        if (u < 0 || u > length) {
+        if (u < -length || u > length) {
             PyErr_SetString(PyExc_ValueError, "value out of range");
             return 0;
         }
-
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
+        if (u < 0)
+            u = length+u;
+        GCPnts_AbscissaPoint abscissaPoint(t,adapt,u,first);
+        double parm = abscissaPoint.Parameter();
+        return PyFloat_FromDouble(parm);
     }
 
     return PyFloat_FromDouble(u);
@@ -997,7 +1000,7 @@ Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
 Py::Boolean TopoShapeEdgePy::getClosed(void) const
 {
     if (getTopoShapePtr()->getShape().IsNull())
-        throw Py::Exception("Cannot determine the 'Closed'' flag of an empty shape");
+        throw Py::RuntimeError("Cannot determine the 'Closed'' flag of an empty shape");
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->getShape());
     return Py::Boolean(ok ? true : false);
 }

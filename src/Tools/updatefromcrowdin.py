@@ -93,16 +93,16 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
              ]
              
-default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko"
+default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko fil id lt val-ES"
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
 
-    print "opening " + qrcpath + "..."
+    print("opening " + qrcpath + "...")
     
     # getting qrc file contents
     if not os.path.exists(qrcpath):
-        print "ERROR: Resource file " + qrcpath + " doesn't exist"
+        print("ERROR: Resource file " + qrcpath + " doesn't exist")
         sys.exit()
     f = open(qrcpath,"ro")
     resources = []
@@ -114,7 +114,7 @@ def updateqrc(qrcpath,lncode):
     name = "_" + lncode + ".qm"
     for r in resources:
         if name in r:
-            print "language already exists in qrc file"
+            print("language already exists in qrc file")
             return
 
     # find the latest qm line
@@ -123,12 +123,12 @@ def updateqrc(qrcpath,lncode):
         if ".qm" in resources[i]:
             pos = i
     if pos == None:
-        print "No existing .qm file in this resource. Appending to the end position"
+        print("No existing .qm file in this resource. Appending to the end position")
         for i in range(len(resources)):
             if "</qresource>" in resources[i]:
                 pos = i-1
     if pos == None:
-        print "ERROR: couldn't add qm files to this resource: " + qrcpath
+        print("ERROR: couldn't add qm files to this resource: " + qrcpath)
         sys.exit()
 
     # inserting new entry just after the last one
@@ -136,9 +136,11 @@ def updateqrc(qrcpath,lncode):
     if ".qm" in line:
         line = re.sub("_.*\.qm","_"+lncode+".qm",line)
     else:
-        print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
-        sys.exit()
-    print "inserting line: ",line
+        modname = os.path.splitext(os.path.basename(qrcpath))[0]
+        line = "        <file>translations/"+modname+"_"+lncode+".qm</file>\n"
+        #print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        #sys.exit()
+    print("inserting line: ",line)
     resources.insert(pos+1,line)
 
     # writing the file
@@ -146,7 +148,7 @@ def updateqrc(qrcpath,lncode):
     for r in resources:
         f.write(r)
     f.close()
-    print "successfully updated ",qrcpath
+    print("successfully updated ",qrcpath)
 
 def doFile(tsfilepath,targetpath,lncode,qrcpath):
     "updates a single ts file, and creates a corresponding qm file"
@@ -159,7 +161,7 @@ def doFile(tsfilepath,targetpath,lncode,qrcpath):
     os.system("lrelease " + newpath)
     newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
     if not os.path.exists(newqm):
-        print "ERROR: impossible to create " + newqm + ", aborting"
+        print("ERROR: impossible to create " + newqm + ", aborting")
         sys.exit()
     updateqrc(qrcpath,lncode)
 
@@ -176,24 +178,24 @@ def doLanguage(lncode,fmodule=""):
     else:
         mods = locations
     if not mods:
-        print "Error: Couldn't find module "+fmodule
+        print("Error: Couldn't find module "+fmodule)
         sys.exit()
     for target in mods:
         basefilepath = tempfolder + os.sep + lncode + os.sep + target[0] + ".ts"
         targetpath = os.path.abspath(target[1])
         qrcpath = os.path.abspath(target[2])
         doFile(basefilepath,targetpath,lncode,qrcpath)
-    print lncode + " done!"
+    print(lncode + " done!")
 
 if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) < 1:
-        print __doc__
+        print(__doc__)
         sys.exit()
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hd:z:m:", ["help", "directory=","zipfile=", "module="])
     except getopt.GetoptError:
-        print __doc__
+        print(__doc__)
         sys.exit()
         
     # checking on the options
@@ -202,7 +204,7 @@ if __name__ == "__main__":
     fmodule = ""
     for o, a in opts:
         if o in ("-h", "--help"):
-            print __doc__
+            print(__doc__)
             sys.exit()
         if o in ("-d", "--directory"):
             inputdir = a
@@ -215,30 +217,30 @@ if __name__ == "__main__":
     if inputdir:
         tempfolder = os.path.realpath(inputdir)
         if not os.path.exists(tempfolder):
-            print "ERROR: " + tempfolder + " not found"
+            print("ERROR: " + tempfolder + " not found")
             sys.exit()
     elif inputzip:
         tempfolder = tempfile.mkdtemp()
-        print "creating temp folder " + tempfolder
+        print("creating temp folder " + tempfolder)
         os.chdir(tempfolder)
         inputzip=os.path.realpath(inputzip)
         if not os.path.exists(inputzip):
-            print "ERROR: " + inputzip + " not found"
+            print("ERROR: " + inputzip + " not found")
             sys.exit()
         shutil.copy(inputzip,tempfolder)
         zfile=zipfile.ZipFile("freecad.zip")
-        print "extracting freecad.zip..."
+        print("extracting freecad.zip...")
         zfile.extractall()
     else:
         tempfolder = tempfile.mkdtemp()
-        print "creating temp folder " + tempfolder
+        print("creating temp folder " + tempfolder)
         os.chdir(tempfolder)
         os.system("wget "+crowdinpath)
         if not os.path.exists("freecad.zip"):
-            print "download failed!"
+            print("download failed!")
             sys.exit()
         zfile=zipfile.ZipFile("freecad.zip")
-        print "extracting freecad.zip..."
+        print("extracting freecad.zip...")
         zfile.extractall()
     os.chdir(currentfolder)
     if not args:
@@ -247,7 +249,7 @@ if __name__ == "__main__":
         args = default_languages.split()
     for ln in args:
         if not os.path.exists(tempfolder + os.sep + ln):
-            print "ERROR: language path for " + ln + " not found!"
+            print("ERROR: language path for " + ln + " not found!")
         else:
             doLanguage(ln,fmodule)
 

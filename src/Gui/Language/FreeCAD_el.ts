@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation type="unfinished">&lt;empty&gt;</translation>
+      <translation>&lt;κενό&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation type="unfinished">Test console output</translation>
+      <translation>Εξαγωγή της κονσόλας δοκιμών</translation>
     </message>
   </context>
   <context>
@@ -125,10 +125,6 @@
     <message>
       <source>Spaceball Motion</source>
       <translation>Κίνηση σφαιρική</translation>
-    </message>
-    <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Καθολική Ευαισθησία:  </translation>
     </message>
     <message>
       <source>Dominant Mode</source>
@@ -162,20 +158,24 @@
       <source>Reverse</source>
       <translation>Αντιστροφή</translation>
     </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Καθολική Ευαισθησία:</translation>
+    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
     <message>
       <source>Formula editor</source>
-      <translation type="unfinished">Formula editor</translation>
+      <translation>Επεξεργαστής μαθηματικού τύπου</translation>
     </message>
     <message>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>Αποτέλεσμα:</translation>
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation type="unfinished">&amp;Discard</translation>
+      <translation>&amp;Απόρριψη</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation type="unfinished">%1 help files not found (%2). You might need to install the %1 documentation package.</translation>
+      <translation>Δεν βρέθηκαν %1 αρχεία βοήθειας (%2). Ίσως να θες να εγκαταστήσεις το πακέτο τεκμηρίωσης %1 .</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -261,7 +261,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation type="unfinished">Please wait until the AutoRecovery file has been saved...</translation>
+      <translation>Παρακαλώ, περίμενε, μέχρι να αποθηκευθεί το αρχείο ΑυτόματηςΑποκατάστασης...</translation>
     </message>
   </context>
   <context>
@@ -387,15 +387,30 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Credits</source>
-      <translation type="unfinished">Credits</translation>
+      <translation>Εύσημα</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+      <translation>https://crowdin. com/translate/freecad/549/en-el#6500102:</translation>
     </message>
     <message>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Άδεια</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Άδεια</translation>
     </message>
   </context>
   <context>
@@ -575,7 +590,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>CheckBox</source>
-      <translation type="unfinished">CheckBox</translation>
+      <translation>ΚουτάκιΤσεκαρίσματος</translation>
     </message>
   </context>
   <context>
@@ -1077,11 +1092,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Neon GNC</source>
-      <translation type="unfinished">Neon GNC</translation>
+      <translation>Νέον GNC</translation>
     </message>
     <message>
       <source>Neon PHC</source>
-      <translation type="unfinished">Neon PHC</translation>
+      <translation>Νέον PHC</translation>
     </message>
     <message>
       <source>Obsidian</source>
@@ -1243,7 +1258,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>Ενεργοποίηση της αναδίπλωσης των λέξεων</translation>
     </message>
   </context>
   <context>
@@ -1254,23 +1269,23 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Small (%1px)</source>
-      <translation type="unfinished">Small (%1px)</translation>
+      <translation>Μικρό (%1px)</translation>
     </message>
     <message>
       <source>Medium (%1px)</source>
-      <translation type="unfinished">Medium (%1px)</translation>
+      <translation>Μεσαίο (%1px)</translation>
     </message>
     <message>
       <source>Large (%1px)</source>
-      <translation type="unfinished">Large (%1px)</translation>
+      <translation>Μεγάλο (%1px)</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation type="unfinished">Extra large (%1px)</translation>
+      <translation>Πολύ μεγάλο (%1px)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation type="unfinished">Custom (%1px)</translation>
+      <translation>Ιδιότυπο (%1px)</translation>
     </message>
   </context>
   <context>
@@ -1323,15 +1338,15 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>User macros</source>
-      <translation type="unfinished">User macros</translation>
+      <translation>Μακροεντολές χρήστη</translation>
     </message>
     <message>
       <source>System macros</source>
-      <translation type="unfinished">System macros</translation>
+      <translation>Μακροεντολές συστήματος</translation>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation type="unfinished">User macros location:</translation>
+      <translation>Τοποθεσία των μακροεντολών χρήστη:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1380,31 +1395,31 @@ This file already exists.</source>
     </message>
     <message>
       <source>Read-only</source>
-      <translation type="unfinished">Read-only</translation>
+      <translation>Για-ανάγνωση-μόνο</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Μετονομάζεται το Αρχείο Μακροεντολής</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Εισήγαγε νέο όνομα:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>Το '%1'
+υπάρχει ήδη.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Αποτυχία της Μετονομασίας</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Αποτυχία μετονομασίας σε '%1'.
+Μήπως, κάποιο σφάλμα αδειών αρχείου;</translation>
     </message>
   </context>
   <context>
@@ -1539,7 +1554,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>HTML files</source>
-      <translation type="unfinished">HTML files</translation>
+      <translation>HTML αρχεία</translation>
     </message>
   </context>
   <context>
@@ -1615,15 +1630,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation type="unfinished">Clear user settings</translation>
+      <translation>Καθάρισμα των ρυθμίσεων του χρήστη</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation type="unfinished">Do you want to clear all your user settings?</translation>
+      <translation>Θέλεις να εκκαθαρίσεις όλες τις ρυθμίσεις σου, ως χρήστης;</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+      <translation>Αν συμφωνείς, θα εκκαθαριστούν όλες οι ρυθμίσεις σου.</translation>
     </message>
   </context>
   <context>
@@ -1741,7 +1756,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Project file</source>
-      <translation type="unfinished">Project file</translation>
+      <translation>Αρχείο εργασίας</translation>
     </message>
   </context>
   <context>
@@ -1768,11 +1783,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Μια μήτρα αναζήτησης για το φιλτράρισμα των παραπάνω αποτελεσμάτων</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Κανένα (Απομάκρυνση του δεσμού)</translation>
     </message>
   </context>
   <context>
@@ -1831,7 +1846,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Python interpreter</source>
-      <translation type="unfinished">Python interpreter</translation>
+      <translation>Ερμηνευτής της Πάιθον</translation>
     </message>
   </context>
   <context>
@@ -2138,8 +2153,8 @@ Specify another directory, please.</source>
       <translation>Αποθήκευση μικρογραφίας σε αρχείο έργου κατά την αποθήκευση εγγράφου</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Δημιουργία αντιγράφου ασφαλείας κατά την επαναποθήκευση ενός εγγράφου</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Μέγιστο πλήθος, από αρχεία αντίγραφου ασφάλειας, που θα διατηρούνται, κατά την επανα-αποθήκευση του εγγράφου</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2175,7 +2190,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Set on save</source>
-      <translation type="unfinished">Set on save</translation>
+      <translation>Ορισμός κατά την αποθήκευση</translation>
     </message>
     <message>
       <source>Company</source>
@@ -2239,19 +2254,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
-      <translation type="unfinished">Run AutoRecovery at startup</translation>
+      <translation>Εκτέλεση ΑυτόματηςΑποκατάστασης κατά την εκκίνηση</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation type="unfinished">Save AutoRecovery information every</translation>
+      <translation>Αποθήκευση των πληροφοριών ΑυτόματηςΑποκατάστασης κάθε</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Προσθήκη του λογότυπου του προγράμματος στη προς δημιουργία μικρογραφία</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Μία διεύθυνση URL όπου ο χρήστης θα μπορεί να βρει περισσότερες πληροφορίες για τη άδεια</translation>
     </message>
   </context>
   <context>
@@ -2509,11 +2524,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Transparent</source>
-      <translation type="unfinished">Transparent</translation>
+      <translation>Διαφανές</translation>
     </message>
     <message>
       <source>Add watermark</source>
-      <translation type="unfinished">Add watermark</translation>
+      <translation>Προσθήκη υδατογραφήματος</translation>
     </message>
   </context>
   <context>
@@ -2611,15 +2626,15 @@ Specify another directory, please.</source>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+      <translation>Χτίσιμο Ευρώπης (εκατοστά / τετ.μέτρα / κυβ.μέτρα)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
+      <translation>Χτίσιμο Η.Π.Α. (πόδια-ίντσες / τετ.πόδια / κυβ.πόδια)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Μετρικά μικρά εξαρτήματα κ´ CNC ( χιλ. , χιλ/λεπ )</translation>
     </message>
   </context>
   <context>
@@ -2658,11 +2673,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pick radius (px):</source>
-      <translation type="unfinished">Pick radius (px):</translation>
+      <translation>Ακτίνα επιλογής (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -2688,11 +2703,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Quantity:</source>
-      <translation type="unfinished">Quantity:</translation>
+      <translation>Ποσότητα:</translation>
     </message>
     <message>
       <source>Units:</source>
-      <translation type="unfinished">Units:</translation>
+      <translation>Μονάδες:</translation>
     </message>
     <message>
       <source>Help</source>
@@ -2718,15 +2733,15 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation type="unfinished">Workbenches</translation>
+      <translation>Πάγκοι Εργασίας</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation type="unfinished">Enabled workbenches</translation>
+      <translation>Ενεργοποιημένοι πάγκοι εργασίας</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation type="unfinished">Disabled workbenches</translation>
+      <translation>Απενεργοποιημένοι πάγκοι εργασίας</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -2754,11 +2769,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation type="unfinished">Sort enabled workbenches</translation>
+      <translation>Ταξινόμηση των ενεργοποιημένων πάγκων εργασίας</translation>
     </message>
     <message>
       <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Ταξινόμηση των ενεργοποιημένων πάγκων εργασίας&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2774,7 +2789,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation type="unfinished">Add all to enabled workbenches</translation>
+      <translation>Προσθήκη όλων, στους ενεργοποιημένους πάγκους εργασίας</translation>
     </message>
   </context>
   <context>
@@ -2788,39 +2803,39 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
       <source>Document Recovery</source>
-      <translation type="unfinished">Document Recovery</translation>
+      <translation>Ανάκτηση Εγγράφου</translation>
     </message>
     <message>
       <source>Status of recovered documents:</source>
-      <translation type="unfinished">Status of recovered documents:</translation>
+      <translation>Κατάσταση των ανακτημένων εγγράφων:</translation>
     </message>
     <message>
       <source>Document Name</source>
-      <translation type="unfinished">Document Name</translation>
+      <translation>Όνομα του Εγγράφου</translation>
     </message>
     <message>
       <source>Status</source>
-      <translation type="unfinished">Status</translation>
+      <translation>Κατάσταση</translation>
     </message>
     <message>
       <source>Start Recovery</source>
-      <translation type="unfinished">Start Recovery</translation>
+      <translation>Εκκίνηση της Ανάκτησης</translation>
     </message>
     <message>
       <source>Not yet recovered</source>
-      <translation type="unfinished">Not yet recovered</translation>
+      <translation>Δεν έχει ανακτηθεί, ακόμη</translation>
     </message>
     <message>
       <source>Unknown problem occurred</source>
-      <translation type="unfinished">Unknown problem occurred</translation>
+      <translation>Παρουσιάστηκε ένα άγνωστο πρόβλημα</translation>
     </message>
     <message>
       <source>Failed to recover</source>
-      <translation type="unfinished">Failed to recover</translation>
+      <translation>Αποτυχία της ανάκτησης</translation>
     </message>
     <message>
       <source>Successfully recovered</source>
-      <translation type="unfinished">Successfully recovered</translation>
+      <translation>Ανακτήθηκε επιτυχώς</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -2828,7 +2843,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation type="unfinished">Cleanup...</translation>
+      <translation>Καθάρισμα...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -2836,7 +2851,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Cleanup</source>
-      <translation type="unfinished">Cleanup</translation>
+      <translation>Καθάρισμα</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
@@ -2856,7 +2871,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Finished</source>
-      <translation type="unfinished">Finished</translation>
+      <translation>Ολοκληρώθηκε</translation>
     </message>
     <message>
       <source>Transient directories deleted.</source>
@@ -2866,9 +2881,9 @@ Specify another directory, please.</source>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Πίεσε την «Έναρξη της Ανάκτησης», για να εκκινήσεις τη διαδικασία ανάκτησης του εγγράφου, που αναφέρεται παρακάτω.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+Η στήλη της «Κατάστασης» δείχνει αν ήταν δυνατή η ανάκτηση του εγγράφου.</translation>
     </message>
   </context>
   <context>
@@ -2887,7 +2902,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Σφάλμα κατά το άνοιγμα του αποθηκευμένου αρχείου: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
@@ -2976,7 +2991,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation type="unfinished">Add or remove custom icon folders</translation>
+      <translation>Προσθήκη, ή απομάκρυνση, προσαρμοσμένων εικονιδίων των φακέλων</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -3349,10 +3364,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Συνδυασμένη προβολή</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Έργο</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -5057,6 +5068,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6503,8 +6518,8 @@ Be aware the point where you click matters.</source>
       <translation>Δημιουργία νέας προβολής</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Δημιουργία ενός νέου παράθυρου προβολής, για το ενεργό έγγγραφο</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

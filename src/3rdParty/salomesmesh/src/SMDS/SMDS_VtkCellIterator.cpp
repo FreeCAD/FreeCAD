@@ -68,8 +68,10 @@ SMDS_VtkCellIteratorToUNV::SMDS_VtkCellIteratorToUNV(SMDS_Mesh* mesh, int vtkCel
 
   _vtkIdList = vtkIdList::New();
   vtkIdType* pts;
+  vtkIdType npts;
   vtkUnstructuredGrid* grid = _mesh->getGrid();
-  grid->GetCellPoints((vtkIdType)_cellId, (vtkIdType&)_nbNodes, pts);
+  grid->GetCellPoints((vtkIdType)_cellId, npts, pts);
+  _nbNodes = static_cast<int>(npts);
   _vtkIdList->SetNumberOfIds(_nbNodes);
   const int *ids = 0;
   switch (_type)

@@ -1732,6 +1732,7 @@ void StdViewScreenShot::activated(int iMsg)
         Base::Reference<ParameterGrp> hExt = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                    ->GetGroup("Preferences")->GetGroup("General");
         QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
+        int backtype = hExt->GetInt("OffscreenImageBackground",0);
 
         QStringList filter;
         QString selFilter;
@@ -1754,6 +1755,7 @@ void StdViewScreenShot::activated(int iMsg)
         DlgSettingsImageImp* opt = new DlgSettingsImageImp(&fd);
         SbVec2s sz = vp.getWindowSize();
         opt->setImageSize((int)sz[0], (int)sz[1]);
+        opt->setBackgroundType(backtype);
 
         fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
         fd.setConfirmOverwrite(true);
@@ -1794,6 +1796,7 @@ void StdViewScreenShot::activated(int iMsg)
                 case 3:  background="Transparent"; break;
                 default: background="Current"; break;
             }
+            hExt->SetInt("OffscreenImageBackground",opt->backgroundType());
 
             QString comment = opt->comment();
             if (!comment.isEmpty()) {

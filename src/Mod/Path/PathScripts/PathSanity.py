@@ -61,7 +61,7 @@ class CommandPathSanity:
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
         self.baseobj = obj.Base
         if self.baseobj is None:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "The Job has no selected Base object.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "The Job has no selected Base object.")+"\n")
             return
         self.__review(obj)
 
@@ -70,14 +70,14 @@ class CommandPathSanity:
         clean = True
 
         # if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
-        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.")+"\n")
 
         if obj.PostProcessor == '':
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.")+"\n")
             clean = False
 
         if obj.PostProcessorOutputFile == '':
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No output file is named. You'll be prompted during postprocessing.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No output file is named. You'll be prompted during postprocessing.")+"\n")
             clean = False
 
         for tc in obj.ToolController:
@@ -137,7 +137,7 @@ class CommandPathSanity:
             clean = False
 
         if len(obj.ToolController) == 0: #need at least one active TC
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.")+"\n")
             clean = False
 
         if clean:
@@ -146,16 +146,16 @@ class CommandPathSanity:
     def __checkTC(self, tc):
         clean = True
         if tc.ToolNumber == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " is using ID 0 which the undefined default. Please set a real tool.")+"\n")
             clean = False
         if tc.HorizFeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Horizontal feed rate\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Horizontal feed rate")+"\n")
             clean = False
         if tc.VertFeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Vertical feed rate\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Vertical feed rate")+"\n")
             clean = False
         if tc.SpindleSpeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the spindle speed\n"))
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the spindle speed")+"\n")
             clean = False
         return clean
 

@@ -26,6 +26,7 @@
 # include <algorithm>
 # include <QFileInfo>
 # include <QInputDialog>
+# include <Python.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -74,8 +75,8 @@ void CmdPointsImport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-      QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
-      .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
+      QString::null, QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+      .arg(QObject::tr("Point formats")).arg(QObject::tr("All Files")));
     if (fn.isEmpty())
         return;
 
@@ -83,13 +84,11 @@ void CmdPointsImport::activated(int iMsg)
         QFileInfo fi;
         fi.setFile(fn);
 
+        Gui::Document* doc = getActiveGuiDocument();
         openCommand("Import points");
-        QByteArray name = fi.baseName().toLatin1();
-        Points::Feature* pts = static_cast<Points::Feature*>(getActiveGuiDocument()->getDocument()->
-            addObject("Points::Feature", static_cast<const char*>(name)));
-        Points::PointKernel* kernel = pts->Points.startEditing();
-        kernel->load(static_cast<const char*>(fn.toLatin1()));
-        pts->Points.finishEditing();
+        addModule(Command::App, "Points");
+        doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")",
+                  fn.toUtf8().data(), doc->getDocument()->getName());
         commitCommand();
 
         updateActive();
@@ -122,20 +121,18 @@ void CmdPointsExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
+    addModule(Command::App, "Points");
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-          QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
-          .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
+          QString::null, QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+          .arg(QObject::tr("Point formats")).arg(QObject::tr("All Files")));
         if (fn.isEmpty())
             break;
 
         if (!fn.isEmpty()) {
-            QFileInfo fi;
-            fi.setFile(fn);
-
-            Points::Feature* pts = static_cast<Points::Feature*>(*it);
-            pts->Points.getValue().save(static_cast<const char*>(fn.toLatin1()));
+            doCommand(Command::Doc, "Points.export([App.ActiveDocument.%s], \"%s\")",
+                      (*it)->getNameInDocument(), fn.toUtf8().data());
         }
     }
 }

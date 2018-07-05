@@ -5,243 +5,243 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation type="unfinished">Create spreadsheet</translation>
+      <translation>Stvori proračunsku tablicu</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation type="unfinished">Create a new spreadsheet</translation>
+      <translation>Stvori novu proračunsku tablicu</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Align bottom</source>
-      <translation type="unfinished">Align bottom</translation>
+      <translation>Poravnaj dolje</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation type="unfinished">Bottom-align contents of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija na donjoj granici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Align center</source>
-      <translation type="unfinished">Align center</translation>
+      <translation>Poravnaj po sredini</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation type="unfinished">Center-align contents of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Align left</source>
-      <translation type="unfinished">Align left</translation>
+      <translation>Poravnaj lijevo</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation type="unfinished">Left-align contents of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija na lijevoj granici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Align right</source>
-      <translation type="unfinished">Align right</translation>
+      <translation>Poravnaj desno</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation type="unfinished">Right-align contents of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija na desnoj granici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Align top</source>
-      <translation type="unfinished">Align top</translation>
+      <translation>Poravnaj gore</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation type="unfinished">Top-align contents of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija na gornjoj granici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation type="unfinished">Vertically center-align</translation>
+      <translation>Okomito poravnaj</translation>
     </message>
     <message>
       <source>Center-align contents vertically of selected cells</source>
-      <translation type="unfinished">Center-align contents vertically of selected cells</translation>
+      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu vodoravno</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation type="unfinished">Export spreadsheet</translation>
+      <translation>Izvezi Proračunsku Tablicu</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation type="unfinished">Export spreadsheet to CSV file</translation>
+      <translation>Izvoz proračunske tablice u CSV datoteku</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation type="unfinished">Import spreadsheet</translation>
+      <translation>Uvezi Proračunsku Tablicu</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation type="unfinished">Import CSV file into spreadsheet</translation>
+      <translation>Uvoz CSV datoteke u proračunsku tablicu</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Merge cells</source>
-      <translation type="unfinished">Merge cells</translation>
+      <translation>Spajanje ćelija</translation>
     </message>
     <message>
       <source>Merge selected cells in spreadsheet</source>
-      <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+      <translation>Spoji odabrane ćelije u proračunskoj tablici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Postavite pseudonim</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Postavite nadimak za odabrane ćelije</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Split cell</source>
-      <translation type="unfinished">Split cell</translation>
+      <translation>Podijeli ćeliju</translation>
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
-      <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+      <translation>Podjela prethodno spojenih ćelija u proračunskoj tablici</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Bold text</source>
-      <translation type="unfinished">Bold text</translation>
+      <translation>Podebljani tekst</translation>
     </message>
     <message>
       <source>Set bold text in selected cells</source>
-      <translation type="unfinished">Set bold text in selected cells</translation>
+      <translation>Postavljanje podebljanoga teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Italic text</source>
-      <translation type="unfinished">Italic text</translation>
+      <translation>Ukošeni tekst</translation>
     </message>
     <message>
       <source>Set italic text in selected cells</source>
-      <translation type="unfinished">Set italic text in selected cells</translation>
+      <translation>Postavite ukošeni teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
     <message>
       <source>Underline text</source>
-      <translation type="unfinished">Underline text</translation>
+      <translation>Podcrtavanje teksta</translation>
     </message>
     <message>
       <source>Set underline text in selected cells</source>
-      <translation type="unfinished">Set underline text in selected cells</translation>
+      <translation>Postavite podcrtavanje teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Prilagođeno</translation>
     </message>
   </context>
   <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
-      <translation type="unfinished">Cell properties</translation>
+      <translation>Svojstva ćelije</translation>
     </message>
     <message>
       <source>&amp;Color</source>
-      <translation type="unfinished">&amp;Color</translation>
+      <translation>&amp;Boja</translation>
     </message>
     <message>
       <source>Text</source>
@@ -249,11 +249,11 @@
     </message>
     <message>
       <source>Background</source>
-      <translation type="unfinished">Background</translation>
+      <translation>Pozadina</translation>
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation type="unfinished">&amp;Alignment</translation>
+      <translation>&amp;Poravnanje</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -285,42 +285,42 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation type="unfinished">&amp;Style</translation>
+      <translation>&amp;Stil</translation>
     </message>
     <message>
       <source>Bold</source>
-      <translation type="unfinished">Bold</translation>
+      <translation>Podebljano</translation>
     </message>
     <message>
       <source>Italic</source>
-      <translation type="unfinished">Italic</translation>
+      <translation>Nakošeno</translation>
     </message>
     <message>
       <source>Underline</source>
-      <translation type="unfinished">Underline</translation>
+      <translation>Podcrtano</translation>
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation type="unfinished">&amp;Display unit</translation>
+      <translation>&amp;Prikaži mjernu jedinicu</translation>
     </message>
     <message>
       <source>Unit string</source>
-      <translation type="unfinished">Unit string</translation>
+      <translation>Mjerna jedinica</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation type="unfinished">A&amp;lias</translation>
+      <translation>&amp;Pseudonim</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation type="unfinished">Alias for this cell</translation>
+      <translation>Nadimak za ovu ćeliju</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
+      <translation>Sve (*)</translation>
     </message>
     <message>
       <source>Import file</source>
@@ -332,11 +332,27 @@
     </message>
     <message>
       <source>Cell contents</source>
-      <translation type="unfinished">Cell contents</translation>
+      <translation>Sadržaj ćelije</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
-      <translation type="unfinished">Show spreadsheet</translation>
+      <translation>Pokaži Proračunsku Tablicu</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Postavljanje boje prednjeg plana ćelije</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Postavlja boju prednjeg plana ćelije proračunske tablice</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Postavi boju pozadine ćelije</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Postavlja boju pozadine ćelije proračunske tablice</translation>
     </message>
   </context>
   <context>
@@ -351,67 +367,67 @@
     </message>
     <message>
       <source>Red</source>
-      <translation type="unfinished">Red</translation>
+      <translation>Crvena</translation>
     </message>
     <message>
       <source>Dark red</source>
-      <translation type="unfinished">Dark red</translation>
+      <translation>Tamno crvena</translation>
     </message>
     <message>
       <source>Green</source>
-      <translation type="unfinished">Green</translation>
+      <translation>Zelena</translation>
     </message>
     <message>
       <source>Dark green</source>
-      <translation type="unfinished">Dark green</translation>
+      <translation>Tamno zelena</translation>
     </message>
     <message>
       <source>Blue</source>
-      <translation type="unfinished">Blue</translation>
+      <translation>Plava</translation>
     </message>
     <message>
       <source>Dark blue</source>
-      <translation type="unfinished">Dark blue</translation>
+      <translation>Tamno plava</translation>
     </message>
     <message>
       <source>Cyan</source>
-      <translation type="unfinished">Cyan</translation>
+      <translation>Modra</translation>
     </message>
     <message>
       <source>Dark cyan</source>
-      <translation type="unfinished">Dark cyan</translation>
+      <translation>Tamno modra</translation>
     </message>
     <message>
       <source>Magenta</source>
-      <translation type="unfinished">Magenta</translation>
+      <translation>Ružičasta</translation>
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation type="unfinished">Dark magenta</translation>
+      <translation>Tamno ružičasta</translation>
     </message>
     <message>
       <source>Yellow</source>
-      <translation type="unfinished">Yellow</translation>
+      <translation>Žuta</translation>
     </message>
     <message>
       <source>Dark yellow</source>
-      <translation type="unfinished">Dark yellow</translation>
+      <translation>Tamno žuta</translation>
     </message>
     <message>
       <source>Gray</source>
-      <translation type="unfinished">Gray</translation>
+      <translation>Siva</translation>
     </message>
     <message>
       <source>Dark gray</source>
-      <translation type="unfinished">Dark gray</translation>
+      <translation>Tamno siva</translation>
     </message>
     <message>
       <source>Light gray</source>
-      <translation type="unfinished">Light gray</translation>
+      <translation>Svjetlo siva</translation>
     </message>
     <message>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Prilagođeno</translation>
     </message>
   </context>
   <context>
@@ -422,7 +438,7 @@
     </message>
     <message>
       <source>&amp;Contents</source>
-      <translation type="unfinished">&amp;Contents</translation>
+      <translation>&amp;Sadržaj</translation>
     </message>
   </context>
   <context>
@@ -436,30 +452,30 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <source>Insert rows</source>
-      <translation type="unfinished">Insert rows</translation>
+      <translation>Umetni redove</translation>
     </message>
     <message>
       <source>Remove rows</source>
-      <translation type="unfinished">Remove rows</translation>
+      <translation>Ukloni redove</translation>
     </message>
     <message>
       <source>Insert columns</source>
-      <translation type="unfinished">Insert columns</translation>
+      <translation>Umetni stupce</translation>
     </message>
     <message>
       <source>Remove columns</source>
-      <translation type="unfinished">Remove columns</translation>
+      <translation>Ukloni stupce</translation>
     </message>
     <message>
       <source>Properties...</source>
-      <translation type="unfinished">Properties...</translation>
+      <translation>Svojstva...</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation type="unfinished">Spreadsheet</translation>
+      <translation>Proračunska tablica</translation>
     </message>
   </context>
 </TS>

@@ -108,7 +108,7 @@ public Q_SLOTS:
     void datumLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);
-    void updateDim(void);
+    void updateDim(bool obtuse = false);
 
 protected:
     void draw() override;
@@ -116,6 +116,8 @@ protected:
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
     virtual void setPens(void);
+    Base::Vector3d findIsoDir(Base::Vector3d ortho);
+    Base::Vector3d findIsoExt(Base::Vector3d isoDir);
 
 protected:
     bool hasHover;

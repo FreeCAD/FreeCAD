@@ -103,7 +103,7 @@ DrawViewDetail::DrawViewDetail()
     ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
 
     getParameters();
-    m_fudge = 1.1;
+    m_fudge = 1.01;
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-        Base::Console().Message("INFO - DVD::execute - testBox is void\n");
+        Base::Console().Message("DrawViewDetail - detail area contains no geometry\n");
     }
 
 //for debugging show compound instead of cut
@@ -274,6 +274,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     requestPaint();
+    dvp->requestPaint();
 
     return App::DocumentObject::StdReturn;
 }

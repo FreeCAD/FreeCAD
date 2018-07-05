@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Go to the next page</source>
-      <translation>Avançar página</translation>
+      <translation>Ir para a próxima página</translation>
     </message>
   </context>
   <context>
@@ -42,13 +42,13 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>Refrescar a página</translation>
+      <translation>Atualizar a página da web</translation>
     </message>
   </context>
   <context>
@@ -56,17 +56,17 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>Stop loading</source>
-      <translation>Parar a carga</translation>
+      <translation>Parar carregamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Stop the current loading</source>
-      <translation>Parar a carga atual</translation>
+      <translation>Parar o carregamento atual</translation>
     </message>
   </context>
   <context>
@@ -74,12 +74,12 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Zoom in</source>
-      <translation>Aproximar</translation>
+      <translation>Ampliar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
       <source>What to upload?</source>
-      <translation>O que fazer upload?</translation>
+      <translation>O que carregar?</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
@@ -163,12 +163,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
       <source>Tags (separated by commas)</source>
-      <translation>Etiquetas (separadas por vírgula)</translation>
+      <translation>Etiquetas (separadas por vírgulas)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (exportador Arch)</translation>
+      <translation>OBJ + MTL (exportador Arquitetura)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
@@ -218,12 +218,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Carregar</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation>fazer upload</translation>
+      <translation>carregar</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>

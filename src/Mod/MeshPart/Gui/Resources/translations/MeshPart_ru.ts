@@ -147,7 +147,7 @@
     <message>
       <location line="+26"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Непрерывность</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -157,7 +157,7 @@
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Начало</translation>
     </message>
   </context>
   <context>
@@ -180,7 +180,7 @@
     <message>
       <location line="+6"/>
       <source>Standard</source>
-      <translation>По умолчанию</translation>
+      <translation>Стандартно</translation>
     </message>
     <message>
       <location line="+7"/>

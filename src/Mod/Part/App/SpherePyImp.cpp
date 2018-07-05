@@ -177,7 +177,7 @@ void SpherePy::setAxis(Py::Object arg)
         this_surf->SetAxis(axis);
     }
     catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
+        throw Py::RuntimeError("cannot set axis");
     }
 }
 

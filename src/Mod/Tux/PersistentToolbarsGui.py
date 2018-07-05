@@ -33,7 +33,7 @@ def pythonToolbars():
 
     active = Gui.activeWorkbench().__class__.__name__
 
-    if active == "DraftWorkbench" or active == "ArchWorkbench":
+    if active == "DraftWorkbench" or active == "ArchWorkbench" or active == "BIMWorkbench":
         if hasattr(Gui, "draftToolBar"):
             try:
                 Gui.draftToolBar.Activated()

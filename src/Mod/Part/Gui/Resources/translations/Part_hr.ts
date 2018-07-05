@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="+312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Any</translation>
+      <translation>Bilo koji</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -37,7 +37,7 @@
       <location line="+1"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Curve</translation>
+      <translation>Krivulja</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -49,7 +49,7 @@
       <location line="+1"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Conic</translation>
+      <translation>Koničan</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -61,13 +61,13 @@
       <location line="+1"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Parabola</translation>
+      <translation>Parabola</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Hyperbola</translation>
+      <translation>Hiperbola</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -109,7 +109,7 @@
       <location line="+2"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -130,95 +130,95 @@
       <location line="-65"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiviran</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Point can be moved by editing Placement property.</translation>
+      <translation>Dodatak je onemogućen. Točka može biti premještena uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Object's origin</translation>
+      <translation>Ishodište Objekta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Točka je stavljena na poziciju položaja objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus1</translation>
+      <translation>Fokus1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Focus of ellipse, parabola, hyperbola.</translation>
+      <translation>Fokus elipse, parabole, hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus2</translation>
+      <translation>Fokus2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Second focus of ellipse and hyperbola.</translation>
+      <translation>Drugi fokus elipse i hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">On edge</translation>
+      <translation>Na rubu</translation>
     </message>
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Točka je stavljena na rub, MapPathParametr kontrolira gdje. Osim toga, vrhovi mogu biti povezani u za izradu projekcija.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of curvature</translation>
+      <translation>Središte zakrivljenosti</translation>
     </message>
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+      <translation>Središte dodirivanja ruba kruga. Opcionalni vrh spajanja, definira gdje.</translation>
     </message>
     <message>
       <location line="-2"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Točka je stavljena na rub, MapPathParametr kontrolira gdje. Osim toga, vrhovi mogu biti povezani u za izradu projekcija.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Središte dodirivanja ruba kruga. Optimalno spajanje vrha definira gdje.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>Centar mase</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>Centar mase svih referenca (pretpostavlja se jednaka gustoća).</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -230,7 +230,7 @@
       <location line="+1"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Not implemented</translation>
+      <translation>Nije realizirano</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -242,31 +242,31 @@
       <location line="+1"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Stavite Datum točku koja se poklapa s drugim vrhom.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Približno točka 1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Točka na prvoj referenci koja je najbliža drugoj referenci.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Približno točka 2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Točka na drugoj referenci koja je najbliža prvoj referenci.</translation>
     </message>
   </context>
   <context>
@@ -275,104 +275,104 @@
       <location line="-100"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiviran</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+      <translation>Dodavanje je onemogućeno. Linija se može pomjeriti uređivanjem svojstva položaja.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>Objekt-ovo X</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+6"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Linija je poravnata uzduž Lokalne X osi objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>Objekt-ovo Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Linija je poravnata uzduž Lokalne Y osi objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>Objekt-ovo Z</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Axis of curvature</translation>
+      <translation>Osi zakrivljenosti</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Linija koja je na osi dodirivanja kruga na rubu zakrivljenosti. Opcionalni vrh definira gdje.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Directrix1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Directrix linija za elipsu, parabolu, hiperbolu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Directrix2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Druga directrix linija za elipsu i hiperbolu.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote1</translation>
+      <translation>Asimptota1</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Asymptote of a hyperbola.</translation>
+      <translation>Asimptota od hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote2</translation>
+      <translation>Asimptota2</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second asymptote of hyperbola.</translation>
+      <translation>Druga asimptota od hiperbole.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -384,25 +384,25 @@
       <location line="+1"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Linija tangente na jedan rub. Opcionalni vrh definira gdje.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Normalno do ruba</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normalno na površinu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Linija okomito na površinu u točki postavljenoj na vrh.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -419,7 +419,7 @@
       <location line="+2"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormalno</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -444,19 +444,19 @@
       <location line="-1"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Tangenta na površinu (V)</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Through two points</translation>
+      <translation>Kroz dvije točke</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that passes through two vertices.</translation>
+      <translation>Linija koja prolazi kroz dva vrha.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -468,25 +468,25 @@
       <location line="+1"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Not implemented.</translation>
+      <translation>Nije ugrađeno.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Približna linija</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Linija premoščenja najkraće udaljenosti između oblika.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">1st principal axis</translation>
+      <translation>1. glavna os</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -498,7 +498,7 @@
       <location line="+2"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">2nd principal axis</translation>
+      <translation>2. glavna os</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -510,7 +510,7 @@
       <location line="+2"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">3rd principal axis</translation>
+      <translation>3. glavna os</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -525,24 +525,24 @@
       <location line="-133"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiviran</translation>
     </message>
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Plane can be moved by editing Placement property.</translation>
+      <translation>Dodatak je onemogućen. Ploha može biti premještena uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Dodatak je onemogućen. Objekt može biti premješten uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Prenesi porijeklo</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -554,7 +554,7 @@
       <location line="+2"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>Objekt-ovo XY</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -566,7 +566,7 @@
       <location line="+2"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>Objekt-ovo XZ</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -578,7 +578,7 @@
       <location line="+2"/>
       <source>Object's  YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's  YZ</translation>
+      <translation>Objekt-ovo YZ</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -590,7 +590,7 @@
       <location line="+2"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Ravna ploha</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -614,7 +614,7 @@
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Normalno do ruba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -640,19 +640,19 @@
       <location line="-4"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Koncentričan</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -732,7 +732,7 @@
       <location line="-124"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiviran</translation>
     </message>
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
@@ -743,13 +743,13 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Dodatak je onemogućen. Objekt može biti premješten uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Prenesi porijeklo</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -761,7 +761,7 @@
       <location line="+2"/>
       <source>Object's  X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Y Z</translation>
+      <translation>Objekt-ovo X Y Z</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -773,7 +773,7 @@
       <location line="+2"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Z-Y</translation>
+      <translation>Objekt-ovo X Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -785,7 +785,7 @@
       <location line="+2"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  Y Z X</translation>
+      <translation>Objekt-ovo Y Z X</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -797,7 +797,7 @@
       <location line="+2"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY na plohi</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -833,7 +833,7 @@
       <location line="+2"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Fernet NBT</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -847,19 +847,19 @@
       <location line="-4"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Fernet TNB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Fernet TBN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Koncentričan</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -949,81 +949,81 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte Z' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Poravnajte O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte X' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Poravnajte O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte X ' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Poravnajte O-Y-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte Y' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Poravnajte O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte Y' i X' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Poravnajte O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte normalu i vodoravnu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Poravnajte O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Podudaranje s prvim vrhom. Poravnajte normalu i okomitu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -1035,7 +1035,7 @@
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Poravnajte O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1047,7 +1047,7 @@
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Poravnajte O-Y-N</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1250,7 +1250,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Clear All</source>
-      <translation type="unfinished">Clear All</translation>
+      <translation>Obriši sve</translation>
     </message>
   </context>
   <context>
@@ -1264,7 +1264,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Measure Linear</source>
-      <translation type="unfinished">Measure Linear</translation>
+      <translation>Mjerno ravnalo</translation>
     </message>
   </context>
   <context>
@@ -1278,7 +1278,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Toggle 3d</source>
-      <translation type="unfinished">Toggle 3d</translation>
+      <translation>Uključi/Isključi 3d</translation>
     </message>
   </context>
   <context>
@@ -1292,7 +1292,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Toggle All</source>
-      <translation type="unfinished">Toggle All</translation>
+      <translation>Uključi/Isključi sve</translation>
     </message>
   </context>
   <context>
@@ -1306,7 +1306,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Toggle Delta</source>
-      <translation type="unfinished">Toggle Delta</translation>
+      <translation>Uključi/isključi Delta</translation>
     </message>
   </context>
   <context>
@@ -1344,7 +1344,7 @@
     <message>
       <location line="-15"/>
       <source>Create a cube solid</source>
-      <translation type="unfinished">Create a cube solid</translation>
+      <translation>Stvori geometrisko tijelo kocke</translation>
     </message>
     <message>
       <source>Box</source>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1455,18 +1455,18 @@
     <message>
       <location line="+1"/>
       <source>Join objects...</source>
-      <translation type="unfinished">Join objects...</translation>
+      <translation>Pridruži objekte...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Join walled objects</source>
-      <translation type="unfinished">Join walled objects</translation>
+      <translation>Pridruži zatvorene objekte</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1484,14 +1484,14 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Split objects...</source>
-      <translation type="unfinished">Split objects...</translation>
+      <translation>Razdjeli objekte...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1509,12 +1509,12 @@
     <message>
       <location line="+1"/>
       <source>Make compound</source>
-      <translation type="unfinished">Make compound</translation>
+      <translation>Napravite spoj</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Make a compound of several shapes</source>
-      <translation type="unfinished">Make a compound of several shapes</translation>
+      <translation>Napravite spoj nekoliko oblika</translation>
     </message>
   </context>
   <context>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1733,10 +1733,14 @@
     <message>
       <location line="+1"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>Stvori naličje od žice</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g. from a sketch)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
       <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
     </message>
@@ -1795,7 +1799,7 @@
     <message>
       <location line="+1"/>
       <source>3D Offset...</source>
-      <translation type="unfinished">3D Offset...</translation>
+      <translation>3D Pomak...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1821,7 +1825,7 @@
     <message>
       <location line="+1"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D Pomak...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1832,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -2149,35 +2153,43 @@
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Referenca 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Referenca 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Referenca 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Referenca 4</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Dodavanje mod:</translation>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Dodavanje pomak:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
       <source>Extra placement:</source>
       <translation type="unfinished">Extra placement:</translation>
     </message>
@@ -2214,7 +2226,7 @@
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Prebaci strane</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Zarubi stranice</translation>
     </message>
@@ -2473,7 +2485,7 @@
     <message>
       <location line="+3"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Uzduž ruba:</translation>
     </message>
     <message>
       <location line="+98"/>
@@ -2483,7 +2495,7 @@
     <message>
       <location line="+6"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>Uzduž:</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -2493,7 +2505,7 @@
     <message>
       <location line="+19"/>
       <source>Against:</source>
-      <translation type="unfinished">Against:</translation>
+      <translation>Nasuprot:</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -2508,7 +2520,7 @@
     <message>
       <location line="+3"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>Simetrično</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -2552,7 +2564,7 @@
     <message>
       <location filename="../../DlgExtrusion.cpp" line="-26"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Odabiranje...</translation>
     </message>
     <message>
       <location line="+241"/>
@@ -2641,7 +2653,7 @@
     <message>
       <location line="-69"/>
       <source>Select faces</source>
-      <translation type="unfinished">Select faces</translation>
+      <translation>Odaberi naličja</translation>
     </message>
     <message>
       <location line="-16"/>
@@ -2651,7 +2663,7 @@
     <message>
       <location line="+6"/>
       <source>Select edges</source>
-      <translation type="unfinished">Select edges</translation>
+      <translation>Odaberite rubove</translation>
     </message>
     <message>
       <location line="+47"/>
@@ -2684,7 +2696,7 @@
       <translation>Nema odabira</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Duljina:</translation>
     </message>
@@ -2705,14 +2717,14 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
-      <translation type="unfinished">Start length</translation>
+      <translation>Početak dužine</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
-      <translation type="unfinished">End length</translation>
+      <translation>Kraj dužine</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2721,17 +2733,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Početni radijus</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Krajnji radijus</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
@@ -2762,13 +2774,13 @@ Please check one or more edge entities first.</source>
       <translation>Nijedan</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Rub%1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>Nema odabranih oblika</translation>
     </message>
@@ -2784,7 +2796,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="+14"/>
       <source>IGES</source>
-      <translation type="unfinished">IGES</translation>
+      <translation>IGES</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2843,22 +2855,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+10"/>
       <source>Header</source>
-      <translation type="unfinished">Header</translation>
+      <translation>Zaglavlje</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Tvrtka</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Product</source>
-      <translation type="unfinished">Product</translation>
+      <translation>Proizvod</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Autor</translation>
     </message>
   </context>
   <context>
@@ -2866,10 +2878,10 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="+14"/>
       <source>STEP</source>
-      <translation type="unfinished">STEP</translation>
+      <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Izvoz</translation>
     </message>
@@ -2904,24 +2916,39 @@ Please select a valid shape in the drop-down box first.</source>
       <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation type="unfinished">Import</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation type="unfinished">Enable STEP Compound merge</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
-      <translation type="unfinished">Header</translation>
+      <translation>Zaglavlje</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Tvrtka</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Autor</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Product</source>
-      <translation type="unfinished">Product</translation>
+      <translation>Proizvod</translation>
     </message>
   </context>
   <context>
@@ -3080,12 +3107,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
       <source>IGES</source>
-      <translation type="unfinished">IGES</translation>
+      <translation>IGES</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
   </context>
   <context>
@@ -3127,12 +3154,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
       <source>STEP</source>
-      <translation type="unfinished">STEP</translation>
+      <translation>STEP</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
   </context>
   <context>
@@ -3308,7 +3335,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+27"/>
       <location filename="../../DlgPrimitives.cpp" line="+67"/>
       <source>Spiral</source>
-      <translation type="unfinished">Spiral</translation>
+      <translation>Spirala</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3331,7 +3358,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+9"/>
       <location filename="../../DlgPrimitives.cpp" line="+14"/>
       <source>Regular polygon</source>
-      <translation type="unfinished">Regular polygon</translation>
+      <translation>Pravilni poligon</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -3393,28 +3420,28 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="-377"/>
       <location line="+191"/>
       <source>U parameter:</source>
-      <translation type="unfinished">U parameter:</translation>
+      <translation>U Parametar:</translation>
     </message>
     <message>
       <location line="-184"/>
       <source>V parameters:</source>
-      <translation type="unfinished">V parameters:</translation>
+      <translation>V Parametri:</translation>
     </message>
     <message>
       <location line="+137"/>
       <source>Radius 3:</source>
-      <translation type="unfinished">Radius 3:</translation>
+      <translation>Radijus 3:</translation>
     </message>
     <message>
       <location line="+70"/>
       <location line="+90"/>
       <source>V parameter:</source>
-      <translation type="unfinished">V parameter:</translation>
+      <translation>V Parametar:</translation>
     </message>
     <message>
       <location line="-23"/>
       <source>U Parameter:</source>
-      <translation type="unfinished">U Parameter:</translation>
+      <translation>U Parametar:</translation>
     </message>
     <message>
       <source>U parametric:</source>
@@ -3428,13 +3455,13 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+150"/>
       <location line="+882"/>
       <source>Polygon:</source>
-      <translation type="unfinished">Polygon:</translation>
+      <translation>Poligon:</translation>
     </message>
     <message>
       <location line="-862"/>
       <location line="+882"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Polumjer opsega:</translation>
     </message>
     <message>
       <location line="-831"/>
@@ -3479,12 +3506,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+88"/>
       <source>Growth:</source>
-      <translation type="unfinished">Growth:</translation>
+      <translation>Rast:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Number of rotations:</source>
-      <translation type="unfinished">Number of rotations:</translation>
+      <translation>Broj rotacija:</translation>
     </message>
     <message>
       <location line="+58"/>
@@ -3577,69 +3604,69 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</translation>
+      <translation>Ako je uključeno, rotirajuća žica će napraviti geometrijsko tijelo, ako nije rotiranjem žice će se proizvesti ljuska.</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
+      <translation>Ako je uključeno, rotirajuća žica će napraviti geometrijsko tijelo, ako nije rotiranjem žice će se proizvesti ljuska.</translation>
     </message>
     <message>
       <location line="+79"/>
       <source>Revolution axis</source>
-      <translation type="unfinished">Revolution axis</translation>
+      <translation>Os vrtnje</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Center X:</source>
-      <translation type="unfinished">Center X:</translation>
+      <translation>Centar X:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Y:</source>
-      <translation type="unfinished">Center Y:</translation>
+      <translation>Centar Y:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Center Z:</source>
-      <translation type="unfinished">Center Z:</translation>
+      <translation>Centar Z:</translation>
     </message>
     <message>
       <location line="+42"/>
       <location line="+41"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Kliknite da biste to postavili kao os</translation>
     </message>
     <message>
       <location line="-38"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>Smjer X:</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Smjer Y:</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Smjer Z:</translation>
     </message>
     <message>
       <location line="+22"/>
       <location filename="../../DlgRevolution.cpp" line="+440"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Odaberite referencu</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Ako je uključeno, rotiranje će biti prema naprijed i nazad za pola kuta.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Symmetric angle</source>
-      <translation type="unfinished">Symmetric angle</translation>
+      <translation>Simetrični kut</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -3674,7 +3701,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-17"/>
       <source>Create Solid</source>
-      <translation type="unfinished">Create Solid</translation>
+      <translation>Stvaranje geometriskog tijela</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="-268"/>
@@ -3700,12 +3727,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+9"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Rotiranje u smjeru osi je nula. Ne smije biti nula.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Razmak zakretanja je nula. Ne smije biti nula.</translation>
     </message>
     <message>
       <location line="+122"/>
@@ -3713,14 +3740,12 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation type="unfinished">Creating Revolve failed.
-
-%1</translation>
+      <translation>Stvaranje zakretanja nije uspjelo. %1</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Selecting... (line or arc)</source>
-      <translation type="unfinished">Selecting... (line or arc)</translation>
+      <translation>Odaberi...(liniju ili kut)</translation>
     </message>
   </context>
   <context>
@@ -3758,7 +3783,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+61"/>
       <source>Maximum angular deflection</source>
-      <translation type="unfinished">Maximum angular deflection</translation>
+      <translation>Maksimalno kutno odstupanje</translation>
     </message>
     <message utf8="true">
       <location line="+7"/>
@@ -3852,17 +3877,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+13"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation type="unfinished">Automatically refine model after sketch-based operation</translation>
+      <translation>Automatski usavrši model nakon boolean operacija</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Object naming</source>
-      <translation type="unfinished">Object naming</translation>
+      <translation>Imenovanje objekta</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Add name of base object</source>
-      <translation type="unfinished">Add name of base object</translation>
+      <translation>Daj ime osnovnom objektu</translation>
     </message>
     <message>
       <location line="-48"/>
@@ -3875,22 +3900,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
       <source>Part colors</source>
-      <translation type="unfinished">Part colors</translation>
+      <translation>Boje objekta</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Default Part colors</source>
-      <translation type="unfinished">Default Part colors</translation>
+      <translation>Zadana boja objekta</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Default shape color</source>
-      <translation type="unfinished">Default shape color</translation>
+      <translation>Zadana boja forme</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The default color for new shapes</source>
-      <translation type="unfinished">The default color for new shapes</translation>
+      <translation>Zadana boja za nove forme</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -3901,7 +3926,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+7"/>
       <location line="+68"/>
       <source>The default line color for new shapes</source>
-      <translation type="unfinished">The default line color for new shapes</translation>
+      <translation>Zadana boja za nove linije forme</translation>
     </message>
     <message>
       <location line="-42"/>
@@ -3912,43 +3937,43 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+7"/>
       <location line="+68"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>Zadana debljina linije za nove forme</translation>
     </message>
     <message>
       <location line="-65"/>
       <location line="+68"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location line="-43"/>
       <source>Default vertex color</source>
-      <translation type="unfinished">Default vertex color</translation>
+      <translation>Zadana boja vrha</translation>
     </message>
     <message>
       <location line="+33"/>
       <source>Default vertex size</source>
-      <translation type="unfinished">Default vertex size</translation>
+      <translation>Zadana veličina vrha</translation>
     </message>
     <message>
       <location line="+35"/>
       <source>Bounding box color</source>
-      <translation type="unfinished">Bounding box color</translation>
+      <translation>Boja graničnog okvira</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+      <translation>Boja graničnog okvira u 3D prikazu</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>Napomene</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Default text color</source>
-      <translation type="unfinished">Default text color</translation>
+      <translation>Zadana boja teksta</translation>
     </message>
   </context>
   <context>
@@ -3991,7 +4016,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="+220"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>Vrh/Rub/Žice/Naličja</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4006,17 +4031,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Dostupni profili</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Odabrani profili</translation>
     </message>
     <message>
       <location line="+82"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+      <translation>Najmanje su potrebna dva vrha, ruba, žice, ili naličja.</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -4067,7 +4092,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+8"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>Osnovna točka</translation>
     </message>
     <message>
       <source>Base point:</source>
@@ -4150,7 +4175,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+28"/>
       <source>Select three or more vertices</source>
-      <translation type="unfinished">Select three or more vertices</translation>
+      <translation>Odaberi tri ili više vrhova</translation>
     </message>
     <message>
       <location line="+52"/>
@@ -4175,7 +4200,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+7"/>
       <source>Select a list of vertices</source>
-      <translation type="unfinished">Select a list of vertices</translation>
+      <translation>Odaberi listu vrhova</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4207,7 +4232,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>Vrh/Rub/Žice/Naličja</translation>
     </message>
     <message>
       <location line="-152"/>
@@ -4223,12 +4248,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Dostupni profili</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Odabrani profili</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4274,7 +4299,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+24"/>
       <location line="+8"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>Odabrani doseg puta je nevažeći.</translation>
     </message>
   </context>
   <context>
@@ -4292,36 +4317,44 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+15"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Referenca 1</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Referenca 2</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Referenca 3</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Referenca 4</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Dodavanje mod:</translation>
     </message>
     <message>
       <location line="+20"/>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Dodavanje pomak:</translation>
+    </message>
+    <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
       <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
       <source>Extra placement:</source>
       <translation type="unfinished">Extra placement:</translation>
     </message>
@@ -4358,27 +4391,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Prebaci strane</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="-17"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>OCC greška: %1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>nepoznata greška</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Dodavanje nije uspjelo: %1</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Nije dodano</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -4387,11 +4420,20 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <location line="+4"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+    </message>
+    <message>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
+    </message>
+    <message>
       <source>Extra placement (inactive - not attached):</source>
       <translation type="unfinished">Extra placement (inactive - not attached):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -4408,7 +4450,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+59"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Odabiranje...</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -4416,50 +4458,49 @@ Please select a valid shape in the drop-down box first.</source>
       <translation type="unfinished">Reference%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Kombinacija referenci:
 </translation>
     </message>
     <message>
       <source>Reference combinations:
 </source>
-      <translation type="unfinished">Reference combinations:
+      <translation>Kombinacija referenci:
 </translation>
     </message>
     <message>
       <location line="+17"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (dodaj %2)</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (dodaj više referenci)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>Sadržaj oblika</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Provjeri geometriju</translation>
     </message>
@@ -4906,7 +4947,7 @@ u 3D pogledu kao putanju za Sweep.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="+172"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Jednostavno</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4947,23 +4988,23 @@ u 3D pogledu kao putanju za Sweep.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Molim odaberite dva oblika.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4989,7 +5030,7 @@ Do you want to continue?</translation>
       <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
@@ -5057,7 +5098,7 @@ Do you want to continue?</translation>
       <location line="+1"/>
       <location line="+1"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Uvoz / izvoz</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -5071,12 +5112,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="+204"/>
       <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
+      <translation>Sve CAD datoteke</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="+963"/>
@@ -5089,7 +5130,7 @@ Do you want to continue?</translation>
       <translation>Uredi zaobljene rubove</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Postavljanje boje ...</translation>
     </message>
@@ -5114,7 +5155,7 @@ Do you want to continue?</translation>
       <translation>Ljuska</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Površina</translation>
@@ -5128,7 +5169,7 @@ Do you want to continue?</translation>
       <location filename="../../TaskAttacher.cpp" line="-9"/>
       <location line="+33"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Referenca još nije postavljena</translation>
     </message>
     <message>
       <location line="-21"/>
@@ -5397,7 +5438,7 @@ Do you want to continue?</translation>
       <location filename="../../TaskDimension.cpp" line="+552"/>
       <location line="+1046"/>
       <source>Selections</source>
-      <translation type="unfinished">Selections</translation>
+      <translation>Odabiri</translation>
     </message>
     <message>
       <location line="-1039"/>
@@ -5408,27 +5449,27 @@ Do you want to continue?</translation>
     <message>
       <location line="-269"/>
       <source>Reset Dialog</source>
-      <translation type="unfinished">Reset Dialog</translation>
+      <translation>Resetiraj dijalog</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Toggle 3d</source>
-      <translation type="unfinished">Toggle 3d</translation>
+      <translation>Uključi/Isključi 3d</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Toggle Delta</source>
-      <translation type="unfinished">Toggle Delta</translation>
+      <translation>Uključi/isključi Delta</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Clear All</source>
-      <translation type="unfinished">Clear All</translation>
+      <translation>Obriši sve</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="+80"/>
       <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
+      <translation>Pokaži kontrolne točke</translation>
     </message>
   </context>
   <context>

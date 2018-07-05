@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Addjon háromszöget kézzel a hálóhoz</translation>
+      <translation>Adjon háromszöget kézzel a hálóhoz</translation>
     </message>
   </context>
   <context>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Megmutatja a kiválasztott háló határvoalait</translation>
+      <translation>Megmutatja a kiválasztott háló határvonalait</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Interaktív formárambontás iránya</translation>
+      <translation>Interaktív formára bontás iránya</translation>
     </message>
     <message>
       <source>Mesh</source>
@@ -106,10 +106,14 @@
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Megnyit egy párbeszédablakot, a háló elemezzéséehez és javításához</translation>
+      <translation>Megnyit egy párbeszédablakot, a háló elemzéséhez és javításához</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
+      <translation>Háló értékelése &amp; javítása...</translation>
+    </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
       <translation>Háló értékelése &amp; javítása...</translation>
     </message>
   </context>
@@ -364,7 +368,7 @@
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>A háló levágása kiválaszott sokszöggel</translation>
+      <translation>A háló levágása kiválasztott sokszöggel</translation>
     </message>
   </context>
   <context>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Lépték...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Kiválasztott hálók skálázása</translation>
     </message>
   </context>
   <context>
@@ -746,7 +750,7 @@
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Tükrözött normalist talált</translation>
+      <translation>Tükrözött normát talált</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
@@ -760,11 +764,11 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 hajlítás a felületen</translation>
+      <translation>%1 összecsukás a felületen</translation>
     </message>
     <message>
       <source>Folds</source>
-      <translation>Hajlítás</translation>
+      <translation>Ráncok</translation>
     </message>
     <message>
       <source>Settings...</source>
@@ -862,7 +866,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Closed</source>
-      <translation>Zárva</translation>
+      <translation>Zárt</translation>
     </message>
     <message>
       <source>Sampling:</source>
@@ -908,7 +912,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Meghatározza a mozaik háló testre vonatkozó maximum eltérését. Minél kisebb az érték, annál lasúbb a renderelés sebessége és szebb a végeredmény.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Hálózófaktor&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Meghatározza a mozaik háló testre vonatkozó maximum eltérését. Minél kisebb az érték, annál lassabb a renderelés sebessége és szebb a végeredmény.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
@@ -931,11 +935,11 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
-      <translation>Két oldali renderelés</translation>
+      <translation>Két oldali igaztás</translation>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Hátsó lap szín</translation>
+      <translation>Hátsó lap színe</translation>
     </message>
     <message>
       <source>Smoothing</source>
@@ -1075,7 +1079,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt;nézd mint</translation>
+      <translation>&lt;felületek mint</translation>
     </message>
     <message>
       <source>Region</source>
@@ -1099,7 +1103,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt;nézd mint</translation>
+      <translation>&gt;felületek mint</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1107,7 +1111,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnybern</translation>
+      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>
@@ -1181,7 +1185,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnybern</translation>
+      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
@@ -1253,7 +1257,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Szilárde test háló</translation>
+      <translation>Szilárd test háló</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1261,11 +1265,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Fill holes</source>
-      <translation>Lyukak kitöltése</translation>
+      <translation>Furatok kitöltése</translation>
     </message>
     <message>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Töltse ki a lyukakat maximális számú élekkel:</translation>
+      <translation>Töltse ki a furatokat maximális számú élekkel:</translation>
     </message>
     <message>
       <source>Binary STL (*.stl)</source>
@@ -1377,7 +1381,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Clear selected faces</source>
-      <translation>Kijelölt felületek törlése</translation>
+      <translation>Felületek kiválasztásának törlése</translation>
     </message>
     <message>
       <source>Annotation</source>
@@ -1413,7 +1417,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation>Autodesk álnév hálótest</translation>
+      <translation>Ál hálótest</translation>
     </message>
     <message>
       <source>Object File Format</source>
@@ -1461,11 +1465,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Méretezés</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Adja meg a skálafaktort:</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1484,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>Behálóz &amp;M</translation>
+      <translation>Behálóz</translation>
     </message>
     <message>
       <source>Mesh tools</source>

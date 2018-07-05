@@ -6,7 +6,7 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Plotgereedschappen</translation>
+      <translation>Plotbewerkingsgereedschappen</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>

@@ -16,18 +16,21 @@
     </Documentation>
 		<Methode Name="getParameterByLength" Const="true">
 			<Documentation>
-				<UserDocu>paramval = getParameterByLength(pos)
+				<UserDocu>paramval = getParameterByLength(pos, [tolerance = 1e-7])
 Get the value of the primary parameter at the given distance along the cartesian
-length of the curve.
+length of the edge.
 
 Args:
-    pos (float or int): The distance along the length of the curve at which to 
+    pos (float or int): The distance along the length of the edge at which to 
         determine the primary parameter value. See help for the FirstParameter or 
         LastParameter properties for more information on the primary parameter.
+        If the given value is positive, the distance from edge start is used.
+        If the given value is negative, the distance from edge end is used.
+    tol (float): Computing tolerance. Optional, defaults to 1e-7.
 
 Returns:
 
-    paramval (float): the value of the primary parameter defining the curve at the 
+    paramval (float): the value of the primary parameter defining the edge at the 
         given position along its cartesian length.
 </UserDocu>
 			</Documentation>

@@ -514,7 +514,7 @@ void Approximate::ParameterBoundary()
 }
 /*! \brief Parameterizing the Inner Points
 
- This function will parameterize the inner points. Using the algorithim based on paper from
+ This function will parameterize the inner points. Using the algorithm based on paper from
  Michael S. Floater, published in Computer Aided Design 14(1997) page 231 - 250,
  entitled Parametrization and smooth approximation of surface triangulation
 */
@@ -1447,7 +1447,7 @@ double Approximate::Reparam()
 
 /*! \brief Extend the Nurb
 
-    Once error is computed and the generated nurb is stil not satisfactory (i.e max_err > tolerance), this function will extend
+ Once error is computed and the generated nurb is still not satisfactory (i.e max_err > tolerance), this function will extend
  the given Nurb by extending the Knot vectors by 2 and, because the degree is held constant, the control points
 */
 void Approximate::ExtendNurb(double c2, int h)
@@ -1466,9 +1466,9 @@ void Approximate::ExtendNurb(double c2, int h)
 
 /*! \brief Reorder the neighbour list
 
-  This function will reorder the list in one-direction. Clockwise or counter clockwise is depending on the
-  facet list and will not be checked by this function. (i.e the third vertex i.e vertex in first facet that
-  is not the CurIndex or the first neighbour in pnt[Ok, I am also lost with this..., just debug and step to see what I mean...])
+ This function will reorder the list in one-direction. Clockwise or counter clockwise is dependent on the
+ facet list and will not be checked by this function. (i.e the third vertex i.e vertex in first facet that
+ is not the CurIndex or the first neighbour in pnt[Ok, I am also lost with this... just debug and step to see what I mean...])
 */
 void Approximate::ReorderNeighbourList(std::set<unsigned long> &pnt,
                                        std::set<unsigned long> &face, std::vector<unsigned long> &nei, unsigned long CurInd)

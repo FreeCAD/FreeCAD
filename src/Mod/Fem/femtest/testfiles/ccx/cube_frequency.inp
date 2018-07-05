@@ -430,53 +430,6 @@ Evolumes
 Evolumes
 
 ***********************************************************
-** Node sets for fixed constraint
-** written by write_node_sets_constraints_fixed function
-** FemConstraintFixed
-*NSET,NSET=FemConstraintFixed
-1,
-2,
-3,
-4,
-9,
-10,
-11,
-12,
-13,
-14,
-15,
-16,
-17,
-18,
-19,
-20,
-45,
-46,
-47,
-48,
-49,
-50,
-51,
-52,
-53,
-54,
-55,
-56,
-57,
-58,
-59,
-60,
-61,
-62,
-63,
-64,
-65,
-66,
-67,
-68,
-69,
-
-***********************************************************
 ** Materials
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
@@ -499,17 +452,7 @@ Evolumes
 ** written by write_step_begin function
 *STEP
 *FREQUENCY
-10,0.0,1000000.0
-
-
-***********************************************************
-** Fixed Constraints
-** written by write_constraints_fixed function
-** FemConstraintFixed
-*BOUNDARY
-FemConstraintFixed,1
-FemConstraintFixed,2
-FemConstraintFixed,3
+10,0.01,1000000.0
 
 
 ***********************************************************
@@ -519,11 +462,6 @@ FemConstraintFixed,3
 U
 *EL FILE
 S, E
-** outputs --> dat file
-*NODE PRINT , NSET=Nall
-U 
-*EL PRINT , ELSET=Eall
-S 
 
 ***********************************************************
 ** written by write_step_end function

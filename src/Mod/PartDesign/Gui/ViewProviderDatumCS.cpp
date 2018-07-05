@@ -146,7 +146,7 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 }
 
 void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
-    // Axis lingth of the CS is 1/3 of maximum bbox dimension, any smarter sizing will make it only worser
+    // Axis length of the CS is 1/3 of maximum bbox dimension, any smarter sizing will make it only worse
     double axisLength = std::max ( { bbox.LengthX (), bbox.LengthY(), bbox.LengthZ() } );
     axisLength *= (1 + marginFactor ()) / 3;
 

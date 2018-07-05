@@ -40,6 +40,7 @@
 #include <QSvgRenderer>
 #endif // #ifndef _PreComp_
 
+#include <chrono>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -70,6 +71,9 @@
 #include "QGIMatting.h"
 #include "QGIViewPart.h"
 #include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
+#include "ViewProviderViewPart.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
@@ -97,20 +101,7 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            //Highlight the children if this is highlighted!?  seems to mess up Face selection?
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-            QGIFace *face = dynamic_cast<QGIFace *>(*it);
-            if(edge) {
-                //edge->setHighlighted(isSelected());
-            } else if(vert){
-                //vert->setHighlighted(isSelected());
-            } else if(face){
-                //face->setHighlighted(isSelected());
-            }
-        }
+        //There's nothing special for QGIVP to do when selection changes!
     } else if(change == ItemSceneChange && scene()) {
            tidy();
     }
@@ -157,22 +148,22 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
           double y = geom->center.y - geom->radius;
 
           path.addEllipse(Rez::guiX(x),
-                          Rez::guiX(y), 
-                          Rez::guiX(geom->radius * 2), 
+                          Rez::guiX(y),
+                          Rez::guiX(geom->radius * 2),
                           Rez::guiX(geom->radius * 2));            //topleft@(x,y) radx,rady
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
-          pathArc(path, 
-                  Rez::guiX(geom->radius), 
-                  Rez::guiX(geom->radius), 
-                  0., 
-                  geom->largeArc, 
+          pathArc(path,
+                  Rez::guiX(geom->radius),
+                  Rez::guiX(geom->radius),
+                  0.,
+                  geom->largeArc,
                   geom->cw,
-                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.x),
                   Rez::guiX(geom->endPnt.y),
-                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.x),
                   Rez::guiX(geom->startPnt.y));
         } break;
         case TechDrawGeometry::ELLIPSE: {
@@ -184,41 +175,41 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                  endX = geom->center.x - geom->major * cos(geom->angle),
                  endY = geom->center.y - geom->major * sin(geom->angle);
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  false, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
                   false,
-                  Rez::guiX(endX), 
-                  Rez::guiX(endY), 
-                  Rez::guiX(startX), 
+                  false,
+                  Rez::guiX(endX),
+                  Rez::guiX(endY),
+                  Rez::guiX(startX),
                   Rez::guiX(startY));
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  false, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
                   false,
-                  Rez::guiX(startX), 
-                  Rez::guiX(startY), 
-                  Rez::guiX(endX), 
+                  false,
+                  Rez::guiX(startX),
+                  Rez::guiX(startY),
+                  Rez::guiX(endX),
                   Rez::guiX(endY));
 
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  geom->largeArc, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
+                  geom->largeArc,
                   geom->cw,
-                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.x),
                   Rez::guiX(geom->endPnt.y),
-                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.x),
                   Rez::guiX(geom->startPnt.y));
 
         } break;
@@ -303,54 +294,35 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
 
 void QGIViewPart::updateView(bool update)
 {
+    auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
+        return;
+    }
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
         return;
     }
 
     QGIView::updateView(update);
 
-
-    if (update ||
-        viewPart->isTouched() ||
-        viewPart->Source.isTouched() ||
-        viewPart->Direction.isTouched() ||
-        viewPart->Rotation.isTouched() ||
-        viewPart->Scale.isTouched() ||
-        viewPart->HardHidden.isTouched() ||
-        viewPart->SmoothVisible.isTouched() ||
-        viewPart->SeamVisible.isTouched()   ||
-        viewPart->IsoVisible.isTouched()    ||
-        viewPart->SmoothHidden.isTouched()    ||
-        viewPart->SeamHidden.isTouched()      ||
-        viewPart->IsoHidden.isTouched()       ||
-        viewPart->IsoCount.isTouched()        ||
-        viewPart->ShowSectionLine.isTouched() ||
-        viewPart->HorizCenterLine.isTouched() ||
-        viewPart->VertCenterLine.isTouched() ) {
+    if (update ) {
         draw();
-    } else if (update ||
-              viewPart->LineWidth.isTouched() ||
-              viewPart->HiddenWidth.isTouched()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            if(edge && edge->getHiddenEdge()) {
-                edge->setWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
-            } else if (edge){
-                edge->setWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
-            }
-        }
-        draw();
-    } else {
-        QGIView::draw();
     }
+
+    auto end   = std::chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
+    Base::Console().Log("TIMING - QGIVP::updateView - total %.3f millisecs\n",diffOut);
 }
 
 void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
     QGIView::draw();
+    drawCenterLines(true);   //have to draw centerlines after border to get size correct.
+    drawAllSectionLines();   //same for section lines
+
 }
 
 void QGIViewPart::drawViewPart()
@@ -363,9 +335,15 @@ void QGIViewPart::drawViewPart()
         return;
     }
 
-    float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
-    float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
-    float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
+
+    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;
+    float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
+    float lineWidthIso = vp->IsoWidth.getValue() * lineScaleFactor;
 //    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
@@ -412,10 +390,14 @@ void QGIViewPart::drawViewPart()
                     newFace->isHatched(true);
                     newFace->setFillMode(QGIFace::FromFile);
                     newFace->setHatchFile(fHatch->HatchPattern.getValue());
-                    newFace->setHatchScale(fHatch->HatchScale.getValue());
-                    newFace->setHatchColor(fHatch->HatchColor.getValue());
+                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                    if (hatchVp != nullptr) {
+                        newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                    }
                 }
-            } 
+            }
             bool drawEdges = getFaceEdgesPref();
             newFace->setDrawEdges(drawEdges);                                        //pref. for debugging only
             newFace->setZValue(ZVALUE::FACE);
@@ -480,8 +462,8 @@ void QGIViewPart::drawViewPart()
     bool usePolygonHLR = viewPart->CoarseView.getValue();
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool showCenters = viewPart->ArcCenterMarks.getValue();
-    double cAdjust = viewPart->CenterScale.getValue();
+    bool showCenters = vp->ArcCenterMarks.getValue();
+    double cAdjust = vp->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter) {
             if (showCenters) {
@@ -500,22 +482,12 @@ void QGIViewPart::drawViewPart()
             item->setZValue(ZVALUE::VERTEX);
         }
     }
-    //draw section line
-    if (viewPart->ShowSectionLine.getValue()) {
-        auto refs = viewPart->getSectionRefs();
-        for (auto& r:refs) {
-            drawSectionLine(r, true);
-        }
-    }
 
     //draw detail highlights
     auto drefs = viewPart->getDetailRefs();
     for (auto& r:drefs) {
         drawHighlight(r, true);
     }
-
-    //draw center lines
-    drawCenterLines(true);
 }
 
 QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
@@ -552,9 +524,14 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
 }
 
 //! Remove all existing QGIPrimPath items(Vertex,Edge,Face)
+//note this triggers scene selectionChanged signal if vertex/edge/face is selected
 void QGIViewPart::removePrimitives()
 {
     QList<QGraphicsItem*> children = childItems();
+    MDIViewPage* mdi = getMDIViewPage();
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(true);
+    }
     for (auto& c:children) {
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
          if (prim) {
@@ -563,6 +540,9 @@ void QGIViewPart::removePrimitives()
             delete prim;
          }
      }
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(false);
+    }
 }
 
 //! Remove all existing QGIDecoration items(SectionLine,SectionMark,...)
@@ -585,18 +565,42 @@ void QGIViewPart::removeDecorations()
      }
 }
 
+void QGIViewPart::drawAllSectionLines(void)
+{
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart)  {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+    if (vp->ShowSectionLine.getValue()) {
+        auto refs = viewPart->getSectionRefs();
+        for (auto& r:refs) {
+            drawSectionLine(r, true);
+        }
+    }
+}
+
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    if (!viewPart ||
-        !viewSection)  {
+    if (!viewPart)  {
         return;
     }
-    
+
     if (!viewSection->hasGeometry()) {
         return;
     }
-    
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
+
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
@@ -637,6 +641,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionSpan;
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
+        double fontSize = getPrefFontSize();
         if (horiz)  {
             sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
@@ -647,8 +652,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             yVal = sectionSpan / 2.0;
         }
         sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
-        sectionLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
-        sectionLine->setFont(m_font,Rez::guiX(6.0));
+        sectionLine->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+        sectionLine->setFont(m_font, fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(viewPart->Rotation.getValue());
         sectionLine->draw();
@@ -660,15 +665,20 @@ void QGIViewPart::drawCenterLines(bool b)
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
     if (!viewPart)  {
         return;
-
     }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
     if (b) {
-        bool horiz = viewPart->HorizCenterLine.getValue();
-        bool vert = viewPart->VertCenterLine.getValue();
+        bool horiz = vp->HorizCenterLine.getValue();
+        bool vert = vp->VertCenterLine.getValue();
 
         QGICenterLine* centerLine;
         double sectionSpan;
-        double sectionFudge = 10.0;
+        double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
         if (horiz)  {
             centerLine = new QGICenterLine();
@@ -677,8 +687,9 @@ void QGIViewPart::drawCenterLines(bool b)
             sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
+            centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            centerLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
+            centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
@@ -690,8 +701,9 @@ void QGIViewPart::drawCenterLines(bool b)
             sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
+            centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            centerLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
+            centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
@@ -706,12 +718,18 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         !viewDetail)  {
         return;
     }
-    
+
     if (!viewDetail->hasGeometry()) {
         return;
     }
 
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
     if (b) {
+        double fontSize = getPrefFontSize();
         QGIHighlight* highlight = new QGIHighlight();
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
@@ -719,8 +737,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
-        highlight->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
-        highlight->setFont(m_font,Rez::guiX(6.0));
+        highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
+        highlight->setFont(m_font, fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
         highlight->draw();
     }
@@ -754,7 +772,7 @@ void QGIViewPart::drawMatting()
 void QGIViewPart::pathArc(QPainterPath &path, double rx, double ry, double x_axis_rotation,
                                     bool large_arc_flag, bool sweep_flag,
                                     double x, double y,
-                                    double curx, double cury) 
+                                    double curx, double cury)
 {
     double sin_th, cos_th;
     double a00, a01, a10, a11;

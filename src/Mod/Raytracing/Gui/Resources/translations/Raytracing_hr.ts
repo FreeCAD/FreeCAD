@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Export a Raytracing project to a file</source>
-      <translation type="unfinished">Export a Raytracing project to a file</translation>
+      <translation>Izvoz Raytracing projekta u datoteku</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
@@ -33,22 +33,22 @@
     <message>
       <location line="+1"/>
       <source>New Luxrender project</source>
-      <translation type="unfinished">New Luxrender project</translation>
+      <translation>Novi Luxrender projekt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert new Luxrender project into the document</source>
-      <translation type="unfinished">Insert new Luxrender project into the document</translation>
+      <translation>Umetnite novi Luxrender projekt u dokument</translation>
     </message>
     <message>
       <location line="+45"/>
       <source>No template</source>
-      <translation type="unfinished">No template</translation>
+      <translation>Nema predložaka</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No template available</source>
-      <translation type="unfinished">No template available</translation>
+      <translation>Nema dostupnih predložaka</translation>
     </message>
   </context>
   <context>
@@ -66,7 +66,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation type="unfinished">Insert a new part object into a Raytracing project</translation>
+      <translation>Umetnite novi dio objekta u Raytracing projekt</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
@@ -91,22 +91,22 @@
     <message>
       <location line="+1"/>
       <source>New POV-Ray project</source>
-      <translation type="unfinished">New POV-Ray project</translation>
+      <translation>Novi POV-Ray projekt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert new POV-Ray project into the document</source>
-      <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+      <translation>Umetnite novi POV-Ray projekt u dokument</translation>
     </message>
     <message>
       <location line="+45"/>
       <source>No template</source>
-      <translation type="unfinished">No template</translation>
+      <translation>Nema predložaka</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No template available</source>
-      <translation type="unfinished">No template available</translation>
+      <translation>Nema dostupnih predložaka</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Render</source>
-      <translation type="unfinished">&amp;Render</translation>
+      <translation>&amp;Iscrtaj</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -137,7 +137,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Reset Camera</source>
-      <translation type="unfinished">&amp;Reset Camera</translation>
+      <translation>&amp;Ponovno postavljanje kamere</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -362,7 +362,7 @@ Do you want to continue?</translation>
       <location line="+62"/>
       <location line="+272"/>
       <source>POV-Ray</source>
-      <translation type="unfinished">POV-Ray</translation>
+      <translation>POV-Ray</translation>
     </message>
     <message>
       <location line="-384"/>
@@ -371,7 +371,7 @@ Do you want to continue?</translation>
       <location line="+276"/>
       <location line="+109"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="-29"/>
@@ -475,17 +475,17 @@ Do you want to continue?</translation>
     <message>
       <location line="+57"/>
       <source>Render</source>
-      <translation type="unfinished">Render</translation>
+      <translation>Iscrtaj</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>+P +A</source>
-      <translation type="unfinished">+P +A</translation>
+      <translation>+P +A</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>+W: </source>
-      <translation type="unfinished">+W: </translation>
+      <translation>+W: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -495,7 +495,7 @@ Do you want to continue?</translation>
     <message>
       <location line="+19"/>
       <source> +H : </source>
-      <translation type="unfinished"> +H : </translation>
+      <translation>  +H : </translation>
     </message>
     <message>
       <location line="+7"/>

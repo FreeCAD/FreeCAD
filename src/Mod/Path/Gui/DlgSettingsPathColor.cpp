@@ -64,6 +64,7 @@ void DlgSettingsPathColor::saveSettings()
     DefaultBBoxSelectionColor->onSave();
     DefaultBBoxNormalColor->onSave();
 	DefaultSelectionStyle->onSave();
+    DefaultTaskPanelLayout->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -79,6 +80,7 @@ void DlgSettingsPathColor::loadSettings()
     DefaultBBoxSelectionColor->onRestore();
     DefaultBBoxNormalColor->onRestore();
 	DefaultSelectionStyle->onRestore();
+    DefaultTaskPanelLayout->onRestore();
 }
 
 /**

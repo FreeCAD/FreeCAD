@@ -104,8 +104,7 @@ PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 DrawViewSection::DrawViewSection()
 {
     static const char *sgroup = "Section";
-    static const char *fgroup = "Format";
-    //static const char *lgroup = "Line";
+    static const char *fgroup = "Cut Surface Format";
 
 
     ADD_PROPERTY_TYPE(SectionSymbol ,("A"),sgroup,App::Prop_None,"The identifier for this section");
@@ -118,14 +117,6 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
-
-//    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show/hide the cut surface");
-//    ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color to shade the cut surface");
-//    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),fgroup,App::Prop_None,"Hatch the cut surface");
-//    ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
-//    ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
-//    ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color of the hatch pattern");
-    
 
     getParameters();
 

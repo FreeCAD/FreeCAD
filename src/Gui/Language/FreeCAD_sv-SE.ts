@@ -127,10 +127,6 @@
       <translation>Spaceball rörelse</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Global känslighet:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominant läge</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Omvänd</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD skulle inte finnas utan deras insatser:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licens</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2138,8 +2153,8 @@ Ange en annan katalog.</translation>
       <translation>Spara minibild i projektfilen när dokumentet sparas</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Skapa upp till säkerhetskopior när dokumentet omsparas</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2661,8 +2676,8 @@ Ange en annan katalog.</translation>
       <translation>Välj radie (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Ställer in området för val av detaljer i 3D-vyn. Större värde gör det lättare att välja saker men gör små saker omöjliga att välja.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -3349,10 +3364,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Kombivy</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -5053,6 +5064,10 @@ Tänk på att det har betydelse var du klickar.</translation>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6499,8 +6514,8 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Skapa ny vy</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Skapar ett nytt visningsfönster för det aktiva dokumentet</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

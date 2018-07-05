@@ -1,4 +1,4 @@
-﻿#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
+#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *

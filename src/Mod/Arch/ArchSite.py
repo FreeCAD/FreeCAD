@@ -36,7 +36,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchSite
 #  \ingroup ARCH
 #  \brief The Site object and tools
@@ -52,8 +52,13 @@ __url__ = "http://www.freecadweb.org"
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):
+
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
@@ -72,6 +77,7 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
 
 
 def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
+
     """makeSolarDiagram(longitude,latitude,[scale,complete]):
     returns a solar diagram as a pivy node. If complete is
     True, the 12 months are drawn"""
@@ -253,17 +259,22 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
 
 
 class _CommandSite:
+
     "the Arch Site command definition"
+
     def GetResources(self):
+
         return {'Pixmap'  : 'Arch_Site',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Site","Site"),
                 'Accel': "S, I",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
 
     def IsActive(self):
+
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         link = p.GetBool("FreeLinking",False)
@@ -278,14 +289,14 @@ class _CommandSite:
                 else:
                     warning = True
         if warning :
-            message = translate( "Arch" ,  "Please select only Building objects or nothing!\n\
-Site are not allowed to accept other object than Building.\n\
+            message = translate( "Arch" ,  "Please either select only Building objects or nothing at all!\n\
+Site is not allowed to accept any other object besides Building.\n\
 Other objects will be removed from the selection.\n\
-You can change that in the preferences." )
+Note: You can change that in the preferences.")
             ArchCommands.printMessage( message )
         if sel and len(siteobj) == 0:
             message = translate( "Arch" ,  "There is no valid object in the selection.\n\
-Site creation aborted." )
+Site creation aborted.") + "\n"
             ArchCommands.printMessage( message )
         else :
             ss = "[ "
@@ -309,28 +320,63 @@ class _Site(ArchFloor._Floor):
     def __init__(self,obj):
 
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Arch",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
-        obj.addProperty("App::PropertyString","Address","Arch",QT_TRANSLATE_NOOP("App::Property","The street and housenumber of this site"))
-        obj.addProperty("App::PropertyString","PostalCode","Arch",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
-        obj.addProperty("App::PropertyString","City","Arch",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
-        obj.addProperty("App::PropertyString","Country","Arch",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
-        obj.addProperty("App::PropertyFloat","Latitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
-        obj.addProperty("App::PropertyFloat","Longitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
-        obj.addProperty("App::PropertyAngle","NorthDeviation","Arch",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
-        obj.addProperty("App::PropertyLength","Elevation","Arch",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
-        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","An url that shows this site in a mapping website"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyArea","ProjectedArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
-        obj.addProperty("App::PropertyLength","Perimeter","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of this terrain"))
-        obj.addProperty("App::PropertyVolume","AdditionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"))
-        obj.addProperty("App::PropertyVolume","SubtractionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
-        obj.addProperty("App::PropertyVector","ExtrusionVector","Arch",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
-        obj.addProperty("App::PropertyBool","RemoveSplitter","Arch",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
-        obj.addExtension("App::GroupExtensionPython", self)
+        self.setProperties(obj)
+        obj.IfcRole = "Site"
+
+    def setProperties(self,obj):
+
+        pl = obj.PropertiesList
+        if not "Terrain" in pl:
+            obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
+        if not "Address" in pl:
+            obj.addProperty("App::PropertyString","Address","Site",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site"))
+        if not "PostalCode" in pl:
+            obj.addProperty("App::PropertyString","PostalCode","Site",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
+        if not "City" in pl:
+            obj.addProperty("App::PropertyString","City","Site",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
+        if not "Country" in pl:
+            obj.addProperty("App::PropertyString","Country","Site",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
+        if not "Latitude" in pl:
+            obj.addProperty("App::PropertyFloat","Latitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+        if not "Longitude" in pl:
+            obj.addProperty("App::PropertyFloat","Longitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+        if not "Declination" in pl:
+            obj.addProperty("App::PropertyAngle","Declination","Site",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
+        if "NorthDeviation"in pl:
+            obj.Declination = obj.NorthDeviation.Value
+            obj.removeProperty("NorthDeviation")
+        if not "Elevation" in pl:
+            obj.addProperty("App::PropertyLength","Elevation","Site",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
+        if not "Url" in pl:
+            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A url that shows this site in a mapping website"))
+        if not "Additions" in pl:
+            obj.addProperty("App::PropertyLinkList","Additions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        if not "Subtractions" in pl:
+            obj.addProperty("App::PropertyLinkList","Subtractions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        if not "ProjectedArea" in pl:
+            obj.addProperty("App::PropertyArea","ProjectedArea","Site",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        if not "Perimeter" in pl:
+            obj.addProperty("App::PropertyLength","Perimeter","Site",QT_TRANSLATE_NOOP("App::Property","The perimeter length of this terrain"))
+        if not "AdditionVolume" in pl:
+            obj.addProperty("App::PropertyVolume","AdditionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"))
+        if not "SubtractionVolume" in pl:
+            obj.addProperty("App::PropertyVolume","SubtractionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
+        if not "ExtrusionVector" in pl:
+            obj.addProperty("App::PropertyVector","ExtrusionVector","Site",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
+            obj.ExtrusionVector = FreeCAD.Vector(0,0,-100000)
+        if not "RemoveSplitter" in pl:
+            obj.addProperty("App::PropertyBool","RemoveSplitter","Site",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
+        if not "OriginOffset" in pl:
+            obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
+        if not hasattr(obj,"Group"):
+            obj.addExtension("App::GroupExtensionPython", self)
         self.Type = "Site"
         obj.setEditorMode('Height',2)
-        obj.ExtrusionVector = FreeCAD.Vector(0,0,-100000)
+
+    def onDocumentRestored(self,obj):
+
+        ArchFloor._Floor.onDocumentRestored(self,obj)
+        self.setProperties(obj)
 
     def execute(self,obj):
 
@@ -458,19 +504,35 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
     "A View Provider for the Site object"
 
     def __init__(self,vobj):
+
         ArchFloor._ViewProviderFloor.__init__(self,vobj)
-        vobj.addProperty("App::PropertyBool","SolarDiagram","Arch",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"))
-        vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Arch",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"))
-        vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"))
-        vobj.addProperty("App::PropertyColor","SolarDiagramColor","Arch",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
-        vobj.SolarDiagramScale = 1
-        vobj.SolarDiagramColor = (0.16,0.16,0.25)
+        self.setProperties(vobj)
+
+    def setProperties(self,vobj):
+
+        pl = vobj.PropertiesList
+        if not "SolarDiagram" in pl:
+            vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"))
+        if not "SolarDiagramScale" in pl:
+            vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Site",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"))
+            vobj.SolarDiagramScale = 1
+        if not "SolarDiagramPosition" in pl:
+            vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Site",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"))
+        if not "SolarDiagramColor" in pl:
+            vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
+            vobj.SolarDiagramColor = (0.16,0.16,0.25)
+
+    def onDocumentRestored(self,vobj):
+
+        self.setProperties(vobj)
 
     def getIcon(self):
+
         import Arch_rc
         return ":/icons/Arch_Site_Tree.svg"
 
     def claimChildren(self):
+
         objs = self.Object.Group+[self.Object.Terrain]
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
@@ -480,6 +542,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         return objs
 
     def setEdit(self,vobj,mode):
+
         if mode == 0:
             import ArchComponent
             taskd = ArchComponent.ComponentTaskPanel()
@@ -490,10 +553,12 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         return False
 
     def unsetEdit(self,vobj,mode):
+
         FreeCADGui.Control.closeDialog()
         return False
-        
+
     def attach(self,vobj):
+
         ArchFloor._ViewProviderFloor.attach(self,vobj)
         from pivy import coin
         self.diagramsep = coin.SoSeparator()
@@ -505,21 +570,23 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         self.diagramsep.addChild(self.coords)
         self.diagramsep.addChild(self.color)
         vobj.Annotation.addChild(self.diagramswitch)
-        
+
     def updateData(self,obj,prop):
+
         if prop in ["Longitude","Latitude"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
-        elif prop == "NorthDeviation":
+        elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
-        
+
     def onChanged(self,vobj,prop):
+
         if prop == "SolarDiagramPosition":
             if hasattr(vobj,"SolarDiagramPosition"):
                 p = vobj.SolarDiagramPosition
                 self.coords.translation.setValue([p.x,p.y,p.z])
-            if hasattr(vobj.Object,"NorthDeviation"):
+            if hasattr(vobj.Object,"Declination"):
                 from pivy import coin
-                self.coords.rotation.setValue(coin.SbVec3f((0,0,1)),math.radians(vobj.Object.NorthDeviation.Value))
+                self.coords.rotation.setValue(coin.SbVec3f((0,0,1)),math.radians(vobj.Object.Declination.Value))
         elif prop == "SolarDiagramColor":
             if hasattr(vobj,"SolarDiagramColor"):
                 l = vobj.SolarDiagramColor

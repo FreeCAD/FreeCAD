@@ -107,14 +107,14 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     // Add origin of the plane to the box if it's not
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
-    double marging = sqrt(bbox.LengthX ()*bbox.LengthY ()) * marginFactor ();
+    double margin = sqrt(bbox.LengthX ()*bbox.LengthY ()) * marginFactor ();
 
     // Change the coordinates of the line
     pCoords->point.setNum (4);
-    pCoords->point.set1Value(0, bbox.MaxX + marging, bbox.MaxY + marging, 0 );
-    pCoords->point.set1Value(1, bbox.MinX - marging, bbox.MaxY + marging, 0 );
-    pCoords->point.set1Value(2, bbox.MinX - marging, bbox.MinY - marging, 0 );
-    pCoords->point.set1Value(3, bbox.MaxX + marging, bbox.MinY - marging, 0 );
+    pCoords->point.set1Value(0, bbox.MaxX + margin, bbox.MaxY + margin, 0 );
+    pCoords->point.set1Value(1, bbox.MinX - margin, bbox.MaxY + margin, 0 );
+    pCoords->point.set1Value(2, bbox.MinX - margin, bbox.MinY - margin, 0 );
+    pCoords->point.set1Value(3, bbox.MaxX + margin, bbox.MinY - margin, 0 );
 
 }
 

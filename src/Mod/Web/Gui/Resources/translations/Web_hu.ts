@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Zoom into the page</source>
-      <translation>Közelítés az oldalra</translation>
+      <translation>Oldal nagyítás</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Weboldal megnyitása…</translation>
+      <translation>Weboldal megnyitása...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Megnyit egy weboldalt a FreeCAD programban</translation>
+      <translation>Weboldal megnyitása a FreeCAD-on belül</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -198,7 +198,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation>IGES (hindi)</translation>
+      <translation>IGES (csak alakzatok)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation>Sketchfab API Token-je</translation>
+      <translation>Sketchfab API token-je</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>

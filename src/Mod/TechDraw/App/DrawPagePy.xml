@@ -23,6 +23,11 @@
         <UserDocu>removeView(DrawView) - Remove a View to this Page</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getAllViews">
+      <Documentation>
+        <UserDocu>getAllViews() - returns a list of all the views on page including Views inside Collections</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getPageWidth">
       <Documentation>
         <UserDocu>Return the width of this page</UserDocu>

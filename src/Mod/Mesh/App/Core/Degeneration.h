@@ -252,7 +252,7 @@ public:
    */
   ~MeshEvalInternalFacets () { }
   /** 
-   * Identifiy internal facets.
+   * Identify internal facets.
    */
   bool Evaluate ();
   /**

@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Vyhodnotit &amp;&amp; opravit síť...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Vyhodnotit a opravit síť...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Měřítko...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Škálovat vybrané sítě</translation>
     </message>
   </context>
   <context>
@@ -420,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Vytvořit průřez ze sítě a roviny</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Průřez ze sítě a roviny</translation>
     </message>
   </context>
   <context>
@@ -768,14 +772,14 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Nastavení...</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Nastavení hodnocení</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -783,15 +787,15 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Zkontrolovat non-manifold body</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Umožnit kontrolu přehybů na povrchu</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Za degenerované plochy považovat jen ty s nulovou plochou</translation>
     </message>
   </context>
   <context>
@@ -920,7 +924,7 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Exportovat soubory AMF za použití komprese</translation>
     </message>
   </context>
   <context>
@@ -943,7 +947,7 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Toto je nejmenší úhel mezi dvěma plochamy, jejichž normály jsou vypočtené pro rovinné stínování.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Je-li úhel mezi normálami dvou sousedních ploch menší než úhel vrásky, plochy budou vyhlazeny podle jejich běžných hran&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Toto je nejmenší úhel mezi dvěma plochami, jejichž normály jsou vypočtené pro rovinné stínování.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Je-li úhel mezi normálami dvou sousedních ploch menší než úhel vrásky, plochy budou vyhlazeny podle jejich běžných hran&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Crease angle</source>
@@ -1232,7 +1236,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     </message>
     <message>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>Při běhu OpenSCADu došlo k neznámé chybě.</translation>
     </message>
   </context>
   <context>
@@ -1254,7 +1258,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Plná síť</translation>
+      <translation>Síť tělesa</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1326,7 +1330,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     </message>
     <message>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Síť '%1' není plná.</translation>
+      <translation>Síť '%1' netvoří těleso.</translation>
     </message>
     <message>
       <source>Min=&lt;%1,%2,%3&gt;
@@ -1462,11 +1466,11 @@ Max = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Škálování</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Vložte měřítko:</translation>
     </message>
   </context>
   <context>

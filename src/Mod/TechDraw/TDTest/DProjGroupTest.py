@@ -69,6 +69,10 @@ def DProjGroupTest():
     print("recomputing document")
     FreeCAD.ActiveDocument.recompute()
 
+    for v in group.Views:
+        print ("View: " + v.Label + " " + v.TypeId)
+        v.autoPosition()
+
     rc = False
     if ("Up-to-date" in group.State):
         rc = True

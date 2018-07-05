@@ -1,5 +1,7 @@
 <RCC>
     <qresource>
+        <file>icons/Arch_Material_Group.svg</file>
+
         <file>icons/FemWorkbench.svg</file>
         <file>icons/preferences-fem.svg</file>
 
@@ -13,6 +15,8 @@
         <file>icons/fem-cfd-analysis.svg</file>
         <file>icons/fem-clip.svg</file>
         <file>icons/fem-clip-scalar.svg</file>
+        <file>icons/fem-clipping-plane-add.svg</file>
+        <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
         <file>icons/fem-constraint-contact.svg</file>
         <file>icons/fem-constraint-displacement.svg</file>
@@ -103,5 +107,9 @@
         <file>translations/Fem_gl.qm</file>
         <file>translations/Fem_kab.qm</file>
         <file>translations/Fem_ko.qm</file>
+        <file>translations/Fem_fil.qm</file>
+        <file>translations/Fem_id.qm</file>
+        <file>translations/Fem_lt.qm</file>
+        <file>translations/Fem_val-ES.qm</file>
     </qresource>
 </RCC>

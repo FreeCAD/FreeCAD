@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -288,13 +289,17 @@ QIcon ViewProviderPoints::getIcon() const
     return px;
 }
 
-bool ViewProviderPoints::setEdit(int)
+bool ViewProviderPoints::setEdit(int ModNum)
 {
-    return true;
+    if (ModNum == ViewProvider::Transform)
+        return ViewProviderGeometryObject::setEdit(ModNum);
+    return false;
 }
 
-void ViewProviderPoints::unsetEdit(int)
+void ViewProviderPoints::unsetEdit(int ModNum)
 {
+    if (ModNum == ViewProvider::Transform)
+        ViewProviderGeometryObject::unsetEdit(ModNum);
 }
 
 void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)

@@ -45,5 +45,9 @@
         <file>translations/Robot_gl.qm</file>
         <file>translations/Robot_kab.qm</file>
         <file>translations/Robot_ko.qm</file>
+        <file>translations/Robot_fil.qm</file>
+        <file>translations/Robot_id.qm</file>
+        <file>translations/Robot_lt.qm</file>
+        <file>translations/Robot_val-ES.qm</file>
     </qresource>
 </RCC> 

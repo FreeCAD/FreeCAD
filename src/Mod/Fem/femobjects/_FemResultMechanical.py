@@ -40,48 +40,29 @@ class _FemResultMechanical():
         obj.addProperty("App::PropertyString", "ResultType", "Base", "Type of the result", 1)  # the 1 set the property to ReadOnly
         obj.ResultType = str(self.Type)
 
-        # `Time, Stats` should have been defined in base cpp class
-
-        # does not show up in propertyEditor of combiView
-        obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "Fem", "List of displacement vectors", True)
-
-        # does not show up in propertyEditor of combiView
-        obj.addProperty("App::PropertyVectorList", "StressVectors", "Fem", "List of stress vectors", True)
-
-        # does not show up in propertyEditor of combiView
-        obj.addProperty("App::PropertyVectorList", "StrainVectors", "Fem", "List of strain vectors", True)
-
-        # does not show up in propertyEditor of combiView
-        obj.addProperty("App::PropertyFloatList", "Peeq", "Fem", "List of equivalent plastic strain values", True)
-
-        # readonly in propertyEditor of combiView
-        obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "Fem", "List of displacement lengths", True)
-
-        obj.addProperty("App::PropertyFloatList", "StressValues", "Fem", "", True)
-
-        obj.addProperty("App::PropertyFloatList", "PrincipalMax", "Fem", "", True)
-
-        obj.addProperty("App::PropertyFloatList", "PrincipalMed", "Fem", "", True)
-
-        obj.addProperty("App::PropertyFloatList", "PrincipalMin", "Fem", "", True)
-
-        obj.addProperty("App::PropertyFloatList", "MaxShear", "Fem", "List of Maximum Shear stress values", True)
-
-        obj.addProperty("App::PropertyFloatList", "MassFlowRate", "Fem", "List of mass flow rate values", True)
-
-        obj.addProperty("App::PropertyFloatList", "NetworkPressure", "Fem", "List of network pressure values", True)
-
-        obj.addProperty("App::PropertyFloatList", "UserDefined", "Fem", "User Defined Results", True)
-
-        # temperature field is needed in the thermal stress analysis
-        obj.addProperty("App::PropertyFloatList", "Temperature", "Fem", "Temperature field", True)
-
         # for frequency analysis
-        obj.addProperty("App::PropertyInteger", "Eigenmode", "Fem", "", True)
+        obj.addProperty("App::PropertyInteger", "Eigenmode", "Data", "", True)
+        obj.addProperty("App::PropertyFloat", "EigenmodeFrequency", "Data", "User Defined Results", True)
 
-        obj.addProperty("App::PropertyFloat", "EigenmodeFrequency", "Fem", "User Defined Results", True)
+        # node results
+        # do not show up in propertyEditor of comboView
+        obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "NodeData", "List of displacement vectors", True)
+        obj.addProperty("App::PropertyVectorList", "StressVectors", "NodeData", "List of stress vectors", True)
+        obj.addProperty("App::PropertyVectorList", "StrainVectors", "NodeData", "List of strain vectors", True)
+        obj.addProperty("App::PropertyFloatList", "Peeq", "NodeData", "List of equivalent plastic strain values", True)
+        # readonly in propertyEditor of comboView
+        obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "NodeData", "List of displacement lengths", True)
+        obj.addProperty("App::PropertyFloatList", "StressValues", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "PrincipalMax", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "PrincipalMed", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "PrincipalMin", "NodeData", "", True)
+        obj.addProperty("App::PropertyFloatList", "MaxShear", "NodeData", "List of Maximum Shear stress values", True)
+        obj.addProperty("App::PropertyFloatList", "MassFlowRate", "NodeData", "List of mass flow rate values", True)
+        obj.addProperty("App::PropertyFloatList", "NetworkPressure", "NodeData", "List of network pressure values", True)
+        obj.addProperty("App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True)
+        obj.addProperty("App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True)
 
-    # standard FeutureT methods
+    # standard Feature methods
     def execute(self, obj):
         """"this method is executed on object creation and whenever the document is recomputed"
         update Part or Mesh should NOT lead to recompution of the analysis automatically, time consuming

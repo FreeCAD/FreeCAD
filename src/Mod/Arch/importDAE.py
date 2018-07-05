@@ -49,7 +49,7 @@ def checkCollada():
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.\n"))
+        FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.")+"\n")
         return False
     else:
         return True

@@ -94,7 +94,7 @@ void Cube::initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Bas
 // rotate/spin the subject inside the glass cube
 // effectively, rotate/spin the cube in reverse of the apparent subject movement
 
-//TODO: there is a problem with calculaion of view rotation vector when the axis of rotation is 
+//TODO: there is a problem with calculation of view rotation vector when the axis of rotation is
 //      +/-Y.  There is hack code here to handle it, but there should be a more elegant solution
 
 // subject CW about Right 

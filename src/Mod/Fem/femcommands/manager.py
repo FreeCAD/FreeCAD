@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 
 class CommandManager(object):
         def __init__(self):
-            self.resources = {'Pixmap': 'fem-frequency-analysis',
+            self.resources = {'Pixmap': 'FemWorkbench',
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
                               'Accel': "",
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
@@ -53,6 +53,8 @@ class CommandManager(object):
         def IsActive(self):
             if not self.is_active:
                 active = False
+            elif self.is_active == 'allways':
+                active = True
             elif self.is_active == 'with_document':
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':

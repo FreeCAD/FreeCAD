@@ -423,7 +423,7 @@
           <item row="16" column="0">
            <widget class="QLabel" name="label_12">
             <property name="text">
-             <string>Cutting Edge Angle</string>
+             <string>Point/Tip Angle</string>
             </property>
            </widget>
           </item>
@@ -576,11 +576,14 @@
             <property name="unit" stdset="0">
              <string notr="true">°</string>
             </property>
+            <property name="text">
+             <string>180 °</string>
+            </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
-             <double>90.000000000000000</double>
+             <double>180.000000000000000</double>
             </property>
            </widget>
           </item>

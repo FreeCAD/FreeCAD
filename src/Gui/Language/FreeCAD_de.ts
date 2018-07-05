@@ -127,10 +127,6 @@
       <translation>Spaceball-Bewegung</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Globale Empfindlichkeit:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominanter Modus</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Umkehren</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Globale Empfindlichkeit:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD wäre nichts ohne ihre Anstrengungen:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Lizenz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliotheken</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Diese Software verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2136,8 +2151,8 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <translation>Beim Speichern des Dokumentes Miniaturansicht in Projektdatei speichrn</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Beim Speichern des Dokuments erstelle Backup-Dateien von bis zu</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Maximale Anzahl an Sicherungsdateien, die behalten werden, wenn das Dokument gespeichert wird</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2617,7 +2632,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Metrische Kleinteile &amp; CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2659,8 +2674,8 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <translation>Auswahlradius (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Setzt den Toleranzbereich für die Auswahl von Elementen in der 3D Ansicht. Größere Werte machen es leichter Dinge zu wählen, aber kann es für kleine Einzelheiten unmöglich machen sie zu wählen.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Legt den Bereich für die Auswahl von Elementen in der 3D-Ansicht fest. Ein größerer Wert erleichtert das Auswählen von Objekten, macht jedoch die Auswahl einiger kleiner Objekte unmöglich.</translation>
     </message>
   </context>
   <context>
@@ -3345,10 +3360,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Combi-Ansicht</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -4363,7 +4374,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Der Text des zugrunde liegenden Objekts wurde geändert. Änderungen verwerfen und den Text aus dem Objekt neu laden?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -4375,7 +4386,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Möchten Sie Ihre Änderungen vor dem Schließen speichern?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -5049,6 +5060,10 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>Der %1 ist nicht leer, auch seinen Inhalt löschen?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Fehler beim Exportieren</translation>
     </message>
   </context>
   <context>
@@ -6496,8 +6511,8 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
       <translation>Neue Ansicht</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Neue Ansicht für das aktive Dokument erstellen</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Erstellt eine neue Ansicht für das aktive Dokument</translation>
     </message>
   </context>
   <context>

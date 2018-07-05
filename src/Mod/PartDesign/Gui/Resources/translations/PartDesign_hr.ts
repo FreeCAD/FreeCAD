@@ -4,23 +4,23 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation type="unfinished">Additive loft</translation>
+      <translation>Dodatno Potkrovlje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Produžuje profil u obliku potkrovlja kroz drugi profil</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Proteže odabranu skicu uzduž puta ili drugog profila</translation>
     </message>
   </context>
   <context>
@@ -33,12 +33,12 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Cijev dodavanje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Proteže odabranu skicu uzduž puta ili drugog profila</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Stvori tijelo</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Stvori novo tijelo i postavi ga kao aktivno</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation type="unfinished">Boolean operation with two or more bodies</translation>
+      <translation>Boolean operacije sa dva ili više tijela</translation>
     </message>
   </context>
   <context>
@@ -106,25 +106,25 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Stvori klon</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Stvori novi klon</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -142,19 +142,19 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Uduplaj odabrani objekt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Udupla odabrani objekt i postavi ga u aktivno tijelo</translation>
     </message>
   </context>
   <context>
@@ -167,7 +167,7 @@
     <message>
       <location line="+1"/>
       <source>Fillet</source>
-      <translation>obrubi</translation>
+      <translation>Obrubi</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -203,36 +203,36 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Rupa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Stvori rupu sa odabranom skicom</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>Stvori podatkovnu liniju</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>Stvori novu podatkovnu liniju</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>Stvori pravocrtni uzorak elementa</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -261,10 +261,14 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migrirati</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
     </message>
@@ -284,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Stvori zrcalni element</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -301,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation type="unfinished">Move object to other body</translation>
+      <translation>Premjesti objekt u drugo tijelo</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation type="unfinished">Moves the selected object to another body</translation>
+      <translation>Premjesti odabrani objekt u drugo tijelo</translation>
     </message>
   </context>
   <context>
@@ -319,12 +323,12 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation type="unfinished">Move object after other object</translation>
+      <translation>Premjesti objekt iza drugog objekta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation type="unfinished">Moves the selected object and insert it after another object</translation>
+      <translation>Premjesti odabrani objekt i umetni ga iza drugog objekta</translation>
     </message>
   </context>
   <context>
@@ -364,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Stvori element višestruke transformacije</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -374,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -392,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -415,35 +419,35 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Stvori dio</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Stvori novi dio i postavi ga kao aktivan</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Stvori podatkovnu plohu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Stvori novu podatkovnu plohu</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -455,7 +459,7 @@
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation type="unfinished">Create a pocket with the selected sketch</translation>
+      <translation>Stvori udubljene sa odabranom skicom</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -465,25 +469,25 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Stvori podatkovnu točku</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Stvori novu podatkovnu točku</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -495,7 +499,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>Stvori polarni uzorak elementa</translation>
     </message>
     <message>
       <source>create a polar pattern feature</source>
@@ -535,7 +539,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Stvori skalarni element</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -545,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -563,14 +567,14 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Potkrovlje oduzimanje</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -629,47 +633,47 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Stvori jedno dodatno primitivno tijelo</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Dodatni Boks</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Dodatni Cilindar</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Dodatna Kugla</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Dodatni Stožac</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Dodatni Elipsoid</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Dodatni Torus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Dodatna Prizma</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Dodatni Stožac</translation>
     </message>
   </context>
   <context>
@@ -680,50 +684,54 @@
       <translation>Oblikovanje tijela</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
-      <translation type="unfinished">Create an subtractive primitive</translation>
+      <translation>Stvori jedno oduzimajuće primitivno tijelo</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
+      <translation type="unfinished">Create a subtractive primitive</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Oduzimajući Kvadar</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Oduzimajući Valjak</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Oduzimajuća Kugla</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Oduzimajući Stožac</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Oduzimajući Elipsoid</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Suptraktivni Torus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Suptraktivna Prizma</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Suptraktivni Klin</translation>
     </message>
   </context>
   <context>
@@ -759,32 +767,32 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="+45"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Važeći</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Ne važeći oblik</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Nema žice u skici</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Skica upravo korištena kod drugog elementa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Skica pripada drugom elementu tijela</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Osnovna ploha</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -825,34 +833,34 @@
     <message>
       <location line="+20"/>
       <source>Modules:</source>
-      <translation type="unfinished">Modules:</translation>
+      <translation>Moduli:</translation>
     </message>
     <message>
       <location line="+85"/>
       <source>High precision:</source>
-      <translation type="unfinished">High precision:</translation>
+      <translation>Visoka preciznost:</translation>
     </message>
     <message>
       <location line="+14"/>
       <location line="+27"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Točno</translation>
     </message>
     <message>
       <location line="-22"/>
       <location line="+27"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Netočno</translation>
     </message>
     <message>
       <location line="-19"/>
       <source>External gear:</source>
-      <translation type="unfinished">External gear:</translation>
+      <translation>Vanjsko opremanje:</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Pressure angle:</source>
-      <translation type="unfinished">Pressure angle:</translation>
+      <translation>Kut pritiska:</translation>
     </message>
   </context>
   <context>
@@ -958,40 +966,40 @@ Please check one or more edge entities first.</source>
       <location line="-377"/>
       <location line="+191"/>
       <source>U parameter:</source>
-      <translation type="unfinished">U parameter:</translation>
+      <translation>U Parametar:</translation>
     </message>
     <message>
       <location line="-184"/>
       <source>V parameters:</source>
-      <translation type="unfinished">V parameters:</translation>
+      <translation>V Parametri:</translation>
     </message>
     <message>
       <location line="+137"/>
       <source>Radius 3:</source>
-      <translation type="unfinished">Radius 3:</translation>
+      <translation>Radijus 3:</translation>
     </message>
     <message>
       <location line="+70"/>
       <location line="+90"/>
       <source>V parameter:</source>
-      <translation type="unfinished">V parameter:</translation>
+      <translation>V Parametar:</translation>
     </message>
     <message>
       <location line="-23"/>
       <source>U Parameter:</source>
-      <translation type="unfinished">U Parameter:</translation>
+      <translation>U Parametar:</translation>
     </message>
     <message>
       <location line="+150"/>
       <location line="+882"/>
       <source>Polygon:</source>
-      <translation type="unfinished">Polygon:</translation>
+      <translation>Poligon:</translation>
     </message>
     <message>
       <location line="-862"/>
       <location line="+882"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Polumjer opsega:</translation>
     </message>
     <message>
       <location line="-831"/>
@@ -1041,12 +1049,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+88"/>
       <source>Growth:</source>
-      <translation type="unfinished">Growth:</translation>
+      <translation>Rast:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Number of rotations:</source>
-      <translation type="unfinished">Number of rotations:</translation>
+      <translation>Broj rotacija:</translation>
     </message>
     <message>
       <location line="+58"/>
@@ -1119,7 +1127,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Odabirom će te izazvati kružnu ovisnost.</translation>
     </message>
   </context>
   <context>
@@ -1132,17 +1140,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>Dodaj tijelo</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>Ukloni tijelo</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Spoji</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1152,17 +1160,16 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Zajedničko</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Odsječak</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>Bulovski parametar</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -1175,13 +1182,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Parametri primitivnog tijela</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Stvori primitivno tijelo</translation>
     </message>
   </context>
   <context>
@@ -1241,12 +1247,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Dodajte ref</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Uklonite ref</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1268,13 +1274,23 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+72"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> parametara</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation type="unfinished">Boolean: Accept: Input error</translation>
     </message>
@@ -1296,7 +1312,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Nema moda dodatka koji odgovaraju trenutnom skupu referenci. Ako odlučite nastaviti, element će ostati gdje je sada, i ne će biti premješten kad se reference promijene. Želite li nastaviti?</translation>
     </message>
   </context>
   <context>
@@ -1309,7 +1325,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1352,7 +1368,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1454,22 +1470,22 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+9"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Omogući korištene elemente</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Allow external features</source>
-      <translation type="unfinished">Allow external features</translation>
+      <translation>Omogući vanjske elemente</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation type="unfinished">From  other bodies of the same part</translation>
+      <translation>Od drugog tijela istoga dijela</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>Od drugog dijela ili slobodnog elementa</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1489,46 +1505,46 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Važeći</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Ne važeći oblik</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Nema žice u skici</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Skica upravo korištena kod drugog elementa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Pripada drugom tijelu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Pripada drugom tijelu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Ne pripada nijednom tijelu</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
-      <translation type="unfinished">Doesn't belongs to any body</translation>
+      <translation>Ne pripada nijednom tijelu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Osnovna ploha</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1538,7 +1554,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+10"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Odaberi element</translation>
     </message>
   </context>
   <context>
@@ -1551,12 +1567,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Dodajte ref</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Uklonite ref</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1645,7 +1661,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Rupa parametri</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1660,22 +1676,22 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>ISO metrički fino profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>UTS grubo profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>UTS fino profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>UTS posebno fino profil</translation>
     </message>
   </context>
   <context>
@@ -1709,12 +1725,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Ukloni element</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -1780,12 +1796,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+12"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Dodavanje sekcije</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Ukloni sekciju</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -1795,7 +1811,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>Potkrovlje parametri</translation>
     </message>
   </context>
   <context>
@@ -1841,12 +1857,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Ukloni element</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -1895,12 +1911,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Ukloni element</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -1997,8 +2013,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -2013,8 +2029,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
@@ -2056,40 +2072,37 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Parametri izvučenog oblika</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Nije odabrana niti jedna površina</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>Do zadnjeg</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>Do prvog</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>Do stranice</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Dvije dimenzije</translation>
     </message>
@@ -2135,7 +2148,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Način orijentacije</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2145,7 +2158,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Fiksno</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2154,12 +2167,12 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <translation>Auxillery</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormalno</translation>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
@@ -2168,7 +2181,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Pomoćni</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -2183,17 +2196,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Dodaj rub</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Ukloni rub</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -2216,7 +2229,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation type="unfinished">Section orientation</translation>
     </message>
@@ -2236,17 +2249,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+14"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>Transformirano</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>Pravi kut</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>Zaobljeni kut</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2256,17 +2269,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Dodaj rub</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Ukloni rub</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
@@ -2289,7 +2302,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+14"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Konstanta</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2299,15 +2312,15 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+23"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Dodavanje sekcije</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Ukloni sekciju</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation type="unfinished">Section transformation</translation>
     </message>
@@ -2330,8 +2343,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
@@ -2352,8 +2365,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>druga duljina</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -2363,12 +2381,12 @@ Please check one or more edge entities first.</source>
       <translation>Ažuriraj pogled</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Parametri udubljenja</translation>
     </message>
@@ -2377,29 +2395,32 @@ Please check one or more edge entities first.</source>
       <translation>Do zadnjeg</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>Do prvog</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>Kroz sve</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>Do stranice</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Dvije dimenzije</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Nije odabrana niti jedna površina</translation>
     </message>
@@ -2447,12 +2468,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Ukloni element</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -2520,19 +2541,19 @@ Please check one or more edge entities first.</source>
       <location line="-15"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Baza X osi</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Baza Y osi</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Baza Z osi</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2592,12 +2613,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Ukloni element</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2635,17 +2656,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Dodaj Geometriju</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Ukloni Geometriju</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
@@ -2656,12 +2677,11 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Nije odabrana niti jedna površina</translation>
     </message>
@@ -2685,7 +2705,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Thikness</source>
-      <translation type="unfinished">Thikness</translation>
+      <translation>Debljina</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2743,7 +2763,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
       <source>Transformed feature messages</source>
-      <translation>Poruka transformiranog uzorka</translation>
+      <translation>Poruka elementa transformiranja</translation>
     </message>
   </context>
   <context>
@@ -2767,22 +2787,22 @@ Please check one or more edge entities first.</source>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Izgradnja linije %1</translation>
     </message>
     <message>
       <location line="-22"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Baza X osi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Baza Y osi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Baza Z osi</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2793,17 +2813,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-9"/>
       <source>Base XY plane</source>
-      <translation type="unfinished">Base XY plane</translation>
+      <translation>Osnovna XY ploha</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base YZ plane</source>
-      <translation type="unfinished">Base YZ plane</translation>
+      <translation>Osnovna YZ ploha</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base XZ plane</source>
-      <translation type="unfinished">Base XZ plane</translation>
+      <translation>Osnovna XZ ploha</translation>
     </message>
   </context>
   <context>
@@ -2818,102 +2838,134 @@ Please check one or more edge entities first.</source>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>Stvori jedan dodatni boks sa: širinom, visinom i dužinom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Stvori jedan dodatni cilindar sa: polumjerom, visinom i kutom</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>Stvori jednu dodatnu kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Stvori jedan dodatni boks sa: širinom, visinom i dužinom</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Stvori jednu dodatnu kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Stvori jedan dodatni stožac</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Stvori jedan dodatni elipsoid</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Stvori jedan dodatni torus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Stvori jednu dodatnu prizmu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Stvori jedan dodatni klin</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Stvori jedan oduzimajući boks sa: širinom, visinom i dužinom</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Stvori jedan oduzimajući cilindar sa: polumjerom, visinom i kutom</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Stvori jednu oduzimajuću kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Stvori jedan oduzimajući boks sa: širinom, visinom i dužinom</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Stvori jednu oduzimajuću kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
-      <translation type="unfinished">Create an subtractive cone</translation>
+      <translation>Stvori jedan oduzimajući stožac</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
-      <translation type="unfinished">Create an subtractive ellipsoid</translation>
+      <translation>Stvori jedan oduzimajući elipsoid</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
-      <translation type="unfinished">Create an subtractive torus</translation>
+      <translation>Stvori jedan oduzimajući torus</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
-      <translation type="unfinished">Create an subtractive prism</translation>
+      <translation>Stvori jednu oduzimajuću prizmu</translation>
+    </message>
+    <message>
+      <source>Create an subtractive wedge</source>
+      <translation>Stvori jedan oduzimajući klin</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
     </message>
     <message>
       <location line="+4"/>
-      <source>Create an subtractive wedge</source>
-      <translation type="unfinished">Create an subtractive wedge</translation>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation type="unfinished">Create a subtractive cone</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation type="unfinished">Create a subtractive torus</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation type="unfinished">Create a subtractive prism</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
+      <translation type="unfinished">Create a subtractive wedge</translation>
     </message>
   </context>
   <context>
@@ -2921,12 +2973,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="+201"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Odaberite tijelo</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Odabir tijela s popisa</translation>
     </message>
   </context>
   <context>
@@ -2934,12 +2986,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+150"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Odaberi element</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a feature from the list</source>
-      <translation type="unfinished">Select a feature from the list</translation>
+      <translation>Odabir elementa s popisa</translation>
     </message>
   </context>
   <context>
@@ -3020,7 +3072,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Molimo prvo napravite dodatni ili oduzimajući element.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3041,7 +3093,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-1"/>
       <source>No valid features in this document</source>
-      <translation>Nema valjanih značajki u ovom dokumentu</translation>
+      <translation>Nema valjanih elemenata u ovom dokumentu</translation>
     </message>
     <message>
       <source>Please create a subtractive or additive feature first</source>
@@ -3075,18 +3127,18 @@ Create the sketch on a face.</source>
       <translation>Uredi zarub</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation type="unfinished">Invalid selection</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>Nema moda dodatka koji odgovara odabranim objektima. Odaberite nešto drugo.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Nema moda dodatka koji odgovara odabranim objektima. Odaberite nešto drugo.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3142,9 +3194,9 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3154,8 +3206,8 @@ Create the sketch on a face.</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3215,7 +3267,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Odabrani višestruki elementi</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3287,9 +3339,9 @@ Create the sketch on a face.</source>
       <translation type="unfinished">Edit revolve</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Kreiranje djela tijela nije uspjelo</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3297,13 +3349,13 @@ Create the sketch on a face.</source>
       <translation type="unfinished">Failed to create a part object.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Nepravilan osnovni  element</translation>
     </message>
     <message>
       <location line="-68"/>
@@ -3327,7 +3379,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Osnovni element (%1) pripada drugom dijelu.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
@@ -3364,7 +3416,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Osnovni element</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3403,7 +3455,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Odaberite točno jedan Part Design element ili tijelo.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3424,7 +3476,7 @@ This may lead to unexpected results.</translation>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Elementi se ne mogu pomjeriti</translation>
     </message>
     <message>
       <location line="-36"/>
@@ -3444,7 +3496,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+135"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Nemoguće je pomjeriti osnovni element tijela.</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3459,12 +3511,12 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Nema prethodnog elementa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Nije moguće stvoriti dodavajući element bez pripadajućeg osnovnog elementa</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3481,17 +3533,17 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Izgradnja linije %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Nema aktivnog tijela</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
@@ -3517,9 +3569,9 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Element nije u tijelu</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3529,7 +3581,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+32"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Element nije u dijelu</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3562,7 +3614,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="-82"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Koordinatni sustav</translation>
     </message>
     <message>
       <location line="+99"/>
@@ -3581,29 +3633,28 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Uređivanje %1</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Element greška</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>%1 nedostaje osnovni element. Ovaj element nije ispravan i ne može se uređivati.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>Uredite potkrovlje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
       <source>Edit pipe</source>
-      <translation type="unfinished">Edit pipe</translation>
+      <translation>Uređivanje cijevi</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
@@ -3625,7 +3676,7 @@ This feature is broken and can't be edited.</translation>
       <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
     </message>
@@ -3659,12 +3710,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Uređivanje rupa</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Uređivanje primitivnog tijela</translation>
     </message>
   </context>
   <context>
@@ -3704,13 +3755,13 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Kroz</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+340"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Dubina</translation>
     </message>
     <message>
       <location line="-331"/>
@@ -3819,7 +3870,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="-253"/>
       <location line="+269"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Dubina</translation>
     </message>
     <message>
       <location line="-259"/>

@@ -837,6 +837,7 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
             if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec)) {
                 GeometryCurvePy* curve = static_cast<GeometryCurvePy*>(p);
                 PyObject* t = PyTuple_New(2);
+                Py_INCREF(this);
                 PyTuple_SetItem(t, 0, this);
                 PyTuple_SetItem(t, 1, PyFloat_FromDouble(prec));
                 return curve->intersectCS(t);

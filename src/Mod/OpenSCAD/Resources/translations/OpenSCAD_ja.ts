@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>フラグメントの最小角度</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>フラグメントの最小サイズ</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>結合を解除し、 子要素の位置と色をランダムに設定</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>融合体を取り除き、子に位置を与え、ランダムな色を付けます。</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>オブジェクトをメッシュとしてエクスポートし、OpenSCAD を使用してブール演算を実行します。</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>メッシュとしてオブジェクトをエクスポートし、ブーリアン演算のためにOpenSCADを使用します。</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>フィーチャーツリー内のオブジェクトを置き換えます、新旧の親オブジェクトを選択してください。</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>フィーチャーツリーのオブジェクトを置換します。古いオブジェクト、新規オブジェクト、親オブジェクトを選択してください。</translation>
     </message>
   </context>
   <context>

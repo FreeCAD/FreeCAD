@@ -19,7 +19,7 @@
 ##
 env:
   global:
-    - FREECAD_RELEASE="0.17"
+    - FREECAD_RELEASE="0.18"
     - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
@@ -171,11 +171,11 @@ before_install:
        brew tap FreeCAD/freecad
 
        brew install --verbose --only-dependencies freecad --with-packaging-utils
-       brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
-
+       pip install six
        # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-       QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
-       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
+       QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
+       QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
+       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
 
        #Install the 3DConnexion frameworks
        if [ "${DEPLOY}" == "1" ]; then
@@ -191,7 +191,7 @@ before_install:
           export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
        fi
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DEIGEN3_INCLUDE_DIR=$(brew --prefix eigen@3.2)/include/eigen3"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
    *)

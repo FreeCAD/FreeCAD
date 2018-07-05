@@ -52,6 +52,9 @@
         <file>icons/NavigationOpenInventor.svg</file>
         <file>icons/NavigationOpenInventor_ZoomAlt.svg</file>
         <file>icons/NavigationOpenInventor_Zoom.svg</file>
+        <file>icons/NavigationRevit_Pan.svg</file>
+        <file>icons/NavigationRevit_Rotate.svg</file>
+        <file>icons/NavigationRevit.svg</file>
         <file>icons/NavigationTouchpad_Pan.svg</file>
         <file>icons/NavigationTouchpad_PanTouch.svg</file>
         <file>icons/NavigationTouchpad_RotateAlt.svg</file>
@@ -96,5 +99,9 @@
         <file>translations/Tux_gl.qm</file>
         <file>translations/Tux_kab.qm</file>
         <file>translations/Tux_ko.qm</file>
+        <file>translations/Tux_fil.qm</file>
+        <file>translations/Tux_id.qm</file>
+        <file>translations/Tux_lt.qm</file>
+        <file>translations/Tux_val-ES.qm</file>
     </qresource>
 </RCC>

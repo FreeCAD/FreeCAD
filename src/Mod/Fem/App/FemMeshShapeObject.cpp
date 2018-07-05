@@ -61,7 +61,6 @@
 #include <StdMeshers_QuadraticMesh.hxx>
 #include <StdMeshers_RadialPrism_3D.hxx>
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#include <StdMeshers_TrianglePreference.hxx>
 #include <StdMeshers_ProjectionSource1D.hxx>
 #include <StdMeshers_ProjectionSource2D.hxx>
 #include <StdMeshers_ProjectionSource3D.hxx>

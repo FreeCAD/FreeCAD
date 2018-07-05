@@ -46,7 +46,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-                 analysis_type=None, dir_name=None
+                 dir_name=None
                  ):
 
         FemInputWriter.FemInputWriter.__init__(
@@ -58,15 +58,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-            analysis_type, dir_name)
+            dir_name)
         # self.dir_name does have a slash at the end
         self.main_file_name = self.mesh_object.Name + '.inp'
         self.file_name = self.dir_name + self.main_file_name
         self.FluidInletoutlet_ele = []
         self.fluid_inout_nodes_file = self.dir_name + self.mesh_object.Name + '_inout_nodes.txt'
-        print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
-        print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
-        print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_calculix_input_file(self):
         timestart = time.clock()
@@ -74,7 +74,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
+        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
         return self.file_name
 
     def write_calculix_one_input_file(self):
@@ -347,9 +347,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # get the element ids for face and edge elements and write them into the objects
         if len(self.shellthickness_objects) > 1:
             self.get_element_geometry2D_elements()
-        elif len(self.beamsection_objects) > 1:
+        if len(self.beamsection_objects) > 1:
             self.get_element_geometry1D_elements()
-        elif len(self.fluidsection_objects) > 1:
+        if len(self.fluidsection_objects) > 1:
             self.get_element_fluid1D_elements()
 
         # get the element ids for material objects and write them into the material object
@@ -364,15 +364,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 # but a mesh could contain the element faces of the volumes as faces
                 # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_single_mat_solid()
-            elif len(self.shellthickness_objects) == 1:
+            if len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_single_mat_single_shell()
             elif len(self.shellthickness_objects) > 1:
                 self.get_ccx_elsets_single_mat_multiple_shell()
-            elif len(self.beamsection_objects) == 1:
+            if len(self.beamsection_objects) == 1:
                 self.get_ccx_elsets_single_mat_single_beam()
             elif len(self.beamsection_objects) > 1:
                 self.get_ccx_elsets_single_mat_multiple_beam()
-            elif len(self.fluidsection_objects) == 1:
+            if len(self.fluidsection_objects) == 1:
                 self.get_ccx_elsets_single_mat_single_fluid()
             elif len(self.fluidsection_objects) > 1:
                 self.get_ccx_elsets_single_mat_multiple_fluid()
@@ -383,15 +383,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 # but a mesh could contain the element faces of the volumes as faces
                 # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retrieving ids from group mesh data is implemented
-            elif len(self.shellthickness_objects) == 1:
+            if len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()
             elif len(self.shellthickness_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
-            elif len(self.beamsection_objects) == 1:
+            if len(self.beamsection_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_beam()
             elif len(self.beamsection_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_beam()
-            elif len(self.fluidsection_objects) == 1:
+            if len(self.fluidsection_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_fluid()
             elif len(self.fluidsection_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
@@ -433,9 +433,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fix_obj = femobj['Object']
             f.write('** ' + fix_obj.Label + '\n')
-            f.write('*NSET,NSET=' + fix_obj.Name + '\n')
-            for n in femobj['Nodes']:
-                f.write(str(n) + ',\n')
+            if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+                if len(femobj['NodesSolid']) > 0:
+                    f.write('*NSET,NSET=' + fix_obj.Name + 'Solid\n')
+                    for n in femobj['NodesSolid']:
+                        f.write(str(n) + ',\n')
+                if len(femobj['NodesFaceEdge']) > 0:
+                    f.write('*NSET,NSET=' + fix_obj.Name + 'FaceEdge\n')
+                    for n in femobj['NodesFaceEdge']:
+                        f.write(str(n) + ',\n')
+            else:
+                f.write('*NSET,NSET=' + fix_obj.Name + '\n')
+                for n in femobj['Nodes']:
+                    f.write(str(n) + ',\n')
 
     def write_node_sets_constraints_displacement(self, f):
         # get nodes
@@ -700,7 +710,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.analysis_type == 'static' or self.analysis_type == 'thermomech':
                 step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
             elif self.analysis_type == 'frequency':
-                print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
+                FreeCAD.Console.PrintMessage('Analysis type frequency and geometrical nonlinear analysis are not allowed together, linear is used instead!\n')
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == 'thermomech':
                 step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
@@ -709,7 +719,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # write step line
         f.write(step + '\n')
         # CONTROLS line
-        # all analyis types, ... really in frequency too?!?
+        # all analysis types, ... really in frequency too?!?
         if self.solver_obj.IterationsControlParameterTimeUse:
             f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
             f.write(self.solver_obj.IterationsControlParameterIter + '\n')
@@ -738,7 +748,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             elif self.analysis_type == 'thermomech':
                 analysis_type += ', DIRECT'
             elif self.analysis_type == 'frequency':
-                print('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored')
+                FreeCAD.Console.PrintMessage('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored\n')
         # analysis line --> steadystate --> thermomech only
         if self.solver_obj.ThermoMechSteadyState:
             if self.analysis_type == 'thermomech':  # bernd: I do not know if STEADY STATE is allowed with DIRECT but since time steps are 1.0 it makes no sense IMHO
@@ -770,15 +780,32 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('** ' + femobj['Object'].Label + '\n')
             fix_obj_name = femobj['Object'].Name
-            f.write('*BOUNDARY\n')
-            f.write(fix_obj_name + ',1\n')
-            f.write(fix_obj_name + ',2\n')
-            f.write(fix_obj_name + ',3\n')
-            if self.beamsection_objects or self.shellthickness_objects:
-                f.write(fix_obj_name + ',4\n')
-                f.write(fix_obj_name + ',5\n')
-                f.write(fix_obj_name + ',6\n')
-            f.write('\n')
+            if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+                if len(femobj['NodesSolid']) > 0:
+                    f.write('*BOUNDARY\n')
+                    f.write(fix_obj_name + 'Solid' + ',1\n')
+                    f.write(fix_obj_name + 'Solid' + ',2\n')
+                    f.write(fix_obj_name + 'Solid' + ',3\n')
+                    f.write('\n')
+                if len(femobj['NodesFaceEdge']) > 0:
+                    f.write('*BOUNDARY\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',1\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',2\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',3\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',4\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',5\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',6\n')
+                    f.write('\n')
+            else:
+                f.write('*BOUNDARY\n')
+                f.write(fix_obj_name + ',1\n')
+                f.write(fix_obj_name + ',2\n')
+                f.write(fix_obj_name + ',3\n')
+                if self.beamsection_objects or self.shellthickness_objects:
+                    f.write(fix_obj_name + ',4\n')
+                    f.write(fix_obj_name + ',5\n')
+                    f.write(fix_obj_name + ',6\n')
+                f.write('\n')
 
     def write_constraints_displacement(self, f):
         f.write('\n***********************************************************\n')
@@ -983,7 +1010,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             lines = inout_nodes_file.readlines()
             inout_nodes_file.close()
         else:
-            print("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file)
+            FreeCAD.Console.PrintError("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file + '\n')
         # get nodes
         self.get_constraints_fluidsection_nodes()
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
@@ -1047,11 +1074,13 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 f.write('S, E, PEEQ\n')
             else:
                 f.write('S, E\n')
-            f.write('** outputs --> dat file\n')
-            f.write('*NODE PRINT , NSET=' + self.ccx_nall + '\n')
-            f.write('U \n')
-            f.write('*EL PRINT , ELSET=' + self.ccx_eall + '\n')
-            f.write('S \n')
+            # there is no need to write all integration point results as long as there is no reader for this
+            # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
+            # f.write('** outputs --> dat file\n')
+            # f.write('*NODE PRINT , NSET=' + self.ccx_nall + '\n')
+            # f.write('U \n')
+            # f.write('*EL PRINT , ELSET=' + self.ccx_eall + '\n')
+            # f.write('S \n')
 
     def write_step_end(self, f):
         f.write('\n***********************************************************\n')

@@ -6,167 +6,167 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>FreeCAD Start Center</source>
-      <translation>FreeCAD Start Center</translation>
+      <translation type="unfinished">FreeCAD Start Center</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Start a new project</source>
-      <translation>Démarrer un nouveau projet</translation>
+      <translation type="unfinished">Start a new project</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Recent Files</source>
-      <translation>Fichiers récents</translation>
+      <translation type="unfinished">Recent Files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
       <source>Tutorials</source>
-      <translation>Tutoriels</translation>
+      <translation type="unfinished">Tutorials</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>FreeCAD Homepage</source>
-      <translation>Page d'accueil FreeCAD</translation>
+      <translation type="unfinished">FreeCAD Homepage</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Example projects</source>
-      <translation>Exemples de projets</translation>
+      <translation type="unfinished">Example projects</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>Schenkel STEP file</source>
-      <translation>Fichier STEP Schenkel</translation>
+      <translation type="unfinished">Schenkel STEP file</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>Charger un exemple Conception de pièce</translation>
+      <translation type="unfinished">Load a PartDesign example</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>Charger une extraction de dessin</translation>
+      <translation type="unfinished">Load a Drawing extraction</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>Charger un exemple de simulation de robot</translation>
+      <translation type="unfinished">Load a Robot simulation example</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>Projects from the Web</source>
-      <translation>Projets sur le Web</translation>
+      <translation type="unfinished">Projects from the Web</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
       <source>Schenkel STEP</source>
-      <translation>STEP Schenkel</translation>
+      <translation type="unfinished">Schenkel STEP</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>Complex Part</source>
-      <translation>Pièce complexe</translation>
+      <translation type="unfinished">Complex Part</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>Close this window after opening or creating a file</source>
-      <translation>Fermer cette fenêtre après l'ouverture ou la création d'un fichier</translation>
+      <translation type="unfinished">Close this window after opening or creating a file</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Don't show me this window again next time</source>
-      <translation>Ne pas me montrer cette fenêtre la prochaine fois</translation>
+      <translation type="unfinished">Don't show me this window again next time</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Designing parts</source>
-      <translation>Concevoir des pièces</translation>
+      <translation type="unfinished">Designing parts</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>L'atelier &lt;b&gt;Conception de pièces&lt;/b&gt; est conçu pour créer des pièces complexes basées sur des esquisses 2D contraintes. Utilisez-le pour dessiner des formes 2D, contraindre certains de leurs éléments et les extruder pour former des pièces en 3D.</translation>
+      <translation type="unfinished">The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>Example workflow</source>
-      <translation>Exemple de flux de travail</translation>
+      <translation type="unfinished">Example workflow</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
       <source>Part Design</source>
-      <translation>Conception de pièces</translation>
+      <translation type="unfinished">Part Design</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Designing architectural elements</source>
-      <translation>Concevoir des éléments architecturaux</translation>
+      <translation type="unfinished">Designing architectural elements</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
       <source>Working with Meshes</source>
-      <translation>Travailler avec des maillages</translation>
+      <translation type="unfinished">Working with Meshes</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>L'&lt;b&gt;Atelier Maillage&lt;/b&gt; permet de travailler sur des objets de maillage. Les mailles sont des objets 3D plus simples que les objets Pièce, mais ils sont souvent plus facile à importer et exporter vers / depuis d'autres applications.</translation>
+      <translation type="unfinished">The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
       <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD propose plusieurs outils pour convertir entre des objets de Maillage et des objets Pièce.</translation>
+      <translation type="unfinished">FreeCAD offers you several tools to convert between Mesh and Part objects.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>Work with Meshes</source>
-      <translation>Travailler avec des maillages</translation>
+      <translation type="unfinished">Work with Meshes</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>The complete workbench</source>
-      <translation>L'atelier complet</translation>
+      <translation type="unfinished">The complete workbench</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
       <source>FreeCAD Complete workbench</source>
-      <translation>Établi complet de FreeCAD</translation>
+      <translation type="unfinished">FreeCAD Complete workbench</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
       <source>file size:</source>
-      <translation>taille du fichier :</translation>
+      <translation type="unfinished">file size:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
       <source>creation time:</source>
-      <translation>date de création :</translation>
+      <translation type="unfinished">creation time:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
       <source>last modified:</source>
-      <translation>dernière modification :</translation>
+      <translation type="unfinished">last modified:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
       <source>populated with some of the most commonly used tools.</source>
-      <translation>doté des outils les plus couramment utilisés.</translation>
+      <translation type="unfinished">populated with some of the most commonly used tools.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Latest videos</source>
-      <translation>Dernières vidéos</translation>
+      <translation type="unfinished">Latest videos</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>On the web</source>
-      <translation>Sur le web</translation>
+      <translation type="unfinished">On the web</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Ceci est la page d'accueil de FreeCAD. Ici vous pourrez trouver beaucoup d'information sur FreeCAD, y compris des tutoriels, des exemples et la documentation de l'utilisateur.</translation>
+      <translation type="unfinished">This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>File not found</source>
-      <translation>Fichier introuvable</translation>
+      <translation>Ulac afaylu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
@@ -231,62 +231,62 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
       <source>Ship Design</source>
-      <translation>Conception de navires</translation>
+      <translation type="unfinished">Ship Design</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
       <source>Designing and calculating ships</source>
-      <translation>Conception et calcul de navires</translation>
+      <translation type="unfinished">Designing and calculating ships</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
       <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>Le module de &lt;b&gt;Conception des navires&lt;/b&gt; offre plusieurs outils pour aider les concepteurs de navires à afficher, modéliser et calculer les profils et autres propriétés spécifiques des coques de navire.</translation>
+      <translation type="unfinished">The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
       <source>Load an Architectural example model</source>
-      <translation>Charger un modèle Architectural</translation>
+      <translation type="unfinished">Load an Architectural example model</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Architectural Design</source>
-      <translation>Conception architecturale</translation>
+      <translation type="unfinished">Architectural Design</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>La section du site dédiée aux scripts python, avec des exemples, explications et les commandes API.</translation>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Your version of FreeCAD is up to date.</source>
-      <translation>Votre version de FreeCAD est à jour.</translation>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation>Nouvelle version de FreeCAD disponible.</translation>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Latest commits</source>
-      <translation>Derniers commits</translation>
+      <translation type="unfinished">Latest commits</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
       <source>Obtain a development version</source>
-      <translation>Obtenir une version de développement</translation>
+      <translation type="unfinished">Obtain a development version</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>Des &lt;b&gt;versions de développement&lt;/b&gt; sont mises à la disposition par certains membres de la communauté de temps en temps et en général contiennent les derniers changements, mais sont aussi plus susceptibles de contenir des bugs.</translation>
+      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
       <source>See all commits</source>
-      <translation>Voir tous les commits</translation>
+      <translation type="unfinished">See all commits</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
@@ -321,17 +321,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>Author</source>
-      <translation>Auteur</translation>
+      <translation>Ameskar</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
       <source>Company</source>
-      <translation>Société</translation>
+      <translation>Takebbanit</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Turagt</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
@@ -341,7 +341,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation type="unfinished">Load an FEM 3D new solver example analysis</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

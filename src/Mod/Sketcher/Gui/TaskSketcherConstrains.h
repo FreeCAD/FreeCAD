@@ -87,6 +87,7 @@ public Q_SLOTS:
     void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_emitCenterSelectedItems(void);
     void on_filterInternalAlignment_stateChanged(int state);
+    void on_extendedInformation_stateChanged(int state);
 
 protected:
     void changeEvent(QEvent *e);

@@ -24,8 +24,9 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
-from PathScripts.PathPreferences import PathPreferences
+
 from PySide import QtCore
 
 

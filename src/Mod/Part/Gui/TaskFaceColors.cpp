@@ -34,6 +34,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <QMessageBox>
 # include <QSet>
+# include <Python.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>

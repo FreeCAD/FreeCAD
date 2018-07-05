@@ -92,21 +92,19 @@
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>Sobre o FreeCAD UnitTest</translation>
+      <translation>Sobre a unidade de Teste do FreeCAD</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Direitos de Autor (c) Werner Mayer
-
-O FreeCAD UnitTest é parte do FreeCAD e suporta o desenvolvimento dos Testes de Unidade para os seus próprios módulos.</translation>
+      <translation>Copyright (c) Werner Mayer FreeCAD UnitTest é parte do FreeCAD e suporta escrever testes de unidade para os próprios módulos.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Digite o nome de um objeto invocável que quando chamado, irá retornar um TestCase. Clique 'Iniciar' e o teste produzido será executado. Clique duplo num erro na visualização em árvore para mais informação sobre o mesmo, incluindo o rastreamento do empilhamento.</translation>
+      <translation>Digite o nome de um objeto invocável que quando chamado, irá retornar um TestCase. Clique 'Iniciar' e o teste produzido será executado. Dê um duplo clique sobre um erro na exibição em árvore para ver mais informações sobre ele, incluindo a pilha de rastreamento.</translation>
     </message>
   </context>
 </TS>

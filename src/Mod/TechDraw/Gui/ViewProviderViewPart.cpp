@@ -40,6 +40,7 @@
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
 #include<Mod/TechDraw/App/DrawPage.h>
 #include "ViewProviderViewPart.h"
@@ -54,6 +55,37 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDraw
 ViewProviderViewPart::ViewProviderViewPart()
 {
     sPixmap = "TechDraw_Tree_View";
+
+    static const char *group = "Lines";
+    static const char *dgroup = "Decoration";
+
+    //default line weights
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+
+    double weight = lg->getWeight("Thick");
+    ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
+
+    weight = lg->getWeight("Thin");
+    ADD_PROPERTY_TYPE(HiddenWidth,(weight),group,App::Prop_None,"The thickness of hidden lines, if enabled (line groups xx.1)");
+
+    weight = lg->getWeight("Graphic");
+    ADD_PROPERTY_TYPE(IsoWidth,(weight),group,App::Prop_None,"The thickness of isoparameter lines, if enabled");
+
+    weight = lg->getWeight("Extra");
+    ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
+    delete lg;                            //Coverity CID 174664
+
+    //decorations
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),dgroup,App::Prop_None,"Center marks on/off");
+    ADD_PROPERTY_TYPE(CenterScale,(2.0),dgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+
+    //properties that affect Section Line
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -63,13 +95,20 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 void ViewProviderViewPart::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->LineWidth)   ||
-        prop == &(getViewObject()->HiddenWidth) ||
-        prop == &(getViewObject()->ArcCenterMarks) ||
-        prop == &(getViewObject()->CenterScale) ||
-        prop == &(getViewObject()->ShowSectionLine)  ||
-        prop == &(getViewObject()->HorizCenterLine)  ||
-        prop == &(getViewObject()->VertCenterLine) ) {
+    ViewProviderDrawingView::updateData(prop);
+}
+
+void ViewProviderViewPart::onChanged(const App::Property* prop)
+{
+    if (prop == &(LineWidth)   ||
+        prop == &(HiddenWidth) ||
+        prop == &(IsoWidth) ||
+        prop == &(ExtraWidth) ||
+        prop == &(ArcCenterMarks) ||
+        prop == &(CenterScale) ||
+        prop == &(ShowSectionLine)  ||
+        prop == &(HorizCenterLine)  ||
+        prop == &(VertCenterLine) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -77,12 +116,6 @@ void ViewProviderViewPart::updateData(const App::Property* prop)
         }
      }
 
-
-    ViewProviderDrawingView::updateData(prop);
-}
-
-void ViewProviderViewPart::onChanged(const App::Property* prop)
-{
     ViewProviderDrawingView::onChanged(prop);
 }
 
@@ -94,8 +127,6 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
         sPixmap = "TechDraw_Tree_Multi";
     }
 
-    // call parent attach method
-//    ViewProviderDocumentObject::attach(pcFeat);
     ViewProviderDrawingView::attach(pcFeat);
 }
 

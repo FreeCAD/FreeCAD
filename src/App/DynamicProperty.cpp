@@ -432,17 +432,19 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
                 }
 #ifndef FC_DEBUG
                 catch (...) {
-                    Base::Console().Error("DynamicProperty::Restore: Unknown C++ exception thrown");
+                    Base::Console().Error("DynamicProperty::Restore: Unknown C++ exception thrown\n");
                 }
 #endif
             }
             else if (prop) {
-                Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
-                    pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
+                //Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
+                //    pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
+                pc->handleChangedPropertyType(reader, TypeName, prop);
             }
             else {
-                Base::Console().Warning("%s: No property found with name %s and type %s\n",
-                    pc->getTypeId().getName(), PropName, TypeName);
+                //Base::Console().Warning("%s: No property found with name %s and type %s\n",
+                //    pc->getTypeId().getName(), PropName, TypeName);
+                pc->handleChangedPropertyName(reader, TypeName, PropName);
             }
         }
         reader.readEndElement("Property");

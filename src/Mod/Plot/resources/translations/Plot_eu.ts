@@ -319,7 +319,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="125"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posizioa</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="130"/>

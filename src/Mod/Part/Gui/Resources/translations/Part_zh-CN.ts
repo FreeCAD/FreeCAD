@@ -142,13 +142,13 @@
       <location line="+2"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>对象的起源</translation>
+      <translation>对象的原点</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>把点放在对象放置上。定位。操作对象的放置, 椭圆/抛物线/双曲线边缘。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -183,7 +183,7 @@
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>把点放在边上, MapPathParametr 控制位置。另外, 顶点可以被链接来在作投影。</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -194,31 +194,31 @@
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+      <translation>边缘密切圆的中心。最优顶点链接定义位置。</translation>
     </message>
     <message>
       <location line="-2"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>把点放在边上, MapPathParametr 控制位置。另外, 顶点可以被链接来在作投影。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>边缘密切圆的中心。最优顶点链接定义位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>质量中心</translation>
+      <translation>质心</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>所有参照物的中心 (假设相等的密度)。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -294,7 +294,7 @@
       <location line="+6"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>线条沿对象的局部 X 轴对齐。操作对象的放置, 椭圆/抛物线/双曲线边缘。</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -306,7 +306,7 @@
       <location line="+1"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>线条沿对象的局部 X 轴对齐。操作对象的放置, 椭圆/抛物线/双曲线边缘。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -324,7 +324,7 @@
       <location line="+1"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>线, 是密切圆的弯曲边的轴。可选顶点定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -390,19 +390,19 @@
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>垂直于边缘</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>垂直于曲面</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>由顶点设置的点与曲面垂直的直线。</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -413,7 +413,7 @@
       <location line="-30"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>与曲线边缘的 Frenet-弗莱纳坐标系统的 N 向量对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -425,7 +425,7 @@
       <location line="+1"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>与曲线边缘的 Frenet-弗莱纳坐标系统的 B 向量对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -438,7 +438,7 @@
       <location line="+3"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+      <translation>沿 U 形参数与曲面相切。顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="-1"/>
@@ -530,13 +530,13 @@
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Plane can be moved by editing Placement property.</translation>
+      <translation>附件被禁用。平面可通过编辑位置属性移动。</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>附件被禁用。物体可通过编辑位置属性移动。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -548,7 +548,7 @@
       <location line="+1"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>原点对齐以匹配顶点。定位由放置属性控制。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -560,7 +560,7 @@
       <location line="+1"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>平面与链接对象的 XY 局部平面对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -572,7 +572,7 @@
       <location line="+1"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>平面与链接对象的 XY 局部平面对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -584,7 +584,7 @@
       <location line="+1"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>平面与链接对象的 YZ 局部平面对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -596,37 +596,37 @@
       <location line="+1"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>平面与平面一致。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>与表面相切</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>平面在顶点处与曲面相切。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>垂直于边缘</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>平面切线与边缘。可选顶点连接定义位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -634,19 +634,19 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>与曲线边缘的 Frenet-弗莱纳坐标系统对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -658,24 +658,24 @@
       <location line="+1"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>对齐平面到边缘的密切圆。起源与曲率点对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>旋转段</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>平面垂直于边缘, Y 轴与密切圆轴线匹配。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>平面垂直于边缘, Y 轴与密切圆轴线匹配。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -687,31 +687,31 @@
       <location line="+1"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>对齐平面以通过三顶点。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>垂直于3点</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>平面将穿过前两个顶点, 垂直于经过三个顶点的平面。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>折叠</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>折叠多的专业模式。按顺序选择4边: 可折叠边、折页线、其它折页线、其它可折叠边。平面将对齐以折叠第一边。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -723,7 +723,7 @@
       <location line="+1"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>在第二和第三主轴上建造的惯性轴 (通过质心) 的平面。</translation>
     </message>
   </context>
   <context>
@@ -737,13 +737,13 @@
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. CS can be moved by editing Placement property.</translation>
+      <translation>附件被禁用。坐标系可以通过编辑位置属性来移动。</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>附件被禁用。物体可通过编辑位置属性移动。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -755,7 +755,7 @@
       <location line="+1"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>原点对齐以匹配顶点。定位由放置属性控制。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -767,31 +767,31 @@
       <location line="+1"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>设定位置与链接对象的位置一致。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  X Z-Y</translation>
+      <translation>对象的 X Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>X、y、z 轴分别与对象的本地 x、z、-y 匹配。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's  Y Z X</translation>
+      <translation>对象的 Y Z X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>X'、Y'、Z' 轴分别与对象的本地 Y、Z、X 匹配。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -803,37 +803,37 @@
       <location line="+1"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
+      <translation>X' Y' 平面与平面对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>与曲面的 XY 相切</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>X' Y' 平面在顶点处与曲面相切。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z 正切到边缘</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Z 轴的对齐方式与边缘相切。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -841,19 +841,19 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>与曲线边缘的 Frenet-弗莱纳坐标系统对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -865,55 +865,55 @@
       <location line="+1"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>将 XY 平面与边缘的密切圆对齐。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>旋转段</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>对齐 Y 轴以匹配边缘的密切圆轴。可选顶点链接定义了位置。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>3点定义的XY平面</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+      <translation>对齐 XY 平面以通过三顶点。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>3点定义的XZ平面</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>对齐XZ平面通过3点; X 轴将通过前面两个点。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>折叠</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>折叠多的专业模式。按顺序选择4边: 可折叠边、折页线、其它折页线、其它可折叠边。XY 平面将对齐以折叠第一边。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -925,141 +925,141 @@
       <location line="+1"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>惯性坐标系, 构造于惯性主轴和质心。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>O-Z-X 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 Z 和 X 轴对齐到顶点/沿直线。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>O-Z-Y轴对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 Z 和 Y 轴朝向顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>O-Z-Y轴对齐</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 X 和 Y 轴朝向顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>O-X-Z 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 X 和 Z 轴对齐到顶点/沿直线。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>O-Y-Z 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 Y 和 Z 轴与顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>O-Y-X 对齐</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将 Y 和 X 轴与顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>O-N-X 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将法线和水平平面轴与顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>O-N-Y 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将法线和垂直平面轴与顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将水平和垂直平面轴与顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>O-X-N 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将水平平面轴和法线对齐至顶点/沿直线。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>O-Y-N 对齐</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将垂直平面轴和法线朝向顶点/沿直线对齐。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>与第一个顶点匹配原点。将垂直和水平平面轴与顶点/沿直线对齐。</translation>
     </message>
   </context>
   <context>
@@ -1139,7 +1139,7 @@
     <message>
       <location line="-194"/>
       <source>Profile</source>
-      <translation>配置文件</translation>
+      <translation>轮廓</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1306,7 +1306,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Toggle Delta</source>
-      <translation type="unfinished">Toggle Delta</translation>
+      <translation>切换增量</translation>
     </message>
   </context>
   <context>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1424,13 +1424,13 @@
     <message>
       <location line="+1"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>给选的形的边缘倒角</translation>
+      <translation>给所选形状的边缘倒角</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1478,13 +1478,13 @@
     <message>
       <location line="+1"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>用于偏移形状的工具 (构造并行形状)</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1496,7 +1496,7 @@
     <message>
       <location line="+1"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>形状拆分工具。Compsolid 创建工具。OCC 6.9.0 或更高版本是必需的。</translation>
     </message>
   </context>
   <context>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1626,7 +1626,7 @@
     <message>
       <location line="+1"/>
       <source>Extrude a selected sketch</source>
-      <translation>挤压选定的草绘</translation>
+      <translation>拉伸选定的草图</translation>
     </message>
   </context>
   <context>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1716,7 +1716,7 @@
     <message>
       <location line="+1"/>
       <source>Utility to loft</source>
-      <translation>放样程序</translation>
+      <translation>放样工具</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
@@ -1737,8 +1737,12 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: 从一组电线 中做脸(例如，草图)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
-      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
+      <translation>Part_MakeFace: 从一组电线 (例如, 从草图) 中做脸。</translation>
     </message>
     <message>
       <source>Make face from sketch</source>
@@ -1795,12 +1799,12 @@
     <message>
       <location line="+1"/>
       <source>3D Offset...</source>
-      <translation type="unfinished">3D Offset...</translation>
+      <translation>3D偏移量...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Part_Offset: Utility to offset in 3D</source>
-      <translation type="unfinished">Part_Offset: Utility to offset in 3D</translation>
+      <translation>部件_偏移: 用于在3D 中偏移的实用程序</translation>
     </message>
     <message>
       <source>Offset...</source>
@@ -1821,18 +1825,18 @@
     <message>
       <location line="+1"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D偏移量...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Part_Offset2D: Utility to offset planar shapes</source>
-      <translation type="unfinished">Part_Offset2D: Utility to offset planar shapes</translation>
+      <translation>部件_偏移: 用于偏移平面现状</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1886,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1934,7 +1938,7 @@
     <message>
       <location line="+1"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+      <translation>从两条边或两条线创建一个直纹面</translation>
     </message>
     <message>
       <source>Create a ruled surface from two curves</source>
@@ -2144,7 +2148,7 @@
     <message>
       <location line="+6"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>选择成功</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2169,17 +2173,25 @@
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>附件模式:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>附件偏移属性。放置在附加的对象的本地空间中表示。</translation>
     </message>
     <message>
       <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>附件偏移:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>SuperPlacement 属性的镜像。额外的放置是表示附加对象的位置。</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
-      <translation type="unfinished">Extra placement:</translation>
+      <translation>额外安置:</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -2214,7 +2226,7 @@
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>翻转面</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2397,7 @@
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>倒角边缘</translation>
     </message>
@@ -2405,7 +2417,7 @@
     <message>
       <location line="+6"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
+      <translation>如果选中, 则反向拉伸方向。</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2415,17 +2427,17 @@
     <message>
       <location line="+7"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>使用 X、Y、Z 值手动指定方向。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Custom direction:</source>
-      <translation type="unfinished">Custom direction:</translation>
+      <translation>自定义方向：</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+      <translation>垂直拉伸到输入形状的平面。</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2457,7 +2469,7 @@
     <message>
       <location line="-211"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>单击此处, 开始选择3d 视图中的边缘。</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2483,43 +2495,43 @@
     <message>
       <location line="+6"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>沿:</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>沿方向拉伸的长度 (可以为负数)。如果两个长度为零, 则使用方向大小。</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Against:</source>
-      <translation type="unfinished">Against:</translation>
+      <translation>反向：</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>向方向拉伸的长度 (可以为负数)。</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>将挤出长度平均分配给双方。</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>对称</translation>
     </message>
     <message>
       <location line="+25"/>
       <location line="+25"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>将斜面 (拔模) 应用于挤出侧面。</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+      <translation>如果选中, 拉伸闭合线框将得到实体, 而不是壳体。</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -2565,52 +2577,50 @@
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
-
-%1</translation>
+      <translation>创建拉伸失败。%1</translation>
     </message>
     <message>
       <location line="+67"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>对象未找到：%1</translation>
     </message>
     <message>
       <location line="+62"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>未选择用于拉伸的形状。先选择一些。</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>旋转轴链接无效。
 
 %1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>方向模式要使用边缘, 但没有链接的边缘。</translation>
     </message>
     <message>
       <location line="+23"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>无法确定要拉伸的形状的法线向量。请使用其他模式。 
 
-(%1)</translation>
+ (%1)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>挤出方向为零长度。它必须是非零的。</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>总挤出长度为零 (长度1 = =-长度2)。它必须是非零的。</translation>
     </message>
     <message>
       <source>Succeeded</source>
@@ -2684,7 +2694,7 @@
       <translation>无选择</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>长度:</translation>
     </message>
@@ -2705,14 +2715,14 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
-      <translation type="unfinished">Start length</translation>
+      <translation>开始长度</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
-      <translation type="unfinished">End length</translation>
+      <translation>终止长度</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2721,17 +2731,17 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>开始半径</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>结束半径</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
@@ -2763,13 +2773,13 @@ Please check one or more edge entities first.</source>
       <translation>无</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>边 %1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>无选定的形状</translation>
     </message>
@@ -2815,17 +2825,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+8"/>
       <source>Write solids and shells as</source>
-      <translation type="unfinished">Write solids and shells as</translation>
+      <translation>将实体和外壳写成</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+      <translation>已修剪面之群组(类型 144)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
+      <translation>实体(类型 186) 壳(类型 514)/ B-REP模式</translation>
     </message>
     <message>
       <source>Enable B-REP mode</source>
@@ -2870,7 +2880,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>导出</translation>
     </message>
@@ -2902,10 +2912,25 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+26"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>在曲面的参数空间中写出曲线</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>导入</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>如果选中此项, 则在文件读取期间不会进行复合合并 (较慢但细节更优)。</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>启用STEP复合合并</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>标题</translation>
     </message>
@@ -3609,7 +3634,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+42"/>
       <location line="+41"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>单击以将此设置为坐标轴</translation>
     </message>
     <message>
       <location line="-38"/>
@@ -3680,7 +3705,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="-268"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>对象未找到：%1</translation>
     </message>
     <message>
       <location line="+81"/>
@@ -3694,7 +3719,7 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>旋转轴链接无效。
 
 %1</translation>
     </message>
@@ -3917,7 +3942,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="-65"/>
       <location line="+68"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location line="-43"/>
@@ -3932,17 +3957,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+35"/>
       <source>Bounding box color</source>
-      <translation type="unfinished">Bounding box color</translation>
+      <translation>边界框颜色</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+      <translation>外框在3D视图中的颜色</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>注释</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -3990,7 +4015,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="+220"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>顶点/边/线/面</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4005,17 +4030,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>可用的轮廓</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>选定的轮廓</translation>
     </message>
     <message>
       <location line="+82"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+      <translation>至少需要两个顶点, 边, 线或面</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -4066,7 +4091,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+8"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>基准点</translation>
     </message>
     <message>
       <source>Base point:</source>
@@ -4149,7 +4174,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+28"/>
       <source>Select three or more vertices</source>
-      <translation type="unfinished">Select three or more vertices</translation>
+      <translation>选取三个或更多顶点</translation>
     </message>
     <message>
       <location line="+52"/>
@@ -4174,7 +4199,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+7"/>
       <source>Select a list of vertices</source>
-      <translation type="unfinished">Select a list of vertices</translation>
+      <translation>选取一个顶点清单</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4206,7 +4231,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>顶点/边/线/面</translation>
     </message>
     <message>
       <location line="-152"/>
@@ -4222,17 +4247,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>可用的轮廓</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>选定的轮廓</translation>
     </message>
     <message>
       <location line="+128"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
+      <translation>选择一个或多个要沿其进行扫描的连接边。</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -4252,7 +4277,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+0"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
+      <translation>"%1" 不能用作轮廓和路径。</translation>
     </message>
     <message>
       <location line="+37"/>
@@ -4267,13 +4292,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+2"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
+      <translation>在3d 视图中选择一个或多个连接的边, 然后按 "完成"</translation>
     </message>
     <message>
       <location line="+24"/>
       <location line="+8"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>选定的扫描路径无效。</translation>
     </message>
   </context>
   <context>
@@ -4286,7 +4311,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+6"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>选择成功</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -4311,18 +4336,26 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>附件模式:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>附件偏移属性。放置在附加的对象的本地空间中表示。</translation>
     </message>
     <message>
       <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>附件偏移:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>SuperPlacement 属性的镜像。额外的放置是表示附加对象的位置。</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
-      <translation type="unfinished">Extra placement:</translation>
+      <translation>额外安置:</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -4357,12 +4390,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+92"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>翻转面</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="-17"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>OCC 错误： %1</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -4372,25 +4405,34 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+3"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>附件模式失败: %1</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>没附档</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>附加模式%1</translation>
     </message>
     <message>
       <location line="+4"/>
-      <source>Extra placement (inactive - not attached):</source>
-      <translation type="unfinished">Extra placement (inactive - not attached):</translation>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>附件偏量 (不活动-未附加):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>不可编辑，因为附件偏移的旋转部分受表达式的约束。</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>额外放置 （无效-未附加):</translation>
+    </message>
+    <message>
+      <location line="-116"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -4412,53 +4454,52 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+4"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>参照 %1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
+      <translation>不可编辑, 因为 superplacement 的旋转部分受表达的约束。</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+参考组合：
 </translation>
     </message>
     <message>
       <source>Reference combinations:
 </source>
-      <translation type="unfinished">Reference combinations:
+      <translation>参考组合：
 </translation>
     </message>
     <message>
       <location line="+17"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (添加 %2)</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 （添加更多参照）</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>造型内容</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>检查几何</translation>
     </message>
@@ -4631,7 +4672,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskAttacher.cpp" line="+217"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>基准对话框: 输入错误</translation>
     </message>
   </context>
   <context>
@@ -4807,7 +4848,7 @@ Reference combinations:
     <message>
       <location line="+7"/>
       <source>Face from vertices</source>
-      <translation type="unfinished">Face from vertices</translation>
+      <translation>由顶点创建面</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4904,64 +4945,64 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="+172"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>简易</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>独立地从每根导线分离平面面。不支持孔; 电线可以在不同的平面上。</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>牛眼面生成器</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <translation>支持制作带有小孔的平面面。</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>奶酪面生成器</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>支持用孔生成平面, 但在孔内没有岛。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>报表视图拉伸面生成器</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>支持用孔制作面孔, 不支持嵌套。</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>请选择两个形状.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4978,15 +5019,15 @@ Do you want to continue?</source>
     <message>
       <location line="-118"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>请选择两个或多个形状。或者, 选择一个包含两个或多个要计算公用的形状的组合。</translation>
     </message>
     <message>
       <location line="+102"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>请选择两个或多个形状。或者, 选择一个包含两个或多个要计算公用的形状的组合。</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>请选择一个或多个形状。</translation>
     </message>
@@ -5086,7 +5127,7 @@ Do you want to continue?</source>
       <translation>编辑圆角边</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>设置颜色...</translation>
     </message>
@@ -5111,7 +5152,7 @@ Do you want to continue?</source>
       <translation>壳体</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>面</translation>
@@ -5327,62 +5368,62 @@ Do you want to continue?</source>
     <message>
       <location line="+12"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+      <translation>BOPAlgo 检查未知</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo BadType</source>
-      <translation type="unfinished">BOPAlgo BadType</translation>
+      <translation>BOPAlgo 错误类型</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+      <translation>BOPAlgo 自我交集</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+      <translation>BOPAlgo 边缘太小</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+      <translation>BOPAlgo 无法复原的面</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+      <translation>BOPAlgo 与Vertex 不兼容</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+      <translation>BOPAlgo 与边缘不兼容</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+      <translation>BOPAlgo 与面不兼容</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation type="unfinished">BOPAlgo OperationAborted</translation>
+      <translation>BOPAlgo 操作取消</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+      <translation>BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BOPAlgo_在面上的无效曲线</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>BOPAlgo NotValid</source>
-      <translation type="unfinished">BOPAlgo NotValid</translation>
+      <translation>BOPAlgo 无效</translation>
     </message>
     <message>
       <location line="+285"/>
@@ -5415,7 +5456,7 @@ Do you want to continue?</source>
     <message>
       <location line="+5"/>
       <source>Toggle Delta</source>
-      <translation type="unfinished">Toggle Delta</translation>
+      <translation>切换增量</translation>
     </message>
     <message>
       <location line="+5"/>

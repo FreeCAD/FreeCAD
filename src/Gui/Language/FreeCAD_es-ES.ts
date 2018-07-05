@@ -127,10 +127,6 @@
       <translation>Movimiento del SpaceBall</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensibilidad global:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Modo dominante</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Invertir</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilidad global:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD no sería nada sin sus esfuerzos:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licencia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliotecas</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Este software utiliza componentes de código abierto, cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1384,27 +1399,26 @@ Este archivo ya existe.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Renombrar archivo Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Introduce nuevo nombre:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' ya existe.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Renombrar fallo</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Fallo al renombre de '%1'.
+¿Tal vez un error de permiso de archivo?</translation>
     </message>
   </context>
   <context>
@@ -2138,8 +2152,8 @@ Especifique otro directorio, por favor.</translation>
       <translation>Guardar la imagen en miniatura dentro del archivo de proyecto cuando se guarda un documento</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Crear archivos de copia de seguridad cuando se vuelva a guardar el documento</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Número máximo de archivos de copia de seguridad a tener a la hora de volver a guardar el documento</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2251,7 +2265,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Una dirección URL donde el usuario puede encontrar más detalles acerca de la licencia</translation>
     </message>
   </context>
   <context>
@@ -2619,7 +2633,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Piezas pequeñas métricas y CNC (mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2661,7 +2675,7 @@ Especifique otro directorio, por favor.</translation>
       <translation>Elegir radio (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Establece la zona de confusión para elegir elementos en vista 3D. Un mayor valor hace que sea más fácil elegir cosas, pero hará imposible seleccionar algunas características pequeñas.</translation>
     </message>
   </context>
@@ -3351,10 +3365,6 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Vista combinada</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Proyecto</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Tareas</translation>
     </message>
@@ -3694,7 +3704,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>¿Desea especificar su ruta de instalación si ya está instalado?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -4029,7 +4039,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Cambiar el objeto vinculado</translation>
     </message>
   </context>
   <context>
@@ -4365,7 +4375,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>El texto del objeto subyacente ha cambiado. ¿Descartar cambios y volver a cargar el texto del objeto?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -5050,6 +5060,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>La %1 no está vacía, ¿borrar su contenido?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exportación fallida</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5607,11 +5621,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Crear grupo</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Crear un nuevo grupo para ordenar objetos</translation>
     </message>
   </context>
   <context>
@@ -5867,7 +5881,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create part</source>
-      <translation>Crear parte</translation>
+      <translation>Crear pieza</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -6496,8 +6510,8 @@ Be aware the point where you click matters.</source>
       <translation>Crear una vista nueva</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Crea una ventana de vista nueva para el documento activo</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Crea una nueva ventana de vista para el documento activo</translation>
     </message>
   </context>
   <context>
@@ -6853,7 +6867,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Mostrar la ventana principal en modo de pantalla completa</translation>
     </message>
   </context>
   <context>

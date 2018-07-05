@@ -23,7 +23,7 @@
 #ifndef PATH_AreaParams_H
 #define PATH_AreaParams_H
 
-// deifne this to enable offset algo selection
+// define this to enable offset algo selection
 // #define AREA_OFFSET_ALGO
 
 /** \file

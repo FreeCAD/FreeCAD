@@ -33,8 +33,7 @@
 using namespace Base;
 
 static inline void checkRange(const char * op, int length, int mass, int time, int electricCurrent,
-                              int thermodynamicTemperature, int amountOfSubstance, int luminoseIntensity, int angle,
-                              int density)
+                              int thermodynamicTemperature, int amountOfSubstance, int luminousIntensity, int angle)
 {
     if ( ( length                   >=  (1 << (UnitSignatureLengthBits                   - 1)) ) ||
          ( mass                     >=  (1 << (UnitSignatureMassBits                     - 1)) ) ||
@@ -42,9 +41,8 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( electricCurrent          >=  (1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
          ( thermodynamicTemperature >=  (1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
          ( amountOfSubstance        >=  (1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
-         ( luminoseIntensity        >=  (1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
-         ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) ||
-         ( density                  >=  (1 << (UnitSignatureDensityBits                  - 1)) ) )
+         ( luminousIntensity        >=  (1 << (UnitSignatureLuminousIntensityBits        - 1)) ) ||
+         ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) )
         throw Base::OverflowError((std::string("Unit overflow in ") + std::string(op)).c_str());
     if ( ( length                   <  -(1 << (UnitSignatureLengthBits                   - 1)) ) ||
          ( mass                     <  -(1 << (UnitSignatureMassBits                     - 1)) ) ||
@@ -52,9 +50,8 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( electricCurrent          <  -(1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
          ( thermodynamicTemperature <  -(1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
          ( amountOfSubstance        <  -(1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
-         ( luminoseIntensity        <  -(1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
-         ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) ||
-         ( density                  <  -(1 << (UnitSignatureDensityBits                  - 1)) ) )
+         ( luminousIntensity        <  -(1 << (UnitSignatureLuminousIntensityBits        - 1)) ) ||
+         ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) )
         throw Base::OverflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
 }
 
@@ -64,9 +61,8 @@ Unit::Unit(int8_t Length,
            int8_t ElectricCurrent,
            int8_t ThermodynamicTemperature,
            int8_t AmountOfSubstance,
-           int8_t LuminoseIntensity,
-           int8_t Angle,
-           int8_t Density)
+           int8_t LuminousIntensity,
+           int8_t Angle)
 {
     checkRange("unit",
                (int32_t)Length,
@@ -75,9 +71,8 @@ Unit::Unit(int8_t Length,
                (int32_t)ElectricCurrent,
                (int32_t)ThermodynamicTemperature,
                (int32_t)AmountOfSubstance,
-               (int32_t)LuminoseIntensity,
-               (int32_t)Angle,
-               (int32_t)Density);
+               (int32_t)LuminousIntensity,
+               (int32_t)Angle);
 
     Sig.Length                   = Length;
     Sig.Mass                     = Mass;
@@ -85,9 +80,8 @@ Unit::Unit(int8_t Length,
     Sig.ElectricCurrent          = ElectricCurrent;
     Sig.ThermodynamicTemperature = ThermodynamicTemperature;
     Sig.AmountOfSubstance        = AmountOfSubstance;
-    Sig.LuminoseIntensity        = LuminoseIntensity;
+    Sig.LuminousIntensity        = LuminousIntensity;
     Sig.Angle                    = Angle;
-    Sig.Density                  = Density;
 }
 
 
@@ -99,9 +93,8 @@ Unit::Unit()
     Sig.ElectricCurrent          = 0;
     Sig.ThermodynamicTemperature = 0;
     Sig.AmountOfSubstance        = 0;
-    Sig.LuminoseIntensity        = 0;
+    Sig.LuminousIntensity        = 0;
     Sig.Angle                    = 0;
-    Sig.Density                  = 0;
 }
 
 Unit::Unit(const Unit& that)
@@ -121,9 +114,8 @@ Unit::Unit(const QString& expr)
         Sig.ElectricCurrent          = 0;
         Sig.ThermodynamicTemperature = 0;
         Sig.AmountOfSubstance        = 0;
-        Sig.LuminoseIntensity        = 0;
+        Sig.LuminousIntensity        = 0;
         Sig.Angle                    = 0;
-        Sig.Density                  = 0;
     }
 }
 
@@ -136,9 +128,8 @@ Unit Unit::pow(signed char exp) const
                (int32_t)Sig.ElectricCurrent * (int32_t)exp,
                (int32_t)Sig.ThermodynamicTemperature * (int32_t)exp,
                (int32_t)Sig.AmountOfSubstance * (int32_t)exp,
-               (int32_t)Sig.LuminoseIntensity * (int32_t)exp,
-               (int32_t)Sig.Angle * (int32_t)exp,
-               (int32_t)Sig.Density * (int32_t)exp);
+               (int32_t)Sig.LuminousIntensity * (int32_t)exp,
+               (int32_t)Sig.Angle * (int32_t)exp);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    * exp;
@@ -147,9 +138,8 @@ Unit Unit::pow(signed char exp) const
     result.Sig.ElectricCurrent          = Sig.ElectricCurrent           * exp;
     result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  * exp;
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         * exp;
-    result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         * exp;
+    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         * exp;
     result.Sig.Angle                    = Sig.Angle                     * exp;
-    result.Sig.Density                  = Sig.Density                   * exp;
 
     return result;
 }
@@ -162,9 +152,8 @@ bool Unit::isEmpty(void)const
         && (this->Sig.ElectricCurrent == 0)
         && (this->Sig.ThermodynamicTemperature == 0)
         && (this->Sig.AmountOfSubstance == 0)
-        && (this->Sig.LuminoseIntensity == 0)
-        && (this->Sig.Angle == 0)
-        && (this->Sig.Density == 0);
+        && (this->Sig.LuminousIntensity == 0)
+        && (this->Sig.Angle == 0);
 }
 
 bool Unit::operator ==(const Unit& that) const
@@ -175,9 +164,8 @@ bool Unit::operator ==(const Unit& that) const
         && (this->Sig.ElectricCurrent == that.Sig.ElectricCurrent)
         && (this->Sig.ThermodynamicTemperature == that.Sig.ThermodynamicTemperature)
         && (this->Sig.AmountOfSubstance == that.Sig.AmountOfSubstance)
-        && (this->Sig.LuminoseIntensity == that.Sig.LuminoseIntensity)
-        && (this->Sig.Angle == that.Sig.Angle)
-        && (this->Sig.Density == that.Sig.Density);
+        && (this->Sig.LuminousIntensity == that.Sig.LuminousIntensity)
+        && (this->Sig.Angle == that.Sig.Angle);
 }
 
 
@@ -190,9 +178,8 @@ Unit Unit::operator *(const Unit &right) const
                (int32_t)Sig.ElectricCurrent + (int32_t)right.Sig.ElectricCurrent,
                (int32_t)Sig.ThermodynamicTemperature + (int32_t)right.Sig.ThermodynamicTemperature,
                (int32_t)Sig.AmountOfSubstance + (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminoseIntensity + (int32_t)right.Sig.LuminoseIntensity,
-               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle,
-               (int32_t)Sig.Density + (int32_t)right.Sig.Density);
+               (int32_t)Sig.LuminousIntensity + (int32_t)right.Sig.LuminousIntensity,
+               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
@@ -201,9 +188,8 @@ Unit Unit::operator *(const Unit &right) const
     result.Sig.ElectricCurrent          = Sig.ElectricCurrent           + right.Sig.ElectricCurrent;
     result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  + right.Sig.ThermodynamicTemperature;
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         + right.Sig.AmountOfSubstance;
-    result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         + right.Sig.LuminoseIntensity;
+    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         + right.Sig.LuminousIntensity;
     result.Sig.Angle                    = Sig.Angle                     + right.Sig.Angle;
-    result.Sig.Density                  = Sig.Density                   + right.Sig.Density;
 
     return result;
 }
@@ -217,9 +203,8 @@ Unit Unit::operator /(const Unit &right) const
                (int32_t)Sig.ElectricCurrent - (int32_t)right.Sig.ElectricCurrent,
                (int32_t)Sig.ThermodynamicTemperature - (int32_t)right.Sig.ThermodynamicTemperature,
                (int32_t)Sig.AmountOfSubstance - (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminoseIntensity - (int32_t)right.Sig.LuminoseIntensity,
-               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle,
-               (int32_t)Sig.Density - (int32_t)right.Sig.Density);
+               (int32_t)Sig.LuminousIntensity - (int32_t)right.Sig.LuminousIntensity,
+               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    - right.Sig.Length;
@@ -228,9 +213,8 @@ Unit Unit::operator /(const Unit &right) const
     result.Sig.ElectricCurrent          = Sig.ElectricCurrent           - right.Sig.ElectricCurrent;
     result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  - right.Sig.ThermodynamicTemperature;
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         - right.Sig.AmountOfSubstance;
-    result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         - right.Sig.LuminoseIntensity;
+    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         - right.Sig.LuminousIntensity;
     result.Sig.Angle                    = Sig.Angle                     - right.Sig.Angle;
-    result.Sig.Density                  = Sig.Density                   - right.Sig.Density;
 
     return result;
 }
@@ -243,9 +227,8 @@ Unit& Unit::operator = (const Unit &New)
     Sig.ElectricCurrent          = New.Sig.ElectricCurrent;
     Sig.ThermodynamicTemperature = New.Sig.ThermodynamicTemperature;
     Sig.AmountOfSubstance        = New.Sig.AmountOfSubstance;
-    Sig.LuminoseIntensity        = New.Sig.LuminoseIntensity;
+    Sig.LuminousIntensity        = New.Sig.LuminousIntensity;
     Sig.Angle                    = New.Sig.Angle;
-    Sig.Density                  = New.Sig.Density;
 
     return *this;
 }
@@ -263,9 +246,8 @@ QString Unit::getString(void) const
         Sig.ElectricCurrent         > 0 ||
         Sig.ThermodynamicTemperature> 0 ||
         Sig.AmountOfSubstance       > 0 ||
-        Sig.LuminoseIntensity       > 0 ||
-        Sig.Angle                   > 0 ||
-        Sig.Density                 > 0 ){
+        Sig.LuminousIntensity       > 0 ||
+        Sig.Angle                   > 0 ){
 
         bool mult = false;
         if (Sig.Length > 0) {
@@ -319,13 +301,13 @@ QString Unit::getString(void) const
                 ret << "^" << Sig.AmountOfSubstance;
         }
 
-        if (Sig.LuminoseIntensity > 0) {
+        if (Sig.LuminousIntensity > 0) {
             if (mult)
                 ret<<'*';
             mult = true;
             ret << "cd";
-            if (Sig.LuminoseIntensity > 1)
-                ret << "^" << Sig.LuminoseIntensity;
+            if (Sig.LuminousIntensity > 1)
+                ret << "^" << Sig.LuminousIntensity;
         }
 
         if (Sig.Angle > 0) {
@@ -335,15 +317,6 @@ QString Unit::getString(void) const
             ret << "deg";
             if (Sig.Angle > 1)
                 ret << "^" << Sig.Angle;
-        }
-
-        if (Sig.Density > 0) {
-            if (mult)
-                ret<<'*';
-            mult = true;
-            ret << "kg/m^3";
-            if (Sig.Density > 1)
-                ret << "^" << Sig.Density;
         }
     }
     else {
@@ -356,9 +329,8 @@ QString Unit::getString(void) const
         Sig.ElectricCurrent         < 0 ||
         Sig.ThermodynamicTemperature< 0 ||
         Sig.AmountOfSubstance       < 0 ||
-        Sig.LuminoseIntensity       < 0 ||
-        Sig.Angle                   < 0 ||
-        Sig.Density                 < 0 ){
+        Sig.LuminousIntensity       < 0 ||
+        Sig.Angle                   < 0 ){
         ret << "/";
 
         int nnom = 0;
@@ -368,9 +340,8 @@ QString Unit::getString(void) const
         nnom += Sig.ElectricCurrent<0?1:0;
         nnom += Sig.ThermodynamicTemperature<0?1:0;
         nnom += Sig.AmountOfSubstance<0?1:0;
-        nnom += Sig.LuminoseIntensity<0?1:0;
+        nnom += Sig.LuminousIntensity<0?1:0;
         nnom += Sig.Angle<0?1:0;
-        nnom += Sig.Density<0?1:0;
 
         if (nnom > 1)
             ret << '(';
@@ -428,13 +399,13 @@ QString Unit::getString(void) const
                 ret << "^" << abs(Sig.AmountOfSubstance);
         }
 
-        if (Sig.LuminoseIntensity < 0) {
+        if (Sig.LuminousIntensity < 0) {
             if (mult)
                 ret<<'*';
             mult = true;
             ret << "cd";
-            if (Sig.LuminoseIntensity < -1)
-                ret << "^" << abs(Sig.LuminoseIntensity);
+            if (Sig.LuminousIntensity < -1)
+                ret << "^" << abs(Sig.LuminousIntensity);
         }
 
         if (Sig.Angle < 0) {
@@ -444,15 +415,6 @@ QString Unit::getString(void) const
             ret << "deg";
             if (Sig.Angle < -1)
                 ret << "^" << abs(Sig.Angle);
-        }
-
-        if (Sig.Density < 0) {
-            if (mult)
-                ret<<'*';
-            mult = true;
-            ret << "kg/m^3";
-            if (Sig.Density < -1)
-                ret << "^" << abs(Sig.Density);
         }
 
         if (nnom > 1)
@@ -477,7 +439,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::ElectricCurrent             )       return QString::fromLatin1("ElectricCurrent"); else
     if(*this == Unit::ElectricPotential           )       return QString::fromLatin1("ElectricPotential"); else
     if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance"); else
-    if(*this == Unit::LuminoseIntensity           )       return QString::fromLatin1("LuminoseIntensity"); else
+    if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity"); else
     if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure"); else
     if(*this == Unit::Force                       )       return QString::fromLatin1("Force"); else
     if(*this == Unit::Work                        )       return QString::fromLatin1("Work"); else
@@ -510,7 +472,7 @@ Unit Unit::Temperature(0,0,0,0,1);
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::ElectricPotential(2,1,-3,-1);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
-Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);
+Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
 
 Unit Unit::Stress  (-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
 Unit Unit::Pressure(-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI

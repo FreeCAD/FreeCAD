@@ -332,7 +332,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
             fn += QLatin1String(".FCMacro");
         QDir dir(this->macroPath);
-        // create the macroPath if inexistant
+        // create the macroPath if nonexistent
         if (!dir.exists()) {
             dir.mkpath(this->macroPath);
         }

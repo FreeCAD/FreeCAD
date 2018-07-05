@@ -46,7 +46,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>Load a Drawing extraction</translation>
+      <translation>Carregar uma extração de desenho</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>Projects from the Web</source>
-      <translation>Projetos a partir da Web</translation>
+      <translation>Projetos na Web</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
@@ -111,12 +111,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>A &lt;b&gt;bancada de trabalho Malha&lt;/b&gt; é usada para trabalhar com objetos Malha. Malhas são objetos 3D mais simples do que os objetos Peça, mas muitas vezes são mais fáceis de importar e exportar de/para outros aplicativos.</translation>
+      <translation>A &lt;b&gt;bancada de trabalho Malha&lt;/b&gt; é usada para trabalhar com objetos Malha. Malhas são objetos 3D mais simples do que os objetos Peça, mas muitas vezes são mais fáceis de importar e exportar de/para outros aplicações.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
       <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>O FreeCAD oferece várias ferramentas para converter entre objetos de Malha e de Peças.</translation>
+      <translation>O FreeCAD dispõe de várias ferramentas para converter entre objetos de Malha e de Peças.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
       <source>populated with some of the most commonly used tools.</source>
-      <translation>Preenchida com algumas das ferramentas comuns e mais usadas.</translation>
+      <translation>preenchida com algumas das ferramentas mais usadas.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
       <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
@@ -336,12 +336,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <translation>A bancada de trabalho &lt;b&gt; Arquitetura &lt;/b&gt; está especialmente concebida, para trabalhar com elementos de arquitetura, tais como, paredes e janelas. Comece por desenhar formas em 2D, e use-as como base para criar objetos de arquitetura.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Abrir um exemplo de uma análise FEM 3D</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>Clique aqui</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>para permitir que o FreeCAD aceda à internet</translation>
     </message>
   </context>
 </TS>

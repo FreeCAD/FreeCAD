@@ -215,59 +215,31 @@ void Part2DObject::acceptGeometry()
 
 void Part2DObject::Restore(Base::XMLReader &reader)
 {
+    Part::Feature::Restore(reader);
+}
+
+void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
+                                             const char * TypeName,
+                                             App::Property * prop)
+{
     //override generic restoration to convert Support property from PropertyLinkSub to PropertyLinkSubList
-
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-        // NOTE: We must also check the type of the current property because a
-        // subclass of PropertyContainer might change the type of a property but
-        // not its name. In this case we would force to read-in a wrong property
-        // type and the behaviour would be undefined.
-        try {
-            if(prop){
-                if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
-                    prop->Restore(reader);
-                } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
-                    //reading legacy Support - when the Support could only be a single flat face.
-                    App::PropertyLinkSub tmp;
-                    if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
-                        tmp.setContainer(this);
-                        tmp.Restore(reader);
-                        static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
-                    }
-                    this->MapMode.setValue(Attacher::mmFlatFace);
-                }
-            } else {
-                extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-            }
+    if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
+        //reading legacy Support - when the Support could only be a single flat face.
+        App::PropertyLinkSub tmp;
+        if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
-        }
-#endif
-
-        reader.readEndElement("Property");
+        this->MapMode.setValue(Attacher::mmFlatFace);
     }
-    reader.readEndElement("Properties");
+}
+
+void Part2DObject::handleChangedPropertyName(Base::XMLReader &reader,
+                                             const char * TypeName,
+                                             const char *PropName)
+{
+    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }
 
 // Python Drawing feature ---------------------------------------------------------

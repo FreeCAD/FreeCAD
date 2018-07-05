@@ -125,21 +125,24 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	Point3D fromPos(*pos);
 	Point3D toPos(*pos);
 	toPos.UpdateCmd(*cmd);
-	if (cmd->Name == "G0" || cmd->Name == "G1")
+	if (m_tool != NULL)
 	{
-        m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
-	}
-	else if (cmd->Name == "G2")
-	{
-		Vector3d vcent = cmd->getCenter();
-		Point3D cent(vcent);
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
-	}
-	else if (cmd->Name == "G3")
-	{
-		Vector3d vcent = cmd->getCenter();
-		Point3D cent(vcent);
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+		if (cmd->Name == "G0" || cmd->Name == "G1")
+		{
+			m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
+		}
+		else if (cmd->Name == "G2")
+		{
+			Vector3d vcent = cmd->getCenter();
+			Point3D cent(vcent);
+			m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
+		}
+		else if (cmd->Name == "G3")
+		{
+			Vector3d vcent = cmd->getCenter();
+			Point3D cent(vcent);
+			m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+		}
 	}
 
 	Base::Placement *plc = new Base::Placement();

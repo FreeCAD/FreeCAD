@@ -870,7 +870,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             }
         }
         else {
-            throw Py::Exception("string or QIODevice expected");
+            throw Py::TypeError("string or QIODevice expected");
         }
     }
     return Py::None();
@@ -1160,7 +1160,7 @@ PyResource::PyResource() : myDlg(0)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySingals.begin(); it != mySingals.end(); ++it) {
+    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
         SignalConnect* sc = *it;
         delete sc;
     }
@@ -1264,7 +1264,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 
     if (objS) {
         SignalConnect* sc = new SignalConnect(this, cb);
-        mySingals.push_back(sc);
+        mySignals.push_back(sc);
         return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
     else

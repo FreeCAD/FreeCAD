@@ -1,4 +1,5 @@
 var linkDescriptions = [];
+var allowDownloads = 0;
 
 function JSONscriptRequest(fullUrl) {
     // REST request path
@@ -55,8 +56,12 @@ function checkVersion(data) {
 }
 
 function load() {
-    // load latest news
     ddiv = document.getElementById("news");
+    if (allowDownloads == 0) {
+        ddiv.innerHTML = '<a href="EnableDownload.py" onClick="enableDownloads()">text70</a> text71';
+        return;
+    }
+    // load latest news
     ddiv.innerHTML = "Connecting...";
     var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
     tobj.buildScriptTag(); // Build the script tag
@@ -85,6 +90,10 @@ function stripTags(text) {
 
 function showTweets(data) {
     ddiv = document.getElementById('news');
+    if (allowDownloads == 0) {
+        ddiv.innerHTML = '<a href="EnableDownload.py" onClick="enableDownloads()">text70</a> text71';
+        return;
+    }
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 4; i++) {
@@ -101,6 +110,17 @@ function showTweets(data) {
     ddiv.innerHTML = html.join('');
     resize();
     resize(); // intentional javascript hack
+}
+
+function enableDownloads() {
+    allowDownloads = 1;
+    // load latest news
+    ddiv = document.getElementById("news");
+    ddiv.innerHTML = "Connecting...";
+    var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
+    tobj.buildScriptTag(); // Build the script tag
+    tobj.addScriptTag(); // Execute (add) the script tag
+    ddiv.innerHTML = "Downloading latest news...";
 }
 
 function showDescr(d) {

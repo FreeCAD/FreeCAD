@@ -32,6 +32,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <boost/math/special_functions/round.hpp>
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -356,6 +357,8 @@ bool PropertyEnumeration::isPartOf(const char *value) const
 
 const char * PropertyEnumeration::getValueAsString(void) const
 {
+    if (!_enum.isValid())
+        throw Base::RuntimeError("Cannot get value from invalid enumeration");
     return _enum.getCStr();
 }
 
@@ -413,6 +416,11 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         reader.readEndElement("CustomEnumList");
 
         _enum.setEnums(values);
+    }
+
+    if (val < 0) {
+        Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+        val = getValue();
     }
 
     setValue(val);
@@ -1753,6 +1761,16 @@ void PropertyStringList::setPyObject(PyObject *value)
         setValue(PyString_AsString(value));
     }
 #endif
+    else if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        setValue(PyUnicode_AsUTF8(value));
+    }
+#else
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
+        setValue(PyString_AsString(unicode));
+        Py_DECREF(unicode);
+    }
+#endif
     else if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
@@ -1781,16 +1799,6 @@ void PropertyStringList::setPyObject(PyObject *value)
         
         setValues(values);
     }
-    else if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
-        setValue(PyUnicode_AsUTF8(value));
-    }
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        setValue(PyString_AsString(unicode));
-        Py_DECREF(unicode);
-    }
-#endif
     else {
         std::string error = std::string("type must be str or unicode or list of str or list of unicodes, not ");
         error += value->ob_type->tp_name;

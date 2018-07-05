@@ -2,6 +2,11 @@
 // Copyright 2017, Lorenz Lechner
 // This program is released under the BSD license. See the file COPYING for details.
 
+
+#ifdef _MSC_VER
+    #define strdup _strdup
+#endif
+
 #include "Area.h"
 #include "Point.h"
 #include "AreaDxf.h"
@@ -12,6 +17,8 @@
 #include <pybind11/operators.h>
 
 #include <vector>
+
+
 
 namespace py = pybind11;
 

@@ -157,6 +157,22 @@ public:
             default:
                 break;
             }
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool extended = hGrp->GetBool("ExtendedConstraintInformation",false);
+
+            if(extended) {
+                if(constraint->Second == Sketcher::Constraint::GeoUndef) {
+                    name = QString::fromLatin1("%1 [(%2,%3)]").arg(name).arg(constraint->First).arg(constraint->FirstPos);
+                }
+                else if(constraint->Third == Sketcher::Constraint::GeoUndef) {
+                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]").arg(name).arg(constraint->First).arg(constraint->FirstPos).arg(constraint->Second).arg(constraint->SecondPos);
+                }
+                else {
+                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]").arg(name).arg(constraint->First).arg(constraint->FirstPos).arg(constraint->Second).arg(constraint->SecondPos).arg(constraint->Third).arg(constraint->ThirdPos);
+                }
+            }
+
             return name;
         }
         else if (role == Qt::DecorationRole) {
@@ -594,7 +610,11 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     QObject::connect(
         ui->filterInternalAlignment, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
-    );
+        );
+    QObject::connect(
+        ui->extendedInformation, SIGNAL(stateChanged(int)),
+                     this                     , SLOT  (on_extendedInformation_stateChanged(int))
+        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -602,6 +622,7 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     this->groupLayout()->addWidget(proxy);
 
     this->ui->filterInternalAlignment->onRestore();
+    this->ui->extendedInformation->onRestore();
 
     slotConstraintsChanged();
 }
@@ -609,6 +630,7 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
 TaskSketcherConstrains::~TaskSketcherConstrains()
 {
     this->ui->filterInternalAlignment->onSave();
+    this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
     delete ui;
 }
@@ -664,6 +686,13 @@ void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
 void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
 {
     Q_UNUSED(state);
+    slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_extendedInformation_stateChanged(int state)
+{
+    Q_UNUSED(state);
+    this->ui->extendedInformation->onSave();
     slotConstraintsChanged();
 }
 
@@ -806,7 +835,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     /* Update the states */
     ui->listWidgetConstraints->blockSignals(true);
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         it->updateVirtualSpaceStatus();
     }
     ui->listWidgetConstraints->blockSignals(false);
@@ -830,7 +859,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         bool showDatums = (Filter < 3);
         bool showNamed = (Filter == 3 && !(constraint->Name.empty()));
         bool showNonDriving = (Filter == 4 && !constraint->isDriving);
-        bool hideInternalAligment = this->ui->filterInternalAlignment->isChecked();
+        bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
 
         switch(constraint->Type) {
         case Sketcher::Horizontal:
@@ -854,7 +883,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             visible = (showDatums || showNamed || showNonDriving);
             break;
         case Sketcher::InternalAlignment:
-            visible = ((showNormal || showNamed) && !hideInternalAligment);
+            visible = ((showNormal || showNamed) && !hideInternalAlignment);
         default:
             break;
         }

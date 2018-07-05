@@ -397,13 +397,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normal a la superficie</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Configurar línea perpendicular a la superficie en el punto de vértice.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -537,7 +537,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Accesorio está deshabilitado. El objeto se puede mover mediante la edición propiedad de colocación.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -635,7 +635,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Alinear al sistema de coordenadas de Frenet-Serret de arista curva. Enlace opcional el vértice define donde.</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -659,7 +659,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Alinear plano al círculo osculador de una arista. El origen se alinea con el punto de curvatura. El enlace opcional al vértice define donde.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -712,7 +712,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Modo de especialidad de doblaje de poliedros. Seleccionar las 4 aristas orden: borde plegable, doble línea, otra línea de doblez, otro borde plegable. El plano a doblar se alineará con el primer borde.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -724,7 +724,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>Plano construido en segundo y tercer ejes principales de inercia (pasa por el centro de masa).</translation>
     </message>
   </context>
   <context>
@@ -738,13 +738,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. CS can be moved by editing Placement property.</translation>
+      <translation>Accesorio está desactivado. CS se pueden mover mediante la propiedad edición de colocación.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Accesorio está deshabilitado. El objeto se puede mover mediante la edición propiedad de colocación.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -768,7 +768,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>La colocación se hace igual a la colocación del objeto vinculado.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -842,7 +842,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Alinear al sistema de coordenadas de Frenet-Serret de arista curva. Enlace opcional el vértice define donde.</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -866,7 +866,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Alinear el plano XY al círculo osculador de una arista. El enlace opcional al vértice define donde.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -878,7 +878,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Alinear eje Y' a eje osculador de círculo de un borde. El enlace opcional al vértice define donde.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -914,7 +914,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+1"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>Modo de especialidad de doblaje de poliedros. Seleccionar las 4 aristas en orden: arista plegable, doble línea, otra línea de doblez, otra arista plegable. El plano XY se alineará para doblar la primera arista.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -932,135 +932,135 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+2"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Alinear O-Z-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes Z' y X' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Alinear O-Z-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes Z' y ' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Alinear O-X-Y</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes X' e Y ' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Alinear O-X-Z</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes X' y Z' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Alinear O-Y-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes Y' y Z' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <location line="+75"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Alinear O-Y-X</translation>
     </message>
     <message>
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear ejes Y' y X' hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+59"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Alinear O-N-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano normal y horizontal hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Alinear O-N-Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano vertical y normal hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear el planos de ejes horizontales y verticales hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Alinear O-X-N</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear los planos de ejes horizontales y verticales hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Alinear O-Y-X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinear planos de ejes y normal hacia el vértice/a lo largo de la línea.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano normal y horizontal hacia el vértice/a lo largo de la línea.</translation>
     </message>
   </context>
   <context>
@@ -1193,7 +1193,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1359,7 +1359,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1395,7 +1395,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1431,7 +1431,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1467,7 +1467,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1479,13 +1479,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+1"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>Herramientas para separación de formas (construir formas paralelas)</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1497,7 +1497,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+1"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Forma parte de herramientas. Herramientas de creación de Compsolid. OCC 6.9.0 o posterior es requerido.</translation>
     </message>
   </context>
   <context>
@@ -1541,7 +1541,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1559,7 +1559,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1597,7 +1597,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1651,7 +1651,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1669,7 +1669,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1738,8 +1738,12 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     </message>
     <message>
       <location line="+1"/>
+      <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
+      <translation>Part_MakeFace: Hacer cara de conjunto de alambres (por ejemplo desde un boceto)</translation>
+    </message>
+    <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
-      <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
+      <translation>Part_MakeFace: Hacer cara del conjunto de alambres (p.e., de un boceto).</translation>
     </message>
     <message>
       <source>Make face from sketch</source>
@@ -1801,7 +1805,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+1"/>
       <source>Part_Offset: Utility to offset in 3D</source>
-      <translation type="unfinished">Part_Offset: Utility to offset in 3D</translation>
+      <translation>Part_Offset: Utilidad para compensar en 3D</translation>
     </message>
     <message>
       <source>Offset...</source>
@@ -1827,13 +1831,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+1"/>
       <source>Part_Offset2D: Utility to offset planar shapes</source>
-      <translation type="unfinished">Part_Offset2D: Utility to offset planar shapes</translation>
+      <translation>Part_Offset2D: Utilidad para separación de formas planas</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -1887,7 +1891,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Pieza</translation>
     </message>
@@ -2170,15 +2174,23 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Modo de fijación:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Propiedad de AttachmentOffset. La situación se expresa en el espacio local del objeto adjunto.</translation>
     </message>
     <message>
       <location line="+3"/>
+      <source>Attachment Offset:</source>
+      <translation>Separación del archivo adjunto:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Espejo de la propiedad superSituación. Colocación adicional se expresa en el espacio local del objeto que está adjunto.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
       <translation>Colocación adicional:</translation>
     </message>
@@ -2386,7 +2398,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
+      <location filename="../../DlgFilletEdges.cpp" line="+1038"/>
       <source>Chamfer Edges</source>
       <translation>Aristas del chaflán</translation>
     </message>
@@ -2416,7 +2428,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+7"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Especificar dirección manualmente usando valores X, Y, Z.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2458,7 +2470,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="-211"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Haga clic para comenzar a seleccionar una arista en vista 3d.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2469,7 +2481,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+10"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Configurar la dirección a una dirección de arista recta. Sugerencia: para tener en cuenta también para la longitud de la arista, pon ambos tramos a cero.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2515,7 +2527,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location line="+25"/>
       <location line="+25"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Aplicar la pendiente (de trazado) a las caras laterales de extrusión.</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -2585,9 +2597,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
-
-%1</translation>
+      <translation>El enlace del eje de revolución es válido. %1</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -2606,7 +2616,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location line="+10"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>La dirección de extrusión es de longitud cero. Debe ser distinto de cero.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -2685,7 +2695,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <translation>Ninguna selección</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-769"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-773"/>
       <source>Length:</source>
       <translation>Longitud:</translation>
     </message>
@@ -2706,12 +2716,12 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     </message>
     <message>
       <location line="+1"/>
-      <location line="+561"/>
+      <location line="+565"/>
       <source>Start length</source>
       <translation>Longitud de inicio</translation>
     </message>
     <message>
-      <location line="-560"/>
+      <location line="-564"/>
       <source>End length</source>
       <translation>Longitud final</translation>
     </message>
@@ -2722,17 +2732,17 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     </message>
     <message>
       <location line="+1"/>
-      <location line="+558"/>
+      <location line="+562"/>
       <source>Start radius</source>
       <translation>Radio inicial</translation>
     </message>
     <message>
-      <location line="-557"/>
+      <location line="-561"/>
       <source>End radius</source>
       <translation>Radio final</translation>
     </message>
     <message>
-      <location line="+547"/>
+      <location line="+551"/>
       <source>Length</source>
       <translation>Longitud</translation>
     </message>
@@ -2764,13 +2774,13 @@ Por favor selecciona primero una o más aristas.</translation>
       <translation>Nada</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-248"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-252"/>
       <location line="+60"/>
       <source>Edge%1</source>
       <translation>Lado %1</translation>
     </message>
     <message>
-      <location line="+135"/>
+      <location line="+139"/>
       <source>No shape selected</source>
       <translation>No hay forma seleccionada</translation>
     </message>
@@ -2871,7 +2881,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>STEP</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+45"/>
       <source>Export</source>
       <translation>Exportar</translation>
     </message>
@@ -2903,10 +2913,25 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+26"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>Escribir las curvas en el espacio paramétrico de superficie</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location line="+23"/>
+      <source>Import</source>
+      <translation>Importar</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
+      <translation>Si esto está marcado, no se realizará una fusión compuesta durante la lectura del archivo (más lenta pero con más detalles).</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Enable STEP Compound merge</source>
+      <translation>Habilitar combinación de PASO compuesto</translation>
+    </message>
+    <message>
+      <location line="-142"/>
       <source>Header</source>
       <translation>Título</translation>
     </message>
@@ -3563,7 +3588,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="-1200"/>
       <location filename="../../DlgPrimitives.cpp" line="+192"/>
       <source>Helix</source>
-      <translation>Espiral</translation>
+      <translation>Hélice</translation>
     </message>
     <message>
       <source>3D View</source>
@@ -3636,7 +3661,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+20"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Si está marcada, la revolución se extenderá hacia adelante y hacia atrás por la mitad del ángulo.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3695,9 +3720,7 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
-
-%1</translation>
+      <translation>El enlace del eje de revolución es válido. %1</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -3707,7 +3730,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+10"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Ángulo span es cero. Debe ser distinto de cero.</translation>
     </message>
     <message>
       <location line="+122"/>
@@ -4008,12 +4031,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-83"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Perfiles disponibles</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Perfiles seleccionados</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -4225,12 +4248,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="-268"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Perfiles disponibles</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Perfiles seleccionados</translation>
     </message>
     <message>
       <location line="+128"/>
@@ -4314,16 +4337,24 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+15"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Modo de fijación:</translation>
     </message>
     <message>
       <location line="+20"/>
-      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+      <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
+      <translation>Propiedad de AttachmentOffset. La situación se expresa en el espacio local del objeto adjunto.</translation>
     </message>
     <message>
       <location line="+3"/>
-      <location filename="../../TaskAttacher.cpp" line="+298"/>
+      <location filename="../../TaskAttacher.cpp" line="+302"/>
+      <source>Attachment Offset:</source>
+      <translation>Separación del archivo adjunto:</translation>
+    </message>
+    <message>
+      <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+      <translation>Espejo de la propiedad superSituación. Colocación adicional se expresa en el espacio local del objeto que está adjunto.</translation>
+    </message>
+    <message>
       <source>Extra placement:</source>
       <translation>Colocación adicional:</translation>
     </message>
@@ -4375,7 +4406,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+3"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Modo de conexión falló: %1</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -4385,15 +4416,24 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+4"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Atado con el modo %1</translation>
     </message>
     <message>
       <location line="+4"/>
-      <source>Extra placement (inactive - not attached):</source>
-      <translation type="unfinished">Extra placement (inactive - not attached):</translation>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Separación archivo adjunto (inactivo - no adjunto):</translation>
     </message>
     <message>
-      <location line="+276"/>
+      <location line="+392"/>
+      <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
+      <translation>No es editable porque la rotación la pieza está restringida por la superposición de las expresiones.</translation>
+    </message>
+    <message>
+      <source>Extra placement (inactive - not attached):</source>
+      <translation>Situación extra (inactivo - no adjunto):</translation>
+    </message>
+    <message>
+      <location line="-116"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
@@ -4418,19 +4458,18 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Referencia%1</translation>
     </message>
     <message>
-      <location line="+43"/>
       <source>Not editable because rotation part of superplacement is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
+      <translation>No es editable porque la rotación la pieza está limitada por la superposición de las expresiones.</translation>
     </message>
     <message>
-      <location line="+61"/>
+      <location line="+104"/>
       <source>
 
 Reference combinations:
 </source>
-      <translation type="unfinished">
+      <translation>
 
-Reference combinations:
+Combinaciones de referencia:
 </translation>
     </message>
     <message>
@@ -4453,7 +4492,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="+572"/>
       <source>Shape Content</source>
       <translation>Contenido de Forma</translation>
     </message>
@@ -4461,7 +4500,7 @@ Reference combinations:
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location line="-530"/>
+      <location line="-535"/>
       <source>Check Geometry</source>
       <translation>Verificar geometría</translation>
     </message>
@@ -4912,12 +4951,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location line="+5"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Hace caras planas separadas para cada alambre independientemente. No hay soporte para agujeros; los alambres pueden estar en diferentes planos.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Ojo de buey fabricador de superficies</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4927,17 +4966,17 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Fabricador de superficies cheese</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>Ayudas haciendo caras planas con agujeros, pero sin islas dentro de los agujeros.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Extrusión de pieza fabricador de superficies</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4948,23 +4987,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Seleccione dos formas por favor.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -4990,7 +5029,7 @@ Do you want to continue?</source>
       <translation>Seleccione dos formas o más, por favor. O bien, seleccione un compuesto que contiene dos o más formas para ser fusionado.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Seleccione una o más formas, por favor.</translation>
     </message>
@@ -5090,7 +5129,7 @@ Do you want to continue?</source>
       <translation>Editar aristas redondeadas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+842"/>
+      <location filename="../../ViewProviderExt.cpp" line="+840"/>
       <source>Set colors...</source>
       <translation>Ajustar colores...</translation>
     </message>
@@ -5115,7 +5154,7 @@ Do you want to continue?</source>
       <translation>Funda</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="-911"/>
+      <location filename="../../TaskAttacher.cpp" line="-915"/>
       <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
       <source>Face</source>
       <translation>Cara</translation>

@@ -27,6 +27,7 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD
 import FreeCAD as App
 
 
@@ -100,3 +101,37 @@ def isDerivedFrom(obj, t):
             obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
+
+
+def getBoundBoxOfAllDocumentShapes(doc):
+    overalboundbox = None
+    for o in doc.Objects:
+        if hasattr(o, 'Shape'):
+            try:
+                bb = o.Shape.BoundBox
+            except:
+                bb = None
+            if bb.isValid():
+                if not overalboundbox:
+                    overalboundbox = bb
+                overalboundbox.add(bb)
+    return overalboundbox
+
+
+def getSelectedFace(selectionex):
+    aFace = None
+    # print(selectionex)
+    if len(selectionex) != 1:
+        FreeCAD.Console.PrintMessage('no or more than one object selected')
+    else:
+        sel = selectionex[0]
+        if len(sel.SubObjects) != 1:
+            FreeCAD.Console.PrintMessage('more than one element selected')
+        else:
+            aFace = sel.SubObjects[0]
+            if aFace.ShapeType != 'Face':
+                FreeCAD.Console.PrintMessage('not a Face selected')
+            else:
+                FreeCAD.Console.PrintMessage(':-)')
+                return aFace
+    return aFace
