@@ -3419,8 +3419,10 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-    if (OCC_VERSION_HEX < 0x070300)
-        throw Base::RuntimeError("Defeaturing is not supported on OCC < 7.3.0.");
+#if OCC_VERSION_HEX < 0x070300
+    (void)s;
+    throw Base::RuntimeError("Defeaturing is available only in OCC 7.3.0 and up.");
+#else
     BRepAlgoAPI_Defeaturing defeat;
     defeat.SetRunParallel(true);
     defeat.SetShape(this->_Shape);
@@ -3441,4 +3443,5 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
 //         defeat.DumpWarnings(aSStream);
 //     }
     return defeat.Shape();
+#endif
 }
