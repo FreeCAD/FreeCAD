@@ -27,6 +27,7 @@ import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import math
 
 from PySide import QtCore
 
@@ -40,37 +41,87 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+def debugEdge(label, e):
+    if Part.Line == type(e.Curve):
+        p0 = e.valueAt(e.FirstParameter)
+        p1 = e.valueAt(e.LastParameter)
+        print("%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))" % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
+    elif Part.Circle == type(e.Curve):
+        r = e.Curve.Radius
+        c = e.Curve.Center
+        a = e.Curve.Axis
+        xu = e.Curve.AngleXU
+        if a.z < 0:
+            first = math.degrees(xu - e.FirstParameter)
+        else:
+            first = math.degrees(xu + e.FirstParameter)
+        last = first + math.degrees(e.LastParameter - e.FirstParameter)
+        print("%s Part.makeCircle(%.2f, App.Vector(%.2f, %.2f, %.2f), App.Vector(%.2f, %.2f, %.2f), %.2f, %.2f)" % (label, r, c.x, c.y, c.z, a.x, a.y, a.z, first, last))
+    else:
+        print("%s %s (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f)" % (label, type(e.Curve).__name__, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
+
+def debugWire(label, w):
+    print("#%s wire >>>>>>>>>>>>>>>>>>>>>>>>" % label)
+    print("grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')" % label)
+    for i,e in enumerate(w.Edges):
+        edge = "%s_e%d" % (label, i)
+        debugEdge("%s = " % edge, e)
+        print("Part.show(%s, '%s')" % (edge, edge))
+        print("grp.addObject(FreeCAD.ActiveDocument.ActiveObject)")
+    print("#%s wire <<<<<<<<<<<<<<<<<<<<<<<<" % label)
+
+def _orientEdges(inEdges):
+    PathLog.track()
+    # orient all edges of the wire so each edge's last value connects to the next edge's first value
+    e0 = inEdges[0]
+    # well, even the very first edge could be misoriented, so let's try and connect it to the second
+    if 1 < len(inEdges):
+        last = e0.valueAt(e0.LastParameter)
+        e1 = inEdges[1]
+        if not PathGeom.pointsCoincide(last, e1.valueAt(e1.FirstParameter)) and not PathGeom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
+            debugEdge('#  _orientEdges - flip first', e0)
+            e0 = PathGeom.flipEdge(e0)
+
+    edges = [e0]
+    last = e0.valueAt(e0.LastParameter)
+    for e in inEdges[1:]:
+        edge = e if PathGeom.pointsCoincide(last, e.valueAt(e.FirstParameter)) else PathGeom.flipEdge(e)
+        edges.append(edge)
+        last = edge.valueAt(edge.LastParameter)
+    return edges
+
+def _isWireClockwise(w):
+    # handle wires consisting of a single circle or 2 edges where one is an arc.
+    # in both cases, because the edges are expected to be oriented correctly, the orientation can be
+    # determined by looking at (one of) the circle curves.
+    if 2 >= len(w.Edges) and Part.Circle == type(w.Edges[0].Curve):
+        return 0 > w.Edges[0].Curve.Axis.z
+    if 2 == len(w.Edges) and Part.Circle == type(w.Edges[1].Curve):
+        return 0 > w.Edges[1].Curve.Axis.z
+
+    # for all other wires we presume they are polygonial and refer to Gauss
+    # https://en.wikipedia.org/wiki/Shoelace_formula
+    area = 0
+    for e in w.Edges:
+        v0 = e.valueAt(e.FirstParameter)
+        v1 = e.valueAt(e.LastParameter)
+        area = area + (v0.x * v1.y - v1.x * v0.y)
+    PathLog.track(area)
+    return area < 0
+
+def isWireClockwise(w):
+    '''isWireClockwise(w) ... returns True if the wire winds clockwise. '''
+    return _isWireClockwise(Part.Wire(_orientEdges(w.Edges)))
+
+
 def orientWire(w, forward=True):
     '''orientWire(w, forward=True) ... orients given wire in a specific direction.
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
-    # first, we must ensure all edges are oriented the same way
-    # one would thing this is the way it should be, but it turns out it isn't
-    # on top of that, when creating a face the axis of the face seems to depend
-    # the axis of any included arcs, and not in the order of the edges
-    e0 = w.Edges[0]
-    # well, even the very first edge could be misoriented, so let's try and connect it to the second
-    if 1 < len(w.Edges):
-        last = e0.valueAt(e0.LastParameter)
-        e1 = w.Edges[1]
-        if not PathGeom.pointsCoincide(last, e1.valueAt(e1.FirstParameter)) and not PathGeom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
-            e0 = PathGeom.flipEdge(e0)
-
-    edges = [e0]
-    last = e0.valueAt(e0.LastParameter)
-    for e in w.Edges[1:]:
-        edge = e if PathGeom.pointsCoincide(last, e.valueAt(e.FirstParameter)) else PathGeom.flipEdge(e)
-        edges.append(edge)
-        last = edge.valueAt(edge.LastParameter)
-    wire = Part.Wire(edges)
+    wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
-        # now that we have a wire where all edges are oriented in the same way which
-        # also matches their order - we can create a face and get it's axis to determine
-        # the orientation of the wire - which is all we need here
-        face = Part.Face(wire)
-        cw = 0 < face.Surface.Axis.z
-        if forward != cw:
+        if forward != _isWireClockwise(wire):
             PathLog.track('orientWire - needs flipping')
             return PathGeom.flipWire(wire)
         PathLog.track('orientWire - ok')
@@ -125,6 +176,7 @@ def offsetWire(wire, base, offset, forward):
         pass
 
     owire = wire.makeOffset2D(offset)
+    debugWire('makeOffset2D_%d' % len(wire.Edges), owire)
 
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
@@ -152,13 +204,29 @@ def offsetWire(wire, base, offset, forward):
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
 
     # first, let's make sure all edges are oriented the proper way
-    wire = orientWire(wire, None)
+    edges = _orientEdges(wire.Edges)
+
+    # determine the start and end point
+    start = edges[0].firstVertex().Point
+    end = edges[-1].lastVertex().Point
+    print("Part.show(Part.Vertex(%.2f, %.2f, %.2f), 'wire_start')" % (start.x, start.y, start.z))
+    print("Part.show(Part.Vertex(%.2f, %.2f, %.2f), 'wire_end')" % (end.x, end.y, end.z))
+    debugWire('wire', wire)
+    debugWire('wedges', Part.Wire(edges))
 
     # find edges that are not inside the shape
+    common = base.common(owire)
+    insideEndpoints = [e.lastVertex().Point for e in common.Edges]
+    insideEndpoints.append(common.Edges[0].firstVertex().Point)
+
     def isInside(edge):
-        if base.isInside(edge.Vertexes[0].Point, offset/2, True) and base.isInside(edge.Vertexes[-1].Point, offset/2, True):
-            return True
+        p0 = edge.firstVertex().Point
+        p1 = edge.lastVertex().Point
+        for p in insideEndpoints:
+            if PathGeom.pointsCoincide(p, p0, 0.01) or PathGeom.pointsCoincide(p, p1, 0.01):
+                return True
         return False
+
     outside = [e for e in owire.Edges if not isInside(e)]
     # discard all edges that are not part of the longest wire
     longestWire = None
@@ -166,9 +234,8 @@ def offsetWire(wire, base, offset, forward):
         if not longestWire or longestWire.Length < w.Length:
             longestWire = w
 
-    # find the start and end point
-    start = wire.Vertexes[0].Point
-    end = wire.Vertexes[-1].Point
+    debugWire('outside', Part.Wire(outside))
+    debugWire('longest', longestWire)
 
     def isCircleAt(edge, center):
         '''isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center.'''
@@ -215,6 +282,9 @@ def offsetWire(wire, base, offset, forward):
         elif collectRight:
             rightSideEdges.append(e)
 
+    debugWire('left', Part.Wire(leftSideEdges))
+    debugWire('right', Part.Wire(rightSideEdges))
+
     # figure out if all the left sided edges or the right sided edges are the ones
     # that are 'outside'. However, we return the full side.
     edges = leftSideEdges
@@ -222,14 +292,18 @@ def offsetWire(wire, base, offset, forward):
         for e0 in rightSideEdges:
             if PathGeom.edgesMatch(e, e0):
                 edges = rightSideEdges
+                print("#use right side edges")
                 if not forward:
+                    print("#reverse")
                     edges.reverse()
                 return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
     # traversal (climb milling). If that's not what we want just reverse the order,
     # orientWire takes care of orienting the edges appropriately.
+    print("#use left side edges")
     if not forward:
+        print("#reverse")
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
