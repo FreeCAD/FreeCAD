@@ -112,7 +112,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site"]:
+    if hostType in ["Floor","Building","Site","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
@@ -194,11 +194,11 @@ def removeComponents(objectsList,host=None):
             if o.InList:
                h = o.InList[0]
                tp = Draft.getType(h)
-               if tp in ["Floor","Building","Site"]:
-                   c = h.Components
+               if tp in ["Floor","Building","Site","BuildingPart"]:
+                   c = h.Group
                    if o in c:
                        c.remove(o)
-                       h.Components = c
+                       h.Group = c
                        o.ViewObject.show()
                elif tp in ["Wall","Structure"]:
                    a = h.Additions

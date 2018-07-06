@@ -387,7 +387,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
@@ -2207,6 +2207,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ';stroke-miterlimit:4'
         svg += ';stroke-dasharray:' + lstyle
         svg += ';fill:' + fill
+        try:
+            svg += ';fill-opacity:' + str(fill_opacity)
+        except NameError:
+            pass
         svg += ';fill-rule: evenodd "'
         svg += '/>\n'
         return svg
@@ -2660,6 +2664,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 if (m != "Wireframe"):
                     if fillstyle == "shape color":
                         fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
+                        fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                     else:
                         fill = 'url(#'+fillstyle+')'
                         svg += getPattern(fillstyle)
