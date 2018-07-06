@@ -2732,3 +2732,79 @@ unsigned int PropertyMaterialList::getMemSize(void) const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Material));
 }
+
+//**************************************************************************
+// PropertyPersistentObject
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPersistentObject , App::PropertyString);
+
+PyObject *PropertyPersistentObject::getPyObject(void){
+    if(_pObject)
+        return _pObject->getPyObject();
+    return inherited::getPyObject();
+}
+
+void PropertyPersistentObject::Save(Base::Writer &writer) const{
+    inherited::Save(writer);
+#define ELEMENT_PERSISTENT_OBJ "PersistentObject"
+    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
+    if(_pObject) {
+        writer.incInd();
+        _pObject->Save(writer);
+        writer.decInd();
+    }
+    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
+}
+
+void PropertyPersistentObject::Restore(Base::XMLReader &reader){
+    inherited::Restore(reader);
+    reader.readElement(ELEMENT_PERSISTENT_OBJ);
+    if(_pObject)
+        _pObject->Restore(reader);
+    reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
+}
+
+Property *PropertyPersistentObject::Copy(void) const{
+    auto *p= new PropertyPersistentObject();
+    p->_cValue = _cValue;
+    p->_pObject = _pObject;
+    return p;
+}
+
+void PropertyPersistentObject::Paste(const Property &from){
+    const auto &prop = dynamic_cast<const PropertyPersistentObject&>(from);
+    if(_cValue!=prop._cValue || _pObject!=prop._pObject) {
+        aboutToSetValue();
+        _cValue = prop._cValue;
+        _pObject = prop._pObject;
+        hasSetValue();
+    }
+}
+
+unsigned int PropertyPersistentObject::getMemSize (void) const{
+    auto size = inherited::getMemSize();
+    if(_pObject)
+        size += _pObject->getMemSize();
+    return size;
+}
+
+void PropertyPersistentObject::setValue(const char *type) {
+    if(!type) type = "";
+    if(type[0]) {
+        Base::Type::importModule(type);
+        Base::Type t = Base::Type::fromName(type);
+        if(t.isBad())
+            throw Base::TypeError("Invalid type");
+        if(!t.isDerivedFrom(Persistence::getClassTypeId()))
+            throw Base::TypeError("Type must be derived from Base::Persistence");
+        if(_pObject && _pObject->getTypeId()==t)
+            return;
+    }
+    aboutToSetValue();
+    _pObject.reset();
+    _cValue = type;
+    if(type[0])
+        _pObject.reset(static_cast<Base::Persistence*>(Base::Type::createInstanceByName(type)));
+    hasSetValue();
+}

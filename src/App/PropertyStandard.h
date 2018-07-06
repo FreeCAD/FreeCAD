@@ -27,6 +27,7 @@
 // Std. configurations
 
 
+#include <memory>
 #include <string>
 #include <list>
 #include <vector>
@@ -643,7 +644,7 @@ public:
      */
     virtual ~PropertyString();
 
-    void setValue(const char* sString);
+    virtual void setValue(const char* sString);
     void setValue(const std::string &sString);
     const char* getValue(void) const;
     const std::string& getStrValue(void) const
@@ -664,7 +665,7 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
-private:
+protected:
     std::string _cValue;
 };
 
@@ -1024,6 +1025,32 @@ protected:
 };
 
 
+/** Property for dynamic creation of a FreeCAD persistent object
+ *
+ * In Python, this property can be assigned a type string to create a dynamic FreeCAD
+ * object, and then read back as the Python binding of the newly created object.
+ */
+class AppExport PropertyPersistentObject: public PropertyString {
+    TYPESYSTEM_HEADER();
+    typedef PropertyString inherited;
+public:
+    virtual PyObject *getPyObject(void) override;
+    virtual void setValue(const char* type) override;
+    
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
+
+    std::shared_ptr<Base::Persistence> getObject() const {
+        return _pObject;
+    }
+
+protected:
+    std::shared_ptr<Base::Persistence> _pObject;
+};
 
 } // namespace App
 

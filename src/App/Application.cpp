@@ -1347,6 +1347,7 @@ void Application::initTypes(void)
     App ::PropertyIntegerSet        ::init();
     App ::PropertyMap               ::init();
     App ::PropertyString            ::init();
+    App ::PropertyPersistentObject  ::init();
     App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
