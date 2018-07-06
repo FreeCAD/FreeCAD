@@ -893,17 +893,22 @@ void ViewProviderPythonFeatureImp::startRestoring()
 void ViewProviderPythonFeatureImp::finishRestoring()
 {
     Base::PyGILStateLocker lock;
-    App::Property* proxy = object->getPropertyByName("Proxy");
-    if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-        Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-        if (vp.ptr() == Py::_None()) {
-            object->show();
-            static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
-        }else if (vp.hasAttr(std::string("onFinishRestoring"))) {
-            Py::Callable method(vp.getAttr(std::string("onFinishRestoring")));
-            Py::Tuple args;
-            method.apply(args);
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.ptr() == Py::_None()) {
+                object->show();
+                static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
+            }else if (vp.hasAttr(std::string("onFinishRestoring"))) {
+                Py::Callable method(vp.getAttr(std::string("onFinishRestoring")));
+                Py::Tuple args;
+                method.apply(args);
+            }
         }
+    }catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
     }
 }
 
