@@ -63,6 +63,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <CXX/Objects.hxx>
+#include <Inventor/MarkerBitmaps.h>
 
 using namespace Gui;
 
@@ -181,6 +182,9 @@ PyMethodDef Application::Methods[] = {
   {"createViewer",               (PyCFunction) Application::sCreateViewer,1,
    "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
    "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
+
+  {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, 1,
+   "Get marker index according to marker size setting"},
 
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -1223,4 +1227,28 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args,PyObjec
         }
     }
     return Py_None;
+}
+
+PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return NULL;
+
+    PY_TRY {
+        ParameterGrp::handle const hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+        if (strcmp(pstr, "square") == 0)
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", hGrp->GetInt("MarkerSize", 9)));
+        else if (strcmp(pstr, "cross") == 0)
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", hGrp->GetInt("MarkerSize", 9)));
+        else if (strcmp(pstr, "empty") == 0)
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_LINE", hGrp->GetInt("MarkerSize", 9)));
+        else if (strcmp(pstr, "quad") == 0)
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_FILLED", hGrp->GetInt("MarkerSize", 9)));
+        else if (strcmp(pstr, "circle") == 0)
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", hGrp->GetInt("MarkerSize", 9)));
+        else
+            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", 9)));
+    }PY_CATCH;
 }
