@@ -205,6 +205,7 @@ public:
     App::PropertyBoolList OverrideMaterialList;
     App::PropertyBool Selectable;
     App::PropertyColorList OverrideColorList;
+    App::PropertyPersistentObject ChildViewProvider;
 
     ViewProviderLink();
     virtual ~ViewProviderLink();
@@ -263,6 +264,14 @@ public:
 
     void setOverrideMode(const std::string &mode) override;
 
+    virtual void onBeforeChange(const App::Property*) override;
+    ViewProviderDocumentObject *getChildViewProvider() const {
+        return childVp;
+    }
+
+    virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
+    virtual void getPropertyList(std::vector<App::Property*> &List) const override;
+
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
@@ -319,6 +328,8 @@ protected:
     };
     std::unique_ptr<DraggerContext> dragCtx;
     CoinPtr<SoDragger> pcDragger;
+    ViewProviderDocumentObject *childVp;
+    LinkInfoPtr childVpLink;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;

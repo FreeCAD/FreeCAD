@@ -286,6 +286,10 @@ public:
         }else{
             pcSnapshot = new SoSeparator;
             pcSnapshot->renderCaching = SoSeparator::OFF;
+            std::ostringstream ss;
+            ss << pcLinked->getObject()->getNameInDocument() 
+                << "(" << type << ')';
+            pcSnapshot->setName(ss.str().c_str());
             pcModeSwitch = new SoSwitch;
         }
 
@@ -1395,7 +1399,7 @@ static const char *_LinkGroupIcon = "LinkGroup";
 static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
-    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false),useCenterballDragger(true)
+    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false),useCenterballDragger(true),childVp(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1429,6 +1433,9 @@ ViewProviderLink::ViewProviderLink()
     ADD_PROPERTY(OverrideMaterialList,());
     ADD_PROPERTY(OverrideColorList,());
 
+    ADD_PROPERTY(ChildViewProvider, (""));
+    ChildViewProvider.setStatus(App::Property::Hidden,true);
+
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
     linkView = new LinkView;
@@ -1444,23 +1451,33 @@ bool ViewProviderLink::isSelectable() const {
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
-    addDisplayMaskMode(linkView->getLinkRoot(),"Link");
+    SoNode *node = linkView->getLinkRoot();
+    addDisplayMaskMode(node,"Link");
+    if(childVp) {
+        childVpLink = LinkInfo::get(childVp,0);
+        node = childVpLink->getSnapshot(LinkView::SnapshotTransform);
+    }
+    addDisplayMaskMode(node,"ChildView");
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
     if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
         hide();
     linkView->setOwner(this);
+
 }
 
-void ViewProviderLink::reattach(App::DocumentObject *) {
+void ViewProviderLink::reattach(App::DocumentObject *obj) {
     linkView->setOwner(this);
+    if(childVp)
+        childVp->reattach(obj);
 }
 
 std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
 {
     std::vector<std::string> StrList = inherited::getDisplayModes();
     StrList.push_back("Link");
+    StrList.push_back("ChildView");
     return StrList;
 }
 
@@ -1483,21 +1500,31 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 }
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
-    if(isRestoring()) {
-        inherited::onChanged(prop);
-        return;
-    }
-    if (prop == &OverrideMaterial || prop == &ShapeMaterial ||
-        prop == &MaterialList || prop == &OverrideMaterialList)
-    {
-        applyMaterial();
-    }else if(prop == &OverrideColorList) {
-        applyColors();
-    }else if(prop==&DrawStyle || prop==&PointSize || prop==&LineWidth) {
-        if(!DrawStyle.getValue())
-            linkView->setDrawStyle(0);
-        else
-            linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
+    if(prop==&ChildViewProvider) {
+        childVp = dynamic_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
+        if(childVp) {
+            childVp->Visibility.setValue(getObject()->Visibility.getValue());
+            childVp->attach(getObject());
+            childVp->updateView();
+            childVp->setActiveMode();
+            if(pcModeSwitch->getNumChildren()>1){
+                childVpLink = LinkInfo::get(childVp,0);
+                pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+            }
+        }
+    }else if(!isRestoring()) {
+        if (prop == &OverrideMaterial || prop == &ShapeMaterial ||
+            prop == &MaterialList || prop == &OverrideMaterialList)
+        {
+            applyMaterial();
+        }else if(prop == &OverrideColorList) {
+            applyColors();
+        }else if(prop==&DrawStyle || prop==&PointSize || prop==&LineWidth) {
+            if(!DrawStyle.getValue())
+                linkView->setDrawStyle(0);
+            else
+                linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
+        }
     }
 
     inherited::onChanged(prop);
@@ -1541,6 +1568,8 @@ const App::LinkBaseExtension *ViewProviderLink::getLinkExtension() const{
 }
 
 void ViewProviderLink::updateData(const App::Property *prop) {
+    if(childVp)
+        childVp->updateData(prop);
     if(!isRestoring() && !pcObject->isRestoring()) {
         auto ext = getLinkExtension();
         if(ext) updateDataPrivate(getLinkExtension(),prop);
@@ -1781,6 +1810,9 @@ void ViewProviderLink::finishRestoring() {
 
     // TODO: notify the tree. This is ugly, any other way?
     getDocument()->signalChangedObject(*this,ext->_LinkRecomputed);
+
+    if(childVp)
+        childVp->finishRestoring();
 }
 
 bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {
@@ -1958,6 +1990,12 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &su
     if(!isSelectable()) return false;
     auto ext = getLinkExtension();
     if(!ext) return false;
+    if(childVpLink && childVp) {
+        auto path = pp->getPath();
+        int idx = path->findNode(childVpLink->getSnapshot(LinkView::SnapshotTransform));
+        if(idx>=0)
+            return childVp->getElementPicked(pp,subname);
+    }
     bool ret = linkView->linkGetElementPicked(pp,subname);
     if(ret && (isGroup(ext) || hasElements(ext))) {
         const auto &elements = ext->getElementListValue();
@@ -1982,6 +2020,12 @@ bool ViewProviderLink::getDetailPath(
     if(append) {
         appendPath(pPath,pcRoot);
         appendPath(pPath,pcModeSwitch);
+    }
+    if(childVpLink && getDefaultMode()==1) {
+        if(childVpLink->getDetail(false,LinkView::SnapshotTransform,subname,det,pPath))
+            return true;
+        pPath->truncate(len);
+        return false;
     }
     std::string _subname;
     if(subname && subname[0] && 
@@ -2615,6 +2659,44 @@ void ViewProviderLink::setOverrideMode(const std::string &mode) {
         auto vp = Application::Instance->getViewProvider(obj);
         vp->setOverrideMode(mode);
     }
+    if(childVp)
+        childVp->setOverrideMode(mode);
+}
+
+void ViewProviderLink::onBeforeChange(const App::Property *prop) {
+    if(prop == &ChildViewProvider) {
+        if(childVp) {
+            childVp->beforeDelete();
+            pcModeSwitch->replaceChild(1,linkView->getLinkRoot());
+            childVpLink.reset();
+            childVp = 0;
+        }
+    }
+    inherited::onBeforeChange(prop);
+}
+
+void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map) const {
+    inherited::getPropertyMap(Map);
+    if(!childVp)
+        return;
+    std::map<std::string,App::Property*> childMap;
+    childVp->getPropertyMap(childMap);
+    for(auto &v : childMap) {
+        auto ret = Map.insert(v);
+        if(!ret.second) {
+            auto myProp = ret.first->second;
+            if(myProp->testStatus(App::Property::Hidden))
+                ret.first->second = v.second;
+        }
+    }
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+    std::map<std::string,App::Property*> Map;
+    getPropertyMap(Map);
+    List.reserve(List.size()+Map.size());
+    for(auto &v:Map)
+        List.push_back(v.second);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
