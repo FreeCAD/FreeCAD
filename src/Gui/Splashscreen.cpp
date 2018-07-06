@@ -461,6 +461,9 @@ void AboutDialog::setupLabels()
     QString disda  = QString::fromLatin1(config["BuildRevisionDate"].c_str());
     QString mturl  = QString::fromLatin1(config["MaintainerUrl"].c_str());
 
+    // we use replace() to keep label formating, so a label with text "<b>Unknown</b>"
+    // gets replaced to "<b>FreeCAD</b>", for example
+
     QString author = ui->labelAuthor->text();
     author.replace(QString::fromLatin1("Unknown Application"), exeName);
     author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
