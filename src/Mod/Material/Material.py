@@ -121,6 +121,7 @@ def getMaterialAttributeStructure(withSpaces=None):
             "UltimateTensileStrength",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
             "CompressiveStrength",  # https://en.wikipedia.org/wiki/Compressive_strength
             "YieldStrength",  # https://en.wikipedia.org/wiki/Yield_Strength
+            "UltimateStrain",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
             "FractureToughness",  # https://en.wikipedia.org/wiki/Fracture_toughness
             "AngleOfFriction"  # https://en.wikipedia.org/wiki/Friction#Angle_of_friction and https://en.m.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
         )),
