@@ -105,7 +105,14 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             QMap<SoNode*, QString>::iterator it = nodeNames.find(child);
             QString name;
             QTextStream stream(&name);
-            stream << child << " ";
+            stream << child << ", ";
+            if(child->isOfType(SoSwitch::getClassTypeId())) {
+                auto pcSwitch = static_cast<SoSwitch*>(child);
+                stream << pcSwitch->whichChild.getValue() << ", ";
+            } else if (child->isOfType(SoSeparator::getClassTypeId())) {
+                auto pcSeparator = static_cast<SoSeparator*>(child);
+                stream << pcSeparator->renderCaching.getValue() << ", ";
+            }
             if (it != nodeNames.end())
                 stream << it.value();
             else
