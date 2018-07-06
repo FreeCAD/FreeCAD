@@ -441,6 +441,8 @@ void ViewProvider::setModeSwitch()
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
+    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+        ext->extensionModeSwitchChange();
 }
 
 int ViewProvider::getDefaultMode() const {
