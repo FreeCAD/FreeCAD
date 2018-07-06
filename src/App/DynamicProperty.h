@@ -52,9 +52,9 @@ public:
     /** @name Access properties */
     //@{
     /// Get all properties of the class (including parent)
-    void getPropertyList(std::vector<Property*> &List) const;
+    void getPropertyList(std::vector<Property*> &List, bool fetchParent=true) const;
     /// Get all properties of the class (including parent)
-    void getPropertyMap(std::map<std::string,Property*> &Map) const;
+    void getPropertyMap(std::map<std::string,Property*> &Map, bool fetchParent=true) const;
     /// Find a property by its name
     Property *getPropertyByName(const char* name) const;
     /// Find a dynamic property by its name

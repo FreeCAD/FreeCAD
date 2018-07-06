@@ -390,11 +390,13 @@ public:
     }
     /// get all properties of the class (including properties of the parent)
     virtual void getPropertyList(std::vector<App::Property*> &List) const {
-        props->getPropertyList(List);
+        ViewProviderT::getPropertyList(List);
+        props->getPropertyList(List,false);
     }
     /// get all properties of the class (including parent)
     virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const {
-        return props->getPropertyMap(Map);
+        ViewProviderT::getPropertyMap(Map);
+        return props->getPropertyMap(Map,false);
     }
     /// find a property by its name
     virtual App::Property *getPropertyByName(const char* name) const {
