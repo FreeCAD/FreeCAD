@@ -426,29 +426,31 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
     if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
         shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
-        if(noElementMap) {
-            shape.resetElementMap();
-            shape.Tag = 0;
-            shape.Hasher.reset();
-        } else {
-            // check for collapsed link array and remap its element
-            auto parent = obj->getLinkedObject(true);
-            auto link = parent->getLinkedObject(true)->getExtensionByType<App::LinkBaseExtension>(true);
-            if(link && !link->getShowElementValue() && link->getElementCountValue()) {
-                const char *dot = strchr(subname,'.');
-                if(dot) {
-                    TopoShape newShape(shape.Tag,shape.Hasher,shape.getShape());
-                    std::string op(TopoShape::indexPostfix());
-                    op += std::string(subname,dot-subname);
-                    newShape.mapSubElement(shape,op.c_str());
-                    shape = newShape;
-                    shape.Tag = obj->getID();
-                }
-            }else if(owner!=linked)
-                shape.reTagElementMap(tag,hasher);
+        if(!shape.isNull()) {
+            if(noElementMap) {
+                shape.resetElementMap();
+                shape.Tag = 0;
+                shape.Hasher.reset();
+            } else {
+                // check for collapsed link array and remap its element
+                auto parent = obj->getLinkedObject(true);
+                auto link = parent->getLinkedObject(true)->getExtensionByType<App::LinkBaseExtension>(true);
+                if(link && !link->getShowElementValue() && link->getElementCountValue()) {
+                    const char *dot = strchr(subname,'.');
+                    if(dot) {
+                        TopoShape newShape(shape.Tag,shape.Hasher,shape.getShape());
+                        std::string op(TopoShape::indexPostfix());
+                        op += std::string(subname,dot-subname);
+                        newShape.mapSubElement(shape,op.c_str());
+                        shape = newShape;
+                        shape.Tag = obj->getID();
+                    }
+                }else if(owner!=linked)
+                    shape.reTagElementMap(tag,hasher);
+            }
+            Py_DECREF(pyobj);
+            return shape;
         }
-        Py_DECREF(pyobj);
-        return shape;
     }
 
     Py_XDECREF(pyobj);
