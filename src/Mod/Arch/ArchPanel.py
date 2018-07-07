@@ -73,7 +73,7 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Panel")
     obj.Label = translate("Arch",name)
     _Panel(obj)
     if FreeCAD.GuiUp:

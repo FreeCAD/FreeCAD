@@ -226,7 +226,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Component")
     obj.Label = translate("Arch",name)
     ArchComponent.Component(obj)
     if FreeCAD.GuiUp:

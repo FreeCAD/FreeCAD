@@ -57,7 +57,7 @@ def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Frame")
     obj.Label = translate("Arch",name)
     _Frame(obj)
     if FreeCAD.GuiUp:

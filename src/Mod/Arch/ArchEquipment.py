@@ -58,7 +58,7 @@ def makeEquipment(baseobj=None,placement=None,name="Equipment"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
     _Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):

@@ -198,7 +198,7 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Building")
     _Building(obj)
     if FreeCAD.GuiUp:
         _ViewProviderBuilding(obj.ViewObject)

@@ -56,7 +56,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
     obj.Label = translate("Arch",name)
     _Stairs(obj)
     if FreeCAD.GuiUp:
