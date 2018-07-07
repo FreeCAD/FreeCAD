@@ -580,14 +580,7 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
         lEdges = [e for e in w.Edges if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)]
         self.assertEqual(2, len(lEdges))
 
-        print("\n# ====================================")
-        for i,e in enumerate(lEdges):
-            PathOpTools.debugEdge("test42_orig_e%d = " % i, e)
-
         wire = PathOpTools.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True)
-        for i,e in enumerate(wire.Edges):
-            PathOpTools.debugEdge("test42_offs_e%d = " % i, e)
-        print("# ====================================")
 
         x = length/2 + 2 * math.cos(math.pi/6)
         y = -10 + 2 * math.sin(math.pi/6)
@@ -602,16 +595,16 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(0, 0, -1), rEdges[0].Curve.Axis)
 
         #offset the other way
-        #wire = PathOpTools.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+        wire = PathOpTools.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
 
-        #self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
-        #self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
+        self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
+        self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
 
-        #rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
+        rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
 
-        #self.assertEqual(1, len(rEdges))
-        #self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
-        #self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
+        self.assertEqual(1, len(rEdges))
+        self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
+        self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
 
     def test43(self):
         '''Check offsetting multiple backwards outside edges.'''
