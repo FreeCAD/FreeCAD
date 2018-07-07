@@ -31,17 +31,28 @@ import math
 
 from PySide import QtCore
 
+__title__ = "PathOpTools - Tools for Path operations."
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
+
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+PrintWireDebug = False
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def debugEdge(label, e):
+    '''debugEdge(label, e) ... prints a python statement to create e
+    Currently lines and arcs are supported.'''
+    if not PrintWireDebug:
+        return
     if Part.Line == type(e.Curve):
         p0 = e.valueAt(e.FirstParameter)
         p1 = e.valueAt(e.LastParameter)
@@ -61,6 +72,9 @@ def debugEdge(label, e):
         print("%s %s (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f)" % (label, type(e.Curve).__name__, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
 
 def debugWire(label, w):
+    '''debugWire(label, w) ... prints python statements for all edges of w to be added to the object tree in a group.'''
+    if not PrintWireDebug:
+        return
     print("#%s wire >>>>>>>>>>>>>>>>>>>>>>>>" % label)
     print("grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')" % label)
     for i,e in enumerate(w.Edges):
@@ -71,6 +85,8 @@ def debugWire(label, w):
     print("#%s wire <<<<<<<<<<<<<<<<<<<<<<<<" % label)
 
 def _orientEdges(inEdges):
+    '''_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
+    Assumes the edges are in an order so they can be connected.'''
     PathLog.track()
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
@@ -91,6 +107,8 @@ def _orientEdges(inEdges):
     return edges
 
 def _isWireClockwise(w):
+    '''_isWireClockwise(w) ... return True if wire is oriented clockwise.
+    Assumes the edges of w are already properly oriented - for generic access use isWireClockwise(w).'''
     # handle wires consisting of a single circle or 2 edges where one is an arc.
     # in both cases, because the edges are expected to be oriented correctly, the orientation can be
     # determined by looking at (one of) the circle curves.
@@ -175,7 +193,7 @@ def offsetWire(wire, base, offset, forward):
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
         pass
 
-    owire = wire.makeOffset2D(offset)
+    owire = orientWire(wire.makeOffset2D(offset), True)
     debugWire('makeOffset2D_%d' % len(wire.Edges), owire)
 
     if wire.isClosed():
@@ -209,8 +227,6 @@ def offsetWire(wire, base, offset, forward):
     # determine the start and end point
     start = edges[0].firstVertex().Point
     end = edges[-1].lastVertex().Point
-    print("Part.show(Part.Vertex(%.2f, %.2f, %.2f), 'wire_start')" % (start.x, start.y, start.z))
-    print("Part.show(Part.Vertex(%.2f, %.2f, %.2f), 'wire_end')" % (end.x, end.y, end.z))
     debugWire('wire', wire)
     debugWire('wedges', Part.Wire(edges))
 
@@ -292,18 +308,18 @@ def offsetWire(wire, base, offset, forward):
         for e0 in rightSideEdges:
             if PathGeom.edgesMatch(e, e0):
                 edges = rightSideEdges
-                print("#use right side edges")
+                PathLog.debug("#use right side edges")
                 if not forward:
-                    print("#reverse")
+                    PathLog.debug("#reverse")
                     edges.reverse()
                 return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
     # traversal (climb milling). If that's not what we want just reverse the order,
     # orientWire takes care of orienting the edges appropriately.
-    print("#use left side edges")
+    PathLog.debug("#use left side edges")
     if not forward:
-        print("#reverse")
+        PathLog.debug("#reverse")
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
