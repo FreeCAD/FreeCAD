@@ -73,7 +73,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
             obj = Draft.clone(baseobj)
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
     obj.Label = translate("Arch",name)
     _Window(obj)
     if FreeCAD.GuiUp:

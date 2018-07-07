@@ -62,7 +62,7 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
     obj.Label = translate("Arch",name)
     _Wall(obj)
     if FreeCAD.GuiUp:

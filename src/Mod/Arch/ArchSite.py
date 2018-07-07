@@ -60,7 +60,7 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     import Part
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Site")
     obj.Label = translate("Arch",name)
     _Site(obj)
     if FreeCAD.GuiUp:

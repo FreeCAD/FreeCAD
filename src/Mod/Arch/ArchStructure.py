@@ -72,7 +72,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
     obj.Label = translate("Arch",name)
     _Structure(obj)
     if FreeCAD.GuiUp:
