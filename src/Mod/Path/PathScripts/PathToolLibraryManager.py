@@ -29,6 +29,7 @@ import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
+import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import json
@@ -37,10 +38,8 @@ import xml.sax
 
 from PySide import QtCore, QtGui
 
-
-LOG_MODULE = 'PathToolLibraryManager'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathToolLibraryManager')
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -392,16 +391,19 @@ class ToolLibraryManager():
 class EditorPanel():
 
     def __init__(self, job, cb):
-        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolLibraryEditor.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
-        #self.editform = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolEdit.ui")
-        self.editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
         self.TLM = ToolLibraryManager()
 
         self.loadTable()
         self.form.ToolsList.resizeColumnsToContents()
         self.job = job
         self.cb = cb
+
+    def toolEditor(self, tool):
+        dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolEdit.ui")
+        editor = PathToolEdit.ToolEditor(tool, dialog.toolEditor, dialog)
+        editor.setupUI()
+        return editor
 
     def accept(self):
         pass
@@ -436,32 +438,14 @@ class EditorPanel():
             return matslist[material]
 
     def addTool(self):
-        t = Path.Tool()
-        editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
-        editform.TypeField.clear()
-        for tooltype in Path.Tool.getToolTypes(t):
-            editform.TypeField.addItem(tooltype)
+        tool = Path.Tool()
+        editor = self.toolEditor(tool)
 
-        editform.MaterialField.clear()
-        for material in Path.Tool.getToolMaterials(t):
-            editform.MaterialField.addItem(material)
-
-        r = editform.exec_()
+        r = editor.Parent.exec_()
         if r:
-            if editform.NameField.text():
-                t.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
-            t.ToolType = self.getType(editform.TypeField.currentIndex())
-            t.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            t.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
-            t.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
-            t.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
-            t.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            t.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
-            t.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
-
+            editor.accept()
             listname = "<Main>"
-
-            if self.TLM.addnew(listname, t) is True:
+            if self.TLM.addnew(listname, editor.Tool) is True:
                 self.loadTable()
 
     def setFields(self):
@@ -515,40 +499,12 @@ class EditorPanel():
         listname = "<Main>"
         toolnum = int(value)
         tool = self.TLM.getTool(listname, toolnum)
-        editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+        editor = self.toolEditor(tool)
 
-        editform.TypeField.clear()
-        for tooltype in Path.Tool.getToolTypes(tool):
-            editform.TypeField.addItem(tooltype)
-
-        editform.MaterialField.clear()
-        for material in Path.Tool.getToolMaterials(tool):
-            editform.MaterialField.addItem(material)
-
-        editform.NameField.setText(tool.Name)
-        editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
-        editform.MaterialField.setCurrentIndex(self.getMaterial(tool.Material))
-        editform.DiameterField.setText(FreeCAD.Units.Quantity(tool.Diameter, FreeCAD.Units.Length).UserString)
-        editform.LengthOffsetField.setText(FreeCAD.Units.Quantity(tool.LengthOffset, FreeCAD.Units.Length).UserString)
-        editform.FlatRadiusField.setText(FreeCAD.Units.Quantity(tool.FlatRadius, FreeCAD.Units.Length).UserString)
-        editform.CornerRadiusField.setText(FreeCAD.Units.Quantity(tool.CornerRadius, FreeCAD.Units.Length).UserString)
-        editform.CuttingEdgeAngleField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
-        editform.CuttingEdgeHeightField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
-
-        r = editform.exec_()
+        r = editor.Parent.exec_()
         if r:
-            if editform.NameField.text():
-                tool.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
-            tool.ToolType = self.getType(editform.TypeField.currentIndex())
-            tool.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            tool.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
-            tool.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
-            tool.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
-            tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
-            tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
-
-            if self.TLM.updateTool(listname, toolnum, tool) is True:
+            editor.accept()
+            if self.TLM.updateTool(listname, toolnum, editor.Tool) is True:
                 self.loadTable()
 
     def importFile(self):

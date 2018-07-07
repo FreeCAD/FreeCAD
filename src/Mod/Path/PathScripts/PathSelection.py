@@ -64,6 +64,27 @@ class ENGRAVEGate:
 
         return False
 
+class CHAMFERGate:
+    def allow(self, doc, obj, sub):
+        try:
+            shape = obj.Shape
+        except:
+            return False
+
+        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+            return True
+
+        if 'Edge' == shape.ShapeType or 'Face' == shape.ShapeType:
+            return True
+
+        if sub:
+            subShape = shape.getElement(sub)
+            if 'Edge' == subShape.ShapeType or 'Face' == subShape.ShapeType:
+                return True
+
+        print(shape.ShapeType)
+        return False
+
 
 class DRILLGate:
     def allow(self, doc, obj, sub):
@@ -156,6 +177,10 @@ def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
     FreeCAD.Console.PrintWarning("Engraving Select Mode\n")
 
+def chamferselect():
+    FreeCADGui.Selection.addSelectionGate(CHAMFERGate())
+    FreeCAD.Console.PrintWarning("Chamfer Select Mode\n")
+
 def profileselect():
     FreeCADGui.Selection.addSelectionGate(PROFILEGate())
     FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
@@ -170,6 +195,7 @@ def surfaceselect():
 
 def select(op):
     opsel = {}
+    opsel['Chamfer'] = chamferselect
     opsel['Contour'] = contourselect
     opsel['Drilling'] = drillselect
     opsel['Engrave'] = engraveselect

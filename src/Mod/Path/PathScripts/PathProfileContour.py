@@ -37,7 +37,7 @@ from PySide import QtCore
 
 FreeCAD.setLogLevel('Path.Area', 0)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -102,6 +102,8 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         return params
 
     def updateDepths(self, obj, ignoreErrors=False):
+        if not hasattr(self, 'stock'):
+            self.stock = self.getJob(obj).Stock
         stockBB = self.stock.Shape.BoundBox
         obj.OpFinalDepth = stockBB.ZMin
         obj.OpStartDepth = stockBB.ZMax

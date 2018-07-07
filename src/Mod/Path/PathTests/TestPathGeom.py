@@ -145,12 +145,12 @@ class TestPathGeom(PathTestBase):
         """Verify isVertical/isHorizontal for faces"""
 
         # planes
-        xPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 0))
-        yPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 0))
-        zPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 0, 1))
-        xyPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 1, 0))
-        xzPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 1))
-        yzPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 1))
+        xPlane = Part.makePlane(100, 100, Vector(), Vector(1, 0, 0))
+        yPlane = Part.makePlane(100, 100, Vector(), Vector(0, 1, 0))
+        zPlane = Part.makePlane(100, 100, Vector(), Vector(0, 0, 1))
+        xyPlane = Part.makePlane(100, 100, Vector(), Vector(1, 1, 0))
+        xzPlane = Part.makePlane(100, 100, Vector(), Vector(1, 0, 1))
+        yzPlane = Part.makePlane(100, 100, Vector(), Vector(0, 1, 1))
 
         self.assertTrue(PathGeom.isVertical(xPlane))
         self.assertTrue(PathGeom.isVertical(yPlane))
@@ -167,12 +167,12 @@ class TestPathGeom(PathTestBase):
         self.assertFalse(PathGeom.isHorizontal(yzPlane))
 
         # cylinders
-        xCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
-        yCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
-        zCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
-        xyCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
-        xzCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
-        yzCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+        xCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        yCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        zCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+        xyCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        xzCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+        yzCylinder = [f for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
 
         self.assertTrue(PathGeom.isHorizontal(xCylinder))
         self.assertTrue(PathGeom.isHorizontal(yCylinder))
@@ -381,3 +381,74 @@ class TestPathGeom(PathTestBase):
         pl = e[1].valueAt((e[1].FirstParameter + e[1].LastParameter)/2)
         self.assertCurve(e[0], p1, p12, p2)
         self.assertCurve(e[1], p2, p23, p3)
+
+    def test70(self):
+        '''Flip a line.'''
+        edge = Part.Edge(Part.Line(Vector(0,0,0), Vector(3, 2, 1)))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+        edge = Part.Edge(Part.Line(Vector(0,0,0), Vector(-3, -2, -1)))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+    def test71(self):
+        '''Flip a line segment.'''
+        edge = Part.Edge(Part.LineSegment(Vector(0,0,0), Vector(3, 2, 1)))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+        edge = Part.Edge(Part.LineSegment(Vector(4,2,1), Vector(-3, -7, 9)))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.makeLine(Vector(1,0,3), Vector(3, 2, 1))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+    def test72(self):
+        '''Flip a circle'''
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+    def test73(self):
+        '''Flip an arc'''
+        # make sure all 4 quadrants work
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 45, 90)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 100, 170)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 200, 250)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 300, 340)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        # and the other way around too
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1), 45, 90)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1), 100, 170)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1), 200, 250)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, -1), 300, 340)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+    def test74(self):
+        '''Flip a rotated arc'''
+        # oh yes ...
+        edge = Part.makeCircle(3, Vector(1, 3, 2), Vector(0, 0, 1), 45, 90)
+        edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -90)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+    def test75(self):
+        '''Flip a b-spline'''
+        spline = Part.BSplineCurve()
+        spline.interpolate([Vector(1,2,3), Vector(-3,0,7), Vector(-3,1,9), Vector(1, 3, 5)])
+        edge = Part.Edge(spline)
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+        edge = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
+        self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+
+
+
