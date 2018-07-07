@@ -73,7 +73,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "DropCutterDir", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction along which dropcutter lines are created"))
         obj.addProperty("App::PropertyEnumeration", "BoundBox", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "Should the operation be limited by the stock object or by the bounding box of the base object"))
         obj.addProperty("App::PropertyVector", "DropCutterExtraOffset", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "Additional offset to the selected bounding box"))
-        obj.addProperty("App::PropertyFloat", "StepOver", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Step over percentage of the drop cutter path"))
+        obj.addProperty("App::PropertyPercent", "StepOver", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Step over percentage of the drop cutter path"))
         obj.addProperty("App::PropertyDistance", "DepthOffset", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Z-axis offset from the surface of the object"))
         obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The Sample Interval. Small values cause long wait times"))
         obj.BoundBox = ['Stock', 'BaseBoundBox']
@@ -101,8 +101,8 @@ class ObjectSurface(PathOp.ObjectOp):
         print("StepOver is  " + str(obj.StepOver))
         if obj.StepOver > 100:
             obj.StepOver = 100
-        if obj.StepOver < 0.001:
-            obj.StepOver = 0.001
+        if obj.StepOver < 1:
+            obj.StepOver = 1
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment) + ')\n'
@@ -248,7 +248,7 @@ class ObjectSurface(PathOp.ObjectOp):
         path = ocl.Path()                   # create an empty path object
 
         if obj.DropCutterDir == 'Y':
-            Ny = int(bb.YLength / (cutter.getDiameter() * (obj.StepOver / 100)))
+            Ny = int(bb.YLength / (cutter.getDiameter() * (obj.StepOver / 100.0)))
             dy = float(ymax - ymin) / Ny  # the y step-over
 
             # add Line objects to the path in this loop
@@ -263,7 +263,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
                 path.append(l)        # add the line to the path
         else:
-            Nx = int(bb.XLength / (cutter.getDiameter() * (obj.StepOver / 100)))
+            Nx = int(bb.XLength / (cutter.getDiameter() * (obj.StepOver / 100.0)))
             dx = float(xmax - xmin) / Nx  # the y step-over
 
             # add Line objects to the path in this loop
