@@ -1336,7 +1336,14 @@ def export(exportList,filename):
                             elif ptype == "IfcInteger":
                                 pvalue = int(pvalue)
                             else:
-                                pvalue = float(pvalue)
+                                try:
+                                    pvalue = float(pvalue)
+                                except:
+                                    try:
+                                        pvalue = FreeCAD.Units.Quantity(pvalue).Value
+                                    except:
+                                        pvalue = pvalue.encode("utf8")
+                                        if DEBUG:print("      warning: unable to export property as numeric value:",key,pvalue)
                             p = ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(ptype),pvalue),None)
                             psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():

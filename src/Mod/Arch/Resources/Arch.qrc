@@ -103,6 +103,7 @@
         <file>ui/DialogBimServerLogin.ui</file>
         <file>ui/DialogDisplayText.ui</file>
         <file>ui/ArchNest.ui</file>
+        <file>ui/DialogIfcProperties.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>
