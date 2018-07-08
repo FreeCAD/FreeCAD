@@ -57,6 +57,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -545,7 +546,7 @@ void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
     SoBaseColor * markcol = new SoBaseColor();
     markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
     SoMarkerSet* marker = new SoMarkerSet();
-    marker->markerIndex=SoMarkerSet::PLUS_9_9;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 
