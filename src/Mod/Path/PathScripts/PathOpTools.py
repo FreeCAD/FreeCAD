@@ -53,9 +53,9 @@ def debugEdge(label, e):
     Currently lines and arcs are supported.'''
     if not PrintWireDebug:
         return
+    p0 = e.valueAt(e.FirstParameter)
+    p1 = e.valueAt(e.LastParameter)
     if Part.Line == type(e.Curve):
-        p0 = e.valueAt(e.FirstParameter)
-        p1 = e.valueAt(e.LastParameter)
         print("%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))" % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
     elif Part.Circle == type(e.Curve):
         r = e.Curve.Radius
