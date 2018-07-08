@@ -59,7 +59,6 @@ public:
     App::PropertyInteger LineWidth;
     App::PropertyColor   NormalColor;
     App::PropertyColor   MarkerColor;
-    App::PropertyInteger MarkerSize;
     App::PropertyBool    ShowNodes;
     App::PropertyVector  StartPosition;
 
