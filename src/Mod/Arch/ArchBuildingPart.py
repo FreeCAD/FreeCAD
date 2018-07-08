@@ -172,6 +172,8 @@ class BuildingPart:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
+        if not "IfcProperties" in pl:
+            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
