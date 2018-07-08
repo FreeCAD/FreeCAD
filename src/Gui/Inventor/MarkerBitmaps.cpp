@@ -170,6 +170,62 @@ const char cross15_marker[CROSS15_WIDTH * CROSS15_HEIGHT + 1] = {
 "  xx        xx "
 " xx          xx"};
 
+//PLUS_11_11
+const int PLUS11_WIDTH = 11;
+const int PLUS11_HEIGHT = 11;
+const char plus11_marker[PLUS11_WIDTH * PLUS11_HEIGHT + 1] = {
+    "           "
+    "     xx    "
+    "     xx    "
+    "     xx    "
+    "     xx    "
+    " xxxxxxxxxx"
+    " xxxxxxxxxx"
+    "     xx    "
+    "     xx    "
+    "     xx    "
+    "     xx    "};
+
+
+//PLUS_13_13
+const int PLUS13_WIDTH = 13;
+const int PLUS13_HEIGHT = 13;
+const char plus13_marker[PLUS13_WIDTH * PLUS13_HEIGHT + 1] = {
+    "             "
+    "      xx     "
+    "      xx     "
+    "      xx     "
+    "      xx     "
+    "      xx     "
+    " xxxxxxxxxxxx"
+    " xxxxxxxxxxxx"
+    "      xx     "
+    "      xx     "
+    "      xx     "
+    "      xx     "
+    "      xx     "};
+
+
+//PLUS_15_15
+const int PLUS15_WIDTH = 15;
+const int PLUS15_HEIGHT = 15;
+const char plus15_marker[PLUS15_WIDTH * PLUS15_HEIGHT + 1] = {
+    "               "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    " xxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxx"
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "
+    "       xx      "};
+
 //SQUARE_LINE_11_11
 const int SQUARE_LINE11_WIDTH = 11;
 const int SQUARE_LINE11_HEIGHT = 11;
@@ -416,6 +472,15 @@ MarkerBitmaps::initClass()
     markerIndex [std::make_pair("CROSS", 9)] = SoMarkerSet::CROSS_9_9;
     markerIndex [std::make_pair("CROSS", 7)] = SoMarkerSet::CROSS_7_7;
     markerIndex [std::make_pair("CROSS", 5)] = SoMarkerSet::CROSS_5_5;
+
+    createBitmap("PLUS", 11, 11, 11, plus11_marker);
+    createBitmap("PLUS", 13, 13, 13, plus13_marker);
+    createBitmap("PLUS", 15, 15, 15, plus15_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("PLUS", 9)] = SoMarkerSet::PLUS_9_9;
+    markerIndex [std::make_pair("PLUS", 7)] = SoMarkerSet::PLUS_7_7;
+    markerIndex [std::make_pair("PLUS", 5)] = SoMarkerSet::PLUS_5_5;
 
     createBitmap("SQUARE_LINE", 11, 11, 11, squareLine11_marker);
     createBitmap("SQUARE_LINE", 13, 13, 13, squareLine13_marker);
