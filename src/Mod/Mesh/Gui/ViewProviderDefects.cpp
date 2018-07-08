@@ -41,6 +41,7 @@
 #include <Base/Sequencer.h>
 #include <App/Application.h>
 #include <Gui/Selection.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -134,7 +135,7 @@ void ViewProviderMeshOrientation::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -201,7 +202,7 @@ void ViewProviderMeshNonManifolds::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -266,7 +267,7 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 
@@ -330,7 +331,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -395,7 +396,7 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 
@@ -452,7 +453,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -558,7 +559,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -625,7 +626,7 @@ void ViewProviderMeshSelfIntersections::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 
@@ -705,7 +706,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 7));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 

@@ -285,7 +285,7 @@ def dimSymbol(symbol=None,invert=False):
         return coin.SoSphere()
     elif symbol == 1:
         marker = coin.SoMarkerSet()
-        marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
+        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
