@@ -55,27 +55,14 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_marker">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Marker size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="QComboBox" name="comboBox">
         <property name="currentIndex">
          <number>-1</number>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="text">
          <string>Ask for value after creating a distance constraint</string>
@@ -91,17 +78,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Grid line pattern</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="EditSketcherMarkerSize"/>
-      </item>
-      <item row="5" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="text">
          <string>Geometry Creation &quot;Continue Mode&quot;</string>
@@ -117,7 +101,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+      <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="text">
          <string>Constraint Creation &quot;Continue Mode&quot; (Experimental)</string>
@@ -133,7 +117,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="enabled">
          <bool>true</bool>
@@ -280,7 +264,7 @@
         </layout>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="7" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBox_5">
         <property name="enabled">
          <bool>true</bool>
@@ -335,14 +319,14 @@
         </layout>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Segments per geometry</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="minimum">
          <number>50</number>
@@ -424,7 +408,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>EditSketcherFontSize</tabstop>
-  <tabstop>EditSketcherMarkerSize</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>

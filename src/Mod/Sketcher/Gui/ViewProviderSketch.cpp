@@ -5336,7 +5336,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     edit = new EditData();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    edit->MarkerSize = hGrp->GetInt("EditSketcherMarkerSize", 7);
+    edit->MarkerSize = hGrp->GetInt("MarkerSize", 7);
 
     createEditInventorNodes();
 
