@@ -68,6 +68,7 @@ else(OCE_FOUND) #look for OpenCASCADE
       endif(CYGWIN OR MINGW)
     else(WIN32)
       FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+        /usr/include/occt
         /usr/include/opencascade
         /usr/local/include/opencascade
         /opt/opencascade/include
