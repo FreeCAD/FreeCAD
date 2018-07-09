@@ -1276,6 +1276,279 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::autoconstraint(PyObject *args)
+{
+    double precision = Precision::Confusion() * 1000;
+    double angleprecision = M_PI/8; 
+    PyObject* includeconstruction = Py_True;
+
+
+    if (!PyArg_ParseTuple(args, "|ddO!", &precision, &angleprecision, &PyBool_Type, &includeconstruction))
+        return 0;
+
+    if (this->getSketchObjectPtr()->autoConstraint(precision, angleprecision, PyObject_IsTrue(includeconstruction) ? true : false)) {
+        std::stringstream str;
+        str << "Unable to autoconstraint";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::detectMissingPointOnPointConstraints(PyObject *args)
+{
+    double precision = Precision::Confusion() * 1000; 
+    PyObject* includeconstruction = Py_True;
+
+    if (!PyArg_ParseTuple(args, "|dO!", &precision, &PyBool_Type, &includeconstruction))
+        return 0;
+
+    return Py::new_reference_to(Py::Long(this->getSketchObjectPtr()->detectMissingPointOnPointConstraints(precision, PyObject_IsTrue(includeconstruction) ? true : false)));
+}
+
+PyObject* SketchObjectPy::detectMissingVerticalHorizontalConstraints(PyObject *args)
+{
+    double angleprecision = M_PI/8; 
+
+    if (!PyArg_ParseTuple(args, "|d", &angleprecision))
+        return 0;
+
+    return Py::new_reference_to(Py::Long(this->getSketchObjectPtr()->detectMissingVerticalHorizontalConstraints(angleprecision)));
+}
+
+PyObject* SketchObjectPy::detectMissingEqualityConstraints(PyObject *args)
+{
+    double precision = Precision::Confusion() * 1000; 
+
+    if (!PyArg_ParseTuple(args, "|d", &precision))
+        return 0;
+
+    return Py::new_reference_to(Py::Long(this->getSketchObjectPtr()->detectMissingEqualityConstraints(precision)));
+}
+
+PyObject* SketchObjectPy::analyseMissingPointOnPointCoincident(PyObject *args)
+{
+    double angleprecision = M_PI/8; 
+
+    if (!PyArg_ParseTuple(args, "|d", &angleprecision))
+        return 0;
+
+    this->getSketchObjectPtr()->analyseMissingPointOnPointCoincident(angleprecision);
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::makeMissingPointOnPointCoincident(PyObject *args)
+{
+
+    PyObject* onebyone = Py_False;
+
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &onebyone))
+        return 0;
+
+    this->getSketchObjectPtr()->makeMissingPointOnPointCoincident(PyObject_IsTrue(onebyone) ? true : false);
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::makeMissingVerticalHorizontal(PyObject *args)
+{
+    PyObject* onebyone = Py_False;
+
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &onebyone))
+        return 0;
+
+    this->getSketchObjectPtr()->makeMissingVerticalHorizontal(PyObject_IsTrue(onebyone) ? true : false);
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::makeMissingEquality(PyObject *args)
+{
+    PyObject* onebyone = Py_True;
+
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &onebyone))
+        return 0;
+
+    this->getSketchObjectPtr()->makeMissingEquality(PyObject_IsTrue(onebyone) ? true : false);
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::autoRemoveRedundants(PyObject *args)
+{
+    PyObject* updategeo = Py_True;
+    
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &updategeo))
+        return 0;
+    
+    this->getSketchObjectPtr()->autoRemoveRedundants(PyObject_IsTrue(updategeo) ? true : false);
+    
+    Py_Return;
+}
+
+Py::List SketchObjectPy::getMissingPointOnPointConstraints(void) const
+{
+    std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingPointOnPointConstraints();
+
+    Py::List list;
+    for (auto c : constraints) {
+        Py::Tuple t(5);
+        t.setItem(0, Py::Long(c.First));
+        t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
+        t.setItem(2, Py::Long(c.Second));
+        t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
+        t.setItem(4, Py::Long(c.Type));
+        list.append(t);
+    }
+    return list;
+}
+
+void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
+{
+    std::vector<ConstraintIds> constraints;
+
+    auto checkpos = [](Py::Tuple &t,int i) {
+        auto checkitem = [](Py::Tuple &t,int i, int val) {return long(Py::Long(t.getItem(i)))==val;};
+        return (checkitem(t,i,0)?Sketcher::none:(checkitem(t,i,1)?Sketcher::start:(checkitem(t,i,2)?Sketcher::end:Sketcher::mid)));
+    };
+
+    for (auto ti : arg) {
+        Py::Tuple t(ti);
+        ConstraintIds c;
+        c.First = (long)Py::Long(t.getItem(0));
+        c.FirstPos = checkpos(t,1);
+        c.Second = (long)Py::Long(t.getItem(2));
+        c.SecondPos = checkpos(t,3);
+        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+
+        constraints.push_back(c);
+    }
+
+    this->getSketchObjectPtr()->setMissingPointOnPointConstraints(constraints);
+}
+
+Py::List SketchObjectPy::getMissingVerticalHorizontalConstraints(void) const
+{
+    std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingVerticalHorizontalConstraints();
+    
+    Py::List list;
+    for (auto c : constraints) {
+        Py::Tuple t(5);
+        t.setItem(0, Py::Long(c.First));
+        t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
+        t.setItem(2, Py::Long(c.Second));
+        t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
+        t.setItem(4, Py::Long(c.Type));
+        list.append(t);
+    }
+    return list;
+}
+
+void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
+{
+    std::vector<ConstraintIds> constraints;
+    
+    auto checkpos = [](Py::Tuple &t,int i) {
+        auto checkitem = [](Py::Tuple &t,int i, int val) {return long(Py::Long(t.getItem(i)))==val;};
+        return (checkitem(t,i,0)?Sketcher::none:(checkitem(t,i,1)?Sketcher::start:(checkitem(t,i,2)?Sketcher::end:Sketcher::mid)));
+    };
+    
+    for (auto ti : arg) {
+        Py::Tuple t(ti);
+        ConstraintIds c;
+        c.First = (long)Py::Long(t.getItem(0));
+        c.FirstPos = checkpos(t,1);
+        c.Second = (long)Py::Long(t.getItem(2));
+        c.SecondPos = checkpos(t,3);
+        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+
+        constraints.push_back(c);
+    }
+
+    this->getSketchObjectPtr()->setMissingVerticalHorizontalConstraints(constraints);
+}
+
+Py::List SketchObjectPy::getMissingLineEqualityConstraints(void) const
+{
+    std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingLineEqualityConstraints();
+
+    Py::List list;
+    for (auto c : constraints) {
+        Py::Tuple t(4);
+        t.setItem(0, Py::Long(c.First));
+        t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
+        t.setItem(2, Py::Long(c.Second));
+        t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
+        list.append(t);
+    }
+    return list;
+}
+
+void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
+{
+    std::vector<ConstraintIds> constraints;
+
+    auto checkpos = [](Py::Tuple &t,int i) {
+        auto checkitem = [](Py::Tuple &t,int i, int val) {return long(Py::Long(t.getItem(i)))==val;};
+        return (checkitem(t,i,0)?Sketcher::none:(checkitem(t,i,1)?Sketcher::start:(checkitem(t,i,2)?Sketcher::end:Sketcher::mid)));
+    };
+
+    for (auto ti : arg) {
+        Py::Tuple t(ti);
+        ConstraintIds c;
+        c.First = (long)Py::Long(t.getItem(0));
+        c.FirstPos = checkpos(t,1);
+        c.Second = (long)Py::Long(t.getItem(2));
+        c.SecondPos = checkpos(t,3);
+        c.Type = Sketcher::Equal;
+
+        constraints.push_back(c);
+    }
+
+    this->getSketchObjectPtr()->setMissingLineEqualityConstraints(constraints);
+}
+
+Py::List SketchObjectPy::getMissingRadiusConstraints(void) const
+{
+    std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingRadiusConstraints();
+    
+    Py::List list;
+    for (auto c : constraints) {
+        Py::Tuple t(4);
+        t.setItem(0, Py::Long(c.First));
+        t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
+        t.setItem(2, Py::Long(c.Second));
+        t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
+        list.append(t);
+    }
+    return list;
+}
+
+void SketchObjectPy::setMissingRadiusConstraints(Py::List arg)
+{
+    std::vector<ConstraintIds> constraints;
+
+    auto checkpos = [](Py::Tuple &t,int i) {
+        auto checkitem = [](Py::Tuple &t,int i, int val) {return long(Py::Long(t.getItem(i)))==val;};
+        return (checkitem(t,i,0)?Sketcher::none:(checkitem(t,i,1)?Sketcher::start:(checkitem(t,i,2)?Sketcher::end:Sketcher::mid)));
+    };
+
+    for (auto ti : arg) {
+        Py::Tuple t(ti);
+        ConstraintIds c;
+        c.First = (long)Py::Long(t.getItem(0));
+        c.FirstPos = checkpos(t,1);
+        c.Second = (long)Py::Long(t.getItem(2));
+        c.SecondPos = checkpos(t,3);
+        c.Type = Sketcher::Equal;
+
+        constraints.push_back(c);
+    }
+
+    this->getSketchObjectPtr()->setMissingRadiusConstraints(constraints);
+}
 
 PyObject* SketchObjectPy::getGeometryWithDependentParameters(PyObject *args)
 {
