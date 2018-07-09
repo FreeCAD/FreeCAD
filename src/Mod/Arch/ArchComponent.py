@@ -1350,94 +1350,94 @@ class ComponentTaskPanel:
                     pset = self.ifcModel.itemFromIndex(sel[0].parent())
                     pset.takeRow(sel[0].row())
 
+if FreeCAD.GuiUp:
 
-
-class IfcEditorDelegate(QtGui.QStyledItemDelegate):
-
-
-    def __init__(self, parent=None, dialog=None, ptypes=[], plabels=[], *args):
-
-        self.dialog = dialog
-        QtGui.QStyledItemDelegate.__init__(self, parent, *args)
-        self.ptypes = ptypes
-        self.plabels = plabels
-
-    def createEditor(self,parent,option,index):
-
-        if index.column() == 0: # property name
-            editor = QtGui.QLineEdit(parent)
-        elif index.column() == 1: # property type
-            editor = QtGui.QComboBox(parent)
-        else: # property value
-            ptype = index.sibling(index.row(),1).data()
-            if "Integer" in ptype:
-                editor = QtGui.QSpinBox(parent)
-            elif "Real" in ptype:
-                editor = QtGui.QDoubleSpinBox(parent)
-                editor.setDecimals(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2))
-            elif ("Boolean" in ptype) or ("Logical" in ptype):
-                editor = QtGui.QComboBox(parent)
-                editor.addItems(["True","False"])
-            elif "Measure" in ptype:
-                editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-                editor.setParent(parent)
-            else:
+    class IfcEditorDelegate(QtGui.QStyledItemDelegate):
+    
+    
+        def __init__(self, parent=None, dialog=None, ptypes=[], plabels=[], *args):
+    
+            self.dialog = dialog
+            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            self.ptypes = ptypes
+            self.plabels = plabels
+    
+        def createEditor(self,parent,option,index):
+    
+            if index.column() == 0: # property name
                 editor = QtGui.QLineEdit(parent)
-            editor.setObjectName("editor_"+ptype)
-        return editor
-
-    def setEditorData(self, editor, index):
-
-        if index.column() == 0:
-            editor.setText(index.data())
-        elif index.column() == 1:
-            editor.addItems(self.plabels)
-            if index.data() in self.plabels:
-                idx = self.plabels.index(index.data())
-                editor.setCurrentIndex(idx)
-        else:
-            if "Integer" in editor.objectName():
-                try:
-                    editor.setValue(int(index.data()))
-                except:
-                    editor.setValue(0)
-            elif "Real" in editor.objectName():
-                try:
-                    editor.setValue(float(index.data()))
-                except:
-                    editor.setValue(0)
-            elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
-                try:
-                    editor.setCurrentIndex(["true","false"].index(index.data().lower()))
-                except:
-                    editor.setCurrentIndex(1)
-            elif "Measure" in editor.objectName():
-                try:
-                    editor.setText(index.data())
-                except:
-                    editor.setValue(0)
-            else:
+            elif index.column() == 1: # property type
+                editor = QtGui.QComboBox(parent)
+            else: # property value
+                ptype = index.sibling(index.row(),1).data()
+                if "Integer" in ptype:
+                    editor = QtGui.QSpinBox(parent)
+                elif "Real" in ptype:
+                    editor = QtGui.QDoubleSpinBox(parent)
+                    editor.setDecimals(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2))
+                elif ("Boolean" in ptype) or ("Logical" in ptype):
+                    editor = QtGui.QComboBox(parent)
+                    editor.addItems(["True","False"])
+                elif "Measure" in ptype:
+                    editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+                    editor.setParent(parent)
+                else:
+                    editor = QtGui.QLineEdit(parent)
+                editor.setObjectName("editor_"+ptype)
+            return editor
+    
+        def setEditorData(self, editor, index):
+    
+            if index.column() == 0:
                 editor.setText(index.data())
-
-    def setModelData(self, editor, model, index):
-
-        if index.column() == 0:
-            model.setData(index,editor.text())
-        elif index.column() == 1:
-            if editor.currentIndex() > -1:
-                idx = editor.currentIndex()
-                data = self.plabels[idx]
-                model.setData(index,data)
-        else:
-            if ("Integer" in editor.objectName()) or ("Real" in editor.objectName()):
-                model.setData(index,str(editor.value()))
-            elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
-                model.setData(index,editor.currentText())
-            elif "Measure" in editor.objectName():
-                model.setData(index,editor.property("text"))
+            elif index.column() == 1:
+                editor.addItems(self.plabels)
+                if index.data() in self.plabels:
+                    idx = self.plabels.index(index.data())
+                    editor.setCurrentIndex(idx)
             else:
+                if "Integer" in editor.objectName():
+                    try:
+                        editor.setValue(int(index.data()))
+                    except:
+                        editor.setValue(0)
+                elif "Real" in editor.objectName():
+                    try:
+                        editor.setValue(float(index.data()))
+                    except:
+                        editor.setValue(0)
+                elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
+                    try:
+                        editor.setCurrentIndex(["true","false"].index(index.data().lower()))
+                    except:
+                        editor.setCurrentIndex(1)
+                elif "Measure" in editor.objectName():
+                    try:
+                        editor.setText(index.data())
+                    except:
+                        editor.setValue(0)
+                else:
+                    editor.setText(index.data())
+    
+        def setModelData(self, editor, model, index):
+    
+            if index.column() == 0:
                 model.setData(index,editor.text())
-        self.dialog.update()
+            elif index.column() == 1:
+                if editor.currentIndex() > -1:
+                    idx = editor.currentIndex()
+                    data = self.plabels[idx]
+                    model.setData(index,data)
+            else:
+                if ("Integer" in editor.objectName()) or ("Real" in editor.objectName()):
+                    model.setData(index,str(editor.value()))
+                elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
+                    model.setData(index,editor.currentText())
+                elif "Measure" in editor.objectName():
+                    model.setData(index,editor.property("text"))
+                else:
+                    model.setData(index,editor.text())
+            self.dialog.update()
 
 
 
