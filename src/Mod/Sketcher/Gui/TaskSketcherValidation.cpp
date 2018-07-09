@@ -64,7 +64,7 @@ using namespace Gui::TaskView;
 /* TRANSLATOR SketcherGui::SketcherValidation */
 
 SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent)
-  : QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), coincidenceRoot(0)
+: QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(0)
 {
     ui->setupUi(this);
     ui->fixButton->setEnabled(false);
@@ -88,6 +88,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);
     ui->comboBoxTolerance->setValidator(new QDoubleValidator(0,10,10,this));
+
 }
 
 SketcherValidation::~SketcherValidation()
@@ -103,230 +104,37 @@ void SketcherValidation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-struct SketcherValidation::VertexIds {
-    Base::Vector3d v;
-    int GeoId;
-    Sketcher::PointPos PosId;
-};
-
-struct SketcherValidation::Vertex_Less : public std::binary_function<const VertexIds&,
-                                                                     const VertexIds&, bool>
-{
-    Vertex_Less(double tolerance) : tolerance(tolerance){}
-    bool operator()(const VertexIds& x,
-                    const VertexIds& y) const
-    {
-        if (fabs (x.v.x - y.v.x) > tolerance)
-            return x.v.x < y.v.x;
-        if (fabs (x.v.y - y.v.y) > tolerance)
-            return x.v.y < y.v.y;
-        if (fabs (x.v.z - y.v.z) > tolerance)
-            return x.v.z < y.v.z;
-        return false; // points are considered to be equal
-    }
-private:
-    double tolerance;
-};
-
-struct SketcherValidation::Vertex_EqualTo : public std::binary_function<const VertexIds&,
-                                                                        const VertexIds&, bool>
-{
-    Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
-    bool operator()(const VertexIds& x,
-                    const VertexIds& y) const
-    {
-        if (fabs (x.v.x - y.v.x) <= tolerance) {
-            if (fabs (x.v.y - y.v.y) <= tolerance) {
-                if (fabs (x.v.z - y.v.z) <= tolerance) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-private:
-    double tolerance;
-};
-
-struct SketcherValidation::ConstraintIds {
-    Base::Vector3d v;
-    int First;
-    int Second;
-    Sketcher::PointPos FirstPos;
-    Sketcher::PointPos SecondPos;
-};
-
-struct SketcherValidation::Constraint_Equal  : public std::unary_function<const ConstraintIds&, bool>
-{
-    ConstraintIds c;
-    Constraint_Equal(const ConstraintIds& c) : c(c)
-    {
-    }
-    bool operator()(const ConstraintIds& x) const
-    {
-        if (c.First == x.First && c.FirstPos == x.FirstPos &&
-            c.Second == x.Second && c.SecondPos == x.SecondPos)
-            return true;
-        if (c.Second == x.First && c.SecondPos == x.FirstPos &&
-            c.First == x.Second && c.FirstPos == x.SecondPos)
-            return true;
-        return false;
-    }
-};
-
 void SketcherValidation::on_findButton_clicked()
 {
-    std::vector<VertexIds> vertexIds;
-    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
-    for (std::size_t i=0; i<geom.size(); i++) {
-        Part::Geometry* g = geom[i];
-
-        if(g->Construction && ui->checkBoxIgnoreConstruction->isChecked())
-            continue;
-
-        if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-            const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-    }
-
     double prec = Precision::Confusion();
-    QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
-    if (v.isValid())
-        prec = v.toDouble();
-    else
-        prec = QLocale::system().toDouble(ui->comboBoxTolerance->currentText());
+    bool ok;
+    double conv;
 
-    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
-    std::vector<VertexIds>::iterator vt = vertexIds.begin();
-    Vertex_EqualTo pred(prec);
+    conv = QLocale::system().toDouble(ui->comboBoxTolerance->currentText(),&ok);
 
-    std::list<ConstraintIds> coincidences;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < vertexIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, vertexIds.end(), pred);
-        if (vt < vertexIds.end()) {
-            std::vector<VertexIds>::iterator vn;
-            for (vn = vt+1; vn != vertexIds.end(); ++vn) {
-                if (pred(*vt,*vn)) {
-                    ConstraintIds id;
-                    id.v = vt->v;
-                    id.First = vt->GeoId;
-                    id.FirstPos = vt->PosId;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = vn->PosId;
-                    coincidences.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
+    if(ok) {
+        prec = conv;
+    }
+    else {
+        QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
+        if (v.isValid()) {
+            prec = v.toDouble();
         }
     }
 
-    // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
-    // and check which of them is forcing two vertexes to be coincident.
-    // If there is none but two vertexes can be considered equal a coincident constraint is missing.
-    std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident ||
-            (*it)->Type == Sketcher::Tangent ||
-            (*it)->Type == Sketcher::Perpendicular) {
-            ConstraintIds id;
-            id.First = (*it)->First;
-            id.FirstPos = (*it)->FirstPos;
-            id.Second = (*it)->Second;
-            id.SecondPos = (*it)->SecondPos;
-            std::list<ConstraintIds>::iterator pos = std::find_if
-                    (coincidences.begin(), coincidences.end(), Constraint_Equal(id));
-            if (pos != coincidences.end()) {
-                coincidences.erase(pos);
-            }
-        }
-    }
+    sketchAnalyser.detectMissingPointOnPointConstraints(prec,!ui->checkBoxIgnoreConstruction->isChecked());
 
-    this->vertexConstraints.clear();
-    this->vertexConstraints.reserve(coincidences.size());
+    std::vector<Sketcher::ConstraintIds> & vertexConstraints = sketchAnalyser.getMissingPointOnPointConstraints();
+
     std::vector<Base::Vector3d> points;
-    points.reserve(coincidences.size());
-    for (std::list<ConstraintIds>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
-        this->vertexConstraints.push_back(*it);
-        points.push_back(it->v);
+    points.reserve(vertexConstraints.size());
+
+    for (auto vc : vertexConstraints) {
+        points.push_back(vc.v);
     }
 
     hidePoints();
-    if (this->vertexConstraints.empty()) {
+    if (vertexConstraints.empty()) {
         QMessageBox::information(this, tr("No missing coincidences"),
             tr("No missing coincidences found"));
         ui->fixButton->setEnabled(false);
@@ -334,7 +142,7 @@ void SketcherValidation::on_findButton_clicked()
     else {
         showPoints(points);
         QMessageBox::warning(this, tr("Missing coincidences"),
-            tr("%1 missing coincidences found").arg(this->vertexConstraints.size()));
+            tr("%1 missing coincidences found").arg(vertexConstraints.size()));
         ui->fixButton->setEnabled(true);
     }
 }
@@ -344,24 +152,11 @@ void SketcherValidation::on_fixButton_clicked()
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("add coincident constraint");
-    std::vector<Sketcher::Constraint*> constr;
-    for (std::vector<ConstraintIds>::iterator it = this->vertexConstraints.begin(); it != this->vertexConstraints.end(); ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = Sketcher::Coincident;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-        constr.push_back(c);
-    }
 
-    sketch->addConstraints(constr);
-    this->vertexConstraints.clear();
+    sketchAnalyser.makeMissingPointOnPointCoincident();
+
     ui->fixButton->setEnabled(false);
     hidePoints();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end(); ++it) {
-        delete *it;
-    }
 
     // finish the transaction and update
     Gui::WaitCursor wc;
