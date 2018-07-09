@@ -272,7 +272,106 @@
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="autoconstraint">
+        <Documentation>
+            <UserDocu>
+                Automatic sketch constraining algorithm.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="detectMissingPointOnPointConstraints">
+        <Documentation>
+            <UserDocu>
+                Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
+                The result may be retrieved or applied using the corresponding Get / Make methods.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="analyseMissingPointOnPointCoincident">
+        <Documentation>
+            <UserDocu>
+                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular. 
+                The result may be retrieved or applied using the corresponding Get / Make methods.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="detectMissingVerticalHorizontalConstraints">
+        <Documentation>
+            <UserDocu>
+                Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
+                The result may be retrieved or applied using the corresponding Get / Make methods.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="detectMissingEqualityConstraints">
+        <Documentation>
+            <UserDocu>
+                Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
+                The result may be retrieved or applied using the corresponding Get / Make methods.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="makeMissingPointOnPointCoincident">
+        <Documentation>
+            <UserDocu>
+                Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="makeMissingVerticalHorizontal">
+        <Documentation>
+            <UserDocu>
+                Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="makeMissingEquality">
+        <Documentation>
+            <UserDocu>
+                Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="autoRemoveRedundants">
+        <Documentation>
+            <UserDocu>
+                Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     
+    <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="MissingPointOnPointConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="MissingVerticalHorizontalConstraints" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="MissingVerticalHorizontalConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="MissingLineEqualityConstraints" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="MissingLineEqualityConstraints" Type="List"/>
+    </Attribute>    
+    <Attribute Name="MissingRadiusConstraints" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="MissingRadiusConstraints" Type="List"/>
+    </Attribute>
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>
