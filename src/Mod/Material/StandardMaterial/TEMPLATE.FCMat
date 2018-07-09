@@ -110,6 +110,9 @@ Shininess =
 SoundTransmissionClass =
 
 ; Description to be updated
+SpecificHeat =
+
+; Description to be updated
 SpecularColor =
 
 ; Description to be updated
