@@ -129,6 +129,8 @@ SketchObject::SketchObject()
 
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
+    
+    analyser = new SketchAnalysis(this);
 }
 
 SketchObject::~SketchObject()
@@ -136,6 +138,8 @@ SketchObject::~SketchObject()
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
     ExternalGeo.clear();
+
+    delete analyser;
 }
 
 App::DocumentObjectExecReturn *SketchObject::execute(void)
@@ -811,6 +815,21 @@ int SketchObject::deleteAllGeometry()
     return 0;
 }
 
+int SketchObject::deleteAllConstraints()
+{
+    std::vector< Constraint * > newConstraints(0);
+
+    this->Constraints.setValues(newConstraints);
+
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+    
+    return 0;
+}
+
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -950,6 +969,28 @@ int SketchObject::delConstraint(int ConstrId)
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
     
+    return 0;
+}
+
+int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
+{
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);
+
+    std::sort(ConstrIds.begin(),ConstrIds.end());
+
+    if (*ConstrIds.begin() < 0 || *std::prev(ConstrIds.end()) >= int(vals.size()))
+        return -1;
+
+    for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
+        newVals.erase(newVals.begin()+*rit);
+
+    this->Constraints.setValues(newVals);
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve(updategeometry);
+
     return 0;
 }
 
@@ -6212,6 +6253,98 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
         solve();
 }
 
+int SketchObject::autoConstraint(double precision, double angleprecision, bool includeconstruction)
+{
+    return analyser->autoconstraint(precision, angleprecision, includeconstruction);
+}
+
+int SketchObject::detectMissingPointOnPointConstraints(double precision, bool includeconstruction)
+{
+    return analyser->detectMissingPointOnPointConstraints(precision, includeconstruction);
+}
+
+void SketchObject::analyseMissingPointOnPointCoincident(double angleprecision)
+{
+    analyser->analyseMissingPointOnPointCoincident(angleprecision);
+}
+
+int SketchObject::detectMissingVerticalHorizontalConstraints(double angleprecision)
+{
+    return analyser->detectMissingVerticalHorizontalConstraints(angleprecision);
+}
+
+int SketchObject::detectMissingEqualityConstraints(double precision)
+{
+    return analyser->detectMissingEqualityConstraints(precision);
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingPointOnPointConstraints(void) 
+{
+    return analyser->getMissingPointOnPointConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingVerticalHorizontalConstraints(void)
+{
+    return analyser->getMissingVerticalHorizontalConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingLineEqualityConstraints(void)
+{
+    return analyser->getMissingLineEqualityConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingRadiusConstraints(void)
+{
+    return analyser->getMissingRadiusConstraints();
+}
+
+void SketchObject::setMissingRadiusConstraints(std::vector<ConstraintIds> &cl)
+{
+    if(analyser)
+        analyser->setMissingRadiusConstraints(cl);
+}
+
+void SketchObject::setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingLineEqualityConstraints(cl);
+}
+
+void SketchObject::setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingVerticalHorizontalConstraints(cl);
+}
+
+void SketchObject::setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingPointOnPointConstraints(cl);
+}
+
+void SketchObject::makeMissingPointOnPointCoincident(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingPointOnPointCoincident(onebyone);
+}
+
+void SketchObject::makeMissingVerticalHorizontal(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingVerticalHorizontal(onebyone);
+}
+
+void SketchObject::makeMissingEquality(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingEquality(onebyone);
+}
+
+void SketchObject::autoRemoveRedundants(bool updategeo)
+{
+    if(analyser)
+        analyser->autoRemoveRedundants(updategeo);
+}
 
 // Python Sketcher feature ---------------------------------------------------------
 
