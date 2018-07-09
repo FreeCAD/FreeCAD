@@ -33,6 +33,7 @@ SectionFillPattern
 SectionLinewidth
 Shininess
 SoundTransmissionClass
+SpecificHeat
 SpecularColor
 StandardCode
 TexturePath
