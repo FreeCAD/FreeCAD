@@ -265,7 +265,7 @@ class GmshTools():
                         FreeCAD.Console.PrintError("  A group with this name exists already.\n")
 
         # group meshing for analysis
-        analysis_group_meshing = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General").GetBool("AnalysisGroupMeshing", True)
+        analysis_group_meshing = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General").GetBool("AnalysisGroupMeshing", False)
         if self.analysis and analysis_group_meshing:
             print('  Group meshing for analysis.')
             self.group_nodes_export = True
