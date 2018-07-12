@@ -595,6 +595,43 @@ int FeaturePythonImp::allowDuplicateLabel() const {
 }
 
 
+bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
+        App::DocumentObject *topParent, App::DocumentObject *child) const 
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *funcName = "redirectSubName";
+            if (feature.hasAttr(funcName)) {
+                Py::Callable method(feature.getAttr(funcName));
+                Py::Tuple args;
+                int i=0;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(4);
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                }else
+                    args = Py::Tuple(3);
+                args.setItem(i++,Py::String(ss.str()));
+                args.setItem(i++,topParent?Py::Object(topParent->getPyObject(),true):Py::Object());
+                args.setItem(i++,child?Py::Object(child->getPyObject(),true):Py::Object());
+                Py::Object ret(method.apply(args));
+                if(ret.isNone())
+                    return false;
+                ss.str("");
+                ss << ret.as_string();
+                return true;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
+
 // ---------------------------------------------------------
 
 namespace App {

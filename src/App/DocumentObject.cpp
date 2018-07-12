@@ -977,3 +977,6 @@ const char *DocumentObject::hasHiddenMarker(const char *subname) {
     return hiddenMarker()==marker?marker:0;
 }
 
+bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, DocumentObject *) const {
+    return false;
+}

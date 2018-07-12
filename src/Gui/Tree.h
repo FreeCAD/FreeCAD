@@ -199,7 +199,7 @@ public:
     ~DocumentItem();
 
     const Gui::Document* document() const;
-    void clearSelection(void);
+    void clearSelection(DocumentObjectItem *exclude=0);
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);

@@ -1167,10 +1167,10 @@ void TreeWidget::onPreSelectTimer() {
     std::ostringstream ss;
     App::DocumentObject *parent = 0;
     objItem->getSubName(ss,parent);
-    if(parent)
-        ss << obj->getNameInDocument() << '.';
-    else
+    if(!parent)
         parent = obj;
+    else if(!obj->redirectSubName(ss,parent,0))
+        ss << obj->getNameInDocument() << '.';
     Selection().setPreselect(parent->getDocument()->getName(),parent->getNameInDocument(),
             ss.str().c_str(),0,0,0,2);
 }
@@ -1304,11 +1304,28 @@ void TreeWidget::onItemSelectionChanged ()
 
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockConnection(true);
-    std::map<const Gui::Document*,DocumentItem*>::iterator pos;
-    for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-        currentDocItem = pos->second;
-        pos->second->updateSelection(pos->second);
-        currentDocItem = 0;
+
+    auto selItems = selectedItems();
+    if(selItems.size()<=1) {
+        // This special handling to deal with possible discrepency of
+        // Gui.Selection and Tree view selection because of newly added
+        // DocumentObject::redirectSubName()
+        Selection().clearCompleteSelection();
+        DocumentObjectItem *item=0;
+        if(selItems.size())
+            item = dynamic_cast<DocumentObjectItem*>(selItems.front());
+        for(auto &v : DocumentMap) {
+            currentDocItem = v.second;
+            v.second->clearSelection(item);
+            currentDocItem = 0;
+        }
+    }else{
+        std::map<const Gui::Document*,DocumentItem*>::iterator pos;
+        for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+            currentDocItem = pos->second;
+            pos->second->updateSelection(pos->second);
+            currentDocItem = 0;
+        }
     }
     this->blockConnection(lock);
 }
@@ -1622,7 +1639,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             QTreeWidgetItem *parent, int index, DocumentObjectDataPtr data)
 {
     const char *name;
-    if (!obj.getObject() || !(name=obj.getObject()->getNameInDocument())) 
+    if (!obj.getObject() || 
+        !(name=obj.getObject()->getNameInDocument()) ||
+        obj.getObject()->testStatus(App::PartialObject))
         return false;
 
     if(!data) {
@@ -2138,14 +2157,19 @@ void DocumentItem::setData (int column, int role, const QVariant & value)
     QTreeWidgetItem::setData(column, role, value);
 }
 
-void DocumentItem::clearSelection(void)
+void DocumentItem::clearSelection(DocumentObjectItem *exclude)
 {
     // Block signals here otherwise we get a recursion and quadratic runtime
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
-        item->selected = 0;
-        item->mySubs.clear();
-        item->setSelected(false);
+        if(item==exclude) {
+            item->selected = 0;
+            updateItemSelection(item);
+        }else{
+            item->selected = 0;
+            item->mySubs.clear();
+            item->setSelected(false);
+        }
     END_FOREACH_ITEM;
     treeWidget()->blockSignals(ok);
 }
@@ -2192,7 +2216,8 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
             Gui::Selection().rmvSelection(obj->getDocument()->getName(),
                     obj->getNameInDocument(),0);
         }
-        str << obj->getNameInDocument() << '.';
+        if(!obj->redirectSubName(str,topParent,0))
+            str << obj->getNameInDocument() << '.';
         obj = topParent;
     }
     const char *objname = obj->getNameInDocument();
@@ -2855,7 +2880,7 @@ int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject 
     }
     if(!topParent)
         topParent = obj;
-    else
+    else if(!obj->redirectSubName(str,topParent,object()->getObject()))
         str << obj->getNameInDocument() << '.';
     return ret;
 }

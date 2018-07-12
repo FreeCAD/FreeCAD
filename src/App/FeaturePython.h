@@ -65,6 +65,9 @@ public:
 
     int allowDuplicateLabel() const;
 
+    bool redirectSubName(std::ostringstream &ss,
+            App::DocumentObject *topParent, App::DocumentObject *child) const;
+
     /// return true to activate tree view group object handling
     int hasChildElement() const;
     /// Get sub-element visibility
@@ -268,6 +271,13 @@ public:
         if(ret < 0)
             return FeatureT::allowDuplicateLabel();
         return ret?true:false;
+    }
+
+    virtual bool redirectSubName(std::ostringstream &ss,
+            App::DocumentObject *topParent, App::DocumentObject *child) const override 
+    {
+        return imp->redirectSubName(ss,topParent,child) ||
+            FeatureT::redirectSubName(ss,topParent,child);
     }
 
     PyObject *getPyObject(void) {

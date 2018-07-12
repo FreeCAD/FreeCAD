@@ -431,6 +431,22 @@ public:
 
     virtual void onUpdateElementReference(const Property *) {}
 
+    /** Allow object to redirect a subname path
+     *
+     * @param ss: input as the current subname path from \a topParent leading
+     * just before this object, i.e. ends at the parent of this object. This 
+     * function should append its own name to this path, or redirect the
+     * subname to other place.
+     * @param topParent: top parent of this subname path
+     * @param child: the immediate child object in the path
+     *
+     * This function is called by tree view to generate a subname path when an
+     * item is selected in the tree. Document object can use this function to
+     * redirect the selection to some other objects. 
+     */
+    virtual bool redirectSubName(std::ostringstream &ss,
+            DocumentObject *topParent, DocumentObject *child) const;
+
     /** Sepecial marker to mark the object has hidden
      *
      * It is used by Gui::ViewProvider::getElementColors(), but exposed here
