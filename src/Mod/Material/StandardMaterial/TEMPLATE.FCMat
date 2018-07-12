@@ -55,9 +55,6 @@ Density = value kg/m^3
 ; Description to be updated
 DiffuseColor =
 
-; Elasticity https://en.wikipedia.org/wiki/Elasticity_%28physics%29
-Elasticity =
-
 ; Description to be updated
 EmissiveColor =
 
@@ -111,6 +108,9 @@ Shininess =
 
 ; Description to be updated
 SoundTransmissionClass =
+
+; Description to be updated
+SpecificHeat =
 
 ; Description to be updated
 SpecularColor =
