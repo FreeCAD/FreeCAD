@@ -183,6 +183,7 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
+    ADD_PROPERTY_TYPE(PartialLoad, (true), "Base", App::Prop_None, "Enable partial loading");
     static const char *BindModeEnum[] = {"Syncrhonized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
     Placement.setStatus(App::Property::Immutable, true);
@@ -197,7 +198,7 @@ void SubShapeBinder::updatePlacement(const Base::Matrix4D &mat) {
 void SubShapeBinder::update() {
     Part::TopoShape result;
     auto obj = Support.getValue();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->getNameInDocument() || obj->testStatus(App::PartialObject))
         return;
     std::vector<Part::TopoShape> shapes;
     const auto &subvals = Support.getSubValues();

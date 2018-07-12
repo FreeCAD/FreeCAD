@@ -531,7 +531,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         if (child)
             values.push_back(child);
         else if (reader.isVerbose())
-            FC_WARN("Lost link to " << name 
+            FC_WARN("Lost link to " << (document?document->getName():"") << " " << name 
                     << " while loading, maybe an object was not loaded correctly");
     }
 
@@ -1697,7 +1697,9 @@ public:
             return std::string(path.toUtf8().constData());
     }
 
-    static DocInfoPtr get(const char *filename, App::Document *pDoc, bool relative, PropertyXLink *l) {
+    static DocInfoPtr get(const char *filename, App::Document *pDoc, 
+            bool relative, PropertyXLink *l, const char *objName=0) 
+    {
         QString path;
         l->filePath = getDocPath(filename,pDoc,relative,&path);
         l->relativePath = relative;
@@ -1711,7 +1713,7 @@ public:
         else {
             info = std::make_shared<DocInfo>();
             auto ret = _DocInfoMap.insert(std::make_pair(path,info));
-            info->init(ret.first);
+            info->init(ret.first,objName);
         }
         info->links.insert(l);
         return info;
@@ -1752,7 +1754,7 @@ public:
         pcDoc = 0;
     }
 
-    void init(DocInfoMap::iterator pos) {
+    void init(DocInfoMap::iterator pos, const char *objName=0) {
         myPos = pos;
         App::Application &app = App::GetApplication();
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
@@ -1773,7 +1775,10 @@ public:
                 }
             }
             FC_LOG("document pending " << filePath());
-            app.addPendingDocument(fullpath.toUtf8().constData());
+            std::vector<std::string> objs;
+            if(objName && objName[0])
+                objs.emplace_back(objName);
+            app.addPendingDocument(fullpath.toUtf8().constData(),objs);
         }
     }
 
@@ -2123,7 +2128,7 @@ void PropertyXLink::setValue(const char *filename, const char *name,
     DocumentObject *pObject=0;
     DocInfoPtr info;
     if(filename && *filename!=0) {
-        info = DocInfo::get(filename,owner->getDocument(),relative,this);
+        info = DocInfo::get(filename,owner->getDocument(),relative,this,name);
         if(info->pcDoc) 
             pObject = info->pcDoc->getObject(name);
     }else

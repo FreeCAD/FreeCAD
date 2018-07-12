@@ -77,7 +77,8 @@ using namespace Gui;
 
 /////////////////////////////////////////////////////////////////////////////////
 
-QPixmap*  TreeWidget::documentPixmap = 0;
+std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
+std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 
@@ -136,6 +137,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
 
+    this->reloadDocAction = new QAction(this);
+    connect(this->reloadDocAction, SIGNAL(triggered()),
+            this, SLOT(onReloadDoc()));
+
     this->skipRecomputeAction = new QAction(this);
     this->skipRecomputeAction->setCheckable(true);
     connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
@@ -156,6 +161,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
     Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
     Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, _1));
+
+    App::GetApplication().signalFinishRestoreDocument.connect
+        (boost::bind(&TreeWidget::slotFinishRestoreDocument, this, _1));
     
     // Gui::Document::signalChangedObject informs the App::Document property
     // change, not view provider's own property, which is what the signal below
@@ -202,8 +210,13 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     preselectTime.start();
 
     setupText();
+    if(!documentPixmap) {
+        documentPixmap.reset(new QPixmap(Gui::BitmapFactory().pixmap("Document")));
+        QIcon icon(*documentPixmap);
+        documentPartialPixmap.reset(new QPixmap(icon.pixmap(documentPixmap->size(),QIcon::Disabled)));
+    }
+
     _updateStatus();
-    documentPixmap = new QPixmap(Gui::BitmapFactory().pixmap("Document"));
 }
 
 TreeWidget::~TreeWidget()
@@ -267,10 +280,20 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         App::Document* doc = docitem->document()->getDocument();
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
-        this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
-        contextMenu.addAction(this->skipRecomputeAction);
-        contextMenu.addAction(this->markRecomputeAction);
-        contextMenu.addAction(this->createGroupAction);
+        if(doc->testStatus(App::Document::PartialDoc))
+            contextMenu.addAction(this->reloadDocAction);
+        else {
+            for(auto d : doc->getDependentDocuments()) {
+                if(d->testStatus(App::Document::PartialDoc)) {
+                    contextMenu.addAction(this->reloadDocAction);
+                    break;
+                }
+            }
+            this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+            contextMenu.addAction(this->skipRecomputeAction);
+            contextMenu.addAction(this->markRecomputeAction);
+            contextMenu.addAction(this->createGroupAction);
+        }
         contextMenu.addSeparator();
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
@@ -620,6 +643,11 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         //QTreeWidget::mouseDoubleClickEvent(event);
         const Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
         if (!doc) return;
+        if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
+            contextItem = item;
+            onReloadDoc();
+            return;
+        }
         MDIView *view = doc->getActiveView();
         if (!view) return;
         getMainWindow()->setActiveWindow(view);
@@ -1049,6 +1077,56 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc)
     DocumentMap[ &Doc ] = item;
 }
 
+void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
+{
+    if(!Doc.testStatus(App::Document::PartialDoc))
+        return;
+    auto doc = Application::Instance->getDocument(&Doc);
+    if(!doc) return;
+
+    auto it = DocumentMap.find(doc);
+    if(it==DocumentMap.end())
+        return;
+
+    auto item = it->second;
+    this->collapseItem(item);
+
+    item->setIcon(0, *documentPartialPixmap);
+}
+
+void TreeWidget::onReloadDoc() {
+    if (!this->contextItem || this->contextItem->type() != DocumentType)
+        return;
+    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+    App::Document* doc = docitem->document()->getDocument();
+    std::vector<std::string> docs;
+    if(doc->testStatus(App::Document::PartialDoc))
+        docs.push_back(doc->FileName.getValue());
+    else {
+        for(auto d : doc->getDependentDocuments(true))
+            if(d->testStatus(App::Document::PartialDoc))
+                docs.push_back(d->FileName.getValue());
+    }
+    std::set<const Gui::Document*> untouchedDocs;
+    for(auto &v : DocumentMap) {
+        if(!v.first->isModified() && !v.first->getDocument()->isTouched())
+            untouchedDocs.insert(v.first);
+    }
+    for(auto &file : docs) 
+        Application::Instance->open(file.c_str(),"FreeCAD");
+
+    for(auto &v : DocumentMap) {
+        if(v.first->getDocument()->FileName.getValue() == docs.front()) {
+            scrollToItem(v.second);
+            continue;
+        }
+        if(untouchedDocs.count(v.first)) {
+            v.first->getDocument()->purgeTouched();
+            const_cast<Gui::Document*>(v.first)->setModified(false);
+        }
+    }
+}
+
 void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
 {
     std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.find(&Doc);
@@ -1234,6 +1312,9 @@ void TreeWidget::setupText() {
 
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+
+    this->reloadDocAction->setText(tr("Reload document"));
+    this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
 
     this->skipRecomputeAction->setText(tr("Skip recomputes"));
     this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));

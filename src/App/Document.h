@@ -74,6 +74,7 @@ public:
         Restoring = 3,
         Recomputing = 4,
         Importing = 5,
+        PartialDoc = 6,
     };
 
     /** @name Properties */
@@ -174,7 +175,7 @@ public:
     bool saveAs(const char* file);
     bool saveCopy(const char* file);
     /// Restore the document from the file in Property Path
-    void restore (bool delaySignal=false);
+    void restore (bool delaySignal=false, const std::set<std::string> &objNames={});
     void afterRestore(bool checkXLink=false);
     void afterRestore(const std::vector<App::DocumentObject *> &, bool checkXLink=false);
     enum ExportStatus {
@@ -221,8 +222,10 @@ public:
      * @param pObjectName if nonNULL use that name otherwise generate a new unique name based on the \a sType
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      * @param viewType    override object's view provider name
+     * @param isPartial   indicate if this object is meant to be partially loaded
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true, const char *viewType=0);
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, 
+            bool isNew=true, const char *viewType=0, bool isPartial=false);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label property.
      * @param sType       The type of created object

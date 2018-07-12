@@ -122,7 +122,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
-    if (doc) {
+    if (doc && !doc->testStatus(App::Document::PartialDoc)) {
         // Set the document's current transient directory
         std::string dirName = doc->TransientDir.getValue();
         dirName += "/fc_recovery_files";

@@ -468,11 +468,15 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
-bool Application::addPendingDocument(const char *FileName) {
+bool Application::addPendingDocument(
+        const char *FileName, const std::vector<std::string> &objNames)
+{
     if(!_allowPending || !FileName) return false;
-    auto ret =  _pendingDocMap.insert(FileName);
+    auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
+    for(auto &name : objNames)
+        ret.first->second.insert(name);
     if(ret.second)
-        _pendingDocs.push_back(ret.first->c_str());
+        _pendingDocs.push_back(ret.first->first.c_str());
     return true;
 }
 
@@ -484,18 +488,33 @@ Document* Application::openDocument(const char * FileName)
 {
     Base::FlagToggler<> flag(_isRestoring);
     _pendingDocs.clear();
+    _pendingDocsReopen.clear();
     _pendingDocMap.clear();
     _allowPending = true;
+
+    ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    bool allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     _pendingDocs.push_back(FileName?FileName:"");
 
     std::deque<Document *> newDocs;
 
-    while(_pendingDocs.size()) {
+    bool isMainDoc = true;
+    while(true) {
         const char *name = _pendingDocs.front();
+        _pendingDocs.pop_front();
         try {
             _objCount = -1;
-            newDocs.push_front(openDocumentPrivate(name));
+            std::set<std::string> objNames;
+            if(allowPartial) {
+                auto it = _pendingDocMap.find(name);
+                if(it!=_pendingDocMap.end())
+                    objNames.swap(it->second);
+            }
+            auto doc = openDocumentPrivate(name,isMainDoc,allowPartial,objNames);
+            if(doc)
+                newDocs.push_front(doc);
+            isMainDoc = false;
             _objCount = -1;
         }catch(const Base::Exception &e) {
             if(newDocs.empty()) throw;
@@ -503,13 +522,20 @@ Document* Application::openDocument(const char * FileName)
         }catch(...) {
             _allowPending = false;
             _pendingDocs.clear();
+            _pendingDocsReopen.clear();
             _pendingDocMap.clear();
             throw;
         }
-        _pendingDocs.pop_front();
+        if(_pendingDocs.empty()) {
+            if(_pendingDocsReopen.empty())
+                break;
+            allowPartial = false;
+            _pendingDocs.swap(_pendingDocsReopen);
+        }
     }
     _allowPending = false;
     _pendingDocs.clear();
+    _pendingDocsReopen.clear();
     _pendingDocMap.clear();
 
     for(auto doc : newDocs) 
@@ -517,7 +543,8 @@ Document* Application::openDocument(const char * FileName)
     return newDocs.back();
 }
 
-Document* Application::openDocumentPrivate(const char * FileName)
+Document* Application::openDocumentPrivate(const char * FileName, 
+        bool isMainDoc, bool allowPartial, const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
 
@@ -532,11 +559,42 @@ Document* Application::openDocumentPrivate(const char * FileName)
     for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
         // get unique path separators
         std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
-        if (filepath == fi) {
-            std::stringstream str;
-            str << "The project '" << FileName << "' is already open!";
-            throw Base::FileSystemError(str.str().c_str());
+        if (filepath != fi) 
+            continue;
+        if(it->second->testStatus(App::Document::PartialDoc)) {
+            // Here means a document is already partially loaded, but the document
+            // is requested again, either partial or not. We must check if the 
+            // document contains the required object
+            
+            if(isMainDoc) {
+                // Main document must be open fully, so close and reopen
+                closeDocument(it->first.c_str());
+                break;
+            }
+
+            if(allowPartial) {
+                bool reopen = false;
+                for(auto &name : objNames) {
+                    auto obj = it->second->getObject(name.c_str());
+                    if(!obj || obj->testStatus(App::PartialObject)) {
+                        reopen = true;
+                        break;
+                    }
+                }
+                if(!reopen)
+                    return 0;
+            }
+            auto &names = _pendingDocMap[FileName];
+            names.clear();
+            _pendingDocsReopen.push_back(FileName);
+            return 0;
         }
+
+        if(!isMainDoc)
+            return 0;
+        std::stringstream str;
+        str << "The project '" << FileName << "' is already open!";
+        throw Base::FileSystemError(str.str().c_str());
     }
 
     // Use the same name for the internal and user name.
@@ -548,7 +606,7 @@ Document* Application::openDocumentPrivate(const char * FileName)
 
     try {
         // read the document
-        newDoc->restore(true);
+        newDoc->restore(true,objNames);
         return newDoc;
     }
     // if the project file itself is corrupt then

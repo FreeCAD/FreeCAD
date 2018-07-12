@@ -287,7 +287,9 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     }
 
     if(has_ver) {
-        if(map_ver.empty()) {
+        if(owner && owner->getDocument()->testStatus(App::Document::PartialDoc))
+            _Shape.Restore(reader);
+        else if(map_ver.empty()) {
             // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
         }else{
@@ -302,7 +304,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             }else
                 _Shape.Restore(reader);
         }
-    } else if(owner) {
+    } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
         static int buildElementMap = -1;
         if(buildElementMap<0) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(

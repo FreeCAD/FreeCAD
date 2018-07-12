@@ -130,6 +130,7 @@ protected Q_SLOTS:
     void onStartEditing();
     void onFinishEditing();
     void onSkipRecompute(bool on);
+    void onReloadDoc();
     void onMarkRecompute();
     void onRecomputeObject();
     void onSyncSelection();
@@ -154,6 +155,7 @@ private:
     void slotRelabelDocument(const Gui::Document&);
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
+    void slotFinishRestoreDocument(const App::Document&);
 
     void changeEvent(QEvent *e);
     void setupText();
@@ -170,6 +172,7 @@ private:
     QAction* syncViewAction;
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
+    QAction* reloadDocAction;
     QTreeWidgetItem* contextItem;
     DocumentObjectItem *editingItem;
     DocumentItem *currentDocItem;
@@ -177,7 +180,8 @@ private:
     QTimer* statusTimer;
     QTimer* preselectTimer;
     QTime preselectTime;
-    static QPixmap* documentPixmap;
+    static std::unique_ptr<QPixmap> documentPixmap;
+    static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
     int statusUpdateDelay;

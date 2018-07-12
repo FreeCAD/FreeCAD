@@ -53,6 +53,7 @@ enum ObjectStatus {
     PythonCall = 6,
     Destroy = 7,
     Recompute2 = 8,
+    PartialObject = 9,
     Expand = 16,
 };
 
@@ -177,7 +178,7 @@ public:
     */
     //@{
     /// returns a list of objects this object is pointing to by Links
-    std::vector<App::DocumentObject*> getOutList(bool noExpression=false) const;
+    std::vector<App::DocumentObject*> getOutList(bool noExpression=false, bool noHidden=false) const;
     /// returns a list of objects linked by the property
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
@@ -428,6 +429,14 @@ public:
      */
     App::DocumentObject *resolveRelativeLink(std::string &subname, 
             App::DocumentObject *&link, std::string &linkSub) const;
+
+    /** allow partial loading of dependent objects
+     *
+     * @return Returns 0 means do not support partial loading. 1 means allow
+     * dependent objects to be partially loaded, i.e. only create, but not
+     * restored. 2 means this object itself can be partially loaded.
+     */
+    virtual int canLoadPartial() const {return 0;}
 
     virtual void onUpdateElementReference(const Property *) {}
 

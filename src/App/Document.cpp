@@ -156,6 +156,7 @@ struct DocumentP
     std::set<App::DocumentObject*> touchedObjs;
     std::map<std::string,DocumentObject*> objectMap;
     std::map<long,DocumentObject*> objectIdMap;
+    std::map<std::string, bool> partialLoadObjects;
     long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
@@ -1514,6 +1515,8 @@ void Document::Restore(Base::XMLReader &reader)
     d->hashers.clear();
     addStringHasher(Hasher);
 
+    setStatus(Document::PartialDoc,false);
+
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1648,7 +1651,7 @@ public:
 // implementation can easily be changed here if necessary.
 Document::ExportStatus Document::isExporting(const App::DocumentObject *obj) const {
     if(_ExportStatus.status!=Document::NotExporting &&
-       _ExportStatus.objs.find(obj)!=_ExportStatus.objs.end())
+       (!obj || _ExportStatus.objs.find(obj)!=_ExportStatus.objs.end()))
         return _ExportStatus.status;
     return Document::NotExporting;
 }
@@ -1691,14 +1694,51 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     d->hashers.clear();
 }
 
+#define FC_ATTR_DEPENDENCIES "Dependencies"
+#define FC_ELEMENT_OBJECT_DEPS "ObjectDeps"
+#define FC_ATTR_DEP_COUNT "Count"
+#define FC_ATTR_DEP_OBJ_NAME "Name"
+#define FC_ATTR_DEP_COUNT "Count"
+#define FC_ATTR_DEP_ALLOW_PARTIAL "AllowPartial"
+#define FC_ELEMENT_OBJECT_DEP "Dep"
+
 void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             Base::Writer &writer) const
 {
     // writing the features types
     writer.incInd(); // indentation for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
+    if(!isExporting(0))
+        writer.Stream() << "\" " FC_ATTR_DEPENDENCIES "=\"1";
+    writer.Stream() << "\">" << endl;
 
     writer.incInd(); // indentation for 'Object type'
+
+    if(!isExporting(0)) {
+        for(auto o : obj) {
+            const auto &outList = o->getOutList(false,true);
+            writer.Stream() << writer.ind() 
+                << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
+                << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();
+            if(outList.empty()) {
+                writer.Stream() << "\"/>" << endl;
+                continue;
+            }
+            int partial = o->canLoadPartial();
+            if(partial>0)
+                writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
+            writer.Stream() << "\">" << endl;
+            writer.incInd();
+            for(auto dep : outList) {
+                auto name = dep?dep->getNameInDocument():"";
+                writer.Stream() << writer.ind() << "<" FC_ELEMENT_OBJECT_DEP " "
+                    FC_ATTR_DEP_OBJ_NAME "=\"" << (name?name:"") << "\"/>" << endl;
+            }
+            writer.decInd();
+            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">" << endl;
+        }
+    }
+
     std::vector<DocumentObject*>::const_iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
@@ -1737,6 +1777,42 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     writer.decInd();  // indentation for 'Objects count'
 }
 
+struct DepInfo {
+    std::set<std::string> deps;
+    int canLoadPartial = 0;
+};
+
+static void _loadDeps(const std::string &name, 
+        std::map<std::string,bool> &objs, 
+        const std::map<std::string,DepInfo> &deps) 
+{
+    auto it = deps.find(name);
+    if(it == deps.end()) {
+        objs.emplace(name,true);
+        return;
+    }
+    if(it->second.canLoadPartial) {
+        if(it->second.canLoadPartial == 1) {
+            // canLoadPartial==1 means all its children will be created but not
+            // restored, i.e. exists as if newly created object, and therefore no
+            // need to load dependency of the children
+            for(auto &dep : it->second.deps)
+                objs.emplace(dep,false);
+            objs.emplace(name,true);
+        }else
+            objs.emplace(name,false);
+        return;
+    }
+    objs.emplace(name,true);
+    // If cannot load partial, then recurse to load all children dependency
+    for(auto &dep : it->second.deps) {
+        auto it = objs.find(dep);
+        if(it!=objs.end() && it->second)
+            continue;
+        _loadDeps(dep,objs,deps);
+    }
+}
+
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
@@ -1750,12 +1826,61 @@ Document::readObjects(Base::XMLReader& reader)
     // read the object types
     reader.readElement("Objects");
     int Cnt = reader.getAttributeAsInteger("Count");
+
+    if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
+        d->partialLoadObjects.clear();
+    else if(d->partialLoadObjects.size()) {
+        std::map<std::string,DepInfo> deps;
+        for (int i=0 ;i<Cnt ;i++) {
+            reader.readElement(FC_ELEMENT_OBJECT_DEPS);
+            int dcount = reader.getAttributeAsInteger(FC_ATTR_DEP_COUNT);
+            if(!dcount)
+                continue;
+            auto &info = deps[reader.getAttribute(FC_ATTR_DEP_OBJ_NAME)];
+            if(reader.hasAttribute(FC_ATTR_DEP_ALLOW_PARTIAL))
+                info.canLoadPartial = reader.getAttributeAsInteger(FC_ATTR_DEP_ALLOW_PARTIAL);
+            for(int j=0;j<dcount;++j) {
+                reader.readElement(FC_ELEMENT_OBJECT_DEP);
+                const char *name = reader.getAttribute(FC_ATTR_DEP_OBJ_NAME);
+                if(name && name[0])
+                    info.deps.insert(name);
+            }
+            reader.readEndElement(FC_ELEMENT_OBJECT_DEPS);
+        }
+        std::vector<std::string> objs;
+        objs.reserve(d->partialLoadObjects.size());
+        for(auto &v : d->partialLoadObjects)
+            objs.push_back(v.first.c_str());
+        for(auto &name : objs)
+            _loadDeps(name,d->partialLoadObjects,deps);
+        if(Cnt > (int)d->partialLoadObjects.size())
+            setStatus(Document::PartialDoc,true);
+        else {
+            for(auto &v : d->partialLoadObjects) {
+                if(!v.second) {
+                    setStatus(Document::PartialDoc,true);
+                    break;
+                }
+            }
+            if(!testStatus(Document::PartialDoc))
+                d->partialLoadObjects.clear();
+        }
+    }
+
     long lastId = 0;
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
         const char *viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):0;
+
+        bool partial = false;
+        if(d->partialLoadObjects.size()) {
+            auto it = d->partialLoadObjects.find(name);
+            if(it == d->partialLoadObjects.end())
+                continue;
+            partial = !it->second;
+        }
 
         if(!testStatus(Status::Importing) && reader.hasAttribute("id")) {
             // if not importing, then temporary reset lastObjectId and make the
@@ -1784,7 +1909,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType);
+            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType, partial);
             if (obj) {
                 if(lastId < obj->_Id)
                     lastId = obj->_Id;
@@ -1819,7 +1944,7 @@ Document::readObjects(Base::XMLReader& reader)
         reader.readElement("Object");
         std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
-        if (pObj) { // check if this feature has been registered
+        if (pObj && !pObj->testStatus(App::PartialObject)) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
             pObj->Restore(reader);
             pObj->setStatus(ObjectStatus::Restore, false);
@@ -1928,6 +2053,9 @@ bool Document::saveCopy(const char* file)
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
+    if(testStatus(Document::PartialDoc))
+        throw Base::RuntimeError("Partial loaded document cannot be saved");
+
     int compression = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetInt("CompressionLevel",3);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
@@ -2045,7 +2173,7 @@ bool Document::save (void)
 }
 
 // Open the document
-void Document::restore (bool delaySignal)
+void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 {
     // clean up if the document is not empty
     // !TODO mind exceptions while restoring!
@@ -2084,12 +2212,16 @@ void Document::restore (bool delaySignal)
     GetApplication().signalStartRestoreDocument(*this);
     setStatus(Document::Restoring, true);
 
+    d->partialLoadObjects.clear();
+    for(auto &name : objNames)
+        d->partialLoadObjects.emplace(name,true);
     try {
         Document::Restore(reader);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
+    d->partialLoadObjects.clear();
 
     // Special handling for Gui document, the view representations must already
     // exist, what is done in Restore().
@@ -2611,6 +2743,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force) {
     int objectCount = 0;
 
+    if (testStatus(Document::PartialDoc))
+        throw Base::RuntimeError("Cannot recompute a partially loaded document");
+
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
         throw Base::RuntimeError("Nested recomputes of a document are not allowed");
@@ -2973,7 +3108,8 @@ void Document::recomputeFeature(DocumentObject* Feat, bool recursive)
     }
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew, const char *viewType)
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 
+        bool isNew, const char *viewType, bool isPartial)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -3031,6 +3167,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->setStatus(ObjectStatus::New, true);
+
+    pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
     if(!viewType)
         viewType = pcObject->getViewProviderNameOverride();

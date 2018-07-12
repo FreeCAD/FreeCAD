@@ -594,6 +594,31 @@ int FeaturePythonImp::allowDuplicateLabel() const {
     }
 }
 
+int FeaturePythonImp::canLoadPartial() const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *funcName = "canLoadPartial";
+            if (feature.hasAttr(funcName)) {
+                Py::Callable method(feature.getAttr(funcName));
+                Py::Tuple args;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                }
+                Py::Int ret(method.apply(args));
+                return ret;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return -1;
+}
 
 bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         App::DocumentObject *topParent, App::DocumentObject *child) const 

@@ -43,6 +43,8 @@
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
 
+FC_LOG_LEVEL_INIT("App::Document",true,true)
+
 using namespace App;
 
 
@@ -190,10 +192,10 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : 0;
 }
 
-std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
+std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression, bool noHidden) const
 {
     std::vector<DocumentObject*> ret;
-    if(_outListCached)
+    if(_outListCached && !noHidden)
         ret = _outList;
     else {
         std::vector<Property*> props;
@@ -201,12 +203,14 @@ std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
         for(auto prop : props) {
             auto link = dynamic_cast<PropertyLinkBase*>(prop);
             if(link) {
-                link->getLinks(ret);
+                link->getLinks(ret,noHidden);
                 continue;
             }
         }
-        _outList = ret;
-        _outListCached = true;
+        if(!noHidden) {
+            _outList = ret;
+            _outListCached = true;
+        }
     }
 
     // Get document objects that this document object relies on
@@ -524,6 +528,13 @@ void DocumentObject::onBeforeChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if(!GetApplication().isRestoring() && 
+       getDocument() && 
+       getDocument()->testStatus(Document::PartialDoc))
+    {
+        FC_WARN("Changes to partial loaded document will not be saved");
+    }
+
     // Delay signaling view provider until the document object has handled the
     // change
     // if (_pDoc)

@@ -78,9 +78,14 @@ public:
     App::PropertyBool Fuse;
     App::PropertyBool MakeFace;
     App::PropertyEnumeration BindMode;
+    App::PropertyBool PartialLoad;
 
     void update();
     void updatePlacement(const Base::Matrix4D &mat);
+
+    virtual int canLoadPartial() const override {
+        return PartialLoad.getValue()?1:0;
+    }
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

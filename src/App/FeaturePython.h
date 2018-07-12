@@ -68,6 +68,8 @@ public:
     bool redirectSubName(std::ostringstream &ss,
             App::DocumentObject *topParent, App::DocumentObject *child) const;
 
+    int canLoadPartial() const;
+
     /// return true to activate tree view group object handling
     int hasChildElement() const;
     /// Get sub-element visibility
@@ -278,6 +280,13 @@ public:
     {
         return imp->redirectSubName(ss,topParent,child) ||
             FeatureT::redirectSubName(ss,topParent,child);
+    }
+
+    virtual int canLoadPartial() const override {
+        int ret = imp->canLoadPartial();
+        if(ret>=0)
+            return ret;
+        return FeatureT::canLoadPartial();
     }
 
     PyObject *getPyObject(void) {

@@ -547,6 +547,15 @@ void MainWindow::closeActiveWindow ()
 void MainWindow::closeAllWindows ()
 {
     d->mdiArea->closeAllSubWindows();
+    // partial open document has no visibile window open, so make sure all
+    // documents are closed.
+    std::vector<std::string> names;
+    for(auto doc : App::GetApplication().getDocuments())
+        names.push_back(doc->getName());
+    for(auto &name : names) {
+        auto doc = Application::Instance->getDocument(name.c_str());
+        Application::Instance->onLastWindowClosed(doc);
+    }
 }
 
 void MainWindow::activateNextWindow ()
@@ -789,14 +798,16 @@ void MainWindow::addWindow(MDIView* view)
  * If you want to avoid that the Gui::MDIView instance gets destructed too you
  * must reparent it afterwards, e.g. set parent to NULL.
  */
-void MainWindow::removeWindow(Gui::MDIView* view)
+void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
-    // free all connections
-    disconnect(view, SIGNAL(message(const QString&, int)),
-               this, SLOT(showMessage(const QString&, int )));
-    disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
-               view, SLOT(windowStateChanged(MDIView*)));
-    view->removeEventFilter(this);
+    if(close) {
+        // free all connections
+        disconnect(view, SIGNAL(message(const QString&, int)),
+                this, SLOT(showMessage(const QString&, int )));
+        disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
+                view, SLOT(windowStateChanged(MDIView*)));
+        view->removeEventFilter(this);
+    }
 
     // check if the focus widget is a child of the view
     QWidget* foc = this->focusWidget();
@@ -818,7 +829,9 @@ void MainWindow::removeWindow(Gui::MDIView* view)
     // However, we must let it here otherwise deleting MDI child views directly can
     // cause other problems.
     d->mdiArea->removeSubWindow(parent);
-    parent->deleteLater();
+
+    if(close) 
+        parent->deleteLater();
     updateActions();
 }
 
@@ -854,6 +867,8 @@ void MainWindow::onSetActiveSubWindow(QWidget *window)
 void MainWindow::setActiveWindow(MDIView* view)
 {
     if(d->activeView == view)
+        return;
+    if(view->getGuiDocument()->getDocument()->testStatus(App::Document::PartialDoc))
         return;
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;

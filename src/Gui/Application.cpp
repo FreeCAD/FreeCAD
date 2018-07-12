@@ -534,6 +534,13 @@ void Application::open(const char* FileName, const char* Module)
             QString filename = QString::fromUtf8(File.filePath().c_str());
             getMainWindow()->appendRecentFile(filename);
             FileDialog::setWorkingDirectory(filename);
+
+            for(auto &v : d->documents) {
+                if(v.first->testStatus(App::Document::PartialDoc)) {
+                    for (auto view : v.second->getMDIViews())
+                        getMainWindow()->removeWindow(view,false);
+                }
+            }
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
