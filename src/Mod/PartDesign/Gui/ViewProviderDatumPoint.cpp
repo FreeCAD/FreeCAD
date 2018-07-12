@@ -32,6 +32,8 @@
 #include "ViewProviderDatumPoint.h"
 // #include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <App/Application.h>
 
 using namespace PartDesignGui;
 
@@ -65,7 +67,7 @@ void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
     SoMarkerSet* marker = new SoMarkerSet();
     marker->vertexProperty = vprop;
     marker->numPoints = 1;
-    marker->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
 
     getShapeRoot ()->addChild(marker);
 }
