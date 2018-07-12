@@ -72,6 +72,7 @@ public:
     void startRestoring();
     void finishRestoring();
     bool onDelete(const std::vector<std::string> & sub);
+    bool canDelete(App::DocumentObject *obj) const;
     //@}
 
     /** @name Display methods */
@@ -212,6 +213,9 @@ public:
         bool ok = imp->onDelete(sub);
         if (!ok) return ok;
         return ViewProviderT::onDelete(sub);
+    }
+    virtual bool canDelete(App::DocumentObject *obj) const override {
+        return imp->canDelete(obj) || ViewProviderT::canDelete(obj);
     }
     //@}
 

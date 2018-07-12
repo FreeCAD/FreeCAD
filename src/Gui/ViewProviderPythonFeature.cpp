@@ -952,6 +952,30 @@ bool ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub
     return true;
 }
 
+bool ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *attr = "canDelete";
+            if (vp.hasAttr(attr)) {
+                Py::Tuple args(1);
+                args.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::Object());
+                Py::Callable method(vp.getAttr(attr));
+                return Py::Boolean(method.apply(args));
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
+}
+
 const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 {
     // Run the getDefaultDisplayMode method of the proxy object.
