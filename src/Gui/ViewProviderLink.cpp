@@ -1394,12 +1394,13 @@ bool LinkView::hasSubs() const {
 PROPERTY_SOURCE(Gui::ViewProviderLink, Gui::ViewProviderDocumentObject)
 
 static const char *_LinkIcon = "Link";
-static const char *_LinkArrayIcon = "LinkArray";
+// static const char *_LinkArrayIcon = "LinkArray";
 static const char *_LinkGroupIcon = "LinkGroup";
 static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
-    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false),useCenterballDragger(true),childVp(0)
+    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
+    ,useCenterballDragger(true),childVp(0),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1482,16 +1483,26 @@ std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
 }
 
 QIcon ViewProviderLink::getIcon() const {
-    if(getObject()->getLinkedObject(false)!=getObject()) {
-        QIcon icon = linkView->getLinkedIcon(getOverlayPixmap());
-        if(!icon.isNull())
-            return icon;
+    auto ext = getLinkExtension();
+    if(ext) {
+        auto link = ext->getLinkedObjectValue();
+        if(link && link!=getObject()) {
+            QPixmap overlay = getOverlayPixmap();
+            overlayCacheKey = overlay.cacheKey();
+            QIcon icon = linkView->getLinkedIcon(overlay);
+            if(!icon.isNull())
+                return icon;
+        }
     }
+    overlayCacheKey = 0;
     return Gui::BitmapFactory().pixmap(sPixmap);
 }
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
-    if(hasSubElement)
+    auto ext = getLinkExtension();
+    if(ext && ext->getLinkedObjectProperty() && ext->getElementCountValue())
+        return BitmapFactory().pixmap("LinkArrayOverlay");
+    else if(hasSubElement)
         return BitmapFactory().pixmap("LinkSubElement");
     else if(hasSubName)
         return BitmapFactory().pixmap("LinkSubOverlay");
@@ -1583,6 +1594,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         if(linkView->hasSubs())
             linkView->updateLink();
         applyColors();
+        checkIcon(ext);
     }else if(prop==ext->getColoredElementsProperty()) {
         if(!prop->testStatus(App::Property::User3))
             applyColors();
@@ -1639,7 +1651,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             updateDataPrivate(ext,ext->getVisibilityListProperty());
             updateDataPrivate(ext,ext->getPlacementListProperty());
         }
-        checkIcon(ext);
     }else if(prop == ext->getShowElementProperty()) {
         if(!ext->getShowElementValue()) {
 
@@ -1749,7 +1760,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             linkView->setChildren(elements, ext->getVisibilityListValue());
             applyColors();
         }
-        checkIcon(ext);
     }
 }
 
@@ -1764,11 +1774,14 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
         icon = _LinkElementIcon;
     else if(!ext->getLinkedObjectProperty() && ext->getElementListProperty())
         icon = _LinkGroupIcon;
-    else if(ext->getElementCountValue())
-        icon = _LinkArrayIcon;
+    // else if(ext->getElementCountValue())
+    //     icon = _LinkArrayIcon;
     else
         icon = _LinkIcon;
-    if(icon!=sPixmap) {
+    qint64 cacheKey = 0;
+    if(getObject()->getLinkedObject(false)!=getObject())
+        cacheKey = getOverlayPixmap().cacheKey();
+    if(icon!=sPixmap || cacheKey!=overlayCacheKey) {
         sPixmap = icon;
         signalChangeIcon();
     }

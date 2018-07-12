@@ -330,6 +330,7 @@ protected:
     CoinPtr<SoDragger> pcDragger;
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
+    mutable qint64 overlayCacheKey;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
