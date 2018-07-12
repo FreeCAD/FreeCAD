@@ -500,8 +500,12 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
 
     commitCommand();
     dim->recomputeFeature();
+    TechDraw::pointPair pp = dim->getLinearPoints();
+    Base::Vector3d mid = (pp.first + pp.second)/2.0;
+    dim->X.setValue(mid.x);
+    dim->Y.setValue(-mid.y); 
 
-    //Horrible hack to force Tree update
+    //Horrible hack to force Tree update (claimChildren)
     double x = objFeat->X.getValue();
     objFeat->X.setValue(x);
 }
@@ -609,6 +613,10 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
     commitCommand();
     dim->recomputeFeature();
+    TechDraw::pointPair pp = dim->getLinearPoints();
+    Base::Vector3d mid = (pp.first + pp.second)/2.0;
+    dim->X.setValue(mid.x);
+    dim->Y.setValue(-mid.y); 
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -717,6 +725,10 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 
     commitCommand();
     dim->recomputeFeature();
+    TechDraw::pointPair pp = dim->getLinearPoints();
+    Base::Vector3d mid = (pp.first + pp.second)/2.0;
+    dim->X.setValue(mid.x);
+    dim->Y.setValue(-mid.y); 
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
