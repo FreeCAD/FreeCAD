@@ -2745,6 +2745,39 @@ bool ViewProviderSketch::doubleClicked(void)
     return true;
 }
 
+QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
+{
+    Base::Reference<ParameterGrp> hGrpSketcher; // param group that includes HideUnits option
+    bool iHideUnits;
+    QString userStr;
+
+    // Get value of HideUnits option. Default is false.
+    hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    iHideUnits = hGrpSketcher->GetBool("HideUnits", 0l);
+
+    // Get the current display string including units
+    userStr = constraint->getPresentationValue().getUserString();
+
+    // Hide units if user has requested it and is being displayed in the base
+    // units. Otherwise, display units.
+    if( iHideUnits )
+    {
+        // Determine if it is being rendered in the base unit (i.e. m for mks
+        // and not centimeters)
+
+        // ADD CODE HERE
+
+        // if rendered in base units, strip them out
+        // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
+        userStr.remove(rxUnits);                                //getUserString(defaultDecimals) without units
+
+    }
+
+
+    return userStr;
+}
+
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
 {
     /*! TODO: Consider pushing this functionality up into Constraint */
@@ -3351,12 +3384,6 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     
     ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     
-    // Get parameter group that includes HideUnits option
-    Base::Reference<ParameterGrp> hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
-
-    // Get value for HideUnits option
-    bool iHideUnits = hGrpSketcher->GetBool("HideUnits", 0l); // default is false
-
     std::vector<int> bsplineGeoIds;
     
     double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
@@ -4609,18 +4636,8 @@ Restart:
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
-			// Strip units if requested. MOVE TO ITS OWN FUNCTION WHEN POSSIBLE. Example code from:
-			// Mod/TechDraw/App/DrawViewDimension.cpp:372
-			QString userStr = Constr->getPresentationValue().getUserString();
-
-			if( iHideUnits )
-			{
-				// Strip units
-				QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
-				userStr.remove(rxUnits);                                //getUserString(defaultDecimals) without units
-
-			}
-			asciiText->string = SbString(userStr.toUtf8().constData());
+                        // Get presentation string (w/o units if option is set)
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         if (Constr->Type == Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -4978,7 +4995,9 @@ Restart:
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+                        
+                        // Get display string with units hidden if so requested
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
