@@ -96,9 +96,6 @@ public:
 
     virtual PyObject *getPyObject(void);
     
-    // Return presentation string. Will include units if HideUnits option is NOT selected. May still return units if rendered units are not the base units (i.e. a small dimension returned in mm instead of m). Only length untis may be hidden.
-    QString getPresentationString() const;
-
     Base::Quantity getPresentationValue() const;
     inline void setValue(double newValue) {
         Value = newValue;
