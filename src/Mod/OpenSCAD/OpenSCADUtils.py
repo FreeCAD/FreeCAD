@@ -160,7 +160,7 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
                     inputfilename)[1].rsplit('.',1)[0],outputext))
             else:
                 outputfilename=os.path.join(dir1,'%s.%s' % \
-                    (tempfilenamegen.next(),outputext))
+                    (next(tempfilenamegen),outputext))
         check_output2([osfilename,'-o',outputfilename, inputfilename])
         return outputfilename
     else:
@@ -172,7 +172,7 @@ def callopenscadstring(scadstr,outputext='csg'):
     please delete the file afterwards'''
     import os,tempfile,time
     dir1=tempfile.gettempdir()
-    inputfilename=os.path.join(dir1,'%s.scad' % tempfilenamegen.next())
+    inputfilename=os.path.join(dir1,'%s.scad' % next(tempfilenamegen))
     inputfile = open(inputfilename,'w')
     inputfile.write(scadstr)
     inputfile.close()
@@ -427,7 +427,7 @@ def meshoptempfile(opname,iterable1):
     dir1=tempfile.gettempdir()
     filenames = []
     for mesh in iterable1:
-        outputfilename=os.path.join(dir1,'%s.stl' % tempfilenamegen.next())
+        outputfilename=os.path.join(dir1,'%s.stl' % next(tempfilenamegen))
         mesh.write(outputfilename)
         filenames.append(outputfilename)
     #absolute path causes error. We rely that the scad file will be in the dame tmpdir
@@ -487,7 +487,7 @@ def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     dir1=tempfile.gettempdir()
     filenames = []
     for item in ObjList :
-        outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
+        outputfilename=os.path.join(dir1,'%s.dxf' % next(tempfilenamegen))
         importDXF.export([item],outputfilename,True,True)
         filenames.append(outputfilename)
     # Mantis 3419
