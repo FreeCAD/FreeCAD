@@ -633,6 +633,11 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Returns a SubElement</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="countElement" Const="true">
+      <Documentation>
+        <UserDocu>Returns the count of a type of element</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="mapSubElement">
       <Documentation>
         <UserDocu>

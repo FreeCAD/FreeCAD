@@ -2304,6 +2304,21 @@ PyObject* TopoShapePy::getElement(PyObject *args)
     return 0;
 }
 
+PyObject* TopoShapePy::countElement(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+    try {
+        return Py::new_reference_to(Py::Int((long)getTopoShapePtr()->countSubShapes(input)));
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+    return 0;
+}
+
 PyObject* TopoShapePy::getTolerance(PyObject *args)
 {
     int mode;
