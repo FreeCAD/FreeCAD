@@ -704,6 +704,10 @@ Py::Int DocumentObjectPy::getID() const {
     return Py::Int(getDocumentObjectPtr()->getID());
 }
 
+Py::Boolean DocumentObjectPy::getRemoving() const {
+    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+}
+
 PyObject *DocumentObjectPy::resolve(PyObject *args)
 {
     const char *subname;

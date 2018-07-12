@@ -154,7 +154,7 @@ resolve(subname) -- resolve the sub object
 
 Returns a tuple (subobj,parent,elementName,subElement), where 'subobj' is the
 last object referenced in 'subname', and 'parent' is the direct parent of
-'subobj', and 'elementName' is the child name of the subobj, which can be used
+'subobj', and 'elementName' is the name of the subobj, which can be used
 to call parent.isElementVisible/setElementVisible(). 'subElement' is the
 non-object sub-element name if any.
                 </UserDocu>
@@ -254,6 +254,12 @@ or None if the GUI is not up</UserDocu>
                 <UserDocu>The unique identifier (among its document) of this object</UserDocu>
 			</Documentation>
 			<Parameter Name="ID" Type="Int"/>
+		</Attribute>
+		<Attribute Name="Removing" ReadOnly="true">
+			<Documentation>
+                <UserDocu>Indicate if the object is being removed</UserDocu>
+			</Documentation>
+			<Parameter Name="Removing" Type="Boolean"/>
 		</Attribute>
 	</PythonExport>
 </GenerateModel>
