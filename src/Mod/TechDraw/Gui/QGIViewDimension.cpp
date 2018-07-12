@@ -308,7 +308,7 @@ void QGIViewDimension::draw()
     if (!isVisible()) {                                                //should this be controlled by parent ViewPart?
         return;
     }
-    
+
     datumLabel->show();
     show();
 
@@ -356,11 +356,11 @@ void QGIViewDimension::draw()
         // text to left of vertical dims
         // text above horizontal dims
         Base::Vector3d dirDist, normDist;               //direction/normal vectors of distance line
-        Base::Vector3d dirExt, normExt;                 
+        Base::Vector3d dirExt, normExt;
         Base::Vector3d dirDim, normDim;
         Base::Vector3d dirIso;
-        dirDist = vecDist; 
-        dirDist.Normalize();                
+        dirDist = vecDist;
+        dirDist.Normalize();
         normDist = Base::Vector3d (-dirDist.y,dirDist.x, 0);         //normal to distance direction
                                                                      //toward dimension line?
         if (strcmp(dimType, "Distance") == 0 ) {
@@ -368,11 +368,11 @@ void QGIViewDimension::draw()
             dirDim = dirDist;
             normDim = Base::Vector3d (-dirDist.y,dirDist.x, 0);
         } else if (strcmp(dimType, "DistanceX") == 0 ) {
-            //distance and dimension lines not (neccessarily) parallel
+            //distance and dimension lines not (necessarily) parallel
             dirDim = Base::Vector3d ( ((endDist.x - startDist.x >= FLT_EPSILON) ? 1 : -1) , 0, 0);
             normDim = Base::Vector3d (-dirDim.y,dirDim.x, 0);
         } else if (strcmp(dimType, "DistanceY") == 0 ) {
-            //distance and dimension lines not (neccessarily) parallel
+            //distance and dimension lines not (necessarily) parallel
             dirDim = Base::Vector3d (0, ((endDist.y - startDist.y >= FLT_EPSILON) ? 1 : -1) , 0);
             normDim = Base::Vector3d (-dirDim.y, dirDim.x, 0);
         }
@@ -384,7 +384,7 @@ void QGIViewDimension::draw()
             //is this dimension an iso dimension? ie points +/-isoX,+/-isoY,+/-isoZ
             dirIso = findIsoDir(dirDist);
             dirExt = findIsoExt(dirIso);
-        } 
+        }
         dirExt.Normalize();
         normExt = Base::Vector3d (-dirExt.y,dirExt.x, 0);         //normal to extension lines (req'd?)
 
@@ -419,7 +419,7 @@ void QGIViewDimension::draw()
         }
 
         // +/- pos of startDist vs endDist for vert/horiz Dims
-        // distStartDelta sb zero for normal dims 
+        // distStartDelta sb zero for normal dims
         float distStartDelta = vecDist.Dot(normDim);        // component of distance vector in dim line direction
         Base::Vector3d startDistAdj = startDist + normDim * distStartDelta;
         midDist = (startDistAdj + endDist) / 2.0;
@@ -486,7 +486,7 @@ void QGIViewDimension::draw()
             } else {
                 dim1Tail = dim1Tip - tailLength * dirDim;
                 dim2Tail = fauxCenter;
-            } 
+            }
         }
 
         // Extension lines
@@ -503,7 +503,7 @@ void QGIViewDimension::draw()
         path.moveTo(gap.x, gap.y);
         path.lineTo(extEndEnd.x, extEndEnd.y);
 
-        //Dimension lines (arrow shafts) 
+        //Dimension lines (arrow shafts)
         //TODO: line tip goes just a bit too far. overlaps the arrowhead's point.
         path.moveTo(dim1Tip.x, dim1Tip.y);
         path.lineTo(dim1Tail.x, dim1Tail.y);
@@ -534,7 +534,7 @@ void QGIViewDimension::draw()
 
         aHead1->setPos(dim1Tip.x, dim1Tip.y);
         aHead2->setPos(dim2Tip.x, dim2Tip.y);
-        
+
         aHead1->setDirMode(false);
         aHead2->setDirMode(false);
 
@@ -730,7 +730,7 @@ void QGIViewDimension::draw()
             dirDimLine = lblCenter - curveCenter;
             dirDimLine.Normalize();
 
-            Base::Vector3d labelEndDir(1.0,0.0,0.0);   
+            Base::Vector3d labelEndDir(1.0,0.0,0.0);
             if (lblCenter.x > pointOnCurve.x) {         //label is to right of point
                 labelEndDir = -1.0 * labelEndDir;
             }

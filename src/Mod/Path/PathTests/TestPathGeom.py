@@ -121,7 +121,7 @@ class TestPathGeom(PathTestBase):
 
         # bezier curves
         # ml: I know nothing about bezier curves, so this might be bollocks
-        # and now I disable the tests because they seem to fail on OCE 
+        # and now I disable the tests because they seem to fail on OCE
         #bezier = Part.BezierCurve()
         #bezier.setPoles([Vector(), Vector(1,1,0), Vector(2,1,0), Vector(2,2,0)])
         #self.assertTrue(PathGeom.isHorizontal(Part.Edge(bezier)))
@@ -249,7 +249,7 @@ class TestPathGeom(PathTestBase):
         self.assertCommandEqual(cmds(p1, p4, p3,  True), cmd('G2', p1, Vector(0, -10, 0)))
 
     def test41(self):
-        """Verify circle results in proper G2/G3 comamnds."""
+        """Verify circle results in proper G2/G3 commands."""
 
         def cmds(center, radius, up = True):
             norm = Vector(0, 0, 1) if up else Vector(0, 0, -1)
@@ -448,7 +448,3 @@ class TestPathGeom(PathTestBase):
 
         edge = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
-
-
-
-
