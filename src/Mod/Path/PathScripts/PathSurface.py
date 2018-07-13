@@ -98,6 +98,15 @@ class ObjectSurface(PathOp.ObjectOp):
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
+
+        # OCL must be installed
+        try:
+            import ocl
+        except:
+            FreeCAD.Console.PrintError(
+                translate("Path_Surface", "This operation requires OpenCamLib to be installed.") + "\n")
+            return
+
         print("StepOver is  " + str(obj.StepOver))
         if obj.StepOver > 100:
             obj.StepOver = 100
@@ -115,14 +124,6 @@ class ObjectSurface(PathOp.ObjectOp):
             return
 
         print("base object: " + self.baseobject.Name)
-
-        if obj.Algorithm in ['OCL Dropcutter', 'OCL Waterline']:
-            try:
-                import ocl
-            except:
-                FreeCAD.Console.PrintError(
-                    translate("Path_Surface", "This operation requires OpenCamLib to be installed.") + "\n")
-                return
 
         if self.baseobject.TypeId.startswith('Mesh'):
             mesh = self.baseobject.Mesh
