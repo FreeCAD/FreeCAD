@@ -73,7 +73,7 @@ Q_OBJECT
 public:
     AutoSaver(QObject *parent);
     ~AutoSaver();
-    void saveIfNeccessary();
+    void saveIfNecessary();
 
 public Q_SLOTS:
     void changeOccurred();
