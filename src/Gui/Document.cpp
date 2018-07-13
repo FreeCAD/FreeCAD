@@ -1180,6 +1180,8 @@ void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
     if(vpd) {
         vpd->setStatus(Gui::isRestoring,false);
         vpd->finishRestoring();
+        if(!vpd->canAddToSceneGraph())
+            toggleInSceneGraph(vpd);
     }
 }
 
@@ -1971,5 +1973,26 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
             }
         }
     } 
+}
+
+void Document::toggleInSceneGraph(ViewProvider *vp) {
+    for (auto view : d->baseViews) {
+        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
+        if (!activeView)
+            continue;
+        auto root = vp->getRoot();
+        if(!root)
+            continue;
+        auto scenegraph = dynamic_cast<SoGroup*>(
+                activeView->getViewer()->getSceneGraph());
+        if(!scenegraph)
+            continue;
+        int idx = scenegraph->findChild(root);
+        if(idx<0) {
+            if(vp->canAddToSceneGraph())
+                scenegraph->addChild(root);
+        }else if(!vp->canAddToSceneGraph())
+            scenegraph->removeChild(idx);
+    }
 }
 

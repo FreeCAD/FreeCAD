@@ -112,6 +112,9 @@ public:
     virtual SoGroup* getChildRoot(void) const;
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getBackRoot(void) const;
+    ///Indicate whether to be added to scene graph or not
+    virtual bool canAddToSceneGraph() const {return true;}
+
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to 
       * the 3DView which should be grouped under its 

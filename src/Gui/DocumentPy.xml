@@ -101,6 +101,15 @@
               <UserDocu>scrollToTreeItem(ViewObject) - scroll the tree view to the item of a view object</UserDocu>
           </Documentation>
       </Methode>
+      <Methode Name="toggleInSceneGraph">
+          <Documentation>
+              <UserDocu>
+toggleInSceneGraph(ViewObject)
+
+Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
+              </UserDocu>
+          </Documentation>
+      </Methode>
       <Attribute Name="ActiveObject" ReadOnly="false">
 	  <Documentation>
 		<UserDocu>The active object of the document</UserDocu>

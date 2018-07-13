@@ -976,6 +976,29 @@ bool ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
     return false;
 }
 
+bool ViewProviderPythonFeatureImp::canAddToSceneGraph() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *attr = "canAddToSceneGraph";
+            if (vp.hasAttr(attr)) {
+                Py::Tuple args;
+                Py::Callable method(vp.getAttr(attr));
+                return Py::Boolean(method.apply(args));
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return true;
+}
+
 const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 {
     // Run the getDefaultDisplayMode method of the proxy object.

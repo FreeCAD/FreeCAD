@@ -240,6 +240,12 @@ public:
             std::string *subname=0, int *mode=0) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
+    /** Add or remove view provider from scene graphs of all views
+     *
+     * It calls ViewProvider::canAddToSceneGraph() to decide whether to add the
+     * view provider or remove it
+     */
+    void toggleInSceneGraph(ViewProvider *vp);
     //@}
 
     /** @name methods for the UNDO REDO handling */

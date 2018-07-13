@@ -327,6 +327,16 @@ PyObject* DocumentPy::scrollToTreeItem(PyObject *args)
     Py_Return;
 }
 
+PyObject* DocumentPy::toggleInSceneGraph(PyObject *args) {
+    PyObject *view;
+    if (!PyArg_ParseTuple(args,"O!",&(Gui::ViewProviderPy::Type), &view))
+        return 0;
+
+    Gui::ViewProvider* vp = static_cast<ViewProviderPy*>(view)->getViewProviderPtr();
+    getDocumentPtr()->toggleInSceneGraph(vp);
+    Py_Return;
+}
+
 Py::Object DocumentPy::getActiveObject(void) const
 {
     App::DocumentObject *object = getDocumentPtr()->getDocument()->getActiveObject();

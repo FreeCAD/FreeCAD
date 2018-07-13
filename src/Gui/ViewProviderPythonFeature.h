@@ -25,6 +25,7 @@
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
 
@@ -112,6 +113,8 @@ public:
     ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &elements);
     //@}
+
+    bool canAddToSceneGraph() const;
 
 private:
     ViewProviderDocumentObject* object;
@@ -454,6 +457,10 @@ public:
         return ViewProviderT::getPyObject();
     }
 
+    virtual bool canAddToSceneGraph() const override {
+        return ViewProviderT::canAddToSceneGraph() && imp->canAddToSceneGraph();
+    }
+
 protected:
     virtual void onChanged(const App::Property* prop) {
         if (prop == &Proxy) {
@@ -465,6 +472,10 @@ protected:
                     // needed to load the right display mode after they're known now
                     ViewProviderT::DisplayMode.touch();
                     ViewProviderT::setOverrideMode(viewerMode);
+                    if(!this->testStatus(Gui::isRestoring) && 
+                       ViewProviderT::canAddToSceneGraph() && 
+                       !imp->canAddToSceneGraph())
+                        this->getDocument()->toggleInSceneGraph(this);
                 }
                 ViewProviderT::updateView();
             }

@@ -907,7 +907,8 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        pcViewProviderRoot->addChild(root);
+        if(pcProvider->canAddToSceneGraph())
+            pcViewProviderRoot->addChild(root);
         _ViewProviderMap[root] = pcProvider;
     }
 
@@ -930,8 +931,10 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
 
     SoSeparator* root = pcProvider->getRoot();
 
-    if (root && (pcViewProviderRoot->findChild(root) != -1)) {
-        pcViewProviderRoot->removeChild(root);
+    if (root) {
+        int index = pcViewProviderRoot->findChild(root);
+        if(index>=0)
+            pcViewProviderRoot->removeChild(index);
         _ViewProviderMap.erase(root);
     }
 
