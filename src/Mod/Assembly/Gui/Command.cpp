@@ -179,11 +179,11 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
 
     // asking for file name (only step at the moment) 
     QStringList filter;
-    filter << QString::fromAscii("STEP (*.stp *.step)");
-    filter << QString::fromAscii("IGES (*.igs *.iges)");
-    filter << QString::fromAscii("BREP (*.brp *.brep)");
-    filter << QString::fromAscii("Mesh (*.stl *.obj)");
-    filter << QString::fromAscii("VRML (*.wrl)");
+    filter << QString::fromLatin1("STEP (*.stp *.step)");
+    filter << QString::fromLatin1("IGES (*.igs *.iges)");
+    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QString::fromLatin1("Mesh (*.stl *.obj)");
+    filter << QString::fromLatin1("VRML (*.wrl)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -237,11 +237,11 @@ void CmdAssemblyImport::activated(int iMsg)
 
     // asking for file name (only step at the moment) 
     QStringList filter;
-    filter << QString::fromAscii("STEP (*.stp *.step)");
-    filter << QString::fromAscii("IGES (*.igs *.iges)");
-    filter << QString::fromAscii("BREP (*.brp *.brep)");
-    filter << QString::fromAscii("Mesh (*.stl *.obj)");
-    filter << QString::fromAscii("VRML (*.wrl)");
+    filter << QString::fromLatin1("STEP (*.stp *.step)");
+    filter << QString::fromLatin1("IGES (*.igs *.iges)");
+    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QString::fromLatin1("Mesh (*.stl *.obj)");
+    filter << QString::fromLatin1("VRML (*.wrl)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
