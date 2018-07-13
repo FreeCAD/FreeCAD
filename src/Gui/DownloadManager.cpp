@@ -91,7 +91,7 @@ DownloadManager::DownloadManager(QWidget *parent)
 DownloadManager::~DownloadManager()
 {
     m_autoSaver->changeOccurred();
-    m_autoSaver->saveIfNeccessary();
+    m_autoSaver->saveIfNecessary();
     if (m_iconProvider)
         delete m_iconProvider;
     delete ui;
