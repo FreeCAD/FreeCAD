@@ -2747,33 +2747,47 @@ bool ViewProviderSketch::doubleClicked(void)
 
 QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
 {
-    Base::Reference<ParameterGrp> hGrpSketcher; // param group that includes HideUnits option
-    bool iHideUnits;
-    QString userStr;
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
+    bool                            iHideUnits;
+    QString                         userStr; // final return string
+    QString                         dummy; // not used but required
+    double                          factor; // unit scaling factor
 
     // Get value of HideUnits option. Default is false.
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
     iHideUnits = hGrpSketcher->GetBool("HideUnits", 0l);
 
     // Get the current display string including units
-    userStr = constraint->getPresentationValue().getUserString();
+    userStr = constraint->getPresentationValue().getUserString(factor, dummy);
 
     // Hide units if user has requested it and is being displayed in the base
     // units. Otherwise, display units.
     if( iHideUnits )
     {
+        Base::Quantity quat;
+        double   baseFactor;
+
+        quat.setValue(1); 
+        quat.setUnit(Base::Unit::Length);
+
+
+        // QString getUserString (double &factor, QString &unitString) const
+
         // Determine if it is being rendered in the base unit (i.e. m for mks
         // and not centimeters)
 
-        // ADD CODE HERE
+        // render string with a unity valued quanity to get base factor
+        quat.getUserString(baseFactor, dummy);
 
-        // if rendered in base units, strip them out
-        // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
-        userStr.remove(rxUnits);                                //getUserString(defaultDecimals) without units
-
+        // if factors are different, userStr is not in base units. Do not omit.
+        if( baseFactor == factor )
+        {
+            // rendered in base units, strip them out
+            // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+            QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
+            userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+        }
     }
-
 
     return userStr;
 }
