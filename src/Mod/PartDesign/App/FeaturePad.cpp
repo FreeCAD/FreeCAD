@@ -225,10 +225,21 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // lets check if the result is a solid
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
+
+            int solidCount = countSolids(result);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
+            }
+
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
         } else {
-            this->Shape.setValue(getSolid(prism));
+            int solidCount = countSolids(prism);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
+            }
+
+           this->Shape.setValue(getSolid(prism));
         }
 
         return App::DocumentObject::StdReturn;

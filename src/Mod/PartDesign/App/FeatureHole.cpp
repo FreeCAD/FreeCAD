@@ -1256,6 +1256,12 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         this->AddSubShape.setValue( holes );
 
         remapSupportShape(base);
+
+        int solidCount = countSolids(base);
+        if (solidCount > 1) {
+            return new App::DocumentObjectExecReturn("Hole: Result has multiple solids. This is not supported at this time.");
+        }
+
         this->Shape.setValue(base);
 
         return App::DocumentObject::StdReturn;
