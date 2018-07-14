@@ -33,6 +33,11 @@
             <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="deleteAllConstraints">
+        <Documentation>
+            <UserDocu>delete all the constraints from the sketch</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="toggleConstruction">
       <Documentation>
         <UserDocu>switch a geometry to a construction line</UserDocu>
