@@ -86,6 +86,7 @@ struct DocumentP
     ViewProvider*               _editViewProvider;
     ViewProviderDocumentObject* _editViewProviderParent;
     std::string                 _editSubname;
+    std::string                 _editSubElement;
     Base::Matrix4D              _editingTransform;
     Application*    _pcAppWnd;
     // the doc/Document
@@ -368,10 +369,16 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     Application::Instance->setEditDocument(this);
 
     d->_editViewProviderParent = vp;
-    if(subname)
-        d->_editSubname = subname;
-    else
-        d->_editSubname.clear();
+    d->_editSubElement.clear();
+    d->_editSubname.clear();
+    if(subname) {
+        const char *element = Data::ComplexGeoData::findElementName(subname);
+        if(element) {
+            d->_editSubname = std::string(subname,element-subname);
+            d->_editSubElement = element;
+        }else
+            d->_editSubname = subname;
+    }
 
     d->_editMode = ModNum;
     d->_editViewProvider = svp->startEditing(ModNum);
@@ -440,7 +447,7 @@ void Document::_resetEdit(void)
 }
 
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp, 
-        std::string *subname, int *mode) const
+        std::string *subname, int *mode, std::string *subelement) const
 {
     if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
@@ -448,6 +455,7 @@ ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
         if (activeView && activeView->getViewer()->isEditingViewProvider()) {
             if(parentVp) *parentVp = d->_editViewProviderParent;
             if(subname) *subname = d->_editSubname;
+            if(subelement) *subelement = d->_editSubElement;
             if(mode) *mode = d->_editMode;
             return d->_editViewProvider;
         }

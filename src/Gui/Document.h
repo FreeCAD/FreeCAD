@@ -237,7 +237,7 @@ public:
     void _resetEdit(void);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0, 
-            std::string *subname=0, int *mode=0) const;
+            std::string *subname=0, int *mode=0, std::string *subElement=0) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     /** Add or remove view provider from scene graphs of all views

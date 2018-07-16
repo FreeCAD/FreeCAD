@@ -394,11 +394,13 @@ void DocumentPy::setEditingTransform(Py::Object arg) {
 
 Py::Object DocumentPy::getInEdit(void) const {
     ViewProviderDocumentObject *vp = 0;
-    std::string subname;
-    getDocumentPtr()->getInEdit(&vp,&subname); 
+    std::string subname,subelement;
+    int mode = 0;
+    getDocumentPtr()->getInEdit(&vp,&subname,&mode,&subelement); 
     if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) 
         return Py::None();
-    return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),Py::String(subname));
+    return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),
+            Py::String(subname),Py::String(subelement),Py::Int(mode));
 }
 
 void DocumentPy::setInEdit(Py::Object arg) {

@@ -130,7 +130,7 @@ Add or remove view object from scene graph of all views depending on its canAddT
 	</Attribute>
     <Attribute Name="InEdit">
       <Documentation>
-        <UserDocu>A tuple(obj,subname) of editing object reference, or None if no object is in edit</UserDocu>
+        <UserDocu>A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit</UserDocu>
       </Documentation>
 	  <Parameter Name="InEdit" Type="Object" />
     </Attribute>
