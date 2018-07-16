@@ -167,6 +167,8 @@ public:
     static const std::string &elementMapPrefix();
     /// Sepecial postfix to mark the following tag
     static const std::string &tagPostfix();
+    /// Speical postfix to mark the index of an array element
+    static const std::string &indexPostfix();
     /** Check if the name starts with elementMapPrefix()
      *
      * @param name: input name

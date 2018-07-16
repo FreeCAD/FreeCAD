@@ -527,6 +527,11 @@ const std::string &ComplexGeoData::tagPostfix() {
     return postfix;
 }
 
+const std::string &ComplexGeoData::indexPostfix() {
+    static std::string postfix(elementMapPrefix() + ":I");
+    return postfix;
+}
+
 size_t ComplexGeoData::findTagInElementName(const std::string &name, 
         long *tag, size_t *len, std::string *postfix, char *type) 
 {

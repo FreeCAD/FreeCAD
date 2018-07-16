@@ -384,7 +384,7 @@ bool TopoShape::canMapElement(const TopoShape &other) const {
     return true;
 }
 
-void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
+void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool forceHasher) {
     if(!canMapElement(other))
         return;
 
@@ -394,7 +394,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
         auto &otherMap = other._Cache->getInfo(type).shapes;
         if(!shapeMap.Extent() || !otherMap.Extent())
             continue;
-        if(other.Hasher) {
+        if(!forceHasher && other.Hasher) {
             if(Hasher) {
                 if(other.Hasher!=Hasher) {
                     if(!getElementMapSize()) {
@@ -402,7 +402,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op) {
                             FC_WARN("hasher mismatch");
                     }else {
                         // throw Base::RuntimeError("hasher mismatch");
-                        FC_WARN("hasher mismatch");
+                        FC_ERR("hasher mismatch");
                     }
                     Hasher = other.Hasher;
                 }
@@ -2260,11 +2260,6 @@ const std::string &TopoShape::lowerPostfix() {
     return postfix;
 }
 
-const std::string &TopoShape::indexPostfix() {
-    static std::string postfix(elementMapPrefix() + ":I");
-    return postfix;
-}
-
 TopoShape &TopoShape::makESlice(const TopoShape &shape, 
         const Base::Vector3d& dir, double d, const char *op) 
 {
@@ -2664,7 +2659,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     initCache(true);
     Tag = tag;
     resetElementMap();
-    mapSubElement(tmp,postfix);
+    mapSubElement(tmp,postfix,!hasher.isNull());
 }
 
 void TopoShape::cacheRelatedElements(const char *name, bool sameType,

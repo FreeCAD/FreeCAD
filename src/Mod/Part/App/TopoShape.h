@@ -511,7 +511,6 @@ public:
     static const std::string &modgenPostfix();
     static const std::string &upperPostfix();
     static const std::string &lowerPostfix();
-    static const std::string &indexPostfix();
     //@}
 
     /** @name Element name mapping helper functions
@@ -519,7 +518,7 @@ public:
      * These functions are implemented in TopoShapeEx.cpp
      */
     //@{
-    void mapSubElement(const TopoShape &other,const char *op=0);
+    void mapSubElement(const TopoShape &other,const char *op=0, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=0) {
         for(auto &shape : shapes)
             mapSubElement(shape,op);

@@ -434,6 +434,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             if(linked && linked!=obj) {
                 if(mat) *mat = matNext;
                 linked->getSubObject(mySubElement.c_str(),pyObj,mat,false,depth+1);
+                checkGeoElementMap(obj,linked,pyObj,0);
             }
         }
         return true;
@@ -494,14 +495,26 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             ret = const_cast<DocumentObject*>(obj);
         } else {
             if(idx) {
-                postfix = "I";
+                postfix = Data::ComplexGeoData::indexPostfix();
                 postfix += std::to_string(idx);
             }
             if(mat)
                 *mat = matNext;
         }
     }
+    checkGeoElementMap(obj,linked,pyObj,postfix.size()?postfix.c_str():0);
     return true;
+}
+
+void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj, 
+        const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const
+{
+    if(!pyObj || !*pyObj || obj->getDocument()==linked->getDocument() ||
+       !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
+        return;
+       
+    auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
+    geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
 }
 
 void LinkBaseExtension::onExtendedUnsetupObject() {

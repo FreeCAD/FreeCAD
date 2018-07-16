@@ -266,6 +266,8 @@ protected:
     bool hasElements() const;
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
+    void checkGeoElementMap(const App::DocumentObject *obj, 
+        const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
 
 protected:
     std::vector<Property *> props;
