@@ -68,10 +68,10 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         return false;
     }
 
-    const char *valStr;
+    const char *valStr = 0;
     if(key == value) 
         valStr = keyStr;
-    else {
+    else if (value!=Py_None) {
 #if PY_MAJOR_VERSION < 3
         if(!PyString_Check(value)) {
             PyErr_SetString(PyExc_TypeError, "value must be string");
@@ -86,20 +86,23 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         valStr = PyUnicode_AsUTF8(value);
 #endif
     }
-
-    auto pIt = propMap.find(valStr);
-    if(pIt == propMap.end()) {
-        str << "cannot find property '" << valStr << "'";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        return false;
-    }
+        
+    App::Property *prop = 0;
     auto &info = it->second;
-    App::Property *prop = pIt->second;
-    if(!prop->isDerivedFrom(info.type)) {
-        str << "expect property '" << keyStr << "(" << valStr 
-            << ") to be derived from '" << info.type.getName() 
-            << "', instead of '" << prop->getTypeId().getName() << "'";
-        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+    if(valStr) {
+        auto pIt = propMap.find(valStr);
+        if(pIt == propMap.end()) {
+            str << "cannot find property '" << valStr << "'";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return false;
+        }
+        prop = pIt->second;
+        if(!prop->isDerivedFrom(info.type)) {
+            str << "expect property '" << keyStr << "(" << valStr 
+                << ") to be derived from '" << info.type.getName() 
+                << "', instead of '" << prop->getTypeId().getName() << "'";
+            PyErr_SetString(PyExc_TypeError, str.str().c_str());
+        }
     }
     props[keyStr] = std::make_pair(info.index,prop);
     return true;
@@ -145,6 +148,28 @@ PyObject* LinkBaseExtensionPy::getLinkExtProperty(PyObject *args)
         return 0;
     }
     return prop->getPyObject();
+}
+
+PyObject* LinkBaseExtensionPy::getLinkExtPropertyName(PyObject *args) {
+    const char *name;
+    if(!PyArg_ParseTuple(args,"s",&name))
+        return 0;
+    auto prop = getLinkBaseExtensionPtr()->getProperty(name);
+    if(!prop) {
+        PyErr_SetString(PyExc_AttributeError, "unknown property name");
+        return 0;
+    }
+    auto container = getLinkBaseExtensionPtr()->getExtendedContainer();
+    if(!container) {
+        PyErr_SetString(PyExc_RuntimeError, "no extended container");
+        return 0;
+    }
+    name = container->getPropertyName(prop);
+    if(!name) {
+        PyErr_SetString(PyExc_RuntimeError, "cannot find property name");
+        return 0;
+    }
+    return Py::new_reference_to(Py::String(name));
 }
 
 PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)

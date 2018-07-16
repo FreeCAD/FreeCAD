@@ -44,6 +44,11 @@ it is assumed the the actualy property name is the same as 'key'
         <UserDocu>getLinkExtProperty(name): return the property value by its predefined name </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getLinkExtPropertyName">
+      <Documentation>
+        <UserDocu>getLinkExtPropertyName(name): lookup the property name by its predefined name </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getLinkPropertyInfo">
       <Documentation>
         <UserDocu>

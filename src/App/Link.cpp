@@ -99,13 +99,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     const auto &infos = getPropertyInfo();
     if(idx<0 || idx>=(int)infos.size())
         LINK_THROW(Base::RuntimeError,"App::LinkBaseExtension: property index out of range");
-    if(!prop) {
-        if(props[idx]) {
-            props[idx]->setStatus(Property::LockDynamic,false);
-            props[idx] = 0;
-        }
-        return;
+
+    if(props[idx]) {
+        props[idx]->setStatus(Property::LockDynamic,false);
+        props[idx] = 0;
     }
+    if(!prop) 
+        return;
     if(!prop->isDerivedFrom(infos[idx].type)) {
         std::ostringstream str;
         str << "App::LinkBaseExtension: expected property type '" << 

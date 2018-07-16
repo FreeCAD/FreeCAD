@@ -2407,7 +2407,7 @@ PyObject *PropertyXLink::getPyObject(void)
         return _pcLink->getPyObject();
     Py::Tuple ret(2);
     ret.setItem(0,Py::Object(_pcLink->getPyObject(),true));
-    ret.setItem(1,Py::String(subName.c_str()));
+    ret.setItem(1,Py::String(getSubName(true)));
     return Py::new_reference_to(ret);
 }
 
