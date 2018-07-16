@@ -219,13 +219,16 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     
-    """overwrites ArchBuilding.makeBiulding"""
+    """overwrites ArchBuilding.makeBuilding"""
     
     obj = makeBuildingPart(objectslist)
     obj.Label = name
     obj.IfcRole = "Building"
-    obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
+    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes
+    if FreeCAD.GuiUp:
+        obj.ViewObject.ShowLevel = False
+        obj.ViewObject.ShowLabel = False
     return obj
 
 

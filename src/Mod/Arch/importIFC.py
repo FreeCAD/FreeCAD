@@ -461,6 +461,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                         if it.Items[0].id() == r.id():
                                             colors[m.RepresentedMaterial.id()] = (c.Red,c.Green,c.Blue)
 
+    # move IfcGrids from products to annotations
+    tp = []
+    for product in products:
+        if product.is_a("IfcGrid") and not (product in annotations):
+            annotations.append(product)
+        else:
+            tp.append(product)
+    products = tp
+
     if only: # only import a list of IDs and their children
         ids = []
         while only:
@@ -1000,28 +1009,67 @@ def insert(filename,docname,skip=[],only=[],root=None):
     scaling = getScaling(ifcfile)
     #print "scaling factor =",scaling
     for annotation in annotations:
+        anno = None
         aid = annotation.id()
-        if aid in skip: continue # user given id skip list
-        if annotation.is_a() in SKIP: continue # preferences-set type skip list
-        name = "Annotation"
-        if annotation.Name:
-            name = annotation.Name.encode("utf8")
-        if "annotation" not in name.lower():
-            name = "Annotation " + name
-        if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
-        shapes2d = []
-        for rep in annotation.Representation.Representations:
-            if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
-                shapes2d.extend(setRepresentation(rep,scaling))
-        if shapes2d:
-            sh = Part.makeCompound(shapes2d)
-            pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
-            if DEBUG: print(pc,"creating object ",aid," : Annotation with shape: ",sh)
-            o = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-            o.Shape = sh
-            p = getPlacement(annotation.ObjectPlacement,scaling)
-            if p: # and annotation.is_a("IfcAnnotation"):
-                o.Placement = p
+        if aid in skip:
+            continue # user given id skip list
+        if annotation.is_a() in SKIP:
+            continue # preferences-set type skip list
+        if annotation.is_a("IfcGrid"):
+            axes = []
+            uvwaxes = ()
+            if annotation.UAxes:
+                uvwaxes = annotation.UAxes
+            if annotation.VAxes:
+                uvwaxes = uvwaxes + annotation.VAxes
+            if annotation.WAxes:
+                uvwaxes = uvwaxes + annotation.WAxes
+            for axis in uvwaxes:
+                if axis.AxisCurve:
+                    sh = setRepresentation(axis.AxisCurve,scaling)
+                    if sh and (len(sh[0].Vertexes) == 2): # currently only straight axes are supported
+                        sh = sh[0]
+                        l = sh.Length
+                        pl = FreeCAD.Placement()
+                        pl.Base = sh.Vertexes[0].Point
+                        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),sh.Vertexes[-1].Point.sub(sh.Vertexes[0].Point))
+                        o = Arch.makeAxis(1,l)
+                        o.Length = l
+                        o.Placement = pl
+                        o.CustomNumber = axis.AxisTag
+                        axes.append(o)
+            if axes:
+                name = "Grid"
+                if annotation.Name:
+                    name = annotation.Name.encode("utf8")
+                if PREFIX_NUMBERS:
+                    name = "ID" + str(aid) + " " + name
+                anno = Arch.makeAxisSystem(axes,name)
+        else:
+            name = "Annotation"
+            if annotation.Name:
+                name = annotation.Name.encode("utf8")
+            if "annotation" not in name.lower():
+                name = "Annotation " + name
+            if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
+            shapes2d = []
+            for rep in annotation.Representation.Representations:
+                if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
+                    shapes2d.extend(setRepresentation(rep,scaling))
+            if shapes2d:
+                sh = Part.makeCompound(shapes2d)
+                pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
+                if DEBUG: print(pc,"creating object ",aid," : Annotation with shape: ",sh)
+                anno = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                anno.Shape = sh
+                p = getPlacement(annotation.ObjectPlacement,scaling)
+                if p: # and annotation.is_a("IfcAnnotation"):
+                    anno.Placement = p
+        # placing in container if needed
+        if anno:
+            for host,children in additions.items():
+                if (aid in children) and (host in objects.keys()):
+                    Arch.addComponents(anno,objects[host])
 
         count += 1
 
@@ -1206,6 +1254,52 @@ def export(exportList,filename):
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
+        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
+            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitely set
+        
+        # export grids
+            
+        if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
+            ifctype = "IfcGrid"
+            ifcaxes = []
+            ifcpols = []
+            for axg in obj.Proxy.getAxisData(obj):
+                ifcaxg = []
+                for ax in axg:
+                    p1 = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
+                    p2 = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)))
+                    pol = ifcfile.createIfcPolyline([p1,p2])
+                    ifcpols.append(pol)
+                    axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
+                    ifcaxg.append(axis)
+                if len(ifcaxes) < 3:
+                    ifcaxes.append(ifcaxg)
+                else:
+                    ifcaxes[2] = ifcaxes[2]+ifcaxg # IfcGrid can have max 3 axes systems
+            u = None
+            v = None
+            w = None
+            if ifcaxes:
+                u = ifcaxes[0]
+            if len(ifcaxes) > 1:
+                v = ifcaxes[1]
+            if len(ifcaxes) > 2:
+                v = ifcaxes[2]
+            if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
+            xvc =  ifcfile.createIfcDirection((1.0,0.0,0.0))
+            zvc =  ifcfile.createIfcDirection((0.0,0.0,1.0))
+            ovc =  ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl =  ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            plac = ifcfile.createIfcLocalPlacement(None,gpl)
+            cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
+            #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
+            srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
+            pdef = ifcfile.createIfcProductDefinitionShape(None,None,[srep])
+            grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
+            products[obj.Name] = grid
+            count += 1
+            continue
+
         from ArchComponent import IFCTYPES
         if ifctype not in IFCTYPES:
             ifctype = "IfcBuildingElementProxy"
@@ -1534,7 +1628,7 @@ def export(exportList,filename):
         f = products[floor.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
-        floors.append(floor.Name)
+        floors.append(f)
         defaulthost = f
     for building in Draft.getObjectsOfType(objectslist,"Building"):
         objs = Draft.getGroupContents(building,walls=True,addgroups=True)
@@ -1545,7 +1639,7 @@ def export(exportList,filename):
             if not (c.Name in treated):
                 if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
                     if c.Name in products.keys():
-                        if Draft.getType(c) == "Floor":
+                        if Draft.getType(c) in ["Floor","BuildingPart"]:
                             childfloors.append(products[c.Name])
                             treated.append(c.Name)
                         elif not (c.Name in treated):
@@ -1580,12 +1674,14 @@ def export(exportList,filename):
     if not buildings:
         if DEBUG: print("No building found. Adding default building")
         buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
+        if floors:
+            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',buildings[0],floors)
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
     untreated = []
     for k,v in products.items():
         if not(k in treated):
             if k != buildings[0].Name:
-                if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor"]):
+                if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
     if untreated:
         if not defaulthost:
@@ -2241,6 +2337,17 @@ def setRepresentation(representation,scaling=1000):
             pts.append(c)
         return Part.makePolygon(pts)
 
+    def getLine(ent):
+        pts = []
+        p1 = getVector(ent.Pnt)
+        p1.multiply(scaling)
+        pts.append(p1)
+        p2 = getVector(ent.Dir)
+        p2.multiply(scaling)
+        p2 = p1.add(p2)
+        pts.append(p2)
+        return Part.makePolygon(pts)
+
     def getCircle(ent):
         c = ent.Position.Location.Coordinates
         c = FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0)
@@ -2250,9 +2357,15 @@ def setRepresentation(representation,scaling=1000):
 
     def getCurveSet(ent):
         result = []
-        for el in ent.Elements:
+        if ent.is_a() in ["IfcGeometricCurveSet","IfcGeometricSet"]:
+            elts = ent.Elements
+        elif ent.is_a() in ["IfcLine","IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
+            elts = [ent]
+        for el in elts:
             if el.is_a("IfcPolyline"):
                 result.append(getPolyline(el))
+            elif el.is_a("IfcLine"):
+                result.append(getLine(el))
             elif el.is_a("IfcCircle"):
                 result.append(getCircle(el))
             elif el.is_a("IfcTrimmedCurve"):
@@ -2291,6 +2404,8 @@ def setRepresentation(representation,scaling=1000):
                         result.append(r)
                 else:
                     result = preresult
+    elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
+        result = getCurveSet(representation)
     return result
 
 

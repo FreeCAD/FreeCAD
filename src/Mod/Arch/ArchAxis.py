@@ -57,7 +57,7 @@ def makeAxis(num=5,size=1000,name="Axes"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Axis")
     obj.Label = translate("Arch",name)
     _Axis(obj)
     if FreeCAD.GuiUp:
@@ -83,7 +83,7 @@ def makeAxisSystem(axes,name="Axis System"):
 
     if not isinstance(axes,list):
         axes = [axes]
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","AxisSystem")
     obj.Label = translate("Arch",name)
     _AxisSystem(obj)
     obj.Axes = axes
@@ -97,7 +97,7 @@ def makeGrid(name="Grid"):
 
     '''makeGrid(): makes a grid object'''
 
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Grid")
     obj.Label = translate("Arch",name)
     ArchGrid(obj)
     if FreeCAD.GuiUp:
@@ -208,6 +208,8 @@ class _Axis:
             obj.addProperty("App::PropertyFloatList","Angles","Axis", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"))
         if not "Labels" in pl:
             obj.addProperty("App::PropertyStringList","Labels","Axis", QT_TRANSLATE_NOOP("App::Property","The label of each axis"))
+        if not "CustomNumber" in pl:
+            obj.addProperty("App::PropertyString","CustomNumber","Axis", QT_TRANSLATE_NOOP("App::Property","An optional custom bubble number"))
         if not "Length" in pl:
             obj.addProperty("App::PropertyLength","Length","Axis", QT_TRANSLATE_NOOP("App::Property","The length of the axes"))
             obj.Length=3000
@@ -264,6 +266,21 @@ class _Axis:
         for e in obj.Shape.Edges:
             pts.append(e.Vertexes[0].Point)
         return pts
+
+    def getAxisData(self,obj):
+        data = []
+        num = 0
+        for e in obj.Shape.Edges:
+            axdata = []
+            axdata.append(e.Vertexes[0].Point)
+            axdata.append(e.Vertexes[-1].Point)
+            if obj.ViewObject:
+                axdata.append(obj.ViewObject.Proxy.getNumber(obj.ViewObject,num))
+            else:
+                axdata.append(str(num))
+            data.append(axdata)
+            num += 1
+        return data
 
 
 class _ViewProviderAxis:
@@ -490,52 +507,13 @@ class _ViewProviderAxis:
                 self.onChanged(vobj,"ShowLabel")
         elif prop in ["NumberingStyle","StartNumber"]:
             if hasattr(self,"bubbletexts"):
-                chars = "abcdefghijklmnopqrstuvwxyz"
-                roman=(('M',1000),('CM',900),('D',500),('CD',400),
-                       ('C',100),('XC',90),('L',50),('XL',40),
-                       ('X',10),('IX',9),('V',5),('IV',4),('I',1))
                 num = 0
                 if hasattr(vobj,"StartNumber"):
                     if vobj.StartNumber > 1:
                         num = vobj.StartNumber-1
                 alt = False
                 for t in self.bubbletexts:
-                    if hasattr(vobj,"NumberingStyle"):
-                        if vobj.NumberingStyle == "1,2,3":
-                            t.string = str(num+1)
-                        elif vobj.NumberingStyle == "01,02,03":
-                            t.string = str(num+1).zfill(2)
-                        elif vobj.NumberingStyle == "001,002,003":
-                            t.string = str(num+1).zfill(3)
-                        elif vobj.NumberingStyle == "A,B,C":
-                            result = ""
-                            base = num/26
-                            if base:
-                                result += chars[base].upper()
-                            remainder = num % 26
-                            result += chars[remainder].upper()
-                            t.string = result
-                        elif vobj.NumberingStyle == "a,b,c":
-                            result = ""
-                            base = num/26
-                            if base:
-                                result += chars[base]
-                            remainder = num % 26
-                            result += chars[remainder]
-                            t.string = result
-                        elif vobj.NumberingStyle == "I,II,III":
-                            result = ""
-                            n = num
-                            n += 1
-                            for numeral, integer in roman:
-                                while n >= integer:
-                                    result += numeral
-                                    n -= integer
-                            t.string = result
-                        elif vobj.NumberingStyle == "L0,L1,L2":
-                            t.string = "L"+str(num)
-                    else:
-                        t.string = str(num+1)
+                    t.string = self.getNumber(vobj,num)
                     num += 1
                     if hasattr(vobj,"BubblePosition"):
                         if vobj.BubblePosition == "Both":
@@ -590,6 +568,50 @@ class _ViewProviderAxis:
                                 self.labels.addChild(st)
                     self.labelset.addChild(self.labels)
 
+    def getNumber(self,vobj,num):
+
+        chars = "abcdefghijklmnopqrstuvwxyz"
+        roman=(('M',1000),('CM',900),('D',500),('CD',400),
+               ('C',100),('XC',90),('L',50),('XL',40),
+               ('X',10),('IX',9),('V',5),('IV',4),('I',1))
+        if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
+            return vobj.Object.CustomNumber.encode("utf8")
+        elif hasattr(vobj,"NumberingStyle"):
+            if vobj.NumberingStyle == "1,2,3":
+                return str(num+1)
+            elif vobj.NumberingStyle == "01,02,03":
+                return str(num+1).zfill(2)
+            elif vobj.NumberingStyle == "001,002,003":
+                return str(num+1).zfill(3)
+            elif vobj.NumberingStyle == "A,B,C":
+                result = ""
+                base = num/26
+                if base:
+                    result += chars[base].upper()
+                remainder = num % 26
+                result += chars[remainder].upper()
+                return result
+            elif vobj.NumberingStyle == "a,b,c":
+                result = ""
+                base = num/26
+                if base:
+                    result += chars[base]
+                remainder = num % 26
+                result += chars[remainder]
+                return result
+            elif vobj.NumberingStyle == "I,II,III":
+                result = ""
+                n = num
+                n += 1
+                for numeral, integer in roman:
+                    while n >= integer:
+                        result += numeral
+                        n -= integer
+                return result
+            elif vobj.NumberingStyle == "L0,L1,L2":
+                return "L"+str(num)
+        else:
+            return str(num+1)
 
     def setEdit(self,vobj,mode=0):
 
@@ -841,6 +863,13 @@ class _AxisSystem:
                     pts.extend([p.add(v) for p in bset])
         return pts
 
+    def getAxisData(self,obj):
+        data = []
+        for axis in obj.Axes:
+            if hasattr(axis,"Proxy") and hasattr(axis.Proxy,"getAxisData"):
+                data.append(axis.Proxy.getAxisData(axis))
+        return data
+
 
 class _ViewProviderAxisSystem:
 
@@ -854,6 +883,10 @@ class _ViewProviderAxisSystem:
 
         import Arch_rc
         return ":/icons/Arch_Axis_System_Tree.svg"
+
+    def isShow(self):
+
+        return True
 
     def claimChildren(self):
 
