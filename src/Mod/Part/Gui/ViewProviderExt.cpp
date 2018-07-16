@@ -356,6 +356,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
+    if(!feature)
+        return;
     if (prop == &MappedColors ||
         prop == &MapFaceColor ||
         prop == &MapLineColor ||
@@ -1331,7 +1333,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         }
     }
 
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop == &feature->Shape) {
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
 
