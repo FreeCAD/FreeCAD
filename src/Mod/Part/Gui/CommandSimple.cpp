@@ -202,11 +202,12 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
         auto parentName = Gui::Command::getObjectCmd(obj);
         for(auto &v : subMap) {
             Gui::Command::doCommand(Gui::Command::Doc,
-                    "__shape = Part.getShape(%s,'%s',needSubElement=%s,refine=%s)\n"
+                    "__shape = Part.getShape(%s,'%s',needSubElement=%s,refine=%s)%s\n"
                     "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
                     "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
                         parentName.c_str(), v.first.c_str(),
                         needElement?"True":"False", refine?"True":"False",
+                        needElement?".copy()":"", 
                         v.second->getNameInDocument(), 
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
