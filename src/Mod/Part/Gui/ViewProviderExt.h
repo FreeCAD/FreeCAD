@@ -96,6 +96,7 @@ public:
     App::PropertyBool MapLineColor;    
     App::PropertyBool MapPointColor;    
     App::PropertyBool MapTransparency;    
+    App::PropertyBool ForceMapColors;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);

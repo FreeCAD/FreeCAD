@@ -282,6 +282,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(MapLineColor,(hPart->GetBool("MapLineColor",false)));
     ADD_PROPERTY(MapPointColor,(hPart->GetBool("MapPointColor",false)));
     ADD_PROPERTY(MapTransparency,(hPart->GetBool("MapTransparency",false)));
+    ADD_PROPERTY(ForceMapColors,(false));
 
     coords = new SoCoordinate3();
     coords->ref();
@@ -362,7 +363,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         prop == &MapFaceColor ||
         prop == &MapLineColor ||
         prop == &MapPointColor ||
-        prop == &MapTransparency) 
+        prop == &MapTransparency || 
+        prop == &ForceMapColors) 
     {
         if(!prop->testStatus(App::Property::User3))
             updateColors(feature);
@@ -1240,7 +1242,7 @@ void ViewProviderPartExt::updateColors(Part::Feature *feature,
     infos[TopAbs_VERTEX].init(TopAbs_VERTEX,this);
     infos[TopAbs_EDGE].init(TopAbs_EDGE,this);
     infos[TopAbs_FACE].init(TopAbs_FACE,this);
-    bool noColorMap = !forceColorMap && !hasBaseFeature();
+    bool noColorMap = !ForceMapColors.getValue() && !forceColorMap && !hasBaseFeature();
 
     std::set<std::string> subMap;
     for(auto &v : subs) {
