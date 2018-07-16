@@ -4118,10 +4118,15 @@ class _ViewProviderDraftLink:
             return ":/icons/Draft_PathLinkArray.svg"
 
     def claimChildren(self):
-        if not self.Object.ShowElement:
-            return [self.Object.Base]
+        obj = self.Object
+        if hasattr(obj,'ExpandArray'):
+            expand = obj.ExpandArray
         else:
-            return self.Object.ElementList
+            expand = obj.ShowElement
+        if not expand:
+            return [obj.Base]
+        else:
+            return obj.ElementList
 
 class _Dimension(_DraftObject):
     "The Draft Dimension object"
@@ -5905,6 +5910,20 @@ class _DraftLink(_DraftObject):
 
     def linkSetup(self,obj):
         obj.configLinkProperty('Placement',LinkedObject='Base')
+        if hasattr(obj,'ShowElement'):
+            # rename 'ShowElement' property to 'ExpandArray' to avoid conflict
+            # with native App::Link
+            obj.configLinkProperty('ShowElement')
+            showElement = obj.ShowElement
+            obj.addProperty("App::PropertyBool","ExpandArray","Draft",
+                    QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
+            obj.ExpandArray = showElement
+            obj.configLinkProperty(ShowElement='ExpandArray')
+            obj.removeProperty('ShowElement')
+        if getattr(obj,'ExpandArray',False):
+            obj.setPropertyStatus('PlacementList','Immutable')
+        else:
+            obj.setPropertyStatus('PlacementList','-Immutable')
 
     def getViewProviderName(self,_obj):
         if self.useLink:
@@ -5922,8 +5941,10 @@ class _DraftLink(_DraftObject):
         import DraftGeomUtils
 
         if self.useLink:
-            if not getattr(obj,'ShowElement',True) or obj.Count != len(pls):
+            if not getattr(obj,'ExpandArray',True) or obj.Count != len(pls):
+                obj.setPropertyStatus('PlacementList','-Immutable')
                 obj.PlacementList = pls
+                obj.setPropertyStatus('PlacementList','Immutable')
                 obj.Count = len(pls)
 
         if obj.Base:
@@ -5965,6 +5986,9 @@ class _DraftLink(_DraftObject):
                 obj.setPropertyStatus('Shape','-Transient')
             else:
                 obj.setPropertyStatus('Shape','Transient')
+        elif prop == 'ExpandArray':
+            obj.setPropertyStatus('PlacementList',
+                    '-Immutable' if obj.ExpandArray else 'Immutable')
 
 
 class _Array(_DraftLink):
@@ -5990,10 +6014,10 @@ class _Array(_DraftLink):
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
         obj.Fuse = False
         if self.useLink:
-            obj.addProperty("App::PropertyInteger","Count"," Link",'')
-            obj.addProperty("App::PropertyBool","ShowElement"," Link",
+            obj.addProperty("App::PropertyInteger","Count","Draft",'')
+            obj.addProperty("App::PropertyBool","ExpandArray","Draft",
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
-            obj.ShowElement = False
+            obj.ExpandArray = False
 
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
@@ -6010,7 +6034,7 @@ class _Array(_DraftLink):
 
     def linkSetup(self,obj):
         _DraftLink.linkSetup(self,obj)
-        obj.configLinkProperty('ShowElement',ElementCount='Count')
+        obj.configLinkProperty(ElementCount='Count')
         obj.setPropertyStatus('Count','Hidden')
 
     def execute(self,obj):
@@ -6089,15 +6113,15 @@ class _PathArray(_DraftLink):
         obj.Align = False
 
         if self.useLink:
-            obj.addProperty("App::PropertyBool","ShowElement","Link",
+            obj.addProperty("App::PropertyBool","ExpandArray","Draft",
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
-            obj.ShowElement = False
+            obj.ExpandArray = False
 
         _DraftLink.attach(self,obj)
 
     def linkSetup(self,obj):
         _DraftLink.linkSetup(self,obj)
-        obj.configLinkProperty('ShowElement',ElementCount='Count')
+        obj.configLinkProperty(ElementCount='Count')
 
     def execute(self,obj):
         import FreeCAD
