@@ -764,6 +764,13 @@ or None if no history.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="clearCache" Const="true">
+      <Documentation>
+        <UserDocu>
+        clearCache() - clear internal sub-shape cache
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

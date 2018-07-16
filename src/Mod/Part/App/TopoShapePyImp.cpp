@@ -2884,6 +2884,13 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
     }
 }
 
+PyObject *TopoShapePy::clearCache(PyObject *args) {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    getTopoShapePtr()->initCache(1);
+    Py_Return;
+}
+
 // End of Methods, Start of Attributes
 
 #if 0 // see ComplexGeoDataPy::Matrix which does the same
