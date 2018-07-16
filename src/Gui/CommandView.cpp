@@ -2681,6 +2681,56 @@ void StdCmdTreeSelection::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_TreeCollapse
+//===========================================================================
+
+DEF_STD_CMD(StdCmdTreeCollapse)
+
+StdCmdTreeCollapse::StdCmdTreeCollapse()
+  : Command("Std_TreeCollapse")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Collapse selected item");
+    sToolTipText  = QT_TR_NOOP("Collapse currently selected tree items");
+    sWhatsThis    = "Std_TreeCollapse";
+    sStatusTip    = QT_TR_NOOP("Collapse currently selected tree items");
+    eType         = Alter3DView;
+}
+
+void StdCmdTreeCollapse::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
+    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
+        (*it)->expandSelectedItems(TreeItemMode::Collapse);
+}
+
+//===========================================================================
+// Std_TreeExpand
+//===========================================================================
+
+DEF_STD_CMD(StdCmdTreeExpand)
+
+StdCmdTreeExpand::StdCmdTreeExpand()
+  : Command("Std_TreeExpand")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Expand selected item");
+    sToolTipText  = QT_TR_NOOP("Expand currently selected tree items");
+    sWhatsThis    = "Std_TreeExpand";
+    sStatusTip    = QT_TR_NOOP("Expand currently selected tree items");
+    eType         = Alter3DView;
+}
+
+void StdCmdTreeExpand::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
+    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
+        (*it)->expandSelectedItems(TreeItemMode::Expand);
+}
+
+//===========================================================================
 // Std_TreeSelectAllInstance
 //===========================================================================
 
@@ -3022,6 +3072,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdBoxSelection());
     rcCmdMgr.addCommand(new StdBoxElementSelection());
     rcCmdMgr.addCommand(new StdCmdTreeSelection());
+    rcCmdMgr.addCommand(new StdCmdTreeExpand());
+    rcCmdMgr.addCommand(new StdCmdTreeCollapse());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
     rcCmdMgr.addCommand(new StdCmdMeasureDistance());
     rcCmdMgr.addCommand(new StdCmdSceneInspector());

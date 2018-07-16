@@ -74,6 +74,7 @@ public:
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *obj, bool recurse); 
     void selectAllLinks(App::DocumentObject *obj); 
+    void expandSelectedItems(TreeItemMode mode);
 
     /* Return a list of selected object of a give document and their parent
      *

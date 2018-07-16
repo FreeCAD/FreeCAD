@@ -1285,6 +1285,30 @@ void TreeWidget::scrollItemToTop(Gui::Document* doc)
     }
 }
 
+void TreeWidget::expandSelectedItems(TreeItemMode mode)
+{
+    if(!isConnectionAttached()) 
+        return;
+
+    for(auto item : selectedItems()) {
+        switch (mode) {
+        case Gui::Expand:
+            item->setExpanded(true);
+            break;
+        case Gui::Collapse:
+            item->setExpanded(false);
+            break;
+        case Gui::Toggle:
+            if (item->isExpanded())
+                item->setExpanded(false);
+            else
+                item->setExpanded(true);
+            break;
+        }
+    }
+}
+
+
 void TreeWidget::setupText() {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->rootItem->setText(0, tr("Application"));
