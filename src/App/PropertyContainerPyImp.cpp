@@ -188,6 +188,7 @@ static const std::map<std::string, int> &getStatusMap() {
         statusMap["MaterialEdit"] = 5;
         statusMap["MaterialListEdit"] = 6;
         statusMap["Output"] = 7;
+        statusMap["LockDynamic"] = 8;
         statusMap["NoModify"] = 9;
     }
     return statusMap;
