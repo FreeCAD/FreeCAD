@@ -3519,17 +3519,17 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     if (obj) {
         list << QString::fromLatin1(obj->getDocument()->getName());
         list << QString::fromLatin1(obj->getNameInDocument());
-        if(xlink && xlink->getSubName()[0]) {
-            auto subObj = obj->getSubObject(xlink->getSubName());
+        if(xlink && xlink->getSubName(false)[0]) {
+            auto subObj = obj->getSubObject(xlink->getSubName(false));
             if(subObj)
                 list << QString::fromLatin1("%1 (%2.%3)").
                     arg(QString::fromUtf8(subObj->Label.getValue())).
                     arg(QString::fromLatin1(obj->getNameInDocument())).
-                    arg(QString::fromUtf8(xlink->getSubName()));
+                    arg(QString::fromUtf8(xlink->getSubName(false)));
             else
                 list << QString::fromLatin1("%1.%2").
                     arg(QString::fromLatin1(obj->getNameInDocument())).
-                    arg(QString::fromUtf8(xlink->getSubName()));
+                    arg(QString::fromUtf8(xlink->getSubName(false)));
         }else
             list << QString::fromUtf8(obj->Label.getValue());
     }
@@ -3562,7 +3562,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     assert(list.size() == FC_XLINK_VALUE_INDEX);
 
     if(xlink) {
-        list << QString::fromUtf8(xlink->getSubName());
+        list << QString::fromUtf8(xlink->getSubName(false));
         auto cobj = dynamic_cast<App::DocumentObject*>(c);
         if(cobj && obj && cobj->getDocument()!=obj->getDocument())
             list << QString::fromLatin1(obj->getDocument()->getName());
