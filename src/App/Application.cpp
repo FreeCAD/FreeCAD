@@ -481,7 +481,7 @@ bool Application::addPendingDocument(
 }
 
 bool Application::isRestoring() const {
-    return _isRestoring;
+    return _isRestoring || Document::isAnyRestoring();
 }
 
 Document* Application::openDocument(const char * FileName)

@@ -148,6 +148,8 @@ namespace App {
 
 typedef boost::bimap<StringHasherRef,int> HasherMap;
 
+static bool _IsRestoring;
+
 // Pimpl class
 struct DocumentP
 {
@@ -1965,6 +1967,7 @@ std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
     d->hashers.clear();
+    Base::FlagToggler<> flag(_IsRestoring);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     reader.readElement("Document");
@@ -2172,9 +2175,15 @@ bool Document::save (void)
     return false;
 }
 
+bool Document::isAnyRestoring() {
+    return _IsRestoring;
+}
+
 // Open the document
 void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 {
+    Base::FlagToggler<> flag(_IsRestoring);
+
     // clean up if the document is not empty
     // !TODO mind exceptions while restoring!
     clearUndos();

@@ -491,6 +491,9 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    /// Indicate if there is any document restoring/importing
+    static bool isAnyRestoring();
+
     friend class Application;
     /// because of transaction handling
     friend class TransactionalObject;
