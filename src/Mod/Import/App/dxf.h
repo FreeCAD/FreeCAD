@@ -143,7 +143,7 @@ protected:
                   const std::string ownerHandle);
 
     //! copy boiler plate file
-    std::ostringstream getPlateFile(std::string fileSpec);
+    std::string getPlateFile(std::string fileSpec);
     void setDataDir(std::string s) { m_dataDir = s; }
     std::string getEntityHandle(void);
     std::string getLayerHandle(void);
