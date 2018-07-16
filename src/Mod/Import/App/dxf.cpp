@@ -95,9 +95,7 @@ void CDxfWrite::writeHeaderSection(void)
     ss.clear();
     ss << "header" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss = getPlateFile(fileSpec);
-    (*m_ofs) << oss.str();
-
+    (*m_ofs) << getPlateFile(fileSpec);
 }
 
 //***************************
@@ -113,8 +111,7 @@ void CDxfWrite::writeClassesSection(void)
     std::stringstream ss;
     ss << "classes" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss = getPlateFile(fileSpec);
-    (*m_ofs) << oss.str();
+    (*m_ofs) << getPlateFile(fileSpec);
 }
 
 //***************************
@@ -126,8 +123,7 @@ void CDxfWrite::writeTablesSection(void)
     std::stringstream ss;
     ss << "tables1" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss = getPlateFile(fileSpec);
-    (*m_ofs) << oss.str();
+    (*m_ofs) << getPlateFile(fileSpec);
 
     (*m_ofs) << (*m_ssLayer).str();
 
@@ -136,8 +132,7 @@ void CDxfWrite::writeTablesSection(void)
     ss.clear();
     ss << "tables2" << m_version << ".rub";
     fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss2 = getPlateFile(fileSpec);
-    (*m_ofs) << oss2.str();
+    (*m_ofs) << getPlateFile(fileSpec);
 
     if (m_version > 12) {
         (*m_ofs) << (*m_ssBlkRecord).str();
@@ -411,9 +406,9 @@ void CDxfWrite::makeBlockSectionHead(void)
     }
 }
 
-ostringstream CDxfWrite::getPlateFile(std::string fileSpec)
+std::string CDxfWrite::getPlateFile(std::string fileSpec)
 {
-    ostringstream outString;
+    std::stringstream outString;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
         Base::Console().Message("dxf unable to open %s!\n",fileSpec.c_str());
@@ -429,7 +424,7 @@ ostringstream CDxfWrite::getPlateFile(std::string fileSpec)
             }
         }
     }
-    return outString;
+    return outString.str();
 }
 
 std::string CDxfWrite::getEntityHandle(void)
@@ -1615,8 +1610,7 @@ void CDxfWrite::writeBlocksSection(void)
         std::stringstream ss;
         ss << "blocks1" << m_version << ".rub";
         std::string fileSpec = m_dataDir + ss.str();
-        std::ostringstream oss = getPlateFile(fileSpec);
-        (*m_ofs) << oss.str();
+        (*m_ofs) << getPlateFile(fileSpec);
     }
     
     //write blocks content
@@ -1634,8 +1628,7 @@ void CDxfWrite::writeEntitiesSection(void)
     std::stringstream ss;
     ss << "entities" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss = getPlateFile(fileSpec);
-    (*m_ofs) << oss.str();
+    (*m_ofs) << getPlateFile(fileSpec);
     
     //write entities content
     (*m_ofs) << (*m_ssEntity).str();
@@ -1656,8 +1649,7 @@ void CDxfWrite::writeObjectsSection(void)
     std::stringstream ss;
     ss << "objects" << m_version << ".rub";
     std::string fileSpec = m_dataDir + ss.str();
-    std::ostringstream oss = getPlateFile(fileSpec);
-    (*m_ofs) << oss.str();
+    (*m_ofs) << getPlateFile(fileSpec);
 }
 
 CDxfRead::CDxfRead(const char* filepath)
