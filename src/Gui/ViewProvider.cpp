@@ -876,7 +876,7 @@ void ViewProvider::setRenderCacheMode(int mode) {
         mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
-Base::BoundBox3d ViewProvider::getBoundingBox(bool transform, MDIView *view) const {
+Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transform, MDIView *view) const {
     if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
         return Base::BoundBox3d();
 
@@ -889,19 +889,36 @@ Base::BoundBox3d ViewProvider::getBoundingBox(bool transform, MDIView *view) con
     View3DInventorViewer* viewer = iview->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
-    SoTempPath path(3);
-    path.ref();
-    if(!transform) {
-        path.append(pcRoot);
-        path.append(pcModeSwitch);
-        bboxAction.setResetPath(&path,true,SoGetBoundingBoxAction::TRANSFORM);
-    }
     auto mode = pcModeSwitch->whichChild.getValue();
     if(mode < 0)
         pcModeSwitch->whichChild = getDefaultMode();
-    bboxAction.apply(pcRoot);
+
+    SoTempPath path(20);
+    path.ref();
+    if(subname && subname[0]) {
+        SoDetail *det=0;
+        if(!getDetailPath(subname,&path,true,det)) {
+            if(mode < 0)
+                pcModeSwitch->whichChild = mode;
+            path.unrefNoDelete();
+            return Base::BoundBox3d();
+        }
+        delete det;
+    }
+    SoTempPath resetPath(3);
+    resetPath.ref();
+    if(!transform) {
+        resetPath.append(pcRoot);
+        resetPath.append(pcModeSwitch);
+        bboxAction.setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
+    }
+    if(path.getLength())
+        bboxAction.apply(&path);
+    else
+        bboxAction.apply(pcRoot);
     if(mode < 0)
         pcModeSwitch->whichChild = mode;
+    resetPath.unrefNoDelete();
     path.unrefNoDelete();
     auto bbox = bboxAction.getBoundingBox();
     float minX,minY,minZ,maxX,maxY,maxZ;

@@ -523,13 +523,14 @@ PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
 PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
     PyObject *transform=Py_True;
     PyObject *pyView = 0;
-    if (!PyArg_ParseTuple(args, "|OO!", &transform,View3DInventorPy::type_object(),&pyView))
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "|sOO!", &subname,&transform,View3DInventorPy::type_object(),&pyView))
         return NULL;
     PY_TRY {
         View3DInventor *view = 0;
         if(pyView)
             view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
-        auto bbox = getViewProviderPtr()->getBoundingBox(PyObject_IsTrue(transform),view);
+        auto bbox = getViewProviderPtr()->getBoundingBox(subname,PyObject_IsTrue(transform),view);
         Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
         return Py::new_reference_to(ret);
     } PY_CATCH;

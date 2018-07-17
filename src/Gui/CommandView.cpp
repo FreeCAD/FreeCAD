@@ -2422,7 +2422,7 @@ static std::vector<std::string> getBoxSelection(
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
-    auto bbox3 = vp->getBoundingBox(transform);
+    auto bbox3 = vp->getBoundingBox(0,transform);
     if(!bbox3.IsValid())
         return ret;
 

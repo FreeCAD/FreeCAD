@@ -172,8 +172,9 @@ colors: color dictonary of type elementName:(r,g,b,a)
         <Methode Name="getBoundingBox">
             <Documentation>
                 <UserDocu>
-getBoundingBox(transform=True, view=None): obtain the bounding box of this view object
+getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box of this view object
 
+* subname: the optional subname referring a sub-object
 * transform: whether to apply the transformation matrix of this view provider
 * view: the MDIView, default to active view
                 </UserDocu>

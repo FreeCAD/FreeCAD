@@ -2782,52 +2782,32 @@ void View3DInventorViewer::viewAll(float factor)
 
 void View3DInventorViewer::viewSelection()
 {
-#if 0
-    // Search for all SoFCSelection nodes
-    SoSearchAction searchAction;
-    searchAction.setType(SoFCSelection::getClassTypeId());
-    searchAction.setInterest(SoSearchAction::ALL);
-    searchAction.apply(pcViewProviderRoot);
-
-    SoPathList& paths = searchAction.getPaths();
-    int countPaths = paths.getLength();
-
     SoGroup* root = new SoGroup();
     root->ref();
 
-    for (int i=0; i<countPaths; i++) {
-        SoPath* path = paths[i];
-        SoNode* node = path->getTail();
-
-        if (!node || node->getTypeId() != SoFCSelection::getClassTypeId())
-            continue; // should not happen
-
-        SoFCSelection* select = static_cast<SoFCSelection*>(node);
-
-        // Check only document and object name but not sub-element name
-        if (Selection().isSelected(select->documentName.getValue().getString(),
-                                   select->objectName.getValue().getString())) {
-            root->addChild(select);
-        }
+    Base::BoundBox3d bbox;
+    for(auto &sel : Selection().getSelection(0,0)) {
+        auto vp = Application::Instance->getViewProvider(sel.pObject);
+        if(!vp)
+            continue;
+        bbox.Add(vp->getBoundingBox(sel.SubName,true));
     }
-
-#else
-    SoGroup* root = new SoGroup();
-    root->ref();
-
-    std::vector<App::DocumentObject*> selection = Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = selection.begin(); it != selection.end(); ++it) {
-        ViewProvider* vp = Application::Instance->getViewProvider(*it);
-        if (vp) {
-            root->addChild(vp->getRoot());
-        }
-    }
-
-#endif
 
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam)
-        cam->viewAll(root, this->getSoRenderManager()->getViewportRegion());
+    if (cam && bbox.IsValid()) {
+        SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
+        float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        switch (cam->viewportMapping.getValue()) {
+            case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+            case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+            case SoCamera::CROP_VIEWPORT_NO_FRAME:
+                aspectratio = 1.0f;
+                break;
+            default:
+                break;
+        }
+        cam->viewBoundingBox(box,aspectratio,1.0);
+    }
 
     root->unref();
 }
