@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>692</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -360,8 +360,11 @@
       </item>
       <item row="7" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
+        <property name="toolTip">
+         <string>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</string>
+        </property>
         <property name="text">
-         <string>Hide base units</string>
+         <string>Hide base length units for supported unit systems</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideUnits</cstring>
