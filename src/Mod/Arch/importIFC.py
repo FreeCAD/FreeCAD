@@ -1125,6 +1125,123 @@ def insert(filename,docname,skip=[],only=[],root=None):
     return doc
 
 
+
+class recycler:
+    
+    "a mechanism to reuse ifc entities if needed"
+
+    def __init__(self,ifcfile):
+        
+        self.ifcfile = ifcfile
+        self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
+        self.cartesianpoints = {}
+        self.directions = {}
+        self.polylines = {}
+        self.propertysinglevalues = {}
+        self.axis2placement3ds = {}
+        self.localplacements = {}
+        self.rgbs = {}
+        self.ssrenderings = {}
+        self.transformationoperators = {}
+        self.spared = 0
+    
+    def createIfcCartesianPoint(self,points):
+        if self.compress and points in self.cartesianpoints:
+            self.spared += 1
+            return self.cartesianpoints[points]
+        else:
+            c = self.ifcfile.createIfcCartesianPoint(points)
+            if self.compress:
+                self.cartesianpoints[points] = c
+            return c
+
+    def createIfcDirection(self,points):
+        if self.compress and points in self.directions:
+            self.spared += 1
+            return self.directions[points]
+        else:
+            c = self.ifcfile.createIfcDirection(points)
+            if self.compress:
+                self.directions[points] = c
+            return c
+
+    def createIfcPolyline(self,points):
+        key = "".join([str(p.Coordinates) for p in points])
+        if self.compress and key in self.polylines:
+            self.spared += 1
+            return self.polylines[key]
+        else:
+            c = self.ifcfile.createIfcPolyline(points)
+            if self.compress:
+                self.polylines[key] = c
+            return c
+
+    def createIfcPropertySingleValue(self,name,ptype,pvalue):
+        key = name + ptype + pvalue
+        if self.compress and key in self.propertysinglevalues:
+            self.spared += 1
+            return self.propertysinglevalues[key]
+        else:
+            c = self.ifcfile.createIfcPropertySingleValue(key,None,ifcfile.create_entity(ptype,pvalue),None)
+            if self.compress:
+                self.propertysinglevalues[key] = c
+            return c
+
+    def createIfcAxis2Placement3D(self,p1,p2,p3):
+        key = str(p1.Coordinates) + str(p2.DirectionRatios) + str(p3.DirectionRatios)
+        if self.compress and key in self.axis2placement3ds:
+            self.spared += 1
+            return self.axis2placement3ds[key]
+        else:
+            c = self.ifcfile.createIfcAxis2Placement3D(p1,p2,p3)
+            if self.compress:
+                self.axis2placement3ds[key] = c
+            return c
+    
+    def createIfcLocalPlacement(self,gpl):
+        key = str(gpl.Location.Coordinates) + str(gpl.Axis.DirectionRatios) + str(gpl.RefDirection.DirectionRatios)
+        if self.compress and key in self.localplacements:
+            self.spared += 1
+            return self.localplacements[key]
+        else:
+            c = self.ifcfile.createIfcLocalPlacement(None,gpl)
+            if self.compress:
+                self.localplacements[key] = c
+            return c
+    
+    def createIfcColourRgb(self,r,g,b):
+        key = (r,g,b)
+        if self.compress and key in self.rgbs:
+            self.spared += 1
+            return self.rgbs[key]
+        else:
+            c = self.ifcfile.createIfcColourRgb(None,r,g,b)
+            if self.compress:
+                self.rgbs[key] = c
+            return c
+    
+    def createIfcSurfaceStyleRendering(self,col):
+        key = (col.Red,col.Green,col.Blue)
+        if self.compress and key in self.ssrenderings:
+            self.spared += 1
+            return self.ssrenderings[key]
+        else:
+            c = self.ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+            if self.compress:
+                self.ssrenderings[key] = c
+            return c
+
+    def createIfcCartesianTransformationOperator3D(self,axis1,axis2,origin,scale,axis3):
+        key = str(axis1.DirectionRatios) + str(axis2.DirectionRatios) + str(origin.Coordinates) + str(scale) + str(axis3.DirectionRatios)
+        if self.compress and key in self.transformationoperators:
+            self.spared += 1
+            return self.transformationoperators[key]
+        else:
+            c = self.ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,scale,axis3)
+            if self.compress:
+                self.transformationoperators[key] = c
+            return c
+
 def export(exportList,filename):
 
 
@@ -1197,6 +1314,11 @@ def export(exportList,filename):
     groups = {} # { Host: [Child,Child,...] }
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
+    
+    # reusable entity system
+    
+    global ifcbin
+    ifcbin = recycler(ifcfile)
 
     # build clones table
 
@@ -1266,9 +1388,9 @@ def export(exportList,filename):
             for axg in obj.Proxy.getAxisData(obj):
                 ifcaxg = []
                 for ax in axg:
-                    p1 = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
-                    p2 = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)))
-                    pol = ifcfile.createIfcPolyline([p1,p2])
+                    p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
+                    p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)))
+                    pol = ifcbin.createIfcPolyline([p1,p2])
                     ifcpols.append(pol)
                     axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
                     ifcaxg.append(axis)
@@ -1286,11 +1408,11 @@ def export(exportList,filename):
             if len(ifcaxes) > 2:
                 v = ifcaxes[2]
             if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
-            xvc =  ifcfile.createIfcDirection((1.0,0.0,0.0))
-            zvc =  ifcfile.createIfcDirection((0.0,0.0,1.0))
-            ovc =  ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl =  ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
-            plac = ifcfile.createIfcLocalPlacement(None,gpl)
+            xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
+            zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
+            ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            plac = ifcbin.createIfcLocalPlacement(gpl)
             cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
             #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
             srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
@@ -1438,7 +1560,7 @@ def export(exportList,filename):
                                     except:
                                         pvalue = pvalue.encode("utf8")
                                         if DEBUG:print("      warning: unable to export property as numeric value:",key,pvalue)
-                            p = ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(ptype),pvalue),None)
+                            p = ifcbin.createIfcPropertySingleValue(str(key),str(ptype),pvalue)
                             psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
                         pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,pname,None,props)
@@ -1495,7 +1617,7 @@ def export(exportList,filename):
                                 print("key",prop["key"],type(prop["key"]))
                                 print("tp",prop["tp"],type(prop["tp"]))
                                 print("val",prop["val"],type(prop["val"]))
-                            props.append(ifcfile.createIfcPropertySingleValue(prop["key"],None,ifcfile.create_entity(prop["tp"],prop["val"]),None))
+                            props.append(ifcbin.createIfcPropertySingleValue(prop["key"],prop["tp"],prop["val"]))
                         pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
                         ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
 
@@ -1531,7 +1653,7 @@ def export(exportList,filename):
                                 val = int(val)
                             else:
                                 val = float(val)
-                        props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
+                        props.append(ifcbin.createIfcPropertySingleValue(str(key),str(tp),val))
                 if props:
                     pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
                     ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
@@ -1544,18 +1666,18 @@ def export(exportList,filename):
             # exporting all the object properties
             FreeCADProps = []
             FreeCADGuiProps = []
-            FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADType",None,ifcfile.create_entity("IfcText",obj.TypeId),None))
-            FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADName",None,ifcfile.create_entity("IfcText",obj.Name),None))
+            FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCADType","IfcText",obj.TypeId))
+            FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCADName","IfcText",obj.Name))
             sets = [("App",obj)]
             if hasattr(obj,"Proxy"):
                 if obj.Proxy:
-                    FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADAppObject",None,ifcfile.create_entity("IfcText",str(obj.Proxy.__class__)),None))
+                    FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCADAppObject","IfcText",str(obj.Proxy.__class__)))
             if FreeCAD.GuiUp:
                 if obj.ViewObject:
                     sets.append(("Gui",obj.ViewObject))
                     if hasattr(obj.ViewObject,"Proxy"):
                         if obj.ViewObject.Proxy:
-                            FreeCADGuiProps.append(ifcfile.createIfcPropertySingleValue("FreeCADGuiObject",None,ifcfile.create_entity("IfcText",str(obj.ViewObject.Proxy.__class__)),None))
+                            FreeCADGuiProps.append(ifcbin.createIfcPropertySingleValue("FreeCADGuiObject","IfcText",str(obj.ViewObject.Proxy.__class__)))
             for realm,ctx in sets:
                 if ctx:
                     for prop in ctx.PropertiesList:
@@ -1597,9 +1719,9 @@ def export(exportList,filename):
                             if itype:
                                 # TODO add description
                                 if realm == "Gui":
-                                    FreeCADGuiProps.append(ifcfile.createIfcPropertySingleValue("FreeCADGui_"+prop,None,ifcfile.create_entity(itype,ivalue),None))
+                                    FreeCADGuiProps.append(ifcbin.createIfcPropertySingleValue("FreeCADGui_"+prop,itype,ivalue))
                                 else:
-                                    FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCAD_"+prop,None,ifcfile.create_entity(itype,ivalue),None))
+                                    FreeCADProps.append(ifcbin.createIfcPropertySingleValue("FreeCAD_"+prop,itype,ivalue))
             if FreeCADProps:
                 pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'FreeCADPropertySet',None,FreeCADProps)
                 ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
@@ -1715,8 +1837,8 @@ def export(exportList,filename):
                             rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
                             break
             if rgb:
-                col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
-                ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+                col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
+                ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m.Label.encode("utf8"),"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
@@ -1761,10 +1883,10 @@ def export(exportList,filename):
         curvestyles = {}
         if annotations and DEBUG: print("exporting 2D objects...")
         for anno in annotations:
-            xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             if anno.isDerivedFrom("Part::Feature"):
                 reps = []
                 sh = anno.Shape.copy()
@@ -1779,8 +1901,8 @@ def export(exportList,filename):
                         reps.append(createCurve(ifcfile,e))
             elif anno.isDerivedFrom("App::Annotation"):
                 l = anno.Position
-                pos = ifcfile.createIfcCartesianPoint((l.x,l.y,l.z))
-                tpl = ifcfile.createIfcAxis2Placement3D(pos,None,None)
+                pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+                tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
                 txt = ifcfile.createIfcTextLiteral(";".join(anno.LabelText).encode("utf8"),tpl,"LEFT")
                 reps = [txt]
 
@@ -1790,10 +1912,10 @@ def export(exportList,filename):
                     if rgb in curvestyles:
                         psa = curvestyles[rgb]
                     else:
-                        col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
-                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
-                        ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
-                        psa = ifcfile.createIfcPresentationStyleAssignment([ics])
+                        col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
+                        cvf = ifcbin.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
+                        ics = ifcbin.createIfcCurveStyle('Line',cvf,None,col)
+                        psa = ifcbin.createIfcPresentationStyleAssignment([ics])
                         curvestyles[rgb] = psa
                     for rep in reps:
                         isi = ifcfile.createIfcStyledItem(rep,[psa],None)
@@ -1821,6 +1943,14 @@ def export(exportList,filename):
         FreeCAD.ActiveDocument.recompute()
 
     os.remove(templatefile)
+    
+    if DEBUG and ifcbin.compress:
+        f = pyopen(filename,"rb")
+        s = len(f.read().split("\n"))
+        f.close()
+        print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
+    del ifcbin
+
 
 
 def createFromProperties(propsets,ifcfile):
@@ -1933,10 +2063,10 @@ def createCurve(ifcfile,wire):
                 p2 = 360 + p2
             if da > 0:
                 follow = not(follow)
-            xvc =       ifcfile.createIfcDirection((1.0,0.0))
-            ovc =       ifcfile.createIfcCartesianPoint(tuple(e.Curve.Center))
-            plc =       ifcfile.createIfcAxis2Placement2D(ovc,xvc)
-            cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
+            xvc =       ifcbin.createIfcDirection((1.0,0.0))
+            ovc =       ifcbin.createIfcCartesianPoint(tuple(e.Curve.Center))
+            plc =       ifcbin.createIfcAxis2Placement2D(ovc,xvc)
+            cir =       ifcbin.createIfcCircle(plc,e.Curve.Radius)
             curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
         else:
             verts = [vertex.Point for vertex in e.Vertexes]
@@ -1948,8 +2078,8 @@ def createCurve(ifcfile,wire):
                     last = e.Vertexes[-1].Point
             else:
                 last = e.Vertexes[-1].Point
-            pts =     [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-            curve =   ifcfile.createIfcPolyline(pts)
+            pts =     [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
+            curve =   ifcbin.createIfcPolyline(pts)
         segment = ifcfile.createIfcCompositeCurveSegment("CONTINUOUS",True,curve)
         segments.append(segment)
     if segments:
@@ -1964,9 +2094,9 @@ def getProfile(ifcfile,p):
     import Part,DraftGeomUtils
     profile = None
     if len(p.Edges) == 1:
-        pxvc = ifcfile.createIfcDirection((1.0,0.0))
-        povc = ifcfile.createIfcCartesianPoint((0.0,0.0))
-        pt = ifcfile.createIfcAxis2Placement2D(povc,pxvc)
+        pxvc = ifcbin.createIfcDirection((1.0,0.0))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         if isinstance(p.Edges[0].Curve,Part.Circle):
             # extruded circle
             profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
@@ -1980,8 +2110,8 @@ def getProfile(ifcfile,p):
             outerwire = createCurve(ifcfile,f.OuterWire)
         else:
             w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
-            pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-            outerwire = ifcfile.createIfcPolyline(pts)
+            pts = [ifcbin.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+            outerwire = ifcbin.createIfcPolyline(pts)
         innerwires = []
         for w in f.Wires:
             if w.hashCode() != f.OuterWire.hashCode():
@@ -1989,8 +2119,8 @@ def getProfile(ifcfile,p):
                     innerwires.append(createCurve(ifcfile,w))
                 else:
                     w = Part.Wire(Part.__sortEdges__(w.Edges))
-                    pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-                    innerwires.append(ifcfile.createIfcPolyline(pts))
+                    pts = [ifcbin.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+                    innerwires.append(ifcbin.createIfcPolyline(pts))
         profile = ifcfile.createIfcArbitraryProfileDefWithVoids("AREA",None,outerwire,innerwires)
     else:
         if DraftGeomUtils.hasCurves(p):
@@ -1999,8 +2129,8 @@ def getProfile(ifcfile,p):
         else:
             # extruded polyline
             w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
-            pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-            pol = ifcfile.createIfcPolyline(pts)
+            pts = [ifcbin.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+            pol = ifcbin.createIfcPolyline(pts)
         profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
     return profile
 
@@ -2026,11 +2156,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     # base shape already exists
                     repmap = sharedobjects[k]
                     pla = obj.Placement
-                    axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-                    axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
-                    axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-                    origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
-                    transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
+                    axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                    axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
+                    axis3 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                    origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
+                    transf = ifcbin.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
                     mapitem = ifcfile.createIfcMappedItem(repmap,transf)
                     shapes = [mapitem]
                     solidType = "MappedRepresentation"
@@ -2085,11 +2215,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 pl2 = FreeCAD.Placement(obj.Placement)
                                 pl2.Base = pl2.Base.multiply(0.001)
                                 pli = pl2.multiply(pli)
-                            xvc =       ifcfile.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-                            zvc =       ifcfile.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-                            ovc =       ifcfile.createIfcCartesianPoint(tuple(pli.Base))
-                            lpl =       ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                            edir =      ifcfile.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
+                            xvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                            zvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                            ovc =       ifcbin.createIfcCartesianPoint(tuple(pli.Base))
+                            lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                            edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
                             shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,evi.Length)
                             shapes.append(shape)
                             solidType = "SweptSolid"
@@ -2159,11 +2289,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
                                     rep.ContextOfItems = context
-                                xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
-                                zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
-                                ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
-                                gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                                placement = ifcfile.createIfcLocalPlacement(None,gpl)
+                                xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+                                zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+                                ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+                                gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                                placement = ifcbin.createIfcLocalPlacement(gpl)
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
@@ -2219,8 +2349,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                     else:
                                         tris = fcsolid.tessellate(tessellation)
                                     for tri in tris[1]:
-                                        pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
-                                        loop =  ifcfile.createIfcPolyLoop(pts)
+                                        pts =   [ifcbin.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
+                                        loop =  ifcbin.createIfcPolyLoop(pts)
                                         bound = ifcfile.createIfcFaceOuterBound(loop,True)
                                         face =  ifcfile.createIfcFace([bound])
                                         faces.append(face)
@@ -2235,8 +2365,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 n = fcface.normalAt(0,0)
                                 if DraftVecUtils.angle(v2,v1,n) >= 0:
                                     verts.reverse() # inverting verts order if the direction is couterclockwise
-                                pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                                loop =  ifcfile.createIfcPolyLoop(pts)
+                                pts =   [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                loop =  ifcbin.createIfcPolyLoop(pts)
                                 bound = ifcfile.createIfcFaceOuterBound(loop,True)
                                 loops.append(bound)
                                 for wire in fcface.Wires:
@@ -2247,8 +2377,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                             v2 = verts[1].sub(c)
                                             if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
                                                 verts.reverse()
-                                            pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                                            loop =  ifcfile.createIfcPolyLoop(pts)
+                                            pts =   [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                            loop =  ifcbin.createIfcPolyLoop(pts)
                                             bound = ifcfile.createIfcFaceBound(loop,True)
                                             loops.append(bound)
                                         else:
@@ -2267,17 +2397,17 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-            xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.Placement
-            axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-            axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
-            origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
-            axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-            transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
+            axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+            axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
+            origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
+            axis3 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+            transf = ifcbin.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
             mapitem = ifcfile.createIfcMappedItem(repmap,transf)
             shapes = [mapitem]
             sharedobjects[tostore] = repmap
@@ -2303,19 +2433,19 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     if obj.Material:
                         if obj.Material.isDerivedFrom("App::MaterialObject"):
                             m = obj.Material.Label.encode("utf8")
-                col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
-                ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+                col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
+                ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
                 surfstyles[rgb] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
-        xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
-        zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
-        ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
-        gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
-        placement = ifcfile.createIfcLocalPlacement(None,gpl)
+        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+        gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+        placement = ifcbin.createIfcLocalPlacement(gpl)
         representation = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
         productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
 
