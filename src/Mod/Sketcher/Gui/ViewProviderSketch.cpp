@@ -2802,39 +2802,14 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
 
         if( !baseUnitStr.isEmpty() ) 
         {
-            cout << baseUnitStr.toAscii().data() << endl;
+            // expected unit string matches actual unit string. remove.
+            if( QString::compare(baseUnitStr, unitStr)==0 )
+            {
+                // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+                QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
+                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+            }
         }
-
-
-
-        //Base::Quantity quat;
-        //double   baseFactor;
-
-        //quat.setValue(1); 
-        //quat.setUnit(Base::Unit::Length);
-
-
-        // QString getUserString (double &factor, QString &unitString) const
-
-        // Determine if it is being rendered in the base unit (i.e. m for mks
-        // and not centimeters)
-
-        // render string with a unity valued quanity to get base factor
-        //quat.getUserString(baseFactor, dummy);
-
-        //cout << "Value of constraint: " << constraint->getValue() << endl
-        //    << "factor " << factor << endl
-        //    << "baseFactor " << baseFactor << endl
-        //    << "Unit string: " << unitStr.toAscii().data() << endl;
-
-        //// if factors are different, userStr is not in base units. Do not omit.
-        //if( baseFactor == factor )
-        //{
-        //    // rendered in base units, strip them out
-        //    // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
-        //    QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
-        //    userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
-        //}
     }
 
     return userStr;
