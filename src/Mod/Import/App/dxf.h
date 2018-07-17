@@ -121,7 +121,7 @@ struct LWPolyDataOut
 };
 //********************
 
-class CDxfWrite{
+class ImportExport CDxfWrite{
 private:
     std::ofstream* m_ofs;
     bool m_fail;
