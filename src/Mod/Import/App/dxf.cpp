@@ -4,8 +4,12 @@
 // modified 2018 wandererfan
 
 #include "PreCompiled.h"
-#include <iomanip>
+
+//required by windows for M_PI definition
+#define _USE_MATH_DEFINES
 #include <cmath>
+
+#include <iomanip>
 
 #include <src/Build/Version.h>
 #include <Base/Console.h>
