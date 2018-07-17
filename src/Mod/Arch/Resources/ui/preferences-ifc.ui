@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>728</height>
+    <width>445</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,44 +40,36 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="toolTip">
-           <string>Show verbose information during import and export of IFC files</string>
-          </property>
-          <property name="text">
-           <string>Show debug messages</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcDebug</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+        <property name="toolTip">
+         <string>Show verbose information during import and export of IFC files</string>
+        </property>
+        <property name="text">
+         <string>Show debug messages</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcDebug</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_6">
-          <property name="text">
-           <string>Create clones when objects have shared geometry</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcCreateClones</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="text">
+         <string>Create clones when objects have shared geometry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcCreateClones</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -209,124 +201,100 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</string>
-          </property>
-          <property name="text">
-           <string>Separate openings</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSeparateOpenings</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+        <property name="toolTip">
+         <string>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</string>
+        </property>
+        <property name="text">
+         <string>Separate openings</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcSeparateOpenings</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_2">
-          <property name="toolTip">
-           <string>If this is checked, the importer will try to detect extrusions. This might slow things down...</string>
-          </property>
-          <property name="text">
-           <string>Detect extrusions</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcGetExtrusions</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+        <property name="toolTip">
+         <string>If this is checked, the importer will try to detect extrusions. This might slow things down...</string>
+        </property>
+        <property name="text">
+         <string>Detect extrusions</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcGetExtrusions</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_17">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_11">
-          <property name="toolTip">
-           <string>Split walls made of multiple layers</string>
-          </property>
-          <property name="text">
-           <string>Split multilayer walls</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSplitLayers</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_11">
+        <property name="toolTip">
+         <string>Split walls made of multiple layers</string>
+        </property>
+        <property name="text">
+         <string>Split multilayer walls</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcSplitLayers</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
-          <property name="toolTip">
-           <string>If this is checked, object names will be prefixed with the IFC ID number</string>
-          </property>
-          <property name="text">
-           <string>Prefix names with ID number</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcPrefixNumbers</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+        <property name="toolTip">
+         <string>If this is checked, object names will be prefixed with the IFC ID number</string>
+        </property>
+        <property name="text">
+         <string>Prefix names with ID number</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcPrefixNumbers</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_3">
-          <property name="toolTip">
-           <string>If several materials with the same name are found in the IFC file, they will be treated as one.</string>
-          </property>
-          <property name="text">
-           <string>Merge materials with same name</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcMergeMaterials</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+        <property name="toolTip">
+         <string>If several materials with the same name are found in the IFC file, they will be treated as one.</string>
+        </property>
+        <property name="text">
+         <string>Merge materials with same name</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcMergeMaterials</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_8">
-          <property name="toolTip">
-           <string>If checked each object will have their Ifc Properties stored in a spreadsheet object.</string>
-          </property>
-          <property name="text">
-           <string>Import Ifc Properties in spreadsheet</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcImportProperties</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_8">
+        <property name="toolTip">
+         <string>If checked each object will have their Ifc Properties stored in a spreadsheet object.</string>
+        </property>
+        <property name="text">
+         <string>Import Ifc Properties in spreadsheet</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcImportProperties</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
@@ -359,24 +327,20 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_20">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_14">
-          <property name="toolTip">
-           <string>Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</string>
-          </property>
-          <property name="text">
-           <string>Fit view while importing</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcFitViewOnImport</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_14">
+        <property name="toolTip">
+         <string>Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</string>
+        </property>
+        <property name="text">
+         <string>Fit view while importing</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcFitViewOnImport</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -388,163 +352,141 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox">
-          <property name="toolTip">
-           <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
-          </property>
-          <property name="text">
-           <string>Force export as Brep</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcExportAsBrep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
+        </property>
+        <property name="text">
+         <string>Force export as Brep</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcExportAsBrep</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_4">
-          <property name="toolTip">
-           <string>Use triangulation options set in the DAE options page</string>
-          </property>
-          <property name="text">
-           <string>Use DAE triangulation options</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcUseDaeOptions</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="toolTip">
+         <string>Use triangulation options set in the DAE options page</string>
+        </property>
+        <property name="text">
+         <string>Use DAE triangulation options</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcUseDaeOptions</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_5">
-          <property name="toolTip">
-           <string>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</string>
-          </property>
-          <property name="text">
-           <string>Join coplanar facets when triangulating</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcJoinCoplanarFacets</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="toolTip">
+         <string>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</string>
+        </property>
+        <property name="text">
+         <string>Join coplanar facets when triangulating</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcJoinCoplanarFacets</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_9">
-          <property name="toolTip">
-           <string>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</string>
-          </property>
-          <property name="text">
-           <string>Store IFC universal ID in FreeCAD objects</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcStoreUid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_9">
+        <property name="toolTip">
+         <string>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</string>
+        </property>
+        <property name="text">
+         <string>Store IFC universal ID in FreeCAD objects</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcStoreUid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_10">
-          <property name="toolTip">
-           <string>Warning, experimental feature!</string>
-          </property>
-          <property name="text">
-           <string>Use IfcOpenShell serializer if available</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSerialize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_10">
+        <property name="toolTip">
+         <string>Warning, experimental feature!</string>
+        </property>
+        <property name="text">
+         <string>Use IfcOpenShell serializer if available</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcSerialize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_18">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_12">
-          <property name="text">
-           <string>Export 2D objects as IfcAnnotations</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcExport2D</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_12">
+        <property name="text">
+         <string>Export 2D objects as IfcAnnotations</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcExport2D</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_19">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_13">
-          <property name="toolTip">
-           <string>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</string>
-          </property>
-          <property name="text">
-           <string>Export full FreeCAD parametric model</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>IfcExportFreeCADProperties</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_13">
+        <property name="toolTip">
+         <string>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</string>
+        </property>
+        <property name="text">
+         <string>Export full FreeCAD parametric model</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcExportFreeCADProperties</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_15">
+        <property name="toolTip">
+         <string>If this is checked, when possible, similar entities will be used only once in the file. This can reduce the file size a lot, but will make it less easily readable by humans</string>
+        </property>
+        <property name="text">
+         <string>Reuse similar entities</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcCompress</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
