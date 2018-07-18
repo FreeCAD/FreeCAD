@@ -385,6 +385,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
+    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -618,23 +619,48 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if GET_EXTRUSIONS:
                             ex = Arch.getExtrusionData(shape)
                             if ex:
-                                print("extrusion ",end="")
-                                baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                                # bug in ifcopenshell? Some faces of a shell may have non-null placement
-                                # workaround to remove the bad placement: exporting/reimporting as step
-                                if not ex[0].Placement.isNull():
-                                    import tempfile
-                                    fd, tf = tempfile.mkstemp(suffix=".stp")
-                                    ex[0].exportStep(tf)
-                                    f = Part.read(tf)
-                                    os.close(fd)
-                                    os.remove(tf)
-                                else:
-                                    f = ex[0]
-                                baseface.Shape = f
+                                # check for extrusion profile
+                                baseface = None
+                                profileid = None
+                                addplacement = None
+                                if product.Representation:
+                                    if product.Representation.Representations:
+                                        if product.Representation.Representations[0].is_a("IfcShapeRepresentation"):
+                                            if product.Representation.Representations[0].Items:
+                                                if product.Representation.Representations[0].Items[0].is_a("IfcExtrudedAreaSolid"):
+                                                    profileid = product.Representation.Representations[0].Items[0].SweptArea.id()
+                                if profileid and profileid in profiles:
+                                    # reuse existing profile
+                                    print("shared extrusion ",end="")
+                                    baseface = profiles[profileid]
+                                    addplacement = FreeCAD.Placement()
+                                    addplacement.Rotation = FreeCAD.Rotation(baseface.Shape.Faces[0].normalAt(0,0),ex[0].Faces[0].normalAt(0,0))
+                                    addplacement.Base = addplacement.Rotation.multVec(ex[0].CenterOfMass.sub(baseface.Shape.CenterOfMass))
+                                if not baseface:
+                                    print("extrusion ",end="")
+                                    baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                                    # bug in ifcopenshell? Some faces of a shell may have non-null placement
+                                    # workaround to remove the bad placement: exporting/reimporting as step
+                                    if not ex[0].Placement.isNull():
+                                        import tempfile
+                                        fd, tf = tempfile.mkstemp(suffix=".stp")
+                                        ex[0].exportStep(tf)
+                                        f = Part.read(tf)
+                                        os.close(fd)
+                                        os.remove(tf)
+                                    else:
+                                        f = ex[0]
+                                    baseface.Shape = f
+                                    if profileid:
+                                        profiles[profileid] = baseface
                                 baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
                                 baseobj.Base = baseface
-                                baseobj.Dir = ex[1]
+                                if addplacement:
+                                    baseobj.Placement.Rotation = addplacement.Rotation
+                                    baseobj.Placement.move(addplacement.Base)
+                                    baseobj.Dir = addplacement.Rotation.inverted().multVec(ex[1])
+                                else:
+                                    baseobj.Dir = ex[1]
                                 if FreeCAD.GuiUp:
                                     baseface.ViewObject.hide()
                         if (not baseobj):
@@ -694,13 +720,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if FreeCAD.GuiUp and baseobj:
                         if hasattr(baseobj,"ViewObject"):
                             baseobj.ViewObject.hide()
-                    if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
+                    if ptype == "IfcBuildingStorey":
+                        if product.Elevation:
+                            obj.Placement.Base.z = product.Elevation * 1000
 
                     # setting role
 
                     try:
                         if hasattr(obj,"IfcRole"):
-                            obj.IfcRole = ptype[3:]
+                            obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
                         else:
                             # pre-0.18 objects, only support a small subset of types
                             r = ptype[3:]
@@ -726,8 +754,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = Arch.makeComponent(baseobj,name=name)
 
             if obj:
-                sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
-                if DEBUG: print(sols,end="")
+                s = ""
+                if hasattr(obj,"Shape"):
+                    if obj.Shape.Solids:
+                        s = str(len(obj.Shape.Solids))+" solids"
+                if DEBUG: print(s,end="")
                 objects[pid] = obj
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
@@ -738,7 +769,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
-                        if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
+                        if ptype == "IfcBuildingStorey":
+                            if product.Elevation:
+                                obj.Placement.Base.z = product.Elevation * 1000
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -750,7 +783,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
-                        if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
+                        if ptype == "IfcBuildingStorey":
+                            if product.Elevation:
+                                obj.Placement.Base.z = product.Elevation * 1000
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
@@ -968,13 +1003,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
     else:
 
         if DEBUG: print("Processing Arch relationships...",end="")
+        first = True
 
         # subtractions
 
         if SEPARATE_OPENINGS:
             for subtraction in subtractions:
                 if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
-                    if DEBUG: print("subtracting ",objects[subtraction[0]].Label, " from ", objects[subtraction[1]].Label)
+                    if DEBUG and first:
+                        print("")
+                        first = False
+                    if DEBUG: print("    subtracting ",objects[subtraction[0]].Label, " from ", objects[subtraction[1]].Label)
                     Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
                     if DEBUG: FreeCAD.ActiveDocument.recompute()
 
@@ -984,11 +1023,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if host in objects.keys():
                 cobs = [objects[child] for child in children if child in objects.keys()]
                 if cobs:
+                    if DEBUG and first:
+                        print("")
+                        first = False
                     if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart"])):
                         # avoid huge fusions
                         print("more than 10 shapes to add: skipping.")
                     else:
-                        if DEBUG: print("adding ",len(cobs), " object(s) to ", objects[host].Label)
+                        if DEBUG: print("    adding ",len(cobs), " object(s) to ", objects[host].Label)
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
@@ -1130,11 +1172,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 
 class recycler:
-    
+
     "a mechanism to reuse ifc entities if needed"
 
     def __init__(self,ifcfile):
-        
+
         self.ifcfile = ifcfile
         self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
         self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
@@ -1147,7 +1189,7 @@ class recycler:
         self.ssrenderings = {}
         self.transformationoperators = {}
         self.spared = 0
-    
+
     def createIfcCartesianPoint(self,points):
         if self.compress and points in self.cartesianpoints:
             self.spared += 1
@@ -1200,7 +1242,7 @@ class recycler:
             if self.compress:
                 self.axis2placement3ds[key] = c
             return c
-    
+
     def createIfcLocalPlacement(self,gpl):
         key = str(gpl.Location.Coordinates) + str(gpl.Axis.DirectionRatios) + str(gpl.RefDirection.DirectionRatios)
         if self.compress and key in self.localplacements:
@@ -1211,7 +1253,7 @@ class recycler:
             if self.compress:
                 self.localplacements[key] = c
             return c
-    
+
     def createIfcColourRgb(self,r,g,b):
         key = (r,g,b)
         if self.compress and key in self.rgbs:
@@ -1222,7 +1264,7 @@ class recycler:
             if self.compress:
                 self.rgbs[key] = c
             return c
-    
+
     def createIfcSurfaceStyleRendering(self,col):
         key = (col.Red,col.Green,col.Blue)
         if self.compress and key in self.ssrenderings:
@@ -1317,9 +1359,9 @@ def export(exportList,filename):
     groups = {} # { Host: [Child,Child,...] }
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
-    
+
     # reusable entity system
-    
+
     global ifcbin
     ifcbin = recycler(ifcfile)
 
@@ -1381,9 +1423,9 @@ def export(exportList,filename):
             continue
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
             ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitely set
-        
+
         # export grids
-            
+
         if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
             ifctype = "IfcGrid"
             ifcaxes = []
@@ -1946,7 +1988,7 @@ def export(exportList,filename):
         FreeCAD.ActiveDocument.recompute()
 
     os.remove(templatefile)
-    
+
     if DEBUG and ifcbin.compress:
         f = pyopen(filename,"rb")
         s = len(f.read().split("\n"))
