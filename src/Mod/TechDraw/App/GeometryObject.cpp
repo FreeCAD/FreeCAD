@@ -695,3 +695,22 @@ TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
     }
     return transShape;
 }
+
+//!moves a shape
+TopoDS_Shape TechDrawGeometry::moveShape(const TopoDS_Shape &input,
+                                         const Base::Vector3d& motion)
+{
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf xlate;
+        xlate.SetTranslation(gp_Vec(motion.x,motion.y,motion.z));
+
+        BRepBuilderAPI_Transform mkTrf(input, xlate);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::moveShape - move failed.\n");
+        return transShape;
+    }
+    return transShape;
+}

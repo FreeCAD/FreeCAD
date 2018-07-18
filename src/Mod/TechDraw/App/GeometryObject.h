@@ -59,6 +59,8 @@ TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
 TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
                              gp_Ax2& viewAxis,
                              double rotAngle);
+TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape &input,
+                                      const Base::Vector3d& motion);
 
 
 //! Returns the centroid of shape, as viewed according to direction
