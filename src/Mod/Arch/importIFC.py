@@ -694,6 +694,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if FreeCAD.GuiUp and baseobj:
                         if hasattr(baseobj,"ViewObject"):
                             baseobj.ViewObject.hide()
+                    if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
 
                     # setting role
 
@@ -737,6 +738,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -748,6 +750,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if ptype == "IfcBuildingStorey": obj.Placement.Base.z = product.Elevation*1000
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
