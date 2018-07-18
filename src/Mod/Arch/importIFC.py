@@ -1137,11 +1137,11 @@ class recycler:
         
         self.ifcfile = ifcfile
         self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
-        self.cartesianpoints = {}
-        self.directions = {}
+        self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
+        self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
         self.polylines = {}
         self.propertysinglevalues = {}
-        self.axis2placement3ds = {}
+        self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
         self.localplacements = {}
         self.rgbs = {}
         self.ssrenderings = {}
