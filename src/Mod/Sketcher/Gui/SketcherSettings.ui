@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>653</height>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,61 @@
       <string>Sketch editing</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="8" column="0" colspan="2">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Notifications</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_22">
+         <item>
+          <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
+           <property name="toolTip">
+            <string>Notify automatic constraint substitutions.</string>
+           </property>
+           <property name="text">
+            <string>Notify automatic constraint substitutions</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>NotifyConstraintSubstitutions</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_6">
         <property name="minimumSize">
@@ -117,7 +172,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+      <item row="7" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="enabled">
          <bool>true</bool>
@@ -264,61 +319,6 @@
         </layout>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
-       <widget class="QGroupBox" name="groupBox_5">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="title">
-         <string>Notifications</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_22">
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
-           <property name="toolTip">
-            <string>Notify automatic constraint substitutions.</string>
-           </property>
-           <property name="text">
-            <string>Notify automatic constraint substitutions</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>NotifyConstraintSubstitutions</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
@@ -339,6 +339,22 @@
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
+        <property name="toolTip">
+         <string>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</string>
+        </property>
+        <property name="text">
+         <string>Hide base length units for supported unit systems</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideUnits</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
         </property>
        </widget>
       </item>
