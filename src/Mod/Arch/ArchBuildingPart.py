@@ -500,6 +500,7 @@ class ViewProviderBuildingPart:
         self.txt.justification = coin.SoText2.LEFT
         self.txt.string.setValue("level")
         self.sep.addChild(self.txt)
+        vobj.addDisplayMode(coin.SoSeparator(),"Default")
         self.onChanged(vobj,"ShapeColor")
         self.onChanged(vobj,"FontName")
         self.onChanged(vobj,"ShowLevel")
@@ -517,10 +518,6 @@ class ViewProviderBuildingPart:
     def setDisplayMode(self,mode):
 
         return mode
-
-    def isShow(self):
-
-        return True
 
     def updateData(self,obj,prop):
 
