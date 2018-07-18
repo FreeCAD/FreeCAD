@@ -2759,7 +2759,7 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     
     // Get value of HideUnits option. Default is false.
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
-    iHideUnits = hGrpSketcher->GetBool("HideUnits", 0l);
+    iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
 
     // Get the current display string including units
     userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
