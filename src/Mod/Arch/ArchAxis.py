@@ -884,10 +884,6 @@ class _ViewProviderAxisSystem:
         import Arch_rc
         return ":/icons/Arch_Axis_System_Tree.svg"
 
-    def isShow(self):
-
-        return True
-
     def claimChildren(self):
 
         if hasattr(self,"axes"):
@@ -897,6 +893,7 @@ class _ViewProviderAxisSystem:
     def attach(self, vobj):
 
         self.axes = vobj.Object.Axes
+        vobj.addDisplayMode(coin.SoSeparator(),"Default")
 
     def getDisplayModes(self,vobj):
 
