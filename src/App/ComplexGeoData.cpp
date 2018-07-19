@@ -257,8 +257,14 @@ size_t ComplexGeoData::getElementMapSize() const {
 const char *ComplexGeoData::getElementName(const char *name, int direction, 
         std::vector<App::StringIDRef> *sid) const 
 {
-    if(!name || !_ElementMap) 
+    if(!name)
+        return 0;
+    if(!_ElementMap) {
+        const char *txt = isMappedElement(name);
+        if(txt && !boost::contains(txt,elementMapPrefix()))
+            return txt;
         return name;
+    }
 
     if(direction==1) {
         auto it = _ElementMap->right.find(name);

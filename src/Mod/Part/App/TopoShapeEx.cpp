@@ -453,11 +453,11 @@ std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const 
     int idx=0;
     for(auto &shape : info.getTopoShapes()) {
         ++idx;
+        shape.Tag = Tag;
         if(shape.isNull()) {
             shape._Shape = info.shapes.FindKey(idx);
             shape.mapSubElement(*this);
         }
-        shape.Tag = Tag;
     }
     return info.topoShapes;
 }
@@ -524,11 +524,11 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     }
 
     auto &shape = info.getTopoShapes()[idx-1];
+    shape.Tag = Tag;
     if(shape.isNull()) {
         shape._Shape = info.shapes.FindKey(idx);
         shape.mapSubElement(*this);
     }
-    shape.Tag = Tag;
     return shape;
 }
 

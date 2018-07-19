@@ -1412,11 +1412,29 @@ std::vector<PyTypeObject*> buildShapeEnumTypeMap()
 PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
 {
     PyObject *pcObj;
-    PyObject *type;
-    if (!PyArg_ParseTuple(args, "O!O!", &(TopoShapePy::Type), &pcObj, &PyType_Type, &type))
-        return NULL;
+    const char *typeName;
 
     try {
+        if (PyArg_ParseTuple(args, "O!s", &(TopoShapePy::Type), &pcObj, &typeName)) {
+            const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->
+                getTopoShapePtr()->getShape();
+            const TopoShape &model = *getTopoShapePtr();
+            if (model.isNull() || shape.IsNull()) {
+                PyErr_SetString(PyExc_ValueError, "Shape is null");
+                return NULL;
+            }
+            auto type = TopoShape::shapeType(typeName);
+            auto indices = model.findAncestors(shape,type);
+            Py::List list;
+            for(auto idx : indices)
+                list.append(shape2pyshape(model.getSubTopoShape(type,idx+1)));
+            return Py::new_reference_to(list);
+        }
+
+        PyObject *type;
+        if (!PyArg_ParseTuple(args, "O!O!", &(TopoShapePy::Type), &pcObj, &PyType_Type, &type))
+            return NULL;
+
         const TopoDS_Shape& model = getTopoShapePtr()->getShape();
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->
                 getTopoShapePtr()->getShape();
