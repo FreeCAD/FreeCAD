@@ -85,7 +85,9 @@ Sub-elements such as vertices, edges or faces are accessible as:
     </Methode>
     <Methode Name="importBrepFromString">
       <Documentation>
-        <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
+        <UserDocu>Load the shape from a string that keeps the content in BREP format.
+importBrepFromString(str,False) to not display a progress bar.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="extrude" Const="true">

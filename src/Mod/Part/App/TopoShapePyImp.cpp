@@ -513,13 +513,14 @@ PyObject*  TopoShapePy::importBinary(PyObject *args)
 PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
 {
     char* input;
-    if (!PyArg_ParseTuple(args, "s", &input))
+    int indicator=1;
+    if (!PyArg_ParseTuple(args, "s|i", &input, &indicator))
         return NULL;
 
     try {
         // read brep
         std::stringstream str(input);
-        getTopoShapePtr()->importBrep(str);
+        getTopoShapePtr()->importBrep(str,indicator);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());

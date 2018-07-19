@@ -597,18 +597,21 @@ void TopoShape::importBrep(const char *FileName)
     }
 }
 
-void TopoShape::importBrep(std::istream& str)
+void TopoShape::importBrep(std::istream& str, int indicator)
 {
     try {
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
 #if OCC_VERSION_HEX >= 0x060300
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading BREP file...");
-        pi->Show();
-        BRepTools::Read(aShape,str,aBuilder,pi);
-        pi->EndScope();
+        if (indicator) {
+            Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
+            pi->NewScope(100, "Reading BREP file...");
+            pi->Show();
+            BRepTools::Read(aShape,str,aBuilder,pi);
+            pi->EndScope();
+        } else
+            BRepTools::Read(aShape,str,aBuilder);
 #else
         BRepTools::Read(aShape,str,aBuilder);
 #endif
