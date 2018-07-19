@@ -356,7 +356,7 @@ void QGIViewDimension::draw()
         // text to left of vertical dims
         // text above horizontal dims
         Base::Vector3d dirDist, normDist;               //direction/normal vectors of distance line
-        Base::Vector3d dirExt, normExt;
+        Base::Vector3d dirExt;
         Base::Vector3d dirDim, normDim;
         Base::Vector3d dirIso;
         dirDist = vecDist;
@@ -386,7 +386,6 @@ void QGIViewDimension::draw()
             dirExt = findIsoExt(dirIso);
         }
         dirExt.Normalize();
-        normExt = Base::Vector3d (-dirExt.y,dirExt.x, 0);         //normal to extension lines (req'd?)
 
         // Get magnitude of angle between dimension line and horizontal
         double angle = atan2(dirDim.y,dirDim.x);
@@ -430,26 +429,21 @@ void QGIViewDimension::draw()
 
         //fauxCenter is where the dimText would be if it was on the dimLine
         Base::Vector3d fauxCenter = lblCenter + textOffset * textNorm;
-        Base::Vector3d vec = fauxCenter - midDist;
-        float sepDistDir = vec.x * textNorm.x + vec.y * textNorm.y;   //dist between distance & dimension lines
 
         margin = Rez::guiX(2.f);
         float scaler = 1.;
 
-        float extStartOffset = (sepDistDir + distStartDelta < 0) ? -margin : margin;
-        float extEndOffset = (sepDistDir < 0) ? -margin : margin;
-
+        //intersection of extention lines and dimension line
         Base::Vector3d startIntercept = DrawUtil::Intersect2d(startDist, dirExt,
                                                            fauxCenter,dirDim);
         Base::Vector3d endIntercept = DrawUtil::Intersect2d(endDist, dirExt,
                                                          fauxCenter,dirDim);
 
+        Base::Vector3d dirExtActual = (startIntercept - startDist);
+        dirExtActual.Normalize();
+        Base::Vector3d extStartEnd = startIntercept + dirExtActual * (margin * scaler);
+        Base::Vector3d extEndEnd   = endIntercept + dirExtActual * (margin * scaler);
 
-        Base::Vector3d extStartEnd = startIntercept + dirExt * (extStartOffset * scaler);     //the little bit past the dimline
-        Base::Vector3d extEndEnd   = endIntercept + dirExt * (extEndOffset * scaler);
-
-        //dim1Tip is the position of 1 arrow point (lhs on a horizontal)
-        //dim2Tail is the position of the other arrow point (rhs)
         //case 1: inner placement: text between extensions & fits. arros point out from inside (default)
         //case 2: inner placement2: text too big to fit. arrows point in from outside
         //case 3: outer placement: text is outside extensions.  arrows point in, 1 arrow tracks dimText
@@ -491,14 +485,10 @@ void QGIViewDimension::draw()
 
         // Extension lines
         QPainterPath path;
-        Base::Vector3d dirExtActual = (extStartEnd - startDist);   //TODO: dirExt is sometimes backwards.
-        dirExtActual.Normalize();
         Base::Vector3d gap = startDist + dirExtActual * (margin * scaler);  //space ext line a bt
         path.moveTo(gap.x, gap.y);
         path.lineTo(extStartEnd.x, extStartEnd.y);
 
-        dirExtActual = (extEndEnd - endDist);                      //TODO: dirExt is sometimes backwards.
-        dirExtActual.Normalize();
         gap = endDist + dirExtActual * (margin * scaler);
         path.moveTo(gap.x, gap.y);
         path.lineTo(extEndEnd.x, extEndEnd.y);
