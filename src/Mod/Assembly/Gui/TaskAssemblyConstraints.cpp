@@ -68,14 +68,14 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
 
     if(obj->First.getValue()) {
         QString str;
-        str = QString::fromAscii(obj->First.getValue()->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(obj->First.getSubValues().front());
+        str = QString::fromLatin1(obj->First.getValue()->getNameInDocument()) + QString::fromLatin1(".") + QString::fromStdString(obj->First.getSubValues().front());
         ui->first_geom->setText(str);
         ass = dynamic_cast<Assembly::PartRef*>(obj->First.getValue())->getParentAssembly();
     };
 
     if(obj->Second.getValue()) {
         QString str;
-        str = QString::fromAscii(obj->Second.getValue()->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(obj->Second.getSubValues().front());
+        str = QString::fromLatin1(obj->Second.getValue()->getNameInDocument()) + QString::fromLatin1(".") + QString::fromStdString(obj->Second.getSubValues().front());
         ui->second_geom->setText(str);
 
         if(!ass)
@@ -258,7 +258,7 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     //        std::pair<Assembly::PartRef*, Assembly::Product*> part1 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
     //        con->First.setValue(part1.first, objs.back().getSubNames());
     //        QString str;
-    //        str = QString::fromAscii(part1.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->First.getSubValues().front());
+    //        str = QString::fromLatin1(part1.first->getNameInDocument()) + QString::fromLatin1(".") + QString::fromStdString(con->First.getSubValues().front());
     //        ui->first_geom->setText(str);
 
     //        App::GetApplication().getActiveDocument()->recompute();
@@ -281,7 +281,7 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     //        std::pair<Assembly::PartRef*, Assembly::Product*> part2 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
     //        con->Second.setValue(part2.first, objs.back().getSubNames());
     //        QString str;
-    //        str = QString::fromAscii(part2.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->Second.getSubValues().front());
+    //        str = QString::fromLatin1(part2.first->getNameInDocument()) + QString::fromLatin1(".") + QString::fromStdString(con->Second.getSubValues().front());
     //        ui->second_geom->setText(str);
 
     //        App::GetApplication().getActiveDocument()->recompute();
