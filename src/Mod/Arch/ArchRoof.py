@@ -721,10 +721,10 @@ class _Roof(ArchComponent.Component):
                                         rn += 1
             if obj.RidgeLength.Value != rl:
                 obj.RidgeLength = rl
-                print(str(rn)+" ridge edges in roof "+obj.Name)
+                #print(str(rn)+" ridge edges in roof "+obj.Name)
             if obj.BorderLength.Value != bl:
                 obj.BorderLength = bl
-                print(str(bn)+" border edges in roof "+obj.Name)
+                #print(str(bn)+" border edges in roof "+obj.Name)
         ArchComponent.Component.computeAreas(self,obj)
 
 

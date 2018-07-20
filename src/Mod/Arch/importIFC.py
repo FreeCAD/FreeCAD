@@ -35,8 +35,8 @@ import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 #
 #  This module provides tools to import and export IFC files.
 
-DEBUG = False
-ADDDEFAULTSTOREY = True
+DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
+ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
@@ -79,6 +79,7 @@ translationtable = { "Foundation":"Footing",
                      "Pipe Fitting":"PipeFitting"
                    }
 
+# the base IFC template for export
 ifctemplate = """ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
@@ -112,6 +113,9 @@ END-ISO-10303-21;
 
 
 def decode(filename,utf=False):
+    
+    "turns unicodes into strings"
+    
     if isinstance(filename,unicode):
         # workaround since ifcopenshell currently can't handle unicode filenames
         if utf:
@@ -124,6 +128,9 @@ def decode(filename,utf=False):
 
 
 def doubleClickTree(item,column):
+    
+    "a double-click callback function for the IFC explorer tool"
+    
     txt = item.text(column)
     if "Entity #" in txt:
         eid = txt.split("#")[1].split(":")[0]
@@ -134,7 +141,9 @@ def doubleClickTree(item,column):
 
 
 def getPreferences():
+    
     """retrieves IFC preferences"""
+    
     global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
@@ -170,6 +179,7 @@ def getPreferences():
 
 
 def explore(filename=None):
+    
     """explore([filename]): opens a dialog showing
     the contents of an IFC file. If no filename is given, a dialog will
     pop up to choose a file."""
@@ -196,6 +206,7 @@ def explore(filename=None):
         print("File not found")
         return
 
+    # draw the widget contents
     ifc = ifcopenshell.open(filename)
     global tree
     tree = QtGui.QTreeWidget()
@@ -328,6 +339,7 @@ def explore(filename=None):
 
 
 def open(filename,skip=[],only=[],root=None):
+    
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
@@ -339,6 +351,7 @@ def open(filename,skip=[],only=[],root=None):
 
 
 def insert(filename,docname,skip=[],only=[],root=None):
+    
     """insert(filename,docname,skip=[],only=[],root=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
@@ -362,13 +375,16 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("done.")
 
     global ROOT_ELEMENT, parametrics
-
+    
     if root:
         ROOT_ELEMENT = root
 
     #global ifcfile # keeping global for debugging purposes
+    
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
+    
+    # set default ifcopenshell optionss to work in brep mode
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)
@@ -378,6 +394,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
     if SPLIT_LAYERS and hasattr(settings,"APPLY_LAYERSETS"):
         settings.set(settings.APPLY_LAYERSETS,True)
+        
+    # gather easy entity types
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
@@ -385,7 +403,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
-    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -403,6 +420,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     mattable = {} # { objid:matid }
     sharedobjects = {} # { representationmapid:object }
     parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
+    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
+    
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -471,7 +490,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             tp.append(product)
     products = tp
 
-    if only: # only import a list of IDs and their children
+    # only import a list of IDs and their children
+    if only: 
         ids = []
         while only:
             currentid = only.pop()
@@ -502,7 +522,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
-        if DEBUG: print(count,"/",len(products)," creating object #",pid," : ",ptype,end="")
+        if DEBUG: print(count,"/",len(products),"object #"+str(pid),":",ptype,end="")
 
         # checking for full FreeCAD parametric definition, overriding everything else
 
@@ -516,6 +536,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     continue
                 else:
                     print("failed.",end="")
+
+        # no parametric data, we go the good old way
 
         name = str(ptype[3:])
         if product.Name:
@@ -567,6 +589,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             sharedobjects[bid] = None
                             store = bid
+                            
+        # additional setting for structural entities
         if hasattr(settings,"INCLUDE_CURVES"):
             if structobj:
                 settings.set(settings.INCLUDE_CURVES,True)
@@ -576,25 +600,26 @@ def insert(filename,docname,skip=[],only=[],root=None):
             cr = ifcopenshell.geom.create_shape(settings,product)
             brep = cr.geometry.brep_data
         except:
-            pass # IfcOpenShell will yield an error if a given product has no shape, but we don't care
+            pass # IfcOpenShell will yield an error if a given product has no shape, but we don't care, we're brave enough
 
         if brep:
-            if DEBUG: print(" ",str(len(brep)/1000),"k ",end="")
+            if DEBUG: print(" "+str(len(brep)/1000)+"k ",end="")
 
             shape = Part.Shape()
-            shape.importBrepFromString(brep)
+            shape.importBrepFromString(brep,False)
 
-            shape.scale(1000.0) # IfcOpenShell always outputs in meters
+            shape.scale(1000.0) # IfcOpenShell always outputs in meters, we convert to mm, the freecad internal unit
 
             if not shape.isNull():
                 if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                    # add to the global boundbox
                     try:
                         bb = shape.BoundBox
                         # if DEBUG: print(' ' + str(bb),end="")
                     except:
                         bb = None
                         if DEBUG: print(' BB could not be computed',end="")
-                    if bb.isValid():
+                    if bb and bb.isValid():
                         if not overallboundbox:
                             overallboundbox = bb
                         if not overallboundbox.isInside(bb):
@@ -602,6 +627,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         overallboundbox.add(bb)
 
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
+
+                    # additional tweaks when not using Arch objects
                     if ptype == "IfcSpace": # do not add spaces to compounds
                         if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
@@ -613,11 +640,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print(shape.Solids," ",end="")
                         baseobj = shape
                 else:
+                    
+                    # create base shape object
                     if clone:
                         if DEBUG: print("clone ",end="")
                     else:
                         if GET_EXTRUSIONS:
-                            ex = Arch.getExtrusionData(shape)
+                            ex = Arch.getExtrusionData(shape) # is this an extrusion?
                             if ex:
                                 # check for extrusion profile
                                 baseface = None
@@ -633,31 +662,45 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     # reuse existing profile
                                     print("shared extrusion ",end="")
                                     baseface = profiles[profileid]
+                                    # calculate delta placement between stored profile and this one
                                     addplacement = FreeCAD.Placement()
-                                    addplacement.Rotation = FreeCAD.Rotation(baseface.Shape.Faces[0].normalAt(0,0),ex[0].Faces[0].normalAt(0,0))
-                                    addplacement.Base = addplacement.Rotation.multVec(ex[0].CenterOfMass.sub(baseface.Shape.CenterOfMass))
+                                    r = FreeCAD.Rotation(baseface.Shape.Faces[0].normalAt(0,0),ex[0].Faces[0].normalAt(0,0))
+                                    if r.Angle > 0.000001:
+                                        # use shape methods to easily obtain a correct placement
+                                        ts = Part.Shape()
+                                        ts.rotate(DraftVecUtils.tup(baseface.Shape.CenterOfMass), DraftVecUtils.tup(r.Axis), math.degrees(r.Angle))
+                                        addplacement = ts.Placement
+                                    d = ex[0].CenterOfMass.sub(baseface.Shape.CenterOfMass)
+                                    if d.Length > 0.000001:
+                                        addplacement.move(d)
                                 if not baseface:
                                     print("extrusion ",end="")
-                                    baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                                    # bug in ifcopenshell? Some faces of a shell may have non-null placement
-                                    # workaround to remove the bad placement: exporting/reimporting as step
-                                    if not ex[0].Placement.isNull():
-                                        import tempfile
-                                        fd, tf = tempfile.mkstemp(suffix=".stp")
-                                        ex[0].exportStep(tf)
-                                        f = Part.read(tf)
-                                        os.close(fd)
-                                        os.remove(tf)
+                                    import DraftGeomUtils
+                                    if DraftGeomUtils.hasCurves(ex[0]) or len(ex[0].Wires) != 1:
+                                        # curves or holes? We just make a Part face
+                                        baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                                        # bug in ifcopenshell? Some faces of a shell may have non-null placement
+                                        # workaround to remove the bad placement: exporting/reimporting as step
+                                        if not ex[0].Placement.isNull():
+                                            import tempfile
+                                            fd, tf = tempfile.mkstemp(suffix=".stp")
+                                            ex[0].exportStep(tf)
+                                            f = Part.read(tf)
+                                            os.close(fd)
+                                            os.remove(tf)
+                                        else:
+                                            f = ex[0]
+                                        baseface.Shape = f
                                     else:
-                                        f = ex[0]
-                                    baseface.Shape = f
+                                        # no hole and no curves, we make a Draft Wire instead
+                                        baseface = Draft.makeWire([v.Point for v in ex[0].Wires[0].OrderedVertexes],closed=True)
                                     if profileid:
                                         profiles[profileid] = baseface
                                 baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
                                 baseobj.Base = baseface
                                 if addplacement:
-                                    baseobj.Placement.Rotation = addplacement.Rotation
-                                    baseobj.Placement.move(addplacement.Base)
+                                    # apply delta placement (stored profile)
+                                    baseobj.Placement = addplacement
                                     baseobj.Dir = addplacement.Rotation.inverted().multVec(ex[1])
                                 else:
                                     baseobj.Dir = ex[1]
@@ -706,14 +749,24 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 print("failed to compute placement ",)
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if freecadtype in ["Wall","Structure"] and baseobj and baseobj.isDerivedFrom("Part::Extrusion"):
+                            # remove intermediary extrusion for types that can extrude themselves
+                            obj.Base = baseobj.Base
+                            obj.Placement = obj.Placement.multiply(baseobj.Placement)
+                            obj.Height = baseobj.Dir.Length
+                            obj.Normal = FreeCAD.Vector(baseobj.Dir).normalize()
+                            bn = baseobj.Name
+                            FreeCAD.ActiveDocument.removeObject(bn)
                         if (freecadtype in ["Structure","Wall"]) and not baseobj:
-                            # remove sizes to prevent auto shape creation
+                            # remove sizes to prevent auto shape creation for types that don't require a base object
                             obj.Height = 0
                             obj.Width = 0
                             obj.Length = 0
                         if store:
                             sharedobjects[store] = obj
+
                     obj.Label = name
+                    if DEBUG: print(": "+obj.Label+" ",end="")
                     if hasattr(obj,"Description") and hasattr(product,"Description"):
                         if product.Description:
                             obj.Description = product.Description
@@ -724,7 +777,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if product.Elevation:
                             obj.Placement.Base.z = product.Elevation * 1000
 
-                    # setting role
+                    # setting IFC role
 
                     try:
                         if hasattr(obj,"IfcRole"):
@@ -763,7 +816,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
 
-            # non-parametric Arch objects
+            # non-parametric Arch objects (just Arch components with a shape)
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():
@@ -891,7 +944,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         annotations.append(product)
                         break
 
-        progressbar.next()
+        try:
+            progressbar.next(True)
+        except(RuntimeError):
+            print("Aborted.")
+            progressbar.stop()
+            FreeCAD.ActiveDocument.recompute()
+            return
 
     progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
@@ -974,6 +1033,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     if MERGE_MODE_ARCH == 3:
 
+        # One compound per storey
+
         if DEBUG: print("Joining Arch shapes...",end="")
 
         for host,children in additions.items(): # Arch
@@ -1013,7 +1074,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if DEBUG and first:
                         print("")
                         first = False
-                    if DEBUG: print("    subtracting ",objects[subtraction[0]].Label, " from ", objects[subtraction[1]].Label)
+                    if DEBUG: print("    subtracting",objects[subtraction[0]].Label, "from", objects[subtraction[1]].Label)
                     Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
                     if DEBUG: FreeCAD.ActiveDocument.recompute()
 
@@ -1030,7 +1091,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         # avoid huge fusions
                         print("more than 10 shapes to add: skipping.")
                     else:
-                        if DEBUG: print("    adding ",len(cobs), " object(s) to ", objects[host].Label)
+                        if DEBUG: print("    adding",len(cobs), "object(s) to", objects[host].Label)
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
@@ -1173,7 +1234,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 class recycler:
 
-    "a mechanism to reuse ifc entities if needed"
+    "the compression engine - a mechanism to reuse ifc entities if needed"
+    
+    # this object has some methods identical to corresponding ifcopenshell methods,
+    # but it checks if a similar entity already exists before creating a new one
+    # to compress a new type, just add the necessary method here
 
     def __init__(self,ifcfile):
 
@@ -1286,6 +1351,7 @@ class recycler:
             if self.compress:
                 self.transformationoperators[key] = c
             return c
+
 
 def export(exportList,filename):
 
@@ -1423,6 +1489,8 @@ def export(exportList,filename):
             continue
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
             ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitely set
+        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Building"):
+            ifctype = "IfcBuilding"
 
         # export grids
 
@@ -1784,41 +1852,44 @@ def export(exportList,filename):
     treated = []
     defaulthost = []
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        objs = Draft.getGroupContents(floor,walls=True)
-        objs = Arch.pruneIncluded(objs)
-        children = []
-        for c in objs:
-            if c.Name in products.keys():
+        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole != "Building"):
+            objs = Draft.getGroupContents(floor,walls=True)
+            objs = Arch.pruneIncluded(objs)
+            children = []
+            for c in objs:
+                if c.Name in products.keys():
+                    if not (c.Name in treated):
+                        children.append(products[c.Name])
+                        treated.append(c.Name)
+            f = products[floor.Name]
+            if children:
+                ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
+            floors.append(f)
+            defaulthost = f
+    for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
+        if (Draft.getType(building) == "Building") or (hasattr(building,"IfcRole") and building.IfcRole == "Building"):
+            objs = Draft.getGroupContents(building,walls=True,addgroups=True)
+            objs = Arch.pruneIncluded(objs)
+            children = []
+            childfloors = []
+            for c in objs:
                 if not (c.Name in treated):
-                    children.append(products[c.Name])
-                    treated.append(c.Name)
-        f = products[floor.Name]
-        if children:
-            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
-        floors.append(f)
-        defaulthost = f
-    for building in Draft.getObjectsOfType(objectslist,"Building"):
-        objs = Draft.getGroupContents(building,walls=True,addgroups=True)
-        objs = Arch.pruneIncluded(objs)
-        children = []
-        childfloors = []
-        for c in objs:
-            if not (c.Name in treated):
-                if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
-                    if c.Name in products.keys():
-                        if Draft.getType(c) in ["Floor","BuildingPart"]:
-                            childfloors.append(products[c.Name])
-                            treated.append(c.Name)
-                        elif not (c.Name in treated):
-                            children.append(products[c.Name])
-                            treated.append(c.Name)
-        b = products[building.Name]
-        if children:
-            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
-        if childfloors:
-            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
-        buildings.append(b)
-        #defaulthost = b
+                    if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
+                        if c.Name in products.keys():
+                            if Draft.getType(c) in ["Floor","BuildingPart"]:
+                                childfloors.append(products[c.Name])
+                                treated.append(c.Name)
+                            elif not (c.Name in treated):
+                                children.append(products[c.Name])
+                                treated.append(c.Name)
+            b = products[building.Name]
+            if children:
+                ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
+            if childfloors:
+                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
+            buildings.append(b)
+            if not defaulthost and not ADDDEFAULTSTOREY:
+                defaulthost = b
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1832,8 +1903,8 @@ def export(exportList,filename):
                             childbuildings.append(products[c.Name])
                             treated.append(c.Name)
         sites.append(products[site.Name])
-        if not defaulthost:
-            defaulthost = products[site.Name]
+        #if not defaulthost:
+            #defaulthost = products[site.Name]
     if not sites:
         if DEBUG: print("No site found. Adding default site")
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
