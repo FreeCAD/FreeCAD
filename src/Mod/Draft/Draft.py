@@ -6137,7 +6137,7 @@ class _PointArray(_DraftObject):
         if hasattr(obj.Base, 'Shape'):
             for pts in pls:
                 #print pts # inspect the objects
-                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Y'):
+                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Z'):
         	        nshape = obj.Base.Shape.copy()
         	        if hasattr(pts, 'Placement'):
         	            place = pts.Placement
