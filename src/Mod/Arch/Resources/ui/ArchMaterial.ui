@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>216</width>
-    <height>295</height>
+    <height>327</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,36 +15,28 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="QComboBox" name="comboBox_MaterialsInDir">
+     <property name="toolTip">
+      <string>Choose a preset card</string>
+     </property>
      <item>
-      <widget class="QComboBox" name="comboBox_MaterialsInDir">
-       <property name="toolTip">
-        <string>Choose a preset card</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>Choose preset...</string>
-        </property>
-       </item>
-      </widget>
+      <property name="text">
+       <string>Choose preset...</string>
+      </property>
      </item>
-    </layout>
+    </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
+    <widget class="QComboBox" name="comboBox_FromExisting">
+     <property name="toolTip">
+      <string>Copy values from an existing material in the document</string>
+     </property>
      <item>
-      <widget class="QComboBox" name="comboBox_FromExisting">
-       <property name="toolTip">
-        <string>Copy values from an existing material in the document</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>Copy existing...</string>
-        </property>
-       </item>
-      </widget>
+      <property name="text">
+       <string>Copy existing...</string>
+      </property>
      </item>
-    </layout>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -173,7 +165,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Opens the OmniClass website to pick a category</string>
+        <string>Opens a browser dialog to choose a class from a BIM standard</string>
        </property>
        <property name="text">
         <string/>
@@ -227,6 +219,24 @@
         <iconset theme="web-browser">
          <normaloff/>
         </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Father</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboFather">
+       <property name="editable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
