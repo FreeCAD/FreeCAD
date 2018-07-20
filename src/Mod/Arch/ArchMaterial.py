@@ -366,13 +366,19 @@ class _ViewProviderArchMaterial:
         return ":/icons/Arch_Material.svg"
 
     def attach(self, vobj):
+        self.Object = vobj.Object
         return
 
     def updateData(self, obj, prop):
         return
 
     def onChanged(self, vobj, prop):
-        return
+        if prop == "Material":
+            if "Father" in vobj.Object.Material:
+                for o in FreeCAD.ActiveDocument.Objects:
+                    if o.isDerivedFrom("App::MaterialObject"):
+                        if o.Label == vobj.Object.Material["Father"]:
+                            o.touch()
 
     def setEdit(self,vobj,mode):
         taskd = _ArchMaterialTaskPanel(vobj.Object)
@@ -390,6 +396,17 @@ class _ViewProviderArchMaterial:
     def __setstate__(self,state):
         return None
 
+    def claimChildren(self):
+        ch = []
+        if hasattr(self,"Object"):
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.isDerivedFrom("App::MaterialObject"):
+                    if o.Material:
+                        if "Father" in o.Material:
+                            if o.Material["Father"] == self.Object.Label:
+                                ch.append(o)
+        return ch
+
 
 class _ArchMaterialTaskPanel:
 
@@ -406,12 +423,21 @@ class _ArchMaterialTaskPanel:
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
         QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
+        QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentIndexChanged(QString)"), self.setFather)
+        QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentTextChanged(QString)"), self.setFather)
         QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
         QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
         QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
         QtCore.QObject.connect(self.form.ButtonCode,QtCore.SIGNAL("pressed()"),self.getCode)
         self.fillMaterialCombo()
         self.fillExistingCombo()
+        try:
+            import BimClassification
+        except:
+            self.form.ButtonCode.hide()
+        else:
+            import os
+            self.form.ButtonCode.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
         if self.obj:
             if hasattr(self.obj,"Material"):
                 self.material = self.obj.Material
@@ -446,6 +472,22 @@ class _ArchMaterialTaskPanel:
             self.form.FieldUrl.setText(self.material['ProductURL'])
         if 'Transparency' in self.material:
             self.form.SpinBox_Transparency.setValue(int(self.material["Transparency"]))
+        if "Father" in self.material:
+            father = self.material["Father"]
+        else:
+            father = None
+        found = False
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("App::MaterialObject"):
+                if o != self.obj:
+                    self.form.comboFather.addItem(o.Label)
+                    if o.Label == father:
+                        self.form.comboFather.setCurrentIndex(self.form.comboFather.count()-1)
+                        found = True
+        if father and not found:
+            self.form.comboFather.addItem(father)
+            self.form.comboFather.setCurrentIndex(self.form.comboFather.count()-1)
+            
 
     def getFields(self):
         "sets self.material from the contents of the task box"
@@ -483,6 +525,11 @@ class _ArchMaterialTaskPanel:
                 if m.Material:
                     self.material = m.Material
                     self.setFields()
+
+    def setFather(self,text):
+        "sets the father"
+        if text:
+            self.material["Father"] = text
 
     def getColor(self):
         "opens a color picker dialog"
@@ -535,8 +582,7 @@ class _ArchMaterialTaskPanel:
                 QtGui.QDesktopServices.openUrl(self.material['ProductURL'])
 
     def getCode(self):
-        baseurl = "http://bsdd.buildingsmart.org/#concept/browse"
-        QtGui.QDesktopServices.openUrl(baseurl)
+        FreeCADGui.runCommand("BIM_Classification")
 
 
 class _ArchMultiMaterial:
