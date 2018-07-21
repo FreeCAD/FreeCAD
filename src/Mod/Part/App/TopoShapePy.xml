@@ -504,6 +504,16 @@ If the shape is an edge it returns True if its vertices are the same.
         <UserDocu>Checks if the shape is valid, i.e. neither null, nor empty nor corrupted.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isCoplanar" Const="true">
+      <Documentation>
+        <UserDocu>isCoplanar(shape,tol=None) -- Checks if this shape is coplanar with the given shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="findPlane" Const="true">
+      <Documentation>
+          <UserDocu>findPlane(tol=None) -- return a plane if the shape is planar</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="fix">
       <Documentation>
         <UserDocu>Tries to fix a broken shape. True is returned if the operation succeeded, False otherwise.

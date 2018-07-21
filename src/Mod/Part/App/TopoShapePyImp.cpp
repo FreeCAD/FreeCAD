@@ -55,6 +55,7 @@
 # include <TopLoc_Location.hxx>
 # include <TopExp.hxx>
 # include <Precision.hxx>
+# include <Geom_Plane.hxx>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -90,6 +91,7 @@
 #include <Mod/Part/App/TopoShapeShellPy.h>
 #include <Mod/Part/App/TopoShapeCompSolidPy.h>
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
+#include <Mod/Part/App/PlanePy.h>
 
 using namespace Part;
 
@@ -2049,6 +2051,31 @@ PyObject*  TopoShapePy::isValid(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, "check failed, shape may be empty");
         return NULL;
     }
+}
+
+PyObject*  TopoShapePy::isCoplanar(PyObject *args)
+{
+    PyObject *pyObj;
+    double tol = -1;
+    if (!PyArg_ParseTuple(args, "O!|d", &TopoShapePy::Type, &pyObj, &tol))
+        return NULL;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isCoplanar(
+                    *static_cast<TopoShapePy*>(pyObj)->getTopoShapePtr(),tol)));
+    }PY_CATCH_OCC
+}
+
+PyObject*  TopoShapePy::findPlane(PyObject *args)
+{
+    double tol = -1;
+    if (!PyArg_ParseTuple(args, "d", &tol))
+        return NULL;
+    PY_TRY {
+        gp_Pln pln;
+        if(getTopoShapePtr()->findPlane(pln,tol))
+            return new PlanePy(new GeomPlane(new Geom_Plane(pln)));
+        Py_Return;
+    }PY_CATCH_OCC
 }
 
 PyObject*  TopoShapePy::fix(PyObject *args)

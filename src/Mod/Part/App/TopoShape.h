@@ -183,6 +183,8 @@ public:
     bool isValid() const;
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
+    bool isCoplanar(const TopoShape &other, double tol=-1) const;
+    bool findPlane(gp_Pln &pln, double tol=-1) const;
     //@}
 
     /** @name Boolean operation*/

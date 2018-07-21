@@ -500,6 +500,8 @@ bool TopoShape::hasSubShape(const char *Type) const {
 TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
     Type = getElementName(Type);
     auto type = shapeType(Type,silent);
+    if(silent && type == TopAbs_SHAPE)
+        return TopoShape();
     int idx = std::atoi(Type+shapeName(type).size());
     return getSubTopoShape(type,idx,silent);
 }
@@ -2679,4 +2681,59 @@ bool TopoShape::getRelatedElementsCached(const char *name, bool sameType,
         return false;
     names.insert(names.end(),it->second.begin(),it->second.end());
     return true;
+}
+
+bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
+    if(_Shape.IsNull())
+        return false;
+    TopoDS_Shape shape = _Shape;
+    TopExp_Explorer exp(_Shape,TopAbs_FACE);
+    if(exp.More()) {
+        auto face = exp.Current();
+        exp.Next();
+        if(!exp.More()) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(face));
+            if(adapt.GetType() != GeomAbs_Plane)
+                return false;
+            pln = adapt.Plane();
+            return true;
+        }
+    }else{
+        TopExp_Explorer exp(_Shape,TopAbs_EDGE);
+        if(exp.More()) {
+            TopoDS_Shape edge = exp.Current();
+            exp.Next();
+            if(!exp.More()) {
+                // To deal with OCCT bug of wrong edge transformation
+                shape = BRepBuilderAPI_Copy(edge).Shape();
+            }
+        }
+    }
+    try {
+        BRepLib_FindSurface finder(shape,tol,Standard_True);
+        if (!finder.Found())
+            return false;
+        pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+        return true;
+    }catch (Standard_Failure &e) {
+        // For some reason the above BRepBuilderAPI_Copy failed to copy
+        // the geometry of some edge, causing exception with message 
+        // BRepAdaptor_Curve::No geometry. However, without the above
+        // copy, circular edges often have the wrong transformation!
+        FC_LOG("failed to find surface: " << e.GetMessageString());
+        return false;
+    }
+}
+
+bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
+    if(isNull() || other.isNull())
+        return false;
+    if(_Shape.IsEqual(other._Shape)) 
+        return true;
+    gp_Pln pln1,pln2;
+    if(!findPlane(pln1,tol) || !other.findPlane(pln2,tol))
+        return false;
+    if(tol<0.0)
+        tol = Precision::Confusion();
+    return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
