@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>742</height>
+    <height>845</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -449,7 +449,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
           <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>
@@ -469,7 +469,14 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Line Group File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
          <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
           <property name="prefEntry" stdset="0">
            <cstring>TemplateFile</cstring>
@@ -479,7 +486,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
           <property name="toolTip">
            <string>Location of default svg/png fill file</string>
@@ -492,14 +499,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>PAT File</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="2">
          <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
           <property name="toolTip">
            <string>Default location for PAT file</string>
@@ -509,6 +516,19 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/PAT</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
+          <property name="toolTip">
+           <string>Alternate Line Group file</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LineGroupFile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
           </property>
          </widget>
         </item>
@@ -618,7 +638,7 @@
           </property>
           <property name="currentFont">
            <font>
-            <family>osifont</family>
+            <family>DejaVu Sans</family>
            </font>
           </property>
           <property name="prefEntry" stdset="0">
