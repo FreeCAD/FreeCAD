@@ -1711,7 +1711,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
@@ -1725,7 +1725,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
