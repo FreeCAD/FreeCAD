@@ -704,9 +704,11 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
     QTreeWidgetItem* targetitem = itemAt(event->pos());
     if (!targetitem || this->isItemSelected(targetitem)) {
+        leaveEvent(0);
         event->ignore();
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
+        leaveEvent(0);
         QList<QModelIndex> idxs = selectedIndexes();
         App::Document* doc = static_cast<DocumentItem*>(targetitem)->
             document()->getDocument();
@@ -725,11 +727,13 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         }
     }
     else if (targetitem->type() == TreeWidget::ObjectType) {
+        onItemEntered(targetitem);
 
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         if (!vp->canDropObjects()) {
+            TREE_TRACE("cannot drop");
             event->ignore();
             return;
         }
@@ -738,6 +742,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
             QTreeWidgetItem* ti = itemFromIndex(*it);
             if (ti->type() != TreeWidget::ObjectType) {
+                TREE_TRACE("cannot drop");
                 event->ignore();
                 return;
             }
@@ -746,12 +751,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             // To avoid a cylic dependency it must be made sure to not allow to
             // drag'n'drop a tree item onto a child or grandchild item of it.
             if (targetItemObj->isChildOfItem(item)) {
+                TREE_TRACE("cannot drop");
                 event->ignore();
                 return;
             }
 
             // if the item is already a child of the target item there is nothing to do
             if (item->parent() == targetitem) {
+                TREE_TRACE("cannot drop");
                 event->ignore();
                 return;
             }
@@ -763,12 +770,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             auto obj = item->object()->getObject();
             // let the view provider decide to accept the object or ignore it
             if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
+                TREE_TRACE("cannot drop " << owner->getNameInDocument() << '.' << subname);
                 event->ignore();
                 return;
             }
         }
     }
     else {
+        leaveEvent(0);
         event->ignore();
     }
 }
