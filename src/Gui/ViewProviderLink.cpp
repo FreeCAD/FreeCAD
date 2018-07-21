@@ -1654,6 +1654,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getShowElementProperty()) {
         if(!ext->getShowElementValue()) {
 
+            auto linked = dynamic_cast<ViewProviderDocumentObject*>(getLinkedView(true,ext));
+            if(linked && linked->getDocument()==getDocument())
+                linked->hide();
+
             const auto &elements = ext->getElementListValue();
             // elements is about to be collapsed, preserve the materials
             if(elements.size()) {
