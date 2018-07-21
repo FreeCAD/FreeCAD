@@ -154,22 +154,6 @@ SOURCE_GROUP("Features" FILES ${Draw_SRCS})
 SOURCE_GROUP("Geometry" FILES ${Geometry_SRCS})
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
-SET(TechDraw_Templates
-    Templates/A0_Landscape_ISO7200TD.svg
-    Templates/A1_Landscape_ISO7200TD.svg
-    Templates/A2_Landscape_ISO7200TD.svg
-    Templates/A3_Landscape_ISO7200TD.svg
-    Templates/A4_LandscapeTD.svg
-    Templates/A4_Landscape_ISO7200TD.svg
-    Templates/A4_Portrait_ISO7200TD.svg
-    Templates/A0_Landscape_blank.svg
-    Templates/A1_Landscape_blank.svg
-    Templates/A2_Landscape_blank.svg
-    Templates/A3_Landscape_blank.svg
-    Templates/A4_Landscape_blank.svg
-    Templates/A4_Portrait_blank.svg
-)
-
 SET(TechDraw_PATFile
     PAT/FCPAT.pat
 )
@@ -201,11 +185,6 @@ fc_target_copy_resource(TechDraw
 fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
-    ${TechDraw_Templates})
-
-fc_target_copy_resource(TechDraw
-    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_PATFile})
 
 fc_target_copy_resource(TechDraw
@@ -218,6 +197,13 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Patterns
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Patterns
+)   
+
+ADD_CUSTOM_COMMAND(TARGET TechDraw
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Templates
+                   ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Templates
 )   
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
