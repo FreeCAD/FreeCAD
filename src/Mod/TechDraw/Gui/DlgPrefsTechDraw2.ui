@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>640</height>
+    <height>716</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -274,6 +274,46 @@
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,0">
+        <item row="3" column="2">
+         <widget class="Gui::PrefColorButton" name="colCenterLine">
+          <property name="color">
+           <color>
+            <red>175</red>
+            <green>175</green>
+            <blue>175</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CenterColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsb_VertexScale">
+          <property name="toolTip">
+           <string>Adjusts size of vertices in drawing</string>
+          </property>
+          <property name="value">
+           <double>3.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>VertexScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Vertex Scale</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="2">
          <widget class="Gui::PrefComboBox" name="pcbMatting">
           <property name="prefEntry" stdset="0">
@@ -312,23 +352,6 @@
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Matting Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefColorButton" name="colCenterLine">
-          <property name="color">
-           <color>
-            <red>175</red>
-            <green>175</green>
-            <blue>175</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CenterColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Decorations</cstring>
           </property>
          </widget>
         </item>
@@ -465,7 +488,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Line Group</string>
+           <string>Line Group Name</string>
           </property>
          </widget>
         </item>
@@ -476,6 +499,30 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Vertex Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_VertexColor">
+          <property name="color">
+           <color>
+            <red>150</red>
+            <green>147</green>
+            <blue>145</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>VertexColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Decorations</cstring>
@@ -536,6 +583,11 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
