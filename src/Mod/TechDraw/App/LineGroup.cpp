@@ -180,6 +180,9 @@ LineGroup* LineGroup::lineGroupFactory(std::string groupName)
     std::string defaultFileName = defaultDir + "LineGroup.csv";
     
     std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    if (lgFileName.empty()) {
+        lgFileName = defaultFileName;
+    }
 
     std::string lgRecord = LineGroup::getRecordFromFile(lgFileName, groupName);
 
