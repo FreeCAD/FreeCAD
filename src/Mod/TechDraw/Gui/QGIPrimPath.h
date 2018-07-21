@@ -55,6 +55,7 @@ public:
     virtual double getWidth() { return m_width;}
     Qt::PenStyle getStyle() { return m_styleCurrent; }
     void setStyle(Qt::PenStyle s);
+    virtual void setNormalColor(QColor c);
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -69,6 +70,8 @@ protected:
     bool isHighlighted;
     QPen m_pen;
     QColor m_colCurrent;
+    QColor m_colNormal;
+    bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
     double m_width;
 
