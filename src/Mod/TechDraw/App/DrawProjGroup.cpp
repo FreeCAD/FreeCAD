@@ -29,14 +29,15 @@
 #include <cmath>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-
 #include <Base/Matrix.h>
+#include <Base/Parameter.h>
 
 #include "Cube.h"
 #include "DrawUtil.h"
@@ -62,6 +63,10 @@ DrawProjGroup::DrawProjGroup(void)
     static const char *group = "Base";
     static const char *agroup = "Distribute";
 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoDist = hGrp->GetBool("AutoDist",true);
+
 
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
@@ -69,7 +74,7 @@ DrawProjGroup::DrawProjGroup(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
 
-    ADD_PROPERTY_TYPE(AutoDistribute ,(true),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
+    ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
