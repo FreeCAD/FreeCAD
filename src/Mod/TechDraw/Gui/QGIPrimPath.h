@@ -45,7 +45,7 @@ public:
 
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QPainterPath shape() const { return path(); };
+    virtual QPainterPath shape() const { return path(); }
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
