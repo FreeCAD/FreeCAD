@@ -85,6 +85,7 @@
         <file>icons/Arch_Grid.svg</file>
         <file>icons/Arch_BuildingPart.svg</file>
         <file>icons/Arch_BuildingPart_Tree.svg</file>
+        <file>icons/Arch_Profile.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
