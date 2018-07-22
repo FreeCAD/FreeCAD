@@ -36,7 +36,7 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 103};
 
-    int type() const { return Type;}
+    int type() const override { return Type;}
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
@@ -48,7 +48,7 @@ public:
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
-    virtual void setPrettyNormal();
+    virtual void setPrettyNormal() override;
 
 protected:
     int projIndex;                                                     //index of edge in Projection. must exist.
