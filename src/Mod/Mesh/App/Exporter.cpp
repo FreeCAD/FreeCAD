@@ -40,6 +40,8 @@
 
 #include "App/Part.h"
 
+#include <Mod/Part/App/TopoShape.h>
+
 #include <zipios++/zipoutputstream.h>
 
 using namespace Mesh;
@@ -173,6 +175,7 @@ bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
+
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -180,9 +183,14 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 
         auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
         if (geoData) {
+            const Part::TopoShape* ts = static_cast<const Part::TopoShape*>(geoData);
+            Part::TopoShape tsCopy(*ts);
+            App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
+            tsCopy.setPlacement(gf->globalPlacement());
+            
             std::vector<Base::Vector3d> aPoints;
             std::vector<Data::ComplexGeoData::Facet> aTopo;
-            geoData->getFaces(aPoints, aTopo, tol);
+            tsCopy.getFaces(aPoints, aTopo, tol);
 
             mesh->addFacets(aTopo, aPoints, false);
             if (countFacets == 0)
