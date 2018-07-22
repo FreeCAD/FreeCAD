@@ -272,6 +272,9 @@ protected:
     boost::signals::connection connectUndoDocument;
     boost::signals::connection connectRedoDocument;
     
+    /// Return display string for constraint including hiding units if
+    //requested.
+    QString getPresentationString(const Sketcher::Constraint *constraint);
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{

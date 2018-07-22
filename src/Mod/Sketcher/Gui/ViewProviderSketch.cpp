@@ -84,6 +84,8 @@
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsSchema.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -2745,6 +2747,74 @@ bool ViewProviderSketch::doubleClicked(void)
     return true;
 }
 
+QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
+{
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
+    bool                            iHideUnits;
+    QString                         userStr; // final return string
+    QString                         unitStr;  // the actual unit string
+    QString                         baseUnitStr; // the expected base unit string
+    double                          factor; // unit scaling factor, currently not used
+    Base::UnitSystem                unitSys; // current unit system
+    
+    // Get value of HideUnits option. Default is false.
+    hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
+
+    // Get the current display string including units
+    userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+
+    // Hide units if user has requested it, is being displayed in the base
+    // units, and the schema being used has a clear base unit in the first
+    // place. Otherwise, display units.
+    if( iHideUnits )
+    {
+        // Only hide the default length unit. Right now there is not an easy way
+        // to get that from the Unit system so we have to manually add it here.
+        // Hopfully this can be added in the future so this code won't have to
+        // be updated if a new units schema is added.
+        unitSys = Base::UnitsApi::getSchema();
+
+        // If this is a supported unit system then define what the base unit is.
+        switch (unitSys) 
+        {
+            case Base::SI1:
+            case Base::MmMin:
+                baseUnitStr = QString::fromLatin1("mm");
+                break;
+
+            case Base::SI2:
+                baseUnitStr = QString::fromLatin1("m");
+                break;
+
+            case Base::ImperialDecimal:
+                baseUnitStr = QString::fromLatin1("in");
+                break;
+
+            case Base::Centimeters:
+                baseUnitStr = QString::fromLatin1("cm");
+                break;
+
+            default:
+                // Nothing to do
+                break;
+        }
+
+        if( !baseUnitStr.isEmpty() ) 
+        {
+            // expected unit string matches actual unit string. remove.
+            if( QString::compare(baseUnitStr, unitStr)==0 )
+            {
+                // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+                QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
+                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+            }
+        }
+    }
+
+    return userStr;
+}
+
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
 {
     /*! TODO: Consider pushing this functionality up into Constraint */
@@ -4602,7 +4672,9 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+
+                        // Get presentation string (w/o units if option is set)
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         if (Constr->Type == Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -4960,7 +5032,9 @@ Restart:
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+                        
+                        // Get display string with units hidden if so requested
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;

@@ -95,7 +95,7 @@ public:
     virtual void Restore(Base::XMLReader &/*reader*/);
 
     virtual PyObject *getPyObject(void);
-
+    
     Base::Quantity getPresentationValue() const;
     inline void setValue(double newValue) {
         Value = newValue;
