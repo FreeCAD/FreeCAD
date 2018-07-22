@@ -33,7 +33,7 @@ INSTALL(
 
 INSTALL(
     DIRECTORY
-        App/DxfPlate
+        DxfPlate
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Import
     FILES_MATCHING
