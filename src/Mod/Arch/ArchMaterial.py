@@ -120,7 +120,7 @@ class _CommandArchMaterial:
         FreeCADGui.doCommand("mat = Arch.makeMaterial()")
         for obj in sel:
             if hasattr(obj,"Material"):
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+obj.Name+".Material = mat")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject("+obj.Name+").Material = mat")
         FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -381,8 +381,8 @@ class _ViewProviderArchMaterial:
                             o.touch()
 
     def setEdit(self,vobj,mode):
-        taskd = _ArchMaterialTaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
+        self.taskd = _ArchMaterialTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(self.taskd)
         return True
 
     def unsetEdit(self,vobj,mode):
@@ -421,6 +421,7 @@ class _ArchMaterialTaskPanel:
         colorPix = QtGui.QPixmap(16,16)
         colorPix.fill(self.color)
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+        self.form.ButtonUrl.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
         QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
         QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentIndexChanged(QString)"), self.setFather)
@@ -477,6 +478,7 @@ class _ArchMaterialTaskPanel:
         else:
             father = None
         found = False
+        self.form.comboFather.addItem("None")
         for o in FreeCAD.ActiveDocument.Objects:
             if o.isDerivedFrom("App::MaterialObject"):
                 if o != self.obj:
@@ -529,7 +531,8 @@ class _ArchMaterialTaskPanel:
     def setFather(self,text):
         "sets the father"
         if text:
-            self.material["Father"] = text
+            if text != "None":
+                self.material["Father"] = text
 
     def getColor(self):
         "opens a color picker dialog"
@@ -582,6 +585,7 @@ class _ArchMaterialTaskPanel:
                 QtGui.QDesktopServices.openUrl(self.material['ProductURL'])
 
     def getCode(self):
+        FreeCADGui.Selection.addSelection(self.obj)
         FreeCADGui.runCommand("BIM_Classification")
 
 
