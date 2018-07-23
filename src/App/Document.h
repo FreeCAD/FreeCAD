@@ -145,6 +145,8 @@ public:
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
     boost::signal<void (const App::Document&)> signalRedo;
+    /// signal on abort the pending transaction
+    boost::signal<void (const App::Document&)> signalTransactionAbort;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
      * you can use this hook to write additional information in

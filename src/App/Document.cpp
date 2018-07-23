@@ -1120,6 +1120,7 @@ void Document::abortTransaction()
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = 0;
 
+        signalTransactionAbort(*this);
         GetApplication().closeActiveTransaction(true,id);
     }else if(GetApplication().autoTransaction())
         GetApplication().closeActiveTransaction(true);

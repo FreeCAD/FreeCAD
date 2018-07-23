@@ -161,6 +161,8 @@ public:
     boost::signal<void (const Document&)> signalUndoDocument;
     /// signal on redo in document
     boost::signal<void (const Document&)> signalRedoDocument;
+    /// signal on transaction abort in document
+    boost::signal<void (const Document&)> signalTransactionAbort;
     /// signal on show hidden items
     boost::signal<void (const Document&)> signalShowHidden;
     //@}
@@ -325,6 +327,7 @@ protected:
     void slotActivatedObject(const App::DocumentObject&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotTransactionAbort(const App::Document&);
     //@}
 
     /// open single document only

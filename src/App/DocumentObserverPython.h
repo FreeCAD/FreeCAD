@@ -69,6 +69,8 @@ private:
     void slotUndoDocument(const App::Document& Doc);
     /** Redoes the last undone transaction of the document */
     void slotRedoDocument(const App::Document& Doc);
+    /** On aborting current pending transaction of the document */
+    void slotTransactionAbort(const App::Document& Doc);
 
 private:
     Py::Object inst;
@@ -81,6 +83,7 @@ private:
     Connection connectApplicationActivateDocument;
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
+    Connection connectApplicationTransactionAbort;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
