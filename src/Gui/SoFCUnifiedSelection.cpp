@@ -527,7 +527,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     static char buf[513];
 
     if (ctrlDown) {
-        if(Gui::Selection().isSelected(docname,objname,info.element.c_str()))
+        if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
             Gui::Selection().rmvSelection(docname,objname,info.element.c_str(),&sels);
         else {
             bool ok = Gui::Selection().addSelection(docname,objname,
