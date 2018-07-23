@@ -470,6 +470,7 @@ protected:
     static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sPushSelStack        (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sHasSelection        (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction

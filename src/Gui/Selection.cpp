@@ -1569,6 +1569,8 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "pushSelStack(clearForward=True, overwrite=False) -- push current selection to stack\n\n"
      "clearForward: whether to clear the forward selection stack.\n"
      "overwrite: overwrite the top back selection stack with current selection."},
+    {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
+     "hasSelection(docName=None, resolve=False) -- check if there is any selection\n"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -1969,4 +1971,21 @@ PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args,
 
     Selection().selStackPush(PyObject_IsTrue(clear),PyObject_IsTrue(overwrite));
     Py_Return;
+}
+
+PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    const char *doc = 0;
+    PyObject *resolve = Py_False;
+    if (!PyArg_ParseTuple(args, "|sO",&doc,&resolve))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        bool ret;
+        if(doc || PyObject_IsTrue(resolve))
+            ret = Selection().hasSelection(doc,PyObject_IsTrue(resolve));
+        else
+            ret = Selection().hasSelection();
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
 }
