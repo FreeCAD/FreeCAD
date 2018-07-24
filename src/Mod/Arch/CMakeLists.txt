@@ -41,6 +41,7 @@ SET(Arch_SRCS
     ArchPipe.py
     ArchNesting.py
     ArchBuildingPart.py
+    ArchReference.py
 )
 
 SET(Dice3DS_SRCS
