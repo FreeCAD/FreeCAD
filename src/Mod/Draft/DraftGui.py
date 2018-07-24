@@ -157,7 +157,7 @@ class todo:
                         func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
-                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", func
                     FreeCAD.Console.PrintWarning (wrn)
             # restack Draft screen widgets after creation
             if hasattr(FreeCADGui,"Snapper"):
