@@ -388,6 +388,8 @@ class _ViewProviderArchMaterial:
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
+        if hasattr(self,"taskd"):
+            del self.taskd
         return
 
     def __getstate__(self):
