@@ -236,6 +236,8 @@ class Component:
             obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        if not "StandardCode" in pl:
+            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
         if not "IfcAttributes" in pl:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Material" in pl:
@@ -1035,9 +1037,21 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.ifcButton, 4, 0, 1, 2)
         self.ifcButton.hide()
 
+        self.classButton = QtGui.QPushButton(self.baseform)
+        self.classButton.setObjectName("classButton")
+        self.grid.addWidget(self.classButton, 5, 0, 1, 2)
+        try:
+            import BimClassification
+        except:
+            self.form.ButtonCode.hide()
+        else:
+            import os
+            self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
+
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.ifcButton, QtCore.SIGNAL("clicked()"), self.editIfcProperties)
+        QtCore.QObject.connect(self.classButton, QtCore.SIGNAL("clicked()"), self.editClass)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *,int)"), self.editObject)
         self.update()
@@ -1156,7 +1170,7 @@ class ComponentTaskPanel:
 
     def retranslateUi(self, TaskPanel):
 
-        self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None))
+        self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Component", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None))
@@ -1170,6 +1184,7 @@ class ComponentTaskPanel:
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
         self.treeHosts.setText(0,QtGui.QApplication.translate("Arch", "Hosts", None))
         self.ifcButton.setText(QtGui.QApplication.translate("Arch", "Edit IFC properties", None))
+        self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit standard code", None))
 
     def editIfcProperties(self):
 
@@ -1364,6 +1379,12 @@ class ComponentTaskPanel:
                 else:
                     pset = self.ifcModel.itemFromIndex(sel[0].parent())
                     pset.takeRow(sel[0].row())
+
+    def editClass(self):
+
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.obj)
+        FreeCADGui.runCommand("BIM_Classification")
 
 if FreeCAD.GuiUp:
 
