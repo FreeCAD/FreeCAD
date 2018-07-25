@@ -273,7 +273,7 @@ void ShapeBuilderWidget::createWireFromEdge()
     QString cmd;
     cmd = QString::fromLatin1(
         "_=Part.Wire(Part.__sortEdges__(%1))\n"
-        "if _.isNull(): raise RuntimeError('Failed to create face')\n"
+        "if _.isNull(): raise RuntimeError('Failed to create a wire')\n"
         "App.ActiveDocument.addObject('Part::Feature','Wire').Shape=_\n"
         "del _\n"
     ).arg(list);
@@ -519,7 +519,7 @@ void ShapeBuilderWidget::switchMode(int mode)
     }
     else if (mode == 1) {
         d->gate->setMode(ShapeSelection::EDGE);
-        d->ui.label->setText(tr("Select a closed set of edges"));
+        d->ui.label->setText(tr("Select adjacent edges"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
         d->ui.checkRefine->setEnabled(false);
