@@ -424,7 +424,7 @@ class ViewProviderBuildingPart:
         #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
         vobj.Proxy = self
         self.setProperties(vobj)
-        vobj.ShapeColor = (0.13,0.15,0.37)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
 
     def setProperties(self,vobj):
 

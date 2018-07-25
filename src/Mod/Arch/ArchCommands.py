@@ -94,6 +94,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Helpers":
+        c = p.GetUnsigned("ColorHelpers",674321151)
     elif objectType == "Construction":
         c = Draft.getParam("constructioncolor",746455039)
         transparency = 0.80
