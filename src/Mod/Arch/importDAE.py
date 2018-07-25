@@ -197,10 +197,18 @@ def export(exportList,filename,tessellation=1):
         m = None
         if obj.isDerivedFrom("Part::Feature"):
             print("exporting object ",obj.Name, obj.Shape)
-            m = Mesh.Mesh(triangulate(obj.Shape))
+            new_shape = obj.Shape.copy()
+            new_shape.Placement = obj.getGlobalPlacement()
+            m = Mesh.Mesh(triangulate(new_shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
             print("exporting object ",obj.Name, obj.Mesh)
             m = obj.Mesh
+        elif obj.isDerivedFrom("App::Part"):
+            for child in obj.OutList:
+                objectslist.append(child)
+            continue
+        else:
+            continue
         if m:
             Topology = m.Topology
             Facets = m.Facets
