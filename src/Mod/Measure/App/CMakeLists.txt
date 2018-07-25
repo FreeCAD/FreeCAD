@@ -47,11 +47,11 @@ SET(Measure_SRCS
     ${Python_SRCS}
 )
 
-if(MSVC)
+if(BUILD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Measure_CPP_SRCS ${Measure_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
-endif(MSVC)
+endif(BUILD_USE_PCH)
 
 # Set special compiler flag to convert a SIGSEV into an exception
 # to handle issue #0000478.
