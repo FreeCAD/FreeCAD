@@ -281,7 +281,7 @@ BoundBox2d Polygon2d::CalcBoundBox (void) const
 
 static short _CalcTorsion (double *pfLine, double fX, double fY)
 {
-  short sQuad[2], i;
+  int sQuad[2], i; // Changing this from short to int allows the compiler to inline this function
   double fResX;
 
   // Klassifizierung der beiden Polygonpunkte in Quadranten

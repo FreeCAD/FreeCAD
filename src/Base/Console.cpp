@@ -39,30 +39,100 @@
 #include "Console.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
-#include <QCoreApplication> 
+#include <QCoreApplication>
 
 using namespace Base;
 
 
 
 
+//=========================================================================
+
+namespace Base {
+    
+class ConsoleEvent : public QEvent {
+public:
+    ConsoleSingleton::FreeCAD_ConsoleMsgType msgtype;
+    std::string msg;
+
+    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& msg)
+        : QEvent(QEvent::User), msgtype(type), msg(msg)
+    {
+    }
+    ~ConsoleEvent()
+    {
+    }
+};
+
+class ConsoleOutput : public QObject
+{
+public:
+    static ConsoleOutput* getInstance() {
+        if (!instance)
+            instance = new ConsoleOutput;
+        return instance;
+    }
+    static void destruct() {
+        delete instance;
+        instance = 0;
+    }
+
+    void customEvent(QEvent* ev) {
+        if (ev->type() == QEvent::User) {
+            ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
+            switch (ce->msgtype) {
+            case ConsoleSingleton::MsgType_Txt:
+                Console().NotifyMessage(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Log:
+                Console().NotifyLog(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Wrn:
+                Console().NotifyWarning(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Err:
+                Console().NotifyError(ce->msg.c_str());
+                break;
+            }
+        }
+    }
+
+private:
+    ConsoleOutput()
+    {
+    }
+    ~ConsoleOutput()
+    {
+    }
+
+    static ConsoleOutput* instance;
+};
+
+ConsoleOutput* ConsoleOutput::instance = 0;
+
+}
+
 //**************************************************************************
 // Construction destruction
 
 
 ConsoleSingleton::ConsoleSingleton(void)
-  :_bVerbose(false),_bCanRefresh(true)
+  : _bVerbose(true)
+  , _bCanRefresh(true)
+  , connectionMode(Direct)
 #ifdef FC_DEBUG
   ,_defaultLogLevel(FC_LOGLEVEL_LOG)
 #else
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
-
+    // make sure this object is part of the main thread
+    ConsoleOutput::getInstance();
 }
 
 ConsoleSingleton::~ConsoleSingleton()
 {
+    ConsoleOutput::destruct();
     for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
         delete (*Iter);
 }
@@ -74,15 +144,16 @@ ConsoleSingleton::~ConsoleSingleton()
 /**  
  *  sets the console in a special mode
  */
-void ConsoleSingleton::SetMode(ConsoleMode m)
+void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
 {
     if(m && Verbose)
         _bVerbose = true;
 }
+
 /**  
  *  unsets the console from a special mode
  */
-void ConsoleSingleton::UnsetMode(ConsoleMode m)
+void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
 {
     if(m && Verbose)
         _bVerbose = false;
@@ -159,6 +230,11 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
     }
 }
 
+void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
+{
+    connectionMode = mode;
+}
+
 /** Prints a Message
  *  This method issues a Message. 
  *  Messages are used to show some non vital information. That means when
@@ -182,7 +258,11 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
     va_end(namelessVars);
-    NotifyMessage(format);
+
+    if (connectionMode == Direct)
+        NotifyMessage(format);
+    else
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Txt, format));
 }
 
 /** Prints a Message
@@ -209,7 +289,11 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
     va_end(namelessVars);
-    NotifyWarning(format);
+
+    if (connectionMode == Direct)
+        NotifyWarning(format);
+    else
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Wrn, format));
 }
 
 /** Prints a Message
@@ -236,7 +320,11 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
     va_end(namelessVars);
-    NotifyError(format);
+
+    if (connectionMode == Direct)
+        NotifyError(format);
+    else
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Err, format));
 }
 
 
@@ -261,13 +349,17 @@ void ConsoleSingleton::Log( const char *pMsg, ... )
     char format[4024];
     const unsigned int format_len = 4024;
 
-    if (!_bVerbose)
+    if (_bVerbose)
     {
         va_list namelessVars;
         va_start(namelessVars, pMsg);  // Get the "..." vars
         vsnprintf(format, format_len, pMsg, namelessVars);
         va_end(namelessVars);
-        NotifyLog(format);
+
+        if (connectionMode == Direct)
+            NotifyLog(format);
+        else
+            QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_Log, format));
     }
 }
 
@@ -416,9 +508,9 @@ PyMethodDef ConsoleSingleton::Methods[] = {
     {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, 1,
      "PrintWarning -- Print a warning to the output"},
     {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, 1,
-     "Set the status for either Log, Msg, Wrn, or Error for an observer"},
+     "Set the status for either Log, Msg, Wrn or Error for an observer"},
     {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, 1,
-     "Get the status for either Log, Msg, Wrn, or Error for an observer"},
+     "Get the status for either Log, Msg, Wrn or Error for an observer"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -657,7 +749,7 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, Py
             else if(strcmp(pstr2,"Err") == 0)
                 pObs->bErr = (Bool==0)?false:true;
             else
-                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg, or Wrn)");
+                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
 
             Py_INCREF(Py_None);
             return Py_None;
