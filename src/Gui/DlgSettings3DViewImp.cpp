@@ -89,6 +89,7 @@ void DlgSettings3DViewImp::saveSettings()
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
     spinBoxZoomStep->onSave();
+    checkBoxDragAtCursor->onSave();
     CheckBox_CornerCoordSystem->onSave();
     CheckBox_ShowFPS->onSave();
     CheckBox_useVBO->onSave();
@@ -107,6 +108,7 @@ void DlgSettings3DViewImp::loadSettings()
     checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
     spinBoxZoomStep->onRestore();
+    checkBoxDragAtCursor->onRestore();
     CheckBox_CornerCoordSystem->onRestore();
     CheckBox_ShowFPS->onRestore();
     CheckBox_useVBO->onRestore();
