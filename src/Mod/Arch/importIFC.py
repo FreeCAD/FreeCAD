@@ -1247,8 +1247,10 @@ class recycler:
         self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
         self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
         self.polylines = {}
+        self.polyloops = {}
         self.propertysinglevalues = {}
         self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
+        self.axis2placement2ds = {}
         self.localplacements = {}
         self.rgbs = {}
         self.ssrenderings = {}
@@ -1286,6 +1288,17 @@ class recycler:
                 self.polylines[key] = c
             return c
 
+    def createIfcPolyLoop(self,points):
+        key = "".join([str(p.Coordinates) for p in points])
+        if self.compress and key in self.polyloops:
+            self.spared += 1
+            return self.polyloops[key]
+        else:
+            c = self.ifcfile.createIfcPolyLoop(points)
+            if self.compress:
+                self.polyloops[key] = c
+            return c
+
     def createIfcPropertySingleValue(self,name,ptype,pvalue):
         key = name + ptype + pvalue
         if self.compress and key in self.propertysinglevalues:
@@ -1306,6 +1319,17 @@ class recycler:
             c = self.ifcfile.createIfcAxis2Placement3D(p1,p2,p3)
             if self.compress:
                 self.axis2placement3ds[key] = c
+            return c
+
+    def createIfcAxis2Placement2D(self,p1,p2):
+        key = str(p1.Coordinates) + str(p2.DirectionRatios)
+        if self.compress and key in self.axis2placement2ds:
+            self.spared += 1
+            return self.axis2placement2ds[key]
+        else:
+            c = self.ifcfile.createIfcAxis2Placement2D(p1,p2)
+            if self.compress:
+                self.axis2placement2ds[key] = c
             return c
 
     def createIfcLocalPlacement(self,gpl):
@@ -2182,7 +2206,7 @@ def createCurve(ifcfile,wire):
             xvc =       ifcbin.createIfcDirection((1.0,0.0))
             ovc =       ifcbin.createIfcCartesianPoint(tuple(e.Curve.Center))
             plc =       ifcbin.createIfcAxis2Placement2D(ovc,xvc)
-            cir =       ifcbin.createIfcCircle(plc,e.Curve.Radius)
+            cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
             curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
         else:
             verts = [vertex.Point for vertex in e.Vertexes]
