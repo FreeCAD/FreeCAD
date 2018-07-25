@@ -147,6 +147,7 @@ struct MainWindowP
     bool whatsthis;
     QString whatstext;
     Assistant* assistant;
+    QMap<QString, QPointer<UrlHandler> > urlHandler;
 };
 
 class MDITabbar : public QTabBar
@@ -1457,10 +1458,27 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     }
 }
 
+void MainWindow::setUrlHandler(const QString &scheme, Gui::UrlHandler* handler)
+{
+    d->urlHandler[scheme] = handler;
+}
+
+void MainWindow::unsetUrlHandler(const QString &scheme)
+{
+    d->urlHandler.remove(scheme);
+}
+
 void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
 {
     QStringList files;
     for (QList<QUrl>::ConstIterator it = url.begin(); it != url.end(); ++it) {
+        QMap<QString, QPointer<UrlHandler> >::iterator jt = d->urlHandler.find(it->scheme());
+        if (jt != d->urlHandler.end() && !jt->isNull()) {
+            // delegate the loading to the url handler
+            (*jt)->openUrl(doc, *it);
+            continue;
+        }
+
         QFileInfo info((*it).toLocalFile());
         if (info.exists() && info.isFile()) {
             if (info.isSymLink())
