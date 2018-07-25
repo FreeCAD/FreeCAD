@@ -324,6 +324,22 @@
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDragAtCursor">
+        <property name="text">
+         <string>Drag at cursor</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DragAtCursor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -624,6 +640,7 @@
   <tabstop>checkBoxZoomAtCursor</tabstop>
   <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>
+  <tabstop>checkBoxDragAtCursor</tabstop>
   <tabstop>FloatSpinBox_EyeDistance</tabstop>
   <tabstop>checkBoxBacklight</tabstop>
   <tabstop>backlightColor</tabstop>
