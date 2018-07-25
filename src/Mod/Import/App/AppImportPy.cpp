@@ -383,9 +383,8 @@ private:
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;
-        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
+        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
         char* useOptionSource = nullptr;
-
 
         if (PyArg_ParseTuple(args.ptr(), "O!et|s",  &(PyList_Type) ,&shapeObj, "utf-8",&fname, &optionSource)) {
             filePath = std::string(fname);
@@ -402,13 +401,16 @@ private:
                 writer.setOptionSource(useOptionSource);
                 writer.setOptions();
                 writer.setLayerName(layerName);
+                writer.init();
                 Py::Sequence list(shapeObj);
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                     if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                        const TopoDS_Shape& shape = static_cast<Part::TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                        Part::TopoShape* ts = static_cast<Part::TopoShapePy*>((*it).ptr())->getTopoShapePtr();
+                        TopoDS_Shape shape = ts->getShape();
                         writer.exportShape(shape);
                     }
                 }
+                writer.endRun();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
@@ -433,9 +435,11 @@ private:
                 writer.setOptionSource(useOptionSource);
                 writer.setOptions();
                 writer.setLayerName(layerName);
+                writer.init();
                 Part::TopoShape* obj = static_cast<Part::TopoShapePy*>(shapeObj)->getTopoShapePtr();
                 TopoDS_Shape shape = obj->getShape();
                 writer.exportShape(shape);
+                writer.endRun();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
@@ -453,7 +457,7 @@ private:
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;
-        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
+        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
         char* useOptionSource = nullptr;
 
 
@@ -472,6 +476,7 @@ private:
                 writer.setOptionSource(useOptionSource);
                 writer.setOptions();
                 writer.setLayerName(layerName);
+                writer.init();
                 Py::Sequence list(docObj);
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                     if (PyObject_TypeCheck((*it).ptr(), &(Part::PartFeaturePy::Type))) {
@@ -484,6 +489,7 @@ private:
                         writer.exportShape(shape);
                     }
                 }
+                writer.endRun();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
@@ -508,12 +514,14 @@ private:
                 writer.setOptionSource(useOptionSource);
                 writer.setOptions();
                 writer.setLayerName(layerName);
+                writer.init();
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
                 Part::Feature* part = static_cast<Part::Feature*>(obj);
                 layerName = part->getNameInDocument();
                 writer.setLayerName(layerName);
                 const TopoDS_Shape& shape = part->Shape.getValue();
                 writer.exportShape(shape);
+                writer.endRun();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
