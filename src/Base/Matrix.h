@@ -83,6 +83,8 @@ public:
   /// Multiplication matrix with vector 
   inline Vector3f  operator *  (const Vector3f& rclVct) const;
   inline Vector3d  operator *  (const Vector3d& rclVct) const;
+  inline void multVec(const Vector3d & src, Vector3d & dst) const;
+  inline void multVec(const Vector3f & src, Vector3f & dst) const;
   /// Comparison
   inline bool      operator != (const Matrix4D& rclMtrx) const;
   /// Comparison
@@ -278,9 +280,9 @@ inline Vector3f Matrix4D::operator* (const Vector3f& rclVct) const
 {
   return Vector3f((float)(dMtrx4D[0][0]*rclVct.x + dMtrx4D[0][1]*rclVct.y +
                           dMtrx4D[0][2]*rclVct.z + dMtrx4D[0][3]),
-                  (float)(dMtrx4D[1][0]*rclVct.x + dMtrx4D[1][1]*rclVct.y + 
+                  (float)(dMtrx4D[1][0]*rclVct.x + dMtrx4D[1][1]*rclVct.y +
                           dMtrx4D[1][2]*rclVct.z + dMtrx4D[1][3]),
-                  (float)(dMtrx4D[2][0]*rclVct.x + dMtrx4D[2][1]*rclVct.y + 
+                  (float)(dMtrx4D[2][0]*rclVct.x + dMtrx4D[2][1]*rclVct.y +
                           dMtrx4D[2][2]*rclVct.z + dMtrx4D[2][3]));
 }
 
@@ -288,10 +290,32 @@ inline Vector3d Matrix4D::operator* (const Vector3d& rclVct) const
 {
   return Vector3d((dMtrx4D[0][0]*rclVct.x + dMtrx4D[0][1]*rclVct.y +
                    dMtrx4D[0][2]*rclVct.z + dMtrx4D[0][3]),
-                  (dMtrx4D[1][0]*rclVct.x + dMtrx4D[1][1]*rclVct.y + 
+                  (dMtrx4D[1][0]*rclVct.x + dMtrx4D[1][1]*rclVct.y +
                    dMtrx4D[1][2]*rclVct.z + dMtrx4D[1][3]),
-                  (dMtrx4D[2][0]*rclVct.x + dMtrx4D[2][1]*rclVct.y + 
+                  (dMtrx4D[2][0]*rclVct.x + dMtrx4D[2][1]*rclVct.y +
                    dMtrx4D[2][2]*rclVct.z + dMtrx4D[2][3]));
+}
+
+inline void Matrix4D::multVec(const Vector3d & src, Vector3d & dst) const
+{
+  double x = (dMtrx4D[0][0]*src.x + dMtrx4D[0][1]*src.y +
+              dMtrx4D[0][2]*src.z + dMtrx4D[0][3]);
+  double y = (dMtrx4D[1][0]*src.x + dMtrx4D[1][1]*src.y +
+              dMtrx4D[1][2]*src.z + dMtrx4D[1][3]);
+  double z = (dMtrx4D[2][0]*src.x + dMtrx4D[2][1]*src.y +
+              dMtrx4D[2][2]*src.z + dMtrx4D[2][3]);
+  dst.Set(x,y,z);
+}
+
+inline void Matrix4D::multVec(const Vector3f & src, Vector3f & dst) const
+{
+  float x = (dMtrx4D[0][0]*src.x + dMtrx4D[0][1]*src.y +
+             dMtrx4D[0][2]*src.z + dMtrx4D[0][3]);
+  float y = (dMtrx4D[1][0]*src.x + dMtrx4D[1][1]*src.y +
+             dMtrx4D[1][2]*src.z + dMtrx4D[1][3]);
+  float z = (dMtrx4D[2][0]*src.x + dMtrx4D[2][1]*src.y +
+             dMtrx4D[2][2]*src.z + dMtrx4D[2][3]);
+  dst.Set(x,y,z);
 }
 
 inline bool Matrix4D::operator== (const Matrix4D& rclMtrx) const
