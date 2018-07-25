@@ -314,7 +314,7 @@ class _ViewProviderAxis:
             vobj.LineWidth = 1
         if not "LineColor" in pl:
             vobj.addProperty("App::PropertyColor","LineColor","Axis",QT_TRANSLATE_NOOP("App::Property","The color of this axis"))
-            vobj.LineColor = (0.13,0.15,0.37)
+            vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "StartNumber" in pl:
             vobj.addProperty("App::PropertyInteger","StartNumber","Axis",QT_TRANSLATE_NOOP("App::Property","The number of the first axis"))
             vobj.StartNumber = 1

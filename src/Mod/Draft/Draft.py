@@ -6730,7 +6730,7 @@ class ViewProviderWorkingPlaneProxy:
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
-        vobj.LineColor = (0.0,0.25,0.25,1.0)
+        vobj.LineColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
         vobj.Proxy = self
 
     def getIcon(self):
