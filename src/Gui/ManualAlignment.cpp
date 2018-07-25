@@ -304,7 +304,7 @@ const MovableGroup& MovableGroupModel::activeGroup() const
     // Make sure that the array is not empty
     if (this->_groups.empty())
         throw Base::RuntimeError("Empty group");
-    return *(this->_groups.begin());
+    return this->_groups.front();
 }
 
 void MovableGroupModel::continueAlignment()
@@ -326,6 +326,13 @@ bool MovableGroupModel::isEmpty() const
 int MovableGroupModel::count() const
 {
     return this->_groups.size();
+}
+
+const MovableGroup& MovableGroupModel::getGroup(int i) const
+{
+    if (i >= count())
+        throw Base::IndexError("Index out of range");
+    return this->_groups[i];
 }
 
 // ------------------------------------------------------------------

@@ -28,6 +28,7 @@
 
 #include <QTreeWidgetItem>
 #include <QTreeWidget>
+#include <QDialog>
 
 namespace Gui {
 namespace Dialog {
