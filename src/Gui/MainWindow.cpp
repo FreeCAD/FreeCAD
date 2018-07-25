@@ -1238,6 +1238,13 @@ QPixmap MainWindow::splashImage() const
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString version = QString::fromLatin1("%1.%2").arg(major).arg(minor);
 
+        std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
+        std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
+        if (te != App::Application::Config().end())
+            title = QString::fromUtf8(te->second.c_str());
+        if (tv != App::Application::Config().end())
+            version = QString::fromUtf8(tv->second.c_str());
+
         QPainter painter;
         painter.begin(&splash_image);
         QFont fontExe = painter.font();
