@@ -90,6 +90,12 @@ MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
   return *this;
 }
 
+void MeshPointArray::Transform(const Base::Matrix4D& mat)
+{
+  for (_TIterator pP = begin(); pP != end(); ++pP)
+    mat.multVec(*pP,*pP);
+}
+
 void MeshFacetArray::Erase (_TIterator pIter)
 {
   unsigned long i, *pulN;
