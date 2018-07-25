@@ -2,6 +2,7 @@ if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
     add_definitions(-DBOOST_DYN_LINK)
+    add_definitions(-DZIPIOS_UTF8)
 endif(WIN32)
 
 include_directories(

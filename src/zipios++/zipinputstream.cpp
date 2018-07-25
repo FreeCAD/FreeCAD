@@ -5,7 +5,7 @@
 
 #include "zipinputstreambuf.h"
 #include "zipinputstream.h"
-#if defined(_WIN32)
+#if defined(_WIN32) && defined(ZIPIOS_UTF8)
 #include <Base/FileInfo.h>
 #endif
 
@@ -27,7 +27,7 @@ ZipInputStream::ZipInputStream( const std::string &filename, std::streampos pos 
   : std::istream( 0 ),
     ifs( 0 )
 {
-#if defined(_WIN32)
+#if defined(_WIN32) && defined(ZIPIOS_UTF8)
   std::wstring wsname = Base::FileInfo(filename).toStdWString();
   ifs = new std::ifstream( wsname.c_str(), std::ios::in |std:: ios::binary ) ;
 #else
