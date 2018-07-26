@@ -2309,6 +2309,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     # base shape not yet created
                     tostore = k
 
+    # unhandled case: object is duplicated because of Axis
+    if obj.isDerivedFrom("Part::Feature") and (len(obj.Shape.Solids) > 1) and hasattr(obj,"Axis") and obj.Axis:
+        forcebrep = True
+
     if (not shapes) and (not forcebrep):
         profile = None
         ev = FreeCAD.Vector()
