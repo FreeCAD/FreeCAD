@@ -39,6 +39,7 @@
 #include "Helpers.h"
 #include "Grid.h"
 #include "TopoAlgorithm.h"
+#include "Functional.h"
 #include <Base/Matrix.h>
 
 #include <Base/Sequencer.h>
@@ -966,7 +967,9 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     }
 
     // sort the edges
-    std::sort(edges.begin(), edges.end(), Edge_Less());
+    //std::sort(edges.begin(), edges.end(), Edge_Less());
+    int threads = std::max(1, QThread::idealThreadCount());
+    MeshCore::parallel_sort(edges.begin(), edges.end(), Edge_Less(), threads);
 
     unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;

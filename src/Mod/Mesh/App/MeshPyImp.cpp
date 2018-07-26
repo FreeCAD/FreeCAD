@@ -164,6 +164,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["STL" ] = MeshCore::MeshIO::BSTL;
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["SMF" ] = MeshCore::MeshIO::SMF;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
@@ -212,6 +213,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["STL" ] = MeshCore::MeshIO::BSTL;
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["SMF" ] = MeshCore::MeshIO::SMF;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IDTF"] = MeshCore::MeshIO::IDTF;
     ext["MGL" ] = MeshCore::MeshIO::MGL;
