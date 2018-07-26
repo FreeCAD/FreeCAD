@@ -164,6 +164,52 @@ private:
     float _fSaveTolerance;
 };
 
+/**
+ * Class for creating the mesh structure by adding facets. Building the structure needs 3 steps:
+ * 1. initializing  
+ * 2. adding the facets
+ * 3. finishing
+ * \code
+ * // Sample Code for building a mesh structure
+ * MeshFastBuilder builder(someMeshReference);
+ * builder.Initialize(numberOfFacets);
+ * ...
+ * for (...)
+ *   builder.AddFacet(...);
+ * ...
+ * builder.Finish();
+ * \endcode
+ * @author Werner Mayer
+ */
+class MeshExport MeshFastBuilder
+{
+private:
+    MeshKernel& _meshKernel;
+
+public:
+    MeshFastBuilder(MeshKernel &rclM);
+    ~MeshFastBuilder(void);
+
+    /** Initializes the class. Must be done before adding facets 
+     * @param ctFacets count of facets.
+     */
+    void Initialize (unsigned long ctFacets);
+    /** Add new facet
+     */
+    void AddFacet (const Base::Vector3f* facetPoints);
+    /** Add new facet
+     */
+    void AddFacet (const MeshGeomFacet& facetPoints);
+
+    /** Finishes building up the mesh structure. Must be done after adding facets.
+     */
+    void Finish ();
+
+private:
+    struct Private;
+    Private* p;
+};
+
 } // namespace MeshCore
 
 #endif 
