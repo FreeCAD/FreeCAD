@@ -26,6 +26,7 @@
 
 #include "Material.h"
 
+#include <algorithm>
 #include <deque>
 #include <string>
 #include <vector>

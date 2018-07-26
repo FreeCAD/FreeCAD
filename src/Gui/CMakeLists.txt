@@ -1171,7 +1171,6 @@ SET(FreeCADGui_SRCS
 )
 
 if(MSVC)
-    add_definitions(-D_PreComp_)
     SET(FreeCADGui_CPP_SRCS
         Language/Translator.cpp
         propertyeditor/PropertyEditor.cpp
@@ -1196,15 +1195,18 @@ if(MSVC)
         ${Workbench_CPP_SRCS}
         ${FreeCADGui_CPP_SRCS}
     )
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADGui PreCompiled.h PreCompiled.cpp FreeCADGui_CPP_SRCS)
 endif(MSVC)
 
-add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
+if (BUILD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    ADD_MSVC_PRECOMPILED_HEADER(FreeCADGui PreCompiled.h PreCompiled.cpp FreeCADGui_CPP_SRCS)
+endif(BUILD_USE_PCH)
 
 if (FREECAD_USE_QT_FILEDIALOG)
     set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
 endif()
 
+add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)

@@ -2313,6 +2313,10 @@ class Modifier(DraftTool):
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
 
+    def __init__(self):
+        Modifier.__init__(self)
+        self.copymode = False
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Move',
                 'Accel' : "M, V",
@@ -2344,6 +2348,8 @@ class Move(Modifier):
             self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
+        if self.copymode:
+            self.ui.isCopy.setChecked(True)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.ghost = ghostTracker(self.sel)

@@ -199,15 +199,15 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
 {
-    if(!getSoRenderManager()->getCamera()->isOfType(SoPerspectiveCamera::getClassTypeId()) &&
-       !getSoRenderManager()->getCamera()->isOfType(SoOrthographicCamera::getClassTypeId())) {
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (cam && !cam->isOfType(SoPerspectiveCamera::getClassTypeId()) &&
+               !cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
         Base::Console().Warning("Quarter::setCameraType",
                                 "Only SoPerspectiveCamera and SoOrthographicCamera is supported.");
         return;
     }
 
 
-    SoCamera* cam = getSoRenderManager()->getCamera();
     SoType perspectivetype = SoPerspectiveCamera::getClassTypeId();
     SbBool oldisperspective = cam ? cam->getTypeId().isDerivedFrom(perspectivetype) : false;
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);

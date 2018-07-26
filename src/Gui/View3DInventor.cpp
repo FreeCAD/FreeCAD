@@ -348,6 +348,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
+    else if (strcmp(Reason,"DragAtCursor") == 0) {
+        bool on = rGrp.GetBool("DragAtCursor", false);
+        _viewer->navigationStyle()->setDragAtCursor(on);
+    }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }

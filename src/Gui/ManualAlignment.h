@@ -169,6 +169,7 @@ public:
     void clear();
     bool isEmpty() const;
     int count() const;
+    const MovableGroup& getGroup(int i) const;
 
 protected:
     void removeActiveGroup();

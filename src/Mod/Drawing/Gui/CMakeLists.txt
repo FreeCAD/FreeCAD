@@ -83,11 +83,11 @@ SET(DrawingGuiTaskDlgs_SRCS
 )
 SOURCE_GROUP("TaskDialogs" FILES ${DrawingGuiTaskDlgs_SRCS})
 
-if(MSVC)
+if(BUILD_USE_PCH)
     #add_definitions(-D_PreComp_)
     #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${DrawingGui_SRCS} ${DrawingGuiView_SRCS} ${DrawingGuiViewProvider_SRCS})
     #ADD_MSVC_PRECOMPILED_HEADER(DrawingGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(MSVC)
+endif(BUILD_USE_PCH)
 
 add_library(DrawingGui SHARED ${DrawingGui_SRCS} ${DrawingGuiView_SRCS} ${DrawingGuiViewProvider_SRCS})
 target_link_libraries(DrawingGui ${DrawingGui_LIBS})

@@ -39,7 +39,6 @@
 
 #include "Stream.h"
 #include "Swap.h"
-#include "FileInfo.h"
 #include <CXX/Objects.hxx>
 
 using namespace Base;
@@ -785,32 +784,3 @@ Streambuf::seekpos(std::streambuf::pos_type pos,
 {
     return seekoff(pos, std::ios_base::beg);
 }
-
-// ---------------------------------------------------------
-
-Base::ofstream::ofstream(const FileInfo& fi, ios_base::openmode mode)
-#ifdef _MSC_VER
-: std::ofstream(fi.toStdWString().c_str(), mode)
-#else
-: std::ofstream(fi.filePath().c_str(), mode)
-#endif
-{
-}
-
-Base::ofstream::~ofstream()
-{
-}
-
-Base::ifstream::ifstream(const FileInfo& fi, ios_base::openmode mode)
-#ifdef _MSC_VER
-: std::ifstream(fi.toStdWString().c_str(), mode)
-#else
-: std::ifstream(fi.filePath().c_str(), mode)
-#endif
-{
-}
-
-Base::ifstream::~ifstream()
-{
-}
-

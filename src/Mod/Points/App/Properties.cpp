@@ -553,6 +553,16 @@ void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIn
     setValues(remainValue);
 }
 
+PyObject *PropertyCurvatureList::getPyObject(void)
+{
+    throw Py::NotImplementedError("Not yet implemented");
+}
+
+void PropertyCurvatureList::setPyObject(PyObject *)
+{
+    throw Py::NotImplementedError("Not yet implemented");
+}
+
 void PropertyCurvatureList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
