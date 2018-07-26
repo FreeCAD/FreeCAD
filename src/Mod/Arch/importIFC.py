@@ -1512,7 +1512,7 @@ def export(exportList,filename):
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
-            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitely set
+            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Building"):
             ifctype = "IfcBuilding"
 

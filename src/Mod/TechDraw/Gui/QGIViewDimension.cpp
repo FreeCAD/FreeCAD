@@ -433,7 +433,7 @@ void QGIViewDimension::draw()
         margin = Rez::guiX(2.f);
         float scaler = 1.;
 
-        //intersection of extention lines and dimension line
+        //intersection of extension lines and dimension line
         Base::Vector3d startIntercept = DrawUtil::Intersect2d(startDist, dirExt,
                                                            fauxCenter,dirDim);
         Base::Vector3d endIntercept = DrawUtil::Intersect2d(endDist, dirExt,
