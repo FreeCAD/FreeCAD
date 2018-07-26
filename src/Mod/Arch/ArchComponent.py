@@ -583,7 +583,7 @@ class Component:
                     if hasattr(obj.Axis.Proxy,"getPoints"):
                         points = obj.Axis.Proxy.getPoints(obj.Axis)
                 if not points:
-                    if obj.Axis.isDerivedFrom("Part.Feature"):
+                    if obj.Axis.isDerivedFrom("Part::Feature"):
                         points = [v.Point for v in obj.Axis.Shape.Vertexes]
         if points:
             shps = []
