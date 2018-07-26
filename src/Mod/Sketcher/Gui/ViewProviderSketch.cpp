@@ -2771,7 +2771,7 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     {
         // Only hide the default length unit. Right now there is not an easy way
         // to get that from the Unit system so we have to manually add it here.
-        // Hopfully this can be added in the future so this code won't have to
+        // Hopefully this can be added in the future so this code won't have to
         // be updated if a new units schema is added.
         unitSys = Base::UnitsApi::getSchema();
 

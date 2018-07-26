@@ -755,7 +755,7 @@ struct WireJoiner {
         }
     }
 
-    // split any edges that are intersected by othe edge's end point in the middle
+    // split any edges that are intersected by other edge's end point in the middle
     void splitEdges() {
 #if (BOOST_VERSION < 105500)
         throw Base::RuntimeError("Module must be built with boost version >= 1.55");
