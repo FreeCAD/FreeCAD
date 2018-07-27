@@ -2053,9 +2053,9 @@ def export(exportList,filename):
                         psa = curvestyles[rgb]
                     else:
                         col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                        cvf = ifcbin.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
-                        ics = ifcbin.createIfcCurveStyle('Line',cvf,None,col)
-                        psa = ifcbin.createIfcPresentationStyleAssignment([ics])
+                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
+                        ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
+                        psa = ifcfile.createIfcPresentationStyleAssignment([ics])
                         curvestyles[rgb] = psa
                     for rep in reps:
                         isi = ifcfile.createIfcStyledItem(rep,[psa],None)
