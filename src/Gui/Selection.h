@@ -30,6 +30,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <deque>
 #include <CXX/Objects.hxx>
 
 #include <Base/Observer.h>
@@ -429,6 +430,12 @@ public:
         return static_cast<unsigned int>(_SelList.size());
     }
 
+    int selStackBackSize() const {return _SelStackBack.size();}
+    int selStackForwardSize() const {return _SelStackForward.size();}
+    void selStackGoBack(int count=1);
+    void selStackGoForward(int count=1);
+    void selStackPush(bool clearForward=true, bool overwrite=false);
+
     bool needPickedList() const;
     void enablePickedList(bool);
     bool hasPickedList() const;
@@ -462,6 +469,7 @@ protected:
     static PyObject *sEnablePickedList    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sPushSelStack        (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
@@ -495,6 +503,10 @@ protected:
 
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
+
+    typedef std::set<std::array<std::string,3> > SelStackItem;
+    std::deque<SelStackItem> _SelStackBack;
+    std::deque<SelStackItem> _SelStackForward;
 
     int checkSelection(const char *pDocName, const char *pObjectName, 
             const char *pSubName,int resolve, _SelObj &sel) const;

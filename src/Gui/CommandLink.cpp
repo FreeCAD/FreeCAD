@@ -43,6 +43,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
 
 FC_LOG_LEVEL_INIT("CommandLink",true,true);
 
@@ -695,22 +696,45 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
     sPixmap       = "LinkSelect";
+    sAccel        = "S, G";
 }
 
 static App::DocumentObject *getSelectedLink(bool finalLink) {
-    const auto &sels = Selection().getSelection("*",true,true);
+    const auto &sels = Selection().getSelection("*",0,true);
     if(sels.empty())
         return 0;
-    auto linked = sels[0].pObject->getLinkedObject(false);
-    if(!linked || linked==sels[0].pObject)
+    auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
+    if(!sobj)
         return 0;
+    auto linked = sobj->getLinkedObject(false);
+    if(!linked)
+        return 0;
+    if(linked==sobj) {
+        auto ext = sobj->getExtensionByType<App::LinkBaseExtension>(true);
+        if(ext) {
+            linked = ext->getTrueLinkedObject(false);
+            if(linked && linked!=sobj) {
+                if(finalLink) {
+                    auto linkFinal = ext->getTrueLinkedObject(true);
+                    if(linkFinal!=linked)
+                        return linkFinal;
+                    return 0;
+                }
+                return linked;
+            }
+        }
+        if(!finalLink && sobj->getDocument()!=sels[0].pObject->getDocument())
+            return sobj;
+        return 0;
+    }
 
     if(finalLink) {
-        auto linkedFinal = sels[0].pObject->getLinkedObject(true);
+        auto linkedFinal = sobj->getLinkedObject(true);
         if(linkedFinal == linked)
             return 0;
+        return linkedFinal;
     }
-    return sels[0].pObject;
+    return linked;
 }
 
 bool StdCmdLinkSelectLinked::isActive() {
@@ -719,13 +743,16 @@ bool StdCmdLinkSelectLinked::isActive() {
 
 void StdCmdLinkSelectLinked::activated(int)
 {
-    auto obj = getSelectedLink(false);
-    if(!obj){
+    auto linked = getSelectedLink(false);
+    if(!linked){
         FC_WARN("invalid selection");
         return;
     }
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
     for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
-        tree->selectLinkedObject(obj,false);
+        tree->selectLinkedObject(linked);
+    Selection().selStackPush();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -736,12 +763,13 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Select final linked object");
+    sMenuText     = QT_TR_NOOP("Select the deepest linked object");
     sToolTipText  = QT_TR_NOOP("Select the deepest linked object");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
     sPixmap       = "LinkSelectFinal";
+    sAccel        = "S, D";
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive() {
@@ -749,13 +777,16 @@ bool StdCmdLinkSelectLinkedFinal::isActive() {
 }
 
 void StdCmdLinkSelectLinkedFinal::activated(int) {
-    auto obj = getSelectedLink(true);
-    if(!obj){
+    auto linked = getSelectedLink(true);
+    if(!linked){
         FC_WARN("invalid selection");
         return;
     }
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
     for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
-        tree->selectLinkedObject(obj,true);
+        tree->selectLinkedObject(linked);
+    Selection().selStackPush();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -783,13 +814,14 @@ bool StdCmdLinkSelectAllLinks::isActive() {
 
 void StdCmdLinkSelectAllLinks::activated(int)
 {
-    const auto &sels = Selection().getSelection("*",true,true);
-    if(sels.empty()) {
-        FC_ERR("invalid selection");
+    auto sels = Selection().getSelection("*",true,true);
+    if(sels.empty())
         return;
-    }
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
     for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
         tree->selectAllLinks(sels[0].pObject);
+    Selection().selStackPush();
 }
 
 //===========================================================================

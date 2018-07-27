@@ -864,6 +864,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 
     _SelList.push_back(temp);
+    _SelStackForward.clear();
 
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
@@ -880,6 +881,88 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     // allow selection
     return true;
+}
+
+void SelectionSingleton::selStackPush(bool clearForward, bool overwrite) {
+    static int stackSize;
+    if(!stackSize) {
+        stackSize = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/View")->GetInt("SelectionStackSize",100);
+    }
+    if(clearForward)
+        _SelStackForward.clear();
+    if(_SelList.empty())
+        return;
+    if((int)_SelStackBack.size() >= stackSize)
+        _SelStackBack.pop_front();
+    SelStackItem item;
+    for(auto &sel : _SelList)
+        item.insert({sel.DocName,sel.FeatName,sel.SubName});
+    if(_SelStackBack.size() && _SelStackBack.back()==item)
+        return;
+    if(!overwrite || _SelStackBack.empty())
+        _SelStackBack.emplace_back();
+    _SelStackBack.back().swap(item);
+}
+
+void SelectionSingleton::selStackGoBack(int count) {
+    if((int)_SelStackBack.size()<count)
+        count = _SelStackBack.size();
+    if(count<=0)
+        return;
+    if(_SelList.size()) {
+        selStackPush(false,true);
+        clearCompleteSelection();
+    }
+    for(int i=0;i<count;++i) {
+        _SelStackForward.push_front(_SelStackBack.back());
+        _SelStackBack.pop_back();
+    }
+    std::deque<SelStackItem> tmpStack;
+    _SelStackForward.swap(tmpStack);
+    while(_SelStackBack.size()) {
+        bool found = true;
+        for(auto &n : _SelStackBack.back()) {
+            if(addSelection(n[0].c_str(), n[1].c_str(), n[2].c_str()))
+                found = true;
+        }
+        if(found)
+            break;
+        tmpStack.push_front(_SelStackBack.back());
+        _SelStackBack.pop_back();
+    }
+    _SelStackForward.swap(tmpStack);
+    getMainWindow()->updateActions();
+}
+
+void SelectionSingleton::selStackGoForward(int count) {
+    if((int)_SelStackForward.size()<count)
+        count = _SelStackForward.size();
+    if(count<=0)
+        return;
+    if(_SelList.size()) {
+        selStackPush(false,true);
+        clearCompleteSelection();
+    }
+    for(int i=0;i<count;++i) {
+        _SelStackBack.push_back(_SelStackForward.front());
+        _SelStackForward.pop_front();
+    }
+    std::deque<SelStackItem> tmpStack;
+    _SelStackForward.swap(tmpStack);
+    while(1) {
+        bool found = false;
+        for(auto &n : _SelStackBack.back()) {
+            if(addSelection(n[0].c_str(), n[1].c_str(), n[2].c_str()))
+                found = true;
+        }
+        if(found || tmpStack.empty()) 
+            break;
+        _SelStackBack.push_back(tmpStack.front());
+        tmpStack.pop_front();
+    }
+    _SelStackForward.swap(tmpStack);
+    getMainWindow()->updateActions();
 }
 
 bool SelectionSingleton::addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
@@ -903,6 +986,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
         temp.z        = 0;
 
         _SelList.push_back(temp);
+        _SelStackForward.clear();
 
         SelectionChanges Chng(SelectionChanges::AddSelection,
                 temp.DocName,temp.FeatName,temp.SubName,temp.TypeName);
@@ -1415,7 +1499,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, METH_VARARGS,
      "removeSelection(object) -- Remove an object from the selection"},
     {"clearSelection"  ,     (PyCFunction) SelectionSingleton::sClearSelection, METH_VARARGS,
-     "clearSelection([string]) -- Clear the selection\n"
+     "clearSelection(doc=None) -- Clear the selection\n"
      "Clear the selection to the given document name. If no document is\n"
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
@@ -1481,6 +1565,10 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, 1, 
      "setVisible(visible=None) -- set visibility of all selection items\n"
      "If 'visible' is None, then toggle visibility"},
+    {"pushSelStack",      (PyCFunction) SelectionSingleton::sPushSelStack, METH_VARARGS,
+     "pushSelStack(clearForward=True, overwrite=False) -- push current selection to stack\n\n"
+     "clearForward: whether to clear the forward selection stack.\n"
+     "overwrite: overwrite the top back selection stack with current selection."},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -1599,7 +1687,7 @@ PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *arg
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
         return NULL;
-    documentName ? Selection().clearSelection(documentName) : Selection().clearCompleteSelection();
+    Selection().clearSelection(documentName);
     Py_Return;
 }
 
@@ -1872,3 +1960,13 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args, P
     Py_Return;
 }
 
+PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    PyObject *clear = Py_True;
+    PyObject *overwrite = Py_False;
+    if (!PyArg_ParseTuple(args, "|OO",&clear,&overwrite))
+        return NULL;                             // NULL triggers exception 
+
+    Selection().selStackPush(PyObject_IsTrue(clear),PyObject_IsTrue(overwrite));
+    Py_Return;
+}

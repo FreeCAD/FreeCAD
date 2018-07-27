@@ -72,7 +72,7 @@ public:
 
     void scrollItemToTop(Gui::Document*);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void selectLinkedObject(App::DocumentObject *obj, bool recurse); 
+    void selectLinkedObject(App::DocumentObject *linked); 
     void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 

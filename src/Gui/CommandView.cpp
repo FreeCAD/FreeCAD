@@ -2744,7 +2744,8 @@ StdCmdTreeSelectAllInstances::StdCmdTreeSelectAllInstances()
     sToolTipText  = QT_TR_NOOP("Select all instances of the current selected object");
     sWhatsThis    = "Std_TreeSelectAllInstances";
     sStatusTip    = QT_TR_NOOP("Select all instances of the current selected object");
-    eType         = Alter3DView|AlterSelection;
+    sPixmap       = "sel-instance";
+    eType         = AlterSelection;
 }
 
 bool StdCmdTreeSelectAllInstances::isActive(void)
@@ -2772,8 +2773,11 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
             Application::Instance->getViewProvider(obj));
     if(!vpd) 
         return;
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
     for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
         tree->selectAllInstances(*vpd);
+    Selection().selStackPush();
 }
 
 //===========================================================================
@@ -3012,6 +3016,65 @@ void CmdViewMeasureToggleAll::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_SelBack
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdSelBack);
+
+StdCmdSelBack::StdCmdSelBack()
+  :Command("Std_SelBack")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Back");
+  sToolTipText  = QT_TR_NOOP("Go back to previous selection");
+  sWhatsThis    = "Std_SelBack";
+  sStatusTip    = QT_TR_NOOP("Go back to previous selection");
+  sPixmap       = "sel-back";
+  sAccel        = "S, B";
+  eType         = AlterSelection;
+}
+
+void StdCmdSelBack::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    Selection().selStackGoBack();
+}
+
+bool StdCmdSelBack::isActive(void)
+{
+  return Selection().selStackBackSize()>1;
+}
+
+//===========================================================================
+// Std_SelForward
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdSelForward);
+
+StdCmdSelForward::StdCmdSelForward()
+  :Command("Std_SelForward")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Forward");
+  sToolTipText  = QT_TR_NOOP("Repeat the backed selection");
+  sWhatsThis    = "Std_SelForward";
+  sStatusTip    = QT_TR_NOOP("Repeat the backed selection");
+  sPixmap       = "sel-forward";
+  sAccel        = "S, F";
+  eType         = AlterSelection;
+}
+
+void StdCmdSelForward::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    Selection().selStackGoForward();
+}
+
+bool StdCmdSelForward::isActive(void)
+{
+  return !!Selection().selStackForwardSize();
+}
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3083,6 +3146,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
+    rcCmdMgr.addCommand(new StdCmdSelBack());
+    rcCmdMgr.addCommand(new StdCmdSelForward());
 }
 
 } // namespace Gui

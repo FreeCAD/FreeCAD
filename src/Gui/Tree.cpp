@@ -577,8 +577,6 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
         TREE_ERR("invlaid object");
         return;
     }
-    if(QApplication::keyboardModifiers() != Qt::ControlModifier)
-        Selection().clearCompleteSelection();
     for(auto link: App::GetApplication().getLinksTo(obj,true)) {
         if(!link || !link->getNameInDocument()) {
             TREE_ERR("invalid linked object");
@@ -1444,7 +1442,9 @@ void TreeWidget::syncSelection(const char *pDocName) {
         if(Selection().hasSelection()) {
             for(auto &v : DocumentMap) {
                 bool lock = this->blockConnection(true);
+                currentDocItem = v.second;
                 v.second->selectItems(syncSelectionAction->isChecked());
+                currentDocItem = 0;
                 this->blockConnection(lock);
             }
         }else{
@@ -1459,7 +1459,9 @@ void TreeWidget::syncSelection(const char *pDocName) {
     if (it != DocumentMap.end()) {
         if(Selection().hasSelection()) {
             bool lock = this->blockConnection(true);
+            currentDocItem = it->second;
             it->second->selectItems(syncSelectionAction->isChecked());
+            currentDocItem = 0;
             this->blockConnection(lock);
         }else
             it->second->clearSelection();
@@ -1604,15 +1606,9 @@ public:
     }
 };
 
-void TreeWidget::selectLinkedObject(App::DocumentObject *obj, bool recurse) { 
+void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 
     if(!isConnectionAttached()) 
         return;
-
-    auto linked = obj->getLinkedObject(recurse);
-    if(!linked || linked == obj) {
-        TREE_ERR("invalid linked object");
-        return;
-    }
 
     auto linkedVp = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(linked));
@@ -1634,9 +1630,6 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *obj, bool recurse) {
     auto linkedItem = it->second->rootItem;
     if(!linkedItem) 
         linkedItem = *it->second->items.begin();
-
-    if(QApplication::keyboardModifiers() != Qt::ControlModifier)
-        Selection().clearCompleteSelection();
 
     if(linkedDoc->showItem(linkedItem,true))
         scrollToItem(linkedItem);
@@ -2487,8 +2480,10 @@ void DocumentItem::selectItems(bool sync) {
     if(sync) {
         if(!first)
             first = last;
-        if(first)
-            treeWidget()->scrollToItem(first);
+        if(first) {
+            getTree()->scrollToItem(first);
+            getTree()->syncView();
+        }
     }
 }
 
