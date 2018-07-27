@@ -1609,7 +1609,7 @@ def export(exportList,filename):
             kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
             kwargs.update({"CompositionType": "ELEMENT",
-                "Elevation": obj.Placement.Base.z})
+                "Elevation": obj.Placement.Base.z/1000.0})
         elif ifctype == "IfcReinforcingBar":
             kwargs.update({"NominalDiameter": obj.Diameter.Value,
                 "BarLength": obj.Length.Value})
