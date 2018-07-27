@@ -119,42 +119,45 @@ class ObjectDressup:
             vy = round(y / length, 0)
         return FreeCAD.Vector(vx, vy, 0)
 
+    def getOffVector(self,obj,v,R):
+        if self.getDirectionOfPath(obj) == 'right':
+            return FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+        else:
+            return FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+ 
+    def get_arcdir(self,obj):
+        if self.getDirectionOfPath(obj) == 'left':
+            return "G3"
+        else:
+            return "G2"
+       
     def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
         global currLocation
         results = []
-        # zdepth = currLocation["Z"]
         op = PathDressup.baseOp(obj.Base)
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
         toolnummer = tc.ToolNumber
-        # set the correct twist command
-        if self.getDirectionOfPath(obj) == 'left':
-            arcdir = "G3"
-        else:
-            arcdir = "G2"
+        arcdir = self.get_arcdir(obj) # set the correct twist command
         R = obj.Length.Value  # Radius of roll or length
+        p0 = queue[0].Placement.Base
+        p1 = queue[1].Placement.Base
         if queue[1].Name == "G1":  # line
-            p0 = queue[0].Placement.Base
-            p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
             # PathLog.notice(" CURRENT_IN  : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
         else:
-            p0 = queue[0].Placement.Base
-            p1 = queue[1].Placement.Base
-            # PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
-            v = self.normalize(p1.sub(p0))
-        if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
-        else:
-            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+            arccenter = FreeCAD.Vector(p0.x+queue[1].I,p0.y+queue[1].J, 0.0)
+            v = self.normalize(p1.sub(arccenter))
+        off_v = self.getOffVector(obj,v,R)
         offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0)  # IJ
         if obj.RadiusCenter == 'Radius':
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
         else:
             leadstart = p0.add(off_v)  # Dmode
         if action == 'start':
+            
             extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
@@ -190,30 +193,21 @@ class ObjectDressup:
         results = []
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
-        # set the correct twist command
-        if self.getDirectionOfPath(obj) == 'right':
-            arcdir = "G2"
-        else:
-            arcdir = "G3"
+        p0 = queue[0].Placement.Base
+        p1 = queue[1].Placement.Base
+        arcdir = self.get_arcdir(obj) # set the correct twist command
         if queue[1].Name == "G1":  # line
-            p0 = queue[0].Placement.Base
-            p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
         else:  # dealing with a circle
-            p0 = queue[0].Placement.Base
-            p1 = queue[1].Placement.Base
-            v = self.normalize(p1.sub(p0))
-        if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
-        else:
-            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+            arccenter = FreeCAD.Vector(p0.x+queue[1].I,p0.y+queue[1].J, 0.0)
+            v = self.normalize(arccenter.sub(p0))
+        off_v = self.getOffVector(obj,v,R)
         offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0.0)
         if obj.RadiusCenter == 'Radius':
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
         else:
             leadend = p1.add(off_v)  # Dmode
-        IJ = off_v  # .negative()
-        #results.append(queue[1])
+        IJ = off_v  
         if obj.StyleOff == 'Arc':
             arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
