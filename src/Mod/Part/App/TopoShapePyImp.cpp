@@ -3219,7 +3219,7 @@ PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
 {
     if (!attr) return 0;
     try {
-        return getTopoShapePtr()->getPySubShape(attr);
+        return getTopoShapePtr()->getPySubShape(attr,true);
     }catch(...){}
     return 0;
 }

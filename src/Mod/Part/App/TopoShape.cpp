@@ -361,9 +361,20 @@ const std::string &TopoShape::shapeName(bool silent) const {
     return shapeName(shapeType(silent),silent);
 }
 
-PyObject * TopoShape::getPySubShape(const char* Type) const
+PyObject * TopoShape::getPySubShape(const char* Type,bool silent) const
 {
-    return Py::new_reference_to(shape2pyshape(getSubTopoShape(Type)));
+    TopoShape s;
+    if(!silent) 
+        s = getSubTopoShape(Type);
+    else{
+        auto idx = shapeTypeAndIndex(Type);
+        if(!idx.second)
+            return 0;
+        s = getSubTopoShape(idx.first,idx.second,true);
+        if(s.isNull())
+            return 0;
+    }
+    return Py::new_reference_to(shape2pyshape(s));
 }
 
 void TopoShape::operator = (const TopoShape& sh)

@@ -145,7 +145,7 @@ public:
     bool hasSubShape(const char *Type) const;
     bool hasSubShape(TopAbs_ShapeEnum type) const;
     /// get the Topo"sub"Shape with the given name
-    PyObject * getPySubShape(const char* Type) const;
+    PyObject * getPySubShape(const char* Type, bool silent=false) const;
 
     /** @name Save/restore */
     //@{
