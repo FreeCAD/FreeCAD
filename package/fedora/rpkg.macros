@@ -1,5 +1,4 @@
 function git_commits_no {
-	commits_since_0_16=$(git rev-list master 0.16 --count)
-	total_commits=$((11532 + $commits_since_0_16))
-	echo $total_commits
+	commits=$(git fetch --unshallow && git rev-list master --count)
+	echo $commits
 }
