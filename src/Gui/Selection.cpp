@@ -1252,13 +1252,16 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         if(DocName == docName)
             rmvPreselect();
 
-        std::list<_SelObj> selList;
-        for (std::list<_SelObj>::iterator it = _SelList.begin(); it != _SelList.end(); ++it) {
-            if (it->DocName != docName)
-                selList.push_back(*it);
+        bool touched = false;
+        for(auto it=_SelList.begin();it!=_SelList.end();) {
+            if(it->DocName == docName) {
+                touched = true;
+                it = _SelList.erase(it);
+            }else
+                ++it;
         }
-
-        _SelList = selList;
+        if(!touched)
+            return;
 
         SelectionChanges Chng(SelectionChanges::ClrSelection,docName.c_str());
 
@@ -1282,6 +1285,9 @@ void SelectionSingleton::clearCompleteSelection()
     }
 
     rmvPreselect();
+
+    if(_SelList.empty())
+        return;
 
     _SelList.clear();
 
