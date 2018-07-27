@@ -466,7 +466,7 @@ PyObject *PropertyLinkList::getPyObject(void)
 #endif
     for (int i = 0; i<count; i++) {
         auto obj = _lValueList[i];
-        if(obj)
+        if(obj && obj->getNameInDocument())
             sequence.setItem(i, Py::asObject(_lValueList[i]->getPyObject()));
         else
             sequence.setItem(i, Py::None());
