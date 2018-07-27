@@ -311,6 +311,12 @@ sort: whether to topologically sort the return list
 	  </Documentation>
 	  <Parameter Name="Importing" Type="Boolean" />
 	</Attribute>
+	<Attribute Name="Recomputing" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is recomputing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Recomputing" Type="Boolean" />
+	</Attribute>
     <Attribute Name="Hasher" ReadOnly="true">
 	  <Documentation>
         <UserDocu>Get the string hasher of this document</UserDocu>

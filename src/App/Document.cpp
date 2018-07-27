@@ -3389,6 +3389,11 @@ void Document::removeObject(const char* sName)
     if (pos == d->objectMap.end())
         return;
 
+    if (testStatus(Document::Recomputing)) {
+        FC_ERR("Cannot delete " << sName << " while recomputing document " << getName());
+        return;
+    }
+
     _checkTransaction(pos->second,0,__LINE__);
 
     if (d->activeObject == pos->second)
@@ -3464,6 +3469,12 @@ void Document::removeObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_removeObject(DocumentObject* pcObject)
 {
+    if (testStatus(Document::Recomputing)) {
+        FC_ERR("Cannot delete " << pcObject->getNameInDocument() 
+                << " while recomputing document " << getName());
+        return;
+    }
+
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject,0,__LINE__);
 

@@ -897,6 +897,11 @@ Py::Boolean DocumentPy::getImporting(void) const
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
 }
 
+Py::Boolean DocumentPy::getRecomputing(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
+}
+
 Py::Object DocumentPy::getHasher() const {
     return Py::Object(getDocumentPtr()->Hasher->getPyObject(),true);
 }
