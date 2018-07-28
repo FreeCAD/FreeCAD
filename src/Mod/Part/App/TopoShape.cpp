@@ -1648,6 +1648,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
         Standard_Failure::Raise("Tool shape is null");
 #if OCC_VERSION_HEX < 0x060900
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
+    (void)approximate;
 #else
     BRepAlgoAPI_Section mkSection;
     mkSection.Init1(this->_Shape);
