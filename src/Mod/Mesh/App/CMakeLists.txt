@@ -11,14 +11,12 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
 )
 
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
     FreeCADBase
     FreeCADApp
-    Part
 )
 
 if (BUILD_QT5)

@@ -30,10 +30,8 @@
 // Exporting of App classes
 #ifdef FC_OS_WIN32
 #   define    MeshExport __declspec(dllexport)
-#   define    PartExport __declspec(dllimport)
 #else // for Linux
 #   define    MeshExport
-#   define    PartExport
 #endif
 
 
