@@ -151,6 +151,7 @@ public:
     void invertSelection();
     void clearSelection();
     void deleteSelection();
+    bool hasSelection() const;
     void getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
                               const Base::ViewProjMethod& proj, SbBool inner,
                               std::vector<unsigned long>& indices) const;
