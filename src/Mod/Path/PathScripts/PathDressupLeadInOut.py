@@ -37,7 +37,6 @@ from PySide import QtCore
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
-
 # Qt tanslation handling
 def translate(text, context="Path_DressupLeadInOut", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -49,7 +48,6 @@ rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
 global currLocation
 currLocation = {}
-
 
 class ObjectDressup:
 
@@ -157,7 +155,6 @@ class ObjectDressup:
         else:
             leadstart = p0.add(off_v)  # Dmode
         if action == 'start':
-            
             extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
@@ -228,12 +225,10 @@ class ObjectDressup:
         queue = []
         action = 'start'
         for curCommand in obj.Base.Path.Commands:
-            # replace = None
             # don't worry about non-move commands, just add to output
             if curCommand.Name not in movecommands + rapidcommands:
                 newpath.append(curCommand)
                 continue
-
             # rapid retract triggers exit move, else just add to output
             if curCommand.Name in rapidcommands:
                 # detect start position
@@ -245,7 +240,7 @@ class ObjectDressup:
                         temp = self.getLeadEnd(obj, queue, 'end')
                         newpath.extend(temp)
                         newpath.append(curCommand)  # Z clear DONE
-
+            # moving on contour
             if curCommand.Name in movecommands:
                 queue.append(curCommand)
                 if action == 'start' and len(queue) < 2:
@@ -256,7 +251,6 @@ class ObjectDressup:
                     if obj.LeadIn:
                         temp = self.getLeadStart(obj, queue, action)
                         newpath.extend(temp)
-                        #newpath.append(curCommand)
                         action = 'none'
                         currLocation.update(curCommand.Parameters)
                     else:
@@ -287,7 +281,6 @@ class ObjectDressup:
         commands = newpath
         return Path.Path(commands)
 
-
 class ViewProviderDressup:
 
     def __init__(self, vobj):
@@ -306,7 +299,6 @@ class ViewProviderDressup:
                             group.remove(g)
                     i.Group = group
                     print(i.Group)
-        # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
@@ -324,7 +316,6 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         return None
 
-
 class CommandPathDressupLeadInOut:
 
     def GetResources(self):
@@ -339,7 +330,6 @@ class CommandPathDressupLeadInOut:
         return False
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
@@ -352,7 +342,6 @@ class CommandPathDressupLeadInOut:
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))
             return
-
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("Create LeadInOut Dressup"))
         FreeCADGui.addModule("PathScripts.PathDressupLeadInOut")
@@ -366,7 +355,6 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
