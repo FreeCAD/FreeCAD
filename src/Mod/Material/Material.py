@@ -94,87 +94,31 @@ def exportFCMat(fileName, matDict):
         configfile.write(Preamble)
         Config.write(configfile)
 
-
 def getMaterialAttributeStructure(withSpaces=None):
+
+    ''''''
+
     # material properties
-    # see the following resources in the FreeCAD wiki for more information about the material specific properties:
+    # see the following resources in the FreeCAD wiki for more informations about the material specific properties:
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
-    materialPropertyGroups = (
-        ("Meta", (
-            "CardName",
-            "AuthorAndLicense",
-            "Source"
-        )),
-        ("General", (
-            "Name",
-            "Father",
-            "Description",
-            "Density",
-            "Vendor",
-            "ProductURL",
-            "SpecificPrice"
-        )),
-        ("Mechanical", (
-            "YoungsModulus",  # https://en.wikipedia.org/wiki/Young%27s_modulus
-            "PoissonRatio",  # https://en.wikipedia.org/wiki/Poisson%27s_ratio
-            "UltimateTensileStrength",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
-            "CompressiveStrength",  # https://en.wikipedia.org/wiki/Compressive_strength
-            "YieldStrength",  # https://en.wikipedia.org/wiki/Yield_Strength
-            "UltimateStrain",  # https://en.wikipedia.org/wiki/Ultimate_tensile_strength
-            "FractureToughness",  # https://en.wikipedia.org/wiki/Fracture_toughness
-            "AngleOfFriction"  # https://en.wikipedia.org/wiki/Friction#Angle_of_friction and https://en.m.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
-        )),
-        ("Thermal", (
-            "ThermalConductivity",  # https://en.wikipedia.org/wiki/Thermal_conductivity
-            "ThermalExpansionCoefficient",  # https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
-            "SpecificHeat"  # https://en.wikipedia.org/wiki/Heat_capacity
-        )),
-        ("Architectural", (
-            "Model",
-            "ExecutionInstructions",
-            "FireResistanceClass",
-            "StandardCode",
-            "SoundTransmissionClass",
-            "Color",
-            "Finish",
-            "UnitsPerQuantity",
-            "EnvironmentalEfficiencyClass"
-        )),
-        ("Rendering", (
-            "DiffuseColor",
-            "AmbientColor",
-            "SpecularColor",
-            "Shininess",
-            "EmissiveColor",
-            "Transparency",
-            "VertexShader",
-            "FragmentShader",
-            "TexturePath",
-            "TextureScaling"
-        )),
-        ("Vector rendering", (
-            "ViewColor",
-            "ViewFillPattern",
-            "SectionFillPattern",
-            "ViewLinewidth",
-            "SectionLinewidth"
-        )),
-        ("User defined", (
-        ))
-    )
+
+    import os
+    import xml.etree.ElementTree as ElementTree
+
+    infile = os.path.dirname(__file__) + os.sep + "MatPropDict.xml"
+    tree = ElementTree.parse(infile)
+
     if withSpaces:
         # on attributes, add a space before a capital letter, will be used for better display in the ui
         import re
-        newMatProp = []
-        for group in materialPropertyGroups:
-            newAttr = []
-            for attr in group[1]:
-                newAttr.append(re.sub(r"(\w)([A-Z])", r"\1 \2", attr))
-            newMatProp.append([group[0], newAttr])
-        materialPropertyGroups = newMatProp
-    # print(materialPropertyGroups)
-    return materialPropertyGroups
+        root = tree.getroot()
+        for group in root.getchildren():
+            for proper in group.getchildren():
+                proper.set('Name', re.sub(r"(\w)([A-Z]+)", r"\1 \2",
+                           proper.attrib['Name']))
+
+    return tree
 
 
 if __name__ == '__main__':
