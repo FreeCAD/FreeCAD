@@ -333,13 +333,16 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     }
 
     d->_editingTransform = Base::Matrix4D();
-    if(!subname || !subname[0]) {
-        auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if(group) {
-            auto ext = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-            d->_editingTransform = ext->globalGroupPlacement().toMatrix();
-        }
-    }
+    // Geo feature group now handles subname like link group. So no need of the
+    // following code.
+    //
+    // if(!subname || !subname[0]) {
+    //     auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    //     if(group) {
+    //         auto ext = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+    //         d->_editingTransform = ext->globalGroupPlacement().toMatrix();
+    //     }
+    // }
     auto sobj = obj->getSubObject(subname,0,&d->_editingTransform);
     if(!sobj || !sobj->getNameInDocument()) {
         FC_ERR("Invalid sub object '" << obj->getNameInDocument() 
