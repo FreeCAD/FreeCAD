@@ -388,6 +388,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
     if(!canMapElement(other))
         return;
 
+    bool warned = false;
     static const std::array<TopAbs_ShapeEnum,3> types = {TopAbs_VERTEX,TopAbs_EDGE,TopAbs_FACE};
     for(auto type : types) {
         auto &shapeMap = _Cache->getInfo(type,true).shapes;
@@ -423,8 +424,14 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
             for(auto &v : other.getElementMappedNames(ss.str().c_str(),true)) {
                 auto &name = v.first;
                 auto &sids = v.second;
-                if(sids.size() && !other.Hasher) 
-                    throw Base::RuntimeError("missing hasher");
+                if(sids.size()) {
+                    if(!warned && !other.Hasher) {
+                        warned = true;
+                        FC_WARN("missing hasher");
+                    }
+                    if(Hasher != other.Hasher)
+                        sids.clear();
+                }
                 ss.str("");
                 encodeElementName(element[0],name,ss,sids,op,other.Tag);
                 setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
@@ -2652,7 +2659,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
 }
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix) {
-    if(Tag==tag || !tag) {
+    if(!tag) {
         FC_WARN("invalid shape tag for re-tagging");
         return;
     }
