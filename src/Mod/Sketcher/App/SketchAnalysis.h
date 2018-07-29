@@ -35,7 +35,7 @@ namespace Sketcher {
 
 class SketchObject;
 
-class SketchAnalysis
+class SketcherExport SketchAnalysis
 {
 public:
     /// Creates an instance of the SketchAnalysis object, taking as parameter a pointer to an SketchObject.
