@@ -374,9 +374,32 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
             }
         }
         if(ret) {
+            if(dot) ++dot;
+            if(dot && *dot && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                // Consider this
+                // Body
+                //  | -- Pad
+                //        | -- Sketch
+                //
+                // Suppose we want to getSubObject(Body,"Pad.Sketch.")
+                // Because of the special property of geo feature group, both
+                // Pad and Sketch are children of Body, so we can't call
+                // getSubObject(Pad,"Sketch.") as this will transform Sketch
+                // using Pad's placement.
+                //
+                const char *next = strchr(dot,'.');
+                if(next) {
+                    App::DocumentObject *nret=0;
+                    extensionGetSubObject(nret,next+1,pyObj,mat,true,depth+1);
+                    if(nret) {
+                        ret = nret;
+                        return true;
+                    }
+                }
+            }
             if(mat && transform) 
                 *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
-            ret = ret->getSubObject(dot?dot+1:"",pyObj,mat,true,depth);
+            ret = ret->getSubObject(dot?dot:"",pyObj,mat,true,depth);
         }
     }
     return true;
