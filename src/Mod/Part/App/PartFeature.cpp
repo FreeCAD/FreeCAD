@@ -363,7 +363,7 @@ struct ShapeCache {
             it->second.erase(&obj);
     }
 
-    bool getShape(App::DocumentObject *obj, TopoShape &shape) {
+    bool getShape(const App::DocumentObject *obj, TopoShape &shape) {
         init();
         auto &entry = cache[obj->getDocument()];
         auto it = entry.find(obj);
@@ -374,7 +374,7 @@ struct ShapeCache {
         return false;
     }
 
-    void setShape(App::DocumentObject *obj, const TopoShape &shape) {
+    void setShape(const App::DocumentObject *obj, const TopoShape &shape) {
         init();
         cache[obj->getDocument()][obj] = shape;
     }
@@ -444,7 +444,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         return shape;
 
     // Check for cache
-    if(_ShapeCache.getShape(owner,shape)) {
+    if(_ShapeCache.getShape(obj,shape)) {
         if(noElementMap) {
             shape.resetElementMap();
             shape.Tag = 0;
@@ -452,7 +452,20 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         }
         shape.transformShape(mat,false,true);
         return shape;
-    }else if(owner!=linked) {
+    }
+    if(obj!=owner && _ShapeCache.getShape(owner,shape)) {
+        if(noElementMap) {
+            shape.resetElementMap();
+            shape.Tag = 0;
+            shape.Hasher.reset();
+        }else if(owner->getDocument()!=obj->getDocument()) {
+            shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+            _ShapeCache.setShape(obj,shape);
+        }
+        shape.transformShape(mat,false,true);
+        return shape;
+    }
+    if(owner!=linked) {
         shape = getTopoShape(linked,0,false,0,0,false,false);
         if(shape.isNull())
             return shape;
@@ -465,6 +478,10 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         if(!noElementMap) {
             shape.reTagElementMap(tag,hasher);
             _ShapeCache.setShape(owner,shape);
+            if(owner->getDocument()!=obj->getDocument()) {
+                shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+                _ShapeCache.setShape(obj,shape);
+            }
         }
         shape.transformShape(mat,false,true);
         return shape;
@@ -525,6 +542,10 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     shape.Hasher = hasher;
     shape.makECompound(shapes);
     _ShapeCache.setShape(owner,shape);
+    if(owner->getDocument()!=obj->getDocument()) {
+        shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+        _ShapeCache.setShape(obj,shape);
+    }
     shape.transformShape(mat,false,true);
     return shape;
 }
