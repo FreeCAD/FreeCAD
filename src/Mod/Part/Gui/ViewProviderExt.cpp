@@ -464,6 +464,10 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
 
             if(MapTransparency.getValue())
                 updateColors(feature);
+            else{
+                Gui::SoUpdateVBOAction action;
+                action.apply(this->faceset);
+            }
         }
     }
     else if (prop == &Lighting) {
@@ -1095,6 +1099,7 @@ std::vector<App::Color> ViewProviderPartExt::getShapeColors(const Part::TopoShap
         vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
     if(vp) {
         defColor = vp->ShapeColor.getValue();
+        defColor.a = vp->Transparency.getValue()/100.0f;
         return vp->DiffuseColor.getValues();
     }
 
