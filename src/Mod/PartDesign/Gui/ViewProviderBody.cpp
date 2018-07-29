@@ -71,6 +71,11 @@ ViewProviderBody::ViewProviderBody()
     DisplayModeBody.setEnums(BodyModeEnum);
 
     sPixmap = "PartDesign_Body_Tree.svg";
+
+    MapTransparency.setValue(true);
+    MapFaceColor.setValue(true);
+    MapLineColor.setValue(true);
+    MapPointColor.setValue(true);
     
     Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }
@@ -381,8 +386,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
         Visibility.touch();
     }
     else {
-        // Experiementing element color mapping in PartDesign, disable visual copy for now
-        // unifyVisualProperty(prop);
+        unifyVisualProperty(prop);
     }
     
     PartGui::ViewProviderPartExt::onChanged(prop);
@@ -391,23 +395,58 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 
+    if(!pcObject || isRestoring())
+        return;
+
     if(prop == &Visibility || 
        prop == &Selectable ||
-       prop == &DisplayModeBody)
+       prop == &DisplayModeBody ||
+       prop == &MapFaceColor ||
+       prop == &MapTransparency ||
+       prop == &MapLineColor ||
+       prop == &MapPointColor ||
+       prop == &ForceMapColors ||
+       prop == &MappedColors ||
+       prop == &DiffuseColor ||
+       prop == &PointColorArray ||
+       prop == &LineColorArray)
         return;
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
 
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
+    // Experiementing element color mapping in PartDesign, enable visual copy on Tip only
+#if 1
+    auto feature = body->Tip.getValue();
+    if(feature) {
+#else
     auto features = body->Group.getValues();
     for(auto feature : features) {
+#endif
         
-        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            continue;
-
-        //copy over the properties data
-        auto p = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
-        p->Paste(*prop);
+        if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+            //copy over the properties data
+            auto vp = dynamic_cast<PartGui::ViewProviderPart*>(gdoc->getViewProvider(feature));
+            if(vp) {
+                auto p = vp->getPropertyByName(prop->getName());
+                if(p && prop->isDerivedFrom(p->getTypeId())) {
+                    if(prop==&ShapeColor) {
+                        if(vp->MapFaceColor.getValue())
+                            vp->MapFaceColor.setValue(false);
+                    }else if(prop == &PointColor) {
+                        if(vp->MapPointColor.getValue())
+                            vp->MapPointColor.setValue(false);
+                    }else if(prop == &LineColor) {
+                        if(vp->MapLineColor.getValue())
+                            vp->MapLineColor.setValue(false);
+                    }else if(prop == &Transparency) {
+                        if(vp->MapTransparency.getValue())
+                            vp->MapTransparency.setValue(false);
+                    }
+                    p->Paste(*prop);
+                }
+            }
+        }
     }
 }
 
