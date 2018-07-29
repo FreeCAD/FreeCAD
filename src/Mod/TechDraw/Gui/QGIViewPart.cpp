@@ -462,7 +462,7 @@ void QGIViewPart::drawViewPart()
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00FF0000));
+    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
     QColor vertexColor = fcColor.asValue<QColor>();
 
     bool usePolygonHLR = viewPart->CoarseView.getValue();
