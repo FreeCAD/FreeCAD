@@ -188,6 +188,13 @@ public:
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
 
+  const char *getPropertyPrefix() const {
+      return _propertyPrefix.c_str();
+  }
+
+  void setPropertyPrefix(const char *prefix) {
+      _propertyPrefix = prefix;
+  }
 
   friend class Property;
   friend class DynamicProperty;
@@ -212,6 +219,7 @@ private:
   PropertyContainer& operator = (const PropertyContainer&);
 
 private: 
+  std::string _propertyPrefix;
   static PropertyData propertyData; 
 };
 

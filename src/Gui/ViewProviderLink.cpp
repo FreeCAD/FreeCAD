@@ -1514,6 +1514,7 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
         childVp = dynamic_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if(childVp) {
+            childVp->setPropertyPrefix("ChildViewProvider.");
             childVp->Visibility.setValue(getObject()->Visibility.getValue());
             childVp->attach(getObject());
             childVp->updateView();
