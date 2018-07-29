@@ -418,7 +418,7 @@ std::string ComplexGeoData::dehashElementName(const char *name) const {
         return name;
     auto sid = Hasher->getID(id);
     if(!sid) {
-        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
             FC_WARN("failed to find hash id " << id);
         else
             FC_LOG("failed to find hash id " << id);
@@ -677,6 +677,7 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
     reader.readElement("ElementMap");
     if(reader.hasAttribute("count")) {
         size_t count = reader.getAttributeAsUnsigned("count");
+        size_t invalid_count = 0;
         for(size_t i=0;i<count;++i) {
             reader.readElement("Element");
             std::vector<App::StringIDRef> sids;
@@ -689,7 +690,7 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
                     while((iss >> id)) {
                         auto sid = Hasher->getID(id);
                         if(!sid) 
-                            FC_ERR("invalid string id " << id);
+                            ++invalid_count;
                         else
                             sids.push_back(sid);
                         char sep;
@@ -699,6 +700,8 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
             }
             setElementName(reader.getAttribute("value"),"",reader.getAttribute("key"),&sids);
         }
+        if(invalid_count)
+            FC_ERR("Found " << invalid_count << " invalid string id");
         reader.readEndElement("ElementMap");
     }
 }
