@@ -22,8 +22,7 @@
 
 
 import FreeCAD
-# import Material
-from Material import getMaterialAttributeStructure
+import Material
 import os
 
 
@@ -102,14 +101,18 @@ def write(filename, dictionary):
     "writes the given dictionary to the given file"
     # sort the data into sections
     contents = []
-    for key in getMaterialAttributeStructure():  # get the mat file structure from material module
-        contents.append({"keyname": key[0]})
-        if key[0] == "Meta":
+    tree = Material.getMaterialAttributeStructure()
+    MatPropDict = tree.getroot()
+    for group in MatPropDict.getchildren():
+        groupName = group.attrib['Name']
+        contents.append({"keyname": groupName})
+        if groupName == "Meta":
             header = contents[-1]
-        elif key[0] == "User defined":
+        elif groupName == "User defined":
             user = contents[-1]
-        for p in key[1]:
-            contents[-1][p] = ""
+        for proper in group.getchildren():
+            properName = proper.attrib['Name']
+            contents[-1][properName] = ""
     for k, i in dictionary.iteritems():
         found = False
         for group in contents:
