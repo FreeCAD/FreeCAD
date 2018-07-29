@@ -2007,6 +2007,72 @@ bool CmdSketcherDeleteAllGeometry::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
+DEF_STD_CMD_A(CmdSketcherDeleteAllConstraints);
+
+CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
+:Command("Sketcher_DeleteAllConstraints")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Delete All Constraints");
+    sToolTipText    = QT_TR_NOOP("Deletes all the constraints");
+    sWhatsThis      = "Sketcher_DeleteAllConstraints";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherDeleteAllConstraints::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Delete All Constraints"),
+                                    QObject::tr("Are you really sure you want to delete all the constraints?"),
+                                    QMessageBox::Yes, QMessageBox::Cancel);
+
+    if (ret == QMessageBox::Yes) {
+        getSelection().clearSelection();
+        
+        Gui::Document * doc= getActiveGuiDocument();
+        
+        SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        
+        Sketcher::SketchObject* Obj= vp->getSketchObject();
+        
+        try {
+            Gui::Command::openCommand("Delete All Constraints");
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.deleteAllConstraints()",
+                                    Obj->getNameInDocument());
+            
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("Failed to delete All Constraints: %s\n", e.what());
+            Gui::Command::abortCommand();
+        }
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+        if(autoRecompute)
+            Gui::Command::updateActive();
+        else
+            Obj->solve();
+    }
+    else if (ret == QMessageBox::Cancel) {
+        // do nothing
+        return;
+    }
+    
+}
+
+bool CmdSketcherDeleteAllConstraints::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
+}
+
 void CreateSketcherCommandsConstraintAccel(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2029,4 +2095,5 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherCompCopy());
     rcCmdMgr.addCommand(new CmdSketcherRectangularArray());
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
 }
