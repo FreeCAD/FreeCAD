@@ -189,10 +189,8 @@ bool LinkBaseExtension::hasElements() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(hasElements())
+    if(hasElements() || getElementCountValue())
         return true;
-    if(getElementCountValue())
-        return false;
     DocumentObject *linked = getTrueLinkedObject(true);
     if(linked) {
         if(linked->hasChildElement())
