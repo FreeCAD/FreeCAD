@@ -181,7 +181,7 @@ public:
             static QIcon vdist( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance") );
             static QIcon horiz( Gui::BitmapFactory().pixmap("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().pixmap("Constraint_Vertical") );
-            static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
+          //static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
             static QIcon block ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainBlock") );
             static QIcon coinc( Gui::BitmapFactory().pixmap("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().pixmap("Constraint_Parallel") );
@@ -190,10 +190,10 @@ public:
             static QIcon dist ( Gui::BitmapFactory().pixmap("Constraint_Length") );
             static QIcon radi ( Gui::BitmapFactory().pixmap("Constraint_Radius") );
             static QIcon dia ( Gui::BitmapFactory().pixmap("Constraint_Diameter") );
-            static QIcon majradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Major_Radius") );
-            static QIcon minradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Minor_Radius") );
+          //static QIcon majradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Major_Radius") );
+          //static QIcon minradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Minor_Radius") );
             static QIcon angl ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle") );
-            static QIcon ellipseXUAngl ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Axis_Angle") );
+          //static QIcon ellipseXUAngl ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal( Gui::BitmapFactory().pixmap("Constraint_EqualLength") );
             static QIcon pntoo( Gui::BitmapFactory().pixmap("Constraint_PointOnObject") );
             static QIcon symm ( Gui::BitmapFactory().pixmap("Constraint_Symmetric") );
