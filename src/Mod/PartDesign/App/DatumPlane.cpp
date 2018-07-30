@@ -36,10 +36,20 @@ using namespace Attacher;
 
 // ============================================================================
 
+const char* Plane::ResizeModeEnums[]= {"Automatic","Manual",NULL};
+
 PROPERTY_SOURCE(PartDesign::Plane, Part::Datum)
 
 Plane::Plane()
 {
+    ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_None, "Automatic or manual resizing");
+    ResizeMode.setEnums(ResizeModeEnums);
+    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_None, "Length of the plane");
+    ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_None, "Width of the plane");
+
+    Length.setReadOnly(true);
+    Width.setReadOnly(true);
+
     this->setAttacher(new AttachEnginePlane);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
     // Sketcher on the PartDesign module
@@ -47,7 +57,6 @@ Plane::Plane()
     if (!builder.IsDone())
         return;
     Shape.setValue(builder.Shape());
-
 }
 
 Plane::~Plane()
@@ -60,4 +69,20 @@ Base::Vector3d Plane::getNormal()
     Base::Vector3d normal;
     rot.multVec(Base::Vector3d(0,0,1), normal);
     return normal;
+}
+
+void Plane::onChanged(const App::Property *prop)
+{
+    if (prop == &ResizeMode) {
+        if (ResizeMode.getValue() == 0) {
+            Length.setReadOnly(true);
+            Width.setReadOnly(true);
+        }
+        else {
+            Length.setReadOnly(false);
+            Width.setReadOnly(false);
+        }
+    }
+
+    Datum::onChanged(prop);
 }

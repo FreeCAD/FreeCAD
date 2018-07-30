@@ -92,6 +92,12 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
     if (strcmp(prop->getName(),"Placement") == 0) {
         updateExtents ();
     }
+    else if (strcmp(prop->getName(),"Length") == 0 ||
+             strcmp(prop->getName(),"Width") == 0) {
+        PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
+        if (pcDatum->ResizeMode.getValue() != 0)
+            setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
+    }
 
     ViewProviderDatum::updateData(prop);
 }
@@ -99,6 +105,10 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
 
 void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
+    if (pcDatum->ResizeMode.getValue() != 0) {
+        setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
+        return;
+    }
 
     Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
 
@@ -109,12 +119,23 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
 
     double margin = sqrt(bbox.LengthX ()*bbox.LengthY ()) * marginFactor ();
 
+    pcDatum->Length.setValue(bbox.LengthX() + 2*margin);
+    pcDatum->Width.setValue(bbox.LengthY() + 2*margin);
+
     // Change the coordinates of the line
     pCoords->point.setNum (4);
     pCoords->point.set1Value(0, bbox.MaxX + margin, bbox.MaxY + margin, 0 );
     pCoords->point.set1Value(1, bbox.MinX - margin, bbox.MaxY + margin, 0 );
     pCoords->point.set1Value(2, bbox.MinX - margin, bbox.MinY - margin, 0 );
     pCoords->point.set1Value(3, bbox.MaxX + margin, bbox.MinY - margin, 0 );
-
 }
 
+void ViewProviderDatumPlane::setExtents(double l, double w)
+{
+    // Change the coordinates of the line
+    pCoords->point.setNum (4);
+    pCoords->point.set1Value(0, l, w, 0);
+    pCoords->point.set1Value(1, 0, w, 0);
+    pCoords->point.set1Value(2, 0, 0, 0);
+    pCoords->point.set1Value(3, l, 0, 0);
+}
