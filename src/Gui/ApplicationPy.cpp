@@ -69,121 +69,121 @@ using namespace Gui;
 
 // FCApplication Methods						// Methods structure
 PyMethodDef Application::Methods[] = {
-  {"activateWorkbench",(PyCFunction) Application::sActivateWorkbenchHandler,1,
+  {"activateWorkbench",(PyCFunction) (void*)Application::sActivateWorkbenchHandler,1,
    "activateWorkbench(string) -> None\n\n"
    "Activate the workbench by name"},
-  {"addWorkbench",     (PyCFunction) Application::sAddWorkbenchHandler,     1,
+  {"addWorkbench",     (PyCFunction) (void*)Application::sAddWorkbenchHandler,     1,
    "addWorkbench(string, object) -> None\n\n"
    "Add a workbench under a defined name."},
-  {"removeWorkbench",  (PyCFunction) Application::sRemoveWorkbenchHandler,  1,
+  {"removeWorkbench",  (PyCFunction) (void*)Application::sRemoveWorkbenchHandler,  1,
    "removeWorkbench(string) -> None\n\n"
    "Remove the workbench with name"},
-  {"getWorkbench",     (PyCFunction) Application::sGetWorkbenchHandler,     1,
+  {"getWorkbench",     (PyCFunction) (void*)Application::sGetWorkbenchHandler,     1,
    "getWorkbench(string) -> object\n\n"
    "Get the workbench by its name"},
-  {"listWorkbenches",   (PyCFunction) Application::sListWorkbenchHandlers,    1,
+  {"listWorkbenches",   (PyCFunction) (void*)Application::sListWorkbenchHandlers,    1,
    "listWorkbenches() -> list\n\n"
    "Show a list of all workbenches"},
-  {"activeWorkbench", (PyCFunction) Application::sActiveWorkbenchHandler,   1,
+  {"activeWorkbench", (PyCFunction) (void*)Application::sActiveWorkbenchHandler,   1,
    "activeWorkbench() -> object\n\n"
    "Return the active workbench object"},
-  {"addResourcePath",             (PyCFunction) Application::sAddResPath,      1,
+  {"addResourcePath",             (PyCFunction) (void*)Application::sAddResPath,      1,
    "addResourcePath(string) -> None\n\n"
    "Add a new path to the system where to find resource files\n"
    "like icons or localization files"},
-  {"addLanguagePath",             (PyCFunction) Application::sAddLangPath,      1,
+  {"addLanguagePath",             (PyCFunction) (void*)Application::sAddLangPath,      1,
    "addLanguagePath(string) -> None\n\n"
    "Add a new path to the system where to find language files"},
-  {"addIconPath",             (PyCFunction) Application::sAddIconPath,      1,
+  {"addIconPath",             (PyCFunction) (void*)Application::sAddIconPath,      1,
    "addIconPath(string) -> None\n\n"
    "Add a new path to the system where to find icon files"},
-  {"addIcon",                 (PyCFunction) Application::sAddIcon,          1,
+  {"addIcon",                 (PyCFunction) (void*)Application::sAddIcon,          1,
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
-  {"getMainWindow",           (PyCFunction) Application::sGetMainWindow,    1,
+  {"getMainWindow",           (PyCFunction) (void*)Application::sGetMainWindow,    1,
    "getMainWindow() -> QMainWindow\n\n"
    "Return the main window instance"},
-  {"updateGui",               (PyCFunction) Application::sUpdateGui,        1,
+  {"updateGui",               (PyCFunction) (void*)Application::sUpdateGui,        1,
    "updateGui() -> None\n\n"
    "Update the main window and all its windows"},
-  {"updateLocale",            (PyCFunction) Application::sUpdateLocale,     1,
+  {"updateLocale",            (PyCFunction) (void*)Application::sUpdateLocale,     1,
    "updateLocale() -> None\n\n"
    "Update the localization"},
-  {"getLocale",            (PyCFunction) Application::sGetLocale,     1,
+  {"getLocale",            (PyCFunction) (void*)Application::sGetLocale,     1,
    "getLocale() -> string\n\n"
    "Returns the locale currently used by FreeCAD"},
-  {"setLocale",            (PyCFunction) Application::sSetLocale,     1,
+  {"setLocale",            (PyCFunction) (void*)Application::sSetLocale,     1,
    "getLocale(string) -> None\n\n"
    "Sets the locale used by FreeCAD. You can set it by\n"
    "top-level domain (e.g. \"de\") or the language name (e.g. \"German\")"},
-  {"supportedLocales", (PyCFunction) Application::sSupportedLocales,     1,
+  {"supportedLocales", (PyCFunction) (void*)Application::sSupportedLocales,     1,
    "supportedLocales() -> dict\n\n"
    "Returns a dict of all supported languages/top-level domains"},
-  {"createDialog",            (PyCFunction) Application::sCreateDialog,     1,
+  {"createDialog",            (PyCFunction) (void*)Application::sCreateDialog,     1,
    "createDialog(string) -- Open a UI file"},
-  {"addPreferencePage",       (PyCFunction) Application::sAddPreferencePage,1,
+  {"addPreferencePage",       (PyCFunction) (void*)Application::sAddPreferencePage,1,
    "addPreferencePage(string,string) -- Add a UI form to the\n"
    "preferences dialog. The first argument specifies the file name"
    "and the second specifies the group name"},
-  {"addCommand",              (PyCFunction) Application::sAddCommand,       1,
+  {"addCommand",              (PyCFunction) (void*)Application::sAddCommand,       1,
    "addCommand(string, object) -> None\n\n"
    "Add a command object"},
-  {"runCommand",              (PyCFunction) Application::sRunCommand,       1,
+  {"runCommand",              (PyCFunction) (void*)Application::sRunCommand,       1,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
-  {"listCommands",               (PyCFunction) Application::sListCommands,1,
+  {"listCommands",               (PyCFunction) (void*)Application::sListCommands,1,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
-  {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView,   1,
+  {"SendMsgToActiveView",     (PyCFunction) (void*)Application::sSendActiveView,   1,
    "deprecated -- use class View"},
-  {"hide",                    (PyCFunction) Application::sHide,             1,
+  {"hide",                    (PyCFunction) (void*)Application::sHide,             1,
    "deprecated"},
-  {"show",                    (PyCFunction) Application::sShow,             1,
+  {"show",                    (PyCFunction) (void*)Application::sShow,             1,
    "deprecated"},
-  {"hideObject",              (PyCFunction) Application::sHideObject,       1,
+  {"hideObject",              (PyCFunction) (void*)Application::sHideObject,       1,
    "hideObject(object) -> None\n\n"
    "Hide the view provider to the given object"},
-  {"showObject",              (PyCFunction) Application::sShowObject,       1,
+  {"showObject",              (PyCFunction) (void*)Application::sShowObject,       1,
    "showObject(object) -> None\n\n"
    "Show the view provider to the given object"},
-  {"open",                    (PyCFunction) Application::sOpen,             1,
+  {"open",                    (PyCFunction) (void*)Application::sOpen,             1,
    "Open a macro, Inventor or VRML file"},
-  {"insert",                  (PyCFunction) Application::sInsert,           1,
+  {"insert",                  (PyCFunction) (void*)Application::sInsert,           1,
    "Open a macro, Inventor or VRML file"},
-  {"export",                  (PyCFunction) Application::sExport,           1,
+  {"export",                  (PyCFunction) (void*)Application::sExport,           1,
    "save scene to Inventor or VRML file"},
-  {"activeDocument",          (PyCFunction) Application::sActiveDocument,   1,
+  {"activeDocument",          (PyCFunction) (void*)Application::sActiveDocument,   1,
    "activeDocument() -> object or None\n\n"
    "Return the active document or None if no one exists"},
-  {"setActiveDocument",       (PyCFunction) Application::sSetActiveDocument,1,
+  {"setActiveDocument",       (PyCFunction) (void*)Application::sSetActiveDocument,1,
    "setActiveDocument(string or App.Document) -> None\n\n"
    "Activate the specified document"},
-  {"activeView", (PyCFunction)Application::sActiveView, 1,
+  {"activeView",              (PyCFunction) (void*)Application::sActiveView,       1,
    "activeView() -> object or None\n\n"
    "Return the active view of the active document or None if no one exists"},
-  {"getDocument",             (PyCFunction) Application::sGetDocument,      1,
+  {"getDocument",             (PyCFunction) (void*)Application::sGetDocument,      1,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
-  {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
+  {"doCommand",               (PyCFunction) (void*)Application::sDoCommand,        1,
    "doCommand(string) -> None\n\n"
    "Prints the given string in the python console and runs it"},
-  {"doCommandGui",               (PyCFunction) Application::sDoCommandGui,  1,
+  {"doCommandGui",               (PyCFunction) (void*)Application::sDoCommandGui,  1,
    "doCommandGui(string) -> None\n\n"
    "Prints the given string in the python console and runs it but doesn't record it in macros"},
-  {"addModule",               (PyCFunction) Application::sAddModule,        1,
+  {"addModule",               (PyCFunction) (void*)Application::sAddModule,        1,
    "addModule(string) -> None\n\n"
    "Prints the given module import only once in the macro recording"},
-  {"showDownloads",               (PyCFunction) Application::sShowDownloads,1,
+  {"showDownloads",               (PyCFunction) (void*)Application::sShowDownloads,1,
    "showDownloads() -> None\n\n"
    "Shows the downloads manager window"},
-  {"showPreferences",               (PyCFunction) Application::sShowPreferences,1,
+  {"showPreferences",               (PyCFunction) (void*)Application::sShowPreferences,1,
    "showPreferences([string,int]) -> None\n\n"
    "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
-  {"createViewer",               (PyCFunction) Application::sCreateViewer,1,
+  {"createViewer",               (PyCFunction) (void*)Application::sCreateViewer,1,
    "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
    "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
-  {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, 1,
+  {"getMarkerIndex", (PyCFunction) (void*)Application::sGetMarkerIndex, 1,
    "Get marker index according to marker size setting"},
 
   {NULL, NULL, 0, NULL}		/* Sentinel */
