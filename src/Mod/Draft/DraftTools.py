@@ -2313,6 +2313,10 @@ class Modifier(DraftTool):
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
 
+    def __init__(self):
+        Modifier.__init__(self)
+        self.copymode = False
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Move',
                 'Accel' : "M, V",
@@ -2344,6 +2348,8 @@ class Move(Modifier):
             self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
+        if self.copymode:
+            self.ui.isCopy.setChecked(True)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.ghost = ghostTracker(self.sel)
@@ -4942,6 +4948,10 @@ class ShowSnapBar():
 class Draft_Clone(Modifier):
     "The Draft Clone command definition"
 
+    def __init__(self):
+        Modifier.__init__(self)
+        self.moveAfterCloning = False
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Clone',
                 'Accel' : "C,L",
@@ -4973,6 +4983,11 @@ class Draft_Clone(Modifier):
             for i in range(l):
                 FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.Objects[-(1+i)])
         self.finish()
+
+    def finish(self,close=False):
+        Modifier.finish(self,close=False)
+        if self.moveAfterCloning:
+            todo.delay(FreeCADGui.runCommand,"Draft_Move")
 
 
 class ToggleGrid():

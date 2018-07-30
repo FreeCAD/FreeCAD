@@ -215,7 +215,7 @@ ParameterGrp::~ParameterGrp()
 
 void ParameterGrp::copyTo(Base::Reference<ParameterGrp> Grp)
 {
-    // delete previos content
+    // delete previous content
     Grp->Clear();
 
     // copy all

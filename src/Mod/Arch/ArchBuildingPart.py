@@ -48,6 +48,147 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
+BuildingTypes = ['Undefined',
+'Agricultural - Barn',
+'Agricultural - Chicken coop or chickenhouse',
+'Agricultural - Cow-shed',
+'Agricultural - Farmhouse',
+'Agricultural - Granary',
+'Agricultural - Greenhouse',
+'Agricultural - Hayloft',
+'Agricultural - Pigpen or sty',
+'Agricultural - Root cellar',
+'Agricultural - Shed',
+'Agricultural - Silo',
+'Agricultural - Stable',
+'Agricultural - Storm cellar',
+'Agricultural - Well house',
+'Agricultural - Underground pit',
+
+'Commercial - Automobile repair shop',
+'Commercial - Bank',
+'Commercial - Car wash',
+'Commercial - Convention center',
+'Commercial - Forum',
+'Commercial - Gas station',
+'Commercial - Hotel',
+'Commercial - Market',
+'Commercial - Market house',
+'Commercial - Skyscraper',
+'Commercial - Shop',
+'Commercial - Shopping mall',
+'Commercial - Supermarket',
+'Commercial - Warehouse',
+'Commercial - Restaurant',
+
+'Residential - Apartment block',
+'Residential - Asylum',
+'Residential - Condominium',
+'Residential - Dormitory',
+'Residential - Duplex',
+'Residential - House',
+'Residential - Nursing home',
+'Residential - Townhouse',
+'Residential - Villa',
+'Residential - Bungalow',
+
+'Educational - Archive',
+'Educational - College classroom building',
+'Educational - College gymnasium',
+'Educational - College students union',
+'Educational - School',
+'Educational - Library',
+'Educational - Museum',
+'Educational - Art gallery',
+'Educational - Theater',
+'Educational - Amphitheater',
+'Educational - Concert hall',
+'Educational - Cinema',
+'Educational - Opera house',
+'Educational - Boarding school',
+
+'Government - Capitol',
+'Government - City hall',
+'Government - Consulate',
+'Government - Courthouse',
+'Government - Embassy',
+'Government - Fire station',
+'Government - Meeting house',
+'Government - Moot hall',
+'Government - Palace',
+'Government - Parliament',
+'Government - Police station',
+'Government - Post office',
+'Government - Prison',
+
+'Industrial - Brewery',
+'Industrial - Factory',
+'Industrial - Foundry',
+'Industrial - Power plant',
+'Industrial - Mill',
+
+'Military - Arsenal',
+'Military -Barracks',
+
+'Parking - Boathouse',
+'Parking - Garage',
+'Parking - Hangar',
+
+'Storage - Silo',
+'Storage - Hangar',
+
+'Religious - Church',
+'Religious - Basilica',
+'Religious - Cathedral',
+'Religious - Chapel',
+'Religious - Oratory',
+'Religious - Martyrium',
+'Religious - Mosque',
+'Religious - Mihrab',
+'Religious - Surau',
+'Religious - Imambargah',
+'Religious - Monastery',
+'Religious - Mithraeum',
+'Religious - Fire temple',
+'Religious - Shrine',
+'Religious - Synagogue',
+'Religious - Temple',
+'Religious - Pagoda',
+'Religious - Gurdwara',
+'Religious - Hindu temple',
+
+'Transport - Airport terminal',
+'Transport - Bus station',
+'Transport - Metro station',
+'Transport - Taxi station',
+'Transport - Railway station',
+'Transport - Signal box',
+'Transport - Lighthouse',
+
+'Infrastructure - Data centre',
+
+'Power station - Fossil-fuel power station',
+'Power station - Nuclear power plant',
+'Power station - Geothermal power',
+'Power station - Biomass-fuelled power plant',
+'Power station - Waste heat power plant',
+'Power station - Renewable energy power station',
+'Power station - Atomic energy plant',
+
+'Other - Apartment',
+'Other - Clinic',
+'Other - Community hall',
+'Other - Eatery',
+'Other - Folly',
+'Other - Food court',
+'Other - Hospice',
+'Other - Hospital',
+'Other - Hut',
+'Other - Bathhouse',
+'Other - Workshop',
+'Other - World trade centre'
+]
+
 
 def makeBuildingPart(objectslist=None):
 
@@ -58,11 +199,13 @@ def makeBuildingPart(objectslist=None):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
+    #obj.IfcRole = "Building Storey" # set default to Floor
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
         obj.addObjects(objectslist)
     return obj
+
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     
@@ -73,9 +216,25 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     obj.IfcRole = "Building Storey"
     return obj
 
+
+def makeBuilding(objectslist=None,baseobj=None,name="Building"):
+    
+    """overwrites ArchBuilding.makeBuilding"""
+    
+    obj = makeBuildingPart(objectslist)
+    obj.Label = name
+    obj.IfcRole = "Building"
+    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
+    obj.BuildingType = BuildingTypes
+    if FreeCAD.GuiUp:
+        obj.ViewObject.ShowLevel = False
+        obj.ViewObject.ShowLabel = False
+    return obj
+
+
 def convertFloors(floor=None):
 
-    """convert the given Floor (or all Arch Floors from the active document if none is given) into BuildingParts"""
+    """convert the given Floor or Building (or all Arch Floors from the active document if none is given) into BuildingParts"""
 
     todel = []
     if floor:
@@ -83,9 +242,14 @@ def convertFloors(floor=None):
     else:
         objset = FreeCAD.ActiveDocument.Objects
     for obj in objset:
-        if Draft.getType(obj) == "Floor":
+        if Draft.getType(obj) in ["Floor","Building"]:
             nobj = makeBuildingPart(obj.Group)
-            nobj.Role = "Storey"
+            if Draft.getType(obj) == "Floor":
+                nobj.IfcRole = "Building Storey"
+            else:
+                nobj.IfcRole = "Building"
+                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
+                nobj.BuildingType = BuildingTypes
             label = obj.Label
             for parent in obj.InList:
                 if hasattr(parent,"Group"):
@@ -104,6 +268,7 @@ def convertFloors(floor=None):
     for n in todel:
         from DraftGui import todo
         todo.delay(FreeCAD.ActiveDocument.removeObject,n)
+
 
 
 class CommandBuildingPart:
@@ -172,6 +337,8 @@ class BuildingPart:
             obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
+        if not "IfcProperties" in pl:
+            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
@@ -257,7 +424,7 @@ class ViewProviderBuildingPart:
         #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
         vobj.Proxy = self
         self.setProperties(vobj)
-        vobj.ShapeColor = (0.13,0.15,0.37)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
 
     def setProperties(self,vobj):
 
@@ -333,6 +500,7 @@ class ViewProviderBuildingPart:
         self.txt.justification = coin.SoText2.LEFT
         self.txt.string.setValue("level")
         self.sep.addChild(self.txt)
+        vobj.addDisplayMode(coin.SoSeparator(),"Default")
         self.onChanged(vobj,"ShapeColor")
         self.onChanged(vobj,"FontName")
         self.onChanged(vobj,"ShowLevel")
@@ -351,10 +519,6 @@ class ViewProviderBuildingPart:
 
         return mode
 
-    def isShow(self):
-
-        return True
-
     def updateData(self,obj,prop):
 
         if prop in ["Placement","LevelOffset"]:
@@ -370,7 +534,8 @@ class ViewProviderBuildingPart:
                         c = o.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
                         for i in range(len(o.Shape.Faces)):
                             cols.append(c)
-            obj.ViewObject.DiffuseColor = cols
+            if hasattr(obj.ViewObject,"DiffuseColor"):
+                obj.ViewObject.DiffuseColor = cols
 
     def onChanged(self,vobj,prop):
 

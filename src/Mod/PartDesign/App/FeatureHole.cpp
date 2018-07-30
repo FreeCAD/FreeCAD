@@ -985,6 +985,9 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         else
             xDir = gp_Vec(0, -zDir.Z(), zDir.Y());
 
+        // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
+        xDir.Normalize();
+
         if ( method == "Dimension" )
             length = Depth.getValue();
         else if ( method == "UpToFirst" ) {
@@ -1262,6 +1265,9 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         this->AddSubShape.setValue(TopoShape().makECompound(holes).moved(invObjLoc));
 
         remapSupportShape(base.getShape());
+        if(base.countSubShapes(TopAbs_SOLID)>1)
+            return new App::DocumentObjectExecReturn("Hole: Result has multiple solids. This is not supported at this time.");
+
         this->Shape.setValue(base);
 
         return App::DocumentObject::StdReturn;

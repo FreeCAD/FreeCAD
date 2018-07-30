@@ -183,6 +183,7 @@ struct MainWindowP
     Assistant* assistant;
     int currentStatusType = 100;
     int actionUpdateDelay = 0;
+    QMap<QString, QPointer<UrlHandler> > urlHandler;
 };
 
 class MDITabbar : public QTabBar
@@ -1312,6 +1313,13 @@ QPixmap MainWindow::splashImage() const
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString version = QString::fromLatin1("%1.%2").arg(major).arg(minor);
 
+        std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
+        std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
+        if (te != App::Application::Config().end())
+            title = QString::fromUtf8(te->second.c_str());
+        if (tv != App::Application::Config().end())
+            version = QString::fromUtf8(tv->second.c_str());
+
         QPainter painter;
         painter.begin(&splash_image);
         QFont fontExe = painter.font();
@@ -1566,10 +1574,27 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     }
 }
 
+void MainWindow::setUrlHandler(const QString &scheme, Gui::UrlHandler* handler)
+{
+    d->urlHandler[scheme] = handler;
+}
+
+void MainWindow::unsetUrlHandler(const QString &scheme)
+{
+    d->urlHandler.remove(scheme);
+}
+
 void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
 {
     QStringList files;
     for (QList<QUrl>::ConstIterator it = url.begin(); it != url.end(); ++it) {
+        QMap<QString, QPointer<UrlHandler> >::iterator jt = d->urlHandler.find(it->scheme());
+        if (jt != d->urlHandler.end() && !jt->isNull()) {
+            // delegate the loading to the url handler
+            (*jt)->openUrl(doc, *it);
+            continue;
+        }
+
         QFileInfo info((*it).toLocalFile());
         if (info.exists() && info.isFile()) {
             if (info.isSymLink())

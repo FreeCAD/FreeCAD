@@ -640,8 +640,10 @@ def findClosest(basepoint,pointslist):
     in a list of 3d points, finds the closest point to the base point.
     an index from the list is returned.
     '''
-    if not pointslist: return None
-    smallest = 100000
+    npoint = None
+    if not pointslist: 
+        return None
+    smallest = 1000000
     for n in range(len(pointslist)):
         new = basepoint.sub(pointslist[n]).Length
         if new < smallest:

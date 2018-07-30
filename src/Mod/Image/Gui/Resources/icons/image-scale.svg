@@ -342,7 +342,7 @@
             <rdf:li />
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A small square in the bottom left corner of a large dotted box ith an arrow pointing from the top left corner of the inner box to the top left corner of the outer box</dc:description>
+        <dc:description>A small square in the bottom left corner of a large dotted box with an arrow pointing from the top left corner of the inner box to the top left corner of the outer box</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

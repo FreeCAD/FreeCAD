@@ -187,8 +187,8 @@ SplashScreen::~SplashScreen()
     delete messages;
 }
 
-/** 
- * Draws the contents of the splash screen using painter \a painter. The default 
+/**
+ * Draws the contents of the splash screen using painter \a painter. The default
  * implementation draws the message passed by message().
  */
 void SplashScreen::drawContents ( QPainter * painter )
@@ -249,7 +249,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 //    if (showLic) { // currently disabled. Additional license blocks are always shown.
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
         // any additional piece of text to be added after the main license text goes below.
-        // Please set title in <h2> tags, license text in <p> tags 
+        // Please set title in <h2> tags, license text in <p> tags
         // and add an <hr/> tag at the end to nicely separate license blocks
 #ifdef _USE_3DCONNEXION_SDK
         info += QString::fromLatin1(
@@ -281,6 +281,10 @@ class SystemInfo {
 public:
 static QString getOperatingSystem()
 {
+#if QT_VERSION >= 0x050400
+    return QSysInfo::prettyProductName();
+#endif
+
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
     {
@@ -449,7 +453,7 @@ void AboutDialog::setupLabels()
     if (qApp->styleSheet().isEmpty()) {
         setStyleSheet(QString::fromLatin1("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize));
     }
-    
+
     QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string,std::string>::iterator it;
@@ -460,6 +464,9 @@ void AboutDialog::setupLabels()
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
     QString disda  = QString::fromLatin1(config["BuildRevisionDate"].c_str());
     QString mturl  = QString::fromLatin1(config["MaintainerUrl"].c_str());
+
+    // we use replace() to keep label formatting, so a label with text "<b>Unknown</b>"
+    // gets replaced to "<b>FreeCAD</b>", for example
 
     QString author = ui->labelAuthor->text();
     author.replace(QString::fromLatin1("Unknown Application"), exeName);
@@ -487,7 +494,7 @@ void AboutDialog::setupLabels()
     platform.replace(QString::fromLatin1("Unknown"),
         QString::fromLatin1("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
-    
+
     // branch name
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {

@@ -328,6 +328,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         // lets check if the result is a solid
                         if (support.isNull())
                             return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
                         {
@@ -371,6 +372,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
         for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             rejected[it->first].push_back(**it2);
+
+    if(support.countSubShapes(TopAbs_SOLID)>1){
+        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. This is not supported at this time.");
+    }
 
     this->Shape.setValue(getSolid(result));
 

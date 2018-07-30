@@ -66,6 +66,7 @@
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 #include <Base/Console.h>
 
 #include <App/PropertyGeo.h>
@@ -198,7 +199,7 @@ ViewProviderDataMarker::ViewProviderDataMarker()
     pCoords->ref();
     pCoords->point.setNum(0);
     pMarker = new SoMarkerSet();
-    pMarker->markerIndex = SoMarkerSet::CIRCLE_FILLED_9_9;
+    pMarker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
     pMarker->numPoints=0;
     pMarker->ref();
 

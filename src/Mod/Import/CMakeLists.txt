@@ -29,4 +29,14 @@ INSTALL(
         #${Import_QRC_SRCS}
     DESTINATION
         Mod/Import
-)   
+)
+
+INSTALL(
+    DIRECTORY
+        DxfPlate
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/Import
+    FILES_MATCHING
+        PATTERN "*.rub*"
+)
+   

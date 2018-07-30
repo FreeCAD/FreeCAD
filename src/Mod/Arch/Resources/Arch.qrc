@@ -85,6 +85,7 @@
         <file>icons/Arch_Grid.svg</file>
         <file>icons/Arch_BuildingPart.svg</file>
         <file>icons/Arch_BuildingPart_Tree.svg</file>
+        <file>icons/Arch_Profile.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
@@ -103,6 +104,7 @@
         <file>ui/DialogBimServerLogin.ui</file>
         <file>ui/DialogDisplayText.ui</file>
         <file>ui/ArchNest.ui</file>
+        <file>ui/DialogIfcProperties.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>

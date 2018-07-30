@@ -23,10 +23,10 @@
 # ***************************************************************************
 
 import FreeCAD
-import math
 import Part
 import Path
 import PathScripts.PathLog as PathLog
+import math
 
 from FreeCAD import Vector
 from PySide import QtCore
@@ -455,3 +455,50 @@ def removeDuplicateEdges(wire):
             unique.append(e)
     return Part.Wire(unique)
 
+def flipEdge(edge):
+    '''flipEdge(edge)
+    Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
+    Currently only lines, line segments, circles and arcs are supported.'''
+
+    if Part.Line == type(edge.Curve) and not edge.Vertexes:
+        return Part.Edge(Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter)))
+    elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
+        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
+    elif Part.Circle == type(edge.Curve):
+        # Create an inverted circle
+        circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)
+        # Rotate the circle appropriately so it starts at edge.valueAt(edge.LastParameter)
+        circle.rotate(FreeCAD.Placement(circle.Center, circle.Axis, 180 - math.degrees(edge.LastParameter + edge.Curve.AngleXU)))
+        # Now the edge always starts at 0 and LastParameter is the value range
+        arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
+        return arc
+    elif Part.BSplineCurve == type(edge.Curve):
+        spline = edge.Curve
+
+        mults = spline.getMultiplicities()
+        weights = spline.getWeights()
+        knots = spline.getKnots()
+        poles = spline.getPoles()
+        perio = spline.isPeriodic()
+        ratio = spline.isRational()
+        degree = spline.Degree
+
+        ma = max(knots)
+        mi = min(knots)
+        knots = [ma+mi-k for k in knots]
+
+        mults.reverse()
+        weights.reverse()
+        poles.reverse()
+        knots.reverse()
+
+        flipped = Part.BSplineCurve()
+        flipped.buildFromPolesMultsKnots(poles, mults , knots, perio, degree, weights, ratio)
+
+        return Part.Edge(flipped)
+
+def flipWire(wire):
+    '''Flip the entire wire and all its edges so it is being processed the other way around.'''
+    edges = [flipEdge(e) for e in wire.Edges]
+    edges.reverse()
+    return Part.Wire(edges)

@@ -198,7 +198,7 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Building")
     _Building(obj)
     if FreeCAD.GuiUp:
         _ViewProviderBuilding(obj.ViewObject)
@@ -299,6 +299,19 @@ class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
 
         import Arch_rc
         return ":/icons/Arch_Building_Tree.svg"
+
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        import Arch_rc
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
+        menu.addAction(action1)
+
+    def convertToBuildingPart(self):
+        if hasattr(self,"Object"):
+            import ArchBuildingPart
+            from DraftGui import todo
+            todo.delay(ArchBuildingPart.convertFloors,self.Object)
 
 
 if FreeCAD.GuiUp:

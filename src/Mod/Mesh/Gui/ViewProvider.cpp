@@ -1823,6 +1823,14 @@ void ViewProviderMesh::deleteSelection()
     }
 }
 
+bool ViewProviderMesh::hasSelection() const
+{
+    std::vector<unsigned long> indices;
+    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+    const Mesh::MeshObject& rMesh = meshProp.getValue();
+    return rMesh.hasSelectedFacets();
+}
+
 void ViewProviderMesh::selectArea(short x, short y, short w, short h,
                                   const SbViewportRegion& region,
                                   SoCamera* camera)

@@ -73,7 +73,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
             obj = Draft.clone(baseobj)
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
     obj.Label = translate("Arch",name)
     _Window(obj)
     if FreeCAD.GuiUp:
@@ -632,8 +632,10 @@ class _CommandWindow:
                     if host and self.Include:
                         FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
                         siblings = host.Proxy.getSiblings(host)
+                        sibs = [host]
                         for sibling in siblings:
-                            if not sibling in win.Hosts:
+                            if not sibling in sibs:
+                                sibs.append(sibling)
                                 FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()

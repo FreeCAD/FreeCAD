@@ -2,6 +2,7 @@ if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
     add_definitions(-DBOOST_DYN_LINK)
+    add_definitions(-DZIPIOS_UTF8)
 endif(WIN32)
 
 include_directories(
@@ -369,10 +370,10 @@ else(FREECAD_USE_EXTERNAL_ZIPIOS)
 endif(FREECAD_USE_EXTERNAL_ZIPIOS)
 
 
-if(MSVC)
-add_definitions(-D_PreComp_)
-ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
-endif(MSVC)
+if(BUILD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
+endif(BUILD_USE_PCH)
 
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 

@@ -578,13 +578,14 @@ PyObject*  TopoShapePy::importBinary(PyObject *args)
 PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
 {
     char* input;
-    if (!PyArg_ParseTuple(args, "s", &input))
+    int indicator=1;
+    if (!PyArg_ParseTuple(args, "s|i", &input, &indicator))
         return NULL;
 
     try {
         // read brep
         std::stringstream str(input);
-        getTopoShapePtr()->importBrep(str);
+        getTopoShapePtr()->importBrep(str,indicator);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());
@@ -2934,6 +2935,33 @@ PyObject *TopoShapePy::clearCache(PyObject *args) {
         return 0;
     getTopoShapePtr()->initCache(1);
     Py_Return;
+}
+
+PyObject* TopoShapePy::defeaturing(PyObject *args)
+{
+    PyObject *l;
+    if (!PyArg_ParseTuple(args, "O",&l))
+        return NULL;
+
+    try {
+        Py::Sequence list(l);
+        std::vector<TopoDS_Shape> shapes;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::TopoShape sh(*it);
+            shapes.push_back(
+                sh.extensionObject()->getTopoShapePtr()->getShape()
+            );
+        }
+        PyTypeObject* type = this->GetType();
+        PyObject* inst = type->tp_new(type, this, 0);
+        static_cast<TopoShapePy*>(inst)->getTopoShapePtr()->setShape
+            (this->getTopoShapePtr()->defeaturing(shapes));
+        return inst;
+    }
+    catch (const Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return NULL;
+    }
 }
 
 // End of Methods, Start of Attributes

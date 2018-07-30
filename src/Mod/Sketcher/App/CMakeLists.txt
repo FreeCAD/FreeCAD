@@ -52,6 +52,9 @@ SET(Features_SRCS
     SketchObjectSF.h
     SketchObject.cpp
     SketchObject.h
+    SketchAnalysis.h
+    SketchAnalysis.cpp
+    Analyse.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 

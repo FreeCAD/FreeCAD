@@ -116,7 +116,7 @@ class snapTracker(Tracker):
         color = coin.SoBaseColor()
         color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.marker = coin.SoMarkerSet() # this is the marker symbol
-        self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
+        self.marker.markerIndex = FreeCADGui.getMarkerIndex("", 9)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValue((0,0,0))
         node = coin.SoAnnotation()
@@ -126,18 +126,7 @@ class snapTracker(Tracker):
         Tracker.__init__(self,children=[node],name="snapTracker")
 
     def setMarker(self,style):
-        if (style == "square"):
-            self.marker.markerIndex = coin.SoMarkerSet.DIAMOND_FILLED_9_9
-        elif (style == "circle"):
-            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
-        elif (style == "quad"):
-            self.marker.markerIndex = coin.SoMarkerSet.SQUARE_FILLED_9_9
-        elif (style == "empty"):
-            self.marker.markerIndex = coin.SoMarkerSet.SQUARE_LINE_9_9
-        elif (style == "cross"):
-            self.marker.markerIndex = coin.SoMarkerSet.CROSS_9_9
-        else:
-            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
+        self.marker.markerIndex = FreeCADGui.getMarkerIndex(style, 9)
 
     def setCoords(self,point):
         self.coords.point.setValue((point.x,point.y,point.z))
@@ -665,7 +654,7 @@ class ghostTracker(Tracker):
 class editTracker(Tracker):
     "A node edit tracker"
     def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
-            marker=coin.SoMarkerSet.SQUARE_FILLED_9_9,inactive=False):
+            marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
         color = coin.SoBaseColor()
         if objcol:
             color.rgb = objcol[:3]

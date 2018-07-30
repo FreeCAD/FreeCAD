@@ -532,22 +532,27 @@ public:
     enum ConsoleMode{
         Verbose = 1,	// suppress Log messages
     };
+    enum ConnectionMode {
+        Direct = 0,
+        Queued =1
+    };
 
-    enum FreeCAD_ConsoleMsgType { 
+    enum FreeCAD_ConsoleMsgType {
         MsgType_Txt = 1,
         MsgType_Log = 2, // ConsoleObserverStd sends this and higher to stderr
         MsgType_Wrn = 4,
         MsgType_Err = 8
-    } ;
+    };
 
     /// Change mode
-    void SetMode(ConsoleMode m);
+    void SetConsoleMode(ConsoleMode m);
     /// Change mode
-    void UnsetMode(ConsoleMode m);
+    void UnsetConsoleMode(ConsoleMode m);
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
     /// Enables or disables message types of a certain console observer
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
+    void SetConnectionMode(ConnectionMode mode);
 
     int *GetLogLevel(const char *tag, bool create=true);
 
@@ -565,7 +570,7 @@ public:
     // retrieval of an observer by name
     ConsoleObserver *Get(const char *Name) const;
 
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
     void Refresh();
     void EnableRefresh(bool enable);
@@ -582,6 +587,7 @@ protected:
 
     bool _bVerbose;
     bool _bCanRefresh;
+    ConnectionMode connectionMode;
 
     // Singleton!
     ConsoleSingleton(void);
@@ -597,6 +603,8 @@ private:
 
     std::map<std::string, int> _logLevels;
     int _defaultLogLevel;
+
+    friend class ConsoleOutput;
 };
 
 /** Access to the Console

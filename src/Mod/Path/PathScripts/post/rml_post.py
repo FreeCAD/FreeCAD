@@ -36,7 +36,7 @@ http://paulbourke.net/dataformats/hpgl/
 
 import FreeCAD
 import Part
-import PostUtils
+import PathScripts.PostUtils as PostUtils
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ == '__builtin__':
@@ -209,8 +209,6 @@ def convertgcode(cmd, args, state):
         return ""
     else:
         raise NotImplementedError("rml_post: GCode command %s not understood" % (cmd,))
-
-    raise Exception("should not be reached. cmd=%s" % (cmd,))
 
 
 def parse(inputstring):

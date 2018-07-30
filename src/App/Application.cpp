@@ -1607,7 +1607,7 @@ void Application::initConfig(int argc, char ** argv)
     _pConsoleObserverStd = new ConsoleObserverStd();
     Console().AttachObserver(_pConsoleObserverStd);
     if (mConfig["Verbose"] == "Strict")
-        Console().SetMode(ConsoleSingleton::Verbose);
+        Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {

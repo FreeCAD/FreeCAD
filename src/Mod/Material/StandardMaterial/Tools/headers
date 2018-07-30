@@ -15,7 +15,6 @@ Color
 CompressiveStrength
 Density
 DiffuseColor
-Elasticity
 EmissiveColor
 Enlargen
 EnvironmentalEfficiencyClass
@@ -34,6 +33,7 @@ SectionFillPattern
 SectionLinewidth
 Shininess
 SoundTransmissionClass
+SpecificHeat
 SpecularColor
 StandardCode
 TexturePath

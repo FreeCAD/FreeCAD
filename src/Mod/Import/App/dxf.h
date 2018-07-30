@@ -3,6 +3,9 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
+#ifndef _dxf_h_
+#define _dxf_h_
+
 #pragma once
 
 #include <algorithm>
@@ -16,6 +19,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+#include <Base/Vector3D.h>
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
 #ifndef HAVE_IOSTREAM
@@ -116,65 +121,119 @@ struct LWPolyDataOut
 };
 //********************
 
-class CDxfWrite{
+class ImportExport CDxfWrite{
 private:
     std::ofstream* m_ofs;
     bool m_fail;
-    std::stringstream m_ssBlock;
+    std::ostringstream* m_ssBlock;
+    std::ostringstream* m_ssBlkRecord;
+    std::ostringstream* m_ssEntity;
+    std::ostringstream* m_ssLayer;
+
+protected:
+    void putLine(const Base::Vector3d s, const Base::Vector3d e,
+                 std::ostringstream* outStream, const std::string handle,
+                 const std::string ownerHandle);
+    void putText(const char* text, const Base::Vector3d location1, const Base::Vector3d location2,
+                 const double height, const int horizJust,
+                 std::ostringstream* outStream, const std::string handle,
+                 const std::string ownerHandle);
+    void putArrow(Base::Vector3d arrowPos, Base::Vector3d barb1Pos, Base::Vector3d barb2Pos,
+                  std::ostringstream* outStream, const std::string handle,
+                  const std::string ownerHandle);
+
+    //! copy boiler plate file
+    std::string getPlateFile(std::string fileSpec);
+    void setDataDir(std::string s) { m_dataDir = s; }
+    std::string getEntityHandle(void);
+    std::string getLayerHandle(void);
+    std::string getBlockHandle(void);
+    std::string getBlkRecordHandle(void);
+
+    std::string m_optionSource;
+    int m_version;
+    int m_entityHandle;
+    int m_layerHandle;
+    int m_blockHandle;
+    int m_blkRecordHandle;
+    
+    std::string m_saveModelSpaceHandle;
+    std::string m_savePaperSpaceHandle;
+    std::string m_saveBlockRecordTableHandle;
+    std::string m_saveBlkRecordHandle;
+    std::string m_currentBlock;
+    std::string m_dataDir;
+    std::string m_layerName;
+    std::vector<std::string> m_layerList;
+    std::vector<std::string> m_blockList;
+    std::vector<std::string> m_blkRecordList;
 
 public:
     CDxfWrite(const char* filepath);
     ~CDxfWrite();
+    
+    void init(void);
+    void endRun(void);
 
     bool Failed(){return m_fail;}
+//    void setOptions(void);
+//    bool isVersionValid(int vers);
+    std::string getLayerName() { return m_layerName; }
+    void setLayerName(std::string s);
+    void addBlockName(std::string s, std::string blkRecordHandle);
 
-    void WriteLine(const double* s, const double* e, const char* layer_name );
-    void WritePoint(const double*, const char*);
-    void WriteArc(const double* s, const double* e, const double* c, bool dir, const char* layer_name );
-    void WriteEllipse(const double* c, double major_radius, double minor_radius, 
-                      double rotation, double start_angle, double end_angle, bool endIsCW, 
-                      const char* layer_name);
-    void WriteCircle(const double* c, double radius, const char* layer_name );
-    void WriteSpline(SplineDataOut sd, const char* layer_name);
-    void WriteLWPolyLine(LWPolyDataOut pd, const char* layer_name);
-    void WritePolyline(LWPolyDataOut pd, const char* layer_name);
-    void WriteVertex(double x, double y, double z, const char* layer_name);
-    void WriteText(const char* text, const double* location1, const double* location2,
-                   const double height, const int horizJust, const char* layer_name);
-    void WriteLinearDim(const double* textMidPoint, const double* lineDefPoint,
+    void writeLine(const double* s, const double* e);
+    void writePoint(const double*);
+    void writeArc(const double* s, const double* e, const double* c, bool dir);
+    void writeEllipse(const double* c, double major_radius, double minor_radius, 
+                      double rotation, double start_angle, double end_angle, bool endIsCW);
+    void writeCircle(const double* c, double radius );
+    void writeSpline(SplineDataOut sd);
+    void writeLWPolyLine(LWPolyDataOut pd);
+    void writePolyline(LWPolyDataOut pd);
+    void writeVertex(double x, double y, double z);
+    void writeText(const char* text, const double* location1, const double* location2,
+                   const double height, const int horizJust);
+    void writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
-                  const char* dimText,
-                  const char* layer_name);
+                  const char* dimText);
     void writeLinearDimBlock(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
                   const char* dimText);
-    void WriteAngularDim(const double* textMidPoint, const double* lineDefPoint,
+    void writeAngularDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* startExt1, const double* endExt1,
                   const double* startExt2, const double* endExt2,
-                  const char* dimText,
-                  const char* layer_name);
+                  const char* dimText);
     void writeAngularDimBlock(const double* textMidPoint, const double* lineDefPoint,
                          const double* startExt1, const double* endExt1,
                          const double* startExt2, const double* endExt2,
                          const char* dimText);
-   void WriteRadialDim(const double* centerPoint, const double* textMidPoint, 
+   void writeRadialDim(const double* centerPoint, const double* textMidPoint, 
                          const double* arcPoint,
-                         const char* dimText,
-                         const char* layer_name);
+                         const char* dimText);
     void writeRadialDimBlock(const double* centerPoint, const double* textMidPoint, 
                          const double* arcPoint, const char* dimText);
-    void WriteDiametricDim(const double* textMidPoint, 
+    void writeDiametricDim(const double* textMidPoint, 
                          const double* arcPoint1, const double* arcPoint2,
-                         const char* dimText,
-                         const char* layer_name);
+                         const char* dimText);
     void writeDiametricDimBlock(const double* textMidPoint, 
                          const double* arcPoint1, const double* arcPoint2,
                          const char* dimText);
 
-    void writeDimBlockPreamble(const char* layer_name);
+    void writeDimBlockPreamble();
+    void writeBlockTrailer(void);
+
     void writeHeaderSection(void);
     void writeTablesSection(void);
     void writeBlocksSection(void);
+    void writeEntitiesSection(void);
+    void writeObjectsSection(void);
+    void writeClassesSection(void);
+
+    void makeLayerTable(void);
+    void makeBlockRecordTableHead(void);
+    void makeBlockRecordTableBody(void);
+    void makeBlockSectionHead(void);
 };
 
 // derive a class from this and implement it's virtual functions
@@ -247,3 +306,4 @@ public:
     std::string LayerName() const;
 
 };
+#endif

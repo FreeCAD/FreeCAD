@@ -458,6 +458,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         }
     }
 
+#if 0
 #ifndef FC_DEBUG
     try {
         MeshCore::MeshEvalNeighbourhood nb(_kernel);
@@ -476,6 +477,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         // ignore memory exceptions and continue
         Base::Console().Log("Check for defects in mesh data structure failed\n");
     }
+#endif
 #endif
 }
 

@@ -5,6 +5,7 @@
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Axis.svg</file>
         <file>icons/Path-BaseGeometry.svg</file>
+        <file>icons/Path-Chamfer.svg</file>
         <file>icons/Path-Comment.svg</file>
         <file>icons/Path-Compound.svg</file>
         <file>icons/Path-Contour.svg</file>
@@ -59,6 +60,10 @@
         <file>icons/Path-BPlay.svg</file>
         <file>icons/Path-BStep.svg</file>
         <file>icons/Path-BStop.svg</file>
+        <file>icons/edge-join-miter.svg</file>
+        <file>icons/edge-join-miter-not.svg</file>
+        <file>icons/edge-join-round.svg</file>
+        <file>icons/edge-join-round-not.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
@@ -66,6 +71,7 @@
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
+        <file>panels/DlgToolEdit.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
@@ -75,6 +81,7 @@
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpChamferEdit.ui</file>
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>
         <file>panels/PageOpHelixEdit.ui</file>
@@ -83,7 +90,7 @@
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
-        <file>panels/ToolEdit.ui</file>
+        <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>

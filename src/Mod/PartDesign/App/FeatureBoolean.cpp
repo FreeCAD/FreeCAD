@@ -128,6 +128,10 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         baseTopShape = result; // Use result of this operation for fuse/cut of next body
     }
 
+    if(result.countSubShapes(TopAbs_SOLID)>1){
+        return new App::DocumentObjectExecReturn("Boolean: Result has multiple solids. This is not supported at this time.");
+    }
+
     this->Shape.setValue(result);
     return App::DocumentObject::StdReturn;
 }

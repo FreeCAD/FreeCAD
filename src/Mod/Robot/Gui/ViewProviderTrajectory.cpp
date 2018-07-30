@@ -52,6 +52,8 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
+#include <App/Application.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 #include <sstream>
 using namespace Gui;
 using namespace RobotGui;
@@ -106,7 +108,7 @@ void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
     SoMarkerSet* marker = new SoMarkerSet;
-    marker->markerIndex=SoMarkerSet::CROSS_5_5;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 5));
     linesep->addChild(markcol);
     linesep->addChild(marker);
 

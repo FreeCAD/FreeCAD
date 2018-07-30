@@ -23,19 +23,15 @@
 # ***************************************************************************
 
 import ArchPanel
-import DraftGeomUtils
 import FreeCAD
 import Part
 import Path
+import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathOp as PathOp
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
-import TechDraw
 import traceback
 
-from DraftGeomUtils import geomType
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
@@ -50,34 +46,7 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-def adjustWirePlacement(obj, shape, wires):
-    job = PathUtils.findParentJob(obj)
-    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
-        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
-            pmntShape   = shape.Placement
-            pmntSupport = shape.Support[0][0].getGlobalPlacement()
-            #pmntSupport = shape.Support[0][0].Placement
-            pmntBase    = job.Base.Placement
-            pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
-            #PathLog.debug("pmnt = %s" % pmnt)
-            newWires = []
-            for w in wires:
-                edges = []
-                for e in w.Edges:
-                    e = e.copy()
-                    e.Placement = FreeCAD.Placement()
-                    edges.append(e)
-                w = Part.Wire(edges)
-                w.Placement = pmnt
-                newWires.append(w)
-            wires = newWires
-        else:
-            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
-    else:
-        PathLog.debug("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'None')) 
-    return wires
-
-class ObjectEngrave(PathOp.ObjectOp):
+class ObjectEngrave(PathEngraveBase.ObjectOp):
     '''Proxy class for Engrave operation.'''
 
     def opFeatures(self, obj):
@@ -110,15 +79,7 @@ class ObjectEngrave(PathOp.ObjectOp):
         if job and job.Base:
             obj.BaseObject = job.Base
 
-        zValues = []
-        if obj.StepDown.Value != 0:
-            z = obj.StartDepth.Value - obj.StepDown.Value
-
-            while z > obj.FinalDepth.Value:
-                zValues.append(z)
-                z -= obj.StepDown.Value
-        zValues.append(obj.FinalDepth.Value)
-        self.zValues = zValues
+        zValues = self.getZValues(obj)
 
         try:
             if self.baseobject.isDerivedFrom('Sketcher::SketchObject') or \
@@ -151,22 +112,20 @@ class ObjectEngrave(PathOp.ObjectOp):
                 wires = []
                 for base, subs in obj.Base:
                     edges = []
-                    #for sub in subs:
-                    #    edges.extend(base.Shape.getElement(sub).Edges)
-                    #shapeWires = adjustWirePlacement(obj, base, TechDraw.edgeWalker(edges))
-                    #wires.extend(shapeWires)
+                    basewires = []
                     for feature in subs:
                         sub = base.Shape.getElement(feature)
                         if type(sub) == Part.Edge:
                             edges.append(sub)
                         elif sub.Wires:
-                            wires.extend(sub.Wires)
+                            basewires.extend(sub.Wires)
                         else:
-                            wires.append(Part.Wire(sub.Edges))
+                            basewires.append(Part.Wire(sub.Edges))
 
                     for edgelist in Part.sortEdges(edges):
-                        wires.append(Part.Wire(edgelist))
-                wires = adjustWirePlacement(obj, base, wires)
+                        basewires.append(Part.Wire(edgelist))
+
+                    wires.extend(self.adjustWirePlacement(obj, base, basewires))
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
@@ -177,7 +136,7 @@ class ObjectEngrave(PathOp.ObjectOp):
                 PathLog.track()
                 wires = []
                 for shape in obj.BaseShapes:
-                    shapeWires = adjustWirePlacement(obj, shape, shape.Shape.Wires)
+                    shapeWires = self.adjustWirePlacement(obj, shape, shape.Shape.Wires)
                     self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires
@@ -187,71 +146,12 @@ class ObjectEngrave(PathOp.ObjectOp):
             traceback.print_exc()
             PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
-    def buildpathocc(self, obj, wires, zValues):
-        '''buildpathocc(obj, wires, zValues) ... internal helper function to generate engraving commands.'''
-        PathLog.track(obj.Label, len(wires), zValues)
-
-        for wire in wires:
-            offset = wire
-
-            # reorder the wire
-            offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
-
-            last = None
-            for z in zValues:
-                if last:
-                    self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
-
-                for edge in offset.Edges:
-                    if not last:
-                        # we set the first move to our first point
-                        last = edge.Vertexes[0].Point
-                        if len(offset.Edges) > 1:
-                            e2 = offset.Edges[1]
-                            if not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[0].Point) and not PathGeom.pointsCoincide(edge.Vertexes[-1].Point, e2.Vertexes[-1].Point):
-                                PathLog.debug("flip first edge")
-                                last = edge.Vertexes[-1].Point
-                            else:
-                                PathLog.debug("original first edge")
-                        else:
-                            PathLog.debug("not enough edges to flip")
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.ClearanceHeight.Value, 'F': self.horizRapid}))
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
-
-                    if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        for cmd in PathGeom.cmdsForEdge(edge):
-                            params = cmd.Parameters
-                            params.update({'Z': z, 'F': self.horizFeed})
-                            self.commandlist.append(Path.Command(cmd.Name, params))
-                        last = edge.Vertexes[-1].Point
-                    else:
-                        for cmd in PathGeom.cmdsForEdge(edge, True):
-                            params = cmd.Parameters
-                            params.update({'Z': z, 'F': self.horizFeed})
-                            self.commandlist.append(Path.Command(cmd.Name, params))
-                        last = edge.Vertexes[0].Point
-            self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        if self.commandlist:
-            self.commandlist.pop()
-
-
-    def opSetDefaultValues(self, obj):
-        '''opSetDefaultValues(obj) ... set depths for engraving'''
-        job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            bb = job.Base.Shape.BoundBox
-            obj.OpStartDepth = bb.ZMax
-            obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
-        else:
-            obj.OpFinalDepth = -0.1
-
     def updateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         self.opSetDefaultValues(obj)
 
 def Create(name):
-    '''Create(name) ... Creates and returns a Engrave operation.'''
+    '''Create(name) ... Creates and returns an Engrave operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectEngrave(obj)
     return obj

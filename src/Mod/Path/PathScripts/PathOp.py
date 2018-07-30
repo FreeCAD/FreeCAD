@@ -44,6 +44,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -62,6 +63,7 @@ FeatureBasePanels   = 0x0800     # Base
 FeatureLocations    = 0x1000     # Locations
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
+
 
 class ObjectOp(object):
     '''
@@ -99,13 +101,13 @@ class ObjectOp(object):
     def addOpValues(self, obj, values):
         if 'start' in values:
             obj.addProperty("App::PropertyDistance", "OpStartDepth", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the calculated value for the StartDepth"))
-            obj.setEditorMode('OpStartDepth', 1) # read-only
+            obj.setEditorMode('OpStartDepth', 1)  # read-only
         if 'final' in values:
             obj.addProperty("App::PropertyDistance", "OpFinalDepth", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the calculated value for the FinalDepth"))
-            obj.setEditorMode('OpFinalDepth', 1) # read-only
+            obj.setEditorMode('OpFinalDepth', 1)  # read-only
         if 'tooldia' in values:
             obj.addProperty("App::PropertyDistance", "OpToolDiameter", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the diameter of the tool"))
-            obj.setEditorMode('OpToolDiameter', 1) # read-only
+            obj.setEditorMode('OpToolDiameter', 1)  # read-only
 
     def __init__(self, obj):
         PathLog.track()
@@ -130,8 +132,12 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
             if FeatureNoFinalDepth & features:
-                obj.setEditorMode('FinalDepth', 2) # hide
+                obj.setEditorMode('FinalDepth', 2)  # hide
             self.addOpValues(obj, ['start', 'final'])
+        else:
+            # StartDepth has become necessary for expressions on other properties
+            obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth internal use only for derived values"))
+            obj.setEditorMode('StartDepth', 1)  # read-only
 
         if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"))
@@ -144,7 +150,7 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Rapid Safety Height between locations."))
 
         if FeatureStartPoint & features:
-            obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
+            obj.addProperty("App::PropertyVectorDistance", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "make True, if specifying a Start Point"))
 
         self.initOperation(obj)
@@ -210,12 +216,18 @@ class ObjectOp(object):
     def opUpdateDepths(self, obj):
         '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass.'''
-     
+        pass
+
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
         pass
+
+    def opRejectAddBase(self, obj, base, sub):
+        '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
+        Should be overwritten by subclasses.'''
+        return False
 
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
@@ -246,17 +258,19 @@ class ObjectOp(object):
             obj.ToolController = PathUtils.findToolController(obj)
             if not obj.ToolController:
                 return False
-            obj.OpToolDiameter  =  obj.ToolController.Tool.Diameter
+            obj.OpToolDiameter = obj.ToolController.Tool.Diameter
 
         if FeatureDepths & features:
             if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):
-                obj.OpStartDepth =  1.0
+                obj.OpStartDepth = 1.0
             else:
-                obj.StartDepth   =  1.0
+                obj.StartDepth = 1.0
             if self.applyExpression(obj, 'FinalDepth', job.SetupSheet.FinalDepthExpression):
-                obj.OpFinalDepth =  0.0
+                obj.OpFinalDepth = 0.0
             else:
-                obj.FinalDepth   =  0.0
+                obj.FinalDepth = 0.0
+        else:
+            obj.StartDepth = 1.0
 
         if FeatureStepDown & features:
             if not self.applyExpression(obj, 'StepDown', job.SetupSheet.StepDownExpression):
@@ -306,11 +320,11 @@ class ObjectOp(object):
         def faceZmin(bb, fbb):
             if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
                 return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax: # vertical face, full cut
+            elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
                 return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
                 return fbb.ZMin
-            elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin: # face/shelf
+            elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
                 return fbb.ZMin
             return bb.ZMin
 
@@ -354,6 +368,12 @@ class ObjectOp(object):
             # update start depth if requested and required
             if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
                 obj.OpStartDepth = zmax
+        else:
+            # every obj has a StartDepth
+            if obj.StartDepth.Value != zmax:
+                obj.StartDepth = zmax
+
+        self.opUpdateDepths(obj)
 
     @waiting_effects
     def execute(self, obj):
@@ -441,6 +461,8 @@ class ObjectOp(object):
                     PathLog.notice((translate("Path", "Base object %s.%s already in the list")+"\n") % (base.Label, sub))
                     return
 
-            baselist.append((base, sub))
-            obj.Base = baselist
-
+            if not self.opRejectAddBase(obj, base, sub):
+                baselist.append((base, sub))
+                obj.Base = baselist
+            else:
+                PathLog.notice((translate("Path", "Base object %s.%s rejected by operation")+"\n") % (base.Label, sub))

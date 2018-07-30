@@ -495,7 +495,7 @@ class _ViewProviderSectionPlane:
             vobj.addProperty("App::PropertyLength","CutDistance","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
         if not "LineColor" in pl:
             vobj.addProperty("App::PropertyColor","LineColor","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The color of this object"))
-            vobj.LineColor = (0.0,0.0,0.4,1.0)
+            vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "CutView" in pl:
             vobj.addProperty("App::PropertyBool","CutView","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
         if not "CutMargin" in pl:

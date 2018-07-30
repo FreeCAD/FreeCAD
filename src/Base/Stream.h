@@ -35,6 +35,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "FileInfo.h"
 
 class QByteArray;
 class QIODevice;
@@ -302,12 +303,21 @@ class FileInfo;
  * while on Linux platforms the file name is UTF-8 encoded.
  * @author Werner Mayer
  */
-class BaseExport ofstream : public std::ofstream
+class ofstream : public std::ofstream
 {
 public:
     ofstream(const FileInfo& fi, ios_base::openmode mode =
-                                 std::ios::out | std::ios::trunc);
-    virtual ~ofstream();
+                                 std::ios::out | std::ios::trunc)
+#ifdef _MSC_VER
+    : std::ofstream(fi.toStdWString().c_str(), mode)
+#else
+    : std::ofstream(fi.filePath().c_str(), mode)
+#endif
+    {
+    }
+    virtual ~ofstream()
+    {
+    }
 };
 
 /**
@@ -316,12 +326,21 @@ public:
  * while on Linux platforms the file name is UTF-8 encoded.
  * @author Werner Mayer
  */
-class BaseExport ifstream : public std::ifstream
+class ifstream : public std::ifstream
 {
 public:
     ifstream(const FileInfo& fi, ios_base::openmode mode = 
-                                 std::ios::in);
-    virtual ~ifstream();
+                                 std::ios::in)
+#ifdef _MSC_VER
+    : std::ifstream(fi.toStdWString().c_str(), mode)
+#else
+    : std::ifstream(fi.filePath().c_str(), mode)
+#endif
+    {
+    }
+    virtual ~ifstream()
+    {
+    }
 };
 
 } // namespace Base

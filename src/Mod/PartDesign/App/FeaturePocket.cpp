@@ -43,6 +43,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
@@ -187,6 +188,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             }
+
+            if(prism.countSubShapes(TopAbs_SOLID)>1)
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+
             this->Shape.setValue(getSolid(prism));
         } else {
             TopoShape prism(0,getDocument()->getStringHasher());
@@ -211,6 +216,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             auto solRes = this->getSolid(result);
             if (solRes.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+
+            if(result.countSubShapes(TopAbs_SOLID)>1)
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes.getShape());
             this->Shape.setValue(getSolid(solRes));

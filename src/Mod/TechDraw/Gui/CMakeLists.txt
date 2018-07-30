@@ -226,11 +226,11 @@ SET(TechDrawGuiTaskDlgs_SRCS
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
-if(MSVC)
+if(BUILD_USE_PCH)
     #add_definitions(-D_PreComp_)
     #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS})
     #ADD_MSVC_PRECOMPILED_HEADER(TechDrawGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(MSVC)
+endif(BUILD_USE_PCH)
 
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS})
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})

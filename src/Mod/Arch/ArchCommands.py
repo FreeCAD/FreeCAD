@@ -94,6 +94,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Helpers":
+        c = p.GetUnsigned("ColorHelpers",674321151)
     elif objectType == "Construction":
         c = Draft.getParam("constructioncolor",746455039)
         transparency = 0.80
@@ -112,7 +114,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site"]:
+    if hostType in ["Floor","Building","Site","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
@@ -194,11 +196,11 @@ def removeComponents(objectsList,host=None):
             if o.InList:
                h = o.InList[0]
                tp = Draft.getType(h)
-               if tp in ["Floor","Building","Site"]:
-                   c = h.Components
+               if tp in ["Floor","Building","Site","BuildingPart"]:
+                   c = h.Group
                    if o in c:
                        c.remove(o)
-                       h.Components = c
+                       h.Group = c
                        o.ViewObject.show()
                elif tp in ["Wall","Structure"]:
                    a = h.Additions
@@ -226,7 +228,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Component")
     obj.Label = translate("Arch",name)
     ArchComponent.Component(obj)
     if FreeCAD.GuiUp:

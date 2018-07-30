@@ -59,6 +59,8 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     sbAltDecimals->onSave();
     plsb_ArrowSize->onSave();
     leLineGroup->onSave();
+    pdsb_VertexScale->onSave();
+    pcb_VertexColor->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -77,6 +79,8 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     sbAltDecimals->onRestore();
     plsb_ArrowSize->onRestore();
     leLineGroup->onRestore();
+    pdsb_VertexScale->onRestore();
+    pcb_VertexColor->onRestore();
 }
 
 /**

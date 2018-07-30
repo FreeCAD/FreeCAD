@@ -100,6 +100,12 @@ ViewProviderMeshFaceSet::ViewProviderMeshFaceSet()
     pcMeshCoord->ref();
     pcMeshFaces = new SoFCIndexedFaceSet;
     pcMeshFaces->ref();
+
+    // setup engine to notify 'pcMeshFaces' node about material changes.
+    // When the affected nodes are deleted the engine will be deleted, too.
+    SoFCMaterialEngine* engine = new SoFCMaterialEngine();
+    engine->diffuseColor.connectFrom(&pcShapeMaterial->diffuseColor);
+    pcMeshFaces->updateGLArray.connectFrom(&engine->trigger);
 }
 
 ViewProviderMeshFaceSet::~ViewProviderMeshFaceSet()
@@ -132,7 +138,7 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::MeshObject* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop)->getValuePtr();
 
-        bool direct = (mesh->countFacets() > this->triangleCount);
+        bool direct = MeshRenderer::shouldRenderDirectly(mesh->countFacets() > this->triangleCount);
         if (direct) {
             this->pcMeshNode->mesh.setValue(mesh);
             // Needs to update internal bounding box caches

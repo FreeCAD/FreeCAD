@@ -51,6 +51,7 @@ SET(Dice3DS_SRCS
 
 SET(Arch_presets
     Presets/profiles.csv
+    Presets/pset_definitions.csv
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

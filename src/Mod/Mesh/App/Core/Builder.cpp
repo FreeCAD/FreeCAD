@@ -32,6 +32,8 @@
 
 #include "Builder.h"
 #include "MeshKernel.h"
+#include "Functional.h"
+#include <QVector>
 
 using namespace MeshCore;
 
@@ -252,4 +254,109 @@ void MeshBuilder::Finish (bool freeMemory)
     }
 
     _meshKernel.RecalcBoundBox();
+}
+
+// ----------------------------------------------------------------------------
+
+struct MeshFastBuilder::Private {
+    struct Vertex
+    {
+        Vertex() : x(0), y(0), z(0), i(0) {}
+        Vertex(float x, float y, float z) : x(x), y(y), z(z), i(0) {}
+
+        float x, y, z;
+        size_t i;
+
+        bool operator!=(const Vertex& rhs) const
+        {
+            return x != rhs.x || y != rhs.y || z != rhs.z;
+        }
+        bool operator<(const Vertex& rhs) const
+        {
+            if      (x != rhs.x)    return x < rhs.x;
+            else if (y != rhs.y)    return y < rhs.y;
+            else if (z != rhs.z)    return z < rhs.z;
+            else                    return false;
+        }
+    };
+
+    // Hint: Using a QVector instead of std::vector is a bit faster
+    QVector<Vertex> verts;
+};
+
+MeshFastBuilder::MeshFastBuilder(MeshKernel &rclM) : _meshKernel(rclM), p(new Private)
+{
+}
+
+MeshFastBuilder::~MeshFastBuilder(void)
+{
+    delete p;
+}
+
+void MeshFastBuilder::Initialize (unsigned long ctFacets)
+{
+    p->verts.reserve(ctFacets * 3);
+}
+
+void MeshFastBuilder::AddFacet (const Base::Vector3f* facetPoints)
+{
+    Private::Vertex v;
+    for (int i=0; i<3; i++) {
+        v.x = facetPoints[i].x;
+        v.y = facetPoints[i].y;
+        v.z = facetPoints[i].z;
+        p->verts.push_back(v);
+    }
+}
+
+void MeshFastBuilder::AddFacet (const MeshGeomFacet& facetPoints)
+{
+    Private::Vertex v;
+    for (int i=0; i<3; i++) {
+        v.x = facetPoints._aclPoints[i].x;
+        v.y = facetPoints._aclPoints[i].y;
+        v.z = facetPoints._aclPoints[i].z;
+        p->verts.push_back(v);
+    }
+}
+
+void MeshFastBuilder::Finish ()
+{
+    QVector<Private::Vertex>& verts = p->verts;
+    size_t ulCtPts = verts.size();
+    for (size_t i=0; i < ulCtPts; ++i) {
+        verts[i].i = i;
+    }
+
+    //std::sort(verts.begin(), verts.end());
+    int threads = std::max(1, QThread::idealThreadCount());
+    MeshCore::parallel_sort(verts.begin(), verts.end(), std::less<Private::Vertex>(), threads);
+
+    QVector<unsigned long> indices(ulCtPts);
+
+    size_t vertex_count = 0;
+    for (QVector<Private::Vertex>::iterator v = verts.begin(); v != verts.end(); ++v) {
+        if (!vertex_count || *v != verts[vertex_count-1])
+            verts[vertex_count++] = *v;
+
+        indices[v->i] = vertex_count - 1;
+    }
+
+    size_t ulCt = verts.size()/3;
+    MeshFacetArray rFacets(ulCt);
+    for (size_t i=0; i < ulCt; ++i) {
+        rFacets[i]._aulPoints[0] = indices[3*i];
+        rFacets[i]._aulPoints[1] = indices[3*i + 1];
+        rFacets[i]._aulPoints[2] = indices[3*i + 2];
+    }
+
+    verts.resize(vertex_count);
+
+    MeshPointArray rPoints;
+    rPoints.reserve(vertex_count);
+    for (QVector<Private::Vertex>::iterator v = verts.begin(); v != verts.end(); ++v) {
+        rPoints.push_back(MeshPoint(v->x, v->y, v->z));
+    }
+
+    _meshKernel.Adopt(rPoints, rFacets, true);
 }

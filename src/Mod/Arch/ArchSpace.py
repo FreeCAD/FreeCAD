@@ -179,7 +179,7 @@ def makeSpace(objects=None,baseobj=None,name="Space"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
     obj.Label = translate("Arch",name)
     _Space(obj)
     if FreeCAD.GuiUp:

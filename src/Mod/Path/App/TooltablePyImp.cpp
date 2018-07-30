@@ -104,7 +104,7 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     getToolPtr()->LengthOffset      = len ? PyFloat_AsDouble(len) : 0.0;
     getToolPtr()->FlatRadius        = fla ? PyFloat_AsDouble(fla) : 0.0;
     getToolPtr()->CornerRadius      = cor ? PyFloat_AsDouble(cor) : 0.0;
-    getToolPtr()->CuttingEdgeAngle  = ang ? PyFloat_AsDouble(ang) : 0.0;
+    getToolPtr()->CuttingEdgeAngle  = ang ? PyFloat_AsDouble(ang) : 180.0;
     getToolPtr()->CuttingEdgeHeight = hei ? PyFloat_AsDouble(hei) : 0.0;
 
     return 0;

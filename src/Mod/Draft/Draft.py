@@ -285,7 +285,7 @@ def dimSymbol(symbol=None,invert=False):
         return coin.SoSphere()
     elif symbol == 1:
         marker = coin.SoMarkerSet()
-        marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
+        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -387,7 +387,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
@@ -2220,6 +2220,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ';stroke-miterlimit:4'
         svg += ';stroke-dasharray:' + lstyle
         svg += ';fill:' + fill
+        try:
+            svg += ';fill-opacity:' + str(fill_opacity)
+        except NameError:
+            pass
         svg += ';fill-rule: evenodd "'
         svg += '/>\n'
         return svg
@@ -2673,6 +2677,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 if (m != "Wireframe"):
                     if fillstyle == "shape color":
                         fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
+                        fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                     else:
                         fill = 'url(#'+fillstyle+')'
                         svg += getPattern(fillstyle)
@@ -6297,7 +6302,7 @@ class _PointArray(_DraftObject):
         if hasattr(obj.Base, 'Shape'):
             for pts in pls:
                 #print pts # inspect the objects
-                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Y'):
+                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Z'):
         	        nshape = obj.Base.Shape.copy()
         	        if hasattr(pts, 'Placement'):
         	            place = pts.Placement
@@ -6890,7 +6895,7 @@ class ViewProviderWorkingPlaneProxy:
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
-        vobj.LineColor = (0.0,0.25,0.25,1.0)
+        vobj.LineColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
         vobj.Proxy = self
 
     def getIcon(self):

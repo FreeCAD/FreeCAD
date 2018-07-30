@@ -450,6 +450,7 @@ void CmdMeshExport::activated(int)
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");

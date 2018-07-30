@@ -79,6 +79,21 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     return TopoShape();
 }
 
+int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
+{
+    int result = 0;
+    if (shape.IsNull())
+        return result;
+    TopExp_Explorer xp;
+    xp.Init(shape,type);
+    for (; xp.More(); xp.Next()) {
+        result++;
+    }
+    return result;
+}
+
+
+
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {
     if (!f.Infinite()) {
