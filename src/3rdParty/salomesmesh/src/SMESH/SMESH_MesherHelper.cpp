@@ -4445,7 +4445,7 @@ namespace { // Structures used by FixQuadraticElements()
             if ( curvNorm * D2 > 0 )
               continue; // convex edge
           }
-          catch ( Standard_Failure )
+          catch ( Standard_Failure &)
           {
             continue;
           }
@@ -4558,7 +4558,7 @@ namespace { // Structures used by FixQuadraticElements()
             if ( concaveU || concaveV )
               concaveFaces.push_back( face );
           }
-          catch ( Standard_Failure )
+          catch ( Standard_Failure &)
           {
             concaveFaces.push_back( face );
           }
@@ -5081,7 +5081,7 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
               try {
                 gp_Vec x = x01.Normalized() + x12.Normalized();
                 trsf.SetTransformation( gp_Ax3( gp::Origin(), link1->Normal(), x), gp_Ax3() );
-              } catch ( Standard_Failure ) {
+              } catch ( Standard_Failure &) {
                 trsf.Invert();
               }
               move.Transform(trsf);

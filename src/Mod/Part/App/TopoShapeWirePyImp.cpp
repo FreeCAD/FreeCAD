@@ -348,7 +348,7 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
             return 0;
         }
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
         return 0;
     }

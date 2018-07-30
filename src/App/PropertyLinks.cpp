@@ -958,7 +958,7 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
         dummy.setPyObject(value);
         this->setValue(dummy.getValue(), dummy.getSubValues());
     }
-    catch (Base::TypeError) {
+    catch (Base::TypeError&) {
         if (PyTuple_Check(value) || PyList_Check(value)) {
             Py::Sequence list(value);
             Py::Sequence::size_type size = list.size();

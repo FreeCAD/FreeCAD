@@ -107,7 +107,7 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
         center.ChangeCoord().Divide(3);
         curv /= 3;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         // if getting center of curvature fails, e.g.
         // for straight lines it raises LProp_NotDefined
         return TopoDS_Edge();
@@ -350,7 +350,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }
@@ -417,7 +417,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }
@@ -723,7 +723,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         //str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }

@@ -105,7 +105,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                         return true;
                     }
                 }
-            } catch (const Base::Exception)
+            } catch (const Base::Exception&)
             { }
         }
         return false; // The Plane/Axis doesn't fits our needs

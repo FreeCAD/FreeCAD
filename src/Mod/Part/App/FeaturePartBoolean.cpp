@@ -118,7 +118,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
                 history[0] = joinHistory(history[0], hist);
                 history[1] = joinHistory(history[1], hist);
             }
-            catch (Standard_Failure) {
+            catch (Standard_Failure&) {
                 // do nothing
             }
         }

@@ -3924,7 +3924,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             try {
                 spline->normalAt(paramlist[i],normallist[i]);
             }
-            catch(Base::Exception) {
+            catch(Base::Exception&) {
                 normallist[i] = Base::Vector3d(0,0,0);
             }
 
@@ -5126,7 +5126,7 @@ Restart:
                     break;
             }
 
-        } catch (Base::Exception e) {
+        } catch (Base::Exception &e) {
             Base::Console().Error("Exception during draw: %s\n", e.what());
         } catch (...){
             Base::Console().Error("Exception during draw: unknown\n");

@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
                         *jt = joinHistory(*jt, hist);
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                     // do nothing
                 }
             }

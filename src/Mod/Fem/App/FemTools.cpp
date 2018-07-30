@@ -99,7 +99,7 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
 
             return true;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return false;
         }
     }
@@ -131,7 +131,7 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
 
             return true;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return false;
         }
     }
@@ -163,7 +163,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
             gp_Pln plane(p1, gp_Dir(vec3));
             dir = plane.Axis().Direction().XYZ();
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
         }
     }
     else if (surface.GetType() == GeomAbs_BezierSurface) {
@@ -182,7 +182,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
             gp_Pln plane(p1, gp_Dir(vec3));
             dir = plane.Axis().Direction().XYZ();
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
         }
     }
 
@@ -213,7 +213,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
 
             return true;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return false;
         }
     }
@@ -235,7 +235,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
 
             return true;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return false;
         }
     }
@@ -260,7 +260,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
             gp_Lin line(s1, gp_Dir(vec));
             dir = line.Direction().XYZ();
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
         }
     }
     else if (curve.GetType() == GeomAbs_BezierCurve) {
@@ -272,7 +272,7 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
             gp_Lin line(s1, gp_Dir(vec));
             dir = line.Direction().XYZ();
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
         }
     }
 

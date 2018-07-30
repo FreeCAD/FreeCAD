@@ -757,7 +757,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
                 try {
                     element = shape.getSubShape(it->c_str());
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                     // This shape doesn't even exist, so no chance to do some tests
                     newSubValues.push_back(*it);
                     continue;
@@ -770,7 +770,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
                         success = true;
                     }
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                 }
                 // try an exact matching
                 if (!success) {
@@ -1051,7 +1051,7 @@ TopoDS_Shape ProfileBased::refineShapeIfActive(const TopoDS_Shape& oldShape) con
             TopoDS_Shape resShape = mkRefine.Shape();
             return resShape;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return oldShape;
         }
     }
