@@ -1892,7 +1892,7 @@ PyObject* TopoShapePy::project(PyObject *args)
             algo.Build();
             return new TopoShapePy(new TopoShape(algo.Projection()));
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             PyErr_SetString(PartExceptionOCCError, "Failed to project shape");
             return NULL;
         }

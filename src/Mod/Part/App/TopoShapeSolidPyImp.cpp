@@ -119,7 +119,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
 
     }
-    catch (Standard_Failure err) {
+    catch (Standard_Failure& err) {
         std::stringstream errmsg;
         errmsg << "Creation of solid failed: " << err.GetMessageString();
         PyErr_SetString(PartExceptionOCCError, errmsg.str().c_str());

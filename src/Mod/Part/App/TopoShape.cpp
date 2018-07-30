@@ -647,7 +647,7 @@ void TopoShape::importBinary(std::istream& str)
         this->_Shape.Location(theShapeSet.Locations().Location (locId));
         this->_Shape.Orientation (anOrient);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Base::RuntimeError("Failed to read shape from binary stream");
     }
 }
@@ -960,7 +960,7 @@ Base::BoundBox3d TopoShape::getBoundBox(void) const
         box.MinZ = zMin;
         box.MaxZ = zMax;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
     }
 
     return box;

@@ -107,7 +107,7 @@ void pagesize(string & page_template, int dims[4], int block[4])
                 break;
         }
     }
-    catch (Standard_Failure)
+    catch (Standard_Failure&)
     { }
 
 

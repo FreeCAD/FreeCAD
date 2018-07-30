@@ -64,7 +64,7 @@ bool Function::value( const double, double& f ) const
       OCC_CATCH_SIGNALS;
 #endif
       f = pow( 10., f );
-    } catch(Standard_Failure) {
+    } catch(Standard_Failure&) {
       f = 0.0;
       ok = false;
     }
@@ -196,7 +196,7 @@ FunctionExpr::FunctionExpr( const char* str, const int conv )
 #endif
     myExpr = ExprIntrp_GenExp::Create();
     myExpr->Process( ( Standard_CString )str );
-  } catch(Standard_Failure) {
+  } catch(Standard_Failure&) {
     ok = false;
   }
 
@@ -230,7 +230,7 @@ bool FunctionExpr::value( const double t, double& f ) const
     OCC_CATCH_SIGNALS;
 #endif
     f = myExpr->Expression()->Evaluate( myVars, myValues );
-  } catch(Standard_Failure) {
+  } catch(Standard_Failure&) {
     f = 0.0;
     ok = false;
   }
@@ -250,7 +250,7 @@ double FunctionExpr::integral( const double a, const double b ) const
       ( *static_cast<math_Function*>( const_cast<FunctionExpr*> (this) ), a, b, 20 );
     if( _int.IsDone() )
       res = _int.Value();
-  } catch(Standard_Failure) {
+  } catch(Standard_Failure&) {
     res = 0.0;
     MESSAGE( "Exception in integral calculating" );
   }

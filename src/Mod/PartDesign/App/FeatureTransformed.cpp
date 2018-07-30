@@ -401,7 +401,7 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
             TopoDS_Shape resShape = mkRefine.Shape();
             return resShape;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return oldShape;
         }
     }

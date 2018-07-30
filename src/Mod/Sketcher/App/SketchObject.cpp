@@ -4931,7 +4931,7 @@ void SketchObject::validateExternalLinks(void)
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             rebuild = true ;
             Objects.erase(Objects.begin()+i);
             SubElements.erase(SubElements.begin()+i);

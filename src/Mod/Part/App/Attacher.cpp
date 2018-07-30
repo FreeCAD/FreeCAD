@@ -783,7 +783,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             if (sub[i].length()>0){
                 try{
                     storage.push_back(shape->getSubShape(sub[i].c_str()));
-                } catch (Standard_Failure){
+                } catch (Standard_Failure&){
                     throw Base::Exception("AttachEngine3D: subshape not found");
                 }
                 if(storage[storage.size()-1].IsNull())

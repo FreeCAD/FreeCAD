@@ -845,7 +845,7 @@ private:
                 return Py::None(); //prevents compiler warning
             }
         }
-        catch (Standard_Failure err) {
+        catch (Standard_Failure& err) {
             std::stringstream errmsg;
             errmsg << "Creation of solid failed: " << err.GetMessageString();
             throw Py::Exception(PartExceptionOCCError, errmsg.str().c_str());
@@ -897,10 +897,10 @@ private:
             );
             return Py::asObject(new TopoShapeFacePy(new TopoShape((Face.Face()))));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of plane failed");
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             throw Py::Exception(PartExceptionOCCError, "creation of plane failed");
         }
     }
@@ -939,7 +939,7 @@ private:
             TopoDS_Shape ResultShape = mkBox.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(ResultShape)));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of box failed");
         }
     }
@@ -989,7 +989,7 @@ private:
             mkSolid.Add(mkWedge.Shell());
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(mkSolid.Solid())));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of wedge failed");
         }
     }
@@ -1124,7 +1124,7 @@ private:
             TopoDS_Edge edge = aMakeEdge.Edge();
             return Py::asObject(new TopoShapeEdgePy(new TopoShape(edge)));
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             throw Py::Exception(PartExceptionOCCError, "creation of circle failed");
         }
     }
@@ -1154,7 +1154,7 @@ private:
             TopoDS_Shape shape = mkSphere.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of sphere failed");
         }
     }
@@ -1184,7 +1184,7 @@ private:
             TopoDS_Shape shape = mkCyl.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of cylinder failed");
         }
     }
@@ -1214,7 +1214,7 @@ private:
             TopoDS_Shape shape = mkCone.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of cone failed");
         }
     }
@@ -1244,7 +1244,7 @@ private:
             const TopoDS_Shape& shape = mkTorus.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of torus failed");
         }
     }
@@ -1396,7 +1396,7 @@ private:
                 return Py::asObject(new TopoShapePy(new TopoShape(shape)));
             }
         }
-        catch (Standard_DomainError) {
+        catch (Standard_DomainError&) {
             throw Py::Exception(PartExceptionOCCDomainError, "creation of revolved shape failed");
         }
     }
@@ -1424,7 +1424,7 @@ private:
                 throw Py::Exception(PartExceptionOCCError, "curves must either be edges or wires");
             }
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             throw Py::Exception(PartExceptionOCCError, "creation of ruled surface failed");
         }
     }
@@ -1712,7 +1712,7 @@ private:
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
         }
-        catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
+        catch (Standard_DomainError&) {                                      // Standard_DomainError is OCC error.
             throw Py::Exception(PartExceptionOCCDomainError, "makeWireString failed - Standard_DomainError");
         }
         catch (std::runtime_error& e) {                                     // FT2 or FT2FC errors

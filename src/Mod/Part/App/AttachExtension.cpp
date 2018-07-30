@@ -129,7 +129,7 @@ bool AttachExtension::positionBySupport()
             return false;
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
         return true;
-    } catch (ExceptionCancel) {
+    } catch (ExceptionCancel&) {
         //disabled, don't do anything
         return false;
     };
