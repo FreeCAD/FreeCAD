@@ -408,7 +408,7 @@ PyObject* AttachEnginePy::calculateAttachedPlacement(PyObject* args)
         Base::Placement result;
         try{
             result = this->getAttachEnginePtr()->calculateAttachedPlacement(plm);
-        } catch (ExceptionCancel) {
+        } catch (ExceptionCancel&) {
             Py_IncRef(Py_None);
             return Py_None;
         }

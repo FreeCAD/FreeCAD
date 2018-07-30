@@ -130,7 +130,7 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
         box.MinZ = zMin;
         box.MaxZ = zMax;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
     }
 
     return box;

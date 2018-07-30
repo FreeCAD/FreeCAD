@@ -203,7 +203,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
                 break;
             }
         }
-    } catch (std::exception) {
+    } catch (std::exception&) {
         Base::Console().Error("Invalid cell range for %s\n",getNameInDocument());
         return result.str();
     }

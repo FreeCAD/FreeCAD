@@ -241,7 +241,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
             }
             break;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             if (bspline != nullptr) {
                 delete bspline;
                 bspline = nullptr;

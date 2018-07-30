@@ -492,7 +492,7 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
                 throw Base::Exception("Spine is neither an edge nor a wire.");
             }
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             throw Base::Exception("Invalid spine.");
         }
     }

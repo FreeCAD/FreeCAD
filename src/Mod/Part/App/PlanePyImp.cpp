@@ -250,7 +250,7 @@ void PlanePy::setAxis(Py::Object arg)
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));
         this_surf->SetAxis(axis);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Py::RuntimeError("cannot set axis");
     }
 }

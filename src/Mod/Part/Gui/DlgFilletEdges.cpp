@@ -453,7 +453,7 @@ void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
                 }
             }
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
         }
     }
 }

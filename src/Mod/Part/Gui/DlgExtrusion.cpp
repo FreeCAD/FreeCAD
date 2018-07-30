@@ -393,7 +393,7 @@ void DlgExtrusion::accept()
     try{
         apply();
         QDialog::accept();
-    } catch (Base::AbortException){
+    } catch (Base::AbortException&){
 
     };
 }
@@ -454,7 +454,7 @@ void DlgExtrusion::apply()
         activeDoc->commitTransaction();
         Gui::Command::updateActive();
     }
-    catch (Base::AbortException){
+    catch (Base::AbortException&){
         throw;
     }
     catch (Base::Exception &err){
@@ -744,7 +744,7 @@ void TaskExtrusion::clicked(int id)
     if (id == QDialogButtonBox::Apply) {
         try{
             widget->apply();
-        } catch (Base::AbortException){
+        } catch (Base::AbortException&){
 
         };
     }

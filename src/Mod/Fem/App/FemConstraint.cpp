@@ -433,7 +433,7 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     try {
         sh = shape.getSubShape(subName.c_str());
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         std::stringstream str;
         str << "No such sub-element '" << subName << "'";
         throw Base::AttributeError(str.str());

@@ -793,7 +793,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
                 ++i;
             }
         }
-        catch (std::exception) {
+        catch (std::exception&) {
             // Cycle detected; flag all with errors
 
             std::map<CellAddress, Vertex>::const_iterator i = VertexList.begin();

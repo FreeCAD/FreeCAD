@@ -116,7 +116,7 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
             checkAndAdd(ts.getShape(), aWD);
         }
     }
-    catch (Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
+    catch (Standard_Failure&) { // any OCC exception means an unappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.\n");
     }
 }
@@ -160,11 +160,11 @@ App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_ConstructionError) {
+    catch (Standard_ConstructionError&) {
         // message is in a Latin language, show a normal one
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
     }
-    catch (StdFail_NotDone) {
+    catch (StdFail_NotDone&) {
         return new App::DocumentObjectExecReturn("A curve was not a B-spline and could not be converted into one.");
     }
     catch (Standard_Failure& e) {
