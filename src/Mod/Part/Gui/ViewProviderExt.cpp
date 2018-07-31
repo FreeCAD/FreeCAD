@@ -1024,8 +1024,7 @@ void ViewProviderPartExt::reload()
     }
 }
 
-static bool getLinkColor(const std::string &mapped, App::DocumentObject *&obj, 
-        App::Color &color, ViewProviderPartExt *&svp) {
+static bool getLinkColor(const std::string &mapped, App::DocumentObject *&obj, App::Color &color) {
     if(!obj)
         return false;
     bool colorFound = false;
@@ -1040,7 +1039,7 @@ static bool getLinkColor(const std::string &mapped, App::DocumentObject *&obj,
                 return true;
         }
         // check for link array
-        if(link && !link->getShowElementValue() && vp->OverrideMaterialList.getSize()) {
+        if(link && !link->getShowElementValue() && link->getElementCountValue()) {
             auto pos = mapped.find(Part::TopoShape::indexPostfix());
             if(pos!=std::string::npos) {
                 std::istringstream iss(mapped.c_str()+pos+Part::TopoShape::indexPostfix().size());
@@ -1057,8 +1056,7 @@ static bool getLinkColor(const std::string &mapped, App::DocumentObject *&obj,
                 }
                 if(colorFound)
                     return colorFound;
-                auto sobj = obj->getSubObject((std::to_string(index)+".").c_str());
-                svp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sobj));
+                obj = obj->getSubObject((std::to_string(index)+".").c_str());
                 return false;
             }
         }
@@ -1089,14 +1087,12 @@ std::vector<App::Color> ViewProviderPartExt::getShapeColors(const Part::TopoShap
     const char *mapped = shape.getElementName("Face1",1);
 
     auto obj = sourceDoc->getObjectByID(shape.Tag);
-    ViewProviderPartExt *vp=0;
-    if(getLinkColor(mapped,obj,defColor,vp))
+    if(getLinkColor(mapped,obj,defColor))
         return {defColor};
-    else if(linkOnly)
+    else if(linkOnly || !obj)
         return {};
 
-    if(!vp)
-        vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
+    auto vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
     if(vp) {
         defColor = vp->ShapeColor.getValue();
         defColor.a = vp->Transparency.getValue()/100.0f;
@@ -1135,11 +1131,9 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         if(!obj || !obj->getNameInDocument())
             return color;
         shape = Part::Feature::getTopoShape(obj);
-        ViewProviderPartExt *vp=0;
-        if(shape.isNull() || (type==TopAbs_FACE && getLinkColor(original,obj,color,vp)))
+        if(shape.isNull() || (type==TopAbs_FACE && getLinkColor(original,obj,color)) || !obj)
             return color;
-        if(!vp)
-            vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
+        auto vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
         if(!vp) {
             // Not a part view provider. No problem, just trace deeper into the
             // history until we find one.

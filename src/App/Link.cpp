@@ -507,7 +507,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
 void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const
 {
-    if(!pyObj || !*pyObj || obj->getDocument()==linked->getDocument() ||
+    if(!pyObj || !*pyObj || (!postfix && obj->getDocument()==linked->getDocument()) ||
        !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
         return;
        

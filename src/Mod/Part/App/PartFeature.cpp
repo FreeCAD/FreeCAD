@@ -459,7 +459,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             shape.Tag = 0;
             shape.Hasher.reset();
         }else if(owner->getDocument()!=obj->getDocument()) {
-            shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+            shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
             _ShapeCache.setShape(obj,shape);
         }
         shape.transformShape(mat,false,true);
@@ -479,7 +479,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             shape.reTagElementMap(tag,hasher);
             _ShapeCache.setShape(owner,shape);
             if(owner->getDocument()!=obj->getDocument()) {
-                shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+                shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
                 _ShapeCache.setShape(obj,shape);
             }
         }
@@ -495,8 +495,13 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     TopoShape baseShape;
     std::string op;
     if(link && link->getElementCountValue()) {
-        baseShape = getTopoShape(owner->getSubObject("0."));
-        baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
+        linked = link->getTrueLinkedObject(false);
+        if(linked && linked!=owner) {
+            baseShape = getTopoShape(linked);
+            baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
+            if(!link->getShowElementValue())
+                baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
+        }
     }
     for(const auto &name : owner->getSubObjects()) {
         if(name.empty()) continue;
@@ -527,10 +532,10 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             subObj = owner->getSubObject(sub,0,&mat);
             if(link && !link->getShowElementValue())
                 shape = baseShape.makETransform(mat,(TopoShape::indexPostfix()+childName).c_str());
-            else
+            else {
                 shape = baseShape.makETransform(mat);
-            if(subObj!=owner)
-                shape.Tag = subObj->getID();
+                shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
+            }
         }
         if(visible<0 && subObj && !subObj->Visibility.getValue())
             continue;
@@ -543,7 +548,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     shape.makECompound(shapes);
     _ShapeCache.setShape(owner,shape);
     if(owner->getDocument()!=obj->getDocument()) {
-        shape.reTagElementMap(owner->getID(),obj->getDocument()->getStringHasher());
+        shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
         _ShapeCache.setShape(obj,shape);
     }
     shape.transformShape(mat,false,true);
