@@ -358,9 +358,7 @@ Cell * PropertySheet::cellAt(CellAddress address)
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        //assert(i != data.end());
-        if (i == data.end())
-            return nullptr;
+        assert(i != data.end());
 
         return i->second;
     }
@@ -380,9 +378,7 @@ const Cell * PropertySheet::cellAt(CellAddress address) const
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        //assert(i != data.end());
-        if (i == data.end())
-            return nullptr;
+        assert(i != data.end());
 
         return i->second;
     }
@@ -556,7 +552,14 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
     if (i != data.end()) {
         Cell * cell = i->second;
+        int rows, columns;
 
+        // Get merged cell data
+        cell->getSpans(rows, columns);
+
+        // Remove merged cell data
+        splitCell(currPos);
+        
         // Remove from old
         removeDependencies(currPos);
         data.erase(currPos);
@@ -565,6 +568,15 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         // Insert into new spot
         cell->moveAbsolute(newPos);
         data[newPos] = cell;
+
+        if (rows > 1 || columns > 1) {
+            CellAddress toPos(newPos.row() + rows - 1, newPos.col() + columns - 1);
+
+            mergeCells(newPos, toPos);
+        }
+        else
+            cell->setSpans(-1, -1);
+
         addDependencies(newPos);
         setDirty(newPos);
 
@@ -879,7 +891,7 @@ void PropertySheet::splitCell(CellAddress address)
             mergedCells.erase(CellAddress(r, c));
         }
 
-    setSpans(anchor, 1, 1);
+    setSpans(anchor, -1, -1);
 }
 
 void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
@@ -889,9 +901,10 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     if (i != mergedCells.end()) {
         CellAddress anchor = i->second;
 
-        const Cell* cell = cellAt(anchor);
-        if (cell)
-            cell->getSpans(rows, cols);
+        if (anchor == address)
+            cellAt(anchor)->getSpans(rows, cols);
+        else
+            rows = cols = 1;
     }
     else {
         rows = cols = 1;

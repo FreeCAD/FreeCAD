@@ -58,7 +58,7 @@ def makeEquipment(baseobj=None,placement=None,name="Equipment"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
     _Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
@@ -350,7 +350,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         sep.addChild(self.coords)
         self.coords.point.deleteValues(0)
         symbol = coin.SoMarkerSet()
-        symbol.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
+        symbol.markerIndex = FreeCADGui.getMarkerIndex("", 5)
         sep.addChild(symbol)
         rn = vobj.RootNode
         rn.addChild(sep)

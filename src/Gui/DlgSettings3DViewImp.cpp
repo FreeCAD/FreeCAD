@@ -83,9 +83,13 @@ void DlgSettings3DViewImp::saveSettings()
     index = this->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
+    QVariant const &vBoxMarkerSize = this->boxMarkerSize->itemData(this->boxMarkerSize->currentIndex());
+    hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
+
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
     spinBoxZoomStep->onSave();
+    checkBoxDragAtCursor->onSave();
     CheckBox_CornerCoordSystem->onSave();
     CheckBox_ShowFPS->onSave();
     CheckBox_useVBO->onSave();
@@ -104,6 +108,7 @@ void DlgSettings3DViewImp::loadSettings()
     checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
     spinBoxZoomStep->onRestore();
+    checkBoxDragAtCursor->onRestore();
     CheckBox_CornerCoordSystem->onRestore();
     CheckBox_ShowFPS->onRestore();
     CheckBox_useVBO->onRestore();
@@ -135,6 +140,17 @@ void DlgSettings3DViewImp::loadSettings()
 
     index = hGrp->GetInt("CornerNaviCube", 1);
     naviCubeCorner->setCurrentIndex(index);
+
+    int const current = hGrp->GetInt("MarkerSize", 9L);
+    this->boxMarkerSize->addItem(tr("5px"), QVariant(5));
+    this->boxMarkerSize->addItem(tr("7px"), QVariant(7));
+    this->boxMarkerSize->addItem(tr("9px"), QVariant(9));
+    this->boxMarkerSize->addItem(tr("11px"), QVariant(11));
+    this->boxMarkerSize->addItem(tr("13px"), QVariant(13));
+    this->boxMarkerSize->addItem(tr("15px"), QVariant(15));
+    index = this->boxMarkerSize->findData(QVariant(current));
+    if (index < 0) index = 2;
+    this->boxMarkerSize->setCurrentIndex(index);
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()

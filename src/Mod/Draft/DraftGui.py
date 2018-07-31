@@ -157,7 +157,7 @@ class todo:
                         func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
-                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", func
                     FreeCAD.Console.PrintWarning (wrn)
             # restack Draft screen widgets after creation
             if hasattr(FreeCADGui,"Snapper"):
@@ -1314,7 +1314,11 @@ class DraftToolBar:
 
     def getcol(self):
         "opens a color picker dialog"
+        oldColor = self.color
         self.color=QtGui.QColorDialog.getColor()
+        if not QtGui.QColor.isValid(self.color): #user canceled
+            self.color = oldColor
+            return
         self.colorPix.fill(self.color)
         self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
         if Draft.getParam("saveonexit",False):
@@ -1334,7 +1338,11 @@ class DraftToolBar:
 
     def getfacecol(self):
         "opens a color picker dialog"
+        oldColor = self.facecolor
         self.facecolor=QtGui.QColorDialog.getColor()
+        if not QtGui.QColor.isValid(self.facecolor): #user canceled
+            self.facecolor = oldColor
+            return
         self.facecolorPix.fill(self.facecolor)
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
         r = float(self.facecolor.red()/255.0)

@@ -29,14 +29,15 @@
 #include <cmath>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-
 #include <Base/Matrix.h>
+#include <Base/Parameter.h>
 
 #include "Cube.h"
 #include "DrawUtil.h"
@@ -62,6 +63,10 @@ DrawProjGroup::DrawProjGroup(void)
     static const char *group = "Base";
     static const char *agroup = "Distribute";
 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoDist = hGrp->GetBool("AutoDist",true);
+
 
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
@@ -69,7 +74,7 @@ DrawProjGroup::DrawProjGroup(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
 
-    ADD_PROPERTY_TYPE(AutoDistribute ,(true),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
+    ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
@@ -510,51 +515,57 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             bigRow = bigCol;
         }
 
-        if (viewPtrs[0] && 
+        if (viewPtrs[0] &&                          //iso
             bboxes[0].IsValid()) {
             position[0].x = -bigCol - xSpacing;
             position[0].y = bigRow + ySpacing;
         }
-        if (viewPtrs[1] && 
+        if (viewPtrs[1] &&                         // T/B
             bboxes[1].IsValid()) {
+            position[1].x = 0.0;
             position[1].y = bigRow + ySpacing;
         }
-        if (viewPtrs[2] && 
+        if (viewPtrs[2] &&                         //iso
             bboxes[2].IsValid()) {
             position[2].x = bigCol + xSpacing;
             position[2].y = bigRow + ySpacing;
         }
-        if (viewPtrs[3] && 
+        if (viewPtrs[3] &&                        // L/R
             bboxes[3].IsValid() &&
             bboxes[4].IsValid()) {
             position[3].x = -bigCol - xSpacing;
+            position[3].y = 0.0;
         }
-        if (viewPtrs[5] && 
+        if (viewPtrs[5] &&                       // R/L
             bboxes[5].IsValid() &&
             bboxes[4].IsValid()) {
             position[5].x = bigCol + xSpacing;
+            position[5].y = 0.0;
         }
         if (viewPtrs[6] && 
             bboxes[6].IsValid()) {    //"Rear"
             if (viewPtrs[5] &&
                 bboxes[5].IsValid()) {
                 position[6].x = position[5].x + bigCol + xSpacing;
+                position[6].y = 0.0;
             }else if (viewPtrs[4] &&
                 bboxes[4].IsValid()) {
                 position[6].x = bigCol + xSpacing;
+                position[6].y = 0.0;
             }
         }
         if (viewPtrs[7] && 
-            bboxes[7].IsValid()) {
-            position[7].x = -bigCol - xSpacing;
+            bboxes[7].IsValid()) {             //iso
+            position[7].x = -bigCol - xSpacing; 
             position[7].y = -bigRow - ySpacing;
         }
-        if (viewPtrs[8] && 
+        if (viewPtrs[8] &&                     // B/T
             bboxes[8].IsValid() &&
             bboxes[4].IsValid()) {
+            position[8].x = 0.0;
             position[8].y = -bigRow - ySpacing;
         }
-        if (viewPtrs[9] && 
+        if (viewPtrs[9] &&                    //iso
             bboxes[9].IsValid()) {
             position[9].x = bigCol + xSpacing;
             position[9].y = -bigRow - ySpacing;

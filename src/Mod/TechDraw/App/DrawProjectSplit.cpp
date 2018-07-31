@@ -493,7 +493,7 @@ std::string edgeSortItem::dump(void)
             result = true;
         }
     } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
-        if (e1.endAngle < e2.startAngle) {
+        if (e1.endAngle < e2.endAngle) {
             result = true;
         } 
     } else if (e1.idx < e2.idx) {

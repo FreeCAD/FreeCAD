@@ -84,6 +84,8 @@
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsSchema.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -1001,6 +1003,7 @@ void ViewProviderSketch::editDoubleClicked(void)
                 Constr->Type == Sketcher::DistanceX || 
                 Constr->Type == Sketcher::DistanceY ||
                 Constr->Type == Sketcher::Radius ||
+                Constr->Type == Sketcher::Diameter ||
                 Constr->Type == Sketcher::Angle ||
                 Constr->Type == Sketcher::SnellsLaw)) {
 
@@ -1226,7 +1229,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 #endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
-        Constr->Type == Radius) {
+        Constr->Type == Radius || Constr->Type == Diameter) {
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -1255,7 +1258,9 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
             } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                 double radius = arc->getRadius();
-                p1 = arc->getCenter();
+                Base::Vector3d center = arc->getCenter();
+                p1 = center;
+
                 double angle = Constr->LabelPosition;
                 if (angle == 10) {
                     double startangle, endangle;
@@ -1266,15 +1271,25 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                     Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                     angle = atan2(tmpDir.y, tmpDir.x);
                 }
-                p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+
+                if(Constr->Type == Sketcher::Diameter)
+                    p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+
+                p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             }
             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
                 const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
                 double radius = circle->getRadius();
-                p1 = circle->getCenter();
+                Base::Vector3d center = circle->getCenter();
+                p1 = center;
+
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                 double angle = atan2(tmpDir.y, tmpDir.x);
-                p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+
+                if(Constr->Type == Sketcher::Diameter)
+                    p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+
+                p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             }
             else 
                 return;
@@ -1284,14 +1299,14 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
-        if (Constr->Type == Distance || Constr->Type == Radius)
+        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter)
             dir = (p2-p1).Normalize();
         else if (Constr->Type == DistanceX)
             dir = Base::Vector3d( (p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
         else if (Constr->Type == DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
 
-        if (Constr->Type == Radius) {
+        if (Constr->Type == Radius || Constr->Type == Diameter) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
@@ -2649,6 +2664,7 @@ void ViewProviderSketch::updateColor(void)
         ConstraintType type = constraint->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
+                               type == Sketcher::Diameter ||
                                type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX ||
@@ -2743,6 +2759,74 @@ bool ViewProviderSketch::doubleClicked(void)
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
     return true;
+}
+
+QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
+{
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
+    bool                            iHideUnits;
+    QString                         userStr; // final return string
+    QString                         unitStr;  // the actual unit string
+    QString                         baseUnitStr; // the expected base unit string
+    double                          factor; // unit scaling factor, currently not used
+    Base::UnitSystem                unitSys; // current unit system
+    
+    // Get value of HideUnits option. Default is false.
+    hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
+
+    // Get the current display string including units
+    userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+
+    // Hide units if user has requested it, is being displayed in the base
+    // units, and the schema being used has a clear base unit in the first
+    // place. Otherwise, display units.
+    if( iHideUnits )
+    {
+        // Only hide the default length unit. Right now there is not an easy way
+        // to get that from the Unit system so we have to manually add it here.
+        // Hopefully this can be added in the future so this code won't have to
+        // be updated if a new units schema is added.
+        unitSys = Base::UnitsApi::getSchema();
+
+        // If this is a supported unit system then define what the base unit is.
+        switch (unitSys) 
+        {
+            case Base::SI1:
+            case Base::MmMin:
+                baseUnitStr = QString::fromLatin1("mm");
+                break;
+
+            case Base::SI2:
+                baseUnitStr = QString::fromLatin1("m");
+                break;
+
+            case Base::ImperialDecimal:
+                baseUnitStr = QString::fromLatin1("in");
+                break;
+
+            case Base::Centimeters:
+                baseUnitStr = QString::fromLatin1("cm");
+                break;
+
+            default:
+                // Nothing to do
+                break;
+        }
+
+        if( !baseUnitStr.isEmpty() ) 
+        {
+            // expected unit string matches actual unit string. remove.
+            if( QString::compare(baseUnitStr, unitStr)==0 )
+            {
+                // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+                QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
+                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+            }
+        }
+    }
+
+    return userStr;
 }
 
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
@@ -4602,7 +4686,9 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+
+                        // Get presentation string (w/o units if option is set)
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         if (Constr->Type == Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -4921,7 +5007,7 @@ Restart:
 
                     }
                     break;
-                case Radius:
+                case Diameter:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
@@ -4929,6 +5015,64 @@ Restart:
                         if (Constr->First != Constraint::GeoUndef) {
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
+                            if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
+                                double radius = arc->getRadius();
+                                double angle = (double) Constr->LabelPosition;
+                                if (angle == 10) {
+                                    double startangle, endangle;
+                                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    angle = (startangle + endangle)/2;
+                                }
+                                Base::Vector3d center = arc->getCenter();
+                                pnt1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                                pnt2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                            }
+                            else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
+                                double radius = circle->getRadius();
+                                double angle = (double) Constr->LabelPosition;
+                                if (angle == 10) {
+                                    angle = 0;
+                                }
+                                Base::Vector3d center = circle->getCenter();
+                                pnt1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                                pnt2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                            }
+                            else
+                                break;
+                        } else
+                            break;
+
+                        SbVec3f p1(pnt1.x,pnt1.y,zConstr);
+                        SbVec3f p2(pnt2.x,pnt2.y,zConstr);
+
+                        SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                        
+                        // Get display string with units hidden if so requested
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
+
+                        asciiText->datumtype    = SoDatumLabel::DIAMETER;
+                        asciiText->param1       = Constr->LabelDistance;
+                        asciiText->param2       = Constr->LabelPosition;
+
+                        asciiText->pnts.setNum(2);
+                        SbVec3f *verts = asciiText->pnts.startEditing();
+
+                        verts[0] = p1;
+                        verts[1] = p2;
+
+                        asciiText->pnts.finishEditing();
+                    }
+                    break;
+                    case Radius:
+                    {
+                        assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                        
+                        Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
+                        if (Constr->First != Constraint::GeoUndef) {
+                            const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
+                            
                             if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                                 const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                                 double radius = arc->getRadius();
@@ -4955,26 +5099,26 @@ Restart:
                                 break;
                         } else
                             break;
-
+                        
                         SbVec3f p1(pnt1.x,pnt1.y,zConstr);
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
-
+                        
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                         asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
-
+                        
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
                         asciiText->param2       = Constr->LabelPosition;
-
+                        
                         asciiText->pnts.setNum(2);
                         SbVec3f *verts = asciiText->pnts.startEditing();
-
+                        
                         verts[0] = p1;
                         verts[1] = p2;
-
+                        
                         asciiText->pnts.finishEditing();
                     }
-                    break;
+                    break;                    
                 case Coincident: // nothing to do for coincident
                 case None:
                 case InternalAlignment:
@@ -5045,6 +5189,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case DistanceX:
             case DistanceY:
             case Radius:
+            case Diameter:
             case Angle:
             {
                 SoDatumLabel *text = new SoDatumLabel();
@@ -5336,7 +5481,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     edit = new EditData();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    edit->MarkerSize = hGrp->GetInt("EditSketcherMarkerSize", 7);
+    edit->MarkerSize = hGrp->GetInt("MarkerSize", 7);
 
     createEditInventorNodes();
 

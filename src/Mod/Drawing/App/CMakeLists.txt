@@ -80,11 +80,11 @@ SET(Drawing_Templates
     Templates/A4_Portrait_plain.svg
 )
 
-if(MSVC)
+if(BUILD_USE_PCH)
     #add_definitions(-D_PreComp_)
     #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Drawing_CPP_SRCS ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
     #ADD_MSVC_PRECOMPILED_HEADER(Drawing PreCompiled.h PreCompiled.cpp Drawing_CPP_SRCS)
-endif(MSVC)
+endif(BUILD_USE_PCH)
 
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})

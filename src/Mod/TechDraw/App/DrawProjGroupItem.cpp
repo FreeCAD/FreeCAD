@@ -109,7 +109,10 @@ void DrawProjGroupItem::autoPosition()
 {
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if ((pgroup != nullptr) && 
+    if (isAnchor()) {
+        X.setValue(0.0);
+        Y.setValue(0.0);
+    } else if ((pgroup != nullptr) && 
         (pgroup->AutoDistribute.getValue()) &&
         (!LockPosition.getValue())) {
         newPos = pgroup->getXYPosition(Type.getValueAsString());
@@ -138,6 +141,20 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
     }
     return result;
 }
+
+bool DrawProjGroupItem::isAnchor(void)
+{
+    bool result = false;
+    auto group = getPGroup();
+    if (group != nullptr) {
+        DrawProjGroupItem* anchor = group->getAnchor();
+        if (anchor == this) {
+            result = true;
+        }
+    }
+    return result;
+}
+
 gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis, 
                                  const bool flip) const

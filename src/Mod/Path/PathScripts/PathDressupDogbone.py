@@ -29,11 +29,11 @@ import math
 import Part
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore, QtGui
 
 """Dogbone Dressup object and FreeCAD command"""
@@ -231,7 +231,7 @@ class Chord (object):
     def getDirectionOfVector(self, B):
         A = self.asVector()
         # if the 2 vectors are identical, they head in the same direction
-        if A == B:
+        if PathGeom.pointsCoincide(A, B):
             return 'Straight'
         d = -A.x*B.y + A.y*B.x
         if d < 0:

@@ -40,6 +40,7 @@ SET(Arch_SRCS
     importSH3D.py
     ArchPipe.py
     ArchNesting.py
+    ArchBuildingPart.py
 )
 
 SET(Dice3DS_SRCS
@@ -50,6 +51,7 @@ SET(Dice3DS_SRCS
 
 SET(Arch_presets
     Presets/profiles.csv
+    Presets/pset_definitions.csv
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

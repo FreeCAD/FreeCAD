@@ -259,6 +259,95 @@ bool CmdPartRefineShape::isActive(void)
     return Gui::Selection().countObjectsOfType(partid) > 0;
 }
 
+//===========================================================================
+// Part_Defeaturing
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDefeaturing);
+
+CmdPartDefeaturing::CmdPartDefeaturing()
+  : Command("Part_Defeaturing")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Defeaturing");
+    sToolTipText  = QT_TR_NOOP("Remove feature from a shape");
+    sWhatsThis    = "Part_Defeaturing";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Defeaturing";
+}
+
+void CmdPartDefeaturing::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::WaitCursor wc;
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    openCommand("Defeaturing");
+    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        try {
+            std::string shape;
+            shape.append("sh=App.");
+            shape.append(it->getDocName());
+            shape.append(".");
+            shape.append(it->getFeatName());
+            shape.append(".Shape\n");
+            
+            std::string faces;
+            std::vector<std::string> subnames = it->getSubNames();
+            for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
+                faces.append("sh.");
+                faces.append(*sub);
+                faces.append(",");
+            }
+
+            doCommand(Doc,"\nsh = App.getDocument('%s').%s.Shape\n"
+                          "nsh = sh.defeaturing([%s])\n"
+                          "if not sh.isPartner(nsh):\n"
+                          "\t\tdefeat = App.ActiveDocument.addObject('Part::Feature','Defeatured').Shape = nsh\n"
+                          "\t\tGui.ActiveDocument.%s.hide()\n"
+                          "else:\n"
+                          "\t\tFreeCAD.Console.PrintError('Defeaturing failed\\n')",
+                          it->getDocName(),
+                          it->getFeatName(),
+                          faces.c_str(),
+                          it->getFeatName());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Warning("%s: %s\n", it->getFeatName(), e.what());
+        }
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdPartDefeaturing::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        std::vector<std::string> subnames = it->getSubNames();
+        for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
+            if (sub->substr(0,4) == "Face") {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+// {
+//     if (getActiveGuiDocument())
+// #if OCC_VERSION_HEX < 0x060900
+//         return false;
+// #else
+//         return true;
+// #endif
+//     else
+//         return false;
+// }
+
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void CreateSimplePartCommands(void)
@@ -268,4 +357,5 @@ void CreateSimplePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartShapeFromMesh());
     rcCmdMgr.addCommand(new CmdPartSimpleCopy());
     rcCmdMgr.addCommand(new CmdPartRefineShape());
+    rcCmdMgr.addCommand(new CmdPartDefeaturing());
 }

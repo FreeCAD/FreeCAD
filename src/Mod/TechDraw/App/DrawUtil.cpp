@@ -437,6 +437,45 @@ double DrawUtil::getDefaultLineWeight(std::string lineType)
     return weight;
 }
 
+bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2)
+{
+    bool result = false;
+    double segLength = (end2 - end1).Length();
+    double l1        = (pt - end1).Length();
+    double l2        = (pt - end2).Length();
+    if (fpCompare(segLength,l1 + l2)) {
+        result = true;
+    }
+    return result;
+}
+
+Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
+                                     Base::Vector3d p2, Base::Vector3d d2)
+{
+    Base::Vector3d result(0,0,0);
+    Base::Vector3d p12(p1.x+d1.x, p1.y+d1.y, 0.0);
+    double A1 = d1.y;
+    double B1 = -d1.x;
+    double C1 = A1*p1.x + B1*p1.y;
+
+    Base::Vector3d p22(p2.x+d2.x, p2.y+d2.y, 0.0);
+    double A2 = d2.y;
+    double B2 = -d2.x;
+    double C2 = A2*p2.x + B2*p2.y;
+
+    double det = A1*B2 - A2*B1;
+    if(det == 0){
+        Base::Console().Message("Lines are parallel\n");
+    }else{
+        double x = (B2*C1 - B1*C2)/det;
+        double y = (A1*C2 - A2*C1)/det;
+        result.x = x;
+        result.y = y;
+    }
+
+    return result;
+}
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)

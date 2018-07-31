@@ -56,7 +56,8 @@ namespace MeshIO {
         PLY,
         APLY,
         PY,
-        AMF
+        AMF,
+        SMF
     };
     enum Binding {
         OVERALL,
@@ -109,6 +110,8 @@ public:
     bool LoadBinarySTL (std::istream &rstrIn);
     /** Loads an OBJ Mesh file. */
     bool LoadOBJ (std::istream &rstrIn);
+    /** Loads an SMF Mesh file. */
+    bool LoadSMF (std::istream &rstrIn);
     /** Loads an OFF Mesh file. */
     bool LoadOFF (std::istream &rstrIn);
     /** Loads a PLY Mesh file. */
@@ -170,6 +173,8 @@ public:
     bool SaveOBJ (std::ostream &rstrOut) const;
     /** Saves the materials of an OBJ file. */
     bool SaveMTL(std::ostream &rstrOut) const;
+    /** Saves the mesh object into an SMF file. */
+    bool SaveSMF (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
     bool SaveOFF (std::ostream &rstrOut) const;
     /** Saves the mesh object into a binary PLY file. */

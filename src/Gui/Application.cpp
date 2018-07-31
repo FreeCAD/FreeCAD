@@ -1722,7 +1722,22 @@ void Application::runApplication(void)
 
     Application app(true);
     MainWindow mw;
-    mw.setWindowTitle(mainApp.applicationName());
+
+    // allow to disable version number
+    ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    bool showVersion = hGen->GetBool("ShowVersionInTitle",true);
+
+    if (showVersion) {
+        // set main window title with FreeCAD Version
+        std::map<std::string, std::string>& config = App::Application::Config();
+        QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
+        QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName()).arg(major).arg(minor);
+        mw.setWindowTitle(title);
+    } else {
+        mw.setWindowTitle(mainApp.applicationName());
+    }
+
     QObject::connect(&mainApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
                      &mw, SLOT(processMessages(const QList<QByteArray> &)));
 

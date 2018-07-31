@@ -136,7 +136,7 @@ public:
     void importIges(const char *FileName);
     void importStep(const char *FileName);
     void importBrep(const char *FileName);
-    void importBrep(std::istream&);
+    void importBrep(std::istream&, int indicator=1);
     void importBinary(std::istream&);
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
@@ -237,6 +237,7 @@ public:
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
+    TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
     //@}
 
     /** @name Getting basic geometric entities */

@@ -62,7 +62,7 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
     obj.Label = translate("Arch",name)
     _Wall(obj)
     if FreeCAD.GuiUp:
@@ -299,7 +299,7 @@ class _CommandWall:
         else:
             FreeCADGui.doCommand('base=Draft.makeLine(trace)')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
-        FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
+        FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.getNormal()')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.doCommand("Draft.autogroup(wall)")
@@ -750,7 +750,7 @@ class _Wall(ArchComponent.Component):
         height = obj.Height.Value
         if not height:
             for p in obj.InList:
-                if Draft.getType(p) == "Floor":
+                if Draft.getType(p) in ["Floor","BuildingPart"]:
                     if p.Height.Value:
                         height = p.Height.Value
         if not height:

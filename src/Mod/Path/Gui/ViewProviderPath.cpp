@@ -91,8 +91,6 @@ ViewProviderPath::ViewProviderPath()
     ADD_PROPERTY_TYPE(NormalColor,(lr,lg,lb),"Path",App::Prop_None,"The color of the feed rate moves");
     ADD_PROPERTY_TYPE(MarkerColor,(mr,mg,mb),"Path",App::Prop_None,"The color of the markers");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth),"Path",App::Prop_None,"The line width of this path");
-    int markerSize = hGrp->GetInt("DefaultPathMarkerSize",4);
-    ADD_PROPERTY_TYPE(MarkerSize,(markerSize),"Path",App::Prop_None,"The point size of the markers");
     ADD_PROPERTY_TYPE(ShowNodes,(false),"Path",App::Prop_None,"Turns the display of nodes on/off");
 
 
@@ -121,7 +119,7 @@ ViewProviderPath::ViewProviderPath()
     pcMarkerStyle = new SoDrawStyle();
     pcMarkerStyle->ref();
     pcMarkerStyle->style = SoDrawStyle::POINTS;
-    pcMarkerStyle->pointSize = MarkerSize.getValue();
+    pcMarkerStyle->pointSize = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 4);
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -305,8 +303,6 @@ void ViewProviderPath::onChanged(const App::Property* prop)
 
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
-    } else if (prop == &MarkerSize) {
-        pcMarkerStyle->pointSize = MarkerSize.getValue();
     } else if (prop == &NormalColor) {
         if (colorindex.size() > 0 && coordStart>=0 && coordStart<(int)colorindex.size()) {
             const App::Color& c = NormalColor.getValue();

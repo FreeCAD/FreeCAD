@@ -85,7 +85,9 @@ Sub-elements such as vertices, edges or faces are accessible as:
     </Methode>
     <Methode Name="importBrepFromString">
       <Documentation>
-        <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
+        <UserDocu>Load the shape from a string that keeps the content in BREP format.
+importBrepFromString(str,False) to not display a progress bar.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="extrude" Const="true">
@@ -559,6 +561,12 @@ The parameter is in the form list of tuples with the two shapes.</UserDocu>
       <Documentation>
         <UserDocu>Remove a sub-shape and return a new shape.
 The parameter is a list of shapes.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="defeaturing" Const="true">
+      <Documentation>
+        <UserDocu>Remove a feature defined by supplied faces and return a new shape.
+The parameter is a list of faces.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isInside" Const="true">

@@ -59,7 +59,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Rebar")
     obj.Label = translate("Arch",name)
     _Rebar(obj)
     if FreeCAD.GuiUp:

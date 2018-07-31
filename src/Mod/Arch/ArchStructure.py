@@ -72,7 +72,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
     obj.Label = translate("Arch",name)
     _Structure(obj)
     if FreeCAD.GuiUp:
@@ -238,7 +238,7 @@ class _CommandStructure:
             else:
                 # metal profile
                 FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
-                if self.Length == self.Profile[4]:
+                if abs(self.Length - self.Profile[4]) < 0.1: # forgive rounding errors
                     # vertical
                     FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
                 else:
@@ -269,7 +269,12 @@ class _CommandStructure:
 
         ilist=[]
         for p in baselist:
-            ilist.append(p[2]+" ("+str(p[4])+"x"+str(p[5])+"mm)")
+            f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
+            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+            s1 = str(round(p[4]/f[1],d))
+            s2 = str(round(p[5]/f[1],d))
+            s3 = str(f[2])
+            ilist.append(p[2]+" ("+s1+"x"+s2+s3+")")
         return ilist
 
     def taskbox(self):
@@ -551,7 +556,7 @@ class _Structure(ArchComponent.Component):
                         else:
                             FreeCAD.Console.PrintWarning(translate("Arch","This mesh is an invalid solid")+"\n")
                             obj.Base.ViewObject.show()
-        if not base:
+        if (not base) and (not obj.Additions):
             #FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             return
 
@@ -578,7 +583,7 @@ class _Structure(ArchComponent.Component):
         normal = None
         if not height:
             for p in obj.InList:
-                if Draft.getType(p) == "Floor":
+                if Draft.getType(p) in ["Floor","BuildingPart"]:
                     if p.Height.Value:
                         height = p.Height.Value
         base = None

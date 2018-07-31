@@ -94,6 +94,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Helpers":
+        c = p.GetUnsigned("ColorHelpers",674321151)
     elif objectType == "Construction":
         c = Draft.getParam("constructioncolor",746455039)
         transparency = 0.80
@@ -112,7 +114,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site"]:
+    if hostType in ["Floor","Building","Site","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
@@ -183,16 +185,22 @@ def removeComponents(objectsList,host=None):
                         if not Draft.getType(o) in ["Window","Roof"]:
                             setAsSubcomponent(o)
             host.Subtractions = s
+        elif Draft.getType(host) in ["SectionPlane"]:
+            a = host.Objects
+            for o in objectsList:
+                if o in a:
+                    a.remove(o)
+            host.Objects = a
     else:
         for o in objectsList:
             if o.InList:
                h = o.InList[0]
                tp = Draft.getType(h)
-               if tp in ["Floor","Building","Site"]:
-                   c = h.Components
+               if tp in ["Floor","Building","Site","BuildingPart"]:
+                   c = h.Group
                    if o in c:
                        c.remove(o)
-                       h.Components = c
+                       h.Group = c
                        o.ViewObject.show()
                elif tp in ["Wall","Structure"]:
                    a = h.Additions
@@ -220,7 +228,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Component")
     obj.Label = translate("Arch",name)
     ArchComponent.Component(obj)
     if FreeCAD.GuiUp:
@@ -1319,7 +1327,7 @@ class _CommandRemove:
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Ungrouping"))
-            if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window","Panel"]) and (len(sel) > 1):
+            if len(sel) > 1:
                 host = sel.pop()
                 ss = "["
                 for o in sel:
@@ -1331,7 +1339,7 @@ class _CommandRemove:
                 FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
             else:
                 FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+sel[-1].Name+")")
+                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+sel[0].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

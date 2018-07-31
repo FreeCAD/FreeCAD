@@ -56,6 +56,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 #if HAVE_OPENCV2
     *part << "Image_CapturerTest";
 #endif
+    *part << "Image_Scaling";
     return root;
 }
 

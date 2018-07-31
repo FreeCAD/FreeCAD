@@ -52,6 +52,8 @@ QGIPrimPath::QGIPrimPath():
 
     isHighlighted = false;
 
+    m_colNormal = Qt::white;
+    m_colOverride = false;
     m_colCurrent = getNormalColor();
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
@@ -130,8 +132,15 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
 QColor QGIPrimPath::getNormalColor()
 {
+
     QColor result;
     QGIView *parent;
+
+    if (m_colOverride) {
+        result = m_colNormal;
+        return result;
+    }
+
     QGraphicsItem* qparent = parentItem();
     if (qparent == nullptr) {
         parent = nullptr;
@@ -204,6 +213,13 @@ void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
     m_styleCurrent = s;
 }
+
+void QGIPrimPath::setNormalColor(QColor c)
+{
+    m_colNormal = c;
+    m_colOverride = true;
+}
+
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
 {

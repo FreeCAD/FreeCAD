@@ -27,8 +27,10 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
@@ -37,8 +39,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 import sys
 
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
 

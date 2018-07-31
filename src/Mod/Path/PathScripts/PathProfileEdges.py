@@ -36,7 +36,7 @@ from PySide import QtCore
 
 """Path Profile from Edges Object and Command"""
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

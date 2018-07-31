@@ -25,13 +25,13 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
 
-from PathScripts.PathGeom import PathGeom
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
@@ -44,6 +44,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+failures = []
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -106,7 +107,7 @@ class Tag:
         self.height = math.fabs(height)
         self.actualHeight = self.height
         self.angle = math.fabs(angle)
-        self.radius = radius
+        self.radius = radius if FreeCAD.Units.Quantity == type(radius) else FreeCAD.Units.Quantity(radius, FreeCAD.Units.Length)
         self.enabled = enabled
         self.isSquare = False
 
@@ -130,7 +131,7 @@ class Tag:
         self.r2 = r1
         height = self.height * 1.01
         radius = 0
-        if self.angle == 90 and height > 0:
+        if PathGeom.isRoughly(90, self.angle) and height > 0:
             # cylinder
             self.isSquare = True
             self.solid = Part.makeCylinder(r1, height)
@@ -158,7 +159,7 @@ class Tag:
             # degenerated case - no tag
             PathLog.debug("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
-        if not R == 0:  # testing is easier if the solid is not rotated
+        if not PathGeom.isRoughly(0, R):  # testing is easier if the solid is not rotated
             angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
             PathLog.debug("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), angle)
@@ -167,7 +168,7 @@ class Tag:
         self.solid.translate(orig)
         radius = min(self.radius, radius)
         self.realRadius = radius
-        if radius != 0:
+        if not PathGeom.isRoughly(0, radius.Value):
             PathLog.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
@@ -209,8 +210,15 @@ class Tag:
         return None
 
     def intersects(self, edge, param):
+        def isDefinitelySmaller(z, zRef):
+            # Eliminate false positives of edges that just brush along the top of the tag
+            return z < zRef and not PathGeom.isRoughly(z, zRef, 0.01)
+
         if self.enabled:
-            if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
+            zFirst = edge.valueAt(edge.FirstParameter).z
+            zLast  = edge.valueAt(edge.LastParameter).z
+            zMax = self.top()
+            if isDefinitelySmaller(zFirst, zMax) or isDefinitelySmaller(zLast, zMax):
                 return self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(param))
         return None
 
@@ -352,15 +360,16 @@ class MapWireToTag:
         self.edgesCleanup.append(copy.copy(edges))
         return edges
 
-    def orderAndFlipEdges(self, edges):
+    def orderAndFlipEdges(self, inputEdges):
         PathLog.track("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
         self.edgesOrder = []
         outputEdges = []
         p0 = self.entry
         lastP = p0
+        edges = copy.copy(inputEdges)
         while edges:
             # print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z))
-            for e in edges:
+            for e in copy.copy(edges):
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
                 if PathGeom.pointsCoincide(p1, p0):
@@ -371,7 +380,7 @@ class MapWireToTag:
                     debugEdge(e, ">>>>> no flip")
                     break
                 elif PathGeom.pointsCoincide(p2, p0):
-                    outputEdges.append((e, True))
+                    outputEdges.append((PathGeom.flipEdge(e), True))
                     edges.remove(e)
                     lastP = None
                     p0 = p1
@@ -379,9 +388,13 @@ class MapWireToTag:
                     break
                 else:
                     debugEdge(e, "<<<<< (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z))
+
             if lastP == p0:
                 self.edgesOrder.append(outputEdges)
                 self.edgesOrder.append(edges)
+                print('input edges:')
+                for e in inputEdges:
+                    debugEdge(e, '  ', False)
                 print('ordered edges:')
                 for e, flip in outputEdges:
                     debugEdge(e, '  %c ' % ('<' if flip else '>'), False)
@@ -424,6 +437,7 @@ class MapWireToTag:
         return shell.removeShape(filter(lambda f: PathGeom.isRoughly(f.Area, 0), shell.Faces))
 
     def commandsForEdges(self):
+        global failures
         if self.edges:
             try:
                 shape = self.shell().common(self.tag.solid)
@@ -439,7 +453,7 @@ class MapWireToTag:
                         if rapid:
                             commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                             rapid = None
-                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+                        commands.extend(PathGeom.cmdsForEdge(e, False, False, self.segm))
                 if rapid:
                     commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                     rapid = None
@@ -450,6 +464,7 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(PathGeom.cmdsForEdge(e))
+                failures.append(self)
                 return commands
         return []
 
@@ -560,7 +575,7 @@ class PathData:
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
             PathLog.debug('  %d: %.2f' % (i, edge.Length))
-            if edge.Length == longestEdge.Length:
+            if PathGeom.isRoughly(edge.Length, longestEdge.Length):
                 startIndex = i
                 break
 
@@ -915,6 +930,8 @@ class ObjectTagDressup:
 
     @waiting_effects
     def processTags(self, obj):
+        global failures
+        failures = []
         tagID = 0
         if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
             for tag in self.tags:
@@ -922,7 +939,7 @@ class ObjectTagDressup:
                 if tag.enabled:
                     PathLog.debug("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
                     # debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                    # if tag.angle != 90:
+                    # if not PathGeom.isRoughly(90, tag.angle):
                     #    debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
                     # else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)

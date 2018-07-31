@@ -113,7 +113,8 @@ def getIndices(shape,offset):
 
 def export(exportList,filename):
     "called when freecad exports a file"
-    outfile = pythonopen(filename,"wb")
+    import codecs
+    outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")

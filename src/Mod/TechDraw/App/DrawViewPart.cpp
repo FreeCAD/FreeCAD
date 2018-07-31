@@ -86,6 +86,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
 
 #include "DrawUtil.h"
 #include "DrawViewSection.h"
@@ -193,7 +194,10 @@ std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject*
     std::vector<TopoDS_Shape> result;
     App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        result.push_back(static_cast<Part::Feature*>(docObj)->Shape.getShape().getShape());
+        Part::Feature* pf = static_cast<Part::Feature*>(docObj);
+        Part::TopoShape ts = pf->Shape.getShape();
+        ts.setPlacement(pf->globalPlacement());
+        result.push_back(ts.getShape());
     } else if (gex != nullptr) {
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
@@ -219,7 +223,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
             BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("DVp - Fusion failed\n");
+                Base::Console().Error("DVp - Fusion failed - %s\n",getNameInDocument());
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();
@@ -807,6 +811,17 @@ void DrawViewPart::unsetupObject()
 
 }
 
+//! is this an Isometric projection?
+bool DrawViewPart::isIso(void) const
+{
+    bool result = false;
+    Base::Vector3d dir = Direction.getValue();
+    if ( DrawUtil::fpCompare(fabs(dir.x),fabs(dir.y))  &&
+         DrawUtil::fpCompare(fabs(dir.x),fabs(dir.z)) ) {
+        result = true;
+    }
+    return result;
+}
 
 PyObject *DrawViewPart::getPyObject(void)
 {

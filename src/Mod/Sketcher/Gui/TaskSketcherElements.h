@@ -68,6 +68,7 @@ protected Q_SLOTS:
     void doPerpendicularConstraint();
     void doLengthConstraint();
     void doRadiusConstraint();
+    void doDiameterConstraint();
     void doAngleConstraint();
     void doEqualConstraint();
     void doPointOnObjectConstraint();

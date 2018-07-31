@@ -179,7 +179,7 @@ def makeSpace(objects=None,baseobj=None,name="Space"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
     obj.Label = translate("Arch",name)
     _Space(obj)
     if FreeCAD.GuiUp:
@@ -324,6 +324,11 @@ class _Space(ArchComponent.Component):
                             p += o.EquipmentPower
                     if p != obj.EquipmentPower:
                         obj.EquipmentPower = p
+        elif prop == "Zone":
+            if obj.Zone:
+                if obj.Zone.ViewObject:
+                    if hasattr(obj.Zone.ViewObject,"Proxy"):
+                        obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
         ArchComponent.Component.onChanged(self,obj,prop)

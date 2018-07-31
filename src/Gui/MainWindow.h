@@ -53,6 +53,19 @@ namespace DockWnd {
     class HelpView;
 } //namespace DockWnd
 
+class GuiExport UrlHandler : public QObject
+{
+    Q_OBJECT
+
+public:
+    UrlHandler(QObject* parent = 0)
+        : QObject(parent){
+    }
+    virtual ~UrlHandler() {
+    }
+    virtual void openUrl(App::Document*, const QUrl&) {
+    }
+};
 
 /** 
  * The MainWindow class provides a main window with menu bar, toolbars, dockable windows,
@@ -147,8 +160,22 @@ public:
     /**
      * Load files from the given URLs into the given document. If the document is 0
      * one gets created automatically if needed.
+     *
+     * If a url handler is registered that supports its scheme it will be delegated
+     * to this handler. This mechanism allows to change the default behaviour.
      */
     void loadUrls(App::Document*, const QList<QUrl>&);
+    /**
+     * Sets the \a handler for the given \a scheme.
+     * If setUrlHandler() is used to set a new handler for a scheme which already has a handler,
+     * the existing handler is simply replaced with the new one. Since MainWindow does not take
+     * ownership of handlers, no objects are deleted when a handler is replaced.
+     */
+    void setUrlHandler(const QString &scheme, UrlHandler* handler);
+    /**
+     * Removes a previously set URL handler for the specified \a scheme.
+     */
+    void unsetUrlHandler(const QString &scheme);
     //@}
 
 public Q_SLOTS:

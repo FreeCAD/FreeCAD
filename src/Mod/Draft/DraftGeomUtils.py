@@ -563,6 +563,8 @@ def orientEdge(edge, normal=None, make_arc=False):
     else:
         axis = edge.Placement.Rotation.Axis
         angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
+    if axis == Vector (0.0, 0.0, 0.0):
+        axis = Vector (0.0, 0.0, 1.0)
     if angle:
         edge.rotate(base, axis, angle)
     if isinstance(edge.Curve,Part.Line):
@@ -638,8 +640,10 @@ def findClosest(basepoint,pointslist):
     in a list of 3d points, finds the closest point to the base point.
     an index from the list is returned.
     '''
-    if not pointslist: return None
-    smallest = 100000
+    npoint = None
+    if not pointslist: 
+        return None
+    smallest = 1000000
     for n in range(len(pointslist)):
         new = basepoint.sub(pointslist[n]).Length
         if new < smallest:

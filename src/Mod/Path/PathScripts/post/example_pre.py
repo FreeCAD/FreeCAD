@@ -36,7 +36,7 @@ import Path
 import FreeCAD
 import PathScripts.PathLog as PathLog
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
