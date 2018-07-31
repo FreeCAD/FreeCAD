@@ -149,9 +149,11 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
     if (getValueFromAlias(candidate) != 0)
         return false;
 
+    /* Check to make sure it doesn't clash with a predefined unit */
     if (ExpressionParser::isTokenAUnit(candidate))
         return false;
 
+    /* Check to make sure it doesn't match a cell reference */
     if (boost::regex_match(candidate.c_str(), cm, gen)) {
         static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
 
@@ -617,23 +619,28 @@ public:
 
 
         if (varExpr) {
-            static const boost::regex e("(\\${0,1})([A-Za-z]+)(\\${0,1})([0-9]+)");
+            static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
             boost::cmatch cm;
             std::string s = varExpr->name();
 
             if (boost::regex_match(s.c_str(), cm, e)) {
-                const boost::sub_match<const char *> colstr = cm[2];
-                const boost::sub_match<const char *> rowstr = cm[4];
+                const boost::sub_match<const char *> colstr = cm[1];
+                const boost::sub_match<const char *> rowstr = cm[2];
                 int thisRow, thisCol;
 
-                thisCol = decodeColumn(colstr.str());
-                thisRow = decodeRow(rowstr.str());
+                try {
+                    thisCol = decodeColumn(colstr.str());
+                    thisRow = decodeRow(rowstr.str());
 
-                if (thisRow >= mRow || thisCol >= mCol) {
-                    thisRow += mRowCount;
-                    thisCol += mColCount;
-                    varExpr->setPath(ObjectIdentifier(varExpr->getOwner(), columnName(thisCol) + rowName(thisRow)));
-                    mChanged = true;
+                    if (thisRow >= mRow || thisCol >= mCol) {
+                        thisRow += mRowCount;
+                        thisCol += mColCount;
+                        varExpr->setPath(ObjectIdentifier(varExpr->getOwner(), columnName(thisCol) + rowName(thisRow)));
+                        mChanged = true;
+                    }
+                }
+                catch (const Base::IndexError &) {
+                    /* Ignore this error here */
                 }
             }
         }
