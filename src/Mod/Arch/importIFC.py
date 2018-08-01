@@ -1430,7 +1430,7 @@ def export(exportList,filename):
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
-        elif obj.isDerivedFrom("App::Annotation"):
+        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) == "DraftText"):
             annotations.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape:
@@ -1512,17 +1512,32 @@ def export(exportList,filename):
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
-            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitely set
+            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
         if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Building"):
             ifctype = "IfcBuilding"
 
         # export grids
 
         if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
-            ifctype = "IfcGrid"
             ifcaxes = []
             ifcpols = []
-            for axg in obj.Proxy.getAxisData(obj):
+            if ifctype == "IfcAxis":
+                # make sure this axis is not included in something else already
+                standalone = True
+                for p in obj.InList:
+                    if hasattr(p,"Axes") and (obj in p.Axes):
+                        if p in objectslist:
+                            axgroups = []
+                            standalone = False
+                            break
+                if standalone:
+                    axgroups = [obj.Proxy.getAxisData(obj)]
+            else:
+                axgroups = obj.Proxy.getAxisData(obj)
+            if not axgroups:
+                continue
+            ifctype = "IfcGrid"
+            for axg in axgroups:
                 ifcaxg = []
                 for ax in axg:
                     p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
@@ -1543,20 +1558,21 @@ def export(exportList,filename):
             if len(ifcaxes) > 1:
                 v = ifcaxes[1]
             if len(ifcaxes) > 2:
-                v = ifcaxes[2]
-            if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
-            xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-            plac = ifcbin.createIfcLocalPlacement(gpl)
-            cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
-            #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
-            srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
-            pdef = ifcfile.createIfcProductDefinitionShape(None,None,[srep])
-            grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
-            products[obj.Name] = grid
-            count += 1
+                w = ifcaxes[2]
+            if u and v:
+                if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
+                xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
+                zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
+                ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+                gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                plac = ifcbin.createIfcLocalPlacement(gpl)
+                cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
+                #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
+                srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
+                pdef = ifcfile.createIfcProductDefinitionShape(None,None,[srep])
+                grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
+                products[obj.Name] = grid
+                count += 1
             continue
 
         from ArchComponent import IFCTYPES
@@ -1609,7 +1625,7 @@ def export(exportList,filename):
             kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
             kwargs.update({"CompositionType": "ELEMENT",
-                "Elevation": obj.Placement.Base.z})
+                "Elevation": obj.Placement.Base.z/1000.0})
         elif ifctype == "IfcReinforcingBar":
             kwargs.update({"NominalDiameter": obj.Diameter.Value,
                 "BarLength": obj.Length.Value})
@@ -2053,9 +2069,9 @@ def export(exportList,filename):
                         psa = curvestyles[rgb]
                     else:
                         col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                        cvf = ifcbin.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
-                        ics = ifcbin.createIfcCurveStyle('Line',cvf,None,col)
-                        psa = ifcbin.createIfcPresentationStyleAssignment([ics])
+                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
+                        ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
+                        psa = ifcfile.createIfcPresentationStyleAssignment([ics])
                         curvestyles[rgb] = psa
                     for rep in reps:
                         isi = ifcfile.createIfcStyledItem(rep,[psa],None)
@@ -2308,6 +2324,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 else:
                     # base shape not yet created
                     tostore = k
+
+    # unhandled case: object is duplicated because of Axis
+    if obj.isDerivedFrom("Part::Feature") and (len(obj.Shape.Solids) > 1) and hasattr(obj,"Axis") and obj.Axis:
+        forcebrep = True
 
     if (not shapes) and (not forcebrep):
         profile = None

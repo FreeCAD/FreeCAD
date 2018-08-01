@@ -48,8 +48,8 @@ using namespace TechDrawGui;
 
 QGIProjGroup::QGIProjGroup()
 {
-    origin = new QGraphicsItemGroup();
-    origin->setParentItem(this);
+    m_origin = new QGraphicsItemGroup();                  //QGIG added to this QGIG??
+    m_origin->setParentItem(this);
 
     // In place to ensure correct drawing and bounding box calculations
     m_backgroundItem = new QGraphicsRectItem();
@@ -124,18 +124,12 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                     updateView();
                 } else if ( type == QString::fromLatin1("Top") ||
                     type == QString::fromLatin1("Bottom")) {
-                    gView->alignTo(origin, QString::fromLatin1("Vertical"));
+                    gView->alignTo(m_origin, QString::fromLatin1("Vertical"));
                 } else if ( type == QString::fromLatin1("Left")  ||
                             type == QString::fromLatin1("Right") ||
                             type == QString::fromLatin1("Rear") ) {
-                    gView->alignTo(origin, QString::fromLatin1("Horizontal"));
-                } else if ( type == QString::fromLatin1("FrontTopRight") ||
-                            type == QString::fromLatin1("FrontBottomLeft") ) {
-                    gView->alignTo(origin, QString::fromLatin1("45slash"));
-                } else if ( type == QString::fromLatin1("FrontTopLeft") ||
-                            type == QString::fromLatin1("FrontBottomRight") ) {
-                    gView->alignTo(origin, QString::fromLatin1("45backslash"));
-                }
+                    gView->alignTo(m_origin, QString::fromLatin1("Horizontal"));
+                } 
             }
          }
     }
@@ -149,7 +143,6 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
         if(qAnchor->shape().contains(transPos)) {
-            //QGIViewCollection::mousePressEvent(event);
             mousePos = event->screenPos();
         }
     }

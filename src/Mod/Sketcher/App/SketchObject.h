@@ -33,6 +33,10 @@
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
 
+#include <Mod/Sketcher/App/SketchAnalysis.h>
+
+#include "Analyse.h"
+
 #include "Sketch.h"
 
 namespace Sketcher
@@ -45,6 +49,8 @@ struct SketcherExport GeoEnum
     static const int VAxis;
     static const int RefExt;
 };
+
+class SketchAnalysis;
 
 class SketcherExport SketchObject : public Part::Part2DObject
 {
@@ -99,6 +105,8 @@ public:
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
+    /// deletes all the constraints of the sketch
+    int deleteAllConstraints();
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// Copy the constraints instead of cloning them and copying the expressions if any
@@ -107,6 +115,7 @@ public:
     int addConstraint(const Constraint *constraint);
     /// delete constraint
     int delConstraint(int ConstrId);
+    int delConstraints(std::vector<int> ConstrIds, bool updategeometry=true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident=true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
     /// Deletes all constraints referencing an external geometry
@@ -354,7 +363,32 @@ public:
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
     
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
-
+public:
+    // Analyser functions
+    int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
+    
+    int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000, bool includeconstruction = true);
+    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
+    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
+    int detectMissingEqualityConstraints(double precision);
+    
+    std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void);
+    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void);
+    std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void);
+    std::vector<ConstraintIds> &getMissingRadiusConstraints(void);
+    
+    void setMissingRadiusConstraints(std::vector<ConstraintIds> &cl);
+    void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl);
+    void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl);
+    void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl);
+    
+    void makeMissingPointOnPointCoincident(bool onebyone = false);
+    void makeMissingVerticalHorizontal(bool onebyone = false);
+    void makeMissingEquality(bool onebyone = true);
+    
+    // helper
+    void autoRemoveRedundants(bool updategeo);
+    
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
@@ -405,6 +439,8 @@ private:
     boost::signals::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
+
+    SketchAnalysis * analyser;
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;

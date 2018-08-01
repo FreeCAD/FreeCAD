@@ -65,6 +65,10 @@ public:
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
 
+    // NaviCube handling
+    Py::Object setEnabledNaviCube(const Py::Tuple& args);
+    Py::Object isEnabledNaviCube(const Py::Tuple& args);
+    Py::Object setNaviCubeCorner(const Py::Tuple& args);
 
 
 private:

@@ -129,6 +129,8 @@ SketchObject::SketchObject()
 
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
+    
+    analyser = new SketchAnalysis(this);
 }
 
 SketchObject::~SketchObject()
@@ -136,6 +138,8 @@ SketchObject::~SketchObject()
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
     ExternalGeo.clear();
+
+    delete analyser;
 }
 
 App::DocumentObjectExecReturn *SketchObject::execute(void)
@@ -286,13 +290,14 @@ int SketchObject::setDatum(int ConstrId, double Datum)
         type != DistanceX &&
         type != DistanceY &&
         type != Radius &&
+        type != Diameter &&
         type != Angle &&
         type != Tangent && //for tangent, value==0 is autodecide, value==Pi/2 is external and value==-Pi/2 is internal
         type != Perpendicular &&
         type != SnellsLaw)
         return -1;
 
-    if ((type == Distance || type == Radius) && Datum <= 0)
+    if ((type == Distance || type == Radius || type == Diameter) && Datum <= 0)
         return (Datum == 0) ? -5 : -4;
 
     // copy the list
@@ -324,6 +329,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
         type != DistanceX &&
         type != DistanceY &&
         type != Radius &&
+        type != Diameter &&
         type != Angle &&
         type != SnellsLaw)
         return -2;
@@ -361,6 +367,7 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
         type != DistanceX &&
         type != DistanceY &&
         type != Radius &&
+        type != Diameter &&
         type != Angle &&
         type != SnellsLaw)
         return -1;
@@ -382,6 +389,7 @@ int SketchObject::toggleDriving(int ConstrId)
         type != DistanceX &&
         type != DistanceY &&
         type != Radius &&
+        type != Diameter &&
         type != Angle &&
         type != SnellsLaw)
         return -2;
@@ -811,6 +819,21 @@ int SketchObject::deleteAllGeometry()
     return 0;
 }
 
+int SketchObject::deleteAllConstraints()
+{
+    std::vector< Constraint * > newConstraints(0);
+
+    this->Constraints.setValues(newConstraints);
+
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+    
+    return 0;
+}
+
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -902,7 +925,8 @@ int SketchObject::addCopyOfConstraints(const SketchObject &orig)
             newVals[i]->Type == Sketcher::Distance ||
             newVals[i]->Type == Sketcher::DistanceX ||
             newVals[i]->Type == Sketcher::DistanceY ||
-            newVals[i]->Type == Sketcher::Radius || 
+            newVals[i]->Type == Sketcher::Radius ||
+            newVals[i]->Type == Sketcher::Diameter ||
             newVals[i]->Type == Sketcher::Angle ||
             newVals[i]->Type == Sketcher::SnellsLaw)) {
 
@@ -950,6 +974,28 @@ int SketchObject::delConstraint(int ConstrId)
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
     
+    return 0;
+}
+
+int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
+{
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);
+
+    std::sort(ConstrIds.begin(),ConstrIds.end());
+
+    if (*ConstrIds.begin() < 0 || *std::prev(ConstrIds.end()) >= int(vals.size()))
+        return -1;
+
+    for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
+        newVals.erase(newVals.begin()+*rit);
+
+    this->Constraints.setValues(newVals);
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve(updategeometry);
+
     return 0;
 }
 
@@ -2770,6 +2816,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                         (*it)->Type ==  Sketcher::Distance ||
                         (*it)->Type ==  Sketcher::Equal ||
                         (*it)->Type ==  Sketcher::Radius ||
+                        (*it)->Type ==  Sketcher::Diameter ||
                         (*it)->Type ==  Sketcher::Angle ||
                         (*it)->Type ==  Sketcher::PointOnObject ){
                             Constraint *constNew = (*it)->copy();
@@ -3029,6 +3076,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                     if (((*it)->Type == Sketcher::DistanceX || 
                                         (*it)->Type == Sketcher::DistanceY ||
                                         (*it)->Type == Sketcher::Distance  ||
+                                        (*it)->Type == Sketcher::Diameter ||
                                         (*it)->Type == Sketcher::Radius ) && clone ) {
                                         // Distances on a single Element are mapped to equality constraints in clone mode
                                         Constraint *constNew = (*it)->copy();
@@ -3719,6 +3767,9 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 if((*it)->Type == Sketcher::Radius && (*it)->First == controlpointgeoids[0]) {
                     isfirstweightconstrained = true ;
                 }
+                else if((*it)->Type == Sketcher::Diameter && (*it)->First == controlpointgeoids[0]) {
+                        isfirstweightconstrained = true ;
+                }
             }
         }
 
@@ -4100,8 +4151,8 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                         }
 
                     }
-                        // ignore radiuses
-                    else if ((*itc)->Type!=Sketcher::Radius && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) )
+                        // ignore radiuses and diameters
+                        else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) )
                         (*ita)++;
 
                  }
@@ -4545,7 +4596,8 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
 
         if ((*it)->Type == Sketcher::Distance ||
-            (*it)->Type == Sketcher::Radius || 
+            (*it)->Type == Sketcher::Radius ||
+            (*it)->Type == Sketcher::Diameter ||
             (*it)->Type == Sketcher::Angle ||
             (*it)->Type == Sketcher::SnellsLaw) {
             // then we link its value to the parent 
@@ -5635,6 +5687,9 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case Radius:
             requireFirst = true;
             break;
+        case Diameter:
+            requireFirst = true;
+            break;            
         case Horizontal:
         case Vertical:
             requireFirst = true;
@@ -6212,6 +6267,98 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
         solve();
 }
 
+int SketchObject::autoConstraint(double precision, double angleprecision, bool includeconstruction)
+{
+    return analyser->autoconstraint(precision, angleprecision, includeconstruction);
+}
+
+int SketchObject::detectMissingPointOnPointConstraints(double precision, bool includeconstruction)
+{
+    return analyser->detectMissingPointOnPointConstraints(precision, includeconstruction);
+}
+
+void SketchObject::analyseMissingPointOnPointCoincident(double angleprecision)
+{
+    analyser->analyseMissingPointOnPointCoincident(angleprecision);
+}
+
+int SketchObject::detectMissingVerticalHorizontalConstraints(double angleprecision)
+{
+    return analyser->detectMissingVerticalHorizontalConstraints(angleprecision);
+}
+
+int SketchObject::detectMissingEqualityConstraints(double precision)
+{
+    return analyser->detectMissingEqualityConstraints(precision);
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingPointOnPointConstraints(void) 
+{
+    return analyser->getMissingPointOnPointConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingVerticalHorizontalConstraints(void)
+{
+    return analyser->getMissingVerticalHorizontalConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingLineEqualityConstraints(void)
+{
+    return analyser->getMissingLineEqualityConstraints();
+}
+
+std::vector<ConstraintIds> & SketchObject::getMissingRadiusConstraints(void)
+{
+    return analyser->getMissingRadiusConstraints();
+}
+
+void SketchObject::setMissingRadiusConstraints(std::vector<ConstraintIds> &cl)
+{
+    if(analyser)
+        analyser->setMissingRadiusConstraints(cl);
+}
+
+void SketchObject::setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingLineEqualityConstraints(cl);
+}
+
+void SketchObject::setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingVerticalHorizontalConstraints(cl);
+}
+
+void SketchObject::setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl)
+{
+    if(analyser)
+        analyser->setMissingPointOnPointConstraints(cl);
+}
+
+void SketchObject::makeMissingPointOnPointCoincident(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingPointOnPointCoincident(onebyone);
+}
+
+void SketchObject::makeMissingVerticalHorizontal(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingVerticalHorizontal(onebyone);
+}
+
+void SketchObject::makeMissingEquality(bool onebyone)
+{
+    if(analyser)
+        analyser->makeMissingEquality(onebyone);
+}
+
+void SketchObject::autoRemoveRedundants(bool updategeo)
+{
+    if(analyser)
+        analyser->autoRemoveRedundants(updategeo);
+}
 
 // Python Sketcher feature ---------------------------------------------------------
 
