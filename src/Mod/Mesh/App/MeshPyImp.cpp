@@ -48,6 +48,10 @@
 
 #include <boost/algorithm/string.hpp>
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#include "numpy/arrayobject.h"
+
+
 using namespace Mesh;
 
 
@@ -1913,4 +1917,63 @@ Py::Tuple MeshPy::getTopology(void) const
     return tuple;
 }
 
+Py::Object MeshPy::getnpFacetsPoints() const
+{
+    MeshObject* mesh = getMeshObjectPtr();
+    
+    _import_array();
+
+    long dims[] = {(long) mesh->countFacets(), 3, 3};
+    PyObject* np_array = PyArray_SimpleNew(3, dims, NPY_FLOAT64);
+    double *arr = (double*) PyArray_DATA((PyArrayObject*) np_array);
+    long i = 0;
+    for (MeshObject::const_facet_iterator it = mesh->facets_begin(); it != mesh->facets_end(); ++it) {
+	for (int j = 0; j < 3; j++)
+	    {
+		MeshPoint pnt = mesh->getPoint(it->PIndex[j]);
+		arr[i] = pnt.x; i++;
+		arr[i] = pnt.y; i++;
+		arr[i] = pnt.z; i++;
+	    }
+    }
+
+    return  Py::Object (np_array);
+}
+
+Py::Object MeshPy::getnpPoints() const
+{
+    MeshObject* mesh = getMeshObjectPtr();
+    
+    _import_array();
+
+    long dims[] = {(long) mesh->countPoints(), 3};
+    PyObject* np_array = PyArray_SimpleNew(2, dims, NPY_FLOAT64);
+    double *arr = (double*) PyArray_DATA((PyArrayObject*) np_array);
+    long i = 0;
+    for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it) {
+	arr[i] = it->x; i++;
+	arr[i] = it->y; i++;
+	arr[i] = it->z; i++;
+    }
+    return Py::Object (np_array);
+}
+
+Py::Object MeshPy::getnpFacets() const
+{
+    MeshObject* mesh = getMeshObjectPtr();
+    
+    _import_array();
+
+    long dims[] = {(long) mesh->countFacets(), 3};
+    PyObject* np_array = PyArray_SimpleNew(2, dims, NPY_LONG);
+    long *arr = (long*) PyArray_DATA((PyArrayObject*) np_array);
+    long i = 0;
+    for (MeshObject::const_facet_iterator it = mesh->facets_begin(); it != mesh->facets_end(); ++it) {
+	for (int j = 0; j < 3; j++)
+	    {
+		arr[i] = it->PIndex[j]; i++;
+	    }
+    }
+    return Py::Object (np_array);
+}
 

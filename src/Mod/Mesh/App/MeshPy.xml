@@ -518,6 +518,24 @@ for p in mesh.Facets:
 			</Documentation>
 			<Parameter Name="Volume" Type="Float" />
 		</Attribute>
+		<Attribute Name="npFacetsPoints" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return a f x 3 x 3 numpy array representing all triangles</UserDocu>
+			</Documentation>
+			<Parameter Name="npFacetsPoints" Type="Object" />
+		</Attribute>
+		<Attribute Name="npPoints" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return a v x 3 array including all vertices.</UserDocu>
+			</Documentation>
+			<Parameter Name="npPoints" Type="Object" />
+		</Attribute>
+		<Attribute Name="npFacets" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return a f x 3 array including all facets indices.</UserDocu>
+			</Documentation>
+			<Parameter Name="npFacets" Type="Object" />
+		</Attribute>
 		<ClassDeclarations>private:
     friend class PropertyMeshKernel;
     class PropertyMeshKernel* parentProperty = nullptr;
