@@ -138,25 +138,27 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         std::pair<std::string,std::string> &elementName, bool append, 
         ElementNameType type, const DocumentObject *filter, const char **_element)
 {
-    const char *element = 0;
     if(!obj || !obj->getNameInDocument())
         return 0;
-    auto ret= obj->resolve(subname,0,0,&element);
+    if(!subname)
+        subname = "";
+    const char *element = Data::ComplexGeoData::findElementName(subname);
     if(_element) *_element = element;
-    if(!ret)
+    auto sobj = obj->getSubObject(subname);
+    if(!sobj)
         return 0;
-    obj = ret->getLinkedObject(true);
+    obj = sobj->getLinkedObject(true);
     if(!obj || (filter && obj!=filter))
         return 0;
     if(!element || !element[0]) {
-        if(append)
-            elementName.second = subname;
-        return ret;
+        if(append) 
+            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+        return sobj;
     }
 
     auto geo = dynamic_cast<GeoFeature*>(obj);
     if(!geo)
-        return ret;
+        return sobj;
     if(!append) 
         elementName = geo->getElementName(element,type);
     else{
@@ -166,7 +168,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
             elementName.first = prefix + names.first;
         elementName.second = prefix + names.second;
     }
-    return ret;
+    return sobj;
 }
 
 bool GeoFeature::hasMissingElement(const char *subname) {

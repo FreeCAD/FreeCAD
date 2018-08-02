@@ -140,9 +140,11 @@ bool PropertyLinkBase::_updateElementReference(
         pos = 0;
     else
         ++pos;
-    if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
-        FC_LOG("element reference update " << sub << " -> " << shadow.first);
-        sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
+    if(pos==pos2) {
+        if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
+            FC_LOG("element reference update " << sub << " -> " << shadow.first);
+            sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
+        } 
     } else if(sub!=shadow.second) {
         FC_LOG("element reference update " << sub << " -> " << shadow.second);
         sub = shadow.second;
@@ -895,7 +897,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(&sub!=&_cSubList[i]) {
+            if(_cSubList[i].size() && sub!=_cSubList[i]) {
                 // Stores the actual value that is shadowed. For new version FC,
                 // we will restore this shadowed value instead.
                 writer.Stream() << "\" " ATTR_SHADOW "=\"" << _cSubList[i];
@@ -932,13 +934,15 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     std::vector<int> mapped;
     std::vector<std::string> values(count);
+    std::vector<std::pair<std::string,std::string> > shadows(count);
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        const char *attr = "value";
-        if(reader.hasAttribute(ATTR_SHADOW))
-            attr = ATTR_SHADOW;
-        values[i] = importSubName(reader,reader.getAttribute(attr));
+        shadows[i].second = importSubName(reader,reader.getAttribute("value"));
+        if(reader.hasAttribute(ATTR_SHADOW)) 
+            values[i] = shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW));
+        else
+            values[i] = shadows[i].second;
         if(reader.hasAttribute(ATTR_MAPPED))
             mapped.push_back(i);
     }
@@ -946,7 +950,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     reader.readEndElement("LinkSub");
 
     if(pcObject) {
-        setValue(pcObject,values);
+        setValue(pcObject,values,&shadows);
         _mapped.swap(mapped);
     }
     else {
@@ -1478,7 +1482,7 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(&sub != &_lSubList[i]) {
+            if(_lSubList[i].size() && sub!=_lSubList[i]) {
                 // Stores the actual value that is shadowed. For new version FC,
                 // we will restore this shadowed value instead.
                 writer.Stream() << "\" " ATTR_SHADOW "=\"" << _lSubList[i];
@@ -1502,6 +1506,8 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     values.reserve(count);
     std::vector<std::string> SubNames;
     SubNames.reserve(count);
+    std::vector<std::pair<std::string,std::string> > shadows;
+    shadows.reserve(count);
     DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
     App::Document* document = father ? father->getDocument() : 0;
     std::vector<int> mapped;
@@ -1515,10 +1521,14 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child) {
             values.push_back(child);
-            const char *attr = "sub";
-            if(reader.hasAttribute(ATTR_SHADOW))
-                attr = ATTR_SHADOW;
-            SubNames.push_back(importSubName(reader,reader.getAttribute(attr)));
+            shadows.emplace_back();
+            auto &shadow = shadows.back();
+            shadow.second = importSubName(reader,reader.getAttribute("sub"));
+            if(reader.hasAttribute(ATTR_SHADOW)) {
+                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW));
+                SubNames.push_back(shadow.first);
+            }else
+                SubNames.push_back(shadow.second);
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
         } else if (reader.isVerbose())
@@ -1529,7 +1539,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     reader.readEndElement("LinkSubList");
 
     // assignment
-    setValues(values,SubNames);
+    setValues(values,SubNames,&shadows);
     _mapped.swap(mapped);
 }
 
@@ -2238,7 +2248,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         "\" name=\"" << objectName <<
         "\" sub=\"" << sub <<
         "\" relative=\"" << (relativePath?"true":"false");
-    if(&sub != &shadowSub.second) {
+    if(subName.size() && sub!=subName) {
         // Stores the actual value that is shadowed. For new version FC,
         // we will restore this shadowed value instead.
         writer.Stream() << "\" " ATTR_SHADOW "=\"" << subName;
@@ -2280,12 +2290,14 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     }
 
     std::string subname;
+    std::pair<std::string,std::string> shadow;
     bool mapped = reader.hasAttribute(ATTR_MAPPED);
     if(reader.hasAttribute("sub")) {
-        const char *attr = "sub";
+        shadow.second = importSubName(reader,reader.getAttribute("sub"));
         if(reader.hasAttribute(ATTR_SHADOW))
-            attr = ATTR_SHADOW;
-        subname = importSubName(reader,reader.getAttribute(attr));
+            subname = shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW));
+        else
+            subname = shadow.second;
     }
 
     if (name.empty()) {
@@ -2295,12 +2307,12 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 
     if(file.size()) {
         this->stamp = stamp;
-        setValue(file.c_str(),name.c_str(),subname.c_str(),relativePath);
+        setValue(file.c_str(),name.c_str(),subname.c_str(),relativePath,&shadow);
         _mapped = mapped;
         return;
     }
 
-    setValue(object,subname.c_str(),relativePath);
+    setValue(object,subname.c_str(),relativePath,&shadow);
     _mapped = mapped;
 }
 
