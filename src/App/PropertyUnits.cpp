@@ -40,6 +40,7 @@
 #include "PropertyUnits.h"
 #include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
+#include <Base/UnitPy.h>
 
 using namespace App;
 using namespace Base;
@@ -113,18 +114,28 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
 
 void PropertyQuantity::setPyObject(PyObject *value)
 {
-    Base::Quantity quant= createQuantityFromPy(value);
-
-    Unit unit = quant.getUnit();
-    if (unit.isEmpty()){
-        PropertyFloat::setValue(quant.getValue());
-        return;
+    // Set the unit if Unit object supplied, else check the unit
+    // and set the value
+    
+    if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
+        Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
+        Base::Unit unit = *(pcObject->getUnitPtr());
+        _Unit = unit;
     }
+    else {
+        Base::Quantity quant= createQuantityFromPy(value);
 
-    if (unit != _Unit)
-        throw Base::UnitsMismatchError("Not matching Unit!");
+        Unit unit = quant.getUnit();
+        if (unit.isEmpty()){
+            PropertyFloat::setValue(quant.getValue());
+            return;
+        }
 
-    PropertyFloat::setValue(quant.getValue());
+        if (unit != _Unit)
+            throw Base::UnitsMismatchError("Not matching Unit!");
+
+        PropertyFloat::setValue(quant.getValue());
+    }
 }
 
 void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
