@@ -623,6 +623,7 @@ class Macro(object):
             self.parsed = True
 
     def fill_details_from_wiki(self, url):
+        code = ""
         try:
             if ctx:
                 u = urllib2.urlopen(url, context=ctx)
@@ -634,26 +635,55 @@ class Macro(object):
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode('utf-8')
         u.close()
-        code = re.findall('<pre>(.*?)<\/pre>', p.replace('\n', '--endl--'))
-        if code:
-            # code = code[0]
-            # take the biggest code block
-            code = sorted(code, key=len)[-1]
-            code = code.replace('--endl--', '\n')
-        else:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
-        # Clean HTML escape codes.
-        try:
-            from HTMLParser import HTMLParser
-        except ImportError:
-            from html.parser import HTMLParser
-        try:
-            code = code.decode('utf8')
-            code = HTMLParser().unescape(code)
-            code = code.encode('utf8')
-            code = code.replace('\xc2\xa0', ' ')
-        except:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + mac + '\n')
+        # check if the macro page has its code hosted elsewhere, download if needed
+        if "rawcodeurl" in p:
+            rawcodeurl = re.findall("rawcodeurl.*?href=\"(http.*?)\">",p)
+            if rawcodeurl:
+                rawcodeurl = rawcodeurl[0]
+                try:
+                    if ctx:
+                        u2 = urllib2.urlopen(rawcodeurl, context=ctx)
+                    else:
+                        u2 = urllib2.urlopen(rawcodeurl)
+                except urllib2.HTTPError:
+                    return
+                # code = u2.read()
+                # github is slow to respond... We need to use this trick below
+                response = ""
+                block = 8192
+                #expected = int(u2.headers['content-length'])
+                while 1:
+                    #print("expected:",expected,"got:",len(response))
+                    data = u2.read(block)
+                    if not data:
+                        break
+                    response += data
+                if response:
+                    code = response
+                if sys.version_info.major >= 3 and isinstance(code, bytes):
+                    code = code.decode('utf-8')
+                u2.close()
+        if not code:
+            code = re.findall('<pre>(.*?)<\/pre>', p.replace('\n', '--endl--'))
+            if code:
+                # code = code[0]
+                # take the biggest code block
+                code = sorted(code, key=len)[-1]
+                code = code.replace('--endl--', '\n')
+            else:
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
+            # Clean HTML escape codes.
+            try:
+                from HTMLParser import HTMLParser
+            except ImportError:
+                from html.parser import HTMLParser
+            try:
+                code = code.decode('utf8')
+                code = HTMLParser().unescape(code)
+                code = code.encode('utf8')
+                code = code.replace('\xc2\xa0', ' ')
+            except:
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
         desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
         if desc:
             desc = desc[0]
