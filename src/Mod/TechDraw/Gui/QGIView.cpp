@@ -79,9 +79,6 @@ QGIView::QGIView()
      locked(false),
      borderVisible(true),
      m_innerView(false)
-     //isAligned(false)
-     //alignMode("")
-     //alignAnchor(nullptr)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -114,9 +111,6 @@ QGIView::QGIView()
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
-//    isAligned = true;
-//    alignMode  = alignment.toStdString();
-//    alignAnchor = item;
     alignHash.clear();
     alignHash.insert(alignment, item);
 }
@@ -130,7 +124,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             newPos.setX(pos().x());
             newPos.setY(pos().y());
         }
-
         // TODO  find a better data structure for this
         // this is just a pair isn't it?
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -140,23 +133,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                 if(alignHash.size() == 1) {   //if aligned.
                     QGraphicsItem*item = alignHash.begin().value();
                     QString alignMode   = alignHash.begin().key();
-
                     if(alignMode == QString::fromLatin1("Vertical")) {
                         newPos.setX(item->pos().x());
                     } else if(alignMode == QString::fromLatin1("Horizontal")) {
                         newPos.setY(item->pos().y());
-                    } else if(alignMode == QString::fromLatin1("45slash")) {
-                        double dist = ( (newPos.x() - item->pos().x()) +
-                                        (item->pos().y() - newPos.y()) ) / 2.0;
-
-                        newPos.setX( item->pos().x() + dist);
-                        newPos.setY( item->pos().y() - dist );
-                    } else if(alignMode == QString::fromLatin1("45backslash")) {
-                        double dist = ( (newPos.x() - item->pos().x()) +
-                                        (newPos.y() - item->pos().y()) ) / 2.0;
-
-                        newPos.setX( item->pos().x() + dist);
-                        newPos.setY( item->pos().y() + dist );
                     }
                 }
             }
@@ -193,7 +173,6 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     if(!locked && isSelected()) {
-        getViewObject()->setMouseMove(true);
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
@@ -201,7 +180,6 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         } else {
             getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
         }
-        getViewObject()->setMouseMove(false);
     }
     QGraphicsItem::mouseReleaseEvent(event);
 }
@@ -214,9 +192,6 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
         m_colCurrent = getSelectColor();
     } else {
         m_colCurrent = getPreColor();
-        //if(shape().contains(event->pos())) {                     // TODO don't like this for determining preselect (MLP)
-        //    m_colCurrent = getPreColor();
-        //}
     }
     drawBorder();
 }
@@ -308,8 +283,6 @@ const std::string QGIView::getViewNameAsString() const
 
 TechDraw::DrawView * QGIView::getViewObject() const
 {
-    //DocumentObject* obj = doc->getObject(viewName.c_str());
-    //TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(obj);
     return viewObj;
 }
 
@@ -356,7 +329,7 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
+    m_font.setPointSize(getPrefFontSize());     //scene units (0.1 mm), not points
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -391,7 +364,7 @@ void QGIView::drawBorder()
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
+    m_font.setPointSize(getPrefFontSize());     //scene units (0.1 mm), not points
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);

@@ -461,8 +461,8 @@ void Cell::setSpans(int rows, int columns)
     if (rows != rowSpan || columns != colSpan) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
-        rowSpan = rows;
-        colSpan = columns;
+        rowSpan = (rows == -1 ? 1 : rows);
+        colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         setUsed(SPANS_UPDATED);
     }
