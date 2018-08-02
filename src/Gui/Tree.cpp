@@ -63,11 +63,11 @@ FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
 #define _TREE_PRINT(_level,_func,_msg) \
     _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,Message,_msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,Warning,_msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,Error,_msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,Log,_msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,Log,_msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,NotifyMessage,_msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,NotifyWarning,_msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,NotifyError,_msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,NotifyLog,_msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,NotifyLog,_msg)
 
 using namespace Gui;
 
