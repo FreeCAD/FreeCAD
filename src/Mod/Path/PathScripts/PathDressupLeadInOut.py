@@ -37,7 +37,7 @@ from PySide import QtCore
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
-# Qt tanslation handling
+
 def translate(text, context="Path_DressupLeadInOut", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -48,6 +48,7 @@ rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
 global currLocation
 currLocation = {}
+
 
 class ObjectDressup:
 
@@ -79,6 +80,8 @@ class ObjectDressup:
         obj.LeadOut = True
         obj.KeepToolDown = False
         obj.UseMashineCRC = False
+        if not obj.Base.UseComp:
+            obj.UseMashineCRC = True
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
@@ -117,18 +120,18 @@ class ObjectDressup:
             vy = round(y / length, 0)
         return FreeCAD.Vector(vx, vy, 0)
 
-    def getOffVector(self,obj,v,R):
+    def getOffVector(self, obj, v, R):
         if self.getDirectionOfPath(obj) == 'right':
             return FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
         else:
             return FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
- 
-    def get_arcdir(self,obj):
+
+    def get_arcdir(self, obj):
         if self.getDirectionOfPath(obj) == 'left':
             return "G3"
         else:
             return "G2"
-       
+
     def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
         global currLocation
@@ -138,7 +141,7 @@ class ObjectDressup:
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
         toolnummer = tc.ToolNumber
-        arcdir = self.get_arcdir(obj) # set the correct twist command
+        arcdir = self.get_arcdir(obj)  # Set the correct twist command
         R = obj.Length.Value  # Radius of roll or length
         p0 = queue[0].Placement.Base
         p1 = queue[1].Placement.Base
@@ -146,9 +149,9 @@ class ObjectDressup:
             v = self.normalize(p1.sub(p0))
             # PathLog.notice(" CURRENT_IN  : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
         else:
-            arccenter = FreeCAD.Vector(p0.x+queue[1].I,p0.y+queue[1].J, 0.0)
+            arccenter = FreeCAD.Vector(p0.x+queue[1].I, p0.y+queue[1].J, 0.0)
             v = self.normalize(p1.sub(arccenter))
-        off_v = self.getOffVector(obj,v,R)
+        off_v = self.getOffVector(obj, v, R)
         offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0)  # IJ
         if obj.RadiusCenter == 'Radius':
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
@@ -192,19 +195,19 @@ class ObjectDressup:
         R = obj.Length.Value  # Radius of roll or length
         p0 = queue[0].Placement.Base
         p1 = queue[1].Placement.Base
-        arcdir = self.get_arcdir(obj) # set the correct twist command
+        arcdir = self.get_arcdir(obj)  # set the correct twist command
         if queue[1].Name == "G1":  # line
             v = self.normalize(p1.sub(p0))
         else:  # dealing with a circle
-            arccenter = FreeCAD.Vector(p0.x+queue[1].I,p0.y+queue[1].J, 0.0)
+            arccenter = FreeCAD.Vector(p0.x+queue[1].I, p0.y+queue[1].J, 0.0)
             v = self.normalize(arccenter.sub(p0))
-        off_v = self.getOffVector(obj,v,R)
+        off_v = self.getOffVector(obj, v, R)
         offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0.0)
         if obj.RadiusCenter == 'Radius':
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
         else:
             leadend = p1.add(off_v)  # Dmode
-        IJ = off_v  
+        IJ = off_v
         if obj.StyleOff == 'Arc':
             arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
@@ -281,6 +284,7 @@ class ObjectDressup:
         commands = newpath
         return Path.Path(commands)
 
+
 class ViewProviderDressup:
 
     def __init__(self, vobj):
@@ -316,6 +320,7 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         return None
 
+
 class CommandPathDressupLeadInOut:
 
     def GetResources(self):
@@ -342,6 +347,9 @@ class CommandPathDressupLeadInOut:
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))
             return
+        if baseObject.JoinType == "Round":
+            # We need to make shure no Extra Arcs on Start
+            baseObject.JoinType = "Square"
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("Create LeadInOut Dressup"))
         FreeCADGui.addModule("PathScripts.PathDressupLeadInOut")
