@@ -68,8 +68,6 @@ App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Con
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
 DrawView::DrawView(void)
-  : autoPos(true),
-    mouseMove(false)
 {
     static const char *group = "Base";
 

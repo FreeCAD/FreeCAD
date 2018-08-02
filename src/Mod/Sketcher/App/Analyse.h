@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2018 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
+ *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,58 +21,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIProjGroup_H
-#define DRAWINGGUI_QGIProjGroup_H
 
-#include <QGraphicsItemGroup>
-#include <QObject>
-#include <App/PropertyLinks.h>
+#ifndef SKETCHER_ANALYSE_H
+#define SKETCHER_ANALYSE_H
 
-#include "QGIViewCollection.h"
+#include <vector>
+#include <Mod/Sketcher/App/Constraint.h>
 
-QT_BEGIN_NAMESPACE
-class QGraphicsScene;
-class QGraphicsSceneMouseEvent;
-class QEvent;
-QT_END_NAMESPACE
+namespace Sketcher {
 
-namespace TechDrawGui
-{
-
-class TechDrawGuiExport QGIProjGroup : public QGIViewCollection
-{
-public:
-    QGIProjGroup();
-
-    // TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
-    ~QGIProjGroup() = default;
-
-    enum {Type = QGraphicsItem::UserType + 113};
-    int type() const { return Type;}
-
-    void alignTo(QGIProjGroup *, const QString &alignment);
-
-    virtual void updateView(bool update = false);
-    virtual void drawBorder(void);
-
-protected:
-    virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    // Mouse handling
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event );
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-    QGIView * getAnchorQItem() const;
-
-private:
-    /// Convenience function
-    TechDraw::DrawProjGroup * getDrawView(void) const;
-
-    QGraphicsRectItem *m_backgroundItem;
-    QGraphicsItem* m_origin;
-    QPoint mousePos;
+struct ConstraintIds {
+        Base::Vector3d v;
+        int First;
+        int Second;
+        Sketcher::PointPos FirstPos;
+        Sketcher::PointPos SecondPos;
+        Sketcher::ConstraintType Type;
 };
 
-} // namespace MDIViewPageGui
+struct Constraint_Equal  : public std::unary_function<const struct Sketcher::ConstraintIds&, bool>
+{
+    struct Sketcher::ConstraintIds c;
+    Constraint_Equal(const ConstraintIds& c) : c(c)
+    {
+    }
+    bool operator()(const ConstraintIds& x) const
+    {
+        if (c.First == x.First && c.FirstPos == x.FirstPos &&
+            c.Second == x.Second && c.SecondPos == x.SecondPos)
+            return true;
+        if (c.Second == x.First && c.SecondPos == x.FirstPos &&
+            c.First == x.Second && c.FirstPos == x.SecondPos)
+            return true;
+        return false;
+    }
+};
 
-#endif // DRAWINGGUI_QGIProjGroup_H
+} //namespace Sketcher
+
+#endif // SKETCHER_ANALYSE_H

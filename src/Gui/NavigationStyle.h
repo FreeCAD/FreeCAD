@@ -100,7 +100,7 @@ public:
 
     enum RotationCenterMode {
         ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
-        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor postion. */
+        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor position. */
     };
 
 public:

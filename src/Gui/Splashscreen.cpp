@@ -281,6 +281,10 @@ class SystemInfo {
 public:
 static QString getOperatingSystem()
 {
+#if QT_VERSION >= 0x050400
+    return QSysInfo::prettyProductName();
+#endif
+
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
     {

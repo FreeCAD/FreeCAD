@@ -120,7 +120,7 @@ class _CommandArchMaterial:
         FreeCADGui.doCommand("mat = Arch.makeMaterial()")
         for obj in sel:
             if hasattr(obj,"Material"):
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject("+obj.Name+").Material = mat")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\").Material = mat")
         FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

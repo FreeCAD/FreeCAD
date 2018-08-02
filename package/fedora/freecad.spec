@@ -44,6 +44,8 @@ BuildRequires:  gettext
 BuildRequires:  graphviz
 BuildRequires:  graphviz
 BuildRequires:  libicu-devel
+BuildRequires:  libspnav
+BuildRequires:  libspnav-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  mesa-libGLU-devel
 BuildRequires:  netgen-mesher-devel

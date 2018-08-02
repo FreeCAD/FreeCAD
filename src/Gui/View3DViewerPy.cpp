@@ -75,6 +75,13 @@ void View3DInventorViewerPy::init_type()
         "getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection).");
     add_varargs_method("setPickRadius", &View3DInventorViewerPy::setPickRadius,
         "setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection).");
+    add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
+        "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
+    add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
+        "isEnabledNaviCube() -> bool: check whether the navi cube is enabled.");
+    add_varargs_method("setNaviCubeCorner", &View3DInventorViewerPy::setNaviCubeCorner,
+        "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
+        "0=top left, 1=top right, 2=bottom left, 3=bottom right");
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -350,4 +357,32 @@ Py::Object View3DInventorViewerPy::setPickRadius(const Py::Tuple& args)
     catch(...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
+}
+
+Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
+{
+    PyObject* m=Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
+        throw Py::Exception();
+    _viewer->setEnabledNaviCube(PyObject_IsTrue(m));
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::isEnabledNaviCube(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    bool ok = _viewer->isEnabledNaviCube();
+    return Py::Boolean(ok);
+}
+
+Py::Object View3DInventorViewerPy::setNaviCubeCorner(const Py::Tuple& args)
+{
+    int pos;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &pos))
+        throw Py::Exception();
+    if (pos < 0 || pos > 3)
+        throw Py::IndexError("Value out of range");
+    _viewer->setNaviCubeCorner(pos);
+    return Py::None();
 }

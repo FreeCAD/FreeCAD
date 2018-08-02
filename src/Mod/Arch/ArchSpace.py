@@ -299,6 +299,9 @@ class _Space(ArchComponent.Component):
         if not "Conditioning" in pl:
             obj.addProperty("App::PropertyEnumeration","Conditioning",  "Space",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
             obj.Conditioning = ConditioningTypes
+        if not "Internal" in pl:
+            obj.addProperty("App::PropertyBool",       "Internal",     "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
+            obj.Internal = True
         self.Type = "Space"
         obj.setEditorMode("HorizontalArea",2)
 
