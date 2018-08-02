@@ -556,7 +556,7 @@ public:
      * These functions uses internal caches for sub shape maps to imporve performance
      */
     //@{
-    void initCache(int reset=0) const;
+    void initCache(int reset=0, const char *file=0, int line=0) const;
     int findShape(const TopoDS_Shape &subshape) const;
     TopoDS_Shape findShape(const char *name) const;
     TopoDS_Shape findShape(TopAbs_ShapeEnum type, int idx) const;

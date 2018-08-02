@@ -315,16 +315,22 @@ public:
     }
 };
 
-void TopoShape::initCache(int reset) const{
+void TopoShape::initCache(int reset, const char *file, int line) const{
     if(reset>0 || !_Cache || !_Cache->shape.IsEqual(_Shape)) {
-        if(_Cache && reset==0)
-            FC_TRACE("invalidate cache");
+        if(_Cache && reset==0) {
+            if(file)
+                _FC_TRACE(file,line,"invalidate cache");
+            else
+                FC_TRACE("invalidate cache");
+        }
         _Cache = std::make_shared<Cache>(_Shape);
     }
 }
 
+#define INIT_SHAPE_CACHE() initCache(0,__FILE__,__LINE__)
+
 int TopoShape::findShape(const TopoDS_Shape &subshape) const {
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->findShape(subshape);
 }
 
@@ -336,22 +342,22 @@ TopoDS_Shape TopoShape::findShape(const char *name) const {
     auto idx = shapeTypeAndIndex(name);
     if(!idx.second)
         return TopoDS_Shape();
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->findShape(idx.first,idx.second);
 }
 
 TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const {
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->findShape(type,idx);
 }
 
 int TopoShape::findAncestor(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const {
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->findShape(_Cache->findAncestor(subshape,type));
 }
 
 TopoDS_Shape TopoShape::findAncestorShape(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const {
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->findAncestor(subshape,type);
 }
 
@@ -367,7 +373,7 @@ std::vector<int> TopoShape::findAncestors(const TopoDS_Shape &subshape, TopAbs_S
 std::vector<TopoDS_Shape> TopoShape::findAncestorsShapes(
         const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const
 {
-    initCache();
+    INIT_SHAPE_CACHE();
     std::vector<TopoDS_Shape> shapes;
     _Cache->findAncestor(subshape,type,&shapes);
     return shapes;
@@ -378,8 +384,8 @@ bool TopoShape::canMapElement(const TopoShape &other) const {
         return false;
     if(!other.Tag && !other.getElementMapSize())
         return false;
-    initCache();
-    other.initCache();
+    INIT_SHAPE_CACHE();
+    other.INIT_SHAPE_CACHE();
     _Cache->relations.clear();
     return true;
 }
@@ -444,7 +450,7 @@ std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
     std::vector<TopoDS_Shape> ret;
     if(isNull())
         return ret;
-    initCache();
+    INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     ret.reserve(info.shapes.Extent());
     for(int i=1;i<=info.shapes.Extent();++i)
@@ -455,7 +461,7 @@ std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
 std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
     if(isNull())
         return std::vector<TopoShape>();
-    initCache();
+    INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     int idx=0;
     for(auto &shape : info.getTopoShapes()) {
@@ -484,7 +490,7 @@ std::pair<TopAbs_ShapeEnum,int> TopoShape::shapeTypeAndIndex(const char *name) {
 }
 
 unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
-    initCache();
+    INIT_SHAPE_CACHE();
     return _Cache->countShape(type);
 }
 
@@ -524,7 +530,7 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
             Standard_Failure::Raise("Invalid shape index");
         return TopoShape();
     }
-    initCache();
+    INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     if(idx > info.shapes.Extent()) {
         if(!silent)
@@ -1909,7 +1915,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     std::string _op = op;
     _op += '_';
 
-    initCache();
+    INIT_SHAPE_CACHE();
     ShapeInfo vinfo(TopAbs_VERTEX,_Cache->getInfo(TopAbs_VERTEX).shapes);
     ShapeInfo einfo(TopAbs_EDGE,_Cache->getInfo(TopAbs_EDGE).shapes);
     ShapeInfo finfo(TopAbs_FACE,_Cache->getInfo(TopAbs_FACE).shapes);
@@ -2580,7 +2586,7 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
 std::vector<std::pair<std::string,std::string> > 
 TopoShape::getRelatedElements(const char *_name, bool sameType) const {
 
-    initCache();
+    INIT_SHAPE_CACHE();
     ShapeRelationKey key(_name,sameType);
     auto it = _Cache->relations.find(key);
     if(it!=_Cache->relations.end())
@@ -2665,7 +2671,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     }
     TopoShape tmp(*this);
     Hasher = hasher;
-    initCache(true);
+    initCache(1,__FILE__,__LINE__);
     Tag = tag;
     resetElementMap();
     mapSubElement(tmp,postfix,!hasher.isNull());
@@ -2674,7 +2680,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
 void TopoShape::cacheRelatedElements(const char *name, bool sameType,
         const std::vector<std::pair<std::string,std::string> > &names) const
 {
-    initCache();
+    INIT_SHAPE_CACHE();
     _Cache->relations[ShapeRelationKey(name,sameType)] = names;
 }
 
