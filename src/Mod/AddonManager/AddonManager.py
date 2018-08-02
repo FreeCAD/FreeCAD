@@ -135,7 +135,7 @@ class AddonsInstaller(QtGui.QDialog):
         self.macro_repo_dir = tempfile.mkdtemp()
 
         self.setObjectName("AddonsInstaller")
-        self.resize(326, 304)
+        self.resize(626, 404)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.tabWidget = QtGui.QTabWidget()
         self.verticalLayout.addWidget(self.tabWidget)
