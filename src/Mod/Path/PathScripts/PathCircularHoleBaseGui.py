@@ -88,6 +88,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.blockSignals(False)
+        self.form.baseList.setSortingEnabled(True)
         self.itemActivated()
 
     def itemActivated(self):
