@@ -313,7 +313,10 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                              &transition)) {
         try {
 #ifndef FC_NO_ELEMENT_MAP
-            return Py::new_reference_to(shape2pyshape(TopoShape().makEPipeShell(getPyShapes(obj), 
+            std::vector<TopoShape> shapes;
+            shapes.push_back(*getTopoShapePtr());
+            getPyShapes(obj,shapes);
+            return Py::new_reference_to(shape2pyshape(TopoShape().makEPipeShell(shapes, 
                             PyObject_IsTrue(make_solid) ? Standard_True : Standard_False,
                             PyObject_IsTrue(is_Frenet)  ? Standard_True : Standard_False, transition)));
 #else
