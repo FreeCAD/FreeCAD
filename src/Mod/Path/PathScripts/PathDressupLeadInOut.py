@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 LTS <SammelLothar@gmx.de> under LGPL               *
+# *   Copyright (c) 2018 LTS <SammelLothar@gmx.de> under LGPL               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
