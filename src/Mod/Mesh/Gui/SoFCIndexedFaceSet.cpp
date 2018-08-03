@@ -47,61 +47,210 @@
 #endif
 
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
 #include "SoFCIndexedFaceSet.h"
-#include <QtOpenGL.h>
 
-#ifdef HAVE_QT5_OPENGL
 #define RENDER_GL_VAO
-#endif
 //#define RENDER_GLARRAYS
-
-#ifdef RENDER_GL_VAO
-#include <QOpenGLBuffer>
-#include <QOpenGLFunctions>
-#endif
 
 
 
 using namespace MeshGui;
 
 #if defined RENDER_GL_VAO
-class MeshRenderer::Private : protected QOpenGLFunctions {
+
+class CoinOpenGLBuffer {
 public:
-    QOpenGLBuffer vertices;
-    QOpenGLBuffer indices;
+    CoinOpenGLBuffer(GLenum type)
+      : target(type)
+      , bufferId(0)
+      , context(-1)
+      , currentContext(-1)
+      , glue(0)
+    {
+        SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
+    }
+    ~CoinOpenGLBuffer()
+    {
+        SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
+
+        destroy();
+    }
+    void setCurrentContext(uint32_t ctx)
+    {
+        currentContext = ctx;
+        glue = cc_glglue_instance(currentContext);
+    }
+    bool create()
+    {
+        if (bufferId > 0)
+            return true;
+        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
+        glGenBuffersARB(1, &bufferId);
+        context = currentContext;
+        return true;
+    }
+    bool isCreated() const
+    {
+        return (bufferId > 0);
+    }
+    void destroy()
+    {
+        // schedule delete for all allocated GL resources
+        if (bufferId > 0) {
+            void * ptr0 = (void*) ((uintptr_t) bufferId);
+            SoGLCacheContextElement::scheduleDeleteCallback(context, buffer_delete, ptr0);
+            bufferId = 0;
+        }
+    }
+    void allocate(const void *data, int count)
+    {
+        if (bufferId > 0) {
+            PFNGLBUFFERDATAPROC glBufferDataARB = (PFNGLBUFFERDATAPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
+            glBufferDataARB(target, count, data, GL_STATIC_DRAW);
+        }
+    }
+    bool bind()
+    {
+        if (bufferId) {
+            if (context != currentContext) {
+                SoDebugError::postWarning("CoinOpenGLBuffer::bind",
+                                          "buffer not created");
+                return false;
+            }
+            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
+            glBindBufferARB(target, bufferId);
+            return true;
+        }
+        return false;
+    }
+    void release()
+    {
+        if (bufferId) {
+            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
+            glBindBufferARB(target, 0);
+        }
+    }
+    GLuint getBufferId() const
+    {
+        return bufferId;
+    }
+    uint32_t getBoundContext() const
+    {
+        return context;
+    }
+    int size() const
+    {
+        GLint value = -1;
+        if (bufferId > 0) {
+            PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(glue, "glGetBufferParameterivARB");
+            glGetBufferParameteriv(target, GL_BUFFER_SIZE, &value);
+        }
+        return value;
+    }
+
+private:
+    static void context_destruction_cb(uint32_t context, void * userdata)
+    {
+        CoinOpenGLBuffer * self = static_cast<CoinOpenGLBuffer*>(userdata);
+
+        if (self->context == context && self->bufferId) {
+            const cc_glglue * glue = cc_glglue_instance((int) context);
+            PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
+
+            GLuint buffer = self->bufferId;
+            glDeleteBuffersARB(1, &buffer);
+            self->context = -1;
+            self->bufferId = 0;
+        }
+    }
+    static void buffer_delete(void * closure, uint32_t contextid)
+    {
+        const cc_glglue * glue = cc_glglue_instance((int) contextid);
+        GLuint id = (GLuint) ((uintptr_t) closure);
+        cc_glglue_glDeleteBuffers(glue, 1, &id);
+    }
+
+    GLenum target;
+    GLuint bufferId;
+    uint32_t context;
+    uint32_t currentContext;
+    const cc_glglue* glue;
+};
+
+class MeshRenderer::Private {
+public:
+    CoinOpenGLBuffer vertices;
+    CoinOpenGLBuffer indices;
     const SbColor * pcolors;
     SoMaterialBindingElement::Binding matbinding;
+    bool initialized;
 
     Private();
-    void generateGLArrays(SoMaterialBindingElement::Binding matbind,
+    ~Private();
+    bool canRenderGLArray(SoGLRenderAction *) const;
+    void generateGLArrays(SoGLRenderAction* action,
+        SoMaterialBindingElement::Binding matbind,
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction*);
-    void renderCoordsGLArray(SoGLRenderAction *action);
+    void renderCoordsGLArray(SoGLRenderAction *);
+
+private:
+    void renderGLArray(SoGLRenderAction *, GLenum);
 };
 
 MeshRenderer::Private::Private()
-  : vertices(QOpenGLBuffer::VertexBuffer)
-  , indices(QOpenGLBuffer::IndexBuffer)
+  : vertices(GL_ARRAY_BUFFER)
+  , indices(GL_ELEMENT_ARRAY_BUFFER)
   , pcolors(0)
   , matbinding(SoMaterialBindingElement::OVERALL)
+  , initialized(false)
 {
-    initializeOpenGLFunctions();
-
-    vertices.create();
-    indices.create();
-
-    vertices.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    indices.setUsagePattern(QOpenGLBuffer::StaticDraw);
 }
 
-void MeshRenderer::Private::generateGLArrays(SoMaterialBindingElement::Binding matbind,
+MeshRenderer::Private::~Private()
+{
+}
+
+bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
+{
+    static bool init = false;
+    static bool vboAvailable = false;
+    if (!init) {
+        std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
+        vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        init = true;
+    }
+
+    if (!vboAvailable)
+        return false;
+
+    // if no buffer is created we must pass here in order to create it afterwards
+    if (!indices.isCreated())
+        return true;
+    return indices.getBoundContext() == action->getCacheContext();
+}
+
+void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
+                                             SoMaterialBindingElement::Binding matbind,
                                              std::vector<float>& vertex, std::vector<int32_t>& index)
 {
     if (vertex.empty() || index.empty())
         return;
+
+    // lazy initialization
+    vertices.setCurrentContext(action->getCacheContext());
+    indices.setCurrentContext(action->getCacheContext());
+
+    if (!initialized) {
+        vertices.create();
+        indices.create();
+        initialized = true;
+    }
+
     vertices.bind();
     vertices.allocate(&(vertex[0]),
                       vertex.size() * sizeof(float));
@@ -114,8 +263,17 @@ void MeshRenderer::Private::generateGLArrays(SoMaterialBindingElement::Binding m
     this->matbinding = matbind;
 }
 
-void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *)
+void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
 {
+    if (!initialized) {
+        SoDebugError::postWarning("MeshRenderer",
+                                  "not initialized");
+        return;
+    }
+
+    vertices.setCurrentContext(action->getCacheContext());
+    indices.setCurrentContext(action->getCacheContext());
+
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -126,34 +284,25 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *)
         glInterleavedArrays(GL_C4F_N3F_V3F, 0, 0);
     else
         glInterleavedArrays(GL_N3F_V3F, 0, 0);
-    glDrawElements(GL_TRIANGLES, indices.size() / sizeof(uint32_t),
+
+    glDrawElements(mode, indices.size() / sizeof(uint32_t),
                    GL_UNSIGNED_INT, NULL);
 
     vertices.release();
     indices.release();
+
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
+void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 {
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
+    renderGLArray(action, GL_TRIANGLES);
+}
 
-    vertices.bind();
-    indices.bind();
-
-    if (matbinding != SoMaterialBindingElement::OVERALL)
-        glInterleavedArrays(GL_C4F_N3F_V3F, 0, 0);
-    else
-        glInterleavedArrays(GL_N3F_V3F, 0, 0);
-    glDrawElements(GL_POINTS, indices.size() / sizeof(uint32_t),
-                   GL_UNSIGNED_INT, NULL);
-
-    vertices.release();
-    indices.release();
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
+void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *action)
+{
+    renderGLArray(action, GL_POINTS);
 }
 #elif defined RENDER_GLARRAYS
 class MeshRenderer::Private {
@@ -169,13 +318,21 @@ public:
     {
     }
 
-    void generateGLArrays(SoMaterialBindingElement::Binding matbind,
+    bool canRenderGLArray(SoGLRenderAction *) const;
+    void generateGLArrays(SoGLRenderAction* action,
+        SoMaterialBindingElement::Binding matbind,
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction *action);
     void renderCoordsGLArray(SoGLRenderAction *action);
 };
 
-void MeshRenderer::Private::generateGLArrays(SoMaterialBindingElement::Binding matbind,
+bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *) const
+{
+    return true;
+}
+
+void MeshRenderer::Private::generateGLArrays(SoGLRenderAction*,
+                                             SoMaterialBindingElement::Binding matbind,
                                              std::vector<float>& vertex, std::vector<int32_t>& index)
 {
     if (vertex.empty() || index.empty())
@@ -260,7 +417,11 @@ public:
     {
     }
 
-    void generateGLArrays(SoMaterialBindingElement::Binding,
+    bool canRenderGLArray(SoGLRenderAction *) const {
+        return false;
+    }
+    void generateGLArrays(SoGLRenderAction*,
+        SoMaterialBindingElement::Binding,
         std::vector<float>&, std::vector<int32_t>&)
     {
     }
@@ -283,14 +444,14 @@ MeshRenderer::~MeshRenderer()
     delete p;
 }
 
-void MeshRenderer::generateGLArrays(SoState* state, SoMaterialBindingElement::Binding matbind,
+void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingElement::Binding matbind,
                                     std::vector<float>& vertex, std::vector<int32_t>& index)
 {
-    SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
+    SoGLLazyElement* gl = SoGLLazyElement::getInstance(action->getState());
     if (gl) {
         p->pcolors = gl->getDiffusePointer();
     }
-    p->generateGLArrays(matbind, vertex, index);
+    p->generateGLArrays(action, matbind, vertex, index);
 }
 
 // Implementation                            | FPS
@@ -321,6 +482,11 @@ void MeshRenderer::renderCoordsGLArray(SoGLRenderAction *action)
 void MeshRenderer::renderFacesGLArray(SoGLRenderAction *action)
 {
     p->renderFacesGLArray(action);
+}
+
+bool MeshRenderer::canRenderGLArray(SoGLRenderAction *action) const
+{
+    return p->canRenderGLArray(action);
 }
 
 bool MeshRenderer::matchMaterial(SoState* state) const
@@ -425,16 +591,17 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
 #endif
 #if defined (RENDER_GLARRAYS) || defined(RENDER_GL_VAO)
 
+        SbBool matchCtx = render.canRenderGLArray(action);
 #if 0
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
 
-        if (matbind == SoMaterialBindingElement::OVERALL) {
+        if (matbind == SoMaterialBindingElement::OVERALL && matchCtx) {
             SoMaterialBundle mb(action);
             mb.sendFirst();
             if (updateGLArray) {
                 updateGLArray = false;
-                generateGLArrays(state);
+                generateGLArrays(action);
             }
             render.renderFacesGLArray(action);
         }
@@ -442,12 +609,18 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
             inherited::GLRender(action);
         }
 #else
-        if (updateGLArray.getValue()) {
+        // get the VBO status of the viewer
+        SbBool hasVBO = true;
+        //Gui::SoGLVBOActivatedElement::get(state, hasVBO);
+        if (!matchCtx)
+            hasVBO = false;
+
+        if (hasVBO && updateGLArray.getValue()) {
             updateGLArray = false;
-            generateGLArrays(state);
+            generateGLArrays(action);
         }
 
-        if (render.matchMaterial(state)) {
+        if (hasVBO && render.matchMaterial(state)) {
             SoMaterialBundle mb(action);
             mb.sendFirst();
             render.renderFacesGLArray(action);
@@ -581,7 +754,7 @@ void SoFCIndexedFaceSet::invalidate()
     updateGLArray = true;
 }
 
-void SoFCIndexedFaceSet::generateGLArrays(SoState * state)
+void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
 {
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
@@ -596,6 +769,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoState * state)
 
     SbBool sendNormals = true;
 
+    SoState* state = action->getState();
     this->getVertexData(state, coords, normals, cindices,
                         nindices, tindices, mindices, numindices,
                         sendNormals, normalCacheUsed);
@@ -761,7 +935,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoState * state)
         }
     }
 
-    render.generateGLArrays(state, matbind, face_vertices, face_indices);
+    render.generateGLArrays(action, matbind, face_vertices, face_indices);
 }
 
 void SoFCIndexedFaceSet::doAction(SoAction * action)

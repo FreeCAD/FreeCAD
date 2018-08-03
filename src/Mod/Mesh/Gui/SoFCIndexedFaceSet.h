@@ -43,10 +43,11 @@ class MeshRenderer
 public:
     MeshRenderer();
     ~MeshRenderer();
-    void generateGLArrays(SoState*, SoMaterialBindingElement::Binding binding,
+    void generateGLArrays(SoGLRenderAction*, SoMaterialBindingElement::Binding binding,
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction *action);
     void renderCoordsGLArray(SoGLRenderAction *action);
+    bool canRenderGLArray(SoGLRenderAction *action) const;
     bool matchMaterial(SoState*) const;
     static bool shouldRenderDirectly(bool);
 
@@ -125,7 +126,7 @@ private:
     void stopVisibility(SoAction * action);
     void renderVisibleFaces(const SbVec3f *);
 
-    void generateGLArrays(SoState * state);
+    void generateGLArrays(SoGLRenderAction * action);
 
 private:
     MeshRenderer render;
