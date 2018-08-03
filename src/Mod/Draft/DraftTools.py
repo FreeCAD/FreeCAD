@@ -75,14 +75,16 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
-    if not text: FreeCAD.Console.PrintMessage("")
-    else:
-        if mode == 'warning':
-            FreeCAD.Console.PrintWarning(text)
-        elif mode == 'error':
-            FreeCAD.Console.PrintError(text)
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("Verbose",True):
+        if not text: 
+            FreeCAD.Console.PrintMessage("")
         else:
-            FreeCAD.Console.PrintMessage(text)
+            if mode == 'warning':
+                FreeCAD.Console.PrintWarning(text)
+            elif mode == 'error':
+                FreeCAD.Console.PrintError(text)
+            else:
+                FreeCAD.Console.PrintMessage(text)
 
 def formatUnit(exp,unit="mm"):
     '''returns a formatting string to set a number to the correct unit'''
