@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>487</width>
-    <height>489</height>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,47 +80,58 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="toolTip">
-           <string>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</string>
-          </property>
-          <property name="text">
-           <string>Global copy mode</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>copymode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+        <property name="toolTip">
+         <string>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</string>
+        </property>
+        <property name="text">
+         <string>Verbose command line mode</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Verbose</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_18">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-          <property name="toolTip">
-           <string>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</string>
-          </property>
-          <property name="text">
-           <string>Select base objects after copying</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>selectBaseObjects</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+        <property name="toolTip">
+         <string>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</string>
+        </property>
+        <property name="text">
+         <string>Global copy mode</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>copymode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+        <property name="toolTip">
+         <string>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</string>
+        </property>
+        <property name="text">
+         <string>Select base objects after copying</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>selectBaseObjects</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -276,64 +287,52 @@ Values with differences below this value will be treated as same.</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_22">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
-          <property name="toolTip">
-           <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
-          </property>
-          <property name="text">
-           <string>Use Part Primitives when available</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UsePartPrimitives</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+        <property name="toolTip">
+         <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
+        </property>
+        <property name="text">
+         <string>Use Part Primitives when available</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UsePartPrimitives</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</string>
-          </property>
-          <property name="text">
-           <string>Fill objects with faces whenever possible</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>fillmode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+        <property name="toolTip">
+         <string>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</string>
+        </property>
+        <property name="text">
+         <string>Fill objects with faces whenever possible</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>fillmode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox">
-          <property name="text">
-           <string>When drawing lines, set focus on Length instead of X coordinate</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>focusOnLength</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="text">
+         <string>When drawing lines, set focus on Length instead of X coordinate</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>focusOnLength</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
