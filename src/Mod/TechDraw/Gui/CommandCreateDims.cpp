@@ -75,7 +75,9 @@ enum EdgeType{
         isVertical,
         isDiagonal,
         isCircle,
-        isCurve,
+        isEllipse,
+        isBSplineCircle,
+        isBSpline,
         isAngle
     };
 
@@ -280,6 +282,18 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     if (edgeType == isCircle) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
+    } else if (edgeType == isBSplineCircle) {
+        QMessageBox::StandardButton result = 
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
+                                                   QObject::tr("Selected edge is a BSpline.  Radius will be approximate."),
+                                                   QMessageBox::Ok | QMessageBox::Cancel,
+                                                   QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
     } else {
         std::stringstream edgeMsg;
         edgeMsg << "Can't make a radius Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
@@ -368,6 +382,18 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     if (edgeType == isCircle) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
+    } else if (edgeType == isBSplineCircle) {
+        QMessageBox::StandardButton result = 
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
+                                                   QObject::tr("Selected edge is a BSpline.  Diameter will be approximate."),
+                                                   QMessageBox::Ok | QMessageBox::Cancel,
+                                                   QMessageBox::Cancel);
+        if (result == QMessageBox::Ok) {
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else {
+            return;
+        }
     } else {
         std::stringstream edgeMsg;
         edgeMsg << "Can't make a diameter Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
@@ -1020,9 +1046,15 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                        geom->geomType == TechDrawGeometry::ARCOFCIRCLE ) {
                 edgeType = isCircle;
             } else if (geom->geomType == TechDrawGeometry::ELLIPSE ||
-                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ||
-                       geom->geomType == TechDrawGeometry::BSPLINE) {
-                edgeType = isCurve;
+                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE) {
+                edgeType = isEllipse;
+            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
+                TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*>(geom);
+                if (spline->isCircle()) {           
+                    edgeType = isBSplineCircle;
+                } else {
+                    edgeType = isBSpline;
+                }
             } else {
                 edgeType = isInvalid;
             }
@@ -1154,8 +1186,14 @@ char* _edgeTypeToText(int e)
         case isCircle:
             result = "circle";
             break;
-        case isCurve:
-            result = "curve";
+        case isEllipse:
+            result = "ellipse";
+            break;
+        case isBSpline:
+            result = "bspline";
+            break;
+        case isBSplineCircle:
+            result = "circular bspline";
             break;
         case isAngle:
             result = "angle";
