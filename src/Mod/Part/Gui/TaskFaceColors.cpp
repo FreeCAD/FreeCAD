@@ -32,6 +32,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <QFontMetrics>
 # include <QMessageBox>
 # include <QSet>
 # include <Python.h>
@@ -101,6 +102,7 @@ public:
     Gui::Document* doc;
     std::vector<App::Color> current,perface;
     QSet<int> index;
+    bool boxSelection;
     Connection connectDelDoc;
     Connection connectDelObj;
 
@@ -122,6 +124,8 @@ public:
             current.push_back(vp->ShapeColor.getValue());
         perface = current;
         perface.resize(mapOfShape.Extent(), perface.front());
+
+        boxSelection = false;
     }
     ~Private()
     {
@@ -247,7 +251,10 @@ public:
         if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             cb->setHandled();
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
+            self->d->boxSelection = true;
             self->d->addFacesToSelection(view, proj, polygon, shape);
+            self->d->boxSelection = false;
+            self->updatePanel();
             view->redraw();
         }
     }
@@ -370,18 +377,30 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
         selection_changed = true;
     }
 
-    if (selection_changed) {
-        QString faces = QString::fromLatin1("[");
-        int size = d->index.size();
-        for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-            faces += QString::number(*it + 1);
-            if (--size > 0)
-                faces += QString::fromLatin1(",");
-        }
-        faces += QString::fromLatin1("]");
-        d->ui->labelElement->setText(faces);
-        d->ui->colorButton->setDisabled(d->index.isEmpty());
+    if (selection_changed && !d->boxSelection) {
+        updatePanel();
     }
+}
+
+void FaceColors::updatePanel()
+{
+    QString faces = QString::fromLatin1("[");
+    int size = d->index.size();
+    for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
+        faces += QString::number(*it + 1);
+        if (--size > 0)
+            faces += QString::fromLatin1(",");
+    }
+    faces += QString::fromLatin1("]");
+
+    int maxWidth = d->ui->labelElement->width();
+    QFontMetrics fm(d->ui->labelElement->font());
+    if (fm.width(faces) > maxWidth) {
+        faces = fm.elidedText(faces, Qt::ElideMiddle, maxWidth);
+    }
+
+    d->ui->labelElement->setText(faces);
+    d->ui->colorButton->setDisabled(d->index.isEmpty());
 }
 
 bool FaceColors::accept()
