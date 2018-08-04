@@ -137,7 +137,7 @@ public:
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
   /// Check for scaling factor, 0: not scale, 1: uniform scale, or else -1
-  int hasScale(double tol=1e-7) const;
+  int hasScale(double tol=0.0) const;
   /// Rotate around the X axis (in transformed space) for the given value in radians
   void rotX         (double fAngle);
   /// Rotate around the Y axis (in transformed space) for the given value in radians

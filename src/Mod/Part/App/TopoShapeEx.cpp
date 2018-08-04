@@ -589,8 +589,10 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
 TopoShape &TopoShape::makETransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
-    if(checkScale && rclTrf.hasScale(Precision::Confusion())<0)
-        return makEGTransform(shape,rclTrf,op,copy);
+    if(checkScale) {
+        if(rclTrf.hasScale()<0)
+            return makEGTransform(shape,rclTrf,op,copy);
+    }
     return makETransform(shape,convert(rclTrf),op,copy);
 }
 
