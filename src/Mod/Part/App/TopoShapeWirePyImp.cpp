@@ -85,7 +85,13 @@ PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj;
-#ifndef FC_NO_ELEMENT_MAP
+
+    // makEWires() uses code copied from Sketch to make sure the 
+    // output edge ordering is the same, because sketch now calls
+    // makEWires() for element mapping. However, the edge order
+    // of makEWires() is not the same as code below. We'll use the
+    // older code for compatibility reason.
+#if 0
     try {
         if (!PyArg_ParseTuple(args, "O", &pcObj))
             return 0;
@@ -102,7 +108,8 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 #else
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+        auto &shape = *static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr();
+        const auto &sh = shape.getShape();
         if (sh.IsNull()) {
             PyErr_SetString(PyExc_TypeError, "given shape is invalid");
             return -1;
@@ -118,6 +125,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
         try {
             getTopoShapePtr()->setShape(mkWire.Wire());
+            getTopoShapePtr()->mapSubElement(shape);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -135,32 +143,22 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
 
         BRepBuilderAPI_MakeWire mkWire;
-        Py::Sequence list(pcObj);
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            PyObject* item = (*it).ptr();
-            if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
-                if (sh.IsNull()) {
-                    PyErr_SetString(PyExc_TypeError, "given shape is invalid");
-                    return -1;
-                }
-                if (sh.ShapeType() == TopAbs_EDGE)
-                    mkWire.Add(TopoDS::Edge(sh));
-                else if (sh.ShapeType() == TopAbs_WIRE)
-                    mkWire.Add(TopoDS::Wire(sh));
-                else {
-                    PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
-                    return -1;
-                }
-            }
+        auto shapes = getPyShapes(pcObj);
+        for (auto &s : shapes) {
+            const auto &sh = s.getShape();
+            if (sh.ShapeType() == TopAbs_EDGE)
+                mkWire.Add(TopoDS::Edge(sh));
+            else if (sh.ShapeType() == TopAbs_WIRE)
+                mkWire.Add(TopoDS::Wire(sh));
             else {
-                PyErr_SetString(PyExc_TypeError, "item is not a shape");
+                PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
                 return -1;
             }
         }
 
         try {
             getTopoShapePtr()->setShape(mkWire.Wire());
+            getTopoShapePtr()->mapSubElement(shapes);
             return 0;
         }
         catch (Standard_Failure& e) {
