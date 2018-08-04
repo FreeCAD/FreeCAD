@@ -770,7 +770,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             auto obj = item->object()->getObject();
             // let the view provider decide to accept the object or ignore it
             if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
-                TREE_TRACE("cannot drop " << owner->getNameInDocument() << '.' << subname);
+                TREE_TRACE("cannot drop " << obj->getNameInDocument() << ' '
+                        << (owner?owner->getNameInDocument():"<No Owner>") << '.' << subname);
                 event->ignore();
                 return;
             }
