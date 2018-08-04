@@ -197,6 +197,7 @@ protected:
 
     bool VisualTouched;
     bool NormalsFromUV;
+    bool UpdatingColor;
 
 
 private:

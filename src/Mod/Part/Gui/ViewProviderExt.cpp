@@ -104,6 +104,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/TimeInfo.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -233,6 +234,7 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
+    UpdatingColor = false;
     VisualTouched = true;
     forceUpdateCount = 0;
     NormalsFromUV = true;
@@ -435,9 +437,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
     }else if(prop == &ShapeColor) {
-        ViewProviderGeometryObject::onChanged(prop);
-        DiffuseColor.setValue(ShapeColor.getValue());
-        updateColors(feature);
+        if(!ShapeColor.testStatus(App::Property::User3)) {
+            ShapeColor.setStatus(App::Property::User3,true);
+            ViewProviderGeometryObject::onChanged(prop);
+            DiffuseColor.setValue(ShapeColor.getValue());
+            updateColors(feature);
+            ShapeColor.setStatus(App::Property::User3,false);
+        }
         return;
     }
     else if (prop == &Transparency) {
@@ -1216,8 +1222,10 @@ struct ColorInfo {
 void ViewProviderPartExt::updateColors(Part::Feature *feature, 
         App::Document *sourceDoc, bool forceColorMap) 
 {
-    if(isRestoring() || !feature)
+    if(isRestoring() || !feature || UpdatingColor)
         return;
+
+    Base::FlagToggler<> flag(UpdatingColor);
 
     if(feature->ColoredElements.getSubValues().size()!=(size_t)MappedColors.getSize()) {
         if(feature->ColoredElements.getSubValues().size()<(size_t)MappedColors.getSize())
