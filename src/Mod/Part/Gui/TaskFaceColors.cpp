@@ -75,7 +75,7 @@ namespace PartGui {
         const App::DocumentObject* object;
     public:
         FaceSelection(const App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(), object(obj)
         {
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
