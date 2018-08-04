@@ -111,6 +111,8 @@ SET(PartGui_SRCS
     AppPartGui.cpp
     AttacherTexts.h
     AttacherTexts.cpp
+    BoxSelection.cpp
+    BoxSelection.h
     Command.cpp
     CommandSimple.cpp
     CommandParametric.cpp
