@@ -1625,8 +1625,8 @@ bool Document::saveCopy(const char* file)
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
-    int compression = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetInt("CompressionLevel",3);
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    int compression = hGrp->GetInt("CompressionLevel",3);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
@@ -1661,6 +1661,9 @@ bool Document::save (void)
             writer.setComment("FreeCAD Document");
             writer.setLevel(compression);
             writer.putNextEntry("Document.xml");
+
+            if (hGrp->GetBool("SaveBinaryBrep", false))
+                writer.setMode("BinaryBrep");
 
             Document::Save(writer);
 
