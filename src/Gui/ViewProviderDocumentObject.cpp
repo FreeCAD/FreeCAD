@@ -40,6 +40,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/BoundBox.h>
 #include <App/Material.h>
 #include <App/DocumentObjectGroup.h>
@@ -65,6 +66,7 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(0)
 {
+    _UpdatingView = false;
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
@@ -182,6 +184,11 @@ void ViewProviderDocumentObject::show(void)
 
 void ViewProviderDocumentObject::updateView()
 {
+    if(_UpdatingView)
+        return;
+
+    Base::FlagToggler<> flag(_UpdatingView);
+
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
 
