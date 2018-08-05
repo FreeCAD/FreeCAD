@@ -497,7 +497,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual(feature->Shape.getValue());
             // The material has to be checked again (#0001736)
-            // onChanged(&DiffuseColor);
+            onChanged(&DiffuseColor);
         }
     }
 
@@ -1349,10 +1349,10 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         // calculate the visual only if visible
         if (isUpdateForced()||Visibility.getValue())
             updateVisual(cShape);
-        else {
+        else 
             VisualTouched = true;
+        if(!isRestoring())
             updateColors(feature);
-        }
 
         if (!VisualTouched) {
             if (this->faceset->partIndex.getNum() > 
@@ -1757,7 +1757,6 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   endif
     VisualTouched = false;
-    updateColors(dynamic_cast<Part::Feature*>(getObject()));
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable) {
