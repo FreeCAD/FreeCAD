@@ -1615,7 +1615,7 @@ bool Document::canClose ()
     //}
 
     bool ok = true;
-    if (isModified()) {
+    if (isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
         QMessageBox box(getActiveView());
         box.setIcon(QMessageBox::Question);
         box.setWindowTitle(QObject::tr("Unsaved document"));
