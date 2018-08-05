@@ -8,41 +8,19 @@ if(BUILD_GUI)
     )
 
     SET(StartPage_Resources
-        ArchDesign.py
-        DefaultWorkbench.py
-        LoadDrawingExample.py
-        LoadPartDesignExample.py
-        LoadRobotExample.py
-        LoadSchenkel.py
-        LoadMRU0.py
-        LoadMRU1.py
-        LoadMRU2.py
-        LoadMRU3.py
-        LoadArchExample.py
-        LoadFemExample2D.py
-        LoadFemExample3D.py
-        LoadFemExample3DNewSolver.py
-        Mesh.py
-        PartDesign.py
-        Ship.py
+        LoadMRU.py
+        LoadExample.py
+        LoadNew.py
+        LoadCustom.py
         StartPage.css
         StartPage.js
         StartPage.html
         EnableDownload.py
-        images/Background.jpg
-        images/FreeCAD.png
-        images/PartDesign.png
-        images/ArchDesign.png
-        images/Mesh.png
-        images/Complete.png
-        images/PartDesignExample.png
-        images/ArchExample.png
-        images/web.png
-        images/blank.png
-        images/freecad-doc.png
-        images/complete.jpg
-        images/Ship.png
-        images/ShipExample.png
+        images/userhub.png
+        images/poweruserhub.png
+        images/developerhub.png
+        images/manual.png
+        images/freecad.png
     )
 
     add_subdirectory(Gui)

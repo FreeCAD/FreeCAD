@@ -1,103 +1,124 @@
 <html>
-  <head>
-    <title>FreeCAD - Start page</title>
-    <script language="javascript">startpage_js</script>
-    <style type="text/css">startpage_css</style>
-  </head>
-  <body onload="load()" onresize="resize()">
-    <h1><img src="images/FreeCAD.png">&nbsp;text01<div id=versionbox>&nbsp</div></h1>
-    <div id="description">
-      &nbsp;
-    </div>
-    <div id="column">
-      <div id="files" class="block">
-        <h2>text03</h2>
-          recentfiles
-      </div>
-      <div id="newproject" class="half-block" style="float: left; display: inline-block; height: 145px;">
-        <h2>text02</h2>
-        <ul>
-          <li><img src="images/blank.png">&nbsp;
-              <a onMouseover="show('<h3>text49</h3> \
-              <p>text50</p>')" 
-              onMouseout="show('')" 
-              href=text51>text49</a>
-          </li>
-          <li><img src="images/PartDesign.png">&nbsp;
-              <a onMouseover="show('<h3>text19</h3> \
-              <p>text20</p><p><small>text21 \
-              :</small></p><img src=images/PartDesignExample.png>')" 
-              onMouseout="show('')" 
-              href="PartDesign.py">text22</a>
-          </li>
-          <li><img src="images/ArchDesign.png">&nbsp;
-            <a onMouseover="show('<h3>text23</h3> \
-              <p>text24</p><p><small>text21 \
-              :</small></p><img src=images/ArchExample.png>')" 
-              onMouseout="show('')"
-              href="ArchDesign.py">text25</a>
-          </li>
-          <li><img src="images/Ship.png">&nbsp;
-            <a onMouseover="show('<h3>text53</h3> \
-              <p>text54</p><p><small>text21 \
-              :</small></p><img src=images/ShipExample.png>')" 
-              onMouseout="show('')"
-              href="Ship.py">text52</a>
-          </li>
-          <li><img src="images/Mesh.png">&nbsp;
-              <a onMouseover="show('<h3>text26</h3> \
-              <p>text27</p><p>text28</p>')" 
-              onMouseout="show('')" 
-              href="Mesh.py">text29</a>
-          </li>
-        </ul>
-      </div>
-      <div id="ontheweb" class="half-block" style="float: right; display: inline-block; height: 145px;">
-        <h2>text06</h2>
-          <ul>
-            <li><img src="images/web.png">&nbsp;
-              <a onMouseover="show('<p>text07</p>')" 
-                onMouseout="show('')"
-                href="exthttp://www.freecadweb.org/">text08</a></li>
-            <li><img src="images/web.png">&nbsp;
-              <a onMouseover="show('<p>text45</p>')" onMouseout="show('')"
-                href=exttext38>text37</a></li>
-            <li><img src="images/web.png">&nbsp;
-              <a onMouseover="show('<p>text46</p>')" 
-                onMouseout="show('')"
-                href=exttext56>text39</a></li>
-            <li><img src="images/web.png">&nbsp;
-              <a onMouseover="show('<p>text47</p>')" 
-                onMouseout="show('')"
-                href=exttext57>text40</a></li>
-            <li><img src="images/web.png">&nbsp;
-              <a onMouseover="show('<p>text48</p>')" 
-                onMouseout="show('')"
-                href="exthttp://freecad-tutorial.blogspot.com/">text43</a></li>
-            <li><img src="images/web.png">&nbsp;
-              <a href="exthttp://github.com/FreeCAD/FreeCAD/releases" 
-                onMouseOver="show('<p>text62</p>')" 
-                onMouseOut="show('')">text61</a></li>
-          </ul>      
-      </div>
-      <div id="examples" class="half-block" style="float: left; display: inline-block;">
-        <h2>text09</h2>
-          <ul>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadSchenkel.py">text10</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">text11</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">text12</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">text13</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">text55</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">text64</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">text60</a></li>
-            <li><img src="images/FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3DNewSolver.py">text69</a></li>
-          </ul>
-      </div>
-      <div id="commits" class="half-block" style="float: right; display: inline-block;">
-        <h2>text05</h2>
-        <div id="news">news feed</div>
-      </div>
-      customblocks
-    </div>
-  </body>
+    <head>
+        <title>T_TITLE</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <script language="javascript">JS</script>
+        <style type="text/css">CSS</style>
+    </head>
+    <body onload="load()">
+        <div class="container">
+            <div class="title">
+                <div class="version">VERSIONSTRING</div>
+            </div>
+            <ul id="tabs" class="tabs">
+                <li><a id="htab1" class="active" onClick="toggle('tab1')" href="#">T_DOCUMENTS</a></li>
+                <li><a id="htab2" onClick="toggle('tab2')" href="#">T_HELP</a></li>
+                <li><a id="htab3" onClick="toggle('tab3')" href="#">T_ACTIVITY</a></li>
+            </ul>
+            <div id="tab1" class="panel">
+
+                <h2>T_RECENTFILES</h2>
+
+                UL_RECENTFILES
+
+                <div class="footnote">
+                    <b>T_TIP</b>: T_ADJUSTRECENT<br/>
+                </div>
+
+                SECTION_EXAMPLES
+
+                SECTION_CUSTOM
+
+                <div class="footnote">
+                    T_CUSTOM
+                </div>
+
+            </div>
+            <div id="tab2" class="panel hidden">
+
+                <div class="docbox">
+
+                    <h2>T_GENERALDOCUMENTATION</h2>
+
+                    <h3>
+                        <img src="images/userhub.png" />
+                        <a href="https://www.freecadweb.org/wiki/User_hub">T_USERHUB</a>
+                    </h3>
+                    <p>T_DESCR_USERHUB</p>
+
+                    <h3>
+                        <img src="images/poweruserhub.png" />
+                        <a href="https://www.freecadweb.org/wiki/Power_users_hub">T_POWERHUB</a>
+                    </h3>
+                    <p>T_DESCR_POWERHUB</p>
+
+                    <h3>
+                        <img src="images/developerhub.png" />
+                        <a href="https://www.freecadweb.org/wiki/Developer_hub">T_DEVHUB</a>
+                    </h3>
+                    <p>T_DESCR_DEVHUB</p>
+
+                    <h3>
+                        <img src="images/manual.png" />
+                        <a href="https://www.freecadweb.org/wiki/Manual:Introduction">T_MANUAL</a>
+                    </h3>
+                    <p>T_DESCR_MANUAL</p>
+
+                </div>
+
+                <div class="docbox">
+
+                    <h2>T_WBHELP</h2>
+
+                    <p>T_DESCR_WBHELP</p>
+
+                    UL_WORKBENCHES
+
+                </div>
+
+                <div class="docbox">
+
+                    <h2>T_COMMUNITYHELP</h2>
+
+                    T_DESCR_COMMUNITYHELP
+
+                </div>
+
+                <div class="docbox">
+
+                    <h2>T_ADDONS</h2>
+
+                    <p>T_DESCR_ADDONS</p>
+
+                    <div id="addons">T_OFFLINEPLACEHOLDER</div>
+
+                </div>
+
+                <div class="footnote">
+                    <p><b>TIP</b>: T_OFFLINEHELP</p>
+                </div>
+
+            </div>
+
+            <div id="tab3" class="panel tab3 hidden">
+
+                    <div class="docbox allwidth">
+
+                        <h2>T_RECENTCOMMITS</h2>
+
+                        <p>T_DESCR_RECENTCOMMITS</p>
+
+                        <div id="commits">T_OFFLINEPLACEHOLDER</div>
+
+
+                        <div class="footnote">
+                            <a href="http://github.com/FreeCAD/FreeCAD/commits/master">T_SEEONGITHUB</a>
+                        </div>
+
+                    </div>
+
+            </div>
+
+        </div>
+    </body>
 </html>
