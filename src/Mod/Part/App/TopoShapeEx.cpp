@@ -549,7 +549,12 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
 
 std::string TopoShape::getElementMapVersion() const{
     std::ostringstream ss;
-    ss << TOPOP_VERSION << '.' << std::hex << OCC_VERSION_HEX 
+    unsigned occ_ver;
+    if((OCC_VERSION_HEX & 0xFF0000) == 0x070000)
+        occ_ver = 0x070200;
+    else
+        occ_ver = OCC_VERSION_HEX;
+    ss << TOPOP_VERSION << '.' << std::hex << occ_ver 
         << '.' << Data::ComplexGeoData::getElementMapVersion();
     return ss.str();
 }
