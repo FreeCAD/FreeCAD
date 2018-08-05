@@ -41,6 +41,7 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
     // Hide currently unused controls
     label_12->hide();
     label_7->hide();
+    colorButton_7->hide();
     radioButton_1->hide();
     radioButton_2->hide();
     
