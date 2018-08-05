@@ -69,6 +69,7 @@ public:
         Output = 7, // same effect as Prop_Output
         LockDynamic = 8, // prevent being removed from dynamic property
         NoModify = 9, // prevent causing Gui::Document::setModified()
+        PartialTrigger = 10, // allow change in partial doc
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status

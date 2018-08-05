@@ -529,6 +529,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
 void DocumentObject::onChanged(const Property* prop)
 {
     if(!GetApplication().isRestoring() && 
+       prop && !prop->testStatus(Property::PartialTrigger) &&
        getDocument() && 
        getDocument()->testStatus(Document::PartialDoc))
     {

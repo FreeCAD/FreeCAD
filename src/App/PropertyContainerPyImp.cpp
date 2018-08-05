@@ -181,15 +181,16 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
 static const std::map<std::string, int> &getStatusMap() {
     static std::map<std::string,int> statusMap;
     if(statusMap.empty()) {
-        statusMap["Immutable"] = 1;
-        statusMap["ReadOnly"] = 2;
-        statusMap["Hidden"] = 3;
-        statusMap["Transient"] = 4;
-        statusMap["MaterialEdit"] = 5;
-        statusMap["MaterialListEdit"] = 6;
-        statusMap["Output"] = 7;
-        statusMap["LockDynamic"] = 8;
-        statusMap["NoModify"] = 9;
+        statusMap["Immutable"] = Property::Immutable;
+        statusMap["ReadOnly"] = Property::ReadOnly;
+        statusMap["Hidden"] = Property::Hidden;
+        statusMap["Transient"] = Property::Transient;
+        statusMap["MaterialEdit"] = Property::MaterialEdit;
+        statusMap["NoMaterialListEdit"] = Property::NoMaterialListEdit;
+        statusMap["Output"] = Property::Output;
+        statusMap["LockDynamic"] = Property::LockDynamic;
+        statusMap["NoModify"] = Property::NoModify;
+        statusMap["PartialTrigger"] = Property::PartialTrigger;
     }
     return statusMap;
 }
