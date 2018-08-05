@@ -365,25 +365,15 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     // can be checked when reading in the data.
     if (_Shape.getShape().IsNull())
         return;
-    // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
-    // Before writing to the project we clean all triangulation data to save memory
-    TopoDS_Shape myShape;
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Part/General");
-    if(hGrp->GetBool("CopyShapeOnSave",false)) {
-        BRepBuilderAPI_Copy copy(_Shape.getShape());
-        myShape = copy.Shape();
-        BRepTools::Clean(myShape); // remove triangulation
-    }else
-        myShape = _Shape.getShape();
-
+    TopoDS_Shape myShape = _Shape.getShape();
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
         shape.setShape(myShape);
         shape.exportBinary(writer.Stream());
     }
     else {
-        bool direct = hGrp->GetBool("DirectAccess", true);
+        bool direct = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             // create a temporary file and copy the content to the zip stream
             // once the tmp. filename is known use always the same because otherwise
