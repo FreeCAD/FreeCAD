@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2012                                                    * 
-#*   Yorik van Havre <yorik@uncreated.net>                                 * 
+#*   Copyright (c) 2016                                                    * 
+#*   Bernd Hahnebach <bernd@bimstatik.org>                                 * 
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,sys
-rf=FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
-FreeCAD.loadFile(rf.GetString("MRU2"))
+import FreeCAD,FreeCADGui,os
+# filename will be given before this script is run
+FreeCAD.open(os.path.join(FreeCAD.getResourceDir()+"examples",filename))
+FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
+from StartPage import StartPage
+StartPage.postStart()
