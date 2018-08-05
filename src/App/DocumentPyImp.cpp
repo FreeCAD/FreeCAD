@@ -892,6 +892,11 @@ Py::Boolean DocumentPy::getRestoring(void) const
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
 }
 
+Py::Boolean DocumentPy::getPartial(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::PartialDoc));
+}
+
 Py::Boolean DocumentPy::getImporting(void) const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));

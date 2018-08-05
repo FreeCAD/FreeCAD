@@ -305,6 +305,12 @@ sort: whether to topologically sort the return list
 	  </Documentation>
 	  <Parameter Name="Restoring" Type="Boolean" />
 	</Attribute>
+	<Attribute Name="Partial" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is partially loaded</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Partial" Type="Boolean" />
+	</Attribute>
 	<Attribute Name="Importing" ReadOnly="true">
 	  <Documentation>
           <UserDocu>Indicate if the document is importing. Note the document will also report Restoring while importing</UserDocu>
