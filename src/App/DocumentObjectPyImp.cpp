@@ -181,6 +181,9 @@ Py::List DocumentObjectPy::getState(void) const
     if (object->testStatus(App::Expand)){
         list.append(Py::String("Expanded"));
     }
+    if (object->testStatus(App::PartialObject)){
+        list.append(Py::String("Partial"));
+    }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
     }
