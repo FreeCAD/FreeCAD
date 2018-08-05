@@ -189,6 +189,10 @@ PyMethodDef Application::Methods[] = {
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, 1,
    "Get marker index according to marker size setting"},
 
+  {"reload",                    (PyCFunction) Application::sReload,  1,
+   "reload(name) -> doc\n\n"
+   "Reload a partial opened document"},
+
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -1278,3 +1282,18 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args, PyOb
             return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
     }PY_CATCH;
 }
+
+PyObject* Application::sReload(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
+
+    PY_TRY {
+        auto doc = Application::Instance->reopen(App::GetApplication().getDocument(name));
+        if(doc)
+            return doc->getPyObject();
+    }PY_CATCH;
+    Py_Return;
+}
+

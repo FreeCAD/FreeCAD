@@ -65,6 +65,8 @@ public:
     void importFrom(const char* FileName, const char* DocName, const char* Module);
     /// Export objects from the document DocName to a single file
     void exportTo(const char* FileName, const char* DocName, const char* Module);
+    /// Reload a partial opened document
+    App::Document *reopen(App::Document *doc);
     //@}
 
 
@@ -240,6 +242,8 @@ public:
     PYFUNCDEF_S(sOpen);                     // open Python scripts
     PYFUNCDEF_S(sInsert);                   // open Python scripts
     PYFUNCDEF_S(sExport);
+
+    PYFUNCDEF_S(sReload);               
 
     PYFUNCDEF_S(sActiveDocument);
     PYFUNCDEF_S(sSetActiveDocument);

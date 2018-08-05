@@ -2095,3 +2095,34 @@ void Application::checkForPreviousCrashes()
             dlg.exec();
     }
 }
+
+App::Document *Application::reopen(App::Document *doc) {
+    if(!doc) return 0;
+    std::vector<std::string> docs;
+    std::string name = doc->FileName.getValue();
+    if(doc->testStatus(App::Document::PartialDoc))
+        docs.push_back(doc->FileName.getValue());
+    else {
+        for(auto d : doc->getDependentDocuments(true))
+            if(d->testStatus(App::Document::PartialDoc))
+                docs.push_back(d->FileName.getValue());
+    }
+    std::set<const Gui::Document*> untouchedDocs;
+    for(auto &v : d->documents) {
+        if(!v.second->isModified() && !v.second->getDocument()->isTouched())
+            untouchedDocs.insert(v.second);
+    }
+    for(auto &file : docs) 
+        open(file.c_str(),"FreeCAD");
+
+    doc = 0;
+    for(auto &v : d->documents) {
+        if(name == v.first->FileName.getValue())
+            doc = const_cast<App::Document*>(v.first);
+        if(untouchedDocs.count(v.second)) {
+            v.second->getDocument()->purgeTouched();
+            v.second->setModified(false);
+        }
+    }
+    return doc;
+}

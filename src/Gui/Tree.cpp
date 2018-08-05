@@ -1107,30 +1107,12 @@ void TreeWidget::onReloadDoc() {
         return;
     DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
     App::Document* doc = docitem->document()->getDocument();
-    std::vector<std::string> docs;
-    if(doc->testStatus(App::Document::PartialDoc))
-        docs.push_back(doc->FileName.getValue());
-    else {
-        for(auto d : doc->getDependentDocuments(true))
-            if(d->testStatus(App::Document::PartialDoc))
-                docs.push_back(d->FileName.getValue());
-    }
-    std::set<const Gui::Document*> untouchedDocs;
+    std::string name = doc->FileName.getValue();
+    Application::Instance->reopen(doc);
     for(auto &v : DocumentMap) {
-        if(!v.first->isModified() && !v.first->getDocument()->isTouched())
-            untouchedDocs.insert(v.first);
-    }
-    for(auto &file : docs) 
-        Application::Instance->open(file.c_str(),"FreeCAD");
-
-    for(auto &v : DocumentMap) {
-        if(v.first->getDocument()->FileName.getValue() == docs.front()) {
+        if(name == v.first->getDocument()->FileName.getValue()) {
             scrollToItem(v.second);
-            continue;
-        }
-        if(untouchedDocs.count(v.first)) {
-            v.first->getDocument()->purgeTouched();
-            const_cast<Gui::Document*>(v.first)->setModified(false);
+            break;
         }
     }
 }
