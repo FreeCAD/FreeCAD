@@ -296,8 +296,9 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
     if(box->button(QDialogButtonBox::Apply))
         box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
-//############################################################################################
 
+//############################################################################################
+// some task box methods
 TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget* parent)
     : TaskBox(icon, title, true, parent) {
 
@@ -335,9 +336,9 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 }
 
 //###########################################################################################################
-
+// post pipeline results
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent)
-    : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Display options"), parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-result"), tr("Result display options"), parent)
 {
     //we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -386,8 +387,9 @@ void TaskPostDisplay::applyPythonCode() {
 }
 
 //############################################################################################
-
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"), tr("Implicit function"), parent) {
+// ? 
+// the icon fem-plane might be wrong but I do not know any better since the plane is one of the implicit functions
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-plane"), tr("Implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostFunction::getClassTypeId()));
 
@@ -408,9 +410,9 @@ void TaskPostFunction::applyPythonCode() {
 }
 
 //############################################################################################
-
+// region clip filter
 TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-clip"), tr("Clip region, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
     assert(function);
@@ -528,10 +530,11 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
-//############################################################################################
 
+//############################################################################################
+// data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Data Along Line"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-DataAlongLine"), tr("Data along a line options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
@@ -746,9 +749,9 @@ plt.show()\n";
 }
 
 //############################################################################################
-
+// data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Data At Point"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-DataAtPoint"), tr("Data at point options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 
@@ -910,9 +913,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
 }
 
 //############################################################################################
-
+// scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Clip options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-clip-scalar"), tr("Scalar clip options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostScalarClip::getClassTypeId()));
 
@@ -1002,9 +1005,9 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
 
 
 //############################################################################################
-
+// warp filter
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Clip options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-warp"), tr("Warp options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
 
@@ -1087,9 +1090,9 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
 }
 
 //############################################################################################
-
+// function clip filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-cut"), tr("Function cut, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
     assert(function);
