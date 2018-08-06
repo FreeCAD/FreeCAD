@@ -109,7 +109,7 @@ protected:
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual QRectF customChildrenBoundingRect(void);
+    virtual QRectF customChildrenBoundingRect(void) const;
     void dumpRect(char* text, QRectF r);
 
     QString getPrefFont(void);
