@@ -1899,6 +1899,16 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
     PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
 #endif
 
+    if(offset<0) {
+        stepover = -fabs(stepover);
+        if(count<0) {
+            if(!last_stepover)
+                last_stepover = offset*0.5;
+            else
+                last_stepover = -fabs(last_stepover);
+        }else
+            last_stepover = 0;
+    }
     for(int i=0;count<0||i<count;++i,offset+=stepover) {
         if(from_center) 
             areas.push_front(make_shared<CArea>());
@@ -1940,8 +1950,19 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
 #endif
         if(count>1)
             FC_TIME_LOG(t1,"makeOffset " << i << '/' << count);
-        if(area.m_curves.empty())
+        if(area.m_curves.empty()) {
+            if(from_center) 
+                areas.pop_front();
+            else
+                areas.pop_back();
+            if(last_stepover && last_stepover>stepover) {
+                offset -= stepover;
+                stepover = last_stepover;
+                --i;
+                continue;
+            }
             return;
+        }
     }
     FC_TIME_LOG(t,"makeOffset count: " << count);
 }
@@ -2004,6 +2025,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         Offset = -tool_radius-extra_offset-shift;
         ExtraPass = -1;
         Stepover = -stepover;
+        LastStepover = -last_stepover;
         // make offset and make sure the loop is CW (i.e. inner wires)
         return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1,from_center);
     }case Area::PocketModeZigZagOffset:
