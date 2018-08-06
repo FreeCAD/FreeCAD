@@ -39,22 +39,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Outline</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Surface</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Surface with Edges</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Wireframe</string>
+         <string>warp vectors</string>
         </property>
        </item>
       </widget>
@@ -173,8 +158,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>line</zorder>
-  <zorder>line_2</zorder>
  </widget>
  <resources/>
  <connections/>
