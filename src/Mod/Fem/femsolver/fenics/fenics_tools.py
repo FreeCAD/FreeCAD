@@ -26,6 +26,110 @@ try:
 except:
     print("No Fenics modules found, please install them.")
 else:
+    
+    class XDMFReader(object):
+        def __init__(self, xdmffilename):
+            
+            self.xdmffilename = xdmffilename
+            self.mesh = None
+            
+        def resetMesh(self):
+            self.mesh = None
+
+        def readMesh(self):
+            # TODO: implement mesh read in for open file
+            if self.mesh is None:
+                xdmffile = fenics.XDMFFile(self.xdmffilename)
+                self.mesh = fenics.Mesh()
+                xdmffile.read(self.mesh)
+                xdmffile.close()
+            
+        
+        def readCellExpression(self, group_value_dict, *args, **kwargs):
+            self.readMesh()
+            xdmffile = fenics.XDMFFile(self.xdmffilename)
+            cf = CellExpressionFromXDMF(group_value_dict, *args, **kwargs)
+            cf.init()
+            for (key, value) in cf.group_value_dict.items():
+                cf.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
+                #fenics.CellFunction("size_t", self.mesh) # deprecated
+                xdmffile.read(cf.markers[key], key)
+                cf.dx[key] = fenics.Measure("dx", domain=self.mesh, subdomain_data=cf.markers[key])
+            xdmffile.close()
+            return cf
+            
+        def readFacetFunction(self, group_value_dict, *args, **kwargs):
+            self.readMesh()
+            xdmffile = fenics.XDMFFile(self.xdmffilename)
+            ff = FacetFunctionFromXDMF(group_value_dict)                
+            ff.init()            
+            for (key, value) in ff.group_value_dict.items():
+                ff.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
+                # fenics.FacetFunction("size_t", self.mesh) # deprecated
+                xdmffile.read(ff.markers[key], key)
+                ff.marked[key] = value.get("marked", 1)
+                ff.ds[key] = fenics.Measure("ds", domain=self.mesh, subdomain_data=ff.markers[key])
+                ff.bcs[key] = value
+            xdmffile.close()
+            return ff            
+    
+    class CellExpressionFromXDMF(fenics.Expression):
+        def __init__(self, group_value_dict, 
+                     default=0., 
+                     check_marked=(lambda x: x == 1), **kwargs):
+            self.group_value_dict = group_value_dict
+            self.check_marked = check_marked
+            self.default = default
+            self.init()
+
+
+        def init(self):
+            self.markers = {}
+            self.dx = {}
+            
+
+        def eval_cell(self, values, x, cell):
+            values_list = []
+            for (key, func) in self.group_value_dict.items():
+                if self.check_marked(self.markers[key][cell.index]):
+                    values_list.append(func(x))
+            if values_list:
+                values[0] = values_list[0]
+                # TODO: improve for vectorial data
+                # TODO: fix value assignment for overlap
+                # according to priority, mean, or standard
+                # TODO: python classes much slower than JIT compilation
+            else:
+                values[0] = self.default
+
+
+    class FacetFunctionFromXDMF(object):
+        def __init__(self, group_value_dict):
+            self.group_value_dict = group_value_dict
+            self.init()
+
+        def init(self):
+            self.markers = {}
+            self.marked = {}
+            self.ds = {}
+            self.bcs = {}
+            
+
+        def getDirichletBCs(self, vectorspace, *args, **kwargs):
+            dbcs = []
+            for (dict_key, dict_value) in self.bcs.items():
+                if dict_value["type"] == 'Dirichlet':
+                    bc = fenics.DirichletBC(vectorspace, dict_value["value"], self.markers[dict_key], dict_value.get("marked", 1), *args, **kwargs)
+                    dbcs.append(bc)
+            return dbcs
+        # TODO: write some functions to return integrals for Neumann and Robin
+        # boundary conditions for the general case (i.e. vector, tensor)
+
+
+# ***********************************************************************
+# * old interface classes
+# ***********************************************************************
+        
 
     class CellExpressionXDMF(fenics.Expression):
         def __init__(self, xdmffilename, group_value_dict, group_priority_dict={}, default=0., check_marked=(lambda x: x == 1), **kwargs):
