@@ -59,7 +59,7 @@ else:
                 xdmffile.read(self.mesh)
                 xdmffile.close()
 
-        def readCellExpression(self, group_value_dict, value_type="scalar", *args, **kwargs):
+        def readCellExpression(self, group_value_dict, value_type="scalar", overlap=lambda x: x[0], *args, **kwargs):
             """
             Reads cell expression and returns it.
             """
@@ -71,15 +71,12 @@ else:
             
             self.readMesh()
             xdmffile = fenics.XDMFFile(self.xdmffilename)
-            val_shape = group_value_dict.values()[0].value_shape()
-            print("read cell expression with value shape: %s" % (str(val_shape),))
-            cf = value_type_dictionary[value_type.lower()](group_value_dict, 
-                                                            val_shape=val_shape, 
+            cf = value_type_dictionary[value_type.lower()](group_value_dict,
+                                                           overlap=overlap,
                                                             *args, **kwargs)
             cf.init()
             for (key, value) in cf.group_value_dict.items():
                 cf.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
-                # fenics.CellFunction("size_t", self.mesh) # deprecated
                 xdmffile.read(cf.markers[key], key)
                 cf.dx[key] = fenics.Measure("dx", domain=self.mesh, subdomain_data=cf.markers[key])
             xdmffile.close()
@@ -95,7 +92,6 @@ else:
             ff.init()
             for (key, value) in ff.group_value_dict.items():
                 ff.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
-                # fenics.FacetFunction("size_t", self.mesh) # deprecated
                 xdmffile.read(ff.markers[key], key)
                 ff.marked[key] = value.get("marked", 1)
                 ff.ds[key] = fenics.Measure("ds", domain=self.mesh, subdomain_data=ff.markers[key])
@@ -109,10 +105,12 @@ else:
         """
         def __init__(self, group_value_dict,
                      default=lambda x: 0.,
-                     check_marked=(lambda x: x == 1), **kwargs):
+                     check_marked=(lambda x: x == 1), overlap=lambda x: x[0],
+                    **kwargs):
             self.init()
             self.group_value_dict = group_value_dict
             self.check_marked = check_marked
+            self.overlap = overlap
             self.default = default
 
         def init(self):
@@ -126,16 +124,15 @@ else:
                         
             values_list = [func(x) for (key, func) in self.group_value_dict.items()
                     if self.check_marked(self.markers[key][cell.index])]
-                        
+            return_value = self.overlap(values_list)
+            
             if values_list:                
-                self.assign_values(values, values_list[0])                
-                # TODO: fix value assignment for overlap
-                # according to priority, mean, or standard
-                # TODO: python classes much slower than JIT compilation
+                self.assign_values(values, return_value)                
             else:
                 self.assign_values(values, self.default(x))
 
-            print("cell index %s values in backend: %s" % (str(cell.index), str(values)))
+            # TODO: python classes much slower than JIT compilation
+
 
 # ***********************************
 # * Sub classes due to value_shape method which is not of dynamical return type
@@ -147,9 +144,9 @@ else:
 
         def __init__(self, group_value_dict,
                      default=lambda x: 0.,
-                     check_marked=(lambda x: x == 1), **kwargs):
+                     check_marked=(lambda x: x == 1), overlap=lambda x: x[0], **kwargs):
             CellExpressionFromXDMF.__init__(self, group_value_dict,
-                    default=default, check_marked=check_marked)
+                    default=default, check_marked=check_marked, overlap=overlap)
         
         def eval_cell(self, values, x, cell):
             self.eval_cell_backend(values, x, cell)
@@ -161,9 +158,9 @@ else:
 
         def __init__(self, group_value_dict,
                      default=lambda x: np.zeros((3,)),
-                     check_marked=(lambda x: x == 1), **kwargs):
+                     check_marked=(lambda x: x == 1), overlap=lambda x: x[0], **kwargs):
             CellExpressionFromXDMF.__init__(self, group_value_dict,
-                    default=default, check_marked=check_marked)
+                    default=default, check_marked=check_marked, overlap=overlap)
 
         def eval_cell(self, values, x, cell):
             self.eval_cell_backend(values, x, cell)
@@ -175,9 +172,9 @@ else:
 
         def __init__(self, group_value_dict,
                      default=lambda x: np.zeros((2,)),
-                     check_marked=(lambda x: x == 1), **kwargs):
+                     check_marked=(lambda x: x == 1), overlap=lambda x: x[0], **kwargs):
             CellExpressionFromXDMF.__init__(self, group_value_dict,
-                    default=default, check_marked=check_marked)
+                    default=default, check_marked=check_marked, overlap=overlap)
 
 
         def eval_cell(self, values, x, cell):
