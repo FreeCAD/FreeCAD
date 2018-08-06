@@ -169,7 +169,7 @@ CmdFemAddPart::CmdFemAddPart()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a part to the Analysis");
+    sMenuText       = QT_TR_NOOP("Add a part to the analysis");
     sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
     sWhatsThis      = "FEM_FemAddPart";
     sStatusTip      = sToolTipText;
@@ -232,7 +232,7 @@ CmdFemCreateSolver::CmdFemCreateSolver()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a solver to the Analysis");
+    sMenuText       = QT_TR_NOOP("Add a solver to the analysis");
     sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
     sWhatsThis      = "FEM_CreateSolver";
     sStatusTip      = sToolTipText;
@@ -971,7 +971,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
 {
     sAppModule    = "Fem";
     sGroup        = QT_TR_NOOP("Fem");
-    sMenuText     = QT_TR_NOOP("Create node set by Poly");
+    sMenuText     = QT_TR_NOOP("Node set by poly");
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
     sWhatsThis    = "FEM_DefineNodesSet";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
@@ -1163,7 +1163,7 @@ CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Clip Filter");
+    sMenuText       = QT_TR_NOOP("Region clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
     sWhatsThis      = "FEM_PostCreateClipFilter";
     sStatusTip      = sToolTipText;
@@ -1187,7 +1187,7 @@ CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Line Clip Filter");
+    sMenuText       = QT_TR_NOOP("Line clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
     sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
     sStatusTip      = sToolTipText;
@@ -1211,7 +1211,7 @@ CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sMenuText       = QT_TR_NOOP("Data at point clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
     sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
     sStatusTip      = sToolTipText;
@@ -1237,8 +1237,8 @@ CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilt
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Stress Linearization Plot");
-    sToolTipText    = QT_TR_NOOP("Create stress linearization plots");
+    sMenuText       = QT_TR_NOOP("Stress linearization plot");
+    sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
     sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-linearizedstresses";
@@ -1282,7 +1282,7 @@ CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Scalar Clip Filter");
+    sMenuText       = QT_TR_NOOP("Scalar clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
     sWhatsThis      = "FEM_PostCreateScalarClipFilter";
     sStatusTip      = sToolTipText;
@@ -1308,7 +1308,7 @@ CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Warp Filter");
+    sMenuText       = QT_TR_NOOP("Warp filter");
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
     sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
     sStatusTip      = sToolTipText;
@@ -1332,7 +1332,7 @@ CmdFemPostCutFilter::CmdFemPostCutFilter()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Cut Filter");
+    sMenuText       = QT_TR_NOOP("Function cut filter");
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
     sWhatsThis      = "FEM_PostCreateCutFilter";
     sStatusTip      = sToolTipText;
@@ -1359,7 +1359,7 @@ CmdFemPostFunctions::CmdFemPostFunctions()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Filter Functions");
+    sMenuText       = QT_TR_NOOP("Filter functions");
     sToolTipText    = QT_TR_NOOP("Functions for use in postprocessing filter...");
     sWhatsThis      = "FEM_PostCreateFunctions";
     sStatusTip      = sToolTipText;
@@ -1498,7 +1498,7 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Apply changes to Pipeline");
+    sMenuText       = QT_TR_NOOP("Apply changes to pipeline");
     sToolTipText    = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
     sWhatsThis      = "FEM_PostApplyChanges";
     sStatusTip      = sToolTipText;
@@ -1542,7 +1542,7 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Post Pipeline from Result");
+    sMenuText       = QT_TR_NOOP("Post pipeline from result");
     sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sWhatsThis      = "FEM_PostPipelineFromResult";
     sStatusTip      = sToolTipText;
