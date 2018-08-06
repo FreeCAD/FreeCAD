@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef FC_OS_WIN32
+#define GL_GLEXT_PROTOTYPES
+#endif
+
 #ifndef _PreComp_
 # include <algorithm>
 # ifdef FC_OS_MACOSX
