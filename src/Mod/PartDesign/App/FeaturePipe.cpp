@@ -262,8 +262,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
         if (!frontwires.empty()) {
             // build the end faces, sew the shell and build the final solid
-            auto front = TopoShape().makEFace(frontwires);
-            auto back = TopoShape().makEFace(backwires);
+            auto front = TopoShape().makEFace(frontwires,0,"Part::FaceMakerCheese");
+            auto back = TopoShape().makEFace(backwires,0,"Part::FaceMakerCheese");
 
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());

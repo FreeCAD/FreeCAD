@@ -939,7 +939,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     TopoShape profileshape;
     try {
         profile = getVerifiedObject();
-        profileshape = getProfileShape();
+        profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -1241,9 +1241,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             if(mapped != name.c_str())
                 name = std::string(mapped);
 
-            TopoShape hole = TopoShape(protoHole).makECopy(mapped);
-            hole.Tag = profileshape.Tag;
-            hole = hole.makETransform(localSketchTransformation);
+            TopoShape hole(profile->getID());
+            hole.setShape(protoHole);
+            // transform and generate element map.
+            hole = hole.makETransform(localSketchTransformation,mapped);
             holes.push_back(hole);
 
             try {

@@ -201,7 +201,7 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                 shape = shape.makEWires();
             if(shape.hasSubShape(TopAbs_WIRE)) {
                 shape.Hasher = getDocument()->getStringHasher();
-                return shape.makEFace();
+                return shape.makEFace(0,"Part::FaceMakerCheese");
             }
         }
         int count = shape.countSubShapes(TopAbs_FACE);

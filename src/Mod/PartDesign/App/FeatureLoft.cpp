@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         for(auto& wires : wiresections)
             backwires.push_back(wires.back());
         
-        auto back = TopoShape(0,hasher).makEFace(backwires);
+        auto back = TopoShape(0,hasher).makEFace(backwires,0,"Part::FaceMakerCheese");
         
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
