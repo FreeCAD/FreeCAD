@@ -1585,7 +1585,7 @@ class DraftToolBar:
 
     def checkSpecialChars(self,txt):
         '''
-        checks for special characters in the entered coords that mut be
+        checks for special characters in the entered coords that must be
         treated as shortcuts
         '''
 

@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "FreeCAD CAM Modul"
+PROJECT_NAME           = "FreeCAD CAM Module"
 PROJECT_NUMBER         = 0.1
 OUTPUT_DIRECTORY       = Doc
 CREATE_SUBDIRS         = NO
