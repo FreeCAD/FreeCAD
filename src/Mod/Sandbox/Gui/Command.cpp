@@ -1047,7 +1047,7 @@ protected:
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
-        DrawText(hdc, "Hello World!", 12, &rect,
+        DrawTextA(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 #if QT_VERSION < 0x050000
         releaseDC(hdc);

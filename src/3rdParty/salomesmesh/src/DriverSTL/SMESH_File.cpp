@@ -79,8 +79,8 @@ bool SMESH_File::open()
   if ( !_map && length > 0 )
   {
 #ifdef WIN32
-    _file = CreateFile(_name.data(), GENERIC_READ, FILE_SHARE_READ,
-                       NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    _file = CreateFileA(_name.data(), GENERIC_READ, FILE_SHARE_READ,
+                        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     bool ok = ( _file != INVALID_HANDLE_VALUE );
 #else
     _file = ::open(_name.data(), O_RDONLY );
@@ -292,7 +292,7 @@ bool SMESH_File::openForWriting()
 {
 #ifdef WIN32
 
-  _file = CreateFile( _name.c_str(),          // name of the write
+  _file = CreateFileA(_name.c_str(),          // name of the write
                       GENERIC_WRITE,          // open for writing
                       0,                      // do not share
                       NULL,                   // default security

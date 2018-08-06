@@ -62,7 +62,7 @@ GUIConsole::GUIConsole (void)
     ::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
      csbi.dwSize.Y = s_nMaxLines;
     ::SetConsoleScreenBufferSize(::GetStdHandle(STD_OUTPUT_HANDLE),csbi.dwSize);
-    ::SetConsoleTitle( "FreeCAD Console");
+    ::SetConsoleTitleA( "FreeCAD Console");
 
     *stdout = *::_fdopen(::_open_osfhandle(reinterpret_cast<LONG>(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT), "w");
     ::setvbuf(stdout, 0, _IONBF, 0);

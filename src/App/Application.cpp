@@ -2270,7 +2270,7 @@ void Application::ExtractUserPath()
 
 #elif defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
-    TCHAR dest[MAX_PATH*3];
+    char dest[MAX_PATH*3];
     // Get the default path where we can save our documents. It seems that
     // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
     // which does the same.
@@ -2454,7 +2454,7 @@ std::string Application::FindHomePath(const char* sCall)
     // Python interpreter is already initialized.
     wchar_t szFileName [MAX_PATH];
     if (Py_IsInitialized()) {
-        GetModuleFileNameW(GetModuleHandle(sCall),szFileName, MAX_PATH-1);
+        GetModuleFileNameW(GetModuleHandleA(sCall),szFileName, MAX_PATH-1);
     }
     else {
         GetModuleFileNameW(0, szFileName, MAX_PATH-1);

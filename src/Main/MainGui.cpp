@@ -336,7 +336,7 @@ typedef BOOL (__stdcall *tMDWD)(
 static tMDWD s_pMDWD;
 static HMODULE s_hDbgHelpMod;
 static MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
-static std::string s_szMiniDumpFileName;  // initialize with whatever appropriate...
+static std::wstring s_szMiniDumpFileName;  // initialize with whatever appropriate...
 
 #include <Base/StackWalker.h>
 class MyStackWalker : public StackWalker
@@ -380,7 +380,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 
   bool bFailed = true; 
   HANDLE hFile; 
-  hFile = CreateFile(s_szMiniDumpFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
+  hFile = CreateFileW(s_szMiniDumpFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
   if (hFile != INVALID_HANDLE_VALUE) 
   { 
     MINIDUMP_EXCEPTION_INFORMATION stMDEI; 
@@ -423,11 +423,12 @@ void InitMiniDumpWriter(const std::string& filename)
 {
   if (s_hDbgHelpMod != NULL)
     return;
-  s_szMiniDumpFileName = filename;
+  Base::FileInfo fi(filename);
+  s_szMiniDumpFileName = fi.toStdWString();
 
   // Initialize the member, so we do not load the dll after the exception has occurred
   // which might be not possible anymore...
-  s_hDbgHelpMod = LoadLibrary(("dbghelp.dll"));
+  s_hDbgHelpMod = LoadLibraryA(("dbghelp.dll"));
   if (s_hDbgHelpMod != NULL)
     s_pMDWD = (tMDWD) GetProcAddress(s_hDbgHelpMod, "MiniDumpWriteDump");
 
