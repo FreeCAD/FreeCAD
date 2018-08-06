@@ -120,21 +120,15 @@ else:
             self.dx = {}
             
         def assign_values(self, values, to_assign):
-            raise NotImplementedError()
-
+            values[:] = to_assign            
+            
         def eval_cell_backend(self, values, x, cell):
                         
             values_list = [func(x) for (key, func) in self.group_value_dict.items()
                     if self.check_marked(self.markers[key][cell.index])]
                         
-            if values_list:
-                #values[0] = values_list[0][0]
-                #values[1] = values_list[0][1]
-                #values[2] = values_list[0][2]
-                
+            if values_list:                
                 self.assign_values(values, values_list[0])                
-                
-                # TODO: improve for vectorial data
                 # TODO: fix value assignment for overlap
                 # according to priority, mean, or standard
                 # TODO: python classes much slower than JIT compilation
@@ -160,9 +154,6 @@ else:
         def eval_cell(self, values, x, cell):
             self.eval_cell_backend(values, x, cell)
         
-        def assign_values(self, values, to_assign):
-            values[0] = to_assign[0]
-
         def value_shape(self):
             return ()
             
@@ -176,13 +167,6 @@ else:
 
         def eval_cell(self, values, x, cell):
             self.eval_cell_backend(values, x, cell)
-            print("cell index %s values in frontend: %s" % (str(cell.index), str(values)))
-
-        
-        def assign_values(self, values, to_assign):
-            values[0] = to_assign[0]
-            values[1] = to_assign[1]
-            values[2] = to_assign[2]
 
         def value_shape(self):
             return (3,)
@@ -198,10 +182,6 @@ else:
 
         def eval_cell(self, values, x, cell):
             self.eval_cell_backend(values, x, cell)
-
-        def assign_values(self, values, to_assign):
-            values[0] = to_assign[0]
-            values[1] = to_assign[1]
 
         def value_shape(self):
             return (2,)
@@ -231,95 +211,3 @@ else:
         # boundary conditions for the general case (i.e. vector, tensor)
 
 
-# ***********************************************************************
-# * old interface classes
-# ***********************************************************************
-
-    class CellExpressionXDMF(fenics.Expression):
-        def __init__(self, xdmffilename, group_value_dict, group_priority_dict={}, default=0., check_marked=(lambda x: x == 1), **kwargs):
-            self.group_priority_dict = group_priority_dict
-            self.check_marked = check_marked
-            self.default = default
-
-            self.readXDMFfile(xdmffilename, group_value_dict)
-
-        def readXDMFfile(self, xdmffilename, group_value_dict):
-            """
-            Initialization of CellExpressionXDMF by reading an XDMF file.
-
-            @param: xdmffilename: path to xdmf file
-            @param: group_value_dict: {"groupname":function(x)}
-
-            function(x) is a function which is evaluated at the marked positions of the cells
-            """
-            xdmffile = fenics.XDMFFile(xdmffilename)
-            self.group_value_dict = group_value_dict
-            self.mesh = fenics.Mesh()
-            xdmffile.read(self.mesh)
-            self.markers = {}
-            self.dx = {}
-            for (key, value) in self.group_value_dict.items():
-                # Fenics interface here: create cell function of type int for every group
-                # TODO: examine whether int is appropriate or this class could be generalized
-                self.markers[key] = fenics.CellFunction("size_t", self.mesh)
-                xdmffile.read(self.markers[key], key)
-                self.dx[key] = fenics.Measure("dx", domain=self.mesh, subdomain_data=self.markers[key])
-            xdmffile.close()
-
-        def eval_cell(self, values, x, cell):
-            values_list = []
-            for (key, func) in self.group_value_dict.items():
-                if self.check_marked(self.markers[key][cell.index]):
-                    values_list.append(func(x))
-            if values_list:
-                values[0] = values_list[0]
-                # TODO: improve for vectorial data
-                # TODO: fix value assignment for overlap
-                # according to priority, mean, or standard
-                # TODO: python classes much slower than JIT compilation
-            else:
-                values[0] = self.default
-
-        # def value_shape(self):
-        #     return self.shape
-
-    class FacetFunctionXDMF(object):
-        def __init__(self, xdmffilename, group_value_dict):
-            """
-            Initialization of FacetFunctionXDMF by reading an XDMF file.
-
-            @param: xdmffilename: path to xdmf file
-            @param: group_value_dict: {"groupname":{"type":"Dirichlet|Neumann|Robin", "value":u_D|du_N|(r,s), "marked":1}, ...}
-
-            If group_value_dict contains no "marked" entry for the groupname, "marked" is set to 1 by default.
-            """
-            self.readXDMFFile(xdmffilename, group_value_dict)
-
-        def readXDMFFile(self, xdmffilename, group_value_dict):
-            xdmffile = fenics.XDMFFile(xdmffilename)
-            self.group_value_dict = group_value_dict
-            self.mesh = fenics.Mesh()
-            xdmffile.read(self.mesh)
-            self.markers = {}
-            self.marked = {}
-            self.ds = {}
-            self.bcs = {}
-            for (key, value) in self.group_value_dict.items():
-                # Fenics interface here: create facet function of type size_t (positive int) for every group
-                # TODO: examine whether size_t is appropriate or this class could be generalized
-                self.markers[key] = fenics.FacetFunction("size_t", self.mesh)
-                xdmffile.read(self.markers[key], key)
-                self.marked[key] = value.get("marked", 1)
-                self.ds[key] = fenics.Measure("ds", domain=self.mesh, subdomain_data=self.markers[key])
-                self.bcs[key] = value
-            xdmffile.close()
-
-        def getDirichletBCs(self, vectorspace, *args, **kwargs):
-            dbcs = []
-            for (dict_key, dict_value) in self.bcs.items():
-                if dict_value["type"] == 'Dirichlet':
-                    bc = fenics.DirichletBC(vectorspace, dict_value["value"], self.markers[dict_key], dict_value.get("marked", 1), *args, **kwargs)
-                    dbcs.append(bc)
-            return dbcs
-        # TODO: write some functions to return integrals for Neumann and Robin
-        # boundary conditions for the general case (i.e. vector, tensor)
