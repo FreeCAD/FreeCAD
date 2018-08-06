@@ -2415,8 +2415,8 @@ struct ShapeInfo{
         if(myWires.empty())
             foreachSubshape(myShape,GetWires(myWires,myRTree,myParams),TopAbs_WIRE);
 
-        // Now find the ture nearest point among the wires returned. Currently
-        // only closed wire has a ture nearest point, using OCC's
+        // Now find the true nearest point among the wires returned. Currently
+        // only closed wire has a true nearest point, using OCC's
         // BRepExtrema_DistShapeShape. We don't do this on open wires, because
         // we haven't implemented wire breaking on open wire yet, and I doubt
         // its usefulness.

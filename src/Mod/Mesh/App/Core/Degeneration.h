@@ -367,8 +367,8 @@ private:
 };
 
 /**
- * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the commong edge with one of their neighbours.
- * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets that or not degenrated.
+ * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the common edge with one of their neighbours.
+ * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets that or not degenerated.
  * The removal of degenerated facets is done by @ref MeshFixDegeneratedFacets.
  * @see MeshEvalDeformedFacets
  * @author Werner Mayer

@@ -183,7 +183,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     int max_width = getMainWindow()->width();
     int top_width = 0;
-    
+
     ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
     QList<ToolBarItem*> items = toolBarItems->getItems();
@@ -272,8 +272,8 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
             // set the tool button user data
             if (action) action->setData(QString::fromLatin1((*it)->command().c_str()));
         } else {
-            // Note: For toolbars we do not remove and readd the actions
-            // because this causes flicker effects. So, it could happen that the order of 
+            // Note: For toolbars we do not remove and re-add the actions
+            // because this causes flicker effects. So, it could happen that the order of
             // buttons doesn't match with the order of commands in the workbench.
             int index = actions.indexOf(action);
             actions.removeAt(index);

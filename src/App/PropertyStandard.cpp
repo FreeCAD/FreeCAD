@@ -1370,7 +1370,7 @@ void PropertyFloatList::Restore(Base::XMLReader &reader)
     string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -2608,7 +2608,7 @@ void PropertyColorList::Restore(Base::XMLReader &reader)
         std::string file (reader.getAttribute("file"));
 
         if (!file.empty()) {
-            // initate a file read
+            // initiate a file read
             reader.addFile(file.c_str(),this);
         }
     }
@@ -2887,7 +2887,7 @@ void PropertyMaterialList::Restore(Base::XMLReader &reader)
         std::string file(reader.getAttribute("file"));
 
         if (!file.empty()) {
-            // initate a file read
+            // initiate a file read
             reader.addFile(file.c_str(), this);
         }
     }

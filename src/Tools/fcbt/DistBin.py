@@ -41,7 +41,7 @@ FileTools.cpallWithFilter('../../lib',DistDir+DistBin+'/lib',FileTools.SetUpFilt
 
 #====================================================================
 # copy Modules
-sys.stdout.write( 'Copy modul Tree ...\n')
+sys.stdout.write( 'Copy module Tree ...\n')
 DistTools.EnsureDir(DistDir+DistBin+'/Mod')
 FileTools.cpallWithFilter('../../src/Mod',DistDir+DistBin+'/Mod',FileTools.SetUpFilter(DistTools.ModFilter))
 

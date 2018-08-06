@@ -245,7 +245,7 @@ public:
         }
 #endif
 
-        // Bug #0000607: Some mices also support horizontal scrolling which however might
+        // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
