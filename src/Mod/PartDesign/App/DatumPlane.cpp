@@ -44,8 +44,8 @@ Plane::Plane()
 {
     ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_None, "Automatic or manual resizing");
     ResizeMode.setEnums(ResizeModeEnums);
-    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_None, "Length of the plane");
-    ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_None, "Width of the plane");
+    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the plane");
+    ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_Output, "Width of the plane");
 
     Length.setReadOnly(true);
     Width.setReadOnly(true);
