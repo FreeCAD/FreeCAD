@@ -1,6 +1,8 @@
 <RCC>
     <qresource> 
         <file>icons/Constraint_Concentric.svg</file>
+        <file>icons/Constraint_Diameter.svg</file>
+        <file>icons/Constraint_Diameter_Driven.svg</file>
         <file>icons/Constraint_Ellipse_Axis_Angle.svg</file>
         <file>icons/Constraint_Ellipse_Major_Radius.svg</file>
         <file>icons/Constraint_Ellipse_Minor_Radius.svg</file>

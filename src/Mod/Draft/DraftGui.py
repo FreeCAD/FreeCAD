@@ -790,7 +790,7 @@ class DraftToolBar:
         self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
         self.isCopy.setText(translate("draft", "Copy")+" ("+inCommandShortcuts["Copy"][0]+")")
-        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved"))
+        self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
         self.SSizeValue.setToolTip(translate("draft", "Height of text"))
@@ -1198,23 +1198,24 @@ class DraftToolBar:
         self.delButton.setChecked(not(addmode))
 
     def showCommandOptions(self,name):
-        cmdstr = "\n"+name+" "+translate("draft","options")+" : "
-        first = True
-        for k,v in inCommandShortcuts.items():
-            if v[2]:
-                if getattr(self,v[2]).isVisible():
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("Verbose",True):
+            cmdstr = "\n"+name+" "+translate("draft","options")+" : "
+            first = True
+            for k,v in inCommandShortcuts.items():
+                if v[2]:
+                    if getattr(self,v[2]).isVisible():
+                        if first:
+                            first = False
+                        else:
+                            cmdstr += ", "
+                        cmdstr += v[0] + ":" + v[1]
+                else:
                     if first:
                         first = False
                     else:
                         cmdstr += ", "
                     cmdstr += v[0] + ":" + v[1]
-            else:
-                if first:
-                    first = False
-                else:
-                    cmdstr += ", "
-                cmdstr += v[0] + ":" + v[1]
-        FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
+            FreeCAD.Console.PrintMessage(cmdstr+"\n\n")
 
     def checkLocal(self):
         "checks if x,y,z coords must be displayed as local or global"

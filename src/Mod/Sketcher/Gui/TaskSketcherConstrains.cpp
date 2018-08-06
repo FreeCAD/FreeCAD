@@ -137,6 +137,7 @@ public:
             case Sketcher::DistanceX:
             case Sketcher::DistanceY:
             case Sketcher::Radius:
+            case Sketcher::Diameter:
             case Sketcher::Angle:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
                 break;
@@ -180,7 +181,7 @@ public:
             static QIcon vdist( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance") );
             static QIcon horiz( Gui::BitmapFactory().pixmap("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().pixmap("Constraint_Vertical") );
-            static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
+          //static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
             static QIcon block ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainBlock") );
             static QIcon coinc( Gui::BitmapFactory().pixmap("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().pixmap("Constraint_Parallel") );
@@ -188,10 +189,11 @@ public:
             static QIcon tang ( Gui::BitmapFactory().pixmap("Constraint_Tangent") );
             static QIcon dist ( Gui::BitmapFactory().pixmap("Constraint_Length") );
             static QIcon radi ( Gui::BitmapFactory().pixmap("Constraint_Radius") );
-            static QIcon majradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Major_Radius") );
-            static QIcon minradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Minor_Radius") );
+            static QIcon dia ( Gui::BitmapFactory().pixmap("Constraint_Diameter") );
+          //static QIcon majradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Major_Radius") );
+          //static QIcon minradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Minor_Radius") );
             static QIcon angl ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle") );
-            static QIcon ellipseXUAngl ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Axis_Angle") );
+          //static QIcon ellipseXUAngl ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal( Gui::BitmapFactory().pixmap("Constraint_EqualLength") );
             static QIcon pntoo( Gui::BitmapFactory().pixmap("Constraint_PointOnObject") );
             static QIcon symm ( Gui::BitmapFactory().pixmap("Constraint_Symmetric") );
@@ -206,6 +208,7 @@ public:
             static QIcon vdist_driven( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven") );
             static QIcon dist_driven ( Gui::BitmapFactory().pixmap("Constraint_Length_Driven") );
             static QIcon radi_driven ( Gui::BitmapFactory().pixmap("Constraint_Radius_Driven") );
+            static QIcon dia_driven ( Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven") );
             static QIcon angl_driven ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven") );
             static QIcon snell_driven ( Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven") );
 
@@ -238,6 +241,8 @@ public:
                 return constraint->isDriving ? vdist : vdist_driven;
             case Sketcher::Radius:
                 return constraint->isDriving ? radi : radi_driven;
+            case Sketcher::Diameter:
+                return constraint->isDriving ? dia : dia_driven;                
             case Sketcher::Angle:
                 return constraint->isDriving ? angl : angl_driven;
             case Sketcher::SnellsLaw:
@@ -303,6 +308,7 @@ public:
         case Sketcher::DistanceX:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
+        case Sketcher::Diameter:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:
             return ( constraint->First >= 0 || constraint->Second >= 0 || constraint->Third >= 0 );
@@ -418,6 +424,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
              it->constraintType() == Sketcher::DistanceX ||
              it->constraintType() == Sketcher::DistanceY ||
              it->constraintType() == Sketcher::Radius ||
+             it->constraintType() == Sketcher::Diameter ||
              it->constraintType() == Sketcher::Angle ||
              it->constraintType() == Sketcher::SnellsLaw)) {
 
@@ -727,6 +734,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
         it->constraintType() == Sketcher::DistanceX ||
         it->constraintType() == Sketcher::DistanceY ||
         it->constraintType() == Sketcher::Radius ||
+        it->constraintType() == Sketcher::Diameter ||
         it->constraintType() == Sketcher::Angle ||
         it->constraintType() == Sketcher::SnellsLaw) {
 
@@ -878,6 +886,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         case Sketcher::DistanceX:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
+        case Sketcher::Diameter:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:
             visible = (showDatums || showNamed || showNonDriving);

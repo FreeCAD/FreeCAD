@@ -6291,7 +6291,13 @@ class _PointArray(_DraftObject):
         while getType(opl) == 'Clone':
             opl = opl.Objects[0]
         if hasattr(opl, 'Geometry'):
-            pls = opl.Geometry
+            place = opl.Placement
+            for pts in opl.Geometry:
+                if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Z'):
+                    pn = pts.copy()
+                    pn.translate(place.Base)
+                    pn.rotate(place)
+                    pls.append(pn)
         elif hasattr(opl, 'Links'):
             pls = opl.Links
         elif hasattr(opl, 'Components'):
@@ -6312,7 +6318,11 @@ class _PointArray(_DraftObject):
         	        i += 1
         	        base.append(nshape)
         obj.Count = i
-        obj.Shape = Part.makeCompound(base)
+        if i > 0: 
+            obj.Shape = Part.makeCompound(base)
+        else:
+            FreeCAD.Console.PrintError(translate("draft","No point found\n"))
+            obj.Shape = obj.Base.Shape.copy()
 
 class _Point(_DraftObject):
     "The Draft Point object"

@@ -68,7 +68,7 @@ private:
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
     QGraphicsRectItem *m_backgroundItem;
-    QGraphicsItem *origin;
+    QGraphicsItem* m_origin;
     QPoint mousePos;
 };
 

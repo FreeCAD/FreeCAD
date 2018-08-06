@@ -134,6 +134,7 @@ class _ProfileC(_Profile):
         cs1=c1.toShape()
         cs2=c2.toShape()
         p=Part.makeRuledSurface(cs2,cs1)
+        p.reverse()
         obj.Shape = p
         obj.Placement = pl
 

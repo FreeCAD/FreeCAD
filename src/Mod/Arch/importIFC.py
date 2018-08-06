@@ -1016,6 +1016,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # processing remaining (normal) groups
 
+    swallowed = []
     for host,children in groups.items():
         if ifcfile[host].is_a("IfcGroup"):
             if ifcfile[host].Name:
@@ -1024,10 +1025,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name.encode("utf8"))
+            grp.Label = grp_name
             objects[host] = grp
             for child in children:
                 if child in objects.keys():
                     grp.addObject(objects[child])
+                    swallowed.append(child)
                 else:
                     if DEBUG: print("unable to add object: #", child, "  to group: #", ifcfile[host].id(), ", ", grp_name)
 
@@ -1082,7 +1085,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         for host,children in additions.items():
             if host in objects.keys():
-                cobs = [objects[child] for child in children if child in objects.keys()]
+                cobs = []
+                for child in children:
+                    if child in objects.keys():
+                        if not child in swallowed: # don't add objects already in groups
+                            cobs.append(objects[child])
                 if cobs:
                     if DEBUG and first:
                         print("")
@@ -1430,7 +1437,7 @@ def export(exportList,filename):
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
-        elif obj.isDerivedFrom("App::Annotation"):
+        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) == "DraftText"):
             annotations.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape:
@@ -1449,6 +1456,7 @@ def export(exportList,filename):
     groups = {} # { Host: [Child,Child,...] }
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
+    spatialelements = {} # {Name:IfcEntity, ... }
 
     # reusable entity system
 
@@ -1519,10 +1527,25 @@ def export(exportList,filename):
         # export grids
 
         if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
-            ifctype = "IfcGrid"
             ifcaxes = []
             ifcpols = []
-            for axg in obj.Proxy.getAxisData(obj):
+            if ifctype == "IfcAxis":
+                # make sure this axis is not included in something else already
+                standalone = True
+                for p in obj.InList:
+                    if hasattr(p,"Axes") and (obj in p.Axes):
+                        if p in objectslist:
+                            axgroups = []
+                            standalone = False
+                            break
+                if standalone:
+                    axgroups = [obj.Proxy.getAxisData(obj)]
+            else:
+                axgroups = obj.Proxy.getAxisData(obj)
+            if not axgroups:
+                continue
+            ifctype = "IfcGrid"
+            for axg in axgroups:
                 ifcaxg = []
                 for ax in axg:
                     p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
@@ -1543,20 +1566,21 @@ def export(exportList,filename):
             if len(ifcaxes) > 1:
                 v = ifcaxes[1]
             if len(ifcaxes) > 2:
-                v = ifcaxes[2]
-            if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
-            xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-            plac = ifcbin.createIfcLocalPlacement(gpl)
-            cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
-            #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
-            srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
-            pdef = ifcfile.createIfcProductDefinitionShape(None,None,[srep])
-            grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
-            products[obj.Name] = grid
-            count += 1
+                w = ifcaxes[2]
+            if u and v:
+                if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
+                xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
+                zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
+                ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+                gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                plac = ifcbin.createIfcLocalPlacement(gpl)
+                cset = ifcfile.createIfcGeometricCurveSet(ifcpols)
+                #subc = ifcfile.createIfcGeometricRepresentationSubContext('FootPrint','Model',context,None,"MODEL_VIEW",None,None,None,None,None)
+                srep = ifcfile.createIfcShapeRepresentation(context,'FootPrint',"GeometricCurveSet",ifcpols)
+                pdef = ifcfile.createIfcProductDefinitionShape(None,None,[srep])
+                grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,pdef,u,v,w)
+                products[obj.Name] = grid
+                count += 1
             continue
 
         from ArchComponent import IFCTYPES
@@ -1595,9 +1619,20 @@ def export(exportList,filename):
                 kwargs.update({"OverallHeight": l/1000.0,
                     "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
         elif ifctype == "IfcSpace":
-            kwargs.update({"CompositionType": "ELEMENT",
-                "InteriorOrExteriorSpace": "INTERNAL",
-                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
+            internal = "NOTDEFINED"
+            if hasattr(obj,"Internal"):
+                if obj.Internal:
+                    internal = "INTERNAL"
+                else:
+                    internal = "EXTERNAL"
+            if schema == "IFC2X3":
+                kwargs.update({"CompositionType": "ELEMENT",
+                    "InteriorOrExteriorSpace": internal,
+                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
+            else:
+                kwargs.update({"CompositionType": "ELEMENT",
+                    "PredefinedType": internal,
+                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
             if ifcopenshell.schema_identifier == "IFC4":
                 kwargs.update({"PredefinedType": "ELEMENT"})
@@ -1619,6 +1654,8 @@ def export(exportList,filename):
         #print(obj.Label," : ",ifctype," : ",kwargs)
         product = getattr(ifcfile,"create"+ifctype)(**kwargs)
         products[obj.Name] = product
+        if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
+            spatialelements[obj.Name] = product
 
         # additions
 
@@ -1993,7 +2030,7 @@ def export(exportList,filename):
         for g in groups.keys():
             okay = True
             for c in groups[g]:
-                if Draft.getType(FreeCAD.ActiveDocument.getObject(c)) == "Group":
+                if Draft.getType(FreeCAD.ActiveDocument.getObject(c)) in ["Group","VisGroup"]:
                     okay = False
                     for s in sortedgroups:
                         if s[0] == c:
@@ -2004,6 +2041,7 @@ def export(exportList,filename):
             if g[0] in groups.keys():
                 del groups[g[0]]
     #print "sorted groups:",sortedgroups
+    containers = {}
     for g in sortedgroups:
         if g[1]:
             children = []
@@ -2014,7 +2052,18 @@ def export(exportList,filename):
                 name = str(FreeCAD.ActiveDocument.getObject(g[0]).Label.encode("utf8"))
                 grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
                 products[g[0]] = grp
+                spatialelements[g[0]] = grp
                 ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
+    # stack groups inside containers
+    stack = {}
+    for g in sortedgroups:
+        go = FreeCAD.ActiveDocument.getObject(g[0])
+        for parent in go.InList:
+            if hasattr(parent,"Group") and (go in parent.Group):
+                if (parent.Name in spatialelements) and (g[0] in spatialelements):
+                    stack.setdefault(parent.Name,[]).append(spatialelements[g[0]])
+    for k,v in stack.items():
+        ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupStackLink','',spatialelements[k],v)
 
     # 2D objects
 
