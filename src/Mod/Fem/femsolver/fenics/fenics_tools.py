@@ -26,15 +26,32 @@ try:
 except:
     print("No Fenics modules found, please install them.")
 else:
+    import numpy as np
+    
+    
     class XDMFReader(object):
+        """
+        Reads XDMF file and provides unified interface for returning
+        cell functions or facet functions.
+        """
         def __init__(self, xdmffilename):
+            """
+            Sets filename and sets mesh instance to None.
+            """
             self.xdmffilename = xdmffilename
             self.mesh = None
 
         def resetMesh(self):
+            """
+            Resets mesh instance to None.
+            """
             self.mesh = None
 
         def readMesh(self):
+            """
+            If mesh instance is None, read mesh instance from file denoted
+            by filename property.
+            """
             # TODO: implement mesh read in for open file
             if self.mesh is None:
                 xdmffile = fenics.XDMFFile(self.xdmffilename)
@@ -42,10 +59,23 @@ else:
                 xdmffile.read(self.mesh)
                 xdmffile.close()
 
-        def readCellExpression(self, group_value_dict, *args, **kwargs):
+        def readCellExpression(self, group_value_dict, value_type="scalar", *args, **kwargs):
+            """
+            Reads cell expression and returns it.
+            """
+            value_type_dictionary = {
+                "scalar":ScalarCellExpressionFromXDMF,
+                "vector2d":Vector2DCellExpressionFromXDMF,
+                "vector3d":Vector3DCellExpressionFromXDMF                
+            }            
+            
             self.readMesh()
             xdmffile = fenics.XDMFFile(self.xdmffilename)
-            cf = CellExpressionFromXDMF(group_value_dict, *args, **kwargs)
+            val_shape = group_value_dict.values()[0].value_shape()
+            print("read cell expression with value shape: %s" % (str(val_shape),))
+            cf = value_type_dictionary[value_type.lower()](group_value_dict, 
+                                                            val_shape=val_shape, 
+                                                            *args, **kwargs)
             cf.init()
             for (key, value) in cf.group_value_dict.items():
                 cf.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
@@ -56,9 +86,12 @@ else:
             return cf
 
         def readFacetFunction(self, group_value_dict, *args, **kwargs):
+            """
+            Reads facet function and returns it.
+            """
             self.readMesh()
             xdmffile = fenics.XDMFFile(self.xdmffilename)
-            ff = FacetFunctionFromXDMF(group_value_dict)
+            ff = FacetFunctionFromXDMF(group_value_dict, *args, **kwargs)
             ff.init()
             for (key, value) in ff.group_value_dict.items():
                 ff.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
@@ -70,35 +103,114 @@ else:
             xdmffile.close()
             return ff
 
-    class CellExpressionFromXDMF(fenics.Expression):
+    class CellExpressionFromXDMF(object):
+        """
+        Creates cell function expression from XDMF file.
+        """
         def __init__(self, group_value_dict,
-                     default=0.,
+                     default=lambda x: 0.,
                      check_marked=(lambda x: x == 1), **kwargs):
+            self.init()
             self.group_value_dict = group_value_dict
             self.check_marked = check_marked
             self.default = default
-            self.init()
 
         def init(self):
             self.markers = {}
             self.dx = {}
+            
+        def assign_values(self, values, to_assign):
+            raise NotImplementedError()
 
-        def eval_cell(self, values, x, cell):
-            values_list = []
-            for (key, func) in self.group_value_dict.items():
-                if self.check_marked(self.markers[key][cell.index]):
-                    values_list.append(func(x))
+        def eval_cell_backend(self, values, x, cell):
+                        
+            values_list = [func(x) for (key, func) in self.group_value_dict.items()
+                    if self.check_marked(self.markers[key][cell.index])]
+                        
             if values_list:
-                values[0] = values_list[0]
+                #values[0] = values_list[0][0]
+                #values[1] = values_list[0][1]
+                #values[2] = values_list[0][2]
+                
+                self.assign_values(values, values_list[0])                
+                
                 # TODO: improve for vectorial data
                 # TODO: fix value assignment for overlap
                 # according to priority, mean, or standard
                 # TODO: python classes much slower than JIT compilation
             else:
-                values[0] = self.default
+                self.assign_values(values, self.default(x))
+
+            print("cell index %s values in backend: %s" % (str(cell.index), str(values)))
+
+# ***********************************
+# * Sub classes due to value_shape method which is not of dynamical return type
+# * Also the assignment of values is to be done by reference. Therefore it has to be
+# * overloaded.
+# ***********************************
+
+    class ScalarCellExpressionFromXDMF(fenics.Expression, CellExpressionFromXDMF):
+
+        def __init__(self, group_value_dict,
+                     default=lambda x: 0.,
+                     check_marked=(lambda x: x == 1), **kwargs):
+            CellExpressionFromXDMF.__init__(self, group_value_dict,
+                    default=default, check_marked=check_marked)
+        
+        def eval_cell(self, values, x, cell):
+            self.eval_cell_backend(values, x, cell)
+        
+        def assign_values(self, values, to_assign):
+            values[0] = to_assign[0]
+
+        def value_shape(self):
+            return ()
+            
+    class Vector3DCellExpressionFromXDMF(fenics.Expression, CellExpressionFromXDMF):
+
+        def __init__(self, group_value_dict,
+                     default=lambda x: np.zeros((3,)),
+                     check_marked=(lambda x: x == 1), **kwargs):
+            CellExpressionFromXDMF.__init__(self, group_value_dict,
+                    default=default, check_marked=check_marked)
+
+        def eval_cell(self, values, x, cell):
+            self.eval_cell_backend(values, x, cell)
+            print("cell index %s values in frontend: %s" % (str(cell.index), str(values)))
+
+        
+        def assign_values(self, values, to_assign):
+            values[0] = to_assign[0]
+            values[1] = to_assign[1]
+            values[2] = to_assign[2]
+
+        def value_shape(self):
+            return (3,)
+            
+    class Vector2DCellExpressionFromXDMF(fenics.Expression, CellExpressionFromXDMF):
+
+        def __init__(self, group_value_dict,
+                     default=lambda x: np.zeros((2,)),
+                     check_marked=(lambda x: x == 1), **kwargs):
+            CellExpressionFromXDMF.__init__(self, group_value_dict,
+                    default=default, check_marked=check_marked)
+
+
+        def eval_cell(self, values, x, cell):
+            self.eval_cell_backend(values, x, cell)
+
+        def assign_values(self, values, to_assign):
+            values[0] = to_assign[0]
+            values[1] = to_assign[1]
+
+        def value_shape(self):
+            return (2,)
 
     class FacetFunctionFromXDMF(object):
-        def __init__(self, group_value_dict):
+        """
+        Creates facet function from XDMF file.
+        """
+        def __init__(self, group_value_dict, *args, **kwargs):
             self.group_value_dict = group_value_dict
             self.init()
 
@@ -111,7 +223,7 @@ else:
         def getDirichletBCs(self, vectorspace, *args, **kwargs):
             dbcs = []
             for (dict_key, dict_value) in self.bcs.items():
-                if dict_value["type"] == 'Dirichlet':
+                if dict_value["type"] == "Dirichlet":
                     bc = fenics.DirichletBC(vectorspace, dict_value["value"], self.markers[dict_key], dict_value.get("marked", 1), *args, **kwargs)
                     dbcs.append(bc)
             return dbcs
