@@ -2555,7 +2555,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 c = fcface.CenterOfMass
                                 v1 = verts[0].sub(c)
                                 v2 = verts[1].sub(c)
-                                n = fcface.normalAt(0,0)
+                                try:
+                                    n = fcface.normalAt(0,0)
+                                except Part.OCCError:
+                                    continue # this is a very wrong face, it probably shouldn't be here...
                                 if DraftVecUtils.angle(v2,v1,n) >= 0:
                                     verts.reverse() # inverting verts order if the direction is couterclockwise
                                 pts =   [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
