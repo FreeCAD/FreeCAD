@@ -32,6 +32,7 @@
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
@@ -43,7 +44,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
-ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
+ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false), guard(false)
 {
     initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }
@@ -116,6 +117,11 @@ std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimCh
 
 void ViewProviderGroupExtension::extensionShow(void) {
 
+    // avoid possible infinite recursion
+    if (guard)
+        return;
+    Base::StateLocker lock(guard);
+
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
     if (!getExtendedViewProvider()->isRestoring() && !this->visible) {
@@ -135,6 +141,11 @@ void ViewProviderGroupExtension::extensionShow(void) {
 }
 
 void ViewProviderGroupExtension::extensionHide(void) {
+
+    // avoid possible infinite recursion
+    if (guard)
+        return;
+    Base::StateLocker lock(guard);
 
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too

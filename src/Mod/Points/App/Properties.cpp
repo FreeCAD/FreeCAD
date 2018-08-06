@@ -39,13 +39,15 @@
 #include "Properties.h"
 #include "PointsPy.h"
 
+#include <QtConcurrentMap>
+
 using namespace Points;
 using namespace std;
 
-TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat);
-TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists);
+TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat)
+TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists)
 
 PropertyGreyValueList::PropertyGreyValueList()
 {
@@ -387,9 +389,9 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
-    for (int ii=0; ii<getSize(); ii++) {
-        set1Value(ii, rot * operator[](ii));
-    }
+    QtConcurrent::blockingMap(_lValueList, [rot](Base::Vector3f& value) {
+        rot.multVec(value, value);
+    });
 
     hasSetValue();
 }

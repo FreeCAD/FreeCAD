@@ -35,6 +35,9 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
+import sys
+if sys.version_info.major >= 3:
+    unicode = str
 
 ## @package ArchBuildingPart
 #  \ingroup ARCH

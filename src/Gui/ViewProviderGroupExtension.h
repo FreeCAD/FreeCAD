@@ -54,6 +54,7 @@ public:
 
 private:
     bool visible; // helper variable
+    bool guard;
     std::vector<ViewProvider*> nodes;
 };
 

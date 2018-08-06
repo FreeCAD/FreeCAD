@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef FC_OS_WIN32
+#define GL_GLEXT_PROTOTYPES
+#endif
+
 #ifndef _PreComp_
 # include <algorithm>
 # ifdef FC_OS_MACOSX
@@ -88,7 +92,9 @@ public:
     {
         if (bufferId > 0)
             return true;
+#ifdef FC_OS_WIN32
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
+#endif
         glGenBuffersARB(1, &bufferId);
         context = currentContext;
         return true;
@@ -109,7 +115,9 @@ public:
     void allocate(const void *data, int count)
     {
         if (bufferId > 0) {
+#ifdef FC_OS_WIN32
             PFNGLBUFFERDATAPROC glBufferDataARB = (PFNGLBUFFERDATAPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
+#endif
             glBufferDataARB(target, count, data, GL_STATIC_DRAW);
         }
     }
@@ -121,7 +129,9 @@ public:
                                           "buffer not created");
                 return false;
             }
+#ifdef FC_OS_WIN32
             PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
+#endif
             glBindBufferARB(target, bufferId);
             return true;
         }
@@ -130,7 +140,9 @@ public:
     void release()
     {
         if (bufferId) {
+#ifdef FC_OS_WIN32
             PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
+#endif
             glBindBufferARB(target, 0);
         }
     }
@@ -146,7 +158,9 @@ public:
     {
         GLint value = -1;
         if (bufferId > 0) {
+#ifdef FC_OS_WIN32
             PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(glue, "glGetBufferParameterivARB");
+#endif
             glGetBufferParameteriv(target, GL_BUFFER_SIZE, &value);
         }
         return value;
@@ -158,8 +172,10 @@ private:
         CoinOpenGLBuffer * self = static_cast<CoinOpenGLBuffer*>(userdata);
 
         if (self->context == context && self->bufferId) {
+#ifdef FC_OS_WIN32
             const cc_glglue * glue = cc_glglue_instance((int) context);
             PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
+#endif
 
             GLuint buffer = self->bufferId;
             glDeleteBuffersARB(1, &buffer);

@@ -39,7 +39,7 @@
 
 using namespace Points;
 
-TYPESYSTEM_SOURCE(Points::PropertyPointKernel , App::PropertyComplexGeoData);
+TYPESYSTEM_SOURCE(Points::PropertyPointKernel , App::PropertyComplexGeoData)
 
 PropertyPointKernel::PropertyPointKernel()
     : _cPoints(new PointKernel())
@@ -70,10 +70,7 @@ const Data::ComplexGeoData* PropertyPointKernel::getComplexData() const
 
 Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
 {
-    Base::BoundBox3d box;
-    for (PointKernel::const_iterator it = _cPoints->begin(); it != _cPoints->end(); ++it)
-        box.Add(*it);
-    return box;
+    return _cPoints->getBoundBox();
 }
 
 PyObject *PropertyPointKernel::getPyObject(void)
