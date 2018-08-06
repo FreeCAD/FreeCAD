@@ -310,7 +310,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         if(buildElementMap<0) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Mod/Part/General");
-            buildElementMap = hGrp->GetBool("AutoElementMap",false)?1:0;
+            buildElementMap = hGrp->GetBool("AutoElementMap",true)?1:0;
         }
         if(buildElementMap) {
             FC_WARN("auto generate element map: " << owner->getNameInDocument());
