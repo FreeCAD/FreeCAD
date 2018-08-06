@@ -63,14 +63,14 @@ bool DlgEvaluateSettings::isFoldsChecked() const
     return ui->checkFolds->isChecked();
 }
 
-void DlgEvaluateSettings::setDegenratedFacetsChecked(bool on)
+void DlgEvaluateSettings::setDegeneratedFacetsChecked(bool on)
 {
-    ui->checkDegenrated->setChecked(on);
+    ui->checkDegenerated->setChecked(on);
 }
 
-bool DlgEvaluateSettings::isDegenratedFacetsChecked() const
+bool DlgEvaluateSettings::isDegeneratedFacetsChecked() const
 {
-    return ui->checkDegenrated->isChecked();
+    return ui->checkDegenerated->isChecked();
 }
 
 #include "moc_DlgEvaluateSettings.cpp"

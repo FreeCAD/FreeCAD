@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QCheckBox" name="checkDegenrated">
+       <widget class="QCheckBox" name="checkDegenerated">
         <property name="text">
          <string>Only consider zero area faces as degenerated</string>
         </property>
