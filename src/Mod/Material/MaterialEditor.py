@@ -28,6 +28,9 @@ from Material import getMaterialAttributeStructure
 import os
 from PySide import QtCore, QtGui
 # from PySide import QtUiTools, QtSvg
+import sys
+if sys.version_info.major >= 3:
+    unicode = str
 
 
 __title__ = "FreeCAD material editor"
