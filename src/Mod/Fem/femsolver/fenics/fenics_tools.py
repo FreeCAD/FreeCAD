@@ -26,13 +26,11 @@ try:
 except:
     print("No Fenics modules found, please install them.")
 else:
-    
     class XDMFReader(object):
         def __init__(self, xdmffilename):
-            
             self.xdmffilename = xdmffilename
             self.mesh = None
-            
+
         def resetMesh(self):
             self.mesh = None
 
@@ -43,8 +41,7 @@ else:
                 self.mesh = fenics.Mesh()
                 xdmffile.read(self.mesh)
                 xdmffile.close()
-            
-        
+
         def readCellExpression(self, group_value_dict, *args, **kwargs):
             self.readMesh()
             xdmffile = fenics.XDMFFile(self.xdmffilename)
@@ -52,17 +49,17 @@ else:
             cf.init()
             for (key, value) in cf.group_value_dict.items():
                 cf.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
-                #fenics.CellFunction("size_t", self.mesh) # deprecated
+                # fenics.CellFunction("size_t", self.mesh) # deprecated
                 xdmffile.read(cf.markers[key], key)
                 cf.dx[key] = fenics.Measure("dx", domain=self.mesh, subdomain_data=cf.markers[key])
             xdmffile.close()
             return cf
-            
+
         def readFacetFunction(self, group_value_dict, *args, **kwargs):
             self.readMesh()
             xdmffile = fenics.XDMFFile(self.xdmffilename)
-            ff = FacetFunctionFromXDMF(group_value_dict)                
-            ff.init()            
+            ff = FacetFunctionFromXDMF(group_value_dict)
+            ff.init()
             for (key, value) in ff.group_value_dict.items():
                 ff.markers[key] = fenics.MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
                 # fenics.FacetFunction("size_t", self.mesh) # deprecated
@@ -71,22 +68,20 @@ else:
                 ff.ds[key] = fenics.Measure("ds", domain=self.mesh, subdomain_data=ff.markers[key])
                 ff.bcs[key] = value
             xdmffile.close()
-            return ff            
-    
+            return ff
+
     class CellExpressionFromXDMF(fenics.Expression):
-        def __init__(self, group_value_dict, 
-                     default=0., 
+        def __init__(self, group_value_dict,
+                     default=0.,
                      check_marked=(lambda x: x == 1), **kwargs):
             self.group_value_dict = group_value_dict
             self.check_marked = check_marked
             self.default = default
             self.init()
 
-
         def init(self):
             self.markers = {}
             self.dx = {}
-            
 
         def eval_cell(self, values, x, cell):
             values_list = []
@@ -102,7 +97,6 @@ else:
             else:
                 values[0] = self.default
 
-
     class FacetFunctionFromXDMF(object):
         def __init__(self, group_value_dict):
             self.group_value_dict = group_value_dict
@@ -113,7 +107,6 @@ else:
             self.marked = {}
             self.ds = {}
             self.bcs = {}
-            
 
         def getDirichletBCs(self, vectorspace, *args, **kwargs):
             dbcs = []
@@ -129,7 +122,6 @@ else:
 # ***********************************************************************
 # * old interface classes
 # ***********************************************************************
-        
 
     class CellExpressionXDMF(fenics.Expression):
         def __init__(self, xdmffilename, group_value_dict, group_priority_dict={}, default=0., check_marked=(lambda x: x == 1), **kwargs):
