@@ -185,6 +185,9 @@ public:
 
     /// get the pointer to the enum list
     const char ** getEnums(void) const;
+
+    /// Returns true if the instance is in a usable state
+    bool isValid(void) const;
     //@}
 
     const char* getEditorName(void) const { return _editorTypeName.c_str(); }
