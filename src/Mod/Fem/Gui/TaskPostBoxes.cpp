@@ -915,7 +915,7 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
 //############################################################################################
 // scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-clip-scalar"), tr("Scalar clip options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-filter-clip-scalar"), tr("Scalar clip options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostScalarClip::getClassTypeId()));
 

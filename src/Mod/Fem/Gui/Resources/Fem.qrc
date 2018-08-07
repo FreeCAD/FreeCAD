@@ -13,7 +13,6 @@
         <file>icons/fem-beam-section.svg</file>
         <file>icons/fem-box.svg</file>
         <file>icons/fem-cfd-analysis.svg</file>
-        <file>icons/fem-clip-scalar.svg</file>
         <file>icons/fem-clipping-plane-add.svg</file>
         <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
@@ -65,6 +64,7 @@
         <file>icons/fem-material-nonlinear.svg</file>
         <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/fem-post-filter-clip-region.svg</file>
+        <file>icons/fem-post-filter-clip-scalar.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
