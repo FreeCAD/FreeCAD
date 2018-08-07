@@ -33,7 +33,6 @@
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-control-solver.svg</file>
-        <file>icons/fem-cylinder.svg</file>
         <file>icons/fem-elmer.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
@@ -66,6 +65,7 @@
         <file>icons/fem-post-filter-linearized-stresses.svg</file>
         <file>icons/fem-post-filter-warp.svg</file>
         <file>icons/fem-post-geo-box.svg</file>
+        <file>icons/fem-post-geo-cylinder.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
