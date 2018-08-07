@@ -1534,38 +1534,48 @@ public:
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         label = viewObject->getObject()->Label.getValue();
-        children = viewObject->claimChildren();
-        updateChildren(children);
+        updateChildren();
     }
 
     const char *getTreeName() const {
         return treeName;
     }
 
-    void updateChildren(std::vector<App::DocumentObject *> &newChildren) {
+    void updateChildren(DocumentObjectDataPtr other) {
+        children = other->children;
+        childSet = other->childSet;
+    }
+
+    bool updateChildren() {
+        auto newChildren = viewObject->claimChildren();
         auto obj = viewObject->getObject();
         std::set<App::DocumentObject *> newSet;
+        bool updated = false;
         for (auto child : newChildren) {
-            if(child && child->getNameInDocument() && 
-               child->getDocument()==obj->getDocument()) 
-            {
+            if(child && child->getNameInDocument()) {
                 if(!newSet.insert(child).second) {
                     TREE_WARN("duplicate child item " << obj->getNameInDocument() 
                         << '.' << child->getNameInDocument());
-                }else if(childSet.find(child) == childSet.end())
-                    _ParentMap[child].insert(obj);
+                }else if(!childSet.erase(child)) {
+                    // this means new child detected
+                    updated = true;
+                    if(child->getDocument()==obj->getDocument())
+                        _ParentMap[child].insert(obj);
+                }
             }
         }
-        if(&newChildren == &children) {
-            childSet.swap(newSet);
-            return;
-        }
         for (auto child : childSet) {
-            if(newSet.find(child) == newSet.end())
+            if(newSet.find(child) == newSet.end()) {
+                // this means old child removed
+                updated = true;
                 _ParentMap[child].erase(obj);
+            }
         }
+        // We still need to check the order of the children
+        updated = updated || children!=newChildren;
         children.swap(newChildren);
         childSet.swap(newSet);
+        return updated;
     }
 
     void clearChildren() {
@@ -2028,13 +2038,69 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view,
     if(&prop == &obj->Visibility)
         return;
 
-    bool updated = false;
-    for(auto &v : getTree()->DocumentMap) {
-        if (v.second->updateObject(view,prop))
-            updated = true;
+    if(&prop == &obj->Label) {
+        const char *label = obj->Label.getValue();
+        for(auto &v : getTree()->DocumentMap) {
+            auto it = v.second->ObjectMap.find(obj);
+            if(it == v.second->ObjectMap.end())
+                continue;
+            if(it->second->label!=label) {
+                it->second->label = label;
+                auto displayName = QString::fromUtf8(label);
+                for(auto item : it->second->items)
+                    item->setText(0, displayName);
+            }
+        }
+        return;
     }
 
-    if(updated) {
+    bool childrenChanged = false;
+    std::vector<App::DocumentObject*> children;
+    bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
+    DocumentObjectDataPtr found;
+    for(auto &v : getTree()->DocumentMap) {
+        auto docItem = v.second;
+        auto it = docItem->ObjectMap.find(obj);
+        if(it == docItem->ObjectMap.end())
+            continue;
+        if(!found) {
+            found = it->second;
+            childrenChanged = found->updateChildren();
+            if(!childrenChanged && it->second->removeChildrenFromRoot==removeChildrenFromRoot)
+                return;
+        }
+        it->second->removeChildrenFromRoot = removeChildrenFromRoot;
+        if(childrenChanged)
+            it->second->updateChildren(found);
+        for(auto item : it->second->items)
+            docItem->populateItem(item,true);
+    }
+
+    if(childrenChanged && prop.testStatus(App::Property::Output)) {
+        // When a property is marked as output, it will not touch its object,
+        // and thus, its property change will not be propagated through
+        // recomputation. So we have to manually check for each links here.
+        for(auto link : App::GetApplication().getLinksTo(obj,true)) {
+            std::vector<App::DocumentObject*> linkedChildren;
+            DocumentObjectDataPtr found;
+            for(auto &v : getTree()->DocumentMap) {
+                auto docItem = v.second;
+                auto it = docItem->ObjectMap.find(link);
+                if(it == docItem->ObjectMap.end())
+                    continue;
+                if(!found) {
+                    found = it->second;
+                    if(!found->updateChildren())
+                        break;
+                }
+                it->second->updateChildren(found);
+                for(auto item : it->second->items)
+                    docItem->populateItem(item,true);
+            }
+        }
+    }
+
+    if(childrenChanged) {
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
@@ -2049,40 +2115,6 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view,
     }
 }
     
-bool DocumentItem::updateObject(const Gui::ViewProviderDocumentObject& view, const App::Property &prop) {
-    auto obj = view.getObject();
-    auto it = ObjectMap.find(obj);
-    if(it == ObjectMap.end())
-        return false;
-
-    if(&prop == &obj->Label) {
-        const char *label = obj->Label.getValue();
-        if(it->second->label!=label) {
-            it->second->label = label;
-            auto displayName = QString::fromUtf8(label);
-            for(auto item : it->second->items)
-                item->setText(0, displayName);
-        }
-        return false;
-    }
-
-    auto children = view.claimChildren();
-    bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
-
-    if(removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
-       children!=it->second->children) 
-    {
-        it->second->removeChildrenFromRoot = removeChildrenFromRoot;
-        it->second->updateChildren(children);
-
-        for(auto item : it->second->items)
-            populateItem(item,true);
-        return true;
-    }
-
-    return false;
-}
-
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
     // Do nothing here because the Label is set in slotChangeObject
