@@ -35,7 +35,6 @@
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-cylinder.svg</file>
-        <file>icons/fem-DataAlongLine.svg</file>
         <file>icons/fem-DataAtPoint.png</file>
         <file>icons/fem-elmer.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
@@ -65,6 +64,7 @@
         <file>icons/fem-post-filter-clip-region.svg</file>
         <file>icons/fem-post-filter-clip-scalar.svg</file>
         <file>icons/fem-post-filter-cut-function.svg</file>
+        <file>icons/fem-post-filter-data-along-line.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>

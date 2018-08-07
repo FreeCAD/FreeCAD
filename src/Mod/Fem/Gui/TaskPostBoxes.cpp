@@ -534,7 +534,7 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
 //############################################################################################
 // data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-DataAlongLine"), tr("Data along a line options"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-data-along-line"), tr("Data along a line options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
