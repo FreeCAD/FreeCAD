@@ -1286,7 +1286,7 @@ CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
     sWhatsThis      = "FEM_PostCreateScalarClipFilter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-clip-scalar";
+    sPixmap         = "fem-post-filter-clip-scalar";
 }
 
 void CmdFemPostCreateScalarClipFilter::activated(int)
