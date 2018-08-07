@@ -589,6 +589,7 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
     return viewAxis;
 }
 
+//TODO: cardinal directions don't seem to affect result. is this right? 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
                                     const Base::Vector3d &direction)
@@ -616,6 +617,15 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
 
     return gp_Pnt(x, y, z);
 }
+
+Base::Vector3d TechDrawGeometry::findCentroidVec(const TopoDS_Shape &shape,
+                                              const Base::Vector3d &direction)
+{
+    gp_Pnt p = TechDrawGeometry::findCentroid(shape,direction);
+    Base::Vector3d result(p.X(),p.Y(),p.Z());
+    return result;
+}
+
 
 //!scales & mirrors a shape about a center
 TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
