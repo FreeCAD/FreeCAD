@@ -106,7 +106,7 @@ def isDerivedFrom(obj, t):
 def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:
-        if hasattr(o, 'Shape'):
+        if hasattr(o, 'Shape') and hasattr(o.Shape, 'BoundBox'):  # netgen mesh obj has an attribut Shape which is a Document obj, which has no BB
             try:
                 bb = o.Shape.BoundBox
             except:
