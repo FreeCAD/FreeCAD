@@ -37,6 +37,12 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools_ShapeSet.hxx>
 
+#include <QFuture>
+#include <QtConcurrentRun>
+#include <QThread>
+#include <QApplication>
+#include <Gui/MainWindow.h>
+
 #if OCC_VERSION_HEX >= 0x060600
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
@@ -409,7 +415,7 @@ void TaskCheckGeometryResults::setupInterface()
 
 void TaskCheckGeometryResults::goCheck()
 {
-    Gui::WaitCursor wc;
+    //Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();
     std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -577,7 +583,9 @@ QString TaskCheckGeometryResults::getShapeContentString()
 {
   return QString::fromStdString(shapeContentString);
 }
-
+void runBOPCheckInBackground(BOPAlgo_ArgumentAnalyzer bop){
+    bop.Perform();
+}
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
 {
   //ArgumentAnalyser was moved at version 6.6. no back port for now.
@@ -612,19 +620,27 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.MergeEdgeMode() = true;
 #endif
   
-#ifdef FC_DEBUG
   Base::TimeInfo start_time;
-#endif
 
-  BOPCheck.Perform();
-
-#ifdef FC_DEBUG
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
-  std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
+  QFuture <void> future = QtConcurrent::run(runBOPCheckInBackground,BOPCheck);
+  while (!future.isFinished()){
+      qApp->processEvents();
+#if defined(Q_OS_WIN)
+      Sleep(DWORD(10));
+#else
+      usleep(10);
 #endif
+      float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+      std::ostringstream ss;
+      ss << "BopAlgo ("<<baseName.toStdString()<<"): " << bopAlgoTime << endl;
+      Gui::getMainWindow()->showMessage(QString::fromStdString(ss.str()));
+}
   
-  if (!BOPCheck.HasFaulty())
+  if (!BOPCheck.HasFaulty()){
       return 0;
+  } else {
+      cerr << "BopAlog check found errors in "<< baseName.toStdString() << endl;
+  }
 
   ResultEntry *entry = new ResultEntry();
   entry->parent = theRoot;
