@@ -583,8 +583,8 @@ QString TaskCheckGeometryResults::getShapeContentString()
 {
   return QString::fromStdString(shapeContentString);
 }
-void runBOPCheckInBackground(BOPAlgo_ArgumentAnalyzer bop){
-    bop.Perform();
+void runBOPCheckInBackground(BOPAlgo_ArgumentAnalyzer *bop){
+    bop->Perform();
 }
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
 {
@@ -622,7 +622,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   
   Base::TimeInfo start_time;
 
-  QFuture <void> future = QtConcurrent::run(runBOPCheckInBackground,BOPCheck);
+  QFuture <void> future = QtConcurrent::run(runBOPCheckInBackground,&BOPCheck);
   while (!future.isFinished()){
       qApp->processEvents();
 #if defined(Q_OS_WIN)
