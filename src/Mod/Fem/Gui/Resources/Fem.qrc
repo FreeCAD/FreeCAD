@@ -66,7 +66,7 @@
         <file>icons/fem-post-geo-box.svg</file>
         <file>icons/fem-post-geo-cylinder.svg</file>
         <file>icons/fem-post-geo-isosurface.svg</file>
-        <file>icons/fem-plane.svg</file>
+        <file>icons/fem-post-geo-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
         <file>icons/fem-run-solver.svg</file>
