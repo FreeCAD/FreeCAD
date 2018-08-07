@@ -659,7 +659,7 @@ class _CommandFemResultsPurge(CommandManager):
     "The FEM_ResultsPurge command definition"
     def __init__(self):
         super(_CommandFemResultsPurge, self).__init__()
-        self.resources = {'Pixmap': 'fem-purge-results',
+        self.resources = {'Pixmap': 'fem-post-results-purge',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
                           'Accel': "S, S",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}
