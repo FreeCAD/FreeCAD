@@ -39,10 +39,14 @@
 # include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Trsf.hxx>
 #endif
 
+#if OCC_VERSION_HEX >= 0x060800
+#include <OSD_OpenFile.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -259,9 +263,53 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
+}
+
+// The following two functions are copied from OCCT BRepTools.cxx and modified
+// to disable saving of triangulation
+//
+static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
+  BRepTools_ShapeSet SS(Standard_False);
+  // SS.SetProgress(PR);
+  SS.Add(Sh);
+  SS.Write(S);
+  SS.Write(Sh,S);
+}
+static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, 
+                                   const Standard_CString File)
+{
+  ofstream os;
+#if OCC_VERSION_HEX >= 0x060800
+  OSD_OpenStream(os, File, ios::out);
+#else
+  os.open(File, ios::out);
+#endif
+  if (!os.rdbuf()->is_open()) return Standard_False;
+
+  Standard_Boolean isGood = (os.good() && !os.eof());
+  if(!isGood)
+    return isGood;
+  
+  BRepTools_ShapeSet SS(Standard_False);
+  // SS.SetProgress(PR);
+  SS.Add(Sh);
+  
+  os << "DBRep_DrawableShape\n";  // for easy Draw read
+  SS.Write(os);
+  isGood = os.good();
+  if(isGood )
+    SS.Write(Sh,os);
+  os.flush();
+  isGood = os.good();
+
+  errno = 0;
+  os.close();
+  isGood = os.good() && isGood && !errno;
+
+  return isGood;
 }
 
 void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
@@ -270,12 +318,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     // can be checked when reading in the data.
     if (_Shape.getShape().IsNull())
         return;
-    // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
-    // Before writing to the project we clean all triangulation data to save memory
-    BRepBuilderAPI_Copy copy(_Shape.getShape());
-    const TopoDS_Shape& myShape = copy.Shape();
-    BRepTools::Clean(myShape); // remove triangulation
-
+    TopoDS_Shape myShape = _Shape.getShape();
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
         shape.setShape(myShape);
@@ -290,7 +333,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             // we may run into some problems on the Linux platform
             static Base::FileInfo fi(App::Application::getTempFileName());
 
-            if (!BRepTools::Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
+            if (!BRepTools_Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
                 // Note: Do NOT throw an exception here because if the tmp. file could
                 // not be created we should not abort.
                 // We only print an error message but continue writing the next files to the
@@ -333,7 +376,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             fi.deleteFile();
         }
         else {
-            BRepTools::Write(myShape, writer.Stream());
+            BRepTools_Write(myShape, writer.Stream());
         }
     }
 }
@@ -548,7 +591,7 @@ void PropertyFilletEdges::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }

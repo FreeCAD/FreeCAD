@@ -91,9 +91,9 @@ class _CommandFemClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super(_CommandFemClippingPlaneRemoveAll, self).__init__()
         self.resources = {'Pixmap': 'fem-clipping-plane-remove-all',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "remove all clipping planes"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "remove all clipping planes")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -135,7 +135,7 @@ class _CommandFemConstraintElectrostaticPotential(CommandManager):
             'Pixmap': 'fem-constraint-electrostatic-potential',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
-                "Constraint Potential"),
+                "Constraint electrostatic potential"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
                 "Creates a FEM constraint electrostatic potential")}
@@ -158,7 +158,7 @@ class _CommandFemConstraintFlowVelocity(CommandManager):
             'Pixmap': 'fem-constraint-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Constraint Flow Velocity"),
+                "Constraint flow velocity"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
                 "Creates a FEM constraint flow velocity")}
@@ -181,7 +181,7 @@ class _CommandFemConstraintInitialFlowVelocity(CommandManager):
             'Pixmap': 'fem-constraint-initial-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintInitialFlowVelocity",
-                "Constraint Initial Flow Velocity"),
+                "Constraint initial flow velocity"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintInitialFlowVelocity",
                 "Creates a FEM constraint initial flow velocity")}
@@ -379,9 +379,9 @@ class _CommandFemMaterialEditor(CommandManager):
     def __init__(self):
         super(_CommandFemMaterialEditor, self).__init__()
         self.resources = {'Pixmap': 'Arch_Material_Group',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Material_Editor", "Material editor"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Material Editor", "opens the FreeCAD material editor")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Material_Editor", "Opens the FreeCAD material editor")}
         self.is_active = 'allways'
 
     def Activated(self):
@@ -645,7 +645,7 @@ class _CommandFemResultShow(CommandManager):
     "The FEM_ResultShow command definition"
     def __init__(self):
         super(_CommandFemResultShow, self).__init__()
-        self.resources = {'Pixmap': 'fem-result',
+        self.resources = {'Pixmap': 'fem-post-result-show',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
                           'Accel': "S, R",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
@@ -659,7 +659,7 @@ class _CommandFemResultsPurge(CommandManager):
     "The FEM_ResultsPurge command definition"
     def __init__(self):
         super(_CommandFemResultsPurge, self).__init__()
-        self.resources = {'Pixmap': 'fem-purge-results',
+        self.resources = {'Pixmap': 'fem-post-results-purge',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
                           'Accel': "S, S",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}

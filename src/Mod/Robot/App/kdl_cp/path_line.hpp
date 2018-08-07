@@ -98,7 +98,7 @@ class Path_Line : public Path
          * of the frame in which you express your path.
          * Other implementations for RotationalInterpolations COULD be
          *    (not implemented) (yet) :
-         *    1) quaternion interpolation : but this is more difficult for the human to interprete
+         *    1) quaternion interpolation : but this is more difficult for the human to interpret
          *    2) 3-axis interpolation : express the orientation of the frame in e.g.
          *       euler zyx angles alfa,beta, gamma  and interpolate these parameters.
          *       But this is dependent of the frame you choose as a reference and

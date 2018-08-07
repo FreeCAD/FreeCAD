@@ -28,6 +28,7 @@
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <QtConcurrentMap>
 
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
@@ -39,10 +40,14 @@
 #include "PointsAlgos.h"
 #include "PointsPy.h"
 
+#ifdef _WIN32
+# include <ppl.h>
+#endif
+
 using namespace Points;
 using namespace std;
 
-TYPESYSTEM_SOURCE(Points::PointKernel, Data::ComplexGeoData);
+TYPESYSTEM_SOURCE(Points::PointKernel, Data::ComplexGeoData)
 
 std::vector<const char*> PointKernel::getElementTypes(void) const
 {
@@ -73,15 +78,31 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
     std::vector<value_type>& kernel = getBasicPoints();
-    for (std::vector<value_type>::iterator it = kernel.begin(); it != kernel.end(); ++it)
-        *it = rclMat * (*it);
+    QtConcurrent::blockingMap(kernel, [rclMat](value_type& value) {
+        rclMat.multVec(value, value);
+    });
 }
 
 Base::BoundBox3d PointKernel::getBoundBox(void)const
 {
     Base::BoundBox3d bnd;
+
+#ifdef _WIN32
+    // Thread-local bounding boxes
+    Concurrency::combinable<Base::BoundBox3d> bbs;
+    // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)
+    Concurrency::parallel_for_each(_Points.begin(), _Points.end(), [this, &bbs](const value_type& value) {
+        Base::Vector3d vertd(value.x, value.y, value.z);
+        bbs.local().Add(this->_Mtrx * vertd);
+    });
+    // Combine each thread-local bounding box in the final bounding box
+    bbs.combine_each([&bnd](const Base::BoundBox3d& lbb) {
+        bnd.Add(lbb);
+    });
+#else
     for (const_point_iterator it = begin(); it != end(); ++it)
         bnd.Add(*it);
+#endif
     return bnd;
 }
 
@@ -155,7 +176,7 @@ void PointKernel::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
     if (reader.DocumentSchema > 3) {

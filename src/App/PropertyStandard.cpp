@@ -377,6 +377,11 @@ const char ** PropertyEnumeration::getEnums(void) const
     return _enum.getEnums();
 }
 
+bool PropertyEnumeration::isValid(void) const
+{
+    return _enum.isValid();
+}
+
 void PropertyEnumeration::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
@@ -1365,7 +1370,7 @@ void PropertyFloatList::Restore(Base::XMLReader &reader)
     string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -2603,7 +2608,7 @@ void PropertyColorList::Restore(Base::XMLReader &reader)
         std::string file (reader.getAttribute("file"));
 
         if (!file.empty()) {
-            // initate a file read
+            // initiate a file read
             reader.addFile(file.c_str(),this);
         }
     }
@@ -2882,7 +2887,7 @@ void PropertyMaterialList::Restore(Base::XMLReader &reader)
         std::string file(reader.getAttribute("file"));
 
         if (!file.empty()) {
-            // initate a file read
+            // initiate a file read
             reader.addFile(file.c_str(), this);
         }
     }

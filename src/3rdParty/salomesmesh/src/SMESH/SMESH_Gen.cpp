@@ -1037,7 +1037,7 @@ std::vector< std::string > SMESH_Gen::GetPluginXMLPaths()
       xmlPath += sep + plugin + ".xml";
       bool fileOK;
 #ifdef WIN32
-      fileOK = (GetFileAttributes(xmlPath.c_str()) != INVALID_FILE_ATTRIBUTES);
+      fileOK = (GetFileAttributesA(xmlPath.c_str()) != INVALID_FILE_ATTRIBUTES);
 #else
       fileOK = (access(xmlPath.c_str(), F_OK) == 0);
 #endif

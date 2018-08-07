@@ -35,7 +35,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPost
 
 ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
-    sPixmap = "fem-data";
+    sPixmap = "fem-post-data-pipline";
 }
 
 ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
