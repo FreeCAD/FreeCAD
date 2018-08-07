@@ -34,7 +34,6 @@ iconprovider = QtGui.QFileIconProvider()
 iconbank = {} # to store already created icons
 
 
-
 def gethexcolor(color):
 
     "returns a color hex value #000000"
@@ -211,7 +210,8 @@ def handle():
     HTML = HTML.replace("T_DESCR_RECENTCOMMITS",TranslationTexts.T_DESCR_RECENTCOMMITS)
     HTML = HTML.replace("T_SEEONGITHUB",TranslationTexts.T_SEEONGITHUB)
     HTML = HTML.replace("T_CUSTOM",TranslationTexts.T_CUSTOM)
-
+    HTML = HTML.replace("T_FORUM",TranslationTexts.T_FORUM)
+    HTML = HTML.replace("T_DESCR_FORUM",TranslationTexts.T_DESCR_FORUM)
 
     # build a "create new" icon with the FreeCAD background color gradient
 
@@ -389,6 +389,7 @@ def handle():
 
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
         HTML = HTML.replace("var allowDownloads = 0;","var allowDownloads = 1;")
+
 
     # encode if necessary
 

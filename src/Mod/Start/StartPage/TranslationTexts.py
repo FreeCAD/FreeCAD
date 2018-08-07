@@ -72,5 +72,7 @@ T_VERSION = translate("StartPage", "version")
 T_BUILD = translate("StartPage", "build")
 T_CREATENEW = translate("StartPage", "Create new...")
 T_UNKNOWN = translate("StartPage", "Unknown")
+T_FORUM = translate("StartPage", "Forum")
+T_DESCR_FORUM = translate("StartPage", "The latest posts on the <a href=\"https://forum.freecadweb.org\">FreeCAD forum</a>:")
 
 
