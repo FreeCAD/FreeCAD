@@ -92,7 +92,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() {
 
-    sPixmap = "fem-clip-scalar";
+    sPixmap = "fem-post-filter-clip-scalar";
 }
 
 ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
