@@ -65,6 +65,7 @@
         <file>icons/fem-post-filter-data-along-line.svg</file>
         <file>icons/fem-post-filter-data-at-point.png</file>
         <file>icons/fem-post-filter-linearized-stresses.svg</file>
+        <file>icons/fem-post-filter-warp.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
@@ -74,7 +75,6 @@
         <file>icons/fem-sphere.svg</file>
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
-        <file>icons/fem-warp.svg</file>
 
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>

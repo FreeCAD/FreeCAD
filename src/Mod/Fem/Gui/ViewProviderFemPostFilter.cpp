@@ -112,7 +112,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector() {
 
-    sPixmap = "fem-warp";
+    sPixmap = "fem-post-filter-warp";
 }
 
 ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
