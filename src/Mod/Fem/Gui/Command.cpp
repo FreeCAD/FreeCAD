@@ -1191,7 +1191,7 @@ CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
     sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-DataAlongLine";
+    sPixmap         = "fem-post-filter-data-along-line";
 }
 
 void CmdFemPostCreateDataAlongLineFilter::activated(int)
