@@ -51,7 +51,7 @@ class _ViewProviderFemResultMechanical:
 
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        return ":/icons/fem-result.svg"
+        return ":/icons/fem-post-result-show.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
