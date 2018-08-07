@@ -377,6 +377,11 @@ const char ** PropertyEnumeration::getEnums(void) const
     return _enum.getEnums();
 }
 
+bool PropertyEnumeration::isValid(void) const
+{
+    return _enum.isValid();
+}
+
 void PropertyEnumeration::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
