@@ -68,8 +68,8 @@
         <file>icons/fem-post-geo-isosurface.svg</file>
         <file>icons/fem-post-geo-plane.svg</file>
         <file>icons/fem-post-geo-sphere.svg</file>
+        <file>icons/fem-post-result-show.svg</file>
         <file>icons/fem-purge-results.svg</file>
-        <file>icons/fem-result.svg</file>
         <file>icons/fem-run-solver.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-solver.svg</file>
