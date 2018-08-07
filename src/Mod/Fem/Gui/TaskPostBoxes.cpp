@@ -1092,7 +1092,7 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
 //############################################################################################
 // function clip filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-cut"), tr("Function cut, choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-cut-function"), tr("Function cut, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
     assert(function);

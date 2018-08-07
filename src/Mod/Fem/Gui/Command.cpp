@@ -1336,7 +1336,7 @@ CmdFemPostCutFilter::CmdFemPostCutFilter()
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
     sWhatsThis      = "FEM_PostCreateCutFilter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-cut";
+    sPixmap         = "fem-post-filter-cut-function";
 }
 
 void CmdFemPostCutFilter::activated(int)
