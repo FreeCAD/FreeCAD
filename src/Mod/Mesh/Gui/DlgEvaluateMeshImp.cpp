@@ -1211,12 +1211,12 @@ void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
         DlgEvaluateSettings dlg(this);
         dlg.setNonmanifoldPointsChecked(d->checkNonManfoldPoints);
         dlg.setFoldsChecked(d->enableFoldsCheck);
-        dlg.setDegenratedFacetsChecked(d->strictlyDegenerated);
+        dlg.setDegeneratedFacetsChecked(d->strictlyDegenerated);
         if (dlg.exec() == QDialog::Accepted) {
             d->checkNonManfoldPoints = dlg.isNonmanifoldPointsChecked();
             d->enableFoldsCheck = dlg.isFoldsChecked();
             d->showFoldsFunction(d->enableFoldsCheck);
-            d->strictlyDegenerated = dlg.isDegenratedFacetsChecked();
+            d->strictlyDegenerated = dlg.isDegeneratedFacetsChecked();
             if (d->strictlyDegenerated)
                 d->epsilonDegenerated = 0.0f;
             else

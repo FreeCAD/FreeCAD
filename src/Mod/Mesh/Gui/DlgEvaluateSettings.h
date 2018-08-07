@@ -47,8 +47,8 @@ public:
     void setFoldsChecked(bool);
     bool isFoldsChecked() const;
 
-    void setDegenratedFacetsChecked(bool);
-    bool isDegenratedFacetsChecked() const;
+    void setDegeneratedFacetsChecked(bool);
+    bool isDegeneratedFacetsChecked() const;
 
 private:
     Ui_DlgEvaluateSettings* ui;

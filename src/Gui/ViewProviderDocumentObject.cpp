@@ -278,7 +278,7 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
 
 void ViewProviderDocumentObject::setActiveMode()
 {
-    if (DisplayMode.getEnums()) {
+    if (DisplayMode.isValid()) {
         const char* mode = DisplayMode.getValueAsString();
         if (mode)
             setDisplayMode(mode);

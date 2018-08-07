@@ -39,11 +39,14 @@
 # include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Trsf.hxx>
 #endif
 
+#if OCC_VERSION_HEX >= 0x060800
 #include <OSD_OpenFile.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -260,7 +263,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -279,7 +282,11 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
                                    const Standard_CString File)
 {
   ofstream os;
+#if OCC_VERSION_HEX >= 0x060800
   OSD_OpenStream(os, File, ios::out);
+#else
+  os.open(File, ios::out);
+#endif
   if (!os.rdbuf()->is_open()) return Standard_False;
 
   Standard_Boolean isGood = (os.good() && !os.eof());
@@ -584,7 +591,7 @@ void PropertyFilletEdges::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
