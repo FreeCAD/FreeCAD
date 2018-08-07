@@ -52,7 +52,6 @@
         <file>icons/fem-fluid-section.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
-        <file>icons/fem-isosurface.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
@@ -66,6 +65,7 @@
         <file>icons/fem-post-filter-warp.svg</file>
         <file>icons/fem-post-geo-box.svg</file>
         <file>icons/fem-post-geo-cylinder.svg</file>
+        <file>icons/fem-post-geo-isosurface.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
