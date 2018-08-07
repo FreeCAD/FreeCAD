@@ -645,7 +645,7 @@ class _CommandFemResultShow(CommandManager):
     "The FEM_ResultShow command definition"
     def __init__(self):
         super(_CommandFemResultShow, self).__init__()
-        self.resources = {'Pixmap': 'fem-result',
+        self.resources = {'Pixmap': 'fem-post-result-show',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
                           'Accel': "S, R",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
