@@ -1215,7 +1215,7 @@ CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
     sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-DataAtPoint";
+    sPixmap         = "fem-post-filter-data-at-point";
 }
 
 void CmdFemPostCreateDataAtPointFilter::activated(int)
