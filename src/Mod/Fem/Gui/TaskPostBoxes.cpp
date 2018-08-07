@@ -388,8 +388,8 @@ void TaskPostDisplay::applyPythonCode() {
 
 //############################################################################################
 // ? 
-// the icon fem-plane might be wrong but I do not know any better since the plane is one of the implicit functions
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-plane"), tr("Implicit function"), parent) {
+// the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostFunction::getClassTypeId()));
 

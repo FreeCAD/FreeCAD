@@ -322,7 +322,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFe
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction() {
 
-    sPixmap = "fem-plane";
+    sPixmap = "fem-post-geo-plane";
 
     setAutoScale(true);
 
