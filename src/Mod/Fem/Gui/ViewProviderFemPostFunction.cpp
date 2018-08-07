@@ -461,7 +461,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostSphereFunction, FemGui::ViewProviderF
 
 ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
 
-    sPixmap = "fem-sphere";
+    sPixmap = "fem-post-geo-sphere";
 
     setAutoScale(false);
 
