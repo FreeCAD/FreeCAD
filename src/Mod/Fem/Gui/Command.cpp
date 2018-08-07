@@ -1312,7 +1312,7 @@ CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
     sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-warp";
+    sPixmap         = "fem-post-filter-warp";
 }
 
 void CmdFemPostWarpVectorFilter::activated(int)
