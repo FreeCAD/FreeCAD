@@ -40,7 +40,6 @@
         <file>icons/fem-cylinder.svg</file>
         <file>icons/fem-DataAlongLine.svg</file>
         <file>icons/fem-DataAtPoint.png</file>
-        <file>icons/fem-data.svg</file>
         <file>icons/fem-elmer.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
@@ -65,6 +64,7 @@
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
+        <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/fem-plane.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-result.svg</file>
