@@ -1,7 +1,10 @@
 var allowDownloads = 0;
 
+
 function toggle(tab) {
+
     // switch to the given tab ID ("tab1", "tab2", etc...)
+
     var tabs = document.getElementById("tabs").childElementCount;
     document.getElementById(tab).classList.remove("hidden");
     document.getElementById("h"+tab).classList.add("active");
@@ -13,7 +16,11 @@ function toggle(tab) {
     }
 }
 
+
 function load() {
+
+    // run at startup
+
     if (allowDownloads == 1) {
         // load latest commits
         ddiv = document.getElementById("commits");
@@ -29,10 +36,21 @@ function load() {
         tobj.buildScriptTag(); // Build the script tag
         tobj.addScriptTag(); // Execute (add) the script tag
         ddiv.innerHTML = "Downloading addons list...";
+        // load forum recent posts
+        ddiv = document.getElementById("forum");
+        ddiv.innerHTML = "Connecting...";
+        var tobj=new JSONscriptRequest('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fforum.freecadweb.org%2Ffeed.php&api_key=s9yqcsrevp9irkqworzmvnrjs4jotjac2g4ybs95&callback=printForum');
+        tobj.buildScriptTag(); // Build the script tag
+        tobj.addScriptTag(); // Execute (add) the script tag
+        ddiv.innerHTML = "Downloading addons list...";
     }
 }
 
+
 function printCommits(data) {
+
+    // json callback for git commits
+
     ddiv = document.getElementById('commits');
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
@@ -43,7 +61,11 @@ function printCommits(data) {
     ddiv.innerHTML = html.join('');
 }
 
+
 function printAddons(data) {
+
+    // json callback for addons list
+
     ddiv = document.getElementById('addons');
     ddiv.innerHTML = "Received";
     var html = ['<ul class="addonslist">'];
@@ -57,10 +79,29 @@ function printAddons(data) {
     ddiv.innerHTML = html.join('');
 }
 
+
+function printForum(data) {
+
+    // json callback for forum posts
+
+    ddiv = document.getElementById('forum');
+    ddiv.innerHTML = "Received";
+    var html = ['<ul>'];
+    for (var i = 0; i < 25; i++) {
+        if (i < data.items.length){
+            html.push('<li><a href="', data.items[i].link, '">', data.items[i].title, '</a><br/><p>', data.items[i].content,'</p></li>');
+        }
+    }
+    html.push('</ul>');
+    ddiv.innerHTML = html.join('');
+}
+
+
 // below are JSON helper functions
 
 
 function JSONscriptRequest(fullUrl) {
+
     // REST request path
     this.fullUrl = fullUrl;
     // Get the DOM location to put the script tag
@@ -69,10 +110,13 @@ function JSONscriptRequest(fullUrl) {
     this.scriptId = 'JscriptId' + JSONscriptRequest.scriptCounter++;
 }
 
+
 // Static script ID counter
 JSONscriptRequest.scriptCounter = 1;
 
+
 JSONscriptRequest.prototype.buildScriptTag = function () {
+
     // Create the script tag
     this.scriptObj = document.createElement("script");
     // Add script object attributes
@@ -81,6 +125,7 @@ JSONscriptRequest.prototype.buildScriptTag = function () {
     this.scriptObj.setAttribute("src", this.fullUrl);
     this.scriptObj.setAttribute("id", this.scriptId);
 }
+
 
 JSONscriptRequest.prototype.removeScriptTag = function () {
     // Destroy the script tag
