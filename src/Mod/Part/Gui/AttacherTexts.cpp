@@ -369,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
 
 // --------------------Py interface---------------------
 
-PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
 {
     int modeIndex = 0;
     char* attacherType;
@@ -400,7 +400,7 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, Py
     }
 }
 
-PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args)
 {
     int refTypeIndex = 0;
     if (!PyArg_ParseTuple(args, "i", &refTypeIndex))

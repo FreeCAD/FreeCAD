@@ -43,7 +43,7 @@ using namespace Base;
 
 // UnitsApi Methods						// Methods structure
 PyMethodDef UnitsApi::Methods[] = {
-    //{"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit  ,1,
+    //{"translateUnit",  (PyCFunction) (void*)UnitsApi::sTranslateUnit  ,1,
     // "translateUnit(string) -> double\n\n"
     // "calculate a mathematical expression with units to a number. \n"
     // "can be used for simple unit translation like: \n"
@@ -51,7 +51,7 @@ PyMethodDef UnitsApi::Methods[] = {
     // " or for more complex espressions:\n"
     // " translateUnit('sin(pi)/50.0 m/s^2')\n"
     //},
-    //{"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs  ,1,
+    //{"getWithPrefs",  (PyCFunction) (void*)UnitsApi::sGetWithPrefs  ,1,
     // "getWithPrefs(type,[string|float|int]) -> double\n\n"
     // "Translation to internal regarding user prefs \n"
     // " That means if no unit is issued the user prefs are in \n"
@@ -68,7 +68,7 @@ PyMethodDef UnitsApi::Methods[] = {
     // " Temperature \n"
 
     //},
-    {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity  ,1,
+    {"parseQuantity",  (PyCFunction) (void*)UnitsApi::sParseQuantity  ,1,
      "parseQuantity(string) -> Base.Quantity()\n\n"
      "calculate a mathematical expression with units to a quantity object. \n"
      "can be used for simple unit translation like: \n"
@@ -76,15 +76,15 @@ PyMethodDef UnitsApi::Methods[] = {
      "or for more complex espressions:\n"
      "parseQuantity('sin(pi)/50.0 m/s^2')\n"
     },
-    {"listSchemas",  (PyCFunction) UnitsApi::sListSchemas  ,1,
+    {"listSchemas",  (PyCFunction) (void*)UnitsApi::sListSchemas  ,1,
      "listSchemas() -> a tuple of schemas\n\n"
      "listSchemas(int) -> description of the given schema\n\n"
     },
-    {"getSchema",  (PyCFunction) UnitsApi::sGetSchema  ,1,
+    {"getSchema",  (PyCFunction) (void*)UnitsApi::sGetSchema  ,1,
      "getSchema() -> int\n\n"
      "The int is the position of the tuple returned by listSchemas"
     },
-    {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate  ,1,
+    {"schemaTranslate",  (PyCFunction) (void*)UnitsApi::sSchemaTranslate  ,1,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
     },

@@ -56,90 +56,90 @@ using namespace App;
 
 // Application Methods						// Methods structure
 PyMethodDef Application::Methods[] = {
-    {"ParamGet",       (PyCFunction) Application::sGetParam,       1,
+    {"ParamGet",       (PyCFunction) (void*)Application::sGetParam,       1,
      "Get parameters by path"},
-    {"saveParameter",  (PyCFunction) Application::sSaveParameter,  1,
+    {"saveParameter",  (PyCFunction) (void*)Application::sSaveParameter,  1,
      "saveParameter(config='User parameter') -> None\n"
      "Save parameter set to file. The default set is 'User parameter'"},
-    {"Version",        (PyCFunction) Application::sGetVersion,     1,
+    {"Version",        (PyCFunction) (void*)Application::sGetVersion,     1,
      "Print the version to the output."},
-    {"ConfigGet",      (PyCFunction) Application::sGetConfig,      1,
+    {"ConfigGet",      (PyCFunction) (void*)Application::sGetConfig,      1,
      "ConfigGet(string) -- Get the value for the given key."},
-    {"ConfigSet",      (PyCFunction) Application::sSetConfig,      1,
+    {"ConfigSet",      (PyCFunction) (void*)Application::sSetConfig,      1,
      "ConfigSet(string, string) -- Set the given key to the given value."},
-    {"ConfigDump",     (PyCFunction) Application::sDumpConfig,     1,
+    {"ConfigDump",     (PyCFunction) (void*)Application::sDumpConfig,     1,
      "Dump the configuration to the output."},
-    {"addImportType",  (PyCFunction) Application::sAddImportType,  1,
+    {"addImportType",  (PyCFunction) (void*)Application::sAddImportType,  1,
      "Register filetype for import"},
-    {"getImportType",  (PyCFunction) Application::sGetImportType,  1,
+    {"getImportType",  (PyCFunction) (void*)Application::sGetImportType,  1,
      "Get the name of the module that can import the filetype"},
-    {"EndingAdd",      (PyCFunction) Application::sAddImportType  ,1, // deprecated
+    {"EndingAdd",      (PyCFunction) (void*)Application::sAddImportType  ,1, // deprecated
      "deprecated -- use addImportType"},
-    {"EndingGet",      (PyCFunction) Application::sGetImportType  ,1, // deprecated
+    {"EndingGet",      (PyCFunction) (void*)Application::sGetImportType  ,1, // deprecated
      "deprecated -- use getImportType"},
-    {"addExportType",  (PyCFunction) Application::sAddExportType  ,1,
+    {"addExportType",  (PyCFunction) (void*)Application::sAddExportType  ,1,
      "Register filetype for export"},
-    {"getExportType",  (PyCFunction) Application::sGetExportType  ,1,
+    {"getExportType",  (PyCFunction) (void*)Application::sGetExportType  ,1,
      "Get the name of the module that can export the filetype"},
-    {"getResourceDir", (PyCFunction) Application::sGetResourceDir  ,1,
+    {"getResourceDir", (PyCFunction) (void*)Application::sGetResourceDir  ,1,
      "Get the root directory of all resources"},
-    {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir  ,1,
+    {"getUserAppDataDir", (PyCFunction) (void*)Application::sGetUserAppDataDir  ,1,
      "Get the root directory of user settings"},
-    {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir  ,1,
+    {"getUserMacroDir", (PyCFunction) (void*)Application::sGetUserMacroDir  ,1,
      "Get the directory of the user's macro directory"},
-    {"getHelpDir", (PyCFunction) Application::sGetHelpDir  ,1,
+    {"getHelpDir", (PyCFunction) (void*)Application::sGetHelpDir  ,1,
      "Get the directory of the documentation"},
-    {"getHomePath",    (PyCFunction) Application::sGetHomePath  ,1,
+    {"getHomePath",    (PyCFunction) (void*)Application::sGetHomePath  ,1,
      "Get the home path, i.e. the parent directory of the executable"},
 
-    {"loadFile",       (PyCFunction) Application::sLoadFile,   1,
+    {"loadFile",       (PyCFunction) (void*)Application::sLoadFile,   1,
      "loadFile(string=filename,[string=module]) -> None\n\n"
      "Loads an arbitrary file by delegating to the given Python module:\n"
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   (PyCFunction) Application::sOpenDocument,   1,
+    {"open",   (PyCFunction) (void*)Application::sOpenDocument,   1,
      "See openDocument(string)"},
-    {"openDocument",   (PyCFunction) Application::sOpenDocument,   1,
+    {"openDocument",   (PyCFunction) (void*)Application::sOpenDocument,   1,
      "openDocument(string) -> object\n\n"
      "Create a document and load the project file into the document.\n"
      "The string argument must point to an existing file. If the file doesn't exist\n"
      "or the file cannot be loaded an I/O exception is thrown. In this case the\n"
      "document is kept alive."},
-//  {"saveDocument",   (PyCFunction) Application::sSaveDocument,   1,
+//  {"saveDocument",   (PyCFunction) (void*)Application::sSaveDocument,   1,
 //   "saveDocument(string) -- Save the document to a file."},
-//  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, 1},
-    {"newDocument",    (PyCFunction) Application::sNewDocument,    1,
+//  {"saveDocumentAs", (PyCFunction) (void*)Application::sSaveDocumentAs, 1},
+    {"newDocument",    (PyCFunction) (void*)Application::sNewDocument,    1,
      "newDocument([string]) -> object\n\n"
      "Create a new document with a given name.\n"
      "The document name must be unique which\n"
      "is checked automatically."},
-    {"closeDocument",  (PyCFunction) Application::sCloseDocument,  1,
+    {"closeDocument",  (PyCFunction) (void*)Application::sCloseDocument,  1,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
-    {"activeDocument", (PyCFunction) Application::sActiveDocument, 1,
+    {"activeDocument", (PyCFunction) (void*)Application::sActiveDocument, 1,
      "activeDocument() -> object or None\n\n"
      "Return the active document or None if there is no one."},
-    {"setActiveDocument",(PyCFunction) Application::sSetActiveDocument, 1,
+    {"setActiveDocument",(PyCFunction) (void*)Application::sSetActiveDocument, 1,
      "setActiveDocement(string) -> None\n\n"
      "Set the active document by its name."},
-    {"getDocument",    (PyCFunction) Application::sGetDocument,    1,
+    {"getDocument",    (PyCFunction) (void*)Application::sGetDocument,    1,
      "getDocument(string) -> object\n\n"
      "Get a document by its name or raise an exception\n"
      "if there is no document with the given name."},
-    {"listDocuments",  (PyCFunction) Application::sListDocuments  ,1,
+    {"listDocuments",  (PyCFunction) (void*)Application::sListDocuments  ,1,
      "listDocuments() -> list\n\n"
      "Return a list of names of all documents."},
-    {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver  ,1,
+    {"addDocumentObserver",  (PyCFunction) (void*)Application::sAddDocObserver  ,1,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
-    {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver  ,1,
+    {"removeDocumentObserver",  (PyCFunction) (void*)Application::sRemoveDocObserver  ,1,
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
-    {"setLogLevel",          (PyCFunction) Application::sSetLogLevel, 1,
+    {"setLogLevel",          (PyCFunction) (void*)Application::sSetLogLevel, 1,
      "setLogLevel(tag, level) -- Set the log level for a string tag.\n"
      "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
-    {"getLogLevel",          (PyCFunction) Application::sGetLogLevel, 1,
+    {"getLogLevel",          (PyCFunction) (void*)Application::sGetLogLevel, 1,
      "getLogLevel(tag) -- Get the log level of a string tag"},
 
     {NULL, NULL, 0, NULL}		/* Sentinel */

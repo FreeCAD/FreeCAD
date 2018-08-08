@@ -499,17 +499,17 @@ ConsoleSingleton & ConsoleSingleton::Instance(void)
 
 // ConsoleSingleton Methods						// Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
-    {"PrintMessage",         (PyCFunction) ConsoleSingleton::sPyMessage, 1, 
+    {"PrintMessage",         (PyCFunction) (void*)ConsoleSingleton::sPyMessage, 1, 
      "PrintMessage(string) -- Print a message to the output"},
-    {"PrintLog",             (PyCFunction) ConsoleSingleton::sPyLog, 1,
+    {"PrintLog",             (PyCFunction) (void*)ConsoleSingleton::sPyLog, 1,
      "PrintLog(string) -- Print a log message to the output"},
-    {"PrintError"  ,         (PyCFunction) ConsoleSingleton::sPyError, 1,
+    {"PrintError"  ,         (PyCFunction) (void*)ConsoleSingleton::sPyError, 1,
      "PrintError(string) -- Print an error message to the output"},
-    {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, 1,
+    {"PrintWarning",         (PyCFunction) (void*)ConsoleSingleton::sPyWarning, 1,
      "PrintWarning -- Print a warning to the output"},
-    {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, 1,
+    {"SetStatus",            (PyCFunction) (void*)ConsoleSingleton::sPySetStatus, 1,
      "Set the status for either Log, Msg, Wrn or Error for an observer"},
-    {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, 1,
+    {"GetStatus",            (PyCFunction) (void*)ConsoleSingleton::sPyGetStatus, 1,
      "Get the status for either Log, Msg, Wrn or Error for an observer"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
