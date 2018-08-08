@@ -33,6 +33,7 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Material.h>
 #include <App/DocumentObjectGroup.h>
@@ -156,6 +157,11 @@ void ViewProviderDocumentObject::show(void)
 
 void ViewProviderDocumentObject::updateView()
 {
+    if(testStatus(ViewStatus::UpdatingView))
+        return;
+
+    Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
+
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
 
