@@ -100,12 +100,12 @@ protected:
     //static double parse(const char*,bool &UsedUnit);
 
 protected: // the python API wrapper methods
-    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
-    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sListSchemas     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSchema       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sSchemaTranslate (PyObject *self,PyObject *args,PyObject *kwd);
+    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args);
+    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args);
+    static PyObject *sParseQuantity   (PyObject *self,PyObject *args);
+    static PyObject *sListSchemas     (PyObject *self,PyObject *args);
+    static PyObject *sGetSchema       (PyObject *self,PyObject *args);
+    static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
 };
 
 } // namespace Base

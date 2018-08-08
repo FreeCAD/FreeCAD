@@ -1066,7 +1066,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
-PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1117,7 +1117,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     return 0;
 }
 
-PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1138,7 +1138,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
@@ -1147,7 +1147,7 @@ PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *arg
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1159,7 +1159,7 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, P
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args)
 {
     char* objecttype;
     char* document=0;
@@ -1174,7 +1174,7 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
 #endif
 }
 
-PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
@@ -1195,7 +1195,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args,
     }
 }
 
-PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1205,7 +1205,7 @@ PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *ar
     return obj.getPyObject();
 }
 
-PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1214,7 +1214,7 @@ PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *ar
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1234,7 +1234,7 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
     }
 }
 
-PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
@@ -1255,7 +1255,7 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
     }
 }
 
-PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject *args)
 {
     char *docName, *objName, *subName;
     PyObject* tuple=0;
@@ -1290,7 +1290,7 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
     }
 }
 
-PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O",&o))
@@ -1301,7 +1301,7 @@ PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *arg
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O",&o))
@@ -1312,7 +1312,7 @@ PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *arg
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *args)
 {
     char* filter;
     if (PyArg_ParseTuple(args, "s",&filter)) {
@@ -1344,7 +1344,7 @@ PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *a
     return 0;
 }
 
-PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
