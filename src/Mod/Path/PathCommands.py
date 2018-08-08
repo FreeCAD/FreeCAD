@@ -61,27 +61,28 @@ class _CommandSelectLoop:
                 'CmdType': "ForEdit"}
 
     def IsActive(self):
-        if 'PathWorkbench' == FreeCADGui.activeWorkbench().name():
-            if bool(FreeCADGui.Selection.getSelection()) is False:
-                return False
-            try:
-                sel = FreeCADGui.Selection.getSelectionEx()[0]
-                if sel.Object == self.obj and sel.SubElementNames == self.sub:
-                    return self.active
-                self.obj = sel.Object
-                self.sub = sel.SubElementNames
-                if sel.SubObjects:
-                    self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
-                else:
-                    self.active = False
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            sel = FreeCADGui.Selection.getSelectionEx()[0]
+            if sel.Object == self.obj and sel.SubElementNames == self.sub:
                 return self.active
-            except Exception as exc:
-                PathLog.error(exc)
-                traceback.print_exc(exc)
-                return False
-        return False
-
+            self.obj = sel.Object
+            self.sub = sel.SubElementNames
+            if sel.SubObjects:
+                self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            else:
+                self.active = False
+            return self.active
+        except Exception as exc:
+            PathLog.error(exc)
+            traceback.print_exc(exc)
+            return False
+        
     def Activated(self):
+        from PathScripts.PathUtils import loopdetect
+        from PathScripts.PathUtils import horizontalEdgeLoop
+        from PathScripts.PathUtils import horizontalFaceLoop
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
         edge1 = sel.SubObjects[0]
