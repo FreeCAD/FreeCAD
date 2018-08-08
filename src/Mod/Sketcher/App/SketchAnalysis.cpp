@@ -337,7 +337,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 }
             
             }
-            catch(Base::Exception &e) {
+            catch(Base::Exception &) {
                 Base::Console().Warning("Point-On-Point Coincidence analysis: unable to obtain derivative. Detection ignored.\n");
                 continue;
             }
@@ -782,8 +782,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         try {
             makeMissingEquality();
         }
-        catch(Base::RuntimeError &e)
-        {
+        catch(Base::RuntimeError &) {
             doc->abortTransaction();
             throw;
         }

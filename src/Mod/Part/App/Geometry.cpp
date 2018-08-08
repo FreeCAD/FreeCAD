@@ -454,7 +454,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
             return true;
         }
     }
-    catch (StdFail_NotDone& e) { // projection does not exist on trimmer curve, let's try basis curve
+    catch (StdFail_NotDone&) { // projection does not exist on trimmer curve, let's try basis curve
         closestParameterToBasicCurve(point,u);
 
         if(abs(u-c->FirstParameter()) < abs(u-c->LastParameter()))
@@ -465,7 +465,6 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
         return true;
     }
     catch (Standard_Failure& e) {
-
         throw Base::RuntimeError(e.GetMessageString());
     }
 
