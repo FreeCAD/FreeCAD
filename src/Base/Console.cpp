@@ -499,23 +499,23 @@ ConsoleSingleton & ConsoleSingleton::Instance(void)
 
 // ConsoleSingleton Methods						// Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
-    {"PrintMessage",         (PyCFunction) ConsoleSingleton::sPyMessage, 1, 
+    {"PrintMessage",         (PyCFunction) ConsoleSingleton::sPyMessage, METH_VARARGS,
      "PrintMessage(string) -- Print a message to the output"},
-    {"PrintLog",             (PyCFunction) ConsoleSingleton::sPyLog, 1,
+    {"PrintLog",             (PyCFunction) ConsoleSingleton::sPyLog, METH_VARARGS,
      "PrintLog(string) -- Print a log message to the output"},
-    {"PrintError"  ,         (PyCFunction) ConsoleSingleton::sPyError, 1,
+    {"PrintError"  ,         (PyCFunction) ConsoleSingleton::sPyError, METH_VARARGS,
      "PrintError(string) -- Print an error message to the output"},
-    {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, 1,
+    {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, METH_VARARGS,
      "PrintWarning -- Print a warning to the output"},
-    {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, 1,
+    {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, METH_VARARGS,
      "Set the status for either Log, Msg, Wrn or Error for an observer"},
-    {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, 1,
+    {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, METH_VARARGS,
      "Get the status for either Log, Msg, Wrn or Error for an observer"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
 
-PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -561,7 +561,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -607,7 +607,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -653,7 +653,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -699,7 +699,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;
@@ -728,7 +728,7 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args, Py
     }PY_CATCH;
 }
 
-PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;

@@ -562,12 +562,12 @@ public:
 protected:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++	
     // static python wrapper of the exported functions
-    static PyObject *sPyLog      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyMessage  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyWarning  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyError    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPySetStatus(PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyGetStatus(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sPyLog      (PyObject *self,PyObject *args);
+    static PyObject *sPyMessage  (PyObject *self,PyObject *args);
+    static PyObject *sPyWarning  (PyObject *self,PyObject *args);
+    static PyObject *sPyError    (PyObject *self,PyObject *args);
+    static PyObject *sPySetStatus(PyObject *self,PyObject *args);
+    static PyObject *sPyGetStatus(PyObject *self,PyObject *args);
 
     bool _bVerbose;
     bool _bCanRefresh;
