@@ -1722,6 +1722,7 @@ void Application::runApplication(void)
 
     Application app(true);
     MainWindow mw;
+    mw.setProperty("QuitOnClosed", true);
 
     // allow to disable version number
     ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
