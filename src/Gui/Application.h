@@ -188,6 +188,8 @@ public:
     static Application* Instance;
     static void initApplication(void);
     static void initTypes(void);
+    static void initOpenInventor(void);
+    static void runInitGuiScript(void);
     static void runApplication(void);
     void tryClose( QCloseEvent * e );
     //@}
