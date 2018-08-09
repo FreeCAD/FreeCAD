@@ -70,6 +70,10 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
     App::Color col ( (uint32_t) shcol );
     
+    MapFaceColor.setValue(false);
+    MapLineColor.setValue(false);
+    MapPointColor.setValue(false);
+    MapTransparency.setValue(false);
     ShapeColor.setValue(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
@@ -203,6 +207,10 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
     App::Color col ( (uint32_t) shcol );
     
+    MapFaceColor.setValue(false);
+    MapLineColor.setValue(false);
+    MapPointColor.setValue(false);
+    MapTransparency.setValue(false);
     ShapeColor.setValue(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
