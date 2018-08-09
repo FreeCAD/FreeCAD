@@ -31,7 +31,7 @@ FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
 iconprovider = QtGui.QFileIconProvider()
-iconbank = {} # to store already created icons
+iconbank = {} # to store already created icons so we don't overpollute the temp dir
 
 
 def gethexcolor(color):
@@ -55,7 +55,7 @@ def isplainfile(filename):
     if basename.startswith("."):
         return False
     if basename[-1].isdigit():
-        if basename[-7:-1].lower() == "fcstd":
+        if basename[-7:-1].lower() == "fcstd": # freecad backup file
             return False
     if basename.endswith("~"):
         return False
@@ -373,7 +373,7 @@ def handle():
     TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
     BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
     SHADOW = "#888888"
-    if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page
+    if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
 
     HTML = HTML.replace("BASECOLOR",BASECOLOR)
@@ -435,4 +435,15 @@ def postStart():
                         if subw.windowTitle() == title:
                             subw.close()
 
+
+
+def checkPostOpenStartPage():
+    
+    "on Start WB startup, check if we are loading a file and therefore need to close the StartPage"
+    
+    import Start
+    if FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Mod/Start').GetBool('DoNotShowOnOpen',False) and (not hasattr(Start,'CanOpenStartPage')):
+        if len(sys.argv) > 1:
+            postStart()
+    Start.CanOpenStartPage = True
 

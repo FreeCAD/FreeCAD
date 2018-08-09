@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>533</height>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -427,6 +427,32 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>closeStart</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Apply on start with opening</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+        <property name="toolTip">
+         <string>If FreeCAD is started by opening a file, apply the two settings above</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DoNotShowOnOpen</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
