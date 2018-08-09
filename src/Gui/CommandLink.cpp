@@ -198,6 +198,14 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 
 static App::DocumentObject *resolveLinkRelative(std::string *subname=0) {
     const auto &sels = Selection().getCompleteSelection(false);
+    if(sels.size()==1 && sels[0].SubName && sels[0].SubName[0]) {
+        auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
+        if(sobj && sobj!=sels[0].pObject) {
+            if(subname)
+                *subname = sels[0].SubName;
+            return sels[0].pObject;
+        }
+    }
     if(sels.size()!=2 || 
        !sels[0].pObject || !sels[0].pObject->getNameInDocument() ||
        !sels[1].pObject || !sels[1].pObject->getNameInDocument())
@@ -249,6 +257,8 @@ void StdCmdLinkMakeRelative::activated(int) {
             "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s,'%s')", 
             doc->getName(),name.c_str(),
             owner->getDocument()->getName(),owner->getNameInDocument(), subname.c_str());
+        auto link = owner->getDocument()->getObject(name.c_str());
+        FCMD_OBJ_CMD(link,"LinkTransform = True");
         setLinkLabel(obj,doc->getName(),name.c_str());
         App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
