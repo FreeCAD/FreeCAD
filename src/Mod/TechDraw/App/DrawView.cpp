@@ -110,7 +110,8 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId()))  {
+        if ((this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) ||
+            (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))) {
             //do nothing. DPGI/DPG handles itself
         } else if (prop == &ScaleType) {
             auto page = findParentPage();
