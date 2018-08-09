@@ -976,7 +976,8 @@ void MainWindow::closeEvent (QCloseEvent * e)
         }
 
         /*emit*/ mainWindowClosed();
-        qApp->quit(); // stop the event loop
+        if (this->property("QuitOnClosed").isValid())
+            qApp->quit(); // stop the event loop
     }
 }
 
