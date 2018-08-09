@@ -113,6 +113,26 @@ void DrawProjGroup::onChanged(const App::Property* prop)
                 //Source has been changed to null! Why? What to do?
             }
         }
+        if (prop == &Scale) {
+            updateChildren();
+        }
+        
+        if (prop == &ScaleType) {
+            double newScale = getScale();
+            if (ScaleType.isValue("Automatic")) {
+                //Recalculate scale if Group is too big or too small!
+                newScale = calculateAutomaticScale();
+                if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+                    Scale.setValue(newScale);
+                }
+            } else if (ScaleType.isValue("Page")) {
+                newScale = page->Scale.getValue();
+                if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+                    Scale.setValue(newScale);
+                }
+            }
+        }
+
     }
     if (isRestoring() && (prop == &CubeDirs)) {
         m_cube->setAllDirs(CubeDirs.getValues());                    //override defaults from saved value if valid
@@ -158,34 +178,8 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    double newScale = getScale();
-    if (ScaleType.isValue("Automatic")) {
-        //Recalculate scale if Group is too big or too small!
-        if (!checkFit(page)) {
-            newScale = calculateAutomaticScale();
-            if(std::abs(getScale() - newScale) > FLT_EPSILON) {
-                Scale.setValue(newScale);
-                updateChildren();
-            }
-         }
-    } else if (ScaleType.isValue("Page")) {                 //don't really need this any more.
-        newScale = page->Scale.getValue();
-        if(std::abs(getScale() - newScale) > FLT_EPSILON) {
-            Scale.setValue(newScale);
-            updateChildren();
-        }
-    } else if (ScaleType.isValue("Custom")) {
-        //don't have to do anything special
-        updateChildren();
-    }
-
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
-        item->purgeTouched();
-    }
-
-    if (page != nullptr) {
-        page->requestPaint();
     }
 
     return DrawViewCollection::execute();
@@ -200,7 +194,10 @@ short DrawProjGroup::mustExecute() const
                  Scale.isTouched()  ||
                  ScaleType.isTouched() ||
                  ProjectionType.isTouched() ||
-                 Anchor.isTouched();
+                 Anchor.isTouched() ||
+                 AutoDistribute.isTouched() ||
+                 spacingX.isTouched() ||
+                 spacingY.isTouched();
     }
     if (result) return result;
     return TechDraw::DrawViewCollection::mustExecute();
@@ -399,11 +396,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
                                                FeatName.c_str() ) );
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
         view->Source.setValues( Source.getValues() );
-        if (ScaleType.isValue("Automatic")) {
-            view->ScaleType.setValue("Custom");
-        } else {
-            view->ScaleType.setValue( ScaleType.getValue() );
-        }
         view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
@@ -535,6 +527,11 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             bboxes[4].IsValid()) {
             position[3].x = -bigCol - xSpacing;
             position[3].y = 0.0;
+        }
+        if (viewPtrs[4] &&                       //Front
+            bboxes[4].IsValid()) {
+            position[4].x = 0.0;
+            position[4].y = 0.0;
         }
         if (viewPtrs[5] &&                       // R/L
             bboxes[5].IsValid() &&
@@ -714,15 +711,14 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
 }
 
 /*! 
- * tell children DPGIs that parent DPG has changed ?Scale?
+ * tell children DPGIs that parent DPG has changed Scale
  */
 void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
-                view->recomputeFeature();
-                view->purgeTouched();
+            view->Scale.setValue(Scale.getValue());
         }
     }
 }
