@@ -971,7 +971,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 }
 
 //! update Tree Selection from QGraphicsScene selection
-//trigged by m_view->scene() signal
+//triggered by m_view->scene() signal
 void MDIViewPage::sceneSelectionChanged()
 {
     if(isSelectionBlocked)  {

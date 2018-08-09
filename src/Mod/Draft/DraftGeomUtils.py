@@ -2482,7 +2482,7 @@ def outerSoddyCircle(circle1, circle2, circle3):
 
         z = q4 / (k4 + 0j)
 
-        # If the formula is not solveable, we return no circle.
+        # If the formula is not solvable, we return no circle.
         if (not z or not (1 / k4)):
             return None
 
@@ -2534,7 +2534,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
 
         z = q4 / (k4 + 0j)
 
-        # If the formula is not solveable, we return no circle.
+        # If the formula is not solvable, we return no circle.
         if (not z or not (1 / k4)):
             return None
 

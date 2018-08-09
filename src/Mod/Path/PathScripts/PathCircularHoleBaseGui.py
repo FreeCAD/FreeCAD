@@ -42,7 +42,7 @@ else:
 
 class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     '''Controller class to be used for the BaseGeomtery page.
-    Circular holes don't just disply the feature, they also add a column
+    Circular holes don't just display the feature, they also add a column
     displaying the radius the feature describes. This page provides that
     UI and functionality for all circular hole based operations.'''
 

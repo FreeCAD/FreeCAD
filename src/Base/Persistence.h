@@ -117,7 +117,7 @@ public:
      */
     virtual void SaveDocFile (Writer &/*writer*/) const;
     /** This method is used to restore large amounts of data from a file
-     * In this method you simply stream in your with SaveDocFile() saved data.
+     * In this method you simply stream in your SaveDocFile() saved data.
      * Again you have to apply for the call of this method in the Restore() call:
      * \code
      * void PropertyMeshKernel::Restore(Base::XMLReader &reader)
@@ -131,7 +131,7 @@ public:
      *     MeshCore::MeshDocXML restorer(*_pcMesh);
      *     restorer.Restore(reader);
      *   }else{
-     *     // initate a file read
+     *     // initiate a file read
      *     reader.addFile(file.c_str(),this);
      *  }
      * }

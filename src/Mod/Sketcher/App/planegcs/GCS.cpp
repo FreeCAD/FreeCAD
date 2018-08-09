@@ -1474,7 +1474,7 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
     subsys->getParams(x);
     subsys->calcGrad(grad);
 
-    // Initial search direction oposed to gradient (steepest-descent)
+    // Initial search direction opposed to gradient (steepest-descent)
     xdir = -grad;
     lineSearch(subsys, xdir);
     double err = subsys->error();
