@@ -404,7 +404,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
 
-    # set default ifcopenshell optionss to work in brep mode
+    # set default ifcopenshell options to work in brep mode
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)

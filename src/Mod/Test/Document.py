@@ -98,7 +98,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.Float-47.11<0.001)
     self.failUnless(L1.Bool    == True)
     self.failUnless(L1.String  == "4711")
-    #temporarily not checked because of strange behavior of boost::fielesystem JR
+    #temporarily not checked because of strange behavior of boost::filesystem JR
     #self.failUnless(L1.Path  == "c:/temp")
     self.failUnless(float(L1.Angle)-3.0<0.001)
     self.failUnless(float(L1.Distance)-47.11<0.001)
@@ -191,7 +191,7 @@ class DocumentBasicCases(unittest.TestCase):
     del L2
     
   def testExtensions(self):
-    #we try to create a normal python object and add a extension to it 
+    #we try to create a normal python object and add an extension to it
     obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
     grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
     #we should have all methods we need to handle extensions 
@@ -415,8 +415,8 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     # saving and restoring
     SaveName = self.TempPath + os.sep + "SaveRestoreExtensions.FCStd"
     Doc = FreeCAD.newDocument("SaveRestoreExtensions")
-    #we try to create a normal python object and add a extension to it 
-    obj  = Doc.addObject("App::DocumentObject", "Obj") 
+    #we try to create a normal python object and add an extension to it
+    obj  = Doc.addObject("App::DocumentObject", "Obj")
     grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
     grp2 = Doc.addObject("App::FeaturePython", "Extension_2") 
     
