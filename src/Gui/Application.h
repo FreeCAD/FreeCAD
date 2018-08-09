@@ -226,7 +226,7 @@ public:
     static PyObject* sHide                     (PyObject *self,PyObject *args); // deprecated
     static PyObject* sShow                     (PyObject *self,PyObject *args); // deprecated
     static PyObject* sHideObject               (PyObject *self,PyObject *args); // hide view provider object
-    static PyObject* sShowObject               (PyObject *self,PyObject *args); // hide view provider object
+    static PyObject* sShowObject               (PyObject *self,PyObject *args); // show view provider object
 
     static PyObject* sOpen                     (PyObject *self,PyObject *args); // open Python scripts
     static PyObject* sInsert                   (PyObject *self,PyObject *args); // open Python scripts
