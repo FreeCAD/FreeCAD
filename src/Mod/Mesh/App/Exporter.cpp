@@ -173,7 +173,6 @@ bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
-
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -183,12 +182,27 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
         if (geoData) {
             App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
             Base::Placement plm = gf->globalPlacement();
-            
+            Base::Placement pl  = gf->Placement.getValue();
+            Base::Placement plInverse = pl.inverse();
+            bool applyGlobal = false;
+            if (pl == plm) {
+               //no extension placement
+               applyGlobal = false;
+            } else {
+               //there is a placement from extension
+               applyGlobal = true;
+            }
+
             std::vector<Base::Vector3d> aPoints;
             std::vector<Data::ComplexGeoData::Facet> aTopo;
             geoData->getFaces(aPoints, aTopo, tol);
-            for (auto& it : aPoints)
-                plm.multVec(it, it);
+
+            if (applyGlobal) {
+                for (auto& it : aPoints) {
+                    plInverse.multVec(it,it);
+                    plm.multVec(it, it);
+                }
+            }
 
             mesh->addFacets(aTopo, aPoints, false);
             if (countFacets == 0)
