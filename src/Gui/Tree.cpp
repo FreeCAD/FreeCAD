@@ -1867,22 +1867,23 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
         ObjectMap.erase(it);
 }
 
-void DocumentItem::populateObject(App::DocumentObject *obj) {
+bool DocumentItem::populateObject(App::DocumentObject *obj) {
     // make sure at least one of the item corresponding to obj is populated
     auto it = ObjectMap.find(obj);
     if(it == ObjectMap.end())
-        return;
+        return false;
     auto &items = it->second->items;
     if(items.empty())
-        return;
+        return false;
     for(auto item : items) {
         if(item->populated)
-            return;
+            return true;
     }
     TREE_LOG("force populate object " << obj->getNameInDocument());
     auto item = *items.begin();
     item->populated = true;
     populateItem(item,true);
+    return true;
 }
 
 void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
@@ -2895,7 +2896,7 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
     }
     if(checkMap) {
         auto it = _ParentMap.find(object()->getObject());
-        if(it!=_ParentMap.end() && it->second.size()) {
+        if(it!=_ParentMap.end()) {
             // Reaching here means all items of this corresponding object is
             // going to be deleted, but the object itself is not deleted and
             // still being refered to by some parent item that is not expanded
@@ -2908,8 +2909,10 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
             // expand its parent item. It only causes minor problems, such as,
             // tree scroll to object command won't work properly.
 
-            getOwnerDocument()->populateObject(*it->second.begin());
-            return false;
+            for(auto parent : it->second) {
+                if(getOwnerDocument()->populateObject(parent))
+                    return false;
+            }
         }
     }
     return true;

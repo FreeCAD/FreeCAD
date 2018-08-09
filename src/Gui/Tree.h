@@ -212,7 +212,7 @@ public:
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
     void populateItem(DocumentObjectItem *item, bool refresh = false);
-    void populateObject(App::DocumentObject *obj);
+    bool populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
