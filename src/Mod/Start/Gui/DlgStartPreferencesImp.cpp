@@ -93,6 +93,7 @@ void DlgStartPreferencesImp::saveSettings()
     radioButton_2->onSave();
     checkBox_1->onSave();
     checkBox_2->onSave();
+    checkBox_3->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -116,6 +117,7 @@ void DlgStartPreferencesImp::loadSettings()
     radioButton_2->onRestore();
     checkBox_1->onRestore();
     checkBox_2->onRestore();
+    checkBox_3->onRestore();
 }
 
 /**
