@@ -267,7 +267,7 @@ class _Stairs(ArchComponent.Component):
                     if obj.Base.Shape.BoundBox.ZLength:
                         h = obj.Base.Shape.BoundBox.ZLength
             if obj.LandingDepth:
-                obj.TreadDepth = float(l-(landings*obj.LandingDepthWidthWidth.Value))/(obj.NumberOfSteps-(1+landings))
+                obj.TreadDepth = float(l-(landings*obj.LandingDepth.Value))/(obj.NumberOfSteps-(1+landings))
             else:
                 obj.TreadDepth = float(l-(landings*obj.Width.Value))/(obj.NumberOfSteps-(1+landings))
             obj.RiserHeight = float(h)/obj.NumberOfSteps
