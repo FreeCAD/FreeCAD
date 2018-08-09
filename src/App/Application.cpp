@@ -2449,11 +2449,16 @@ std::string Application::FindHomePath(const char* call)
 #elif defined (FC_OS_WIN32)
 std::string Application::FindHomePath(const char* sCall)
 {
-    // We have three ways to start this application either use one of the two executables or
-    // import the FreeCAD.pyd module from a running Python session. In the latter case the
-    // Python interpreter is already initialized.
+    // We have several ways to start this application:
+    // * use one of the two executables
+    // * import the FreeCAD.pyd module from a running Python session. In this case the
+    //   Python interpreter is already initialized.
+    // * use a custom dll that links FreeCAD core dlls and that is loaded by its host application
+    //   In this case the calling name should be set to FreeCADBase.dll or FreeCADApp.dll in order
+    //   to locate the correct home directory
     wchar_t szFileName [MAX_PATH];
-    if (Py_IsInitialized()) {
+    QString dll(QString::fromUtf8(sCall));
+    if (Py_IsInitialized() || dll.endsWith(QLatin1String(".dll"))) {
         GetModuleFileNameW(GetModuleHandleA(sCall),szFileName, MAX_PATH-1);
     }
     else {
