@@ -23,8 +23,8 @@
 // Vers: 3.6
 // Desc: Provides functionality to create povray animations with freecad
 //       Povray clock variable counts 0 to 1
-//       Kamera positions must be defined before including this file
-// Date: 03-Mar-2005 
+//       Camera positions must be defined before including this file
+// Date: 03-Mar-2005
 // Auth: Dr. Georg Wiora
 // FreeCAD Povray standard file
 
