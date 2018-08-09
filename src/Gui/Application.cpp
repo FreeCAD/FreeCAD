@@ -1577,6 +1577,19 @@ void Application::initTypes(void)
             (ViewProviderDocumentObject::getClassTypeId());
 }
 
+void Application::initOpenInventor(void)
+{
+    // init the Inventor subsystem
+    SoDB::init();
+    SIM::Coin3D::Quarter::Quarter::init();
+    SoFCDB::init();
+}
+
+void Application::runInitGuiScript(void)
+{
+    Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
+}
+
 void Application::runApplication(void)
 {
     const std::map<std::string,std::string>& cfg = App::Application::Config();
@@ -1780,9 +1793,7 @@ void Application::runApplication(void)
 #endif
 
     // init the Inventor subsystem
-    SoDB::init();
-    SIM::Coin3D::Quarter::Quarter::init();
-    SoFCDB::init();
+    initOpenInventor();
 
     QString home = QString::fromUtf8(App::GetApplication().getHomePath());
 
@@ -1826,7 +1837,7 @@ void Application::runApplication(void)
     // running the GUI init script
     try {
         Base::Console().Log("Run Gui init script\n");
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
+        runInitGuiScript();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
