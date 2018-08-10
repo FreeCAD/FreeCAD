@@ -141,6 +141,25 @@ def doubleClickTree(item,column):
             addr[0].setSelected(True)
 
 
+def dd2dms(dd):
+    
+    "converts decimal degrees to degrees,minutes,seconds"
+
+    dd = abs(dd)
+    minutes,seconds = divmod(dd*3600,60)
+    degrees,minutes = divmod(minutes,60)
+    if dd < 0: 
+        degrees = -degrees
+    return (int(degrees),int(minutes),int(seconds))
+
+def dms2dd(degrees, minutes, seconds, milliseconds=0):
+
+    "converts degrees,minutes,seconds to decimal degrees"
+
+    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
+    return dd
+
+
 def getPreferences():
     
     """retrieves IFC preferences"""
@@ -944,6 +963,27 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if r.RepresentationIdentifier == "FootPrint":
                         annotations.append(product)
                         break
+            
+            # additional properties for specific types
+            
+            if product.is_a("IfcSite"):
+                if product.RefElevation:
+                    obj.Elevation = product.RefElevation*1000
+                if product.RefLatitude:
+                    obj.Latitude = dms2dd(*product.RefLatitude)
+                if product.RefLongitude:
+                    obj.Longitude = dms2dd(*product.RefLongitude)
+                if product.SiteAddress:
+                    if product.SiteAddress.AddressLines:
+                        obj.Address = product.SiteAddress.AddressLines[0]
+                    if product.SiteAddress.Town:
+                        obj.City = product.SiteAddress.Town
+                    if product.SiteAddress.Region:
+                        obj.Region = product.SiteAddress.Region
+                    if product.SiteAddress.Country:
+                        obj.Country = product.SiteAddress.Country
+                    if product.SiteAddress.PostalCode:
+                        obj.PostalCode = product.SiteAddress.PostalCode
 
         try:
             progressbar.next(True)
@@ -1640,7 +1680,11 @@ def export(exportList,filename):
             else:
                 kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
-            kwargs.update({"CompositionType": "ELEMENT"})
+            kwargs.update({"RefLatitude":dd2dms(obj.Latitude),
+                           "RefLongitude":dd2dms(obj.Longitude),
+                           "RefElevation":obj.Elevation.Value/1000.0,
+                           "SiteAddress":buildAddress(obj,ifcfile),
+                           "CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
             kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
@@ -1915,32 +1959,37 @@ def export(exportList,filename):
     treated = []
     defaulthost = []
 
+    # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
+    for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
+        if not bp.IfcRole in ["Site","Building","Building Storey","Space","Undefined"]:
+            if bp.Name in products:
+                subs = []
+                for c in bp.Group:
+                    if c.Name in products:
+                        subs.append(products[c.Name])
+                        treated.append(c.Name)
+                if subs:
+                    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Assembly','',products[bp.Name],subs)
+
+    # floors/buildingparts
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole == "Building Storey"):
-            objs = Draft.getGroupContents(floor,walls=True)
+            objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
             for c in objs:
-                if c.Name in products.keys():
-                    if not (c.Name in treated):
-                        children.append(products[c.Name])
-                        treated.append(c.Name)
+                if c.Name != floor.Name: # getGroupContents + addgroups will include the floor itself
+                    if c.Name in products.keys():
+                        if not (c.Name in treated):
+                            children.append(products[c.Name])
+                            treated.append(c.Name)
             f = products[floor.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
             floors.append(f)
             defaulthost = f
-        elif (Draft.getType(floor) == "BuildingPart") and (not floor.IfcRole in ["Site","Building","Building Storey","Space","Undefined"]):
-            # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements
-            if floor.Name in products:
-                subs = []
-                for c in floor.Group:
-                    if c.Name in products:
-                        subs.append(products[c.Name])
-                        treated.append(c.Name)
-                if subs:
-                    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Assembly','',products[floor.Name],subs)
 
+    # buildings
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(building) == "Building") or (hasattr(building,"IfcRole") and building.IfcRole == "Building"):
             objs = Draft.getGroupContents(building,walls=True,addgroups=True)
@@ -1966,6 +2015,7 @@ def export(exportList,filename):
             if not defaulthost and not ADDDEFAULTSTOREY:
                 defaulthost = b
 
+    # sites
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1979,8 +2029,6 @@ def export(exportList,filename):
                             childbuildings.append(products[c.Name])
                             treated.append(c.Name)
         sites.append(products[site.Name])
-        #if not defaulthost:
-            #defaulthost = products[site.Name]
 
     if not sites:
         if DEBUG: print("No site found. Adding default site")
@@ -2160,6 +2208,19 @@ def export(exportList,filename):
     del ifcbin
 
 
+def buildAddress(obj,ifcfile):
+    
+    
+    a = obj.Address.encode("utf8") or None
+    p = obj.PostalCode.encode("utf8") or None
+    t = obj.City.encode("utf8") or None
+    r = obj.Region.encode("utf8") or None
+    c = obj.Country.encode("utf8") or None
+    if a or p or t or r or c:
+        addr = ifcfile.createIfcPostalAddress("SITE",'Site Address','',None,[a],None,t,r,p,c)
+    else:
+        addr = None
+    return addr
 
 def createFromProperties(propsets,ifcfile):
 
