@@ -55,7 +55,8 @@ typesmap = { "Site":         ["IfcSite"],
              "Panel":        ["IfcPlate"],
              "Equipment":    ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"],
              "Pipe":         ["IfcPipeSegment"],
-             "PipeConnector":["IfcPipeFitting"]
+             "PipeConnector":["IfcPipeFitting"],
+             "BuildingPart": ["IfcElementAssembly"]
            }
 
 # which IFC entity (product) is a structural object
@@ -1666,6 +1667,7 @@ def export(exportList,filename):
                 prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None,"ELEMENT")
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
+        
 
         # subtractions
 
@@ -1912,8 +1914,9 @@ def export(exportList,filename):
     floors = []
     treated = []
     defaulthost = []
+
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole != "Building"):
+        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole == "Building Storey"):
             objs = Draft.getGroupContents(floor,walls=True)
             objs = Arch.pruneIncluded(objs)
             children = []
@@ -1927,6 +1930,17 @@ def export(exportList,filename):
                 ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
             floors.append(f)
             defaulthost = f
+        elif (Draft.getType(floor) == "BuildingPart") and (not floor.IfcRole in ["Site","Building","Building Storey","Space","Undefined"]):
+            # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements
+            if floor.Name in products:
+                subs = []
+                for c in floor.Group:
+                    if c.Name in products:
+                        subs.append(products[c.Name])
+                        treated.append(c.Name)
+                if subs:
+                    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Assembly','',products[floor.Name],subs)
+
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(building) == "Building") or (hasattr(building,"IfcRole") and building.IfcRole == "Building"):
             objs = Draft.getGroupContents(building,walls=True,addgroups=True)
@@ -1951,6 +1965,7 @@ def export(exportList,filename):
             buildings.append(b)
             if not defaulthost and not ADDDEFAULTSTOREY:
                 defaulthost = b
+
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1966,6 +1981,7 @@ def export(exportList,filename):
         sites.append(products[site.Name])
         #if not defaulthost:
             #defaulthost = products[site.Name]
+
     if not sites:
         if DEBUG: print("No site found. Adding default site")
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
@@ -1982,6 +1998,9 @@ def export(exportList,filename):
             if k != buildings[0].Name:
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
+                elif Draft.getType(FreeCAD.ActiveDocument.getObject(k)) == "BuildingPart":
+                    if not(FreeCAD.ActiveDocument.getObject(k).IfcRole in ["Building","Building Storey","Site","Space","Undefined"]):
+                        untreated.append(v)
     if untreated:
         if not defaulthost:
             defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
