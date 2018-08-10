@@ -88,7 +88,7 @@ Base::BoundBox3d PointKernel::getBoundBox(void)const
     Base::BoundBox3d bnd;
 
     //FIXME: VS 2015 or later causes a linker error
-#if defined (_MSC_VER) && (_MSC_VER <= 1800)
+#if defined _WIN32 
     // Thread-local bounding boxes
     Concurrency::combinable<Base::BoundBox3d> bbs;
     // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)
