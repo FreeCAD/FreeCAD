@@ -37,8 +37,10 @@ if(MSVC)
         list(APPEND FreeCADBase_LIBS
             debug vcruntimed.lib
             debug ucrtd.lib
+            debug concrtd.lib
             optimized vcruntime.lib
             optimized ucrt.lib
+            optimized concrt.lib
         )
     endif()
 elseif(MINGW)
