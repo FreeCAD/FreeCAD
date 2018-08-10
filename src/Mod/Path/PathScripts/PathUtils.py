@@ -510,10 +510,9 @@ def addToJob(obj, jobname=None):
                         mylist = [j.Label for j in jobs]
                     form.cboProject.addItems(mylist)
                     r = form.exec_()
-                    if r is False:
+                    if r is False or r == 0:
                         return None
                     else:
-                        print(form.cboProject.currentText())
                         job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
 
     if obj and job:
