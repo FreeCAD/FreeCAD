@@ -65,8 +65,9 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     //projection group controls these
     Direction.setStatus(App::Property::ReadOnly,true);
     RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::ReadOnly,true);
+    ScaleType.setValue("Custom");
+    ScaleType.setStatus(App::Property::ReadOnly,true);
 }
 
 short DrawProjGroupItem::mustExecute() const
@@ -75,7 +76,8 @@ short DrawProjGroupItem::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     RotationVector.isTouched() ||
-                    Source.isTouched()  );
+                    Source.isTouched()  ||
+                    Scale.isTouched());
     }
 
     if (result) {
@@ -109,16 +111,19 @@ void DrawProjGroupItem::autoPosition()
 {
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if (isAnchor()) {
-        X.setValue(0.0);
-        Y.setValue(0.0);
-    } else if ((pgroup != nullptr) && 
+//    if (isAnchor()) {
+//        X.setValue(0.0);
+//        Y.setValue(0.0);
+//    } else 
+    if ((pgroup != nullptr) && 
         (pgroup->AutoDistribute.getValue()) &&
         (!LockPosition.getValue())) {
         newPos = pgroup->getXYPosition(Type.getValueAsString());
         X.setValue(newPos.x);
         Y.setValue(newPos.y);
     }
+    requestPaint();
+    purgeTouched();
 }
 
 void DrawProjGroupItem::onDocumentRestored()

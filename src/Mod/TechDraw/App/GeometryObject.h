@@ -66,6 +66,8 @@ TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape &input,
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
+Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
+                        const Base::Vector3d &direction);
 
 gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,

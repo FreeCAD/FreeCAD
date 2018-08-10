@@ -409,12 +409,13 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect());          //good for debugging
+//    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
-QRectF QGIView::customChildrenBoundingRect() {
+QRectF QGIView::customChildrenBoundingRect() const
+{
     QList<QGraphicsItem*> children = childItems();
     int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Magic number warning.
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
