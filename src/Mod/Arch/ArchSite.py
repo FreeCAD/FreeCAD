@@ -329,11 +329,13 @@ class _Site(ArchFloor._Floor):
         if not "Terrain" in pl:
             obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
         if not "Address" in pl:
-            obj.addProperty("App::PropertyString","Address","Site",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site"))
+            obj.addProperty("App::PropertyString","Address","Site",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site, with postal box or appartment number if needed"))
         if not "PostalCode" in pl:
             obj.addProperty("App::PropertyString","PostalCode","Site",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
         if not "City" in pl:
             obj.addProperty("App::PropertyString","City","Site",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
+        if not "Region" in pl:
+            obj.addProperty("App::PropertyString","Region","Site",QT_TRANSLATE_NOOP("App::Property","The region, province or county of this site"))
         if not "Country" in pl:
             obj.addProperty("App::PropertyString","Country","Site",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
         if not "Latitude" in pl:
