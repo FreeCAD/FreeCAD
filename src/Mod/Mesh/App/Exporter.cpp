@@ -124,9 +124,10 @@ MergeExporter::~MergeExporter()
 bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 {
     const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
+    Base::Placement plm = static_cast<Mesh::Feature *>(obj)->globalPlacement();
 
-    MeshCore::MeshKernel kernel( mesh.getKernel() );
-    kernel.Transform(mesh.getTransform());
+    MeshCore::MeshKernel kernel(mesh.getKernel());
+    kernel.Transform(plm.toMatrix());
 
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
