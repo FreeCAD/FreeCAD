@@ -578,10 +578,6 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
-void runBOPCheckInBackground(BOPAlgo_ArgumentAnalyzer *bop){
-    bop->Perform();
-}
-
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
 {
   //ArgumentAnalyser was moved at version 6.6. no back port for now.
