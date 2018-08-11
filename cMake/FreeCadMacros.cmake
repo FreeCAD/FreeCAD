@@ -14,7 +14,7 @@ MACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 #   TAGS     - Since only the file name is used
 #              to generate rules, pre-pend a user 
 #              supplied tag to prevent duplicate rule errors. 
-SET(AddTargets "")
+SET(AddTargets)
 FOREACH(SRC ${FILES})
     GET_FILENAME_COMPONENT(SRCFILE ${SRC} NAME) 
     # Command to copy the files to ${STEP1}/src, if changed.
@@ -31,27 +31,31 @@ FOREACH(SRC ${FILES})
     ENDIF("${TO_DIR}" STREQUAL "")
     ADD_CUSTOM_COMMAND(
         OUTPUT  ${TARGET}
-        COMMAND ${CMAKE_COMMAND}
-        ARGS    -E copy_if_different ${FROM} ${TO}
+        COMMAND "${CMAKE_COMMAND}"
+        ARGS    -E copy_if_different "${FROM}" "${TO}"
         COMMENT "Copying ${SRCFILE} ${TO_DIR}"
         )
-    SET(AddTargets ${AddTargets} ${TARGET})
+    list(APPEND AddTargets ${TARGET})
 ENDFOREACH(SRC ${FILES})
 SET(${TARGETS} ${AddTargets})
 ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 
 MACRO (fc_copy_sources target_name outpath)
+	if(BUILD_VERBOSE_GENERATION)
+		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
+	else()
+		set(fc_details "")
+	endif()
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
 		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile ${outfile} ABSOLUTE)
-		add_file_dependencies(${infile} ${outfile})
+		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    ${infile}
-			COMMAND   ${CMAKE_COMMAND}
-			ARGS      -E copy ${infile} ${outfile}
+			SOURCE    "${infile}"
+			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
-			OUTPUTS   ${outfile}
+			OUTPUTS   "${outfile}"
+			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
@@ -62,18 +66,21 @@ MACRO (fc_copy_sources target_name outpath)
 ENDMACRO(fc_copy_sources)
 
 MACRO (fc_target_copy_resource target_name inpath outpath)
+	if(BUILD_VERBOSE_GENERATION)
+		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
+	else()
+		set(fc_details "")
+	endif()
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${inpath}/${it}" infile)
-		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
-		get_filename_component(infile ${infile} ABSOLUTE)
-		get_filename_component(outfile ${outfile} ABSOLUTE)
-		add_file_dependencies(${infile} ${outfile})
+		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    ${infile}
-			COMMAND   ${CMAKE_COMMAND}
-			ARGS      -E copy ${infile} ${outfile}
+			SOURCE    "${infile}"
+			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
-			OUTPUTS   ${outfile}
+			OUTPUTS   "${outfile}"
+			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
@@ -96,15 +103,15 @@ macro(copy_to_local_output_paths SOURCE_PATHS)
 		 endif(CMAKE_CFG_INTDIR STREQUAL .)
 		 file(TO_NATIVE_PATH ${SOURCE_PATHS} NATIVE_SOURCE)
 		 file(TO_NATIVE_PATH ${DEBUG_LOCAL_OUTPUT_PATH}/ NATIVE_DEBUG_DESTINATION)
-		 file(TO_NATIVE_PATH ${RELEASE_LOCAL_OUTPUT_PATH}/ NATIVE_RELESE_DESTINATION)
+		 file(TO_NATIVE_PATH ${RELEASE_LOCAL_OUTPUT_PATH}/ NATIVE_RELEASE_DESTINATION)
 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}")
 		 execute_process(
 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}
 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		 if(NOT ${DEBUG_LOCAL_OUTPUT_PATH} STREQUAL ${RELEASE_LOCAL_OUTPUT_PATH})
-		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELESE_DESTINATION}")
+		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}")
 		 		 execute_process(
-		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELESE_DESTINATION}
+		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}
 		 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		 endif(NOT ${DEBUG_LOCAL_OUTPUT_PATH} STREQUAL ${RELEASE_LOCAL_OUTPUT_PATH})
 endmacro(copy_to_local_output_paths)
@@ -112,15 +119,15 @@ endmacro(copy_to_local_output_paths)
 macro(copy_to_main_output_paths SOURCE_PATHS)
 		 file(TO_NATIVE_PATH ${SOURCE_PATHS} NATIVE_SOURCE)
 		 file(TO_NATIVE_PATH ${DEBUG_MAIN_OUTPUT_PATH}/ NATIVE_DEBUG_DESTINATION)
-		 file(TO_NATIVE_PATH ${RELEASE_MAIN_OUTPUT_PATH}/ NATIVE_RELESE_DESTINATION)
+		 file(TO_NATIVE_PATH ${RELEASE_MAIN_OUTPUT_PATH}/ NATIVE_RELEASE_DESTINATION)
 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}")
 		 execute_process(
 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}
 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		 if(NOT ${DEBUG_MAIN_OUTPUT_PATH} STREQUAL ${RELEASE_MAIN_OUTPUT_PATH})
-		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELESE_DESTINATION}")
+		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}")
 		 		 execute_process(
-		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELESE_DESTINATION}
+		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}
 		 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		 endif(NOT ${DEBUG_MAIN_OUTPUT_PATH} STREQUAL ${RELEASE_MAIN_OUTPUT_PATH})
 endmacro(copy_to_main_output_paths)
@@ -128,39 +135,44 @@ endmacro(copy_to_main_output_paths)
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
 macro(generate_from_xml BASE_NAME)
-    file(TO_NATIVE_PATH ${CMAKE_SOURCE_DIR}/src/Tools/generate.py TOOL_PATH)
-    file(TO_NATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.xml SOURCE_PATH)
+    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/generate.py")
+    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.xml" SOURCE_NATIVE_PATH)
 
-    file(TO_NATIVE_PATH ${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp SOURCE_CPP_PATH)
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp" )
+    
     # BASE_NAME may include also a path name
-    GET_FILENAME_COMPONENT(OUTPUT_PATH ${SOURCE_CPP_PATH} PATH)
-    if (NOT EXISTS ${SOURCE_CPP_PATH})
+    GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
+    file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
+    if(NOT EXISTS "${SOURCE_CPP_PATH}")
         # assures the source files are generated at least once
-        message(STATUS "${SOURCE_CPP_PATH}")
-        execute_process(COMMAND ${PYTHON_EXECUTABLE} ${TOOL_PATH} --outputPath ${OUTPUT_PATH} ${SOURCE_PATH}
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        execute_process(COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+                        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         )
-    endif (NOT EXISTS ${SOURCE_CPP_PATH})
-
+    endif()
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.h ${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp
-        COMMAND ${PYTHON_EXECUTABLE} ${TOOL_PATH} --outputPath ${OUTPUT_PATH} ${BASE_NAME}.xml
-        MAIN_DEPENDENCY ${BASE_NAME}.xml
-        DEPENDS ${CMAKE_SOURCE_DIR}/src/Tools/generateTemplates/templateClassPyExport.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.xml
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp"
+        COMMAND ${PYTHON_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.xml
+        MAIN_DEPENDENCY "${SOURCE_PATH}"
+        DEPENDS
+        "${CMAKE_SOURCE_DIR}/src/Tools/generateTemplates/templateClassPyExport.py"
+        "${TOOL_PATH}"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMENT "Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.xml"
     )
 endmacro(generate_from_xml)
 
 macro(generate_from_py BASE_NAME OUTPUT_FILE)
-		 file(TO_NATIVE_PATH ${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py TOOL_PATH)
-		 file(TO_NATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py SOURCE_PATH)
-		 add_custom_command(
-		 		 OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}
-		 		 COMMAND ${PYTHON_EXECUTABLE} ${TOOL_PATH} ${SOURCE_PATH} ${OUTPUT_FILE}
-		 		 MAIN_DEPENDENCY ${BASE_NAME}.py
-		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-		 		 COMMENT Building files out of ${BASE_NAME}.py)
+		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
+		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py" SOURCE_NATIVE_PATH)
+		add_custom_command(
+		 		OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}"
+		 		COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}" "${OUTPUT_FILE}"
+				MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py"
+				DEPENDS "${TOOL_PATH}"
+				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+				COMMENT "Building files out of ${BASE_NAME}.py")
 endmacro(generate_from_py)
 
 
