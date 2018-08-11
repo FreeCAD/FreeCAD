@@ -37,12 +37,6 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools_ShapeSet.hxx>
 
-#include <QFuture>
-#include <QtConcurrentRun>
-#include <QThread>
-#include <QApplication>
-#include <Gui/MainWindow.h>
-
 #if OCC_VERSION_HEX >= 0x060600
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
@@ -415,7 +409,7 @@ void TaskCheckGeometryResults::setupInterface()
 
 void TaskCheckGeometryResults::goCheck()
 {
-    //Gui::WaitCursor wc;
+    Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();
     std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -583,9 +577,11 @@ QString TaskCheckGeometryResults::getShapeContentString()
 {
   return QString::fromStdString(shapeContentString);
 }
+
 void runBOPCheckInBackground(BOPAlgo_ArgumentAnalyzer *bop){
     bop->Perform();
 }
+
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
 {
   //ArgumentAnalyser was moved at version 6.6. no back port for now.
@@ -614,33 +610,38 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #endif
 #if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part");
+  bool runParallelSignal = group->GetBool("RunParallelMode", true);
+  //running in parallel mode improves performance, but also increases cpu usage,
+  //which might lead to thermal issues
+  //on some systems with inadequate cpu cooling
+  //this parameter provides users a way to turn this feature off
+  group->SetBool("RunParallelMode", runParallelSignal);
+  if (runParallelSignal){
+     BOPCheck.SetRunParallel(true);
+  }
+
   BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = true;
   BOPCheck.CurveOnSurfaceMode() = true;
   BOPCheck.MergeEdgeMode() = true;
 #endif
   
+#ifdef FC_DEBUG
   Base::TimeInfo start_time;
-
-  QFuture <void> future = QtConcurrent::run(runBOPCheckInBackground,&BOPCheck);
-  while (!future.isFinished()){
-      qApp->processEvents();
-#if defined(Q_OS_WIN)
-      Sleep(DWORD(10));
-#else
-      usleep(10);
 #endif
-      float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
-      std::ostringstream ss;
-      ss << "BopAlgo ("<<baseName.toStdString()<<"): " << bopAlgoTime << endl;
-      Gui::getMainWindow()->showMessage(QString::fromStdString(ss.str()));
-}
+
+BOPCheck.Perform();
+
+#ifdef FC_DEBUG
+  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
+#endif
   
-  if (!BOPCheck.HasFaulty()){
+  if (!BOPCheck.HasFaulty())
       return 0;
-  } else {
-      cerr << "BopAlog check found errors in "<< baseName.toStdString() << endl;
-  }
 
   ResultEntry *entry = new ResultEntry();
   entry->parent = theRoot;
