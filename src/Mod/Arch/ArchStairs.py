@@ -154,6 +154,8 @@ class _Stairs(ArchComponent.Component):
         if not "BlondelRatio" in pl:
             obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"))
             obj.setEditorMode("BlondelRatio",1)
+        if not hasattr(obj,"LandingDepth"):
+            obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
 
         # structural properties
         if not "Landings" in pl:
@@ -264,10 +266,12 @@ class _Stairs(ArchComponent.Component):
                     l = obj.Base.Shape.Length
                     if obj.Base.Shape.BoundBox.ZLength:
                         h = obj.Base.Shape.BoundBox.ZLength
-            obj.TreadDepth = float(l-(landings*obj.Width.Value))/(obj.NumberOfSteps-(1+landings))
+            if obj.LandingDepth:
+                obj.TreadDepth = float(l-(landings*obj.LandingDepth.Value))/(obj.NumberOfSteps-(1+landings))
+            else:
+                obj.TreadDepth = float(l-(landings*obj.Width.Value))/(obj.NumberOfSteps-(1+landings))
             obj.RiserHeight = float(h)/obj.NumberOfSteps
             obj.BlondelRatio = obj.RiserHeight.Value*2+obj.TreadDepth.Value
-
 
     def align(self,basepoint,align,widthvec):
 
@@ -517,7 +521,10 @@ class _Stairs(ArchComponent.Component):
             return
         import Part,DraftGeomUtils
         v = DraftGeomUtils.vec(edge)
-        reslength = edge.Length - obj.Width.Value
+        if obj.LandingDepth:
+            reslength = edge.Length - obj.LandingDepth.Value
+        else:
+            reslength = edge.Length - obj.Width.Value
         vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
         vLength = Vector(vLength.x,vLength.y,0)
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
@@ -529,7 +536,10 @@ class _Stairs(ArchComponent.Component):
         hstep = h/obj.NumberOfSteps
         landing = int(obj.NumberOfSteps/2)
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
-        p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
+        if obj.LandingDepth:
+            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
+        else:
+            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
         p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
         self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
         self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape())

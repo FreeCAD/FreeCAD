@@ -55,7 +55,8 @@ typesmap = { "Site":         ["IfcSite"],
              "Panel":        ["IfcPlate"],
              "Equipment":    ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"],
              "Pipe":         ["IfcPipeSegment"],
-             "PipeConnector":["IfcPipeFitting"]
+             "PipeConnector":["IfcPipeFitting"],
+             "BuildingPart": ["IfcElementAssembly"]
            }
 
 # which IFC entity (product) is a structural object
@@ -113,9 +114,9 @@ END-ISO-10303-21;
 
 
 def decode(filename,utf=False):
-    
+
     "turns unicodes into strings"
-    
+
     if isinstance(filename,unicode):
         # workaround since ifcopenshell currently can't handle unicode filenames
         if utf:
@@ -128,9 +129,9 @@ def decode(filename,utf=False):
 
 
 def doubleClickTree(item,column):
-    
+
     "a double-click callback function for the IFC explorer tool"
-    
+
     txt = item.text(column)
     if "Entity #" in txt:
         eid = txt.split("#")[1].split(":")[0]
@@ -140,10 +141,29 @@ def doubleClickTree(item,column):
             addr[0].setSelected(True)
 
 
+def dd2dms(dd):
+
+    "converts decimal degrees to degrees,minutes,seconds"
+
+    dd = abs(dd)
+    minutes,seconds = divmod(dd*3600,60)
+    degrees,minutes = divmod(minutes,60)
+    if dd < 0:
+        degrees = -degrees
+    return (int(degrees),int(minutes),int(seconds))
+
+def dms2dd(degrees, minutes, seconds, milliseconds=0):
+
+    "converts degrees,minutes,seconds to decimal degrees"
+
+    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
+    return dd
+
+
 def getPreferences():
-    
+
     """retrieves IFC preferences"""
-    
+
     global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
@@ -179,7 +199,7 @@ def getPreferences():
 
 
 def explore(filename=None):
-    
+
     """explore([filename]): opens a dialog showing
     the contents of an IFC file. If no filename is given, a dialog will
     pop up to choose a file."""
@@ -339,7 +359,7 @@ def explore(filename=None):
 
 
 def open(filename,skip=[],only=[],root=None):
-    
+
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
@@ -351,7 +371,7 @@ def open(filename,skip=[],only=[],root=None):
 
 
 def insert(filename,docname,skip=[],only=[],root=None):
-    
+
     """insert(filename,docname,skip=[],only=[],root=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
@@ -375,15 +395,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("done.")
 
     global ROOT_ELEMENT, parametrics
-    
+
     if root:
         ROOT_ELEMENT = root
 
     #global ifcfile # keeping global for debugging purposes
-    
+
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
-    
+
     # set default ifcopenshell optionss to work in brep mode
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
@@ -394,7 +414,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
     if SPLIT_LAYERS and hasattr(settings,"APPLY_LAYERSETS"):
         settings.set(settings.APPLY_LAYERSETS,True)
-        
+
     # gather easy entity types
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
@@ -421,7 +441,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     sharedobjects = {} # { representationmapid:object }
     parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
     profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
-    
+
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -491,7 +511,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     products = tp
 
     # only import a list of IDs and their children
-    if only: 
+    if only:
         ids = []
         while only:
             currentid = only.pop()
@@ -589,7 +609,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             sharedobjects[bid] = None
                             store = bid
-                            
+
         # additional setting for structural entities
         if hasattr(settings,"INCLUDE_CURVES"):
             if structobj:
@@ -640,7 +660,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print(shape.Solids," ",end="")
                         baseobj = shape
                 else:
-                    
+
                     # create base shape object
                     if clone:
                         if DEBUG: print("clone ",end="")
@@ -944,6 +964,27 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         annotations.append(product)
                         break
 
+            # additional properties for specific types
+
+            if product.is_a("IfcSite"):
+                if product.RefElevation:
+                    obj.Elevation = product.RefElevation*1000
+                if product.RefLatitude:
+                    obj.Latitude = dms2dd(*product.RefLatitude)
+                if product.RefLongitude:
+                    obj.Longitude = dms2dd(*product.RefLongitude)
+                if product.SiteAddress:
+                    if product.SiteAddress.AddressLines:
+                        obj.Address = product.SiteAddress.AddressLines[0]
+                    if product.SiteAddress.Town:
+                        obj.City = product.SiteAddress.Town
+                    if product.SiteAddress.Region:
+                        obj.Region = product.SiteAddress.Region
+                    if product.SiteAddress.Country:
+                        obj.Country = product.SiteAddress.Country
+                    if product.SiteAddress.PostalCode:
+                        obj.PostalCode = product.SiteAddress.PostalCode
+
         try:
             progressbar.next(True)
         except(RuntimeError):
@@ -1242,7 +1283,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 class recycler:
 
     "the compression engine - a mechanism to reuse ifc entities if needed"
-    
+
     # this object has some methods identical to corresponding ifcopenshell methods,
     # but it checks if a similar entity already exists before creating a new one
     # to compress a new type, just add the necessary method here
@@ -1639,7 +1680,11 @@ def export(exportList,filename):
             else:
                 kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
-            kwargs.update({"CompositionType": "ELEMENT"})
+            kwargs.update({"RefLatitude":dd2dms(obj.Latitude),
+                           "RefLongitude":dd2dms(obj.Longitude),
+                           "RefElevation":obj.Elevation.Value/1000.0,
+                           "SiteAddress":buildAddress(obj,ifcfile),
+                           "CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
             kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
@@ -1666,6 +1711,7 @@ def export(exportList,filename):
                 prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None,"ELEMENT")
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
+
 
         # subtractions
 
@@ -1836,6 +1882,26 @@ def export(exportList,filename):
             #if DEBUG : print("no ifc properties to export")
             pass
 
+        # Quantities
+        
+        if hasattr(obj,"IfcAttributes"):
+            quantities = []
+            if ("ExportHeight" in obj.IfcAttributes) and obj.IfcAttributes["ExportHeight"] and hasattr(obj,"Height"):
+                quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value/1000.0))
+            if ("ExportWidth" in obj.IfcAttributes) and obj.IfcAttributes["ExportWidth"] and hasattr(obj,"Width"):
+                quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value/1000.0))
+            if ("ExportLength" in obj.IfcAttributes) and obj.IfcAttributes["ExportLength"] and hasattr(obj,"Length"):
+                quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value/1000.0))
+            if ("ExportHorizontalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
+                quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value/1000000.0))
+            if ("ExportVerticalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
+                quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value/1000000.0))
+            if ("ExportVolume" in obj.IfcAttributes) and obj.IfcAttributes["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
+                quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume/1000000000.0))
+            if quantities:
+                eltq = ifcfile.createIfcElementQuantity(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"ElementQuantities",None,"FreeCAD",quantities)
+                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],eltq)
+
         if FULL_PARAMETRIC:
             # exporting all the object properties
             FreeCADProps = []
@@ -1912,21 +1978,41 @@ def export(exportList,filename):
     floors = []
     treated = []
     defaulthost = []
+
+    # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
+
+    for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
+        if not bp.IfcRole in ["Site","Building","Building Storey","Space","Undefined"]:
+            if bp.Name in products:
+                subs = []
+                for c in bp.Group:
+                    if c.Name in products:
+                        subs.append(products[c.Name])
+                        treated.append(c.Name)
+                if subs:
+                    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Assembly','',products[bp.Name],subs)
+
+    # floors/buildingparts
+
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole != "Building"):
-            objs = Draft.getGroupContents(floor,walls=True)
+        if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcRole") and floor.IfcRole == "Building Storey"):
+            objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
             for c in objs:
-                if c.Name in products.keys():
-                    if not (c.Name in treated):
-                        children.append(products[c.Name])
-                        treated.append(c.Name)
+                if c.Name != floor.Name: # getGroupContents + addgroups will include the floor itself
+                    if c.Name in products.keys():
+                        if not (c.Name in treated):
+                            children.append(products[c.Name])
+                            treated.append(c.Name)
             f = products[floor.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
             floors.append(f)
             defaulthost = f
+
+    # buildings
+
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(building) == "Building") or (hasattr(building,"IfcRole") and building.IfcRole == "Building"):
             objs = Draft.getGroupContents(building,walls=True,addgroups=True)
@@ -1951,6 +2037,9 @@ def export(exportList,filename):
             buildings.append(b)
             if not defaulthost and not ADDDEFAULTSTOREY:
                 defaulthost = b
+
+    # sites
+
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1964,8 +2053,7 @@ def export(exportList,filename):
                             childbuildings.append(products[c.Name])
                             treated.append(c.Name)
         sites.append(products[site.Name])
-        #if not defaulthost:
-            #defaulthost = products[site.Name]
+
     if not sites:
         if DEBUG: print("No site found. Adding default site")
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
@@ -1982,6 +2070,9 @@ def export(exportList,filename):
             if k != buildings[0].Name:
                 if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor","BuildingPart"]):
                     untreated.append(v)
+                elif Draft.getType(FreeCAD.ActiveDocument.getObject(k)) == "BuildingPart":
+                    if not(FreeCAD.ActiveDocument.getObject(k).IfcRole in ["Building","Building Storey","Site","Space","Undefined"]):
+                        untreated.append(v)
     if untreated:
         if not defaulthost:
             defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
@@ -2141,6 +2232,19 @@ def export(exportList,filename):
     del ifcbin
 
 
+def buildAddress(obj,ifcfile):
+
+
+    a = obj.Address.encode("utf8") or None
+    p = obj.PostalCode.encode("utf8") or None
+    t = obj.City.encode("utf8") or None
+    r = obj.Region.encode("utf8") or None
+    c = obj.Country.encode("utf8") or None
+    if a or p or t or r or c:
+        addr = ifcfile.createIfcPostalAddress("SITE",'Site Address','',None,[a],None,t,r,p,c)
+    else:
+        addr = None
+    return addr
 
 def createFromProperties(propsets,ifcfile):
 

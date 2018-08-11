@@ -135,6 +135,7 @@ def isVertical(obj):
     '''isVertical(obj) ... answer True if obj points into Z'''
     if type(obj) == FreeCAD.Vector:
         return isRoughly(obj.x, 0) and isRoughly(obj.y, 0)
+
     if obj.ShapeType == 'Face':
         if type(obj.Surface) == Part.Plane:
             return isHorizontal(obj.Surface.Axis)
@@ -144,9 +145,12 @@ def isVertical(obj):
             return True
         if type(obj.Surface) == Part.SurfaceOfExtrusion:
             return isVertical(obj.Surface.Direction)
+        if type(obj.Surface) == Part.SurfaceOfRevolution:
+            return isHorizontal(obj.Surface.Direction)
         if type(obj.Surface) != Part.BSplineSurface:
             PathLog.info(translate('PathGeom', "face %s not handled, assuming not vertical") % type(obj.Surface))
         return None
+
     if obj.ShapeType == 'Edge':
         if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
             return isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
@@ -158,6 +162,7 @@ def isVertical(obj):
         if type(obj.Curve) != Part.BSplineCurve:
             PathLog.info(translate('PathGeom', "edge %s not handled, assuming not vertical") % type(obj.Curve))
         return None
+
     PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
     return None
 
@@ -165,6 +170,7 @@ def isHorizontal(obj):
     '''isHorizontal(obj) ... answer True if obj points into X or Y'''
     if type(obj) == FreeCAD.Vector:
         return isRoughly(obj.z, 0)
+
     if obj.ShapeType == 'Face':
         if type(obj.Surface) == Part.Plane:
             return isVertical(obj.Surface.Axis)
@@ -174,13 +180,17 @@ def isHorizontal(obj):
             return True
         if type(obj.Surface) == Part.SurfaceOfExtrusion:
             return isHorizontal(obj.Surface.Direction)
+        if type(obj.Surface) == Part.SurfaceOfRevolution:
+            return isVertical(obj.Surface.Direction)
         return isRoughly(obj.BoundBox.ZLength, 0.0)
+
     if obj.ShapeType == 'Edge':
         if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
             return isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
         if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse: # or type(obj.Curve) == Part.BSplineCurve:
             return isVertical(obj.Curve.Axis)
         return isRoughly(obj.BoundBox.ZLength, 0.0)
+
     PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
     return None
 

@@ -193,7 +193,7 @@ BuildingTypes = ['Undefined',
 ]
 
 
-def makeBuildingPart(objectslist=None):
+def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
 
     '''makeBuildingPart(objectslist): creates a buildingPart including the
     objects from the given list.'''

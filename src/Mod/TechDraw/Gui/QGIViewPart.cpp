@@ -984,7 +984,9 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 
 QRectF QGIViewPart::boundingRect() const
 {
-    return childrenBoundingRect();
+//    return childrenBoundingRect();
+//    return customChildrenBoundingRect();
+    return QGIView::boundingRect();
 }
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
