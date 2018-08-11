@@ -255,7 +255,10 @@ class ObjectOp(object):
         features = self.opFeatures(obj)
 
         if FeatureTool & features:
-            obj.ToolController = PathUtils.findToolController(obj)
+            if 1 < len(job.Operations.Group):
+                obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
+            else:
+                obj.ToolController = PathUtils.findToolController(obj)
             if not obj.ToolController:
                 return False
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
