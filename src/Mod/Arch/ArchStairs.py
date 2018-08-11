@@ -156,6 +156,9 @@ class _Stairs(ArchComponent.Component):
             obj.setEditorMode("BlondelRatio",1)
         if not hasattr(obj,"LandingDepth"):
             obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
+        if not hasattr(obj,"Flight"):
+            obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of of flight after landing"))
+            obj.Flight = ["Straight","HalfTurnLeft"]
 
         # structural properties
         if not "Landings" in pl:
@@ -313,6 +316,10 @@ class _Stairs(ArchComponent.Component):
         p2 = p1.add(DraftVecUtils.neg(vNose)).add(vLength)
         p3 = p2.add(vWidth)
         p4 = p3.add(DraftVecUtils.neg(vLength)).add(vNose)
+        if obj.Flight == "HalfTurnLeft":
+            p1 = p1.add(-vWidth)
+            p2 = p2.add(-vWidth)
+
         step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if obj.TreadThickness.Value:
             step = step.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
@@ -331,26 +338,38 @@ class _Stairs(ArchComponent.Component):
         p3 = p2.add(DraftVecUtils.scaleTo(vLength,reslength)).add(Vector(0,0,resheight))
         p6 = p1.add(vLength)
         if obj.TreadThickness.Value:
-            p7 = p6.add(Vector(0,0,obj.TreadThickness.Value))
-
+            if obj.Flight == "Straight":
+                p7 = p6.add(Vector(0,0,obj.TreadThickness.Value))
         reslength = fLength + (obj.StructureThickness.Value/math.sin(a)-(fHeight-obj.TreadThickness.Value)/math.tan(a))
         if p7:
             p5 = p7.add(DraftVecUtils.scaleTo(vLength,reslength))
         else:
-            p5 = p6.add(DraftVecUtils.scaleTo(vLength,reslength))
+            if obj.Flight == "Straight":
+                p5 = p6.add(DraftVecUtils.scaleTo(vLength,reslength))
+            else:
+                p5 = None
         resheight = obj.StructureThickness.Value + obj.TreadThickness.Value
         reslength = resheight/math.tan(a)
-        p4 = p5.add(DraftVecUtils.scaleTo(vLength,-reslength)).add(Vector(0,0,-resheight))
+        if obj.Flight == "Straight":
+            p4 = p5.add(DraftVecUtils.scaleTo(vLength,-reslength)).add(Vector(0,0,-resheight))
+        else:
+            p4 = p6.add(Vector(0,0,-obj.StructureThickness.Value))
         if obj.Structure == "Massive":
             if obj.StructureThickness.Value:
                 if p7:
                     struct = Part.Face(Part.makePolygon([p1,p2,p3,p4,p5,p7,p6,p1]))
-                else:
+                elif p5:
                     struct = Part.Face(Part.makePolygon([p1,p2,p3,p4,p5,p6,p1]))
+                else:
+                    struct = Part.Face(Part.makePolygon([p1,p2,p3,p4,p6,p1]))
                 evec = vWidth
+                mvec = FreeCAD.Vector(0.0,0)
                 if obj.StructureOffset.Value:
                     mvec = DraftVecUtils.scaleTo(vWidth,obj.StructureOffset.Value)
                     struct.translate(mvec)
+                if obj.Flight == "HalfTurnLeft":
+                    evec = DraftVecUtils.scaleTo(evec,2*evec.Length-2*mvec.Length)
+                else:
                     evec = DraftVecUtils.scaleTo(evec,evec.Length-(2*mvec.Length))
                 struct = struct.extrude(evec)
         elif obj.Structure in ["One stringer","Two stringers"]:
@@ -540,10 +559,17 @@ class _Stairs(ArchComponent.Component):
             p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
         else:
             p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-        p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+        if obj.Flight == "HalfTurnLeft":
+            p3r = p2
+            p4r = p2.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+        else:
+            p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
         self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
         self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape())
-        self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
+        if obj.Flight == "HalfTurnLeft":
+            self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
+        else:
+            self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
 
 
     def makeCurvedStairs(self,obj,edge):
