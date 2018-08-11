@@ -19,11 +19,14 @@ if(BUILD_GUI)
     endforeach()
 
     configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/doc/freecad.qhc COPYONLY)
+    INSTALL(FILES
+        ${CMAKE_BINARY_DIR}/doc/freecad.qch
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    )
 endif(BUILD_GUI)
 
 INSTALL(FILES
     freecad.qhc
-    ${CMAKE_BINARY_DIR}/doc/freecad.qch
     ThirdPartyLibraries.html
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
