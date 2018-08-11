@@ -183,7 +183,6 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
             App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
             Base::Placement plm = gf->globalPlacement();
             Base::Placement pl  = gf->Placement.getValue();
-            Base::Placement plInverse = pl.inverse();
             bool applyGlobal = false;
             if (pl == plm) {
                //no extension placement
@@ -198,9 +197,9 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
             geoData->getFaces(aPoints, aTopo, tol);
 
             if (applyGlobal) {
+                Base::Placement diff_plm = plm * pl.inverse();
                 for (auto& it : aPoints) {
-                    plInverse.multVec(it,it);
-                    plm.multVec(it, it);
+                    diff_plm.multVec(it,it);
                 }
             }
 
