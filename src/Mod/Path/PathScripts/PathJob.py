@@ -117,6 +117,8 @@ class ObjectJob:
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
 
         ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
+        if ops.ViewObject:
+            ops.ViewObject.Proxy = 0
         obj.Operations = ops
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
@@ -189,8 +191,25 @@ class ObjectJob:
             if orig:
                 setattr(obj, name, createResourceClone(obj, orig, name, icon))
 
+    def fixupOperations(self, obj):
+        if obj.Operations.ViewObject:
+            try:
+                obj.Operations.ViewObject.DisplayMode
+            except:
+                name = obj.Operations.Name
+                label = obj.Operations.Label
+                ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
+                ops.ViewObject.Proxy = 0
+                ops.Group = obj.Operations.Group
+                obj.Operations.Group = []
+                obj.Operations = ops
+                FreeCAD.ActiveDocument.removeObject(name)
+                ops.Label = label
+
+
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
+        self.fixupOperations(obj)
         self.setupSetupSheet(obj)
 
     def onChanged(self, obj, prop):
