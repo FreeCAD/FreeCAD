@@ -606,6 +606,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #endif
 #if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+  BOPCheck.SetRunParallel(true); //performance boost, use all available cores
   BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = true;
   BOPCheck.CurveOnSurfaceMode() = true;
@@ -616,7 +617,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   Base::TimeInfo start_time;
 #endif
 
-  BOPCheck.Perform();
+BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
