@@ -15,7 +15,7 @@
 
 find_package(Netgen CONFIG)
 if(Netgen_FOUND)
-  set(NGLIB_INCLUDE_DIR ${NETGEN_INCLUDE_DIR})
+  set(NGLIB_INCLUDE_DIR ${NETGEN_INCLUDE_DIR} PATH_SUFFIXES netgen-mesher)
   set(NGLIB_LIBRARIES nglib)
   set(NETGEN_DEFINITIONS -DNO_PARALLEL_THREADS -DOCCGEOMETRY)
   # for external smesh only the following two variables are needed:
