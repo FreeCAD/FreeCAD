@@ -606,19 +606,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #endif
 #if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
-
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part");
-  bool runParallelSignal = group->GetBool("RunParallelMode", true);
-  //running in parallel mode improves performance, but also increases cpu usage,
-  //which might lead to thermal issues
-  //on some systems with inadequate cpu cooling
-  //this parameter provides users a way to turn this feature off
-  group->SetBool("RunParallelMode", runParallelSignal);
-  if (runParallelSignal){
-     BOPCheck.SetRunParallel(true);
-  }
-
+  BOPCheck.SetRunParallel(true); //performance boost, use all available cores
   BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = true;
   BOPCheck.CurveOnSurfaceMode() = true;
