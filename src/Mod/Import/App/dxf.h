@@ -156,6 +156,7 @@ protected:
     int m_layerHandle;
     int m_blockHandle;
     int m_blkRecordHandle;
+    bool m_polyOverride;
     
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
@@ -180,6 +181,8 @@ public:
 //    bool isVersionValid(int vers);
     std::string getLayerName() { return m_layerName; }
     void setLayerName(std::string s);
+    void setVersion(int v) { m_version = v;}
+    void setPolyOverride(bool b) { m_polyOverride = b; }
     void addBlockName(std::string s, std::string blkRecordHandle);
 
     void writeLine(const double* s, const double* e);

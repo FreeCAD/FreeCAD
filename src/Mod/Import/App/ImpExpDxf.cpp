@@ -341,9 +341,10 @@ void ImpExpDxfWrite::setOptions(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionMaxLength = hGrp->GetFloat("maxsegmentlength",5.0);
-    optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",false);
     optionExpPoints  = hGrp->GetBool("ExportPoints",false);
     m_version = hGrp->GetInt("DxfVersionOut",14);
+    optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",false);
+    m_polyOverride = hGrp->GetBool("DiscretizeEllipses",false);
     setDataDir(App::Application::getResourceDir() + "Mod/Import/DxfPlate/");
 }
 
@@ -370,37 +371,66 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             gp_Pnt s = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
             if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-                if ((optionPolyLine) &&
-                    (m_version >= 14) ) {
-                    exportLWPoly(adapt);
-                } else if ((optionPolyLine) ||
-                    (m_version < 14) ) {
-                    exportPolyline(adapt);
-                } else {
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
                     exportEllipse(adapt);
+                    }
                 }
-            } else {
-                if ((optionPolyLine) &&
-                    (m_version >= 14) ) {
-                    exportLWPoly(adapt);
-                } else if ((optionPolyLine) ||
-                    (m_version < 14) ) {
-                    exportPolyline(adapt);
-                } else {
-                    exportEllipseArc(adapt);
+            } else {                                     // it's an arc
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
+                        exportEllipseArc(adapt);
+                    }
                 }
             }
-
         } else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            if ((optionPolyLine) &&
-                (m_version >= 14) ) {
-                exportLWPoly(adapt);
-            } else if ((optionPolyLine)  ||
-                (m_version < 14) ) {
-                exportPolyline(adapt);
-            } else {
-                exportBSpline(adapt);
-            }
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
+                        exportBSpline(adapt);
+                    }
+                }
         } else if (adapt.GetType() == GeomAbs_BezierCurve) {
             exportBCurve(adapt);
         } else if (adapt.GetType() == GeomAbs_Line) {
