@@ -63,7 +63,6 @@ void CDxfWrite::init(void)
     writeHeaderSection();
     makeBlockRecordTableHead();
     makeBlockSectionHead();
-
 }
 
 //! assemble pieces into output file
