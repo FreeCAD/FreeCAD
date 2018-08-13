@@ -623,7 +623,7 @@ void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& cen
         centers.push_back(curveCenter);
         sumCenter += Base::Vector3d(curveCenter.X(),curveCenter.Y(),curveCenter.Z());
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure&) {
         Base::Console().Log("TechDraw - GEO::BSpline::getCircleParms - CLProps failed\n");
         isCircle = false;
         return;
