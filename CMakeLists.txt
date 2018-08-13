@@ -603,8 +603,9 @@ endif()
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
+    set (BOOST_COMPONENTS filesystem program_options regex signals system thread)
     find_package(Boost ${BOOST_MIN_VERSION}
-        COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+        COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
     if(UNIX AND NOT APPLE)
         # Boost.Thread 1.67+ headers reference pthread_condattr_*
@@ -612,15 +613,19 @@ endif()
     endif()
 
     IF(NOT Boost_FOUND)
-        MESSAGE(FATAL_ERROR "========================================\n"
-                            "boost not found, install the components:\n"
-                            " * filesystem\n"
-                            " * program_options\n"
-                            " * regex\n"
-                            " * signals\n"
-                            " * system\n"
-                            " * thread\n"
-                            "========================================\n")
+        set (NO_BOOST_COMPONENTS)
+        foreach (comp ${BOOST_COMPONENTS})
+            string(TOUPPER ${comp} uppercomp)
+            if (NOT Boost_${uppercomp}_FOUND)
+                list(APPEND NO_BOOST_COMPONENTS ${comp})
+            endif()
+        endforeach()
+        MESSAGE(FATAL_ERROR "=============================================\n"
+                            "Required components:\n"
+                            " ${BOOST_COMPONENTS}\n"
+                            "Not found, install the components:\n"
+                            " ${NO_BOOST_COMPONENTS}\n"
+                            "=============================================\n")
     ENDIF(NOT Boost_FOUND)
 
 # -------------------------------- XercesC --------------------------------
