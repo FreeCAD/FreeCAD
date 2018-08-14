@@ -3681,6 +3681,15 @@ int System::diagnose(Algorithm alg)
         dofs = -1;
         return dofs;
     }
+#ifdef _GCS_DEBUG
+#ifdef _DEBUG_TO_FILE
+    std::ofstream stream;
+    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
+    stream << "GCS::System::diagnose()" << std::endl;
+    stream.flush();
+    stream.close();
+#endif
+#endif
 
     // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make the application
@@ -3707,14 +3716,21 @@ int System::diagnose(Algorithm alg)
     // map tag to a tag multiplicity (the number of solver constraints associated with the same tag)
     std::map< int , int> tagmultiplicity;
     
-    Eigen::MatrixXd J(clist.size(), pdiagnoselist.size());
-    int count=0;
+    Eigen::MatrixXd J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
+    
+    // The jacobian has been reduced to only contain driving constraints. Identification
+    // of constraint indices from this reduced jacobian requires a mapping.
+    std::map<int,int> jacobianconstraintmap;
+    
+    int jacobianconstraintcount=0;
+    int allcount=0;
     for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();
+        ++allcount;        
         if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
-            count++;
+            jacobianconstraintcount++;
             for (int j=0; j < int(pdiagnoselist.size()); j++) {
-                    J(count-1,j) = (*constr)->grad(pdiagnoselist[j]);
+                    J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
             }
             
             // parallel processing: create tag multiplicity map
@@ -3722,6 +3738,8 @@ int System::diagnose(Algorithm alg)
                 tagmultiplicity[(*constr)->getTag()] = 0;
             else
                 tagmultiplicity[(*constr)->getTag()]++;
+            
+            jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
         }
     }
 
@@ -3745,14 +3763,6 @@ int System::diagnose(Algorithm alg)
 #endif
 
 #ifdef _GCS_DEBUG
-#ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    stream << "GCS::System::diagnose()" << std::endl;
-    stream.flush();
-    stream.close();
-#endif
-
     LogMatrix("J",J);
 #endif
 
@@ -3770,7 +3780,7 @@ int System::diagnose(Algorithm alg)
 
     if(qrAlgorithm==EigenDenseQR){
         if (J.rows() > 0) {
-            qrJT.compute(J.topRows(count).transpose());
+            qrJT.compute(J.topRows(jacobianconstraintcount).transpose());
             //Eigen::MatrixXd Q = qrJT.matrixQ ();
 
             paramsNum = qrJT.rows();
@@ -3793,7 +3803,7 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
         if (SJ.rows() > 0) {
-            SqrJT.compute(SJ.topRows(count).transpose());
+            SqrJT.compute(SJ.topRows(jacobianconstraintcount).transpose());
             // Do not ask for Q Matrix!!
             // At Eigen 3.2 still has a bug that this only works for square matrices
             // if enabled it will crash
@@ -4006,8 +4016,8 @@ int System::diagnose(Algorithm alg)
                         else if(qrAlgorithm==EigenSparseQR)
                             origCol=SqrJT.colsPermutation().indices()[row];
 #endif
-
-                        conflictGroups[j-rank].push_back(clist[origCol]);
+                        //conflictGroups[j-rank].push_back(clist[origCol]);
+                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
                     }
                 }
                 int origCol = 0;
@@ -4019,9 +4029,28 @@ int System::diagnose(Algorithm alg)
                 else if(qrAlgorithm==EigenSparseQR)
                     origCol=SqrJT.colsPermutation().indices()[j];
 #endif
-
-                conflictGroups[j-rank].push_back(clist[origCol]);
+                //conflictGroups[j-rank].push_back(clist[origCol]);
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap[origCol]]);
             }
+            
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+
+        stream.flush();
+
+        stream << "ConflictGroups: [";
+        for(auto group :conflictGroups)  {
+            stream << "[";
+            
+            for(auto c :group)
+                stream << c->getTag();
+            
+            stream << "]";
+        }
+        stream << "]" << std::endl;
+
+        tmp = stream.str();
+        LogString(tmp);        
+#endif
 
             // try to remove the conflicting constraints and solve the
             // system in order to check if the removed constraints were
