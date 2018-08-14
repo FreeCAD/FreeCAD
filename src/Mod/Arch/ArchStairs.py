@@ -160,6 +160,10 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of of flight after landing"))
             obj.Flight = ["Straight","HalfTurnLeft"]
 
+        # Segment properties
+        if not hasattr(obj,"LastSegment"):
+            obj.addProperty("App::PropertyLink","LastSegment","Segment","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
+
         # structural properties
         if not "Landings" in pl:
             obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"))
@@ -208,7 +212,8 @@ class _Stairs(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         base = obj.Base.Shape.copy()
 
-        if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 1):
+        # special case NumberOfSteps = 1 : multi-edges landing
+        if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 0):
             if obj.Base:
                 if not obj.Base.isDerivedFrom("Part::Feature"):
                     return
@@ -225,11 +230,20 @@ class _Stairs(ArchComponent.Component):
                 if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
+
+                      if obj.NumberOfSteps > 1:
+
                         if obj.Landings == "At center":
                             landings = 1
                             self.makeStraightStairsWithLanding(obj,edge)
                         else:
                             self.makeStraightStairs(obj,edge)
+
+                      if obj.NumberOfSteps == 1:
+                            self.makeStraightLanding(obj,edge)
+                      if obj.NumberOfSteps == 0:
+                            pass # Should delete the whole shape
+
                     else:
                         if obj.Landings == "At center":
                             landings = 1
@@ -305,7 +319,12 @@ class _Stairs(ArchComponent.Component):
                 l = obj.Base.Shape.Length
                 if obj.Base.Shape.BoundBox.ZLength:
                     h = obj.Base.Shape.BoundBox.ZLength
-        fLength = float(l-obj.Width.Value)/(numberofsteps-2)
+
+        if obj.LandingDepth:
+            fLength = float(l-obj.LandingDepth.Value)/(numberofsteps-2)
+        else:
+            fLength = float(l-obj.Width.Value)/(numberofsteps-2)
+
         fHeight = float(h)/numberofsteps
         a = math.atan(fHeight/fLength)
         print("landing data:",fLength,":",fHeight)
