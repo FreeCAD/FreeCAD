@@ -145,7 +145,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             traceback.print_exc()
             PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
-    def updateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         self.opSetDefaultValues(obj)
 

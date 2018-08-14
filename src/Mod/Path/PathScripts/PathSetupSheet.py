@@ -81,8 +81,8 @@ class SetupSheet:
 
     DefaultSafeHeightOffset      = '3 mm'
     DefaultClearanceHeightOffset = '5 mm'
-    DefaultSafeHeightExpression      = "StartDepth+${SetupSheet}.SafeHeightOffset"
-    DefaultClearanceHeightExpression = "StartDepth+${SetupSheet}.ClearanceHeightOffset"
+    DefaultSafeHeightExpression      = "OpStockZMax+${SetupSheet}.SafeHeightOffset"
+    DefaultClearanceHeightExpression = "OpStockZMax+${SetupSheet}.ClearanceHeightOffset"
 
     DefaultStartDepthExpression = 'OpStartDepth'
     DefaultFinalDepthExpression = 'OpFinalDepth'
