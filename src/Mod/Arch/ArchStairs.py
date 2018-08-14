@@ -233,7 +233,6 @@ class _Stairs(ArchComponent.Component):
                 if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
-
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps > 1:
 
@@ -255,6 +254,12 @@ class _Stairs(ArchComponent.Component):
                             self.makeCurvedStairsWithLandings(obj,edge)
                         else:
                             self.makeCurvedStairs(obj,edge)
+
+                elif (len(obj.Base.Shape.Edges) >= 1):
+                      if obj.NumberOfSteps == 1:
+                            edges = obj.Base.Shape.Edges
+                            self.makeMultiEdgesLanding(obj,edges)
+
             else:
                 if not obj.Length.Value:
                     return
@@ -304,9 +309,114 @@ class _Stairs(ArchComponent.Component):
             basepoint = basepoint.add(DraftVecUtils.scale(widthvec,-1))
         return basepoint
 
+
+    def makeMultiEdgesLanding(self,obj,edges):
+
+        "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
+
+        import Part,DraftGeomUtils
+
+        v, vLength, vWidth, vBase = [], [], [], []
+        p1o, p2o, p1, p2, p3, p4 = [], [], [], [], [], []
+        outline, outlineP1P2, outlineP3P4 = [], [], []
+
+        enum_edges = enumerate(edges)
+        for i, edge in enum_edges:
+            v.append(DraftGeomUtils.vec(edge))
+            vLength.append(Vector(v[i].x,v[i].y,0))
+            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
+            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),obj.Width.Value))
+            vBase.append(edges[i].Vertexes[0].Point)
+            vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
+
+            # step + structure							# assume all left-align first # no nosing
+            p1o.append(vBase[i].add(Vector(0,0,-abs(obj.TreadThickness.Value))))
+            p2o.append(p1o[i].add(vLength[i]))
+            p1.append(self.align(vBase[i],obj.Align,vWidth[i]).add(Vector(0,0,-abs(obj.TreadThickness.Value))))
+            p2.append(p1[i].add(vLength[i]))
+            p3.append(p2[i].add(vWidth[i]))
+            p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])))
+
+
+            if obj.Align == 'Left':
+                outlineP1P2.append(p1[i])
+                outlineP1P2.append(p2[i])					# can better skip 1 'supposedly' overlapping point every pair?
+                if i > 0:
+                    print ("Debug - intersection calculation")
+                    print (p3[i-1])
+                    print (p4[i-1])
+                    print (p3[i])
+                    print (p4[i])
+                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
+                    print (intersection)
+                    outlineP3P4.insert(0, intersection[0])
+                else:
+                    outlineP3P4.insert(0, p4[i])
+
+            elif obj.Align == 'Right':
+                if i > 0:
+                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
+                    outlineP1P2.append(intersection[0])
+                else:
+                    outlineP1P2.append(p1[i])
+                outlineP3P4.insert(0, p4[i])
+                outlineP3P4.insert(0, p3[i])
+
+            elif obj.Align == 'Center':
+                if i > 0:
+                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
+                    outlineP1P2.append(intersection[0])
+                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
+                    outlineP3P4.insert(0, intersection[0])
+                else:
+                    outlineP1P2.append(p1[i])
+                    outlineP3P4.insert(0, p4[i])
+
+            else:
+                outlineP1P2.append(p1[i])
+                outlineP1P2.append(p2[i])
+                outlineP3P4.insert(0, p4[i])
+                outlineP3P4.insert(0, p3[i])
+
+        # add back last/first 'missing' point(s)
+        if obj.Align in ['Left', 'Center']:
+            outlineP3P4.insert(0, p3[i])
+        if obj.Align in ['Right', 'Center']:
+            outlineP1P2.append(p2[i])
+
+        outline = outlineP1P2 + outlineP3P4
+        outline.append(p1[0])
+        print (outlineP1P2)
+        print (outlineP3P4)
+        print (outline)
+
+        stepFace = Part.Face(Part.makePolygon(outline))
+
+        if obj.TreadThickness.Value:
+            step = stepFace.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
+            self.steps.append(step)
+        else:
+            self.pseudosteps.append(step)
+
+        if obj.StructureThickness.Value:
+            landingFace = stepFace
+            struct = landingFace.extrude(Vector(0,0,-abs(obj.StructureThickness.Value)))
+
+        if struct:
+            self.structures.append(struct)
+
+        obj.AbsTop = vBase[1]
+
+    @staticmethod
+    def vbaseFollowLastSement(obj, vBase):
+        if obj.LastSegment:
+            lastSegmentAbsTop = obj.LastSegment.AbsTop
+            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+        return vBase
+
+
     # Add flag (temporarily?) for indicating which method call this to determine whether the landing has been 're-based' before or not
     def makeStraightLanding(self,obj,edge,numberofsteps=None, callByMakeStraightStairsWithLanding=False):
-
         "builds a landing from a straight edge"
 
         # general data
@@ -320,9 +430,7 @@ class _Stairs(ArchComponent.Component):
 
         # if not call by makeStraightStairsWithLanding() - not 're-base' in function there, then 're-base' here
         if not callByMakeStraightStairsWithLanding:
-            if obj.LastSegment:
-                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
-                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+            vBase = self.vbaseFollowLastSement(obj, vBase)
             obj.AbsTop = vBase
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
@@ -346,6 +454,7 @@ class _Stairs(ArchComponent.Component):
         # step
         p1 = self.align(vBase,obj.Align,vWidth)
         p1o = p1.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+
         p1 = p1.add(vNose).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
         p2 = p1.add(DraftVecUtils.neg(vNose)).add(vLength)
         p3 = p2.add(vWidth)
@@ -355,7 +464,6 @@ class _Stairs(ArchComponent.Component):
         if not callByMakeStraightStairsWithLanding:
             p2o = p2
             p3o = p3
-            #p2o = Vector(p2.x, p2.y, p2.z)
 
         if obj.Flight == "HalfTurnLeft":
             p1 = p1.add(-vWidth)
@@ -493,7 +601,7 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment:
                 print("obj.LastSegment is: " )
                 print(obj.LastSegment.Name)
-                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
+                lastSegmentAbsTop = obj.LastSegment.AbsTop
                 print("lastSegmentAbsTop is: ")
                 print(lastSegmentAbsTop)
                 vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
@@ -623,7 +731,7 @@ class _Stairs(ArchComponent.Component):
         if obj.LastSegment:
                 print("obj.LastSegment is: " )
                 print(obj.LastSegment.Name)
-                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
+                lastSegmentAbsTop = obj.LastSegment.AbsTop
                 print("lastSegmentAbsTop is: ")
                 print(lastSegmentAbsTop)
                 p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
@@ -675,4 +783,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Stairs',_CommandStairs())
-
