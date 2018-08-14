@@ -108,6 +108,11 @@ class ObjectOp(object):
         if 'tooldia' in values:
             obj.addProperty("App::PropertyDistance", "OpToolDiameter", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the diameter of the tool"))
             obj.setEditorMode('OpToolDiameter', 1)  # read-only
+        if 'stockz' in values:
+            obj.addProperty("App::PropertyDistance", "OpStockZMax", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the max Z value of Stock"))
+            obj.setEditorMode('OpStockZMax', 1)  # read-only
+            obj.addProperty("App::PropertyDistance", "OpStockZMin", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the min Z value of Stock"))
+            obj.setEditorMode('OpStockZMin', 1)  # read-only
 
     def __init__(self, obj):
         PathLog.track()
@@ -138,6 +143,8 @@ class ObjectOp(object):
             # StartDepth has become necessary for expressions on other properties
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth internal use only for derived values"))
             obj.setEditorMode('StartDepth', 1)  # read-only
+
+        self.addOpValues(obj, ['stockz'])
 
         if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"))
@@ -185,6 +192,11 @@ class ObjectOp(object):
 
         if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
             self.addOpValues(obj, ['start', 'final'])
+            if FeatureNoFinalDepth & features:
+                obj.setEditorMode('OpFinalDepth', 2)
+
+        if not hasattr(obj, 'OpStockZMax'):
+            self.addOpValues(obj, ['stockz'])
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -354,6 +366,9 @@ class ObjectOp(object):
         stockBB = self.stock.Shape.BoundBox
         zmin = stockBB.ZMin
         zmax = stockBB.ZMax
+
+        obj.OpStockZMin = zmin
+        obj.OpStockZMax = zmax
 
         if hasattr(obj, 'Base') and obj.Base:
             for base, sublist in obj.Base:
