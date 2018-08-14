@@ -27,6 +27,7 @@
 # include <QApplication>
 # include <QDateTime>
 # include <QMessageBox>
+# include <QProgressDialog>
 # ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
@@ -114,6 +115,9 @@ bool WaitCursorP::isModalDialog(QObject* o) const
     while (parent) {
         QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
         if (dlg && dlg->isModal())
+            return true;
+        QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+        if (pd)
             return true;
         parent = parent->parentWidget();
     }
