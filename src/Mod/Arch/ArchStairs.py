@@ -163,6 +163,9 @@ class _Stairs(ArchComponent.Component):
         # Segment properties
         if not hasattr(obj,"LastSegment"):
             obj.addProperty("App::PropertyLink","LastSegment","Segment","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
+        if not hasattr(obj,"AbsTop"):
+            obj.addProperty("App::PropertyVector","AbsTop","Segment",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to "))
+            obj.setEditorMode("AbsTop",1)
 
         # structural properties
         if not "Landings" in pl:
@@ -231,6 +234,7 @@ class _Stairs(ArchComponent.Component):
                     edge = obj.Base.Shape.Edges[0]
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
 
+                      # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps > 1:
 
                         if obj.Landings == "At center":
@@ -239,6 +243,7 @@ class _Stairs(ArchComponent.Component):
                         else:
                             self.makeStraightStairs(obj,edge)
 
+                      # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps == 1:
                             self.makeStraightLanding(obj,edge)
                       if obj.NumberOfSteps == 0:
@@ -299,7 +304,8 @@ class _Stairs(ArchComponent.Component):
             basepoint = basepoint.add(DraftVecUtils.scale(widthvec,-1))
         return basepoint
 
-    def makeStraightLanding(self,obj,edge,numberofsteps=None):
+    # Add flag (temporarily?) for indicating which method call this to determine whether the landing has been 're-based' before or not
+    def makeStraightLanding(self,obj,edge,numberofsteps=None, callByMakeStraightStairsWithLanding=False):
 
         "builds a landing from a straight edge"
 
@@ -311,6 +317,14 @@ class _Stairs(ArchComponent.Component):
         vLength = Vector(v.x,v.y,0)
         vWidth = vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         vBase = edge.Vertexes[0].Point
+
+        # if not call by makeStraightStairsWithLanding() - not 're-base' in function there, then 're-base' here
+        if not callByMakeStraightStairsWithLanding:
+            if obj.LastSegment:
+                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
+                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+            obj.AbsTop = vBase
+
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         h = obj.Height.Value
         l = obj.Length.Value
@@ -331,10 +345,18 @@ class _Stairs(ArchComponent.Component):
 
         # step
         p1 = self.align(vBase,obj.Align,vWidth)
+        p1o = p1.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
         p1 = p1.add(vNose).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
         p2 = p1.add(DraftVecUtils.neg(vNose)).add(vLength)
         p3 = p2.add(vWidth)
         p4 = p3.add(DraftVecUtils.neg(vLength)).add(vNose)
+
+        p4o = p3.add(DraftVecUtils.neg(vLength))
+        if not callByMakeStraightStairsWithLanding:
+            p2o = p2
+            p3o = p3
+            #p2o = Vector(p2.x, p2.y, p2.z)
+
         if obj.Flight == "HalfTurnLeft":
             p1 = p1.add(-vWidth)
             p2 = p2.add(-vWidth)
@@ -426,6 +448,14 @@ class _Stairs(ArchComponent.Component):
                     s1 = pol.extrude(evec)
                     s2 = pol2.extrude(evec.negative())
                     struct = Part.makeCompound([s1,s2])
+
+        # Overwriting result of above functions if case fit - should better avoid running the above in first place (better rewrite later)
+        if not callByMakeStraightStairsWithLanding:
+            if obj.StructureThickness.Value:
+                struct = None
+                landingFace = Part.Face(Part.makePolygon([p1o,p2o,p3o,p4o,p1o]))
+                struct = landingFace.extrude(Vector(0,0,-abs(obj.StructureThickness.Value)))
+
         if struct:
             self.structures.append(struct)
 
@@ -442,6 +472,12 @@ class _Stairs(ArchComponent.Component):
         import Part,DraftGeomUtils
         if not numberofsteps:
             numberofsteps = obj.NumberOfSteps
+            # if not numberofsteps - not call by makeStraightStairsWithLanding()
+            # if not 're-base' there (StraightStair is part of StraightStairsWithLanding 'flight'), then 're-base' here (StraightStair is individual 'flight')
+            callByMakeStraightStairsWithLanding = False
+        else:
+            callByMakeStraightStairsWithLanding = True
+
         v = DraftGeomUtils.vec(edge)
         vLength = DraftVecUtils.scaleTo(v,float(edge.Length)/(numberofsteps-1))
         vLength = Vector(vLength.x,vLength.y,0)
@@ -452,9 +488,19 @@ class _Stairs(ArchComponent.Component):
         vHeight = Vector(0,0,float(h)/numberofsteps)
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         vBase = edge.Vertexes[0].Point
+
+        if not callByMakeStraightStairsWithLanding:
+            if obj.LastSegment:
+                print("obj.LastSegment is: " )
+                print(obj.LastSegment.Name)
+                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
+                print("lastSegmentAbsTop is: ")
+                print(lastSegmentAbsTop)
+                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+            obj.AbsTop = vBase.add(Vector(0,0,h))
+
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         a = math.atan(vHeight.Length/vLength.Length)
-        #print("stair data:",vLength.Length,":",vHeight.Length)
 
         # steps
         for i in range(numberofsteps-1):
@@ -573,6 +619,17 @@ class _Stairs(ArchComponent.Component):
             h = obj.Height.Value
         hstep = h/obj.NumberOfSteps
         landing = int(obj.NumberOfSteps/2)
+
+        if obj.LastSegment:
+                print("obj.LastSegment is: " )
+                print(obj.LastSegment.Name)
+                lastSegmentAbsTop = obj.LastSegment.AbsTop #obj.LastSegment.Proxy.AbsTop
+                print("lastSegmentAbsTop is: ")
+                print(lastSegmentAbsTop)
+                p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+                print(p1)
+        obj.AbsTop = p1.add(Vector(0,0,h))
+
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
         if obj.LandingDepth:
             p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
@@ -584,7 +641,9 @@ class _Stairs(ArchComponent.Component):
         else:
             p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
         self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
-        self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape())
+
+        self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
+
         if obj.Flight == "HalfTurnLeft":
             self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
         else:
@@ -616,3 +675,4 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Stairs',_CommandStairs())
+
