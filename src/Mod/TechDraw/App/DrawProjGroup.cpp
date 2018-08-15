@@ -116,6 +116,9 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         if (prop == &Scale) {
             updateChildren();
         }
+        if (prop == &Source) {
+            updateChildrenSource();
+        }
         
         if (prop == &ScaleType) {
             double newScale = getScale();
@@ -719,6 +722,24 @@ void DrawProjGroup::updateChildren(void)
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
             view->Scale.setValue(Scale.getValue());
+        }
+    }
+}
+
+//void DrawProjGroup::updateChildren(const App::Property* prop)
+//{
+//    view->....setValue(s)(prop->getValue(s));
+//}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed Source
+ */
+void DrawProjGroup::updateChildrenSource(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
+            view->Source.setValues(Source.getValues());
         }
     }
 }
