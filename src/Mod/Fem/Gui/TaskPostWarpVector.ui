@@ -69,6 +69,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
        <property name="maximum">
         <double>99999.000000000000000</double>
        </property>
@@ -119,8 +122,11 @@
          <height>0</height>
         </size>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
        <property name="maximum">
-        <double>99999.000000000000000</double>
+        <double>1000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -152,6 +158,12 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>9999999.000000000000000</double>
        </property>
       </widget>
      </item>
