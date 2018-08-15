@@ -1006,36 +1006,51 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
 
 //############################################################################################
 // warp filter
+// spinbox min, slider, spinbox max
+// spinbox warp factor
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent) :
     TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-filter-warp"), tr("Warp options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
 
-    //we load the views widget
+    // we load the views widget
     proxy = new QWidget(this);
     ui = new Ui_TaskPostWarpVector();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    //load the default values
+    // load the default values for warp display
     updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
+    double warp_factor = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.getValue(); // get the standard warp factor
 
-    double value = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.getValue();
-        //don't forget to sync the slider
+    // set spinbox warp_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value);
+    ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
+
+    // set min and max, don't forget to sync the slider
+    // TODO if warp is set to standard 1.0, find a smarter way for standard min, max and warp_factor
+    // may be depend on grid boundbox and min max vector values
     ui->Max->blockSignals(true);
-    ui->Max->setValue( value==0 ? 1 : value * 10.);
+    ui->Max->setValue( warp_factor==0 ? 1 : warp_factor * 10.);
     ui->Max->blockSignals(false);
     ui->Min->blockSignals(true);
-    ui->Min->setValue( value==0 ? 0 : value / 10.);
+    ui->Min->setValue( warp_factor==0 ? 0 : warp_factor / 10.);
     ui->Min->blockSignals(false);
+
+    // sync slider
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((value - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    // slider min = 0%, slider max = 100%
+    //
+    //                 ( warp_factor - min )
+    // slider_value = ----------------------- x 100
+    //                     ( max - min )
+    //
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
+    Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 TaskPostWarpVector::~TaskPostWarpVector() {
@@ -1047,45 +1062,62 @@ void TaskPostWarpVector::applyPythonCode() {
 }
 
 void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx) {
+    // combobox to choose the result to warp
 
     static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Vector.setValue(idx);
     recompute();
 }
 
-void TaskPostWarpVector::on_Slider_valueChanged(int v) {
+void TaskPostWarpVector::on_Slider_valueChanged(int slider_value) {
+    // slider changed, change warp factor and sync spinbox
 
-    double val = ui->Min->value() + (ui->Max->value()-ui->Min->value())/100.*v;
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(val);
+    //
+    //                                       ( max - min )
+    // warp_factor = min + ( slider_value x --------------- )
+    //                                            100
+    //
+    double warp_factor = ui->Min->value() + (( ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
 
-    //don't forget to sync the spinbox
+    // sync the spinbox
     ui->Value->blockSignals(true);
-    ui->Value->setValue( val );
+    ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-void TaskPostWarpVector::on_Value_valueChanged(double v) {
+void TaskPostWarpVector::on_Value_valueChanged(double warp_factor) {
+    // spinbox changed, change warp factor and sync slider
 
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(v);
+    // TODO warp factor should not be smaller than min and greater than max
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
 
-    //don't forget to sync the slider
+    // sync the slider, see above for formula
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue(int((v - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.));
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::on_Max_valueChanged(double) {
 
+    // TODO max should be greater than min
+    // TODO if warp factor is greater than max, warp factor should be max, don't forget to sync 
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 }
 
 void TaskPostWarpVector::on_Min_valueChanged(double) {
 
+    // TODO min should be smaller than max
+    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync 
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 }
 
