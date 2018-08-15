@@ -246,6 +246,7 @@ protected:
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
+    void slotTransactionDone (const App::Document &doc);
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
@@ -262,6 +263,7 @@ private:
     const char *treeName; // for debugging purpose
     const Gui::Document* pDocument;
     std::map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
+    std::vector<long> TransactingObjects;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectNewObject;
@@ -275,6 +277,8 @@ private:
     Connection connectExpObject;
     Connection connectScrObject;
     Connection connectRecomputed;
+    Connection connectUndo;
+    Connection connectRedo;
 
     friend class TreeWidget;
 };

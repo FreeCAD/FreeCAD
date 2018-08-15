@@ -1658,7 +1658,10 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
     connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
-    connectRecomputed = doc->getDocument()->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
+    auto adoc = doc->getDocument();
+    connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
+    connectUndo = adoc->signalUndo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
+    connectRedo = adoc->signalRedo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 
@@ -1678,6 +1681,8 @@ DocumentItem::~DocumentItem()
     connectExpObject.disconnect();
     connectScrObject.disconnect();
     connectRecomputed.disconnect();
+    connectUndo.disconnect();
+    connectRedo.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() const{
@@ -1732,7 +1737,27 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 }
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
-    createNewItem(obj);
+    if(pDocument->getDocument()->isPerformingTransaction()) {
+        // We have to delay item creation until undo/redo is done, because the
+        // object re-creation while in transaction may break tree view item
+        // update logic. For example, a parent object re-created before its
+        // children, but the parent's link property already contains all the
+        // (detached) children.
+        TransactingObjects.push_back(obj.getObject()->getID());
+    }else
+        createNewItem(obj);
+}
+
+void DocumentItem::slotTransactionDone(const App::Document& doc) {
+    for(auto id : TransactingObjects) {
+        auto obj = doc.getObjectByID(id);
+        if(!obj || ObjectMap.find(obj)!=ObjectMap.end())
+            continue;
+        auto vpd = dynamic_cast<ViewProviderDocumentObject*>(pDocument->getViewProvider(obj));
+        if(vpd)
+            createNewItem(*vpd);
+    }
+    TransactingObjects.clear();
 }
 
 bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
