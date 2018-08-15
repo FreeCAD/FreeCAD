@@ -1140,7 +1140,7 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, RenderFunc rend
         auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
         if(!ctx2 || !ctx2->hideAll) {
             auto state = action->getState();
-            auto ctx = getRenderContext<SelContext>(this);
+            SelContextPtr ctx = getRenderContext<SelContext>(this);
             bool colorPushed = false;
             if(!ShapeColorNode && overrideColor && 
                !SoOverrideElement::getDiffuseColorOverride(state) &&
@@ -1456,7 +1456,7 @@ void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
 
 void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
-    if(!path)
+    if(!path || path->getLength()!=pathLength)
         return;
 
     SoState * state = action->getState();
@@ -1494,12 +1494,14 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
     if(path) {
         path->unref();
         removeAllChildren();
+        path = 0;
     }
     if(!newPath || !newPath->getLength())
         return;
 
     path = newPath->copy();
     path->ref();
+    pathLength = path->getLength();
     addChild(path->getNode(0));
 }
 
