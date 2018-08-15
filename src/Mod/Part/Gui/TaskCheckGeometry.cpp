@@ -611,7 +611,9 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
+#if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetProgressIndicator(theProgress);
+#endif
 //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
