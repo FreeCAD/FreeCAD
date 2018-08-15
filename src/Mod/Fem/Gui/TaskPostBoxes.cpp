@@ -1090,7 +1090,7 @@ void TaskPostWarpVector::on_Slider_valueChanged(int slider_value) {
 void TaskPostWarpVector::on_Value_valueChanged(double warp_factor) {
     // spinbox changed, change warp factor and sync slider
 
-    // TODO warp factor should not be smaller than min and greater than max
+    // TODO warp factor should not be smaller than min and greater than max, but problems on automate change of warp_factor, see on_Max_valueChanged
 
     static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
@@ -1105,11 +1105,33 @@ void TaskPostWarpVector::on_Value_valueChanged(double warp_factor) {
 
 void TaskPostWarpVector::on_Max_valueChanged(double) {
 
-    // TODO max should be greater than min
-    // TODO if warp factor is greater than max, warp factor should be max, don't forget to sync 
+    // TODO max should be greater than min, see a few lines later on problem on input characters
     ui->Slider->blockSignals(true);
     ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
+
+    /* 
+     * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
+     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input one character of his 4000
+     * I do not know how to solve this, but the code to set slider and spinbox is fine thus I leave it ... 
+    // set warp factor to max, if warp factor > max
+    if (ui->Value->value() > ui->Max->value()) {
+        double warp_factor = ui->Max->value();
+        static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
+        recompute();
+
+        // sync the slider, see above for formula
+        ui->Slider->blockSignals(true);
+        int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+        ui->Slider->setValue(slider_value);
+        ui->Slider->blockSignals(false);
+        // sync the spinbox, see above for formula
+        ui->Value->blockSignals(true);
+        ui->Value->setValue(warp_factor);
+        ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    }
+    */
 }
 
 void TaskPostWarpVector::on_Min_valueChanged(double) {
