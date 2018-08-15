@@ -77,6 +77,7 @@
 #include <QtOpenGL.h>
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
@@ -438,7 +439,8 @@ bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
 bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det, 
         ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z) 
 {
-    setPreSelection = true;
+    Base::FlagToggler<SbBool> flag(setPreSelection);
+
     bool highlighted = false;
     if(path && path->getLength() && 
        vpd && vpd->getObject() && vpd->getObject()->getNameInDocument()) 
@@ -456,8 +458,12 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 
-        if (Gui::Selection().setPreselect(docname,objname,element,x,y,z)) {
-            if (currenthighlight && *currenthighlight!=*path) {
+        int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
+        if(ret<0 && currenthighlight)
+            return true;
+
+        if(ret) {
+            if (currenthighlight) {
                 SoHighlightElementAction action;
                 action.setHighlighted(false);
                 action.apply(currenthighlight);
@@ -483,7 +489,6 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         }
         this->touch();
     }
-    setPreSelection = false;
     return highlighted;
 }
 

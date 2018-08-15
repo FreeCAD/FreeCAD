@@ -637,27 +637,27 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, int signal)
+int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, int signal)
 {
     if(!pDocName || !pObjectName) {
         rmvPreselect();
-        return false;
+        return 0;
     }
     if(!pSubName) pSubName = "";
 
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName)
-        return true;
+        return -1;
 
     rmvPreselect();
 
     if (ActiveGate && signal!=1) {
         App::Document* pDoc = getDocument(pDocName);
         if (!pDoc || !pObjectName) 
-            return false;
+            return 0;
         std::pair<std::string,std::string> elementName;
         auto pObject = pDoc->getObject(pObjectName);
         if(!pObject)
-            return false;
+            return 0;
 
         const char *subelement = pSubName;
         if(gateResolve) {
@@ -665,7 +665,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             auto &oldElementName = elementName.second;
             pObject = App::GeoFeature::resolveElement(pObject,pSubName,elementName);
             if (!pObject)
-                return false;
+                return 0;
             if(gateResolve > 1)
                 subelement = newElementName.size()?newElementName.c_str():oldElementName.c_str();
             else
@@ -690,7 +690,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                 Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                 mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
             }
-            return false;
+            return 0;
         }
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         mdi->restoreOverrideCursor();
@@ -720,7 +720,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     }
 
     // allows the preselection
-    return true;
+    return 1;
 }
 
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
