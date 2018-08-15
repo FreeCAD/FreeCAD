@@ -3399,6 +3399,25 @@ void Document::removeObject(const char* sName)
 
     _checkTransaction(pos->second,0,__LINE__);
 
+    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
+        // Preserve link group sub object global visibilities. Normally those
+        // claimed object should be hidden in global coordinate space. However,
+        // when the group is deleted, the user will naturally try to show the
+        // children, which may now in the global space. When the parent is
+        // undeleted, having its children shown in both the local and global
+        // coordinate space is very confusing. Hence, we preserve the visibility
+        // here
+        for(auto &sub : pos->second->getSubObjects()) {
+            if(sub.empty())
+                continue;
+            if(sub[sub.size()-1]!='.')
+                sub += '.';
+            auto sobj = pos->second->getSubObject(sub.c_str());
+            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
+                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
+        }
+    }
+
     if (d->activeObject == pos->second)
         d->activeObject = 0;
 
@@ -3483,6 +3502,19 @@ void Document::_removeObject(DocumentObject* pcObject)
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
+    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
+        // Preserve link group children global visibility. See comments in
+        // removeObject() for more details.
+        for(auto &sub : pos->second->getSubObjects()) {
+            if(sub.empty())
+                continue;
+            if(sub[sub.size()-1]!='.')
+                sub += '.';
+            auto sobj = pos->second->getSubObject(sub.c_str());
+            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
+                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
+        }
+    }
 
     if (d->activeObject == pcObject)
         d->activeObject = 0;
