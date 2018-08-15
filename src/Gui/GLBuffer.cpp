@@ -27,16 +27,14 @@
 #define GL_GLEXT_PROTOTYPES
 #endif
 
-#ifndef _PreComp_
-# ifdef FC_OS_MACOSX
+#ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
 # include <OpenGL/glext.h>
-# else
+#else
 # include <GL/gl.h>
 # include <GL/glu.h>
 # include <GL/glext.h>
-# endif
 #endif
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
