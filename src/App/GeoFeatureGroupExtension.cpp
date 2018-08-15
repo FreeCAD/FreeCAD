@@ -390,7 +390,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
                 const char *next = strchr(dot,'.');
                 if(next) {
                     App::DocumentObject *nret=0;
-                    extensionGetSubObject(nret,dot,pyObj,mat,true,depth+1);
+                    extensionGetSubObject(nret,dot,pyObj,mat,transform,depth+1);
                     if(nret) {
                         ret = nret;
                         return true;
