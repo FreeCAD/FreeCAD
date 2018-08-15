@@ -507,14 +507,26 @@ bool MeshRenderer::canRenderGLArray(SoGLRenderAction *action) const
 
 bool MeshRenderer::matchMaterial(SoState* state) const
 {
+    // FIXME: There is sometimes a minor problem that in wireframe
+    // mode the colors do not match. The steps to reproduce
+    // * set mesh to shaded mode
+    // * open function to remove components and select an area
+    // * set to wireframe mode
+    // => the material of the shaded mode instead of that of the
+    // wireframe mode
     SoMaterialBindingElement::Binding matbind =
         SoMaterialBindingElement::get(state);
+    if (p->matbinding != matbind)
+        return false;
+    // the buffer doesn't contain color information
+    if (matbind == SoMaterialBindingElement::OVERALL)
+        return true;
     const SbColor * pcolors = 0;
     SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
     if (gl) {
         pcolors = gl->getDiffusePointer();
     }
-    return p->matbinding == matbind && p->pcolors == pcolors;
+    return p->pcolors == pcolors;
 }
 
 bool MeshRenderer::shouldRenderDirectly(bool direct)
@@ -596,26 +608,57 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
+#if defined(RENDER_GL_VAO)
+    SoState * state = action->getState();
+
+    // get the VBO status of the viewer
+    SbBool useVBO = true;
+    //Gui::SoGLVBOActivatedElement::get(state, useVBO);
+
+    // Check for a matching OpenGL context
+    if (!render.canRenderGLArray(action))
+        useVBO = false;
+
+    // use VBO for fast rendering if possible
+    if (useVBO) {
+        if (updateGLArray.getValue()) {
+            updateGLArray = false;
+            generateGLArrays(action);
+        }
+
+        if (render.matchMaterial(state)) {
+            SoMaterialBundle mb(action);
+            mb.sendFirst();
+            render.renderFacesGLArray(action);
+        }
+        else {
+            drawFaces(action);
+        }
+    }
+    else {
+        drawFaces(action);
+    }
+#else
+    drawFaces(action);
+#endif
+}
+
+void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
+{
     SoState * state = action->getState();
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
 
-#if defined(RENDER_GL_VAO)
-    if (mode == false || render.matchMaterial(state)) {
-#else
     unsigned int num = this->coordIndex.getNum()/4;
     if (mode == false || num <= this->renderTriangleLimit) {
-#endif
-#if defined (RENDER_GLARRAYS) || defined(RENDER_GL_VAO)
-
-        SbBool matchCtx = render.canRenderGLArray(action);
-#if 0
+#ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
 
+        SbBool matchCtx = render.canRenderGLArray(action);
         if (matbind == SoMaterialBindingElement::OVERALL && matchCtx) {
             SoMaterialBundle mb(action);
             mb.sendFirst();
-            if (updateGLArray) {
+            if (updateGLArray.getValue()) {
                 updateGLArray = false;
                 generateGLArrays(action);
             }
@@ -624,27 +667,6 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         else {
             inherited::GLRender(action);
         }
-#else
-        // get the VBO status of the viewer
-        SbBool hasVBO = true;
-        //Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-        if (!matchCtx)
-            hasVBO = false;
-
-        if (hasVBO && updateGLArray.getValue()) {
-            updateGLArray = false;
-            generateGLArrays(action);
-        }
-
-        if (hasVBO && render.matchMaterial(state)) {
-            SoMaterialBundle mb(action);
-            mb.sendFirst();
-            render.renderFacesGLArray(action);
-        }
-        else {
-            inherited::GLRender(action);
-        }
-#endif
 #else
         inherited::GLRender(action);
 #endif
