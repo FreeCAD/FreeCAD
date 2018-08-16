@@ -73,10 +73,8 @@ bool OpenGLBuffer::create()
 {
     if (bufferId > 0)
         return true;
-#ifdef FC_OS_WIN32
-    PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
-    glGenBuffersARB(1, &bufferId);
+
+    cc_glglue_glGenBuffers(glue, 1, &bufferId);
     context = currentContext;
     return true;
 }
@@ -99,10 +97,7 @@ void OpenGLBuffer::destroy()
 void OpenGLBuffer::allocate(const void *data, int count)
 {
     if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-        PFNGLBUFFERDATAPROC glBufferDataARB = (PFNGLBUFFERDATAPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
-        glBufferDataARB(target, count, data, GL_STATIC_DRAW);
+        cc_glglue_glBufferData(glue, target, count, data, GL_STATIC_DRAW);
     }
 }
 
@@ -114,10 +109,8 @@ bool OpenGLBuffer::bind()
                                       "buffer not created");
             return false;
         }
-#ifdef FC_OS_WIN32
-        PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-        glBindBufferARB(target, bufferId);
+
+        cc_glglue_glBindBuffer(glue, target, bufferId);
         return true;
     }
     return false;
@@ -126,10 +119,7 @@ bool OpenGLBuffer::bind()
 void OpenGLBuffer::release()
 {
     if (bufferId) {
-#ifdef FC_OS_WIN32
-        PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-        glBindBufferARB(target, 0);
+        cc_glglue_glBindBuffer(glue, target, 0);
     }
 }
 
@@ -147,10 +137,7 @@ int OpenGLBuffer::size() const
 {
     GLint value = -1;
     if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-        PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(glue, "glGetBufferParameterivARB");
-#endif
-        glGetBufferParameteriv(target, GL_BUFFER_SIZE, &value);
+        cc_glglue_glGetBufferParameteriv(glue, target, GL_BUFFER_SIZE, &value);
     }
     return value;
 }
@@ -160,13 +147,9 @@ void OpenGLBuffer::context_destruction_cb(uint32_t context, void * userdata)
     OpenGLBuffer * self = static_cast<OpenGLBuffer*>(userdata);
 
     if (self->context == context && self->bufferId) {
-#ifdef FC_OS_WIN32
         const cc_glglue * glue = cc_glglue_instance((int) context);
-        PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-#endif
-
         GLuint buffer = self->bufferId;
-        glDeleteBuffersARB(1, &buffer);
+        cc_glglue_glDeleteBuffers(glue, 1, &buffer);
         self->context = -1;
         self->bufferId = 0;
     }
