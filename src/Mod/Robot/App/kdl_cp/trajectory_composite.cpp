@@ -93,7 +93,8 @@ namespace KDL {
         vt.insert(vt.end(),elem);
         duration += elem->Duration();
         vd.insert(vd.end(),duration);
-        path->Add(elem->GetPath(),false); // FreeCAD change
+        if (path)
+            path->Add(elem->GetPath(),false); // FreeCAD change
     }
 
     void Trajectory_Composite::Destroy() {
@@ -105,6 +106,7 @@ namespace KDL {
         vd.erase(vd.begin(),vd.end());
         
         delete path; // FreeCAD change
+        path = nullptr; // FreeCAD change
     }
 
     Trajectory_Composite::~Trajectory_Composite() {
