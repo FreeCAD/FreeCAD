@@ -83,7 +83,7 @@ def createResourceClone(obj, orig, name, icon):
     clone.addProperty('App::PropertyString', 'PathResource')
     clone.PathResource = name
     if clone.ViewObject:
-        PathIconViewProvider.ViewProvider(clone.ViewObject, icon)
+        PathIconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
     obj.Document.recompute() # necessary to create the clone shape
     return clone
@@ -144,7 +144,7 @@ class ObjectJob:
             obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'SetupSheet holding the settings for this job'))
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
-                PathIconViewProvider.ViewProvider(obj.SetupSheet.ViewObject, 'SetupSheet')
+                PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
 
     def onDelete(self, obj, arg2=None):

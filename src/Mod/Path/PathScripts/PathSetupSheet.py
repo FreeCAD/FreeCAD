@@ -207,7 +207,7 @@ class SetupSheet:
         return _traverseTemplateAttributes(attrs, self.decodeAttributeString)
 
 
-def Create(name='SetupSheet'):
+def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
     proxy = SetupSheet(obj)
     return obj

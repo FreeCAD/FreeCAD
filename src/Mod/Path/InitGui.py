@@ -95,6 +95,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileEdgesGui
         from PathScripts import PathProfileFacesGui
         from PathScripts import PathSanity
+        from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathStop
         from PathScripts import PathSurfaceGui
