@@ -108,11 +108,15 @@ class _CommandStairs:
         # a list of 'segment' / 'flight' of stairs
         stairs = []
         additions = []
+        lenSelection = len(FreeCADGui.Selection.getSelection())
 
-        if len(FreeCADGui.Selection.getSelection()) > 0:
-            if len(FreeCADGui.Selection.getSelection()) > 1:
+        if lenSelection > 0:
+            if lenSelection > 1:
                 stairs.append(makeStairs(None, None, None, None, None))
-            i = 1
+                i = 1
+            else:
+                i = 0
+
             for obj in FreeCADGui.Selection.getSelection():
                 print (obj.Name)
                 if (len(obj.Shape.Edges) > 1):
@@ -120,17 +124,14 @@ class _CommandStairs:
                 else:
                     stairs.append(makeStairs(obj, None, None, None, 16))
                 if i > 1:
-                    print(stairs[i].Name)
                     additions.append(stairs[i])
-                    print(" i > 2 ")
-                    print(stairs[i].Name)
                     stairs[i].LastSegment = stairs[i-1]
                 else:
                     if len(stairs) > 1:						# i.e. length >1, have a 'master' staircase created
                         stairs[0].Base = stairs[i]
                 i += 1
             print(stairs)
-            if len(FreeCADGui.Selection.getSelection()) > 1:
+            if lenSelection > 1:
                 stairs[0].Additions = additions
 
         else:
