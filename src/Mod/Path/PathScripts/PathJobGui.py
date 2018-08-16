@@ -38,6 +38,7 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import sys
+import traceback
 
 from PySide import QtCore, QtGui
 from pivy import coin
@@ -1032,7 +1033,8 @@ def Create(base, template=None):
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except:
+    except Exception as exc:
         PathLog.error(sys.exc_info())
+        #traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
 
