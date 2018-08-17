@@ -141,7 +141,7 @@ PyMethodDef PyObjectBase::Methods[] = {
 
 PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 {
-    char *attr;
+    const char *attr;
 #if PY_MAJOR_VERSION >= 3
     attr = PyUnicode_AsUTF8(attro);
 #else
@@ -195,7 +195,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 
 int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
-    char *attr;
+    const char *attr;
 #if PY_MAJOR_VERSION >= 3
     attr = PyUnicode_AsUTF8(attro);
 #else
@@ -236,7 +236,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 /*------------------------------
  * PyObjectBase attributes	-- attributes
 ------------------------------*/
-PyObject *PyObjectBase::_getattr(char *attr)
+PyObject *PyObjectBase::_getattr(const char *attr)
 {
     if (streq(attr, "__class__")) {
         // Note: We must return the type object here, 
@@ -279,7 +279,7 @@ PyObject *PyObjectBase::_getattr(char *attr)
     }
 }
 
-int PyObjectBase::_setattr(char *attr, PyObject *value)
+int PyObjectBase::_setattr(const char *attr, PyObject *value)
 {
     if (streq(attr,"softspace"))
         return -1; // filter out softspace

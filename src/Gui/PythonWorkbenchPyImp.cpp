@@ -64,7 +64,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pPath, j);
                 if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                    char* pItem = PyUnicode_AsUTF8(item);
+                    const char* pItem = PyUnicode_AsUTF8(item);
                     path.push_back(pItem);
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
@@ -81,7 +81,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
             }
         } else if (PyUnicode_Check(pPath)) {
 #if PY_MAJOR_VERSION >= 3
-            char* pItem = PyUnicode_AsUTF8(pPath);
+            const char* pItem = PyUnicode_AsUTF8(pPath);
             path.push_back(pItem);
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pPath, "utf-8", 0);
@@ -106,7 +106,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pItems, i);
                 if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                    char* pItem = PyUnicode_AsUTF8(item);
+                    const char* pItem = PyUnicode_AsUTF8(item);
                     items.push_back(pItem);
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
@@ -123,7 +123,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
             }
         } else if (PyUnicode_Check(pItems)) {
 #if PY_MAJOR_VERSION >= 3
-            char* pItem = PyUnicode_AsUTF8(pItems);
+            const char* pItem = PyUnicode_AsUTF8(pItems);
             items.push_back(pItem);
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pItems, "utf-8", 0);
@@ -199,7 +199,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pPath, j);
                 if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                    char* pItem = PyUnicode_AsUTF8(item);
+                    const char* pItem = PyUnicode_AsUTF8(item);
                     path.push_back(pItem);
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
@@ -216,7 +216,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
             }
         } else if (PyUnicode_Check(pPath)) {
 #if PY_MAJOR_VERSION >= 3
-            char* pItem = PyUnicode_AsUTF8(pPath);
+            const char* pItem = PyUnicode_AsUTF8(pPath);
             path.push_back(pItem);
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pPath, "utf-8", 0);
@@ -241,7 +241,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pItems, i);
                 if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                    char* pItem = PyUnicode_AsUTF8(item);
+                    const char* pItem = PyUnicode_AsUTF8(item);
                     items.push_back(pItem);
 #else
                     PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
@@ -258,7 +258,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
             }
         } else if (PyUnicode_Check(pItems)) {
 #if PY_MAJOR_VERSION >= 3
-            char* pItem = PyUnicode_AsUTF8(pItems);
+            const char* pItem = PyUnicode_AsUTF8(pItems);
             items.push_back(pItem);
 #else
             PyObject* unicode = PyUnicode_AsEncodedString(pItems, "utf-8", 0);
@@ -313,7 +313,7 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
             PyObject* item = PyList_GetItem(pObject, i);
             if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                char* pItem = PyUnicode_AsUTF8(item);
+                const char* pItem = PyUnicode_AsUTF8(item);
                 items.push_back(pItem);
 #else
                 PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);
@@ -389,7 +389,7 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
             PyObject* item = PyList_GetItem(pObject, i);
             if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                char* pItem = PyUnicode_AsUTF8(item);
+                const char* pItem = PyUnicode_AsUTF8(item);
                 items.push_back(pItem);
 #else
                 PyObject* unicode = PyUnicode_AsEncodedString(item, "utf-8", 0);

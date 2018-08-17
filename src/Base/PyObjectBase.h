@@ -231,7 +231,7 @@ public:
      *  need to call the method of the base class! Otherwise even the 
      *  methods of the object will disappear!
      */
-    virtual PyObject *_getattr(char *attr);
+    virtual PyObject *_getattr(const char *attr);
     /// static wrapper for pythons _getattro()
     static  PyObject *__getattro(PyObject * PyObj, PyObject *attro);
 
@@ -241,7 +241,7 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      */
-    virtual int _setattr(char *attro, PyObject *value);    // _setattr method
+    virtual int _setattr(const char *attro, PyObject *value);    // _setattr method
     /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 
