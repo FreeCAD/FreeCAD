@@ -1437,7 +1437,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 #endif
                 continue;
 #if PY_MAJOR_VERSION >= 3
-            char* pItem = PyUnicode_AsUTF8(item);
+            const char* pItem = PyUnicode_AsUTF8(item);
 #else
             char* pItem = PyString_AsString(item);
 #endif
