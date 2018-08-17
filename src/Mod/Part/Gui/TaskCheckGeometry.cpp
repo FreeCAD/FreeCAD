@@ -420,7 +420,9 @@ void TaskCheckGeometryResults::goCheck()
 
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
+#if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
+#endif
 
     selectedCount = static_cast<int>(selection.size());
     for (it = selection.begin(); it != selection.end(); ++it)
@@ -613,6 +615,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPAlgo_ArgumentAnalyzer BOPCheck;
 #if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetProgressIndicator(theProgress);
+#else
+  Q_UNUSED(theProgress);
 #endif
 //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
