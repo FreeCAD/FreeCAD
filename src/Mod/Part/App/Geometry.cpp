@@ -134,6 +134,7 @@
 #include <Base/Tools.h>
 
 #include <ctime>
+#include <cmath>
 
 #include "Geometry.h"
 
@@ -457,7 +458,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
     catch (StdFail_NotDone&) { // projection does not exist on trimmer curve, let's try basis curve
         closestParameterToBasicCurve(point,u);
 
-        if(abs(u-c->FirstParameter()) < abs(u-c->LastParameter()))
+        if(std::abs(u-c->FirstParameter()) < std::abs(u-c->LastParameter()))
             u = c->FirstParameter();
         else
             u = c->LastParameter();
