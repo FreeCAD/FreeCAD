@@ -188,5 +188,11 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 			<Parameter Name="LastParameter" Type="Float"/>
 		</Attribute>
+		<Attribute Name="Rotation" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns a rotation object to describe the orientation for curve that supports it</UserDocu>
+			</Documentation>
+			<Parameter Name="Rotation" Type="Object"/>
+		</Attribute>
 	</PythonExport>
 </GenerateModel>

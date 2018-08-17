@@ -31,6 +31,7 @@
 # include <gp_Parab.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Quaternion.hxx>
 # include <Geom_Geometry.hxx>
 # include <Geom_Surface.hxx>
 # include <GeomConvert_ApproxSurface.hxx>
@@ -855,3 +856,16 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
     PyErr_SetString(PyExc_TypeError, "intersect(): Geometry is not a surface");
     return 0;
 }
+
+Py::Object GeometrySurfacePy::getRotation(void) const
+{
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
+        (getGeometryPtr()->handle());
+    if(!s)
+        return Py::Object();
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position());
+    auto q = trsf.GetRotation();
+    return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
+}
+

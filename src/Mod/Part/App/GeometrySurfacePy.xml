@@ -87,6 +87,12 @@ Checks if the surface is planar within a certain tolerance.
 			</Documentation>
 			<Parameter Name="Continuity" Type="String"/>
 		</Attribute>
+		<Attribute Name="Rotation" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns a rotation object to describe the orientation for surface that supports it</UserDocu>
+			</Documentation>
+			<Parameter Name="Rotation" Type="Object"/>
+		</Attribute>
 		<Methode Name="uIso">
 			<Documentation>
 				<UserDocu>Builds the U isoparametric curve</UserDocu>
