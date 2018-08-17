@@ -142,16 +142,12 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     try {
         TopoShape ts(Shape.getShape());
         bool doTransform = pmat && *pmat!=ts.getTransform();
-        if(subname && *subname) {
-            ts = ts.getSubTopoShape(subname);
-            if(doTransform) {
-                auto s = ts.getShape();
-                ts.setShape(s.Located(s.Location().NextLocation()),false);
-            }
-        }else if(doTransform) {
+        if(doTransform) {
             ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
             ts.initCache(1);
         }
+        if(subname && *subname)
+            ts = ts.getSubTopoShape(subname);
         if(doTransform && !ts.isNull()) {
             static int sCopy = -1; 
             if(sCopy<0) {
