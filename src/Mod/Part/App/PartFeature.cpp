@@ -501,6 +501,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         if(linked && linked!=owner) {
             baseShape = getTopoShape(linked);
             baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
+            baseShape.initCache(1);
             if(!link->getShowElementValue())
                 baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
         }

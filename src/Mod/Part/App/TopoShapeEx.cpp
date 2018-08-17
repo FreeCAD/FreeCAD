@@ -623,6 +623,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
         tmp._Shape.Move(trsf);
     if(op || (shape.Tag && shape.Tag!=Tag)) {
         _Shape = tmp._Shape;
+        tmp.initCache(1);
         mapSubElement(tmp,op);
     } else
         *this = tmp;
@@ -2676,9 +2677,9 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         FC_WARN("invalid shape tag for re-tagging");
         return;
     }
+    initCache(1);
     TopoShape tmp(*this);
     Hasher = hasher;
-    initCache(1,__FILE__,__LINE__);
     Tag = tag;
     resetElementMap();
     mapSubElement(tmp,postfix,!hasher.isNull());
