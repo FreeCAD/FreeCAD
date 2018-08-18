@@ -90,11 +90,10 @@ using namespace Base;
 using namespace boost;
 
 static int StatCount = 0;
-#if SMESH_VERSION_MAJOR >= 7
-    SMESH_Gen* FemMesh::_mesh_gen = 0;
-#endif
 
-TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
+SMESH_Gen* FemMesh::_mesh_gen = 0;
+
+TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence)
 
 FemMesh::FemMesh()
 {
@@ -493,13 +492,9 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-#if SMESH_VERSION_MAJOR < 7
-    return SMESH_Gen::get();
-#else
     if (!FemMesh::_mesh_gen)
         FemMesh::_mesh_gen = new SMESH_Gen();
     return FemMesh::_mesh_gen;
-#endif
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)

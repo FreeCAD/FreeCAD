@@ -75,9 +75,7 @@
 
 using namespace MeshPart;
 
-#if SMESH_VERSION_MAJOR >= 7
-    SMESH_Gen* Mesher::_mesh_gen = 0;
-#endif
+SMESH_Gen* Mesher::_mesh_gen = 0;
 
 
 MeshingOutput::MeshingOutput() 
@@ -323,13 +321,9 @@ Mesh::MeshObject* Mesher::createMesh() const
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
-#if SMESH_VERSION_MAJOR < 7
-    SMESH_Gen* meshgen = SMESH_Gen::get();
-#else
-    if (! Mesher::_mesh_gen)
+    if (!Mesher::_mesh_gen)
         Mesher::_mesh_gen = new SMESH_Gen();
     SMESH_Gen* meshgen = Mesher::_mesh_gen;
-#endif
 
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
 
