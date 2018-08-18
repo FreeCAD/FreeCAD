@@ -55,7 +55,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
-        pass
+        obj.addProperty("App::PropertyBool", "UseOutline", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."))
+        obj.UseOutline = False
+
+    def opOnDocumentRestored(self, obj):
+        '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
+        if not hasattr(obj, 'UseOutline'):
+            self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
@@ -110,10 +116,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 f.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - f.BoundBox.ZMin))
 
             # check all faces and see if they are touching/overlapping and combine those into a compound
-            self.horizontal = PathGeom.combineConnectedShapes(self.horiz)
-            for shape in self.horizontal:
+            self.horizontal = []
+            for shape in PathGeom.combineConnectedShapes(self.horiz):
                 shape.sewShape()
                 shape.tessellate(0.1)
+                if obj.UseOutline:
+                    wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
+                    wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
+                    self.horizontal.append(Part.Face(wire))
+                else:
+                    self.horizontal.append(shape)
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
