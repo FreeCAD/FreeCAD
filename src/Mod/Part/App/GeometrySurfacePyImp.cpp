@@ -864,7 +864,7 @@ Py::Object GeometrySurfacePy::getRotation(void) const
     if(!s)
         return Py::Object();
     gp_Trsf trsf;
-    trsf.SetTransformation(s->Position());
+    trsf.SetTransformation(s->Position(),gp_Ax3());
     auto q = trsf.GetRotation();
     return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
 }
