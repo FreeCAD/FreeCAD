@@ -339,9 +339,9 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
 
 #if QT_VERSION >= 0x050000
-    module = PyImport_ImportModule((char*)"PyQt5.QtWidgets");
+    module = PyImport_ImportModule((char*)"PySide2.QtWidgets");
     if (!module)
-        throw Py::Exception(PyExc_ImportError, "Cannot load PyQt5.QtWidgets module");
+        throw Py::Exception(PyExc_ImportError, "Cannot load PySide2.QtWidgets module");
 #else
     module = PyImport_ImportModule((char*)"PyQt4.Qt");
     if (!module)
