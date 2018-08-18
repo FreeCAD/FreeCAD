@@ -179,7 +179,7 @@ class _CommandStairs:
         stairs = []
         additions = []
 
-        if len(FreeCADGui.Selection.getSelection()) >= 0:
+        if len(FreeCADGui.Selection.getSelection()) > 0:
             n = []
             nStr = ""
             for obj in FreeCADGui.Selection.getSelection():
@@ -334,7 +334,7 @@ class _Stairs(ArchComponent.Component):
         self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
-        landings = 0
+        landings = 0 # ? Any use - paul 2018.7.15
 
         base = None
 
@@ -364,12 +364,7 @@ class _Stairs(ArchComponent.Component):
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps > 1:
-
-                        if obj.Landings == "At center":
-                            landings = 1
-                            self.makeStraightStairsWithLanding(obj,edge)
-                        else:
-                            self.makeStraightStairs(obj,edge)
+                            self.makeStraightStairsWithLanding(obj,edge)	# all cases use makeStraightStairsWithLanding()
 
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps == 1:
@@ -394,11 +389,8 @@ class _Stairs(ArchComponent.Component):
                 if not obj.Length.Value:
                     return
                 edge = Part.LineSegment(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
-                if obj.Landings == "At center":
-                    landings = 1
-                    self.makeStraightStairsWithLanding(obj,edge)
-                else:
-                    self.makeStraightStairs(obj,edge)
+
+                self.makeStraightStairsWithLanding(obj,edge)
 
         if self.structures or self.steps:
             base = Part.makeCompound(self.structures + self.steps)
@@ -876,56 +868,88 @@ class _Stairs(ArchComponent.Component):
             return
         import Part,DraftGeomUtils
         v = DraftGeomUtils.vec(edge)
-        if obj.LandingDepth:
-            reslength = edge.Length - obj.LandingDepth.Value
+
+        landing = 0
+        if obj.TreadDepthEnforce == 0:
+            if obj.Landings == "At center":
+                if obj.LandingDepth:
+                    reslength = edge.Length - obj.LandingDepth.Value
+                else:
+                    reslength = edge.Length - obj.Width.Value
+            else:
+                reslength = edge.Length
+            vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
+
         else:
-            reslength = edge.Length - obj.Width.Value
-        vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
+
+            if obj.Landings == "At center":
+                reslength = obj.TreadDepthEnforce * (obj.NumberOfSteps-2) # TODO any use ?
+            else:
+                reslength = obj.TreadDepthEnforce * (obj.NumberOfSteps-1) # TODO any use ?
+            vLength = DraftVecUtils.scaleTo(v,float(obj.TreadDepthEnforce))
         vLength = Vector(vLength.x,vLength.y,0)
+
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         p1 = edge.Vertexes[0].Point
-        if round(v.z,Draft.precision()) != 0:
-            h = v.z
+
+        if obj.RiserHeightEnforce == 0:
+            if round(v.z,Draft.precision()) != 0:
+                h = v.z
+            else:
+                h = obj.Height.Value
+            hstep = h/obj.NumberOfSteps
+
         else:
-            h = obj.Height.Value
-        hstep = h/obj.NumberOfSteps
-        landing = int(obj.NumberOfSteps/2)
+            h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps) 
+            hstep = obj.RiserHeightEnforce.Value
+
+        if obj.Landings == "At center":
+            landing = int(obj.NumberOfSteps/2)
+        else:
+            landing = obj.NumberOfSteps-1
+
         if obj.LastSegment:
-                print("obj.LastSegment is: " )
-                print(obj.LastSegment.Name)
-                lastSegmentAbsTop = obj.LastSegment.AbsTop
-                print("lastSegmentAbsTop is: ")
-                print(lastSegmentAbsTop)
-                p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)			# use Last Segment top's z-coordinate 
-                print(p1)
+            lastSegmentAbsTop = obj.LastSegment.AbsTop
+            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)			# use Last Segment top's z-coordinate 
+
         obj.AbsTop = p1.add(Vector(0,0,h))
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
-        if obj.LandingDepth:
-            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
-        else:
-            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-        if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-            if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
-                p3r = p2
-            elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
-                p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
-            elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
-                p3r = self.align(p2,"Right",2*vWidth)
-            elif (obj.Align == "Center" and obj.Flight == "HalfTurnLeft"):
-                p3r = self.align(p2,"Right",vWidth)
-            elif (obj.Align == "Center" and obj.Flight == "HalfTurnRight"):
-                p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+
+        if obj.Landings == "At center":
+            if obj.LandingDepth:
+                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
-                print("Should have a bug here, if see this")
-            p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
-        else:
-            p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
+   
+            if obj.Flight in ["HalfTurnLeft HalfTurnLeft", "HalfTurnRight"]:
+                if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
+                    p3r = p2
+                elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
+                    p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+                elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
+                    p3r = self.align(p2,"Right",2*vWidth)
+                elif (obj.Align == "Center" and obj.Flight == "HalfTurnLeft"):
+                    p3r = self.align(p2,"Right",vWidth)
+                elif (obj.Align == "Center" and obj.Flight == "HalfTurnRight"):
+                    p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+                else:
+                    print("Should have a bug here, if see this")
+                p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+            else:
+                p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+            self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
+
+            if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+                self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
+            else:
+                self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
+
         self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
-        self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
-        if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-            self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
-        else:
-            self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
+        print (p1, p2)
+        if obj.Landings == "At center" and obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
+            print (p3, p4)
+        elif obj.Landings == "At center" and obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+            print (p3r, p4r)
 
 
     def makeCurvedStairs(self,obj,edge):
