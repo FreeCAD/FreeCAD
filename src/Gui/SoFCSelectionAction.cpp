@@ -1159,6 +1159,10 @@ SoBoxSelectionRenderAction::constructorCommon(void)
 
 SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction(void)
 {
+    // clear highlighting node
+    if (PRIVATE(this)->highlightPath) {
+        PRIVATE(this)->highlightPath->unref();
+    }
     PRIVATE(this)->postprocpath->unref();
     PRIVATE(this)->localRoot->unref();
 
@@ -1218,6 +1222,10 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     if (shapepath) {
                         SoPathList list;
                         list.append(shapepath);
+                        // clear old highlighting node if still active
+                        if (PRIVATE(this)->highlightPath) {
+                            PRIVATE(this)->highlightPath->unref();
+                        }
                         PRIVATE(this)->highlightPath = path;
                         PRIVATE(this)->highlightPath->ref();
                         this->drawBoxes(path, &list);
@@ -1262,6 +1270,10 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
             if (shapepath) {
                 SoPathList list;
                 list.append(shapepath);
+                // clear old highlighting node if still active
+                if (PRIVATE(this)->highlightPath) {
+                    PRIVATE(this)->highlightPath->unref();
+                }
                 PRIVATE(this)->highlightPath = path;
                 PRIVATE(this)->highlightPath->ref();
                 this->drawBoxes(path, &list);
