@@ -21,6 +21,7 @@ if(BUILD_GUI)
         images/developerhub.png
         images/manual.png
         images/freecad.png
+        images/installed.png
     )
 
     add_subdirectory(Gui)
