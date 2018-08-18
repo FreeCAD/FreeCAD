@@ -600,15 +600,13 @@ void QGIViewDimension::draw()
                 posMode = VerticalSnap;
             }
 
+            fauxCenter = Base::Vector3d(lblCenter.x,lblCenter.y + vertOffset,lblCenter.z);
             if(posMode == VerticalSnap) {
                 if (lblCenter.y > curveCenter.y) {
-                    tip = tip;
-                    gap = gap;
-                    fauxCenter = Base::Vector3d(lblCenter.x,lblCenter.y + vertOffset,lblCenter.z);
+                   //no op
                 } else {
                     tip = -tip;
                     gap = -gap;
-                    fauxCenter = Base::Vector3d(lblCenter.x,lblCenter.y + vertOffset,lblCenter.z);
                 }
 
                 arrow1Tip.x = curveCenter.x - radius;                       //to left, on circle cl
@@ -647,8 +645,6 @@ void QGIViewDimension::draw()
 
             } else if(posMode == HorizontalSnap) {
                 if (lblCenter.x > curveCenter.x) {
-                    tip = tip;
-                    gap = gap;
                     fauxCenter = Base::Vector3d(lblCenter.x - horizOffset,lblCenter.y,lblCenter.z);
                 } else {
                     tip = -tip;
@@ -749,8 +745,6 @@ void QGIViewDimension::draw()
         QPainterPath arcPath;
         if (isArc) {
             if (lblCenter.x > curveCenter.x) {            // label to right of vert c/l
-                tip = tip;
-                gap = gap;
                 fauxCenter = Base::Vector3d(lblCenter.x - horizOffset,lblCenter.y,lblCenter.z);
                 kinkPoint  = Base::Vector3d(fauxCenter.x - kinkLength,fauxCenter.y,fauxCenter.z);
             } else {
