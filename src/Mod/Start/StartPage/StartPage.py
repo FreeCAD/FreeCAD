@@ -350,33 +350,61 @@ def handle():
     for wb in sorted(FreeCADGui.listWorkbenches().keys()):
         if wb.endswith("Workbench"):
             wn = wb[:-9]
-            wblist.append(wn.lower())
-            if wb in iconbank:
-                img = iconbank[wb]
-            else:
-                img = os.path.join(FreeCAD.getResourceDir(),"data","Mod",wn,"Resources","icons",wn+"Workbench.svg")
-                if not os.path.exists(img):
-                    w = FreeCADGui.listWorkbenches()[wb]
-                    if hasattr(w,"Icon"):
-                        xpm = w.Icon
-                        if "XPM" in xpm:
-                            xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
-                            r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
-                            p = QtGui.QPixmap(r)
-                            p = p.scaled(24,24)
-                            img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-                            p.save(img)
-                        else:
-                            img = xpm
+        else:
+            wn = wb
+        if wn == "flamingoTools":
+            wn = "flamingo"
+        if wn == "Geodat":
+            wn = "geodata"
+        if wn == "None":
+            continue
+        wblist.append(wn.lower())
+        if wb in iconbank:
+            img = iconbank[wb]
+        else:
+            img = os.path.join(FreeCAD.getResourceDir(),"data","Mod",wn,"Resources","icons",wn+"Workbench.svg")
+            if not os.path.exists(img):
+                w = FreeCADGui.listWorkbenches()[wb]
+                if hasattr(w,"Icon"):
+                    xpm = w.Icon
+                    if "XPM" in xpm:
+                        xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
+                        r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
+                        p = QtGui.QPixmap(r)
+                        p = p.scaled(24,24)
+                        img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+                        p.save(img)
                     else:
-                        img="images/freecad.png"
-                iconbank[wb] = img
-            UL_WORKBENCHES += '<li>'
-            UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
-            UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
-            UL_WORKBENCHES += '</li>'
+                        img = xpm
+                else:
+                    img="images/freecad.png"
+            iconbank[wb] = img
+        UL_WORKBENCHES += '<li>'
+        UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
+        UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES",UL_WORKBENCHES)
+    
+    # Detect additional addons that are not a workbench
+    try:
+        import dxfLibrary
+    except:
+        pass
+    else:
+        wblist.append("dxf-library")
+    try:
+        import RebarTools
+    except:
+        pass
+    else:
+        wblist.append("reinforcement")
+    try:
+        import CADExchangerIO
+    except:
+        pass
+    else:
+        wblist.append("cadexchanger")
     HTML = HTML.replace("var wblist = [];","var wblist = " + str(wblist) + ";")
 
 
