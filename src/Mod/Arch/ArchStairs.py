@@ -146,12 +146,12 @@ def makeRailing(stairs):
     for stair in stairs:
         print (stair)
 
-        if (len(stair.Base.Shape.Edges) > 1):
-            rRailWire = Draft.makeWire(stair.OutlineRight)
-            lRailWire = Draft.makeWire(stair.OutlineLeft)
-            lRail = ArchPipe.makePipe(lRailWire,50)
-            rRail = ArchPipe.makePipe(rRailWire,50)
-            i += 1
+        stair.recompute()
+        lRailWire = Draft.makeWire(stair.OutlineLeft)
+        lRail = ArchPipe.makePipe(lRailWire,50)
+        rRailWire = Draft.makeWire(stair.OutlineRight)
+        rRail = ArchPipe.makePipe(rRailWire,50)
+        i += 1
 
 
 class _CommandStairs:
@@ -469,12 +469,15 @@ class _Stairs(ArchComponent.Component):
         p1o, p2o, p1, p2, p3, p4 = [], [], [], [], [], []
         outline, outlineP1P2, outlineP3P4 = [], [], []
 
+        if not isinstance(edges, list):
+            edges = [edges]
+
         enum_edges = enumerate(edges)
         for i, edge in enum_edges:
             v.append(DraftGeomUtils.vec(edge))
-            vLength.append(Vector(v[i].x,v[i].y,0))
-            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
 
+            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
             netWidth = obj.Width.Value - 2*offsetH
             vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidth))
 
@@ -974,6 +977,11 @@ class _Stairs(ArchComponent.Component):
             print (p3, p4)
         elif obj.Landings == "At center" and obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
             print (p3r, p4r)
+
+        edge = Part.LineSegment(p1,p2).toShape()
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge, align="left", offsetH=90, offsetV=900)
+        obj.OutlineLeft = outlineRailL # outlineL # outlineP1P2
+        obj.OutlineRight = outlineRailR # outlineR # outlineP3P4
 
 
     def makeCurvedStairs(self,obj,edge):
