@@ -32,6 +32,7 @@ FreeCADGui.updateLocale()
 
 iconprovider = QtGui.QFileIconProvider()
 iconbank = {} # to store already created icons so we don't overpollute the temp dir
+tempfolder = None # store icons inside a subfolder in temp dir
 
 
 def gethexcolor(color):
@@ -69,7 +70,7 @@ def getInfo(filename):
 
     "returns available file information"
 
-    global iconbank
+    global iconbank,tempfolder
 
     def getLocalTime(timestamp):
         "returns a local time from a timestamp"
@@ -119,7 +120,7 @@ def getInfo(filename):
                         image = iconbank[filename]
                     else:
                         imagedata=zfile.read("thumbnails/Thumbnail.png")
-                        image = tempfile.mkstemp(suffix='.png')[1]
+                        image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
                         thumb = open(image,"wb")
                         thumb.write(imagedata)
                         thumb.close()
@@ -134,7 +135,7 @@ def getInfo(filename):
             else:
                 icon = iconprovider.icon(i)
                 px = icon.pixmap(128,128)
-                image = tempfile.mkstemp(suffix='.png')[1]
+                image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
                 px.save(image)
                 iconbank[t] = image
 
@@ -148,7 +149,19 @@ def handle():
 
     "builds the HTML code of the start page"
 
-    global iconbank
+    global iconbank,tempfolder
+
+
+    # reuse stuff from previous runs to reduce temp dir clutter
+
+    import Start
+    if hasattr(Start,"iconbank"):
+        iconbank = Start.iconbank
+    if hasattr(Start,"tempfolder"):
+        tempfolder = Start.tempfolder
+    else:
+        tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
+
 
     # build the html page skeleton
 
@@ -201,7 +214,9 @@ def handle():
     HTML = HTML.replace("T_WBHELP",TranslationTexts.T_WBHELP)
     HTML = HTML.replace("T_DESCR_WBHELP",TranslationTexts.T_DESCR_WBHELP)
     HTML = HTML.replace("T_COMMUNITYHELP",TranslationTexts.T_COMMUNITYHELP)
-    HTML = HTML.replace("T_DESCR_COMMUNITYHELP",TranslationTexts.T_DESCR_COMMUNITYHELP)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP1",TranslationTexts.T_DESCR_COMMUNITYHELP1)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP2",TranslationTexts.T_DESCR_COMMUNITYHELP2)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP3",TranslationTexts.T_DESCR_COMMUNITYHELP3)
     HTML = HTML.replace("T_ADDONS",TranslationTexts.T_ADDONS)
     HTML = HTML.replace("T_DESCR_ADDONS",TranslationTexts.T_DESCR_ADDONS)
     HTML = HTML.replace("T_OFFLINEHELP",TranslationTexts.T_OFFLINEHELP)
@@ -212,6 +227,8 @@ def handle():
     HTML = HTML.replace("T_CUSTOM",TranslationTexts.T_CUSTOM)
     HTML = HTML.replace("T_FORUM",TranslationTexts.T_FORUM)
     HTML = HTML.replace("T_DESCR_FORUM",TranslationTexts.T_DESCR_FORUM)
+    HTML = HTML.replace("T_EXTERNALLINKS",TranslationTexts.T_EXTERNALLINKS)
+
 
     # build a "create new" icon with the FreeCAD background color gradient
 
@@ -226,7 +243,7 @@ def handle():
         pa = QtGui.QPainter(i)
         pa.fillRect(i.rect(),gradient)
         pa.end()
-        createimg = tempfile.mkstemp(suffix='.png')[1]
+        createimg = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
         i.save(createimg)
         iconbank["createimg"] = createimg
 
@@ -327,11 +344,13 @@ def handle():
 
     # build UL_WORKBENCHES
 
+    wblist = []
     UL_WORKBENCHES = '<ul class="workbenches">'
     FreeCAD.getResourceDir()
     for wb in sorted(FreeCADGui.listWorkbenches().keys()):
         if wb.endswith("Workbench"):
             wn = wb[:-9]
+            wblist.append(wn.lower())
             if wb in iconbank:
                 img = iconbank[wb]
             else:
@@ -341,22 +360,24 @@ def handle():
                     if hasattr(w,"Icon"):
                         xpm = w.Icon
                         if "XPM" in xpm:
+                            xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
                             r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
                             p = QtGui.QPixmap(r)
                             p = p.scaled(24,24)
-                            img = tempfile.mkstemp(suffix='.png')[1]
+                            img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
                             p.save(img)
                         else:
                             img = xpm
                     else:
                         img="images/freecad.png"
                 iconbank[wb] = img
-            UL_WORKBENCHES += '<li><h3>'
-            UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">'
+            UL_WORKBENCHES += '<li>'
+            UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
             UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
-            UL_WORKBENCHES += '</h3></li>'
+            UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES",UL_WORKBENCHES)
+    HTML = HTML.replace("var wblist = [];","var wblist = " + str(wblist) + ";")
 
 
     # set and replace colors
@@ -365,7 +386,7 @@ def handle():
     if p.GetString("BackgroundImage",""):
         BACKGROUND = gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))+" url("+p.GetString("BackgroundImage","")+")"
     else:
-        BACKGROUND = gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183)) 
+        BACKGROUND = gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))
         # linear gradient not supported by QT "linear-gradient("+gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))+","+gethexcolor(p.GetUnsigned("BackgroundColor2",2141107711))+")"
     LINKCOLOR = gethexcolor(p.GetUnsigned("LinkColor",65535))
     BASECOLOR = gethexcolor(p.GetUnsigned("PageColor",4294967295))
@@ -390,11 +411,19 @@ def handle():
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
         HTML = HTML.replace("var allowDownloads = 0;","var allowDownloads = 1;")
 
+
     # enable or disable forum
 
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowForum",False):
         HTML = HTML.replace("var showForum = 0;","var showForum = 1;")
-        HTML = HTML.replace("display: none; /* forumbox */","display: block; /* forumbox */")
+        HTML = HTML.replace("display: none; /* forum display */","display: block; /* forum display */")
+
+
+    # store variables for further use
+
+    Start.iconbank = iconbank
+    Start.tempfolder = tempfolder
+
 
     # encode if necessary
 
@@ -443,9 +472,9 @@ def postStart():
 
 
 def checkPostOpenStartPage():
-    
+
     "on Start WB startup, check if we are loading a file and therefore need to close the StartPage"
-    
+
     import Start
     if FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Mod/Start').GetBool('DoNotShowOnOpen',False) and (not hasattr(Start,'CanOpenStartPage')):
         if len(sys.argv) > 1:
