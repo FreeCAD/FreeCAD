@@ -191,9 +191,9 @@ public:
     void writeEllipse(const double* c, double major_radius, double minor_radius, 
                       double rotation, double start_angle, double end_angle, bool endIsCW);
     void writeCircle(const double* c, double radius );
-    void writeSpline(SplineDataOut sd);
-    void writeLWPolyLine(LWPolyDataOut pd);
-    void writePolyline(LWPolyDataOut pd);
+    void writeSpline(const SplineDataOut &sd);
+    void writeLWPolyLine(const LWPolyDataOut &pd);
+    void writePolyline(const LWPolyDataOut &pd);
     void writeVertex(double x, double y, double z);
     void writeText(const char* text, const double* location1, const double* location2,
                    const double height, const int horizJust);
