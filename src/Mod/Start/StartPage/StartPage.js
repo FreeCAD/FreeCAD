@@ -1,5 +1,5 @@
 var allowDownloads = 0;
-
+var showForum = 0;
 
 function toggle(tab) {
 
@@ -36,13 +36,15 @@ function load() {
         tobj.buildScriptTag(); // Build the script tag
         tobj.addScriptTag(); // Execute (add) the script tag
         ddiv.innerHTML = "Downloading addons list...";
-        // load forum recent posts
-        ddiv = document.getElementById("forum");
-        ddiv.innerHTML = "Connecting...";
-        var tobj=new JSONscriptRequest('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fforum.freecadweb.org%2Ffeed.php&api_key=s9yqcsrevp9irkqworzmvnrjs4jotjac2g4ybs95&callback=printForum');
-        tobj.buildScriptTag(); // Build the script tag
-        tobj.addScriptTag(); // Execute (add) the script tag
-        ddiv.innerHTML = "Downloading addons list...";
+        if (showForum == 1) {
+            // load forum recent posts
+            ddiv = document.getElementById("forum");
+            ddiv.innerHTML = "Connecting...";
+            var tobj=new JSONscriptRequest('https://www.freecadweb.org/xml-to-json.php?callback=printForum&url=https://forum.freecadweb.org/feed.php');
+            tobj.buildScriptTag(); // Build the script tag
+            tobj.addScriptTag(); // Execute (add) the script tag
+            ddiv.innerHTML = "Downloading addons list...";
+        }
     }
 }
 
@@ -88,8 +90,8 @@ function printForum(data) {
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {
-        if (i < data.items.length){
-            html.push('<li><a href="', data.items[i].link, '">', data.items[i].title, '</a><br/><p>', data.items[i].content,'</p></li>');
+        if (i < data.feed.entry.length){
+            html.push('<li><big><a href="', data.feed.entry[i].link.href, '">', data.feed.entry[i].title.$, '</a></big><br/><p>', data.feed.entry[i].content.$,'</p></li>');
         }
     }
     html.push('</ul>');

@@ -113,6 +113,10 @@ ul.icons {
     max-width: 24px;
     max-height: 24px;
 }
+.forumbox img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
 .allwidth {
     max-width: 98%;
 }
@@ -147,4 +151,8 @@ ul.workbenches li, ul.addonslist li {
 }
 .forum ul {
     padding: 10px;
+}
+.forumbox {
+    margin-top: 20px;
+    display: none; /* forumbox */
 }
