@@ -392,7 +392,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* 
         center2= (static_cast<const Part::GeomArcOfCircle *>(geom2))->getCenter();
 
     Base::Vector3d direction=center2-center;
-    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
 
     Base::Vector3d PoE = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -456,7 +456,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
         center2= (static_cast<const Part::GeomArcOfCircle *>(geom2))->getCenter();
 
     Base::Vector3d direction=center2-center;
-    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
 
     Base::Vector3d PoE = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -966,7 +966,7 @@ public:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
 
-        // Constrait icon size in px
+        // Constrain icon size in px
         int iconSize = 16;
         QPixmap cursorPixmap(cursor_genericconstraint),
                 icon = Gui::BitmapFactory().pixmap(cmd->sPixmap).scaledToWidth(iconSize);
@@ -4034,7 +4034,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 }
                 else {
                     Base::Vector3d direction=point1-center;
-                    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+                    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
 
                     PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                                         center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
@@ -4211,7 +4211,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             }
             else {
                 Base::Vector3d direction=point1-center;
-                double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+                double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomaly by the polar
 
                 PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
                                                     center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);

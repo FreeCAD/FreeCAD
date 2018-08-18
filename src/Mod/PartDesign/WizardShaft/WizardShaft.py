@@ -154,9 +154,9 @@ class TaskWizardShaft:
     def isAllowedAlterDocument(self):
         return False
 
-# Work-around to allow a callback
+# Workaround to allow a callback
 # Problem: From the FemConstraint ViewProvider, we need to tell the Shaft instance that the user finished editing the constraint
-# We can find the Shaft Wizard dialog object from C++, but there is not way to reach the Shaft instance
+# We can find the Shaft Wizard dialog object from C++, but there is no way to reach the Shaft instance
 # Also it seems to be impossible to access the active dialog from Python, so Gui::Command::runCommand() is not an option either
 # Note: Another way would be to create a hidden widget in the Shaft Wizard dialog and write some data to it, triggering a slot 
 # in the python code

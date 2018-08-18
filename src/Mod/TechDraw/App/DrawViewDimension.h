@@ -46,12 +46,21 @@ struct DimRef {
 
 typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
 
-struct anglePoints {
+struct anglePoints
+{
     pointPair ends;
     Base::Vector3d vertex;
+
+    anglePoints()
+    {
+        ends.first  = Base::Vector3d(0.0,0.0,0.0);
+        ends.second = Base::Vector3d(0.0,0.0,0.0);
+        vertex      = Base::Vector3d(0.0,0.0,0.0);
+    }
 };
 
-struct arcPoints {
+struct arcPoints
+{
     bool isArc;
     double radius;
     Base::Vector3d center;
@@ -59,6 +68,20 @@ struct arcPoints {
     pointPair arcEnds;
     Base::Vector3d midArc;
     bool arcCW;
+
+    arcPoints() 
+    {
+         isArc = false;
+         radius = 0.0;
+         center         = Base::Vector3d(0.0,0.0,0.0);
+         onCurve.first  = Base::Vector3d(0.0,0.0,0.0);
+         onCurve.second = Base::Vector3d(0.0,0.0,0.0);
+         arcEnds.first  = Base::Vector3d(0.0,0.0,0.0);
+         arcEnds.second = Base::Vector3d(0.0,0.0,0.0);
+         midArc         = Base::Vector3d(0.0,0.0,0.0);
+         arcCW = false;
+    }
+
 };
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView

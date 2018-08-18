@@ -119,6 +119,7 @@ class ObjectJob:
         ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
         if ops.ViewObject:
             ops.ViewObject.Proxy = 0
+            ops.ViewObject.Visibility = False
         obj.Operations = ops
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
