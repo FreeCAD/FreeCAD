@@ -161,9 +161,7 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
-#if SMESH_VERSION_MAJOR >= 7
     static SMESH_Gen *_mesh_gen;
-#endif
 };
 
 } //namespace Part
