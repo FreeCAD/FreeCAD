@@ -155,3 +155,6 @@ ul.workbenches li, ul.addonslist li {
 .forum {
     display: none; /* forum display */
 }
+.forum pre {
+    white-space: pre-wrap;
+}
