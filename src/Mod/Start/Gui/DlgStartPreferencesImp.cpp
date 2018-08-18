@@ -94,6 +94,7 @@ void DlgStartPreferencesImp::saveSettings()
     checkBox_1->onSave();
     checkBox_2->onSave();
     checkBox_3->onSave();
+    checkBox_4->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -118,6 +119,7 @@ void DlgStartPreferencesImp::loadSettings()
     checkBox_1->onRestore();
     checkBox_2->onRestore();
     checkBox_3->onRestore();
+    checkBox_4->onRestore();
 }
 
 /**

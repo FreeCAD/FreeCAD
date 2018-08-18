@@ -329,7 +329,7 @@ def handle():
 
     UL_WORKBENCHES = '<ul class="workbenches">'
     FreeCAD.getResourceDir()
-    for wb in FreeCADGui.listWorkbenches().keys():
+    for wb in sorted(FreeCADGui.listWorkbenches().keys()):
         if wb.endswith("Workbench"):
             wn = wb[:-9]
             if wb in iconbank:
@@ -353,7 +353,7 @@ def handle():
                 iconbank[wb] = img
             UL_WORKBENCHES += '<li><h3>'
             UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">'
-            UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn+'</a>'
+            UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
             UL_WORKBENCHES += '</h3></li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES",UL_WORKBENCHES)
@@ -390,6 +390,11 @@ def handle():
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
         HTML = HTML.replace("var allowDownloads = 0;","var allowDownloads = 1;")
 
+    # enable or disable forum
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowForum",False):
+        HTML = HTML.replace("var showForum = 0;","var showForum = 1;")
+        HTML = HTML.replace("display: none; /* forumbox */","display: block; /* forumbox */")
 
     # encode if necessary
 
