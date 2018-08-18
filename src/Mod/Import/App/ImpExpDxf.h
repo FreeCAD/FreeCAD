@@ -100,15 +100,15 @@ namespace Import
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
 
     protected:
-        void exportCircle(const BRepAdaptor_Curve& c);
-        void exportEllipse(const BRepAdaptor_Curve& c);
-        void exportArc(const BRepAdaptor_Curve& c);
-        void exportEllipseArc(const BRepAdaptor_Curve& c);
-        void exportBSpline(const BRepAdaptor_Curve& c);
-        void exportBCurve(const BRepAdaptor_Curve& c);
-        void exportLine(const BRepAdaptor_Curve& c);
-        void exportLWPoly(const BRepAdaptor_Curve& c);   //LWPolyline not supported in R12?
-        void exportPolyline(const BRepAdaptor_Curve& c);
+        void exportCircle(BRepAdaptor_Curve& c);
+        void exportEllipse(BRepAdaptor_Curve& c);
+        void exportArc(BRepAdaptor_Curve& c);
+        void exportEllipseArc(BRepAdaptor_Curve& c);
+        void exportBSpline(BRepAdaptor_Curve& c);
+        void exportBCurve(BRepAdaptor_Curve& c);
+        void exportLine(BRepAdaptor_Curve& c);
+        void exportLWPoly(BRepAdaptor_Curve& c);   //LWPolyline not supported in R12?
+        void exportPolyline(BRepAdaptor_Curve& c);
 
 //        std::string m_optionSource;
         double optionMaxLength;
