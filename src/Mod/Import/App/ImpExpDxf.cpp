@@ -486,7 +486,7 @@ bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2)
 }
 
 
-void ImpExpDxfWrite::exportCircle(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve& c)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
@@ -498,7 +498,7 @@ void ImpExpDxfWrite::exportCircle(const BRepAdaptor_Curve& c)
     writeCircle(center, radius);
 }
 
-void ImpExpDxfWrite::exportEllipse(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
@@ -517,7 +517,7 @@ void ImpExpDxfWrite::exportEllipse(const BRepAdaptor_Curve& c)
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true );
 }
 
-void ImpExpDxfWrite::exportArc(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve& c)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
@@ -543,7 +543,7 @@ void ImpExpDxfWrite::exportArc(const BRepAdaptor_Curve& c)
     writeArc(start, end, center, dir );
 }
 
-void ImpExpDxfWrite::exportEllipseArc(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
@@ -583,7 +583,7 @@ void ImpExpDxfWrite::exportEllipseArc(const BRepAdaptor_Curve& c)
     writeEllipse(center, major, minor, rotation, startAngle, endAngle, endIsCW);
 }
 
-void ImpExpDxfWrite::exportBSpline(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 {
     SplineDataOut sd;
     Handle(Geom_BSplineCurve) spline;
@@ -658,13 +658,13 @@ void ImpExpDxfWrite::exportBSpline(const BRepAdaptor_Curve& c)
     writeSpline(sd);
 }
 
-void ImpExpDxfWrite::exportBCurve(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
 {
     (void) c;
     Base::Console().Message("BCurve dxf export not yet supported\n");
 }
 
-void ImpExpDxfWrite::exportLine(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)
 {
     double f = c.FirstParameter();
     double l = c.LastParameter();
@@ -677,7 +677,7 @@ void ImpExpDxfWrite::exportLine(const BRepAdaptor_Curve& c)
     writeLine(start, end);
 }
 
-void ImpExpDxfWrite::exportLWPoly(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
 {
     LWPolyDataOut pd;
     pd.Flag = c.IsClosed();
@@ -702,7 +702,7 @@ void ImpExpDxfWrite::exportLWPoly(const BRepAdaptor_Curve& c)
     }
 }
 
-void ImpExpDxfWrite::exportPolyline(const BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve& c)
 {
     LWPolyDataOut pd;
     pd.Flag = c.IsClosed();
