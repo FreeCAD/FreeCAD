@@ -31,6 +31,7 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
+import traceback
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
@@ -471,6 +472,7 @@ class MapWireToTag:
                 return commands
             except Exception as e:
                 PathLog.error("Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag" % (self.tag.x, self.tag.y, e.args[0]))
+                #traceback.print_exc(e)
                 self.tag.enabled = False
                 commands = []
                 for e in self.edges:
