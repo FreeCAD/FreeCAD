@@ -18,8 +18,11 @@ h1 {
 }
 h2 {
     text-align: center;
-    fint-size: 0.9em;
     clear: both;
+}
+hr {
+    height: 20px;
+    border: none;
 }
 .hidden {
     display: none;
@@ -56,7 +59,8 @@ ul.tabs li a:hover {
     background-color: TEXTCOLOR;
     color: BASECOLOR;
 }
-ul.tabs li a.active {
+ul.tabs li a.active, ul.tabs li a.active:hover {
+    color: TEXTCOLOR;
     background-color: BASECOLOR;
     border-bottom: 1px solid BASECOLOR;
 }
@@ -113,7 +117,7 @@ ul.icons {
     max-width: 24px;
     max-height: 24px;
 }
-.forumbox img {
+.forum img {
     max-width: 100% !important;
     max-height: 100% !important;
 }
@@ -128,7 +132,6 @@ h3 a {
 }
 #commits ul {
     margin: 30px 0;
-    padding: 10px;
 }
 #commits ul li, .forum ul li {
     margin-bottom: 10px;
@@ -149,10 +152,6 @@ ul.workbenches li, ul.addonslist li {
     display: inline;
     width: 50%;
 }
-.forum ul {
-    padding: 10px;
-}
-.forumbox {
-    margin-top: 20px;
-    display: none; /* forumbox */
+.forum {
+    display: none; /* forum display */
 }

@@ -1,5 +1,6 @@
 var allowDownloads = 0;
 var showForum = 0;
+var wblist = [];
 
 function toggle(tab) {
 
@@ -74,7 +75,11 @@ function printAddons(data) {
     var blacklist = ['addons_installer.FCMacro','FreeCAD-Addon-Details.md','README.md'];
     for (var i = 0; i < data.data.length; i++) {
         if ( (data.data[i].name[0] != ".") && (blacklist.indexOf(data.data[i].name) < 0) ) {
-            html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
+            if (wblist.indexOf(data.data[i].name.toLowerCase()) == -1) {
+                html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
+            } else {
+                html.push('<li>', data.data[i].name, '&nbsp;<img src="images/installed.png"></li>');
+            }
         }
     }
     html.push('</ul>');
