@@ -114,7 +114,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
                 stairs[i].LastSegment = stairs[i-1]
             else:
                 if len(stairs) > 1:						# i.e. length >1, have a 'master' staircase created
-                    stairs[0].Base = stairs[i]
+                    stairs[0].Base = stairs[1]
             i += 1
         if lenSelection > 1:
             stairs[0].Additions = additions
@@ -147,8 +147,8 @@ def makeRailing(stairs):
         print (stair)
 
         if (len(stair.Base.Shape.Edges) > 1):
-            lRailWire = Draft.makeWire(stair.OutlineLeft)
             rRailWire = Draft.makeWire(stair.OutlineRight)
+            lRailWire = Draft.makeWire(stair.OutlineLeft)
             lRail = ArchPipe.makePipe(lRailWire,50)
             rRail = ArchPipe.makePipe(rRailWire,50)
             i += 1
@@ -273,6 +273,12 @@ class _Stairs(ArchComponent.Component):
 
         if not hasattr(obj,"LandingDepth"):
             obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
+
+        if not hasattr(obj,"TreadDepthEnforce"):
+            obj.addProperty("App::PropertyLength","TreadDepthEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs - Enforced regardless Length or edge's Length"))
+        if not hasattr(obj,"RiserHeightEnforce"):
+            obj.addProperty("App::PropertyLength","RiserHeightEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs - Enforced regardless Height or edge's Height"))
+
         if not hasattr(obj,"Flight"):
             obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of of flight after landing"))
             obj.Flight = ["Straight","HalfTurnLeft","HalfTurnRight"]
@@ -613,12 +619,13 @@ class _Stairs(ArchComponent.Component):
             p2o = p2
             p3o = p3
 
-        if obj.Flight == "HalfTurnLeft":
-            p1 = p1.add(-vWidth)
-            p2 = p2.add(-vWidth)
-        elif obj.Flight == "HalfTurnRight":
-            p3 = p3.add(vWidth)
-            p4 = p4.add(vWidth)
+        if callByMakeStraightStairsWithLanding:
+            if obj.Flight == "HalfTurnLeft":
+                p1 = p1.add(-vWidth)
+                p2 = p2.add(-vWidth)
+            elif obj.Flight == "HalfTurnRight":
+                p3 = p3.add(vWidth)
+                p4 = p4.add(vWidth)
 
         step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if obj.TreadThickness.Value:
