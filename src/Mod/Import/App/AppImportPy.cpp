@@ -409,7 +409,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource) {
+            if (optionSource != nullptr) {
                 strcpy(useOptionSource,optionSource);
             } else {
                 useOptionSource = defaultOptions;
@@ -422,7 +422,7 @@ private:
                 if (versionOverride) {
                     writer.setVersion(versionParm);
                 }
-                writer.setPolyOverride(true);
+                writer.setPolyOverride(polyOverride);
                 writer.setLayerName(layerName);
                 writer.init();
                 Py::Sequence list(shapeObj);
@@ -458,7 +458,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource) {
+            if (optionSource != nullptr) {
                 strcpy(useOptionSource,optionSource);
             } else {
                 useOptionSource = defaultOptions;
@@ -521,7 +521,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource) {
+            if (optionSource != nullptr) {
                 strcpy(useOptionSource,optionSource);
             } else {
                 useOptionSource = defaultOptions;
@@ -555,7 +555,7 @@ private:
                 throw Py::RuntimeError(e.what());
             }
         } else if (PyArg_ParseTuple(args.ptr(), "O!et|iOs",
-                                                &(Part::PartFeaturePy::Type) ,
+                                                &(App::DocumentObjectPy::Type) ,
                                                 &docObj, 
                                                 "utf-8",
                                                 &fname, 
@@ -574,7 +574,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource) {
+            if (optionSource != nullptr) {
                 strcpy(useOptionSource,optionSource);
             } else {
                 useOptionSource = defaultOptions;
@@ -587,7 +587,7 @@ private:
                 if (versionOverride) {
                     writer.setVersion(versionParm);
                 }
-                writer.setPolyOverride(true);
+                writer.setPolyOverride(polyOverride);
                 writer.setLayerName(layerName);
                 writer.init();
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();

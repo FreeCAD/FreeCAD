@@ -521,7 +521,7 @@ void CDxfWrite::putLine(const Base::Vector3d s, const Base::Vector3d e,
 //***************************
 //writeLWPolyLine  (Note: LWPolyline might not be supported in R12
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeLWPolyLine(LWPolyDataOut pd)
+void CDxfWrite::writeLWPolyLine(const LWPolyDataOut &pd)
 {
     (*m_ssEntity) << "  0"               << endl;
     (*m_ssEntity) << "LWPOLYLINE"     << endl;
@@ -579,7 +579,7 @@ void CDxfWrite::writeLWPolyLine(LWPolyDataOut pd)
 //***************************
 //writePolyline
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writePolyline(LWPolyDataOut pd)
+void CDxfWrite::writePolyline(const LWPolyDataOut &pd)
 {
     (*m_ssEntity) << "  0"            << endl;
     (*m_ssEntity) << "POLYLINE"       << endl;
@@ -796,7 +796,7 @@ void CDxfWrite::writeEllipse(const double* c, double major_radius, double minor_
 //***************************
 //writeSpline
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeSpline(SplineDataOut sd)
+void CDxfWrite::writeSpline(const SplineDataOut &sd)
 {
     (*m_ssEntity) << "  0"          << endl;
     (*m_ssEntity) << "SPLINE"       << endl;
