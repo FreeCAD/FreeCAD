@@ -578,6 +578,14 @@ View3DInventorViewer::~View3DInventorViewer()
         static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = 0;
         Py_DECREF(_viewerPy);
     }
+
+    // In the init() function we have overridden the default SoGLRenderAction with our
+    // own instance of SoBoxSelectionRenderAction and SoRenderManager destroyed the default.
+    // But it does this only once so that now we have to explicitly destroy our instance in
+    // order to free the memory.
+    SoGLRenderAction* glAction = this->getSoRenderManager()->getGLRenderAction();
+    this->getSoRenderManager()->setGLRenderAction(nullptr);
+    delete glAction;
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
