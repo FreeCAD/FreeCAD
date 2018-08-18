@@ -580,13 +580,35 @@ class _Stairs(ArchComponent.Component):
             obj.AbsTop = vBase
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
-        h = obj.Height.Value
-        l = obj.Length.Value
-        if obj.Base:
+        h = 0
+
+        if obj.RiserHeightEnforce != 0:
+            h = obj.RiserHeightEnforce * numberofsteps
+        elif obj.Base: # TODO - should this happen? - though in original code
             if obj.Base.isDerivedFrom("Part::Feature"):
-                l = obj.Base.Shape.Length
-                if obj.Base.Shape.BoundBox.ZLength:
-                    h = obj.Base.Shape.BoundBox.ZLength
+                #l = obj.Base.Shape.Length
+                #if obj.Base.Shape.BoundBox.ZLength:
+                if round(obj.Base.Shape.BoundBox.ZLength,Draft.precision()) != 0: # ? - need precision
+                    h = obj.Base.Shape.BoundBox.ZLength #.Value?
+                else:
+                    print ("obj.Base has 0 z-value")
+                    print (h)
+        if h==0 and obj.Height.Value != 0:
+            h = obj.Height.Value
+        else:
+            print (h)
+
+        if obj.TreadDepthEnforce != 0:
+                l = obj.TreadDepthEnforce.Value * (numberofsteps-2)
+                if obj.LandingDepth:
+                    l += obj.LandingDepth.Value
+                else:
+                    l += obj.Width.Value
+        elif obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                l = obj.Base.Shape.Length #.Value?
+        elif obj.Length.Value != 0:
+            l = obj.Length.Value
 
         if obj.LandingDepth:
             fLength = float(l-obj.LandingDepth.Value)/(numberofsteps-2)
@@ -862,7 +884,7 @@ class _Stairs(ArchComponent.Component):
 
     def makeStraightStairsWithLanding(self,obj,edge):
 
-        "builds a straight staircase with a landing in the middle"
+        "builds a straight staircase with/without a landing in the middle"
 
         if obj.NumberOfSteps < 3:
             return
@@ -876,9 +898,11 @@ class _Stairs(ArchComponent.Component):
                     reslength = edge.Length - obj.LandingDepth.Value
                 else:
                     reslength = edge.Length - obj.Width.Value
+
+                vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
             else:
                 reslength = edge.Length
-            vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
+                vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-1))
 
         else:
 
@@ -906,7 +930,7 @@ class _Stairs(ArchComponent.Component):
         if obj.Landings == "At center":
             landing = int(obj.NumberOfSteps/2)
         else:
-            landing = obj.NumberOfSteps-1
+            landing = obj.NumberOfSteps
 
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
