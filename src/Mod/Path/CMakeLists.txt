@@ -95,6 +95,8 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PostUtils.py
+    PathScripts/PathAdaptiveGui.py
+    PathScripts/PathAdaptive.py
     PathScripts/__init__.py
 )
 

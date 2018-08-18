@@ -60,6 +60,7 @@ set(AREA_SRC_COMMON
 
 set(AREA_SRC_CLIPPER
     AreaClipper.cpp
+	Adaptive.cpp
     clipper.cpp
 )
 
@@ -98,6 +99,7 @@ add_library(
     MODULE
     ${PYAREA_SRC}
 )
+
 
 if(MSVC)
     set(area_native_LIBS

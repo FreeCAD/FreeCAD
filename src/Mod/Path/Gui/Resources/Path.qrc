@@ -65,6 +65,7 @@
         <file>icons/edge-join-round.svg</file>
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/preferences-path.svg</file>
+		<file>icons/Path-Adaptive.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
