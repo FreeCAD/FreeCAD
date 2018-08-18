@@ -157,6 +157,31 @@ class POCKETGate:
 
         return pocketable
 
+class ADAPTIVEGate:
+    def allow(self, doc, obj, sub):
+
+        adaptive = False
+        try:
+            obj = obj.Shape
+        except:
+            return False
+
+        if obj.ShapeType == 'Edge':
+            adaptive = False
+
+        elif obj.ShapeType == 'Face':
+            adaptive = True
+
+        elif obj.ShapeType == 'Solid':
+            if sub and sub[0:4] == 'Face':
+                adaptive = True
+
+        elif obj.ShapeType == 'Compound':
+            if sub and sub[0:4] == 'Face':
+                adaptive = True
+
+        return adaptive
+
 class CONTOURGate:
     def allow(self, doc, obj, sub):
         pass
@@ -189,6 +214,10 @@ def pocketselect():
     FreeCADGui.Selection.addSelectionGate(POCKETGate())
     FreeCAD.Console.PrintWarning("Pocketing Select Mode\n")
 
+def adaptiveselect():
+    FreeCADGui.Selection.addSelectionGate(ADAPTIVEGate())
+    FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
+
 def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(MESHGate())
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
@@ -207,6 +236,7 @@ def select(op):
     opsel['Profile Edges'] = eselect
     opsel['Profile Faces'] = profileselect
     opsel['Surface'] = surfaceselect
+    opsel['Adaptive'] = adaptiveselect
     return opsel[op]
 
 def clear():

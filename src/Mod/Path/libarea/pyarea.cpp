@@ -11,6 +11,7 @@
 #include "Point.h"
 #include "AreaDxf.h"
 #include "kurve/geometry.h"
+#include "Adaptive.hpp"
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -358,9 +359,46 @@ void init_pyarea(py::module &m){
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
     m.def("TangentialArc", TangentialArc);
+
+	using namespace AdaptivePath;
+	py::enum_<MotionType>(m, "AdaptiveMotionType")
+	 .value("Cutting", MotionType::mtCutting)
+     .value("LinkClear", MotionType::mtLinkClear)
+	 .value("LinkNotClear", MotionType::mtLinkNotClear)
+	 .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
+
+	py::enum_<OperationType>(m, "AdaptiveOperationType")
+	 .value("Clearing", OperationType::otClearing)
+     .value("ProfilingInside", OperationType::otProfilingInside)
+	 .value("ProfilingOutside", OperationType::otProfilingOutside);
+
+	py::class_<AdaptiveOutput>(m, "AdaptiveOutput")
+		.def(py::init<>())
+		.def_readwrite("HelixCenterPoint",&AdaptiveOutput::HelixCenterPoint)
+		.def_readwrite("StartPoint",&AdaptiveOutput::StartPoint)
+		.def_readwrite("AdaptivePaths",&AdaptiveOutput::AdaptivePaths)
+		.def_readwrite("ReturnMotionType",&AdaptiveOutput::ReturnMotionType);
+
+	py::class_<Adaptive2d>(m, "Adaptive2d")
+		.def(py::init<>())
+		.def("Execute",&Adaptive2d::Execute)
+	 	.def_readwrite("stepOverFactor", &Adaptive2d::stepOverFactor)
+	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
+		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
+		.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
+		.def_readwrite("tolerance", &Adaptive2d::tolerance)
+		.def_readwrite("opType", &Adaptive2d::opType);
 }
 
 PYBIND11_MODULE(area, m){
     m.doc()= "not yet";
     init_pyarea(m);
 };
+
+
+
+
+using namespace AdaptivePath;
+PYBIND11_MODULE(AdaptivePath, m){
+
+}
