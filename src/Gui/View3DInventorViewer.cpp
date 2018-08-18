@@ -553,6 +553,11 @@ View3DInventorViewer::~View3DInventorViewer()
     setSceneGraph(0);
     this->pEventCallback->unref();
     this->pEventCallback = 0;
+    // Note: It can happen that there is still someone who references
+    // the root node but isn't destroyed when closing this viewer so
+    // that it prevents all children from being deleted. To reduce this
+    // likelihood we explicitly remove all child nodes now.
+    this->pcViewProviderRoot->removeAllChildren();
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = 0;
     this->backlight->unref();
