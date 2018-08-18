@@ -157,8 +157,13 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     }
 
     auto geo = dynamic_cast<GeoFeature*>(obj);
-    if(!geo)
+    if(!geo) {
+        if(!append) 
+            elementName.second = element;
+        else
+            elementName.second = Data::ComplexGeoData::oldElementName(subname);
         return sobj;
+    }
     if(!append) 
         elementName = geo->getElementName(element,type);
     else{
