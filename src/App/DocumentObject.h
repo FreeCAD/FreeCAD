@@ -47,13 +47,15 @@ enum ObjectStatus {
     Touch = 0,
     Error = 1,
     New = 2,
-    Recompute = 3,
+    Recompute = 3, // set when the object is currently being recomputed
     Restore = 4,
     Remove = 5,
     PythonCall = 6,
     Destroy = 7,
-    Recompute2 = 8,
+    Recompute2 = 8, // set when the object is being recomputed in the second pass
     PartialObject = 9,
+    PendingRecompute = 10, // set by Document, indicating the object is in recomputation queue
+    PendingRemove = 11, // set by Document, indicating the object is in pending for remove after recompute
     Expand = 16,
 };
 

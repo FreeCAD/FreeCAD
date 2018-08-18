@@ -2809,6 +2809,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
     }
 #endif
+    for(auto obj : topoSortedObjects)
+        obj->setStatus(ObjectStatus::PendingRecompute,true);
+
     std::set<App::DocumentObject *> filter;
     size_t idx = 0;
     // maximum two passes to allow some form of dependency inversion
@@ -2816,7 +2819,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         FC_LOG("Recompute pass " << passes);
         for (;idx<topoSortedObjects.size();++idx) {
             auto obj = topoSortedObjects[idx];
-            if(filter.find(obj)!=filter.end())
+            if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                 continue;
             // ask the object if it should be recomputed
             if (obj->isTouched() || obj->mustExecute() == 1) {
@@ -2852,6 +2855,14 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 }
             }
         }
+    }
+
+    for(auto obj : topoSortedObjects) {
+        if(!obj->getNameInDocument())
+            continue;
+        obj->setStatus(ObjectStatus::PendingRecompute,false);
+        if(obj->testStatus(ObjectStatus::PendingRemove))
+            obj->getDocument()->removeObject(obj->getNameInDocument());
     }
 
     signalRecomputed(*this,topoSortedObjects);
@@ -3392,8 +3403,10 @@ void Document::removeObject(const char* sName)
     if (pos == d->objectMap.end())
         return;
 
-    if (testStatus(Document::Recomputing)) {
-        FC_ERR("Cannot delete " << sName << " while recomputing document " << getName());
+    if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
+        // TODO: shall we allow removal if there is active udno transaction?
+        FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
+        pos->second->setStatus(ObjectStatus::PendingRemove,true);
         return;
     }
 
