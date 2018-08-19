@@ -159,7 +159,7 @@ namespace Py
         )
         {
             ext_meth_def.ml_name = const_cast<char *>( _name );
-            ext_meth_def.ml_meth = reinterpret_cast<method_varargs_call_handler_t>( _handler );
+            ext_meth_def.ml_meth = reinterpret_cast<method_varargs_call_handler_t>(reinterpret_cast<void (*) (void)>(_handler));
             ext_meth_def.ml_flags = METH_VARARGS|METH_KEYWORDS;
             ext_meth_def.ml_doc = const_cast<char *>( _doc );
 
