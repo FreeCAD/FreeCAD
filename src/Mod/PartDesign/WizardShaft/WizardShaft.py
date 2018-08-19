@@ -22,8 +22,8 @@
 
 import FreeCAD, FreeCADGui
 from PySide import QtCore, QtGui
-from WizardShaftTable import WizardShaftTable
-from Shaft import Shaft
+from .WizardShaftTable import WizardShaftTable
+from .Shaft import Shaft
 
 class TaskWizardShaft:
     "Shaft Wizard"
