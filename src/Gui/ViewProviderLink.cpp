@@ -1400,7 +1400,7 @@ static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
     :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
-    ,useCenterballDragger(true),childVp(0),overlayCacheKey(0)
+    ,useCenterballDragger(false),childVp(0),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
