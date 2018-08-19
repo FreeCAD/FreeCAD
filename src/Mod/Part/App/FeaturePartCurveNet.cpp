@@ -57,7 +57,7 @@ App::DocumentObjectExecReturn *CurveNet::execute(void)
     }
 
     TopoShape aShape;
-    aShape.read((const Standard_CString)FileName.getValue());
+    aShape.read(FileName.getValue());
     this->Shape.setValue(aShape);
 
     return App::DocumentObject::StdReturn;

@@ -479,7 +479,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
     unsigned char c;
     std::ostream& to = writer.Stream();
     while (from.get((char&)c)) {
-        to.put((const char)c);
+        to.put((char)c);
     }
 }
 
@@ -503,7 +503,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
     aboutToSetValue();
     unsigned char c;
     while (reader.get((char&)c)) {
-        to.put((const char)c);
+        to.put((char)c);
     }
     to.close();
 
