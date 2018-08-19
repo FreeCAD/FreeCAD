@@ -1401,7 +1401,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: not enough shapes (need 4 lines: edgeA, axisA, axisB, edgeB).");
 
         //extract the four lines
-        const TopoDS_Edge* (edges[4]);
+        const TopoDS_Edge* edges[4];
         BRepAdaptor_Curve adapts[4];
         gp_Lin lines[4];
         for(int i=0  ;  i<4  ;  i++){
