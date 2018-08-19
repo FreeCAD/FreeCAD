@@ -341,9 +341,10 @@ void ImpExpDxfWrite::setOptions(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionMaxLength = hGrp->GetFloat("maxsegmentlength",5.0);
-    optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",false);
     optionExpPoints  = hGrp->GetBool("ExportPoints",false);
     m_version = hGrp->GetInt("DxfVersionOut",14);
+    optionPolyLine  = hGrp->GetBool("DiscretizeEllipses",false);
+    m_polyOverride = hGrp->GetBool("DiscretizeEllipses",false);
     setDataDir(App::Application::getResourceDir() + "Mod/Import/DxfPlate/");
 }
 
@@ -370,37 +371,66 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             gp_Pnt s = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
             if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-                if ((optionPolyLine) &&
-                    (m_version >= 14) ) {
-                    exportLWPoly(adapt);
-                } else if ((optionPolyLine) ||
-                    (m_version < 14) ) {
-                    exportPolyline(adapt);
-                } else {
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
                     exportEllipse(adapt);
+                    }
                 }
-            } else {
-                if ((optionPolyLine) &&
-                    (m_version >= 14) ) {
-                    exportLWPoly(adapt);
-                } else if ((optionPolyLine) ||
-                    (m_version < 14) ) {
-                    exportPolyline(adapt);
-                } else {
-                    exportEllipseArc(adapt);
+            } else {                                     // it's an arc
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
+                        exportEllipseArc(adapt);
+                    }
                 }
             }
-
         } else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            if ((optionPolyLine) &&
-                (m_version >= 14) ) {
-                exportLWPoly(adapt);
-            } else if ((optionPolyLine)  ||
-                (m_version < 14) ) {
-                exportPolyline(adapt);
-            } else {
-                exportBSpline(adapt);
-            }
+                if (m_polyOverride) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else if (optionPolyLine) {
+                    if (m_version >= 14) {
+                        exportLWPoly(adapt);
+                    } else {           //m_version < 14
+                        exportPolyline(adapt);
+                    }
+                } else {                                  //no overrides, do what's right!
+                    if (m_version < 14) {
+                        exportPolyline(adapt);
+                    } else {
+                        exportBSpline(adapt);
+                    }
+                }
         } else if (adapt.GetType() == GeomAbs_BezierCurve) {
             exportBCurve(adapt);
         } else if (adapt.GetType() == GeomAbs_Line) {
@@ -456,7 +486,7 @@ bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2)
 }
 
 
-void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve& c)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
@@ -468,7 +498,7 @@ void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve c)
     writeCircle(center, radius);
 }
 
-void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
@@ -487,7 +517,7 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve c)
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true );
 }
 
-void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve& c)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
@@ -513,7 +543,7 @@ void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve c)
     writeArc(start, end, center, dir );
 }
 
-void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
@@ -553,7 +583,7 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve c)
     writeEllipse(center, major, minor, rotation, startAngle, endAngle, endIsCW);
 }
 
-void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 {
     SplineDataOut sd;
     Handle(Geom_BSplineCurve) spline;
@@ -628,13 +658,13 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve c)
     writeSpline(sd);
 }
 
-void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
 {
     (void) c;
     Base::Console().Message("BCurve dxf export not yet supported\n");
 }
 
-void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)
 {
     double f = c.FirstParameter();
     double l = c.LastParameter();
@@ -647,7 +677,7 @@ void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve c)
     writeLine(start, end);
 }
 
-void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
 {
     LWPolyDataOut pd;
     pd.Flag = c.IsClosed();
@@ -672,7 +702,7 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve c)
     }
 }
 
-void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve c)
+void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve& c)
 {
     LWPolyDataOut pd;
     pd.Flag = c.IsClosed();
