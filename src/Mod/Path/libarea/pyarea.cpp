@@ -396,9 +396,3 @@ PYBIND11_MODULE(area, m){
 };
 
 
-
-
-using namespace AdaptivePath;
-PYBIND11_MODULE(AdaptivePath, m){
-
-}
