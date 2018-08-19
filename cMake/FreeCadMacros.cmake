@@ -146,6 +146,7 @@ macro(generate_from_xml BASE_NAME)
     file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
     if(NOT EXISTS "${SOURCE_CPP_PATH}")
         # assures the source files are generated at least once
+        message(STATUS "${SOURCE_CPP_PATH}")
         execute_process(COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
                         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         )
@@ -153,7 +154,7 @@ macro(generate_from_xml BASE_NAME)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp"
         COMMAND ${PYTHON_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.xml
-        MAIN_DEPENDENCY "${SOURCE_PATH}"
+        MAIN_DEPENDENCY "${BASE_NAME}.xml"
         DEPENDS
         "${CMAKE_SOURCE_DIR}/src/Tools/generateTemplates/templateClassPyExport.py"
         "${TOOL_PATH}"
