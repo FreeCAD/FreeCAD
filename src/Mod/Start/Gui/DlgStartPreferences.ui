@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>581</height>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
       <string>Start page options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="11" column="1">
+      <item row="12" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_3">
         <property name="toolTip">
          <string>an optional custom folder to be displayed at the bottom of the first page</string>
@@ -55,14 +55,14 @@
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="12" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Show additional folder</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1" alignment="Qt::AlignRight">
+      <item row="6" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_3">
         <property name="maximumSize">
          <size>
@@ -88,21 +88,21 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="11" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Show examples folder contents</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Background color</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton_2">
@@ -141,7 +141,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_12">
         <property name="enabled">
          <bool>false</bool>
@@ -151,7 +151,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1" alignment="Qt::AlignRight">
+      <item row="5" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_2">
         <property name="maximumSize">
          <size>
@@ -177,14 +177,14 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Link color</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_2">
         <property name="toolTip">
          <string>an optional image to display as background</string>
@@ -197,21 +197,21 @@
         </property>
        </widget>
       </item>
-      <item row="13" column="0">
+      <item row="14" column="0">
        <widget class="QLabel" name="autoModuleLabel">
         <property name="text">
          <string>Switch workbench after loafing</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Page background color</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1" alignment="Qt::AlignRight">
+      <item row="7" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_4">
         <property name="maximumSize">
          <size>
@@ -237,24 +237,24 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Background image</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Page text color</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="1">
+      <item row="14" column="1">
        <widget class="QComboBox" name="AutoloadModuleCombo"/>
       </item>
-      <item row="8" column="1" alignment="Qt::AlignRight">
+      <item row="9" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_6">
         <property name="maximumSize">
          <size>
@@ -280,7 +280,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1" alignment="Qt::AlignRight">
+      <item row="8" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_5">
         <property name="maximumSize">
          <size>
@@ -306,14 +306,14 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Box background color</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" alignment="Qt::AlignRight">
+      <item row="1" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_1">
         <property name="maximumSize">
          <size>
@@ -339,7 +339,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" alignment="Qt::AlignRight">
+      <item row="2" column="1" alignment="Qt::AlignRight">
        <widget class="Gui::PrefColorButton" name="colorButton_7">
         <property name="enabled">
          <bool>false</bool>
@@ -368,7 +368,7 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="enabled">
          <bool>false</bool>
@@ -378,14 +378,14 @@
         </property>
        </widget>
       </item>
-      <item row="14" column="0">
+      <item row="15" column="0">
        <widget class="QLabel" name="label_11">
         <property name="text">
          <string>Close start page after loading</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_1">
         <property name="toolTip">
          <string>if you want the examples to show on the first page</string>
@@ -407,14 +407,14 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Background text color</string>
         </property>
        </widget>
       </item>
-      <item row="14" column="1">
+      <item row="15" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_2">
         <property name="toolTip">
          <string>Should the start page be closed after loading?</string>
@@ -433,14 +433,14 @@
         </property>
        </widget>
       </item>
-      <item row="15" column="0">
+      <item row="16" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
          <string>Close &amp; switch on file open</string>
         </property>
        </widget>
       </item>
-      <item row="15" column="1">
+      <item row="16" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_3">
         <property name="toolTip">
          <string>If FreeCAD is started by opening a file, apply the two settings above</string>
@@ -459,14 +459,14 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="0">
+      <item row="13" column="0">
        <widget class="QLabel" name="label_14">
         <property name="text">
          <string>Show forum</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="1">
+      <item row="13" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_4">
         <property name="toolTip">
          <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
@@ -479,6 +479,32 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowForum</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Use FreeCAD style sheet</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="toolTip">
+         <string>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseStyleSheet</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
