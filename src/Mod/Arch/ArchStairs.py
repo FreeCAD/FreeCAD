@@ -491,10 +491,16 @@ class _Stairs(ArchComponent.Component):
 
         if obj.OutlineWireLeft:
             OutlineWireLeftObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireLeft)
-            OutlineWireLeftObject.Points = obj.OutlineLeft
+            if obj.OutlineLeftAll:
+                OutlineWireLeftObject.Points = obj.OutlineLeftAll
+            elif obj.OutlineLeft:
+                OutlineWireLeftObject.Points = obj.OutlineLeft
         if obj.OutlineWireRight:
             OutlineWireRightObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireRight)
-            OutlineWireRightObject.Points = obj.OutlineRight
+            if obj.OutlineRightAll:
+                OutlineWireRightObject.Points = obj.OutlineRightAll
+            elif obj.OutlineRight:
+                OutlineWireRightObject.Points = obj.OutlineRight
 
         # compute step data
         if obj.NumberOfSteps > 1:
