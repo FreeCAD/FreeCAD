@@ -402,7 +402,7 @@ private:
             layerName = "none";
             PyMem_Free(fname);
 
-            if ((versionParm == 12) or 
+            if ((versionParm == 12) ||
                (versionParm == 14)) {
                versionOverride = true;
             }
@@ -451,7 +451,7 @@ private:
             layerName = "none";
             PyMem_Free(fname);
 
-            if ((versionParm == 12) or 
+            if ((versionParm == 12) ||
                (versionParm == 14)) {
                versionOverride = true;
             }
@@ -513,7 +513,7 @@ private:
             layerName = "none";
             PyMem_Free(fname);
 
-            if ((versionParm == 12) or 
+            if ((versionParm == 12) ||
                (versionParm == 14)) {
                versionOverride = true;
             }
@@ -566,7 +566,7 @@ private:
             layerName = "none";
             PyMem_Free(fname);
 
-            if ((versionParm == 12) or 
+            if ((versionParm == 12) ||
                (versionParm == 14)) {
                versionOverride = true;
             }
