@@ -132,26 +132,95 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         else:
             _ViewProviderStairs(obj.ViewObject)
 
-    if baseobj:
+    if stairs:
+        for stair in stairs:
+            stair.recompute()
         makeRailing(stairs)
         return stairs
     else:
+        obj.recompute()
+
         return obj
 
 
 def makeRailing(stairs):
-    "simple Railing definition testing"
+    "simple make Railing function testing"
 
-    i =0
-    for stair in stairs:
-        print (stair)
+    def makeRailingLorR(stairs,side="L"):
+        for stair in reversed(stairs):
+            if side == "L":
+                outlineLR = stair.OutlineLeft
+                OutlineLRAll = stair.OutlineLeftAll
+                stairs0OutlineWireLR = "OutlineWireLeft"
+                stairOutlineWireLR = "OutlineWireLeft"
+            elif side == "R":
+                outlineLR = stair.OutlineRight
+                OutlineLRAll = stair.OutlineRightAll
+                stairs0OutlineWireLR = "OutlineWireRight"
+                stairOutlineWireLR = "OutlineWireRight"
+            if outlineLR or OutlineLRAll:
+                lrRail = ArchPipe.makePipe()
+                if OutlineLRAll:
+                    lrRailWire = Draft.makeWire(OutlineLRAll)
+                    lrRail.Base = lrRailWire
+                    setattr(stairs[0], stairs0OutlineWireLR, lrRailWire.Name)
+                    setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif outlineLR:
+                    lrRailWire = Draft.makeWire(outlineLR)
+                    lrRail.Base = lrRailWire
+                    setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
+    makeRailingLorR(stairs,"L")
+    makeRailingLorR(stairs,"R")
 
-        stair.recompute()
-        lRailWire = Draft.makeWire(stair.OutlineLeft)
-        lRail = ArchPipe.makePipe(lRailWire,50)
-        rRailWire = Draft.makeWire(stair.OutlineRight)
-        rRail = ArchPipe.makePipe(rRailWire,50)
-        i += 1
+    if False: # TODO - To be deleted
+      for stair in reversed(stairs):
+        print ("stair.Name")
+        print (stair.Name)
+        if stair.OutlineLeft or stair.OutlineLeftAll:
+                lrRail = ArchPipe.makePipe()
+                if stair.OutlineLeftAll:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeftAll)
+                    lrRail.Base = lrRailWire
+                    stairs[0].OutlineWireLeft = lrRailWire.Name
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif stair.OutlineLeft:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeft)
+                    lrRail.Base = lrRailWire
+                    stair.OutlineWireLeft = lrRailWire.Name
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
+    if False: # TODO - To be deleted
+      for stair in reversed(stairs):
+        print ("stair.Name")
+        print (stair.Name)
+        if stair.OutlineRight or stair.OutlineRightAll:
+                lrRail = ArchPipe.makePipe()
+                if stair.OutlineRightAll:
+                    lrRailWire = Draft.makeWire(stair.OutlineRightAll)
+                    lrRail.Base = lrRailWire
+                    stairs[0].OutlineWireRight = lrRailWire.Name
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif stair.OutlineRight:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeft)
+                    lrRail.Base = lrRailWire
+                    stair.OutlineWireRight = lrRailWire.Name
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
 
 
 class _CommandStairs:
@@ -296,6 +365,20 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
             obj.setEditorMode("OutlineRight",1)
 
+        if not hasattr(obj,"OutlineWireLeft"):
+            #obj.addProperty("App::PropertyLink","OutlineWireLeft","Segment and Parts","Wire object created from OutlineLeft")	# To test which is better
+            obj.addProperty("App::PropertyString","OutlineWireLeft","Segment and Parts","Name of Wire object's created from OutlineLeft")
+        if not hasattr(obj,"OutlineWireRight"):
+            #obj.addProperty("App::PropertyLink","OutlineWireRight","Segment and Parts","Wire object created from OutlineRight")	# To test which is better
+            obj.addProperty("App::PropertyString","OutlineWireRight","Segment and Parts","Name of Wire object's created from OutlineLeft")
+
+        if not hasattr(obj,"OutlineLeftAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineLeftAll",1)
+        if not hasattr(obj,"OutlineRightAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineRightAll",1)
+
         # structural properties
         if not "Landings" in pl:
             obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"))
@@ -406,6 +489,13 @@ class _Stairs(ArchComponent.Component):
                 obj.Shape = base
                 obj.Placement = pl
 
+        if obj.OutlineWireLeft:
+            OutlineWireLeftObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireLeft)
+            OutlineWireLeftObject.Points = obj.OutlineLeft
+        if obj.OutlineWireRight:
+            OutlineWireRightObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireRight)
+            OutlineWireRightObject.Points = obj.OutlineRight
+
         # compute step data
         if obj.NumberOfSteps > 1:
             l = obj.Length.Value
@@ -459,6 +549,9 @@ class _Stairs(ArchComponent.Component):
 
         if struct:
             self.structures.append(struct)
+
+        self.connectRailingVector(obj,outlineRailL,outlineRailR)
+
 
     #@staticmethod
     def returnOutlines(self, obj, edges, align="left", offsetH=0, offsetV=0):	# better omit 'obj' latter - 'currently' only for vbaseFollowLastSement()?
@@ -980,8 +1073,32 @@ class _Stairs(ArchComponent.Component):
 
         edge = Part.LineSegment(p1,p2).toShape()
         outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge, align="left", offsetH=90, offsetV=900)
+
+        self.connectRailingVector(obj,outlineRailL,outlineRailR)
+
+
+    def connectRailingVector(self,obj,outlineRailL,outlineRailR):
+
         obj.OutlineLeft = outlineRailL # outlineL # outlineP1P2
         obj.OutlineRight = outlineRailR # outlineR # outlineP3P4
+
+        if obj.LastSegment:
+            if obj.LastSegment.OutlineLeftAll:
+                outlineLeftAll = obj.LastSegment.OutlineLeftAll
+            else:
+                outlineLeftAll = []
+            if obj.LastSegment.OutlineRightAll:
+                outlineRightAll = obj.LastSegment.OutlineRightAll
+            else:
+                outlineRightAll = []
+        else:
+            outlineLeftAll = []
+            outlineRightAll = []
+        outlineLeftAll.extend(outlineRailL)
+        outlineRailR.extend(outlineRightAll)
+        outlineRightAll=outlineRailR
+        obj.OutlineLeftAll = outlineLeftAll
+        obj.OutlineRightAll = outlineRightAll
 
 
     def makeCurvedStairs(self,obj,edge):
