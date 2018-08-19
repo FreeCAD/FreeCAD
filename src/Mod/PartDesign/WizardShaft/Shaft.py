@@ -22,9 +22,9 @@
 # ******************************************************************************/
 
 import FreeCAD, FreeCADGui
-from SegmentFunction import SegmentFunction,  IntervalFunction,  StressFunction,  TranslationFunction
-from ShaftFeature import ShaftFeature
-from ShaftDiagram import Diagram
+from .SegmentFunction import SegmentFunction,  IntervalFunction,  StressFunction,  TranslationFunction
+from .ShaftFeature import ShaftFeature
+from .ShaftDiagram import Diagram
 import math
 
 class ShaftSegment:
