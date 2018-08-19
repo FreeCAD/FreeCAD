@@ -1499,6 +1499,7 @@ void Application::initTypes(void)
     App ::Link                      ::init();
     App ::LinkPython                ::init();
     App ::LinkElement               ::init();
+    App ::LinkElementPython         ::init();
     App ::LinkGroup                 ::init();
     App ::LinkGroupPython           ::init();
 

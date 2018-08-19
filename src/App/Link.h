@@ -463,6 +463,8 @@ public:
     bool canDelete() const {return myOwner==0;}
 };
 
+typedef App::FeaturePythonT<LinkElement> LinkElementPython;
+
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkGroup : public App::DocumentObject, public App::LinkBaseExtension {

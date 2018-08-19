@@ -668,6 +668,17 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 auto placementProp = getPlacementListProperty();
                 auto scaleProp = getScaleListProperty();
                 const auto &vis = getVisibilityListValue();
+                auto proxy = dynamic_cast<PropertyPythonObject*>(parent->getPropertyByName("Proxy"));
+                Py::Callable method;
+                Py::Tuple args(3);
+                if(proxy) {
+                    Py::Object proxyValue = proxy->getValue();
+                    const char *fname = "onCreateLinkElement";
+                    if (proxyValue.hasAttr(fname)) {
+                        method = proxyValue.getAttr(fname);
+                        args.setItem(0,Py::Object(parent->getPyObject(),true));
+                    }
+                }
                 for(size_t i=objs.size();i<elementCount;++i) {
                     name.resize(offset);
                     name += std::to_string(i);
@@ -679,7 +690,13 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     if(obj && (!obj->myOwner || obj->myOwner==this))
                         obj->Visibility.setValue(false);
                     else {
-                        obj = new LinkElement;
+                        if(!method.isNone()) {
+                            obj = new LinkElementPython;
+                            args.setItem(1,Py::Object(obj->getPyObject(),true));
+                            args.setItem(2,Py::Int((int)i));
+                            method.apply(args);
+                        } else
+                            obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
 
@@ -1068,6 +1085,16 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::LinkElement, App::DocumentObject)
 LinkElement::LinkElement() {
     LINK_PROPS_ADD(LINK_PARAMS_ELEMENT);
     LinkBaseExtension::initExtension(this);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::LinkElementPython, App::LinkElement)
+template<> const char* App::LinkElementPython::getViewProviderName(void) const {
+    return "Gui::ViewProviderLinkPython";
+}
+template class AppExport FeaturePythonT<App::LinkElement>;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
