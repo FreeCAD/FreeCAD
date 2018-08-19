@@ -137,7 +137,9 @@ bool ViewProviderDragger::setEdit(int ModNum)
     csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
     
-    pcRoot->insertChild(csysDragger, 0);
+    // dragger node is added to viewer's editing root in setEditViewer
+    // pcRoot->insertChild(csysDragger, 0);
+    csysDragger->ref();
     
     TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
     Gui::Control().showDialog(task);
@@ -155,7 +157,9 @@ void ViewProviderDragger::unsetEdit(int ModNum)
     pcTransform->translation.disconnect(&csysDragger->translation);
     pcTransform->rotation.disconnect(&csysDragger->rotation);
     
-    pcRoot->removeChild(csysDragger); //should delete csysDragger
+    // dragger node is added to viewer's editing root in setEditViewer
+    // pcRoot->removeChild(csysDragger); //should delete csysDragger
+    csysDragger->unref();
     csysDragger = nullptr;
   }
   Gui::Control().closeDialog();
