@@ -58,6 +58,8 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
     void updateData(const App::Property*);
 
+    virtual ViewProvider *startEditing(int ModNum=0) override;
+
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
@@ -74,6 +76,10 @@ private:
     static void dragFinishCallback(void * data, SoDragger * d);
     
     static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+
+    bool checkLink();
+
+    ViewProvider *_linkDragger = nullptr;
 };
 
 } // namespace Gui

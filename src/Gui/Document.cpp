@@ -386,6 +386,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->_editMode = ModNum;
     d->_editViewProvider = svp->startEditing(ModNum);
     if(!d->_editViewProvider) {
+        d->_editViewProviderParent = 0;
         FC_LOG("object '" << sobj->getNameInDocument() << "' refuse to edit");
         return false;
     }
@@ -427,7 +428,6 @@ void Document::_resetEdit(void)
         if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
         d->_editViewProvider = 0;
-        d->_editViewProviderParent = 0;
 
         // The logic below is not necessary anymore, because this method is
         // changed into a private one,  _resetEdit(). And the exposed
@@ -445,6 +445,7 @@ void Document::_resetEdit(void)
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
 #endif
     }
+    d->_editViewProviderParent = 0;
     if(Application::Instance->editDocument() == this)
         Application::Instance->setEditDocument(0);
 }
@@ -452,16 +453,16 @@ void Document::_resetEdit(void)
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp, 
         std::string *subname, int *mode, std::string *subelement) const
 {
+    if(parentVp) *parentVp = d->_editViewProviderParent;
+    if(subname) *subname = d->_editSubname;
+    if(subelement) *subelement = d->_editSubElement;
+    if(mode) *mode = d->_editMode;
+
     if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
-        if (activeView && activeView->getViewer()->isEditingViewProvider()) {
-            if(parentVp) *parentVp = d->_editViewProviderParent;
-            if(subname) *subname = d->_editSubname;
-            if(subelement) *subelement = d->_editSubElement;
-            if(mode) *mode = d->_editMode;
+        if (activeView && activeView->getViewer()->isEditingViewProvider())
             return d->_editViewProvider;
-        }
     }
 
     return 0;
