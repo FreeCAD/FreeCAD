@@ -24,7 +24,8 @@
 # This is the start page template. It builds a HTML global variable that contains
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,TranslationTexts
+import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+from . import TranslationTexts
 from PySide import QtCore,QtGui
 
 FreeCADGui.addLanguagePath(":/translations")
