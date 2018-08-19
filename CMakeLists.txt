@@ -19,7 +19,7 @@ if(COMMAND cmake_policy)
     endif(POLICY CMP0020)
     # added in cmake 3.0
     if(POLICY CMP0050)
-        cmake_policy(SET CMP0050 OLD)
+        cmake_policy(SET CMP0050 NEW)
     endif(POLICY CMP0050)
     if (POLICY CMP0045)
         cmake_policy(SET CMP0045 NEW)

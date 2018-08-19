@@ -125,11 +125,6 @@ fc_target_copy_resource(Path
     ${CMAKE_BINARY_DIR}/Mod/Path
     ${Path_Scripts})
 
-fc_target_copy_resource(Path 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path
-    ${Path_Resources})
-
 SET_BIN_DIR(Path Path /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 

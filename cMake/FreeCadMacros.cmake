@@ -51,7 +51,6 @@ MACRO (fc_copy_sources target_name outpath)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    "${infile}"
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
 			OUTPUTS   "${outfile}"
@@ -59,7 +58,6 @@ MACRO (fc_copy_sources target_name outpath)
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${target_name}
 		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
@@ -76,7 +74,6 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    "${infile}"
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
 			TARGET    ${target_name}
 			OUTPUTS   "${outfile}"
@@ -84,7 +81,6 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${target_name}
 		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
