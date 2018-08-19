@@ -1042,6 +1042,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
                     break;
                 }
             }
+        /* FALLTHRU */
         // mode is FocalPointAtCursor or a ScenePointAtCursor failed
         case FocalPointAtCursor:
             {
