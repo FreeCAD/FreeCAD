@@ -2129,20 +2129,21 @@ bool ViewProviderLink::initDraggingPlacement() {
                 Py::Callable method(feature.getAttr(fname));
                 Py::Tuple arg;
                 Py::Object ret(method.apply(arg));
-                if(!ret.isTrue())
+                if(ret.isTuple()) {
+                    PyObject *pymat,*pypla,*pybbox;
+                    if(!PyArg_ParseTuple(ret.ptr(),"O!O!O!",&Base::MatrixPy::Type, &pymat,
+                                &Base::PlacementPy::Type, &pypla,
+                                &Base::BoundBoxPy::Type, &pybbox)) {
+                        FC_ERR("initDraggingPlacement() expects return of type tuple(matrix,placement,boundbox)");
+                        return false;
+                    }
+                    dragCtx.reset(new DraggerContext);
+                    dragCtx->initialPlacement = *static_cast<Base::PlacementPy*>(pypla)->getPlacementPtr();
+                    dragCtx->preTransform = *static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
+                    dragCtx->bbox = *static_cast<Base::BoundBoxPy*>(pybbox)->getBoundBoxPtr();
+                    return true;
+                }else if(!ret.isTrue())
                     return false;
-                PyObject *pymat,*pypla,*pybbox;
-                if(!PyArg_ParseTuple(ret.ptr(),"O!O!O!",&Base::MatrixPy::Type, &pymat,
-                            &Base::PlacementPy::Type, &pypla,
-                            &Base::BoundBoxPy::Type, &pybbox)) {
-                    FC_ERR("initDraggingPlacement() expects return of type tuple(matrix,placement,boundbox)");
-                    return false;
-                }
-                dragCtx.reset(new DraggerContext);
-                dragCtx->initialPlacement = *static_cast<Base::PlacementPy*>(pypla)->getPlacementPtr();
-                dragCtx->preTransform = *static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
-                dragCtx->bbox = *static_cast<Base::BoundBoxPy*>(pybbox)->getBoundBoxPtr();
-                return true;
             }
         }
     } catch (Py::Exception&) {
@@ -2383,8 +2384,8 @@ bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
             if (feature.hasAttr(fname)) {
                 Py::Callable method(feature.getAttr(fname));
                 Py::Tuple args;
-                method.apply(args);
-                return true;
+                if(method.apply(args).isTrue())
+                    return true;
             }
         }
     } catch (Py::Exception&) {
