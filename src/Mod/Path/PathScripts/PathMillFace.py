@@ -124,12 +124,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         return [(env, False)]
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... initialize mill facing properties'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
-
-        job = PathUtils.findParentJob(obj)
 
         # need to overwrite the default depth calculations for facing
         if job and job.Base:

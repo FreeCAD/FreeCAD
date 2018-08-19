@@ -147,7 +147,8 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
-        self.opSetDefaultValues(obj)
+        job = PathUtils.findParentJob(obj)
+        self.opSetDefaultValues(obj, job)
 
 def Create(name):
     '''Create(name) ... Creates and returns an Engrave operation.'''

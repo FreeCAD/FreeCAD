@@ -147,11 +147,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.removalshape = self.removalshapes[0][0]
         return self.removalshapes
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... set default values'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-        job = PathUtils.findParentJob(obj)
         if job and job.Stock:
             bb = job.Stock.Shape.BoundBox
             obj.OpFinalDepth = bb.ZMin

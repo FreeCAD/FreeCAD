@@ -187,7 +187,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         return out
 
-    def opSetDefaultValues(self, obj):
+    def opSetDefaultValues(self, obj, job):
         obj.Direction = "CW"
         obj.StartSide = "Inside"
         obj.StepOver = 100

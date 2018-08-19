@@ -116,8 +116,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command('G80'))
 
-    def opSetDefaultValues(self, obj):
-        '''opSetDefaultValues(obj) ... set default value for RetractHeight'''
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
         obj.RetractHeight = 10
 
 def Create(name):
