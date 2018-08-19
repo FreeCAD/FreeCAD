@@ -308,13 +308,12 @@ class ObjectSurface(PathOp.ObjectOp):
     def pocketInvertExtraOffset(self):
         return True
 
-    def opSetDefaultValues(self, obj):
-        '''opSetDefaultValues(obj) ... initialize defauts'''
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj, job) ... initialize defauts'''
 
         # obj.ZigZagAngle = 45.0
         obj.StepOver = 50
         # need to overwrite the default depth calculations for facing
-        job = PathUtils.findParentJob(obj)
         if job and job.Base:
             d = PathUtils.guessDepths(job.Base.Shape, None)
             obj.OpStartDepth = d.start_depth

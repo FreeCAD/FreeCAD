@@ -236,8 +236,8 @@ class ObjectOp(object):
         Can safely be overwritten by subclasses.'''
         pass
 
-    def opSetDefaultValues(self, obj):
-        '''opSetDefaultValues(obj) ... overwrite to set initial default values.
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
         pass
@@ -319,7 +319,7 @@ class ObjectOp(object):
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
 
-        self.opSetDefaultValues(obj)
+        self.opSetDefaultValues(obj, job)
         obj.recompute()
         return True
 

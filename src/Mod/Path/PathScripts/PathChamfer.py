@@ -113,8 +113,8 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
         return base != self.baseobject
 
-    def opSetDefaultValues(self, obj):
-        PathLog.track(obj.Label)
+    def opSetDefaultValues(self, obj, job):
+        PathLog.track(obj.Label, job.Label)
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'

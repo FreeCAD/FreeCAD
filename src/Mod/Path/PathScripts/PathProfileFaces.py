@@ -130,9 +130,9 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         PathLog.debug("%d shapes" % len(shapes))
         return shapes
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... sets default values for hole, circle and perimeter processing.'''
-        self.baseObject().areaOpSetDefaultValues(obj)
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... sets default values for hole, circle and perimeter processing.'''
+        self.baseObject().areaOpSetDefaultValues(obj, job)
 
         obj.processHoles = False
         obj.processCircles = False

@@ -88,8 +88,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             removalshapes = [(obj.removalshape, False)]
         return removalshapes
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... set default values'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 

@@ -135,8 +135,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         '''areaOpUseProjection(obj) ... returns True'''
         return True
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... sets default values.
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... sets default values.
         Do not overwrite.'''
         obj.Side = "Outside"
         obj.OffsetExtra = 0.0
