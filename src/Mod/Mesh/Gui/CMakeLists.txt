@@ -146,11 +146,6 @@ add_library(MeshGui SHARED ${MeshGui_SRCS})
 target_link_libraries(MeshGui ${MeshGui_LIBS})
 
 
-fc_target_copy_resource(MeshGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    InitGui.py)
-
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
