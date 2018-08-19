@@ -166,7 +166,7 @@ def handle():
     # build the html page skeleton
 
     resources_dir = os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage")
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Start")
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
     template = p.GetString("Template","")
     if template:
         html_filename = template
@@ -176,14 +176,22 @@ def handle():
     css_filename = os.path.join(resources_dir, "StartPage.css")
     with open(html_filename, 'r') as f:
         HTML = f.read()
-
     with open(js_filename, 'r') as f:
         JS = f.read()
-
     with open(css_filename, 'r') as f:
         CSS = f.read()
     HTML = HTML.replace("JS",JS)
     HTML = HTML.replace("CSS",CSS)
+
+
+    # get the stylesheet if we are using one
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("UseStyleSheet",False):
+        qssfile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet","")
+        if qssfile:
+            with open(qssfile, 'r') as f:
+                ALTCSS = f.read().decode("utf8")
+            HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
 
     # get FreeCAD version
