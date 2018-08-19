@@ -813,17 +813,6 @@ Py::Object TopoShapeFacePy::getSurface() const
     throw Py::TypeError("undefined surface type");
 }
 
-PyObject* TopoShapeFacePy::setTolerance(PyObject *args)
-{
-    double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
-    BRep_Builder aBuilder;
-    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
-    aBuilder.UpdateFace(f, tol);
-    Py_Return;
-}
-
 Py::Float TopoShapeFacePy::getTolerance(void) const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
