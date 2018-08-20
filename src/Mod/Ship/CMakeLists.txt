@@ -112,11 +112,17 @@ SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
 SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipCreateLoadCondition_SRCS} ${ShipGZ_SRCS} ${ShipUtils_SRCS})
 
+SET(ShipGuiIcon_SVG
+    resources/icons/ShipWorkbench.svg
+)
+
 ADD_CUSTOM_TARGET(Ship ALL
-    SOURCES ${all_files} ${Ship_QRC_SRCS}
+    SOURCES ${all_files} ${Ship_QRC_SRCS} ${ShipGuiIcon_SVG}
 )
 
 fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
+
+fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Ship" ${ShipGuiIcon_SVG})
 
 IF(BUILD_GUI)
     fc_target_copy_resource(Ship
@@ -204,11 +210,10 @@ INSTALL(
     DESTINATION
         Mod/Ship
 )
-
-SET(ShipGuiIcon_SVG
-    resources/icons/ShipWorkbench.svg
+INSTALL(
+    FILES
+        ${ShipGuiIcon_SVG}
+    DESTINATION
+       "${CMAKE_INSTALL_DATADIR}/Mod/Ship/resources/icons"
 )
 
-fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Ship" ${ShipGuiIcon_SVG})
-
-INSTALL(FILES ${ShipGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Ship/resources/icons")
