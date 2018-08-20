@@ -44,33 +44,17 @@ SET(StartGui_SRCS
     Workbench.h
 )
 
-add_library(StartGui SHARED ${StartGui_SRCS})
-target_link_libraries(StartGui ${StartGui_LIBS})
-
-fc_target_copy_resource(StartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Start
-    ${CMAKE_BINARY_DIR}/Mod/Start
-    InitGui.py)
-
-fc_target_copy_resource(StartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Start/StartPage
-    ${CMAKE_BINARY_DIR}/Mod/Start/StartPage
-    ${StartPage_Scripts})
-
-fc_target_copy_resource(StartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Start/StartPage
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage
-    ${StartPage_Resources})
-
-SET_BIN_DIR(StartGui StartGui /Mod/Start)
-SET_PYTHON_PREFIX_SUFFIX(StartGui)
-
-INSTALL(TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(StartGuiIcon_SVG
     Resources/icons/StartWorkbench.svg
 )
 
+add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
+target_link_libraries(StartGui ${StartGui_LIBS})
+
+SET_BIN_DIR(StartGui StartGui /Mod/Start)
+SET_PYTHON_PREFIX_SUFFIX(StartGui)
+
 fc_copy_sources(StartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start" ${StartGuiIcon_SVG})
 
+INSTALL(TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${StartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Start/Resources/icons")
