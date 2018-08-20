@@ -371,13 +371,12 @@ SET(FemGui_SRCS
 )
 
 
-add_library(FemGui SHARED ${FemGui_SRCS})
-target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
-
-
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
+
+add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
+target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
 
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
