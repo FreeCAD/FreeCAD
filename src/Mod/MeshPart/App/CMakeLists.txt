@@ -58,14 +58,19 @@ SET(MeshPart_SRCS
     PreCompiled.h
 )
 
-add_library(MeshPart SHARED ${MeshPart_SRCS})
+set(MeshPart_Scripts
+    ../Init.py
+)
+
+add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
 
 
-fc_target_copy_resource(MeshPart 
-    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
+fc_target_copy_resource_flat(MeshPart
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/MeshPart
-    Init.py)
+    ${MeshPart_Scripts}
+)
 
 SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPart)
