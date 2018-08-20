@@ -113,17 +113,8 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #    SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
 #endif(WIN32)
 
-SET(Path_Scripts
-    Init.py
-)
-
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
-
-fc_target_copy_resource(Path 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/Mod/Path
-    ${Path_Scripts})
 
 SET_BIN_DIR(Path Path /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)
