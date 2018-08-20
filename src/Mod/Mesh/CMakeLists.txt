@@ -14,11 +14,11 @@ if(BUILD_GUI)
     list (APPEND Mesh_Scripts InitGui.py)
 endif(BUILD_GUI)
 
-add_custom_target(Mesh_Data ALL
+add_custom_target(MeshScripts ALL
     SOURCES ${Mesh_Scripts}
 )
 
-fc_target_copy_resource_flat(Mesh_Data
+fc_target_copy_resource_flat(MeshScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     ${Mesh_Scripts}

@@ -142,19 +142,18 @@ SET(MeshGui_SRCS
     Workbench.h
 )
 
-add_library(MeshGui SHARED ${MeshGui_SRCS})
+SET(MeshGuiIcon_SVG
+    Resources/icons/MeshWorkbench.svg
+)
+
+add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
 target_link_libraries(MeshGui ${MeshGui_LIBS})
 
 
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
-INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-SET(MeshGuiIcon_SVG
-    Resources/icons/MeshWorkbench.svg
-)
-
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
 
+INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")
