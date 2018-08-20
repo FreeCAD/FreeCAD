@@ -111,7 +111,8 @@ std::string App::quote(const std::string &input)
  * @param property Name of property.
  */
 
-ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const std::string & property)
+ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, 
+        const std::string & property, int index)
     : owner(_owner)
     , documentNameSet(false)
     , documentObjectNameSet(false)
@@ -121,15 +122,15 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
         if (!docObj)
             throw Base::RuntimeError("Property must be owned by a document object.");
 
-        if (property.size() > 0) {
-            const Document * doc = docObj->getDocument();
-
-            documentName = String(doc->getName(), false, true);
-            documentObjectName = String(docObj->getNameInDocument(), false, true);
-        }
+        if (property.size() > 0)
+            setDocumentObjectName(docObj,true);
     }
-    if (property.size() > 0)
-        addComponent(Component::SimpleComponent(property));
+    if (property.size() > 0) {
+        if(index<0)
+            addComponent(Component::SimpleComponent(property));
+        else
+            addComponent(Component::ArrayComponent(property,index));
+    }
 }
 
 /**
@@ -137,7 +138,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
  * @param prop Property to construct object identifier for.
  */
 
-ObjectIdentifier::ObjectIdentifier(const Property &prop)
+ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     : owner(prop.getContainer())
     , documentNameSet(false)
     , documentObjectNameSet(false)
@@ -147,12 +148,12 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop)
     if (!docObj)
         throw Base::TypeError("Property must be owned by a document object.");
 
-    Document * doc = docObj->getDocument();
+    setDocumentObjectName(docObj,true);
 
-    documentName = String(doc->getName(), false, true);
-    documentObjectName = String(docObj->getNameInDocument(), false, true);
-
-    addComponent(Component::SimpleComponent(String(owner->getPropertyName(&prop))));
+    if(index<0)
+        addComponent(Component::SimpleComponent(String(owner->getPropertyName(&prop))));
+    else
+        addComponent(Component::ArrayComponent(String(owner->getPropertyName(&prop)),index));
 }
 
 /**
@@ -942,6 +943,8 @@ ObjectIdentifier ObjectIdentifier::canonicalPath() const
     ObjectIdentifier simplified(getDocumentObject());
 
     ResolveResults result(*this);
+    simplified.documentName = documentName;
+    simplified.documentObjectName = documentObjectName;
 
     for (std::size_t i = result.propertyIndex; i < components.size(); ++i)
         simplified << components[i];
@@ -996,6 +999,17 @@ void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &nam
     documentObjectName = name;
     documentObjectNameSet = force;
 }
+
+void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force)
+{
+    if(!obj || !obj->getNameInDocument() || !obj->getDocument())
+        throw Base::RuntimeError("invalid object");
+    documentNameSet = force;
+    documentName = String(obj->getDocument()->getName(),false,true);
+    documentObjectNameSet = force;
+    documentObjectName = String(obj->getNameInDocument(),true);
+}
+
 
 /**
  * @brief Get the document object name

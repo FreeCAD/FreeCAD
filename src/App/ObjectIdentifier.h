@@ -156,9 +156,10 @@ public:
 
     };
 
-    ObjectIdentifier(const App::PropertyContainer * _owner = 0, const std::string & property = std::string());
+    ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
+            const std::string & property = std::string(), int index=-1);
 
-    ObjectIdentifier(const App::Property & prop);
+    ObjectIdentifier(const App::Property & prop, int index=-1);
 
     virtual ~ObjectIdentifier() {}
 
@@ -193,6 +194,7 @@ public:
     const String getDocumentName() const;
 
     void setDocumentObjectName(const String & name, bool force = false);
+    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false);
 
     const String getDocumentObjectName() const;
 
