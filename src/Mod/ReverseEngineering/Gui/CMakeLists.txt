@@ -68,24 +68,18 @@ SET(ReenGui_SRCS
     Workbench.h
 )
 
-add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS})
-target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
-
-
-fc_target_copy_resource(ReverseEngineeringGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/ReverseEngineering
-    ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
-    InitGui.py)
-
-SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
-SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
-
-install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(ReverseEngineeringGuiIcon_SVG
     Resources/icons/ReverseEngineeringWorkbench.svg
 )
 
+add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
+target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+
+
+SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
+SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
+
 fc_copy_sources(ReverseEngineeringGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering" ${ReverseEngineeringGuiIcon_SVG})
 
-INSTALL(FILES ${ReverseEngineeringGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering/Resources/icons")
+install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${ReverseEngineeringGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering/Resources/icons")
