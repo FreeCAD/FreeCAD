@@ -44,24 +44,19 @@ set(WebGui_MOC_HDRS
 fc_wrap_cpp(WebGui_MOC_SRCS ${WebGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})
 
-add_library(WebGui SHARED ${WebGui_SRCS})
-target_link_libraries(WebGui ${WebGui_LIBS})
-
-
-fc_target_copy_resource(WebGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Web
-    ${CMAKE_BINARY_DIR}/Mod/Web
-    InitGui.py)
-
-SET_BIN_DIR(WebGui WebGui /Mod/Web)
-SET_PYTHON_PREFIX_SUFFIX(WebGui)
-
-INSTALL(TARGETS WebGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(WebGuiIcon_SVG
     Resources/icons/WebWorkbench.svg
 )
 
+add_library(WebGui SHARED ${WebGui_SRCS} ${WebGuiIcon_SVG})
+target_link_libraries(WebGui ${WebGui_LIBS})
+
+
+SET_BIN_DIR(WebGui WebGui /Mod/Web)
+SET_PYTHON_PREFIX_SUFFIX(WebGui)
+
 fc_copy_sources(WebGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Web" ${WebGuiIcon_SVG})
+
+INSTALL(TARGETS WebGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 INSTALL(FILES ${WebGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Web/Resources/icons")
