@@ -7,7 +7,6 @@ endif(BUILD_GUI)
 INSTALL(
     FILES
         Init.py
-        InitGui.py
     DESTINATION
         Mod/JtReader
 )   
