@@ -54,15 +54,19 @@ SET(Points_SRCS
     Structured.h
 )
 
-add_library(Points SHARED ${Points_SRCS})
+set(Points_Scripts
+    ../Init.py
+)
+
+add_library(Points SHARED ${Points_SRCS} ${Points_Scripts})
 
 target_link_libraries(Points ${Points_LIBS})
 
 
-fc_target_copy_resource(Points 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Points
+fc_target_copy_resource_flat(Points
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Points
-    Init.py)
+    ${Points_Scripts})
 
 SET_BIN_DIR(Points Points /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(Points)
