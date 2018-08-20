@@ -26,6 +26,8 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 import ArchPipe
+from Units import Quantity
+zeroMM = Quantity('0mm')
 
 import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
@@ -80,6 +82,11 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
             obj.NumberOfSteps = steps
         obj.Structure = "Massive"
         obj.StructureThickness = 150
+
+        obj.RailingOffsetLeft = 60
+        obj.RailingOffsetRight = 60
+        obj.RailingHeightLeft = 900
+        obj.RailingHeightRight = 900
 
     if baseobj:
         lenSelection = len(baseobj)
@@ -379,6 +386,15 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
             obj.setEditorMode("OutlineRightAll",1)
 
+        if not hasattr(obj,"RailingHeightLeft"):
+            obj.addProperty("App::PropertyLength","RailingHeightLeft","Segment and Parts","Height of Railing on Left hand side from Stairs or Landing ")
+        if not hasattr(obj,"RailingHeightRight"):
+            obj.addProperty("App::PropertyLength","RailingHeightRight","Segment and Parts","Height of Railing on Right hand side from Stairs or Landing ")
+        if not hasattr(obj,"RailingOffsetLeft"):
+            obj.addProperty("App::PropertyLength","RailingOffsetLeft","Segment and Parts","Offset of Railing on Left hand side from stairs or landing Edge ")
+        if not hasattr(obj,"RailingOffsetRight"):
+            obj.addProperty("App::PropertyLength","RailingOffsetRight","Segment and Parts","Offset of Railing on Right hand side from stairs or landing Edge ")
+
         # structural properties
         if not "Landings" in pl:
             obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"))
@@ -535,8 +551,9 @@ class _Stairs(ArchComponent.Component):
         # import Again?
         import Draft, Part
 
-        outline, outlineL, outlineR, vBase1 = self.returnOutlines(obj, edges, align="left", offsetH=0, offsetV=0)
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edges, align="left", offsetH=90, offsetV=900)
+        outline, outlineL, outlineR, vBase1 = self.returnOutlines(obj, edges, "left", zeroMM, zeroMM, zeroMM, zeroMM)
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edges,"left",obj.RailingOffsetLeft, obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight)
+
         obj.OutlineLeft = outlineRailL
         obj.OutlineRight = outlineRailR
         obj.AbsTop = vBase1[0]
@@ -560,7 +577,8 @@ class _Stairs(ArchComponent.Component):
 
 
     #@staticmethod
-    def returnOutlines(self, obj, edges, align="left", offsetH=0, offsetV=0):	# better omit 'obj' latter - 'currently' only for vbaseFollowLastSement()?
+    def returnOutlines(self, obj, edges, align="left", offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM):
+    # better omit 'obj' latter?- currently only for vbaseFollowLastSement()?
 
         import DraftGeomUtils
 
@@ -577,16 +595,18 @@ class _Stairs(ArchComponent.Component):
             vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
 
             # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
-            netWidth = obj.Width.Value - 2*offsetH
+            netWidth = obj.Width.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+
             vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidth))
 
             vBase.append(edges[i].Vertexes[0].Point)
             vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
 
-            if offsetV != 0:  # redundant?
-                vBase[i] = vBase[i].add(Vector(0,0,offsetV))
-            if offsetH != 0:  # redundant?
-                vOffsetH = DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),offsetH)
+            if offsetVLeft != 0:  # redundant?
+                vBase[i] = vBase[i].add(Vector(0,0,offsetVLeft.Value))
+            if offsetHLeft != 0:  # redundant?
+                vOffsetH = DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),offsetHLeft.Value)
+
                 vBase[i] = self.align(vBase[i], "Right", -vOffsetH)
 
             # step + structure							# assume all left-align first # no nosing
@@ -594,7 +614,9 @@ class _Stairs(ArchComponent.Component):
             p2o.append(p1o[i].add(vLength[i]))
             p1.append(self.align(vBase[i],obj.Align,vWidth[i]).add(Vector(0,0,-abs(obj.TreadThickness.Value))))
             p2.append(p1[i].add(vLength[i]))
-            p3.append(p2[i].add(vWidth[i]))
+
+            p3.append(p2[i].add(vWidth[i]).add(Vector(0,0,(offsetVRight-offsetVLeft).Value)))
+
             p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])))
 
             #if obj.Align == 'Left':
@@ -1078,7 +1100,8 @@ class _Stairs(ArchComponent.Component):
             print (p3r, p4r)
 
         edge = Part.LineSegment(p1,p2).toShape()
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge, align="left", offsetH=90, offsetV=900)
+
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge,"left",obj.RailingOffsetLeft,obj.RailingOffsetRight,obj.RailingHeightLeft,obj.RailingHeightRight)
 
         self.connectRailingVector(obj,outlineRailL,outlineRailR)
 
