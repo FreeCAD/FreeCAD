@@ -740,7 +740,8 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                 results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
                 results.propertyIndex = 1;
             }
-            else {
+
+            if(!results.resolvedProperty) {
 
                 /* Document name set explicitly? */
                 if (documentName.getString().size() > 0) {
