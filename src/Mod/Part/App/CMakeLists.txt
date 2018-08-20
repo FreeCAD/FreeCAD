@@ -364,37 +364,9 @@ SET(Part_SRCS
     FaceMakerBullseye.h
 )
 
-SET(Part_Scripts
-    Init.py
-    TestPartApp.py
-    MakeBottle.py
-    JoinFeatures.py
-    AttachmentEditor/__init__.py
-    AttachmentEditor/Commands.py
-    AttachmentEditor/FrozenClass.py
-    AttachmentEditor/TaskAttachmentEditor.py
-    AttachmentEditor/TaskAttachmentEditor.ui
-    BOPTools/__init__.py
-    BOPTools/GeneralFuseResult.py
-    BOPTools/JoinAPI.py
-    BOPTools/JoinFeatures.py
-    BOPTools/ShapeMerge.py
-    BOPTools/SplitAPI.py
-    BOPTools/SplitFeatures.py
-    BOPTools/Utils.py
-    CompoundTools/__init__.py
-    CompoundTools/_CommandCompoundFilter.py
-    CompoundTools/CompoundFilter.py
-)
-
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 
-
-fc_target_copy_resource(Part 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Part
-    ${CMAKE_BINARY_DIR}/Mod/Part
-    ${Part_Scripts})
 
 SET_BIN_DIR(Part Part /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)
