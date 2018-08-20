@@ -11,11 +11,15 @@ SET(Test_SRCS
     UnitTests.py
     Workbench.py
     unittestgui.py
-    InitGui.py
     testmakeWireString.py
     TestPythonSyntax.py
 )
 SOURCE_GROUP("" FILES ${Test_SRCS})
+
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+    list (APPEND Test_SRCS InitGui.py)
+endif(BUILD_GUI)
 
 ADD_CUSTOM_TARGET(Test ALL
     SOURCES ${Test_SRCS}
@@ -29,7 +33,3 @@ INSTALL(
     DESTINATION
         Mod/Test
 )
-
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
