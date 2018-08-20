@@ -66,14 +66,18 @@ SET(SandboxGui_SRCS
     Workbench.h
 )
 
-add_library(SandboxGui SHARED ${SandboxGui_SRCS})
+set (SandboxGui_Scripts
+    ../InitGui.py
+)
+
+add_library(SandboxGui SHARED ${SandboxGui_SRCS} ${SandboxGui_Scripts})
 target_link_libraries(SandboxGui ${SandboxGui_LIBS})
 
 
-fc_target_copy_resource(SandboxGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sandbox
+fc_target_copy_resource_flat(SandboxGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Sandbox
-    InitGui.py)
+    ${SandboxGui_Scripts})
 
 SET_BIN_DIR(SandboxGui SandboxGui /Mod/Sandbox)
 SET_PYTHON_PREFIX_SUFFIX(SandboxGui)
