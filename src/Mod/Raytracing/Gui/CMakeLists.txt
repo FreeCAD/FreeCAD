@@ -80,24 +80,18 @@ SET(RaytracingGui_SRCS
     Workbench.h
 )
 
-add_library(RaytracingGui SHARED ${RaytracingGui_SRCS})
-target_link_libraries(RaytracingGui ${RaytracingGui_LIBS})
-
-
-fc_target_copy_resource(RaytracingGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
-    ${CMAKE_BINARY_DIR}/Mod/Raytracing
-    InitGui.py)
-
-SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
-SET_PYTHON_PREFIX_SUFFIX(RaytracingGui)
-
-INSTALL(TARGETS RaytracingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(RaytracingGuiIcon_SVG
     Resources/icons/RaytracingWorkbench.svg
 )
 
+add_library(RaytracingGui SHARED ${RaytracingGui_SRCS} ${RaytracingGuiIcon_SVG})
+target_link_libraries(RaytracingGui ${RaytracingGui_LIBS})
+
+
+SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
+SET_PYTHON_PREFIX_SUFFIX(RaytracingGui)
+
 fc_copy_sources(RaytracingGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Raytracing" ${RaytracingGuiIcon_SVG})
 
+INSTALL(TARGETS RaytracingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${RaytracingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Raytracing/Resources/icons")
