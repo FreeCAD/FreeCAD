@@ -747,6 +747,20 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                 results.propertyName = components[1].name.getString();
                 results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
                 results.propertyIndex = 1;
+                if(!results.resolvedProperty) {
+                    // If the second component is not a property name, try to
+                    // interpret the first component as the property name.
+                    const DocumentObject * docObj = static_cast<const DocumentObject*>(owner);
+                    results.resolvedProperty = docObj->getPropertyByName(components[0].name);
+                    if(results.resolvedProperty) {
+                        results.propertyName = components[0].name.getString();
+                        results.resolvedDocument = docObj->getDocument();
+                        results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
+                        results.resolvedDocumentObjectName = String(docObj->getNameInDocument(), false, true);
+                        results.resolvedDocumentObject = const_cast<DocumentObject*>(docObj);
+                        results.propertyIndex = 0;
+                    }
+                }
             }
             else {
 
