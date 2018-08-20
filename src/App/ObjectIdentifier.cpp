@@ -123,7 +123,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
             throw Base::RuntimeError("Property must be owned by a document object.");
 
         if (property.size() > 0)
-            setDocumentObjectName(docObj,true);
+            setDocumentObjectName(docObj);
     }
     if (property.size() > 0) {
         if(index<0)
@@ -148,7 +148,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     if (!docObj)
         throw Base::TypeError("Property must be owned by a document object.");
 
-    setDocumentObjectName(docObj,true);
+    setDocumentObjectName(docObj);
 
     if(index<0)
         addComponent(Component::SimpleComponent(String(owner->getPropertyName(&prop))));
@@ -309,13 +309,17 @@ std::string ObjectIdentifier::toString() const
     std::stringstream s;
     ResolveResults result(*this);
 
-    if (documentNameSet)
-        s << documentName.toString() << "#";
+    if(result.resolvedDocumentObject == owner) {
+        s << '.';
+    } else {
+        if (documentNameSet)
+            s << documentName.toString() << "#";
 
-    if (documentObjectNameSet)
-        s << documentObjectName.toString() << ".";
-    else if (result.propertyIndex > 0)
-        s << components[0].toString() << ".";
+        if (documentObjectNameSet)
+            s << documentObjectName.toString() << ".";
+        else if (result.propertyIndex > 0)
+            s << components[0].toString() << ".";
+    }
 
     s << getPropertyName() << getSubPathStr();
 
@@ -839,10 +843,13 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
     std::vector<std::string> l;
     ResolveResults result(*this);
 
-    if (documentNameSet)
-        l.push_back(result.resolvedDocumentName.toString());
-    if (documentObjectNameSet)
-        l.push_back(result.resolvedDocumentObjectName.toString());
+    if(result.resolvedDocumentObject != owner)
+    {
+        if (documentNameSet)
+            l.push_back(result.resolvedDocumentName.toString());
+        if (documentObjectNameSet)
+            l.push_back(result.resolvedDocumentObjectName.toString());
+    }
 
     std::vector<Component>::const_iterator i = components.begin();
     while (i != components.end()) {
@@ -1007,7 +1014,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
     documentNameSet = force;
     documentName = String(obj->getDocument()->getName(),false,true);
     documentObjectNameSet = force;
-    documentObjectName = String(obj->getNameInDocument(),true);
+    documentObjectName = String(obj->getNameInDocument(),false,true);
 }
 
 
