@@ -309,7 +309,10 @@ std::string ObjectIdentifier::toString() const
     std::stringstream s;
     ResolveResults result(*this);
 
-    if(result.resolvedDocumentObject == owner) {
+    if(result.resolvedProperty && 
+       result.resolvedDocumentObject==owner && 
+       components.size()>1 && result.propertyIndex==0) 
+    {
         s << '.';
     } else {
         if (documentNameSet)
@@ -745,8 +748,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                 results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
                 results.propertyIndex = 1;
             }
-
-            if(!results.resolvedProperty) {
+            else {
 
                 /* Document name set explicitly? */
                 if (documentName.getString().size() > 0) {
@@ -843,8 +845,7 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
     std::vector<std::string> l;
     ResolveResults result(*this);
 
-    if(result.resolvedDocumentObject != owner)
-    {
+    if(!result.resolvedProperty || result.resolvedDocumentObject != owner) {
         if (documentNameSet)
             l.push_back(result.resolvedDocumentName.toString());
         if (documentObjectNameSet)
