@@ -6,11 +6,46 @@ if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
+set(TechDraw_Scripts
+    Init.py
+    TestTechDrawApp.py
+)
+
+if(BUILD_GUI)
+    list (APPEND TechDraw_Scripts InitGui.py)
+endif(BUILD_GUI)
+
+SET(TechDraw_PATFile
+    PAT/FCPAT.pat
+)
+
+SET(TechDraw_LineGroupFile
+    LineGroup/LineGroup.csv
+)
+
+add_custom_target(TechDraw_Data ALL
+    SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile}
+)
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
+    ${TechDraw_Scripts}
+)
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_PATFile})
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_LineGroupFile})
+
 INSTALL(
     FILES
-        Init.py
-        InitGui.py
-        TestTechDrawApp.py
+        ${TechDraw_Scripts}
     DESTINATION
         Mod/TechDraw
 )

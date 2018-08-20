@@ -65,6 +65,7 @@ else()
 endif()
 
 SET(TechDrawGui_SRCS
+    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/InitGui.py
     ${TechDrawGui_SRCS}
     AppTechDrawGui.cpp
     AppTechDrawGuiPy.cpp
@@ -226,33 +227,23 @@ SET(TechDrawGuiTaskDlgs_SRCS
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
-if(BUILD_USE_PCH)
-    #add_definitions(-D_PreComp_)
-    #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS})
-    #ADD_MSVC_PRECOMPILED_HEADER(TechDrawGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(BUILD_USE_PCH)
-
-add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS})
-target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
-
-fc_target_copy_resource(TechDrawGui
-    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
-    ${CMAKE_BINARY_DIR}/Mod/TechDraw
-    InitGui.py)
-
 SET(TechDrawGuiIcon_SVG
     Resources/icons/preferences-techdraw.svg
 )
-
-fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})
-
-INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
 
 ##install OSIFONT
 SET(TechDrawGuiFonts
     Resources/fonts/osifont-lgpl3fe.ttf
     Resources/fonts/osifont.license
 )
+
+add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
+                               ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts})
+target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
+
+fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})
+INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
+
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
 
