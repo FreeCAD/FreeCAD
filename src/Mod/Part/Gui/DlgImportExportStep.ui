@@ -119,6 +119,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseBaseName">
+        <property name="toolTip">
+         <string>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</string>
+        </property>
+        <property name="text">
+         <string>Ignore instance names</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>UseBaseName</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -249,22 +265,6 @@
         </property>
         <property name="prefEntry" stdset="0">
          <string>ExportHiddenObject</string>
-        </property>
-        <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxUseBaseName">
-        <property name="toolTip">
-         <string>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</string>
-        </property>
-        <property name="text">
-         <string>Ignore instance names</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <string>UseBaseName</string>
         </property>
         <property name="prefPath" stdset="0">
          <string>Mod/Import</string>
