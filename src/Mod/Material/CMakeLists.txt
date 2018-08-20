@@ -40,7 +40,7 @@ ADD_CUSTOM_TARGET(Material ALL
 )
 
 fc_target_copy_resource(Material 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Material
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
 
@@ -61,11 +61,11 @@ ADD_CUSTOM_TARGET(FluidMaterialLib ALL
 # When a target copies files to different output directories then apparently it always builds the project
 # which is very annoying. So, the trick is to split this into two targets to avoid this behaviour.
 fc_target_copy_resource(MaterialLib 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Material
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material
     ${MaterialLib_Files})
 fc_target_copy_resource(FluidMaterialLib 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Material
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material
     ${FluidMaterial_Files})
 
