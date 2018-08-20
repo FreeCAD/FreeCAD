@@ -123,6 +123,11 @@ identifier: path                                { /* Path to property within doc
                                                   $$ = ObjectIdentifier(DocumentObject);
                                                   $$.addComponents($1);
                                                 }
+          | '.' path                            { /* Path to property of the current document object */
+                                                  $$ = ObjectIdentifier(DocumentObject);
+                                                  $$.setDocumentObjectName(DocumentObject);
+                                                  $$.addComponents($2);
+                                                }
           | object '.' path                     { /* Path to property within document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
                                                   $$.setDocumentObjectName($1, true);
