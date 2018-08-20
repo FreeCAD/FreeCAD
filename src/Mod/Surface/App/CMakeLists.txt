@@ -37,12 +37,6 @@ link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})
 target_link_libraries(Surface ${Surface_LIBS})
 
-
-fc_target_copy_resource(Surface 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Surface
-    ${CMAKE_BINARY_DIR}/Mod/Surface
-    Init.py)
-
 SET_BIN_DIR(Surface Surface /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)
 
