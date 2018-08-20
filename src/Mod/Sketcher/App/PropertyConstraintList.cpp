@@ -68,13 +68,13 @@ PropertyConstraintList::~PropertyConstraintList()
 
 App::ObjectIdentifier PropertyConstraintList::makeArrayPath(int idx)
 {
-    return App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::ArrayComponent(ObjectIdentifier::String(getName()), idx);
+    return App::ObjectIdentifier(*this,idx);
 }
 
 App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint * c)
 {
-    return App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                           << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name)));
+    return App::ObjectIdentifier(*this) << App::ObjectIdentifier::Component::SimpleComponent(
+            App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name)));
 }
 
 App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint * c)
@@ -415,8 +415,7 @@ bool PropertyConstraintList::validConstraintName(const std::string & name)
 
 ObjectIdentifier PropertyConstraintList::createPath(int ConstrNbr) const
 {
-    return App::ObjectIdentifier(getContainer())
-            << App::ObjectIdentifier::Component::ArrayComponent(App::ObjectIdentifier::String(getName()), ConstrNbr);
+    return App::ObjectIdentifier(*this,ConstrNbr);
 }
 
 int PropertyConstraintList::getIndexFromConstraintName(const string &name)
@@ -509,8 +508,7 @@ const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentif
 
     if (c0.isArray() && p.numSubComponents() == 1) {
         if (c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
-            return ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                                        << ObjectIdentifier::Component::SimpleComponent(_lValueList[c0.getIndex()]->Name);
+            return ObjectIdentifier(*this) << ObjectIdentifier::Component::SimpleComponent(_lValueList[c0.getIndex()]->Name);
         return p;
     }
     else if (c0.isSimple() && p.numSubComponents() == 2) {
@@ -526,8 +524,7 @@ void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) cons
 {
     for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         if ((*it)->Name.size() > 0)
-            paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                            << ObjectIdentifier::Component::SimpleComponent((*it)->Name));
+            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::Component::SimpleComponent((*it)->Name));
     }
 }
 
