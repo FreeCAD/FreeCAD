@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>491</height>
+    <height>506</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -306,19 +306,6 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="but3D">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>This function is temporarily unavailable.</string>
-            </property>
-            <property name="text">
-             <string>Match 3D</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="butDownRotate">
             <property name="toolTip">
@@ -340,15 +327,31 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="2">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="2" column="0">
-           <widget class="QPushButton" name="butReset">
-            <property name="toolTip">
-             <string>Return Primary Direction to Initial Value</string>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="text">
-             <string>Reset</string>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
             </property>
-           </widget>
+           </spacer>
           </item>
          </layout>
         </item>
