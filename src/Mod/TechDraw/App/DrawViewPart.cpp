@@ -129,7 +129,8 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking from.");
+    ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
+                      group,App::Prop_None,"Projection direction. The direction you are looking from.");
     ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
@@ -248,19 +249,18 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     inputCenter = TechDrawGeometry::findCentroid(shape,
                                                  Direction.getValue());
     shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
-
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDrawGeometry::mirrorShape(shape,
                                                   inputCenter,
                                                   getScale());
 
-     gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
-     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+    gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
+    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
         mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
                                                       viewAxis,
                                                       Rotation.getValue());
      }
-     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+    geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
@@ -690,7 +690,14 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis,
                                  const bool flip)  const
 {
-     gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);
+    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);
+     
+    //put X dir of viewAxis on other side to get view right side up
+    gp_Ax1 rotAxis(viewAxis.Location(),viewAxis.Direction());
+    gp_Dir xDir = viewAxis.XDirection();
+    gp_Dir newX = xDir.Rotated(rotAxis, M_PI);
+    viewAxis.SetXDirection(newX);
+
      return viewAxis;
 }
 

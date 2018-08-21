@@ -29,6 +29,8 @@
 #include <QByteArray>
 
 #include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Vec.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
@@ -36,9 +38,12 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 
+#include <App/DocumentObject.h>
 #include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
+
+#include <Mod/Part/App/PartFeature.h>
 
 #include "LineGroup.h"
 
@@ -65,6 +70,8 @@ class TechDrawExport DrawUtil {
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const Base::Vector2d& v);
+        static std::string formatVector(const gp_Dir& v);
+        static std::string formatVector(const gp_Vec& v);
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
         static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2, double tolerance = FLT_EPSILON);
@@ -82,7 +89,6 @@ class TechDrawExport DrawUtil {
         //! find intersection in 2d for 2 lines in point+direction form
         static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                    Base::Vector3d p2, Base::Vector3d d2);
-
 
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
