@@ -27,22 +27,24 @@ MACRO (fc_copy_sources target_name outpath)
 ENDMACRO(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
-    if (EXISTS ${outputfile})
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E compare_files ${inputfile}
-                                                      ${outputfile}
-            RESULT_VARIABLE DIFFERENT_FILES
-            OUTPUT_QUIET
-            ERROR_QUIET
-        )
+    if (EXISTS ${inputfile})
+        if (EXISTS ${outputfile})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E compare_files ${inputfile}
+                                                          ${outputfile}
+                RESULT_VARIABLE DIFFERENT_FILES
+                OUTPUT_QUIET
+                ERROR_QUIET
+            )
 
-        if (DIFFERENT_FILES)
+            if (DIFFERENT_FILES)
+                execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
+                                                                   "${outputfile}")
+            endif()
+        else()
             execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
                                                                "${outputfile}")
         endif()
-    else()
-        execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
-                                                           "${outputfile}")
     endif()
 ENDMACRO(fc_copy_file_if_different)
 

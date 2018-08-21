@@ -15,6 +15,11 @@ EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/SubWC
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
       OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+fc_copy_file_if_different(
+    "${CMAKE_CURRENT_BINARY_DIR}/Version.h.out"
+    "${CMAKE_CURRENT_BINARY_DIR}/Version.h"
+)
+
 # as fallback if Version.h isn't created for any reason
 if (NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
     set(PACKAGE_WCREF ${PACKAGE_VERSION_PATCH})
