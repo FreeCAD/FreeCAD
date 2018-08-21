@@ -265,18 +265,12 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    std::vector<App::DocumentObject*> groups = getSelection().getObjectsOfType(App::DocumentObjectGroup::getClassTypeId());
-    if ((shapes.empty()) &&
-        (groups.empty())) {
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if ((shapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Can not make a View from this selection"));
         return;
     }
-    if (!groups.empty()) {
-        shapes.insert(shapes.end(),groups.begin(),groups.end());
-    }
-    
     std::string PageName = page->getNameInDocument();
 
     Gui::WaitCursor wc;
@@ -464,16 +458,11 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    std::vector<App::DocumentObject*> groups = getSelection().getObjectsOfType(App::DocumentObjectGroup::getClassTypeId());
-    if ((shapes.empty()) &&
-        (groups.empty())) {
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Can not make a ProjectionGroup from this selection"));
         return;
-    }
-    if (!groups.empty()) {
-        shapes.insert(shapes.end(),groups.begin(),groups.end());
     }
 
     std::string PageName = page->getNameInDocument();

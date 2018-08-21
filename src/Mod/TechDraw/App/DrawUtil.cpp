@@ -91,6 +91,9 @@ std::string DrawUtil::getGeomTypeFromName(std::string geomName)
    boost::match_results<std::string::const_iterator> what;
    boost::match_flag_type flags = boost::match_default;
    std::string::const_iterator begin = geomName.begin();
+   auto pos = geomName.rfind('.');
+   if(pos!=std::string::npos)
+       begin += pos+1;
    std::string::const_iterator end = geomName.end();
    std::stringstream ErrorMsg;
 

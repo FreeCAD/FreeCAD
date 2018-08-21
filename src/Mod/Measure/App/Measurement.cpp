@@ -127,9 +127,6 @@ MeasureType Measurement::getType()
 
     for (;obj != objects.end(); ++obj, ++subEl) {
 
-        const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
-        const Part::TopoShape& refShape = refObj->Shape.getShape();
-
         // Check if solid object
         if(strcmp((*subEl).c_str(), "") == 0) {
             vols++;
@@ -137,7 +134,7 @@ MeasureType Measurement::getType()
 
             TopoDS_Shape refSubShape;
             try {
-                refSubShape = refShape.getSubShape((*subEl).c_str());
+                refSubShape = Part::Feature::getShape(*obj,(*subEl).c_str(),true);
             }
             catch (Standard_Failure& e) {
                 std::stringstream errorMsg;
@@ -210,23 +207,10 @@ MeasureType Measurement::getType()
 
 TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
 {
-    const Part::Feature *refObj = static_cast<const Part::Feature*>(obj);
-    const Part::TopoShape& refShape = refObj->Shape.getShape();
-
-    // Check if selecting whol object
-    if(strcmp(subName, "") == 0) {
-        return refShape.getShape();
-    } else {
-
-        TopoDS_Shape refSubShape;
-        try {
-            refSubShape = refShape.getSubShape(subName);
-        }
-        catch (Standard_Failure& e) {
-    
-            throw Base::Exception(e.GetMessageString());
-        }
-        return refSubShape;
+    try {
+        return Part::Feature::getShape(obj,subName,true);
+    } catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 

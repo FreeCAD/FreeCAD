@@ -863,7 +863,8 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     if (!result)
         return;
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0,
+            App::DocumentObject::getClassTypeId(),0);
 
     App::DocumentObject* obj3D = 0;
     std::vector<App::DocumentObject*> parts;
@@ -871,13 +872,11 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            obj3D = ((*itSel).getObject());
-            std::vector<std::string> subList = (*itSel).getSubNames();
-            for (auto& s:subList) {
-                parts.push_back(obj3D);
-                subs.push_back(s);
-            }
+        obj3D = ((*itSel).getObject());
+        std::vector<std::string> subList = (*itSel).getSubNames();
+        for (auto& s:subList) {
+            parts.push_back(obj3D);
+            subs.push_back(s);
         }
     }
 

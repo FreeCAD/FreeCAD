@@ -170,9 +170,8 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         }
 
-    DrawView::onChanged(prop);
     }
-
+    DrawView::onChanged(prop);
 }
 
 void DrawViewDimension::onDocumentRestored()

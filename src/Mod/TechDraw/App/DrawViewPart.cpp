@@ -164,8 +164,13 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     } else {
         std::vector<TopoDS_Shape> sourceShapes;
         for (auto& l:links) {
-            std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-            sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            auto shape = Part::Feature::getShape(l);
+            if(!shape.IsNull())
+                sourceShapes.push_back(shape);
+            else {
+                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            }
         }
 
         BRep_Builder builder;
