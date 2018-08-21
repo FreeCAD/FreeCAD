@@ -1,9 +1,24 @@
 #include "clipper.hpp"
 #include <vector>
 #include <list>
+#include <time.h>
+
 
 #ifndef ADAPTIVE_HPP
 #define ADAPTIVE_HPP
+
+#ifndef __DBL_MAX__
+#define __DBL_MAX__ 1.7976931348623158e+308
+#endif
+
+#ifndef __LONG_MAX__
+#define __LONG_MAX__ 2147483647
+#endif
+
+#ifndef M_PI
+#define M_PI 3.141592653589793238
+#endif
+
 
 //#define DEV_MODE
 
