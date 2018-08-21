@@ -13,6 +13,7 @@
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 #include "ExpressionCompleter.h"
+#include <App/ExpressionParser.h>
 #include <App/PropertyLinks.h>
 
 Q_DECLARE_METATYPE(App::ObjectIdentifier);
@@ -35,13 +36,7 @@ ExpressionCompleter::ExpressionCompleter(const App::Document * currentDoc, const
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
     std::vector<App::Document*>::const_iterator di = docs.begin();
 
-    std::vector<DocumentObject*> deps;
-    if (currentDocObj)
-        deps = currentDocObj->getInList();
-    std::set<const DocumentObject*> forbidden;
-
-    for (std::vector<DocumentObject*>::const_iterator it = deps.begin(); it != deps.end(); ++it)
-        forbidden.insert(*it);
+    auto forbidden = currentDocObj->getInListEx(true);
 
     /* Create tree with full path to all objects */
     while (di != docs.end()) {
@@ -79,15 +74,14 @@ ExpressionCompleter::ExpressionCompleter(const App::Document * currentDoc, const
  */
 
 void ExpressionCompleter::createModelForDocument(const App::Document * doc, QStandardItem * parent,
-                                                 const std::set<const DocumentObject*> & forbidden) {
+                                                 const std::set<DocumentObject*> & forbidden) {
     std::vector<App::DocumentObject*> docObjs = doc->getObjects();
     std::vector<App::DocumentObject*>::const_iterator doi = docObjs.begin();
 
     while (doi != docObjs.end()) {
-        std::set<const DocumentObject*>::const_iterator it = forbidden.find(*doi);
 
         // Skip?
-        if (it != forbidden.end()) {
+        if (forbidden.count(*doi)) {
             ++doi;
             continue;
         }

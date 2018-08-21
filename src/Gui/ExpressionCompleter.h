@@ -33,7 +33,7 @@ public Q_SLOTS:
     void slotUpdate(const QString &prefix);
 
 private:
-    void createModelForDocument(const App::Document * doc, QStandardItem * parent, const std::set<const App::DocumentObject *> &forbidden);
+    void createModelForDocument(const App::Document * doc, QStandardItem * parent, const std::set<App::DocumentObject *> &forbidden);
     void createModelForDocumentObject(const App::DocumentObject * docObj, QStandardItem * parent);
     void createModelForPaths(const App::Property * prop, QStandardItem *docObjItem);
 
