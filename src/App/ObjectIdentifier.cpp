@@ -39,6 +39,7 @@
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>
+#include <App/Link.h>
 
 using namespace App;
 using namespace Base;
@@ -202,6 +203,8 @@ bool ObjectIdentifier::operator ==(const ObjectIdentifier &other) const
         return false;
     if (result1.resolvedDocumentObjectName != result2.resolvedDocumentObjectName)
         return false;
+    if (result1.subObjectName != result2.subObjectName)
+        return false;
     if (components != other.components)
         return false;
     return true;
@@ -239,6 +242,12 @@ bool ObjectIdentifier::operator <(const ObjectIdentifier &other) const
         return true;
 
     if (result1.resolvedDocumentObjectName > result2.resolvedDocumentObjectName)
+        return false;
+
+    if (result1.subObjectName < result2.subObjectName)
+        return true;
+
+    if (result1.subObjectName > result2.subObjectName)
         return false;
 
     if (components.size() < other.components.size())
@@ -314,7 +323,7 @@ std::string ObjectIdentifier::toString() const
        components.size()>1 && result.propertyIndex==0) 
     {
         s << '.';
-    } else {
+    }else{
         if (documentNameSet)
             s << documentName.toString() << "#";
 
@@ -323,6 +332,9 @@ std::string ObjectIdentifier::toString() const
         else if (result.propertyIndex > 0)
             s << components[0].toString() << ".";
     }
+
+    if(subObjectName.getString().size())
+        s << subObjectName.toString() << '.';
 
     s << getPropertyName() << getSubPathStr();
 
@@ -685,6 +697,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
     }
 
+    results.subObjectName = subObjectName;
     results.propertyName = "";
     results.propertyIndex = 0;
 
@@ -711,7 +724,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         if (components.size() > 0) {
             results.propertyName = components[0].name.getString();
             results.propertyIndex = 0;
-            results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
+            results.getProperty(*this);
         }
         else
             return;
@@ -726,10 +739,11 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
 
             results.resolvedDocumentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument(), false, true);
             results.resolvedDocumentObject = getDocumentObject(results.resolvedDocument, results.resolvedDocumentObjectName, byIdentifier);
+            if(!results.resolvedDocumentObject)
+                return;
             results.propertyName = components[0].name.getString();
-            if (results.resolvedDocumentObject)
-                results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
             results.propertyIndex = 0;
+            results.getProperty(*this);
         }
         else if (components.size() >= 2) {
             /* No --  */
@@ -745,19 +759,21 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                 /* Yes */
                 results.resolvedDocumentObjectName = String(components[0].name, false, byIdentifier);
                 results.propertyName = components[1].name.getString();
-                results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
                 results.propertyIndex = 1;
+                results.getProperty(*this);
                 if(!results.resolvedProperty) {
                     // If the second component is not a property name, try to
                     // interpret the first component as the property name.
-                    const DocumentObject * docObj = static_cast<const DocumentObject*>(owner);
-                    results.resolvedProperty = docObj->getPropertyByName(components[0].name);
+                    auto docObj = static_cast<const DocumentObject*>(owner);
+                    DocumentObject *sobj = 0;
+                    results.resolvedProperty = resolveProperty(docObj,components[0].name,sobj);
                     if(results.resolvedProperty) {
                         results.propertyName = components[0].name.getString();
                         results.resolvedDocument = docObj->getDocument();
                         results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
                         results.resolvedDocumentObjectName = String(docObj->getNameInDocument(), false, true);
                         results.resolvedDocumentObject = const_cast<DocumentObject*>(docObj);
+                        results.resolvedSubObject = sobj;
                         results.propertyIndex = 0;
                     }
                 }
@@ -781,8 +797,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                     results.propertyIndex = 0;
                 }
                 results.propertyName = components[results.propertyIndex].name.getString();
-                if (results.resolvedDocumentObject)
-                    results.resolvedProperty = results.resolvedDocumentObject->getPropertyByName(results.propertyName.c_str());
+                results.getProperty(*this);
             }
         }
         else
@@ -865,7 +880,9 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
         if (documentObjectNameSet)
             l.push_back(result.resolvedDocumentObjectName.toString());
     }
-
+    if(subObjectName.getString().size()) {
+        l.back() += subObjectName.toString();
+    }
     std::vector<Component>::const_iterator i = components.begin();
     while (i != components.end()) {
         l.push_back(i->toString());
@@ -950,6 +967,37 @@ Property *ObjectIdentifier::getProperty() const
     return result.resolvedProperty;
 }
 
+Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj, 
+        const char *propertyName, App::DocumentObject *&sobj) const 
+{
+    if(obj && subObjectName.getString().size()) {
+        sobj = obj->getSubObject(subObjectName);
+        obj = sobj;
+    }
+    if(!obj)
+        return 0;
+    auto prop = obj->getPropertyByName(propertyName);
+    if(prop && 
+       !prop->testStatus(Property::Hidden) &&
+       !(prop->getType() & PropertyType::Prop_Hidden))
+        return prop;
+
+    auto linked = obj->getLinkedObject(true);
+    if(!linked || linked==obj) {
+        auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true);
+        if(!ext)
+            return prop;
+        linked = ext->getTrueLinkedObject(true);
+        if(!linked || linked==obj)
+            return prop;
+    }
+
+    auto linkedProp = linked->getPropertyByName(propertyName);
+    return linkedProp?linkedProp:prop;
+}
+
+        
+
 /**
  * @brief Create a canonical representation of an object identifier.
  *
@@ -1016,13 +1064,18 @@ const ObjectIdentifier::String ObjectIdentifier::getDocumentName() const
  * @param force Force name to be set.
  */
 
-void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &name, bool force)
+void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &name, bool force, 
+        const ObjectIdentifier::String &subname)
 {
     documentObjectName = name;
     documentObjectNameSet = force;
+    subObjectName = subname;
+    if(subObjectName.str.size() && subObjectName.str.back()!='.')
+        subObjectName.str += '.';
 }
 
-void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force)
+void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force,
+        const ObjectIdentifier::String &subname)
 {
     if(!obj || !obj->getNameInDocument() || !obj->getDocument())
         throw Base::RuntimeError("invalid object");
@@ -1030,6 +1083,9 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
     documentName = String(obj->getDocument()->getName(),false,true);
     documentObjectNameSet = force;
     documentObjectName = String(obj->getNameInDocument(),false,true);
+    subObjectName = subname;
+    if(subObjectName.str.size() && subObjectName.str.back()!='.')
+        subObjectName.str += '.';
 }
 
 
@@ -1202,6 +1258,9 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
         return std::string("Document not found: ") + resolvedDocumentName.toString();
     else if (resolvedDocumentObject == 0)
         return std::string("Document object not found: ") + resolvedDocumentObjectName.toString();
+    else if (subObjectName.getString().size() && resolvedSubObject == 0)
+        return std::string("Sub-object not found: ") + resolvedDocumentObjectName.getString()
+            + '.' + subObjectName.toString();
     else if (resolvedProperty == 0)
         return std::string("Property not found: ") + propertyName;
 
@@ -1209,3 +1268,8 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 
     return "";
 }
+
+void ObjectIdentifier::ResolveResults::getProperty(const ObjectIdentifier &oi) {
+    resolvedProperty = oi.resolveProperty(resolvedDocumentObject,propertyName.c_str(),resolvedSubObject);
+}
+

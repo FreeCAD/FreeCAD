@@ -44,6 +44,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <func> FUNC
      %type <string_or_identifier> document
      %type <string_or_identifier> object
+     %type <string_or_identifier> subname
      %type <ivalue> integer
      %left ONE NUM INTEGER CONSTANT
      %left EQ NEQ LT GT GTE LTE
@@ -123,10 +124,25 @@ identifier: path                                { /* Path to property within doc
                                                   $$ = ObjectIdentifier(DocumentObject);
                                                   $$.addComponents($1);
                                                 }
+          | '.' subname '.' path                { /* Path to property of a sub-object of the current object*/
+                                                  $$ = ObjectIdentifier(DocumentObject);
+                                                  $$.setDocumentObjectName(DocumentObject,false,$2);
+                                                  $$.addComponents($4);
+                                                }
           | '.' path                            { /* Path to property of the current document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
                                                   $$.setDocumentObjectName(DocumentObject);
                                                   $$.addComponents($2);
+                                                }
+          | IDENTIFIER '.' subname '.' path     { /* Path to property of a sub-object */
+                                                  $$ = ObjectIdentifier(DocumentObject);
+                                                  $$.setDocumentObjectName(ObjectIdentifier::String($1,false,true), true, $3);
+                                                  $$.addComponents($5);
+                                                }
+          | object '.' subname '.' path         { /* Path to property of a sub-object */
+                                                  $$ = ObjectIdentifier(DocumentObject);
+                                                  $$.setDocumentObjectName($1, true, $3);
+                                                  $$.addComponents($5);
                                                 }
           | object '.' path                     { /* Path to property within document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
@@ -181,5 +197,9 @@ document: STRING                                       { $$ = ObjectIdentifier::
 object: STRING                                         { $$ = ObjectIdentifier::String($1, true); }
       | CELLADDRESS                                    { $$ = ObjectIdentifier::String($1, true); }
       ;
+
+subname: STRING                                         { $$ = ObjectIdentifier::String($1, true); }
+       | CELLADDRESS                                    { $$ = ObjectIdentifier::String($1, true); }
+       ;
 
 %%

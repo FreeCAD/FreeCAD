@@ -513,11 +513,6 @@ public:
   semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
 };
 
-#define YYSTYPE semantic_type
-#include "ExpressionParser.tab.h"
-#undef YYTOKENTYPE
-#undef YYSTYPE
-#undef YYSTYPE_ISDECLARED
 }
 
 }

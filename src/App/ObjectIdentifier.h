@@ -47,6 +47,7 @@ class AppExport ObjectIdentifier {
 public:
 
     class String {
+        friend class ObjectIdentifier;
 
     public:
 
@@ -185,6 +186,9 @@ public:
 
     App::Property *getProperty() const;
 
+    App::Property *resolveProperty(const App::DocumentObject *obj, 
+        const char *propertyName, App::DocumentObject *&sobj) const;
+
     App::ObjectIdentifier canonicalPath() const;
 
     // Document-centric functions
@@ -193,8 +197,11 @@ public:
 
     const String getDocumentName() const;
 
-    void setDocumentObjectName(const String & name, bool force = false);
-    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false);
+    void setDocumentObjectName(const String & name, bool force = false, 
+            const String &subname = String());
+
+    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false, 
+            const String &subname = String());
 
     const String getDocumentObjectName() const;
 
@@ -250,10 +257,13 @@ protected:
         String resolvedDocumentName;
         App::DocumentObject * resolvedDocumentObject;
         String resolvedDocumentObjectName;
+        String subObjectName;
+        App::DocumentObject * resolvedSubObject;
         App::Property * resolvedProperty;
         std::string propertyName;
 
         std::string resolveErrorString() const;
+        void getProperty(const ObjectIdentifier &oi);
     };
 
     std::string getPythonAccessor() const;
@@ -267,6 +277,7 @@ protected:
     bool documentNameSet;
     String  documentObjectName;
     bool documentObjectNameSet;
+    String  subObjectName;
     std::vector<Component> components;
 
 };
