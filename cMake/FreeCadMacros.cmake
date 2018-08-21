@@ -26,6 +26,28 @@ MACRO (fc_copy_sources target_name outpath)
 	)
 ENDMACRO(fc_copy_sources)
 
+MACRO (fc_copy_file_if_different inputfile outputfile)
+    if (EXISTS ${inputfile})
+        if (EXISTS ${outputfile})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E compare_files ${inputfile}
+                                                          ${outputfile}
+                RESULT_VARIABLE DIFFERENT_FILES
+                OUTPUT_QUIET
+                ERROR_QUIET
+            )
+
+            if (DIFFERENT_FILES)
+                execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
+                                                                   "${outputfile}")
+            endif()
+        else()
+            execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
+                                                               "${outputfile}")
+        endif()
+    endif()
+ENDMACRO(fc_copy_file_if_different)
+
 MACRO (fc_target_copy_resource target_name inpath outpath)
 # Macro to copy a list of files into a nested directory structure
 # Arguments -

@@ -74,7 +74,7 @@ class VersionControl:
 class UnknownControl(VersionControl):
     def extractInfo(self, srcdir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h"):
+        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
@@ -87,7 +87,7 @@ class UnknownControl(VersionControl):
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h"):
+        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
             return False
         try:
             f = open(srcdir+"/debian/changelog")
@@ -385,12 +385,12 @@ def main():
             lines = inp.readlines()
             inp.close()
             lines = i.writeVersion(lines)
-            out  = open("%s/src/Build/Version.h" % (bindir),"w");
+            out  = open("%s/src/Build/Version.h.out" % (bindir),"w");
             out.writelines(lines)
             out.write('\n')
             out.close()
             i.printInfo()
-            sys.stdout.write("%s/src/Build/Version.h written\n" % (bindir))
+            sys.stdout.write("%s/src/Build/Version.h.out written\n" % (bindir))
             break
 
 if __name__ == "__main__":

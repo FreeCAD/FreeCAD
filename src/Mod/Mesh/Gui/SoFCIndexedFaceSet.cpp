@@ -106,8 +106,11 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
     static bool init = false;
     static bool vboAvailable = false;
     if (!init) {
-        std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
-        vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        vboAvailable = Gui::OpenGLBuffer::isVBOSupported();
+        if (!vboAvailable) {
+            SoDebugError::postInfo("MeshRenderer",
+                                   "GL_ARB_vertex_buffer_object extension not supported");
+        }
         init = true;
     }
 
@@ -483,7 +486,7 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
 
     // get the VBO status of the viewer
     SbBool useVBO = true;
-    //Gui::SoGLVBOActivatedElement::get(state, useVBO);
+    Gui::SoGLVBOActivatedElement::get(state, useVBO);
 
     // Check for a matching OpenGL context
     if (!render.canRenderGLArray(action))
