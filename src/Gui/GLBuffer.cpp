@@ -41,6 +41,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
 
+#include <string>
+
 #include "GLBuffer.h"
 
 using namespace Gui;
@@ -63,6 +65,21 @@ OpenGLBuffer::~OpenGLBuffer()
     destroy();
 }
 
+/*!
+ * \brief OpenGLBuffer::isVBOSupported returns if the OpenGL driver
+ * supports the VBO extension.
+ * When calling this function there must be a current OpenGL context.
+ * \return
+ */
+bool OpenGLBuffer::isVBOSupported()
+{
+    const GLubyte * str = glGetString(GL_EXTENSIONS);
+    if (!str)
+        return false;
+    std::string ext = reinterpret_cast<const char*>(str);
+    return (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+}
+
 void OpenGLBuffer::setCurrentContext(uint32_t ctx)
 {
     currentContext = ctx;
@@ -73,6 +90,9 @@ bool OpenGLBuffer::create()
 {
     if (bufferId > 0)
         return true;
+
+    if (!cc_glglue_has_vertex_buffer_object(glue))
+        return false;
 
     cc_glglue_glGenBuffers(glue, 1, &bufferId);
     context = currentContext;
