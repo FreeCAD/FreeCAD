@@ -135,6 +135,8 @@ MeasureType Measurement::getType()
             TopoDS_Shape refSubShape;
             try {
                 refSubShape = Part::Feature::getShape(*obj,(*subEl).c_str(),true);
+                if(refSubShape.IsNull())
+                    return Invalid;
             }
             catch (Standard_Failure& e) {
                 std::stringstream errorMsg;
@@ -208,7 +210,10 @@ MeasureType Measurement::getType()
 TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
 {
     try {
-        return Part::Feature::getShape(obj,subName,true);
+        auto shape = Part::Feature::getShape(obj,subName,true);
+        if(shape.IsNull())
+            throw Base::Exception("null shape");
+        return shape;
     } catch (Standard_Failure& e) {
         throw Base::Exception(e.GetMessageString());
     }
