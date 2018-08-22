@@ -162,8 +162,9 @@ class ObjectOp(object):
 
         self.initOperation(obj)
 
-        if self.setDefaultValues(obj):
-            obj.Proxy = self
+        if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
+            if self.setDefaultValues(obj):
+                obj.Proxy = self
 
     def setEditorModes(self, obj, features):
         '''Editor modes are not preserved during document store/restore, set editor modes for all properties'''
