@@ -833,7 +833,9 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
 {
     if (d->_pcDocument != &doc)
         return;
-    if(objs.size()>1 || App::GetApplication().getActiveDocument()!=&doc)
+    if(objs.size()>1 || 
+       App::GetApplication().getActiveDocument()!=&doc || 
+       !doc.testStatus(App::Document::AllowPartialRecompute))
         return;
     App::DocumentObject *obj = 0;
     auto editDoc = Application::Instance->editDocument();

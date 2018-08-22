@@ -75,6 +75,7 @@ public:
         Recomputing = 4,
         Importing = 5,
         PartialDoc = 6,
+        AllowPartialRecompute = 7, // allow recomputing editing object if SkipRecompute is set
     };
 
     /** @name Properties */

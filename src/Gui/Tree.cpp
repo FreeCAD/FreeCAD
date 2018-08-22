@@ -146,6 +146,11 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
             this, SLOT(onSkipRecompute(bool)));
 
+    this->allowPartialRecomputeAction = new QAction(this);
+    this->allowPartialRecomputeAction->setCheckable(true);
+    connect(this->allowPartialRecomputeAction, SIGNAL(toggled(bool)),
+            this, SLOT(onAllowPartialRecompute(bool)));
+
     this->markRecomputeAction = new QAction(this);
     connect(this->markRecomputeAction, SIGNAL(triggered()),
             this, SLOT(onMarkRecompute()));
@@ -291,6 +296,9 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
             }
             this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
             contextMenu.addAction(this->skipRecomputeAction);
+            this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
+            if(doc->testStatus(App::Document::SkipRecompute))
+                contextMenu.addAction(this->allowPartialRecomputeAction);
             contextMenu.addAction(this->markRecomputeAction);
             contextMenu.addAction(this->createGroupAction);
         }
@@ -467,6 +475,16 @@ void TreeWidget::onSkipRecompute(bool on)
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         doc->setStatus(App::Document::SkipRecompute, on);
+    }
+}
+
+void TreeWidget::onAllowPartialRecompute(bool on)
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        doc->setStatus(App::Document::AllowPartialRecompute, on);
     }
 }
 
@@ -1332,6 +1350,10 @@ void TreeWidget::setupText() {
 
     this->skipRecomputeAction->setText(tr("Skip recomputes"));
     this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+
+    this->allowPartialRecomputeAction->setText(tr("Allow partial recomputes"));
+    this->allowPartialRecomputeAction->setStatusTip(
+            tr("Enable or disable recomputating editing object when 'skip recomputation' is enabled"));
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));

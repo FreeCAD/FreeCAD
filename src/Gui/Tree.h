@@ -131,6 +131,7 @@ protected Q_SLOTS:
     void onStartEditing();
     void onFinishEditing();
     void onSkipRecompute(bool on);
+    void onAllowPartialRecompute(bool on);
     void onReloadDoc();
     void onMarkRecompute();
     void onRecomputeObject();
@@ -166,6 +167,7 @@ private:
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
+    QAction* allowPartialRecomputeAction;
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
     QAction* preSelectionAction;
