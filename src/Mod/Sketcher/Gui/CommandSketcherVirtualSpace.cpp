@@ -185,7 +185,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         else
             abortCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         // clear the selection (convenience)
         getSelection().clearSelection();
