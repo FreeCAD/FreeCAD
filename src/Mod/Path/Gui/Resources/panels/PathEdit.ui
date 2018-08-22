@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -146,30 +146,49 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QComboBox" name="stock">
-         <property name="currentIndex">
-          <number>2</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>Create Box</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Create Cylinder</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Extend Model's Bound Box</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Use Existing Solid</string>
-          </property>
-         </item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QComboBox" name="stock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Create Box</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Create Cylinder</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extend Model's Bound Box</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Use Existing Solid</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="updateStock">
+            <property name="text">
+             <string>New</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -632,7 +651,6 @@
   <tabstop>postProcessorSetOutputFile</tabstop>
   <tabstop>postProcessor</tabstop>
   <tabstop>postProcessorArguments</tabstop>
-  <tabstop>stock</tabstop>
   <tabstop>stockExisting</tabstop>
   <tabstop>stockExtXneg</tabstop>
   <tabstop>stockExtXpos</tabstop>
