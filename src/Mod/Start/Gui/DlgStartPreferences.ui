@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>585</height>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
       <string>Start page options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="12" column="1">
+      <item row="13" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_3">
         <property name="toolTip">
          <string>an optional custom folder to be displayed at the bottom of the first page</string>
@@ -55,7 +55,7 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="0">
+      <item row="13" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Show additional folder</string>
@@ -88,7 +88,7 @@
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="12" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Show examples folder contents</string>
@@ -102,7 +102,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton_2">
@@ -197,10 +197,29 @@
         </property>
        </widget>
       </item>
-      <item row="14" column="0">
+      <item row="15" column="0">
        <widget class="QLabel" name="autoModuleLabel">
         <property name="text">
          <string>Switch workbench after loafing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="toolTip">
+         <string>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseStyleSheet</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
         </property>
        </widget>
       </item>
@@ -251,7 +270,7 @@
         </property>
        </widget>
       </item>
-      <item row="14" column="1">
+      <item row="15" column="1">
        <widget class="QComboBox" name="AutoloadModuleCombo"/>
       </item>
       <item row="9" column="1" alignment="Qt::AlignRight">
@@ -368,7 +387,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="11" column="0">
        <widget class="QLabel" name="label_7">
         <property name="enabled">
          <bool>false</bool>
@@ -378,14 +397,14 @@
         </property>
        </widget>
       </item>
-      <item row="15" column="0">
+      <item row="16" column="0">
        <widget class="QLabel" name="label_11">
         <property name="text">
          <string>Close start page after loading</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="12" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_1">
         <property name="toolTip">
          <string>if you want the examples to show on the first page</string>
@@ -414,7 +433,7 @@
         </property>
        </widget>
       </item>
-      <item row="15" column="1">
+      <item row="16" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_2">
         <property name="toolTip">
          <string>Should the start page be closed after loading?</string>
@@ -433,14 +452,14 @@
         </property>
        </widget>
       </item>
-      <item row="16" column="0">
+      <item row="17" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
          <string>Close &amp; switch on file open</string>
         </property>
        </widget>
       </item>
-      <item row="16" column="1">
+      <item row="17" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_3">
         <property name="toolTip">
          <string>If FreeCAD is started by opening a file, apply the two settings above</string>
@@ -459,14 +478,14 @@
         </property>
        </widget>
       </item>
-      <item row="13" column="0">
+      <item row="14" column="0">
        <widget class="QLabel" name="label_14">
         <property name="text">
          <string>Show forum</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="1">
+      <item row="14" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_4">
         <property name="toolTip">
          <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
@@ -492,24 +511,54 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox_5">
-        <property name="toolTip">
-         <string>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_16">
         <property name="text">
-         <string/>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UseStyleSheet</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
+         <string>Font family</string>
         </property>
        </widget>
+      </item>
+      <item row="10" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit">
+          <property name="toolTip">
+           <string>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>Arial,Helvetica,sans</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontFamily</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Start</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox">
+          <property name="toolTip">
+           <string>The base font size to use for all texts of the Start page</string>
+          </property>
+          <property name="suffix">
+           <string>px</string>
+          </property>
+          <property name="value">
+           <number>13</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Start</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -546,6 +595,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -558,6 +612,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

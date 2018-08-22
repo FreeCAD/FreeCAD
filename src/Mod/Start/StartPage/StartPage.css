@@ -1,8 +1,8 @@
 body {
     background: BACKGROUND;
     color: BGTCOLOR;
-    font-family: Arial, Helvetica, Sans;
-    font-size: 13px;
+    font-family: FONTFAMILY;
+    font-size: FONTSIZE;
 }
 a, a:link, a:visited {
     text-decoration: none;
