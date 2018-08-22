@@ -380,7 +380,18 @@ class MapWireToTag:
                     debugEdge(e, ">>>>> no flip")
                     break
                 elif PathGeom.pointsCoincide(p2, p0):
-                    outputEdges.append((PathGeom.flipEdge(e), True))
+                    flipped = PathGeom.flipEdge(e)
+                    if not flipped is None:
+                        outputEdges.append((flipped, True))
+                    else:
+                        p0 = None
+                        cnt = 0
+                        for p in reversed(e.discretize(Deflection=0.01)):
+                            if not p0 is None:
+                                outputEdges.append((Part.Edge(Part.LineSegment(p0, p)), True))
+                                cnt = cnt + 1
+                            p0 = p
+                        PathLog.info("replaced edge with %d straight segments" % cnt)
                     edges.remove(e)
                     lastP = None
                     p0 = p1

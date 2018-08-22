@@ -507,6 +507,8 @@ def flipEdge(edge):
 
         return Part.Edge(flipped)
 
+    PathLog.warning(translate('PathGeom', "%s not support for flipping") % type(edge.Curve))
+
 def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
     edges = [flipEdge(e) for e in wire.Edges]
