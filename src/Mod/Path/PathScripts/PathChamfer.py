@@ -72,6 +72,9 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         obj.Join = ['Round', 'Miter']
         obj.setEditorMode('Join', 2) # hide for now
 
+    def opOnDocumentRestored(self, obj):
+        obj.setEditorMode('Join', 2) # hide for now
+
     def opExecute(self, obj):
         PathLog.track(obj.Label)
         (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)

@@ -212,6 +212,8 @@ class ObjectJob:
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
+        obj.setEditorMode('Operations', 2) # hide
+        obj.setEditorMode('Placement', 2)
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
