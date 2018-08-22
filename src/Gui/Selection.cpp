@@ -49,7 +49,7 @@
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 
-
+FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
 using namespace Gui;
 using namespace std;
@@ -83,7 +83,20 @@ void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
         connectSelection = Selection().signalSelectionChanged.connect(boost::bind
-            (&SelectionObserver::onSelectionChanged, this, _1));
+            (&SelectionObserver::_onSelectionChanged, this, _1));
+    }
+}
+
+void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
+    try { 
+        onSelectionChanged(msg);
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        FC_ERR("Unhandled Base::Exception caught in selection observer: ");
+    } catch (std::exception &e) {
+        FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
+    } catch (...) {
+        FC_ERR("Unhandled unknown exception caught in selection observer");
     }
 }
 
