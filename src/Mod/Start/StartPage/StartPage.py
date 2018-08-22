@@ -88,6 +88,9 @@ def getInfo(filename):
         return hsize
 
     if os.path.exists(filename):
+        
+        if os.path.isdir(filename):
+            return None,None,None
 
         # get normal file info
         s = os.stat(filename)
@@ -135,7 +138,8 @@ def getInfo(filename):
                 image = iconbank[t]
             else:
                 icon = iconprovider.icon(i)
-                px = icon.pixmap(128,128)
+                preferred = icon.actualSize(QtCore.QSize(128,128))
+                px = icon.pixmap(preferred)
                 image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
                 px.save(image)
                 iconbank[t] = image
@@ -303,18 +307,19 @@ def handle():
         SECTION_EXAMPLES += "<ul>"
         for basename in os.listdir(FreeCAD.getResourceDir()+"examples"):
             filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
-            image,size,author = getInfo(filename)
-            if size:
-                SECTION_EXAMPLES += '<li class="icon">'
-                SECTION_EXAMPLES += '<a href="LoadExample.py?filename='+basename+'" title="'+basename+'">'
-                SECTION_EXAMPLES += '<img src="'+image+'">'
-                SECTION_EXAMPLES += '</a>'
-                SECTION_EXAMPLES += '<div class="caption">'
-                SECTION_EXAMPLES += '<h4>'+basename+'</h4>'
-                SECTION_EXAMPLES += '<p>'+size+'</p>'
-                SECTION_EXAMPLES += '<p>'+author+'</p>'
-                SECTION_EXAMPLES += '</div>'
-                SECTION_EXAMPLES += '</li>'
+            if filename.endswith(".FCStd") or filename.endswith(".fcstd") or filename.endswith(".stp"):
+                image,size,author = getInfo(filename)
+                if size:
+                    SECTION_EXAMPLES += '<li class="icon">'
+                    SECTION_EXAMPLES += '<a href="LoadExample.py?filename='+basename+'" title="'+basename+'">'
+                    SECTION_EXAMPLES += '<img src="'+image+'">'
+                    SECTION_EXAMPLES += '</a>'
+                    SECTION_EXAMPLES += '<div class="caption">'
+                    SECTION_EXAMPLES += '<h4>'+basename+'</h4>'
+                    SECTION_EXAMPLES += '<p>'+size+'</p>'
+                    SECTION_EXAMPLES += '<p>'+author+'</p>'
+                    SECTION_EXAMPLES += '</div>'
+                    SECTION_EXAMPLES += '</li>'
         SECTION_EXAMPLES += "</ul>"
     if sys.version_info.major < 3:
         SECTION_EXAMPLES = SECTION_EXAMPLES.decode("utf8")
@@ -417,7 +422,7 @@ def handle():
     HTML = HTML.replace("var wblist = [];","var wblist = " + str(wblist) + ";")
 
 
-    # set and replace colors
+    # set and replace colors and font settings
 
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
     if p.GetString("BackgroundImage",""):
@@ -433,14 +438,18 @@ def handle():
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
-
+    FONTFAMILY = p.GetString("FontFamily","Arial,Helvetica,sans")
+    if not FONTFAMILY:
+        FONTFAMILY = "Arial,Helvetica,sans"
+    FONTSIZE = p.GetInt("FontSize",13)
     HTML = HTML.replace("BASECOLOR",BASECOLOR)
     HTML = HTML.replace("BOXCOLOR",BOXCOLOR)
     HTML = HTML.replace("LINKCOLOR",LINKCOLOR)
     HTML = HTML.replace("TEXTCOLOR",TEXTCOLOR)
     HTML = HTML.replace("BGTCOLOR",BGTCOLOR)
     HTML = HTML.replace("BACKGROUND",BACKGROUND)
-    HTML = HTML.replace("SHADOW",SHADOW)
+    HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
+    HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
 
 
     # enable web access if permitted

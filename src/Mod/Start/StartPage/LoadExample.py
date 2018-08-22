@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,os
 # filename will be given before this script is run
-FreeCAD.open(os.path.join(FreeCAD.getResourceDir()+"examples",filename))
+FreeCAD.loadFile(os.path.join(FreeCAD.getResourceDir()+"examples",filename))
 FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
 from StartPage import StartPage
