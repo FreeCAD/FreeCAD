@@ -156,8 +156,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.OpFinalDepth = bb.ZMin
             obj.OpStartDepth = bb.ZMax
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append('CutMode')
+    setup.append('ExtraOffset')
+    setup.append('StepOver')
+    setup.append('ZigZagAngle')
+    setup.append('OffsetPattern')
+    setup.append('UseOutline')
+    return setup
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectPocket(obj)
     return obj

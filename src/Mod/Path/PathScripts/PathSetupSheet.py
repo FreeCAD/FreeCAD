@@ -34,6 +34,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
+_RegisteredOps = {}
+
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
@@ -211,3 +213,12 @@ def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
     proxy = SetupSheet(obj)
     return obj
+
+class _RegisteredOp(object):
+    def __init__(self, factory, properties):
+        self.factory = factory
+        self.properties = properties
+
+def RegisterOperation(name, objFactory, setupProperties):
+    global _RegisteredOps
+    _RegisteredOps[name] = _RegisteredOp(objFactory, setupProperties)

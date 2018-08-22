@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+import FreeCAD
+import Path
+import PathScripts.PathLog as PathLog
+
+__title__ = "Setup Sheet for a Job."
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
+
+
+class Property(object):
+    '''Base class for all prototype properties'''
+    def __init__(self, name, category, info):
+        self.name = name
+        self.category = category
+        self.info = info
+        self.editorMode = 0
+
+    def setValue(self, value):
+        self.value = value
+    def getValue(self):
+        return self.value
+
+    def setEditorMode(self, mode):
+        self.editorMode = mode
+
+class PropertyEnumeration(Property):
+    def setValue(self, value):
+        if list == type(value):
+            self.enums = value
+        else:
+            super(self.__class__, self).setValue(value)
+
+    def getEnumValues(self):
+        return self.enums
+
+class PropertyDistance(Property):
+    pass
+
+class PropertyPercent(Property):
+    pass
+
+class PropertyFloat(Property):
+    pass
+
+class PropertyBool(Property):
+    pass
+
+class PropertyString(Property):
+    pass
+
+class OpPrototype(object):
+
+    PropertyType = {
+            'App::PropertyEnumeration': PropertyEnumeration,
+            'App::PropertyDistance': PropertyDistance,
+            'App::PropertyPercent': PropertyPercent,
+            'App::PropertyFloat': PropertyFloat,
+            'App::PropertyBool': PropertyBool,
+            'App::PropertyString': PropertyString,
+            'App::PropertyLinkSubListGlobal': Property,
+            'App::PropertyLink': Property,
+            'App::PropertyVectorDistance': Property,
+            'Part::PropertyPartShape': Property,
+            }
+
+    def __init__(self):
+        self.properties = {}
+        self.DoNotSetDefaultValues = True
+
+    def addProperty(self, typeString, name, category, info = None):
+        prop = self.PropertyType[typeString](name, category, info)
+        self.properties[name] = prop
+
+    def setEditorMode(self, name, mode):
+        self.properties[name].setEditorMode(mode)
+
+
+    def setupProperties(self, setup):
+        return [p for p in self.properties if p.name in setup]
