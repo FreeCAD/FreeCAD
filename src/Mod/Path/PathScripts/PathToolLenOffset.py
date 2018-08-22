@@ -40,8 +40,10 @@ class ToolLenOffset:
         obj.addProperty("App::PropertyLength", "Height", "HeightOffset",QtCore.QT_TRANSLATE_NOOP("App::Property","The first height value in Z, to rapid to, before making a feed move in Z"))
         obj.addProperty("App::PropertyBool","Active","HeightOffset",QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
         obj.Proxy = self
-        mode = 2
-        obj.setEditorMode('Placement', mode)
+        obj.setEditorMode('Placement', 2)
+
+    def onDocumentRestored(self, obj):
+        obj.setEditorMode('Placement', 2)
 
     def execute(self, obj):
 

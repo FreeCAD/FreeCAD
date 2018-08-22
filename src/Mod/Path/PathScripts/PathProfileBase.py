@@ -79,6 +79,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
+    def areaOpOnDocumentRestored(self, obj):
+        for prop in ['UseComp', 'JoinType']:
+            self.areaOpOnChanged(obj, prop)
+
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
         Do not overwrite.'''

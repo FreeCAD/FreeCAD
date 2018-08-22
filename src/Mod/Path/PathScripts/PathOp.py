@@ -158,6 +158,17 @@ class ObjectOp(object):
         if self.setDefaultValues(obj):
             obj.Proxy = self
 
+    def setEditorModes(self, obj, features):
+        '''Editor modes are not preserved during document store/restore, set editor modes for all properties'''
+
+        for op in ['OpStartDepth', 'OpFinalDepth', 'OpToolDiameter']:
+            if hasattr(obj, op):
+                obj.setEditorMode(op, 1) # read-only
+
+        if FeatureDepths & features:
+            if FeatureNoFinalDepth & features:
+                obj.setEditorMode('OpFinalDepth', 2)
+
     def onDocumentRestored(self, obj):
         features = self.opFeatures(obj)
         if FeatureBaseGeometry & features and 'App::PropertyLinkSubList' == obj.getTypeIdOfProperty('Base'):
@@ -174,9 +185,8 @@ class ObjectOp(object):
 
         if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
             self.addOpValues(obj, ['start', 'final'])
-            if FeatureNoFinalDepth & features:
-                obj.setEditorMode('OpFinalDepth', 2)
 
+        self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
     def __getstate__(self):

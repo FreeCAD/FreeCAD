@@ -79,7 +79,12 @@ def shapeBoundBox(obj):
         PathLog.error(translate('PathStock', "Invalid base object %s - no shape found") % obj.Name)
     return None
 
-class StockFromBase:
+class Stock(object):
+    def onDocumentRestored(self, obj):
+        if hasattr(obj, 'StockType'):
+            obj.setEditorMode('StockType', 2) # hide
+
+class StockFromBase(Stock):
 
     def __init__(self, obj, base):
         "Make stock"
@@ -130,7 +135,7 @@ class StockFromBase:
             self.execute(obj)
 
 
-class StockCreateBox:
+class StockCreateBox(Stock):
     MinExtent = 0.001
 
     def __init__(self, obj):
@@ -165,7 +170,7 @@ class StockCreateBox:
         if prop in ['Length', 'Width', 'Height'] and not 'Restore' in obj.State:
             self.execute(obj)
 
-class StockCreateCylinder:
+class StockCreateCylinder(Stock):
     MinExtent = 0.001
 
     def __init__(self, obj):

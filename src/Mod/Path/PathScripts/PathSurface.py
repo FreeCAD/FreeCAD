@@ -95,6 +95,9 @@ class ObjectSurface(PathOp.ObjectOp):
         if prop == "Algorithm":
             self.setEditorProperties(obj)
 
+    def opOnDocumentRestored(self, obj):
+        self.setEditorProperties(obj)
+
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
