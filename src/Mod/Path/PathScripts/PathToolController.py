@@ -81,8 +81,10 @@ class ToolController:
         obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"))
         obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"))
         obj.Proxy = self
-        mode = 2
-        obj.setEditorMode('Placement', mode)
+        obj.setEditorMode('Placement', 2)
+
+    def onDocumentRestored(self, obj):
+        obj.setEditorMode('Placement', 2)
 
     def setFromTemplate(self, obj, template):
         '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''

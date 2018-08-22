@@ -70,6 +70,9 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         self.baseObject().initAreaOp(obj)
         obj.setEditorMode('Side', 2) # it's always outside
 
+    def areaOpOnDocumentRestored(self, obj):
+        obj.setEditorMode('Side', 2) # it's always outside
+
     def areaOpSetDefaultValues(self, obj):
         '''areaOpSetDefaultValues(obj) ... call super's implementation and set Side="Outside".'''
         self.baseObject().areaOpSetDefaultValues(obj)

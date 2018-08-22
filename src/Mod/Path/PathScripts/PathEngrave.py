@@ -56,19 +56,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
             obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseShapes', 2) # hide
+        obj.setEditorMode('BaseShapes', 2) # hide
         if not hasattr(obj, 'BaseObject'):
             obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseObject', 2) # hide
+        obj.setEditorMode('BaseObject', 2) # hide
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
         self.setupAdditionalProperties(obj)
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         # upgrade ...
-        super(self.__class__, self).onDocumentRestored(obj)
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):

@@ -392,6 +392,9 @@ class ObjectDressup:
         obj.Proxy = self
         obj.Base = base
 
+    def onDocumentRestored(self, obj):
+        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
+        
     def __getstate__(self):
         return None
 

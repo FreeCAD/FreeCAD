@@ -126,6 +126,16 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.areaOpOnChanged(obj, prop)
 
+    def opOnDocumentRestored(self, obj):
+        for prop in ['AreaParams', 'PathParams', 'removalshape']:
+            if hasattr(obj, prop):
+                obj.setEditorMode(prop, 2)
+        self.areaOpOnDocumentRestored(obj)
+
+    def areaOpOnDocumentRestored(self, obj):
+        '''areaOpOnDocumentRestored(obj) ... overwrite to fully restore receiver'''
+        pass
+
     def opSetDefaultValues(self, obj):
         '''opSetDefaultValues(obj) ... base implementation, do not overwrite.
         The base implementation sets the depths and heights based on the
