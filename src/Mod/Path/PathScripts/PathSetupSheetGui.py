@@ -27,8 +27,10 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathIconViewProvider as PathIconViewProvider
+import PathScripts.PathLog as PathLog
+import PathScripts.PathSetupSheet as PathSetupSheet
+import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
@@ -91,6 +93,18 @@ class ViewProvider:
     def doubleClicked(self, vobj):
         self.setEdit(vobj)
 
+class OpTaskPanel:
+    def __init__(self, obj, name, op):
+        self.name = name
+        self.obj = obj
+        self.op = op
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupOp.ui")
+        self.form.setWindowTitle(self.name)
+
+    def setupUi(self):
+        PathLog.track()
+
+
 class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole
     DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
@@ -99,7 +113,9 @@ class TaskPanel:
         self.vobj = vobj
         self.obj = vobj.Object
         PathLog.track(self.obj.Label)
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
+        self.globalForm = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
+        self.ops = [OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)]
+        self.form = [self.globalForm] + [op.form for op in self.ops]
         FreeCAD.ActiveDocument.openTransaction(translate("Path_SetupSheet", "Edit SetupSheet"))
 
     def reject(self):
@@ -123,22 +139,22 @@ class TaskPanel:
             if val != value:
                 PathGui.setProperty(self.obj, name, value)
 
-        updateExpression('StartDepthExpression',        self.form.startDepthExpr)
-        updateExpression('FinalDepthExpression',        self.form.finalDepthExpr)
-        updateExpression('StepDownExpression',          self.form.stepDownExpr)
-        updateExpression('ClearanceHeightExpression',   self.form.clearanceHeightExpr)
-        updateExpression('SafeHeightExpression',        self.form.safeHeightExpr)
+        updateExpression('StartDepthExpression',        self.globalForm.startDepthExpr)
+        updateExpression('FinalDepthExpression',        self.globalForm.finalDepthExpr)
+        updateExpression('StepDownExpression',          self.globalForm.stepDownExpr)
+        updateExpression('ClearanceHeightExpression',   self.globalForm.clearanceHeightExpr)
+        updateExpression('SafeHeightExpression',        self.globalForm.safeHeightExpr)
         self.clearanceHeightOffs.updateProperty()
         self.safeHeightOffs.updateProperty()
         self.rapidVertical.updateProperty()
         self.rapidHorizontal.updateProperty()
 
     def updateUI(self):
-        self.form.startDepthExpr.setText(       self.obj.StartDepthExpression)
-        self.form.finalDepthExpr.setText(       self.obj.FinalDepthExpression)
-        self.form.stepDownExpr.setText(         self.obj.StepDownExpression)
-        self.form.clearanceHeightExpr.setText(  self.obj.ClearanceHeightExpression)
-        self.form.safeHeightExpr.setText(       self.obj.SafeHeightExpression)
+        self.globalForm.startDepthExpr.setText(       self.obj.StartDepthExpression)
+        self.globalForm.finalDepthExpr.setText(       self.obj.FinalDepthExpression)
+        self.globalForm.stepDownExpr.setText(         self.obj.StepDownExpression)
+        self.globalForm.clearanceHeightExpr.setText(  self.obj.ClearanceHeightExpression)
+        self.globalForm.safeHeightExpr.setText(       self.obj.SafeHeightExpression)
         self.clearanceHeightOffs.updateSpinBox()
         self.safeHeightOffs.updateSpinBox()
         self.rapidVertical.updateSpinBox()
@@ -162,11 +178,14 @@ class TaskPanel:
         self.updateUI()
 
     def setupUi(self):
-        self.clearanceHeightOffs = PathGui.QuantitySpinBox(self.form.clearanceHeightOffs, self.obj, 'ClearanceHeightOffset')
-        self.safeHeightOffs = PathGui.QuantitySpinBox(self.form.safeHeightOffs, self.obj, 'SafeHeightOffset')
-        self.rapidHorizontal = PathGui.QuantitySpinBox(self.form.rapidHorizontal, self.obj, 'HorizRapid')
-        self.rapidVertical = PathGui.QuantitySpinBox(self.form.rapidVertical, self.obj, 'VertRapid')
+        self.clearanceHeightOffs = PathGui.QuantitySpinBox(self.globalForm.clearanceHeightOffs, self.obj, 'ClearanceHeightOffset')
+        self.safeHeightOffs = PathGui.QuantitySpinBox(self.globalForm.safeHeightOffs, self.obj, 'SafeHeightOffset')
+        self.rapidHorizontal = PathGui.QuantitySpinBox(self.globalForm.rapidHorizontal, self.obj, 'HorizRapid')
+        self.rapidVertical = PathGui.QuantitySpinBox(self.globalForm.rapidVertical, self.obj, 'VertRapid')
         self.setFields()
+
+        for op in self.ops:
+            op.setupUi()
 
 def Create(name = 'SetupSheet'):
     '''Create(name = 'SetupSheet') ... creates a new setup sheet'''
