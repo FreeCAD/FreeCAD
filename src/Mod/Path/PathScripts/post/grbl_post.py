@@ -50,6 +50,8 @@ parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up
 parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
+parser.add_argument('--tool-change', action='store_true', help='insert M6 for tool changes')
+parser.add_argument('--no-tool-change', action='store_true', help='suppress all tool chanage commands (default)')
 
 TOOLTIP_ARGS=parser.format_help()
 
@@ -104,6 +106,7 @@ def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
+    global OUTPUT_TOOL_CHANGE
     global SHOW_EDITOR
     global PRECISION
     global PREAMBLE
@@ -133,6 +136,10 @@ def processArguments(argstring):
             PREAMBLE = args.preamble
         if args.postamble is not None:
             POSTAMBLE = args.postamble
+        if args.tool_change:
+            OUTPUT_TOOL_CHANGE = True
+        if args.no_tool_change:
+            OUTPUT_TOOL_CHANGE = False
     except:
         return False
 
@@ -263,7 +270,7 @@ def parse(pathobj):
                         if command not in RAPID_MOVES:
                             outstring.append(param + format(c.Parameters['F'] * 60, '.2f'))
                     elif param == 'T':
-                        outstring.append(param + str(c.Parameters['T']))
+                        outstring.append(param + str(int(c.Parameters['T'])))
                     else:
                         outstring.append(param + format(c.Parameters[param], precision_string))
 
@@ -272,7 +279,8 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                if OUTPUT_COMMENTS: out += linenumber() + "(begin toolchange)\n"
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + "(begin toolchange)\n"
                 if not OUTPUT_TOOL_CHANGE:
                     outstring.insert(0, ";")
                 else:
