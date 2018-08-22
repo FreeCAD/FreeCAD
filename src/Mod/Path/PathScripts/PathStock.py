@@ -207,7 +207,7 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
-    PathLog.track(job.Label, neg, pos, placement)
+    PathLog.track(job.Label if job else "-", neg, pos, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockFromBase(obj, base)
@@ -227,7 +227,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    PathLog.track(job.Label, extent, placement)
+    PathLog.track(job.Label if job else "-", extent, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateBox(obj)
@@ -250,7 +250,7 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    PathLog.track(job.Label, radius, height, placement)
+    PathLog.track(job.Label if job else "-", radius, height, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateCylinder(obj)
