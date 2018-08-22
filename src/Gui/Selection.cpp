@@ -101,7 +101,20 @@ void SelectionObserver::attachSelection()
                 resolve?Selection().signalSelectionChanged2:
                 Selection().signalSelectionChanged);
         connectSelection = signal.connect(boost::bind
-            (&SelectionObserver::onSelectionChanged, this, _1));
+            (&SelectionObserver::_onSelectionChanged, this, _1));
+    }
+}
+
+void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
+    try { 
+        onSelectionChanged(msg);
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        FC_ERR("Unhandled Base::Exception caught in selection observer: ");
+    } catch (std::exception &e) {
+        FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
+    } catch (...) {
+        FC_ERR("Unhandled unknown exception caught in selection observer");
     }
 }
 

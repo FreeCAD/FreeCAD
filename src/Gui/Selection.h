@@ -204,6 +204,7 @@ public:
 
 private:
     virtual void onSelectionChanged(const SelectionChanges& msg) = 0;
+    void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
     typedef boost::signals::connection Connection;
