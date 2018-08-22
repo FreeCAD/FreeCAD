@@ -900,6 +900,9 @@ class TaskPanel:
                 PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
         self.stockEdit.activate(self.obj, index == -1)
 
+    def updateStock(self):
+        self.updateStockEditor(self.form.stock.currentIndex())
+
     def centerInStock(self):
         bbb = self.obj.Base.Shape.BoundBox
         bbs = self.obj.Stock.Shape.BoundBox
@@ -982,6 +985,7 @@ class TaskPanel:
         self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
+        self.form.updateStock.clicked.connect(self.updateStock)
 
         self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
         self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
