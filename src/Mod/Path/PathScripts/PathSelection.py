@@ -160,14 +160,14 @@ class POCKETGate:
 class ADAPTIVEGate:
     def allow(self, doc, obj, sub):
 
-        adaptive = False
+        adaptive = True
         try:
             obj = obj.Shape
         except:
             return False
 
         if obj.ShapeType == 'Edge':
-            adaptive = False
+            adaptive = True
 
         elif obj.ShapeType == 'Face':
             adaptive = True
