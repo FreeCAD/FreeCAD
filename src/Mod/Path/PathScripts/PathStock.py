@@ -31,7 +31,7 @@ import math
 from PySide import QtCore
 
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 
@@ -97,6 +97,9 @@ class StockFromBase:
         obj.ExtZneg= 1.0
         obj.ExtZpos= 1.0
 
+        # placement is only tracked on creation
+        bb = shapeBoundBox(base)
+        obj.Placement = FreeCAD.Placement(FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation())
         obj.Proxy = self
 
     def __getstate__(self):
@@ -110,8 +113,7 @@ class StockFromBase:
         # Sometimes, when the Base changes it's temporarily not assigned when
         # Stock.execute is triggered - it'll be set correctly the next time around.
         if bb:
-            origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
-            self.origin = origin - FreeCAD.Vector(obj.ExtXneg.Value, obj.ExtYneg.Value, obj.ExtZneg.Value)
+            self.origin = FreeCAD.Vector(-obj.ExtXneg.Value, -obj.ExtYneg.Value, -obj.ExtZneg.Value)
 
             self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
             self.width  = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
@@ -203,6 +205,7 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
+    PathLog.track(job.Label, neg, pos, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockFromBase(obj, base)
@@ -222,6 +225,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
+    PathLog.track(job.Label, extent, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateBox(obj)
@@ -244,6 +248,7 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
+    PathLog.track(job.Label, radius, height, placement)
     base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateCylinder(obj)
