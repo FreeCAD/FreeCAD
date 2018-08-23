@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2012                                                    * 
-#*   Yorik van Havre <yorik@uncreated.net>                                 * 
+#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +20,16 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,sys
-rf=FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
-FreeCAD.loadFile(rf.GetString("MRU2"))
+import FreeCAD,FreeCADGui,os,urllib
+# filename will be given before this script is run
+cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+if cfolder:
+    if not os.path.isdir(cfolder):
+        cfolder = os.path.dirname(cfolder)
+    f = urllib.unquote(filename).replace("+"," ")
+    FreeCAD.open(os.path.join(cfolder,f))
+    FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
+    from StartPage import StartPage
+    StartPage.postStart()
+    

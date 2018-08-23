@@ -385,6 +385,11 @@ class SelectPlane(DraftTool):
                             self.display(plane.axis)
                             self.finish()
                             return
+                        elif sel.SubElementNames[0] == "Plane":
+                            plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                            self.display(plane.axis)
+                            self.finish()
+                            return
                     elif len(sel.SubElementNames) == 3:
                         if ("Vertex" in sel.SubElementNames[0]) \
                         and ("Vertex" in sel.SubElementNames[1]) \
@@ -393,6 +398,13 @@ class SelectPlane(DraftTool):
                                                  sel.SubObjects[1].Point,
                                                  sel.SubObjects[2].Point,
                                                  self.offset)
+                            self.display(plane.axis)
+                            self.finish()
+                            return
+                elif sel.Object.isDerivedFrom("Part::Feature"):
+                    if sel.Object.Shape:
+                        if len(sel.Object.Shape.Faces) == 1:
+                            plane.alignToFace(sel.Object.Shape.Faces[0], self.offset)
                             self.display(plane.axis)
                             self.finish()
                             return

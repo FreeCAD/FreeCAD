@@ -25,6 +25,10 @@ __title__="FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+import ArchPipe
+from Units import Quantity
+zeroMM = Quantity('0mm')
+
 import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -56,32 +60,174 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
-    obj.Label = translate("Arch",name)
-    _Stairs(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderStairs(obj.ViewObject)
+
+    bases = []
+    stairs = []
+    additions = []
+
+    def setProperty(obj,length,width,height,steps,name):
+        if length:
+            obj.Length = length
+        else:
+            obj.Length = p.GetFloat("StairsLength",4500.0)
+        if width:
+            obj.Width = width
+        else:
+            obj.Width = p.GetFloat("StairsWidth",1000.0)
+        if height:
+            obj.Height = height
+        else:
+            obj.Height = p.GetFloat("StairsHeight",3000.0)
+        if steps:
+            obj.NumberOfSteps = steps
+        obj.Structure = "Massive"
+        obj.StructureThickness = 150
+
+        obj.RailingOffsetLeft = 60
+        obj.RailingOffsetRight = 60
+        obj.RailingHeightLeft = 900
+        obj.RailingHeightRight = 900
+
     if baseobj:
-        obj.Base = baseobj
-    if length:
-        obj.Length = length
-    else:
-        obj.Length = p.GetFloat("StairsLength",4500.0)
-    if width:
-        obj.Width = width
-    else:
-        obj.Width = p.GetFloat("StairsWidth",1000.0)
-    if height:
-        obj.Height = height
-    else:
-        obj.Height = p.GetFloat("StairsHeight",3000.0)
-    if steps:
-        obj.NumberOfSteps = steps
+        lenSelection = len(baseobj)
+        if lenSelection > 1:
+            print (len(baseobj))
+            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+            stair.Label = translate("Arch",name)
+            _Stairs(stair)
+            stairs.append(stair)
+            stairs[0].Label = translate("Arch",name)
+            i = 1
+        else:
+            i = 0
+        for baseobjI in baseobj:
+            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+            stair.Label = translate("Arch",name)
+            _Stairs(stair)
+            stairs.append(stair)
+            stairs[i].Label = translate("Arch",name)
+            stairs[i].Base = baseobjI
 
-    obj.Structure = "Massive"
-    obj.StructureThickness = 150
+            if (len(baseobjI.Shape.Edges) > 1):
+                stepsI = 1							#'landing' if 'multi-edges' currently
+            elif steps:
+                stepsI = steps
+            else:
+                stepsI = 16
+            setProperty(stairs[i],None,width,height,stepsI,name)
 
-    return obj
+            if i > 1:
+                additions.append(stairs[i])
+                stairs[i].LastSegment = stairs[i-1]
+            else:
+                if len(stairs) > 1:						# i.e. length >1, have a 'master' staircase created
+                    stairs[0].Base = stairs[1]
+            i += 1
+        if lenSelection > 1:
+            stairs[0].Additions = additions
+
+    else:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+        obj.Label = translate("Arch",name)
+        _Stairs(obj)
+        setProperty(obj,length,width,height,steps,name)
+
+    if FreeCAD.GuiUp:
+        if baseobj:
+            for stair in stairs:
+                _ViewProviderStairs(stair.ViewObject)
+        else:
+            _ViewProviderStairs(obj.ViewObject)
+
+    if stairs:
+        for stair in stairs:
+            stair.recompute()
+        makeRailing(stairs)
+        return stairs
+    else:
+        obj.recompute()
+
+        return obj
+
+
+def makeRailing(stairs):
+    "simple make Railing function testing"
+
+    def makeRailingLorR(stairs,side="L"):
+        for stair in reversed(stairs):
+            if side == "L":
+                outlineLR = stair.OutlineLeft
+                OutlineLRAll = stair.OutlineLeftAll
+                stairs0OutlineWireLR = "OutlineWireLeft"
+                stairOutlineWireLR = "OutlineWireLeft"
+            elif side == "R":
+                outlineLR = stair.OutlineRight
+                OutlineLRAll = stair.OutlineRightAll
+                stairs0OutlineWireLR = "OutlineWireRight"
+                stairOutlineWireLR = "OutlineWireRight"
+            if outlineLR or OutlineLRAll:
+                lrRail = ArchPipe.makePipe()
+                if OutlineLRAll:
+                    lrRailWire = Draft.makeWire(OutlineLRAll)
+                    lrRail.Base = lrRailWire
+                    setattr(stairs[0], stairs0OutlineWireLR, lrRailWire.Name)
+                    setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif outlineLR:
+                    lrRailWire = Draft.makeWire(outlineLR)
+                    lrRail.Base = lrRailWire
+                    setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
+    makeRailingLorR(stairs,"L")
+    makeRailingLorR(stairs,"R")
+
+    if False: # TODO - To be deleted
+      for stair in reversed(stairs):
+        print ("stair.Name")
+        print (stair.Name)
+        if stair.OutlineLeft or stair.OutlineLeftAll:
+                lrRail = ArchPipe.makePipe()
+                if stair.OutlineLeftAll:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeftAll)
+                    lrRail.Base = lrRailWire
+                    stairs[0].OutlineWireLeft = lrRailWire.Name
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif stair.OutlineLeft:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeft)
+                    lrRail.Base = lrRailWire
+                    stair.OutlineWireLeft = lrRailWire.Name
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
+    if False: # TODO - To be deleted
+      for stair in reversed(stairs):
+        print ("stair.Name")
+        print (stair.Name)
+        if stair.OutlineRight or stair.OutlineRightAll:
+                lrRail = ArchPipe.makePipe()
+                if stair.OutlineRightAll:
+                    lrRailWire = Draft.makeWire(stair.OutlineRightAll)
+                    lrRail.Base = lrRailWire
+                    stairs[0].OutlineWireRight = lrRailWire.Name
+                    railList = stairs[0].Additions
+                    railList.append(lrRail)
+                    stairs[0].Additions = railList
+                    break
+                elif stair.OutlineRight:
+                    lrRailWire = Draft.makeWire(stair.OutlineLeft)
+                    lrRail.Base = lrRailWire
+                    stair.OutlineWireRight = lrRailWire.Name
+                    railList = stair.Additions
+                    railList.append(lrRail)
+                    stair.Additions = railList
 
 
 class _CommandStairs:
@@ -108,9 +254,21 @@ class _CommandStairs:
         # a list of 'segment' / 'flight' of stairs
         stairs = []
         additions = []
-        lenSelection = len(FreeCADGui.Selection.getSelection())
 
-        if lenSelection > 0:
+        if len(FreeCADGui.Selection.getSelection()) > 0:
+            n = []
+            nStr = ""
+            for obj in FreeCADGui.Selection.getSelection():
+                n.append(obj.Name) # would no longer use
+                if nStr != "":
+                    nStr = nStr + ","
+                nStr = nStr + "FreeCAD.ActiveDocument." + obj.Name
+            FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=["+nStr+"])")
+
+        #lenSelection = len(FreeCADGui.Selection.getSelection())
+        #if lenSelection > 0:
+        elif False:
+
             if lenSelection > 1:
                 stairs.append(makeStairs(None, None, None, None, None))
                 i = 1
@@ -136,8 +294,8 @@ class _CommandStairs:
 
         else:
             FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
-        FreeCADGui.addModule("Draft")
 
+        FreeCADGui.addModule("Draft")
         for obj in stairs:
                 Draft.autogroup(obj) # seems not working?
 
@@ -188,18 +346,54 @@ class _Stairs(ArchComponent.Component):
         if not "BlondelRatio" in pl:
             obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"))
             obj.setEditorMode("BlondelRatio",1)
+
         if not hasattr(obj,"LandingDepth"):
             obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
+
+        if not hasattr(obj,"TreadDepthEnforce"):
+            obj.addProperty("App::PropertyLength","TreadDepthEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs - Enforced regardless Length or edge's Length"))
+        if not hasattr(obj,"RiserHeightEnforce"):
+            obj.addProperty("App::PropertyLength","RiserHeightEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs - Enforced regardless Height or edge's Height"))
+
         if not hasattr(obj,"Flight"):
             obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of of flight after landing"))
             obj.Flight = ["Straight","HalfTurnLeft","HalfTurnRight"]
 
-        # Segment properties
+        # Segment and Parts properties
         if not hasattr(obj,"LastSegment"):
-            obj.addProperty("App::PropertyLink","LastSegment","Segment","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
+            obj.addProperty("App::PropertyLink","LastSegment","Segment and Parts","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
         if not hasattr(obj,"AbsTop"):
-            obj.addProperty("App::PropertyVector","AbsTop","Segment",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to "))
+            obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to "))
             obj.setEditorMode("AbsTop",1)
+        if not hasattr(obj,"OutlineLeft"):
+            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
+            obj.setEditorMode("OutlineLeft",1)
+        if not hasattr(obj,"OutlineRight"):
+            obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
+            obj.setEditorMode("OutlineRight",1)
+
+        if not hasattr(obj,"OutlineWireLeft"):
+            #obj.addProperty("App::PropertyLink","OutlineWireLeft","Segment and Parts","Wire object created from OutlineLeft")	# To test which is better
+            obj.addProperty("App::PropertyString","OutlineWireLeft","Segment and Parts","Name of Wire object's created from OutlineLeft")
+        if not hasattr(obj,"OutlineWireRight"):
+            #obj.addProperty("App::PropertyLink","OutlineWireRight","Segment and Parts","Wire object created from OutlineRight")	# To test which is better
+            obj.addProperty("App::PropertyString","OutlineWireRight","Segment and Parts","Name of Wire object's created from OutlineLeft")
+
+        if not hasattr(obj,"OutlineLeftAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineLeftAll",1)
+        if not hasattr(obj,"OutlineRightAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineRightAll",1)
+
+        if not hasattr(obj,"RailingHeightLeft"):
+            obj.addProperty("App::PropertyLength","RailingHeightLeft","Segment and Parts","Height of Railing on Left hand side from Stairs or Landing ")
+        if not hasattr(obj,"RailingHeightRight"):
+            obj.addProperty("App::PropertyLength","RailingHeightRight","Segment and Parts","Height of Railing on Right hand side from Stairs or Landing ")
+        if not hasattr(obj,"RailingOffsetLeft"):
+            obj.addProperty("App::PropertyLength","RailingOffsetLeft","Segment and Parts","Offset of Railing on Left hand side from stairs or landing Edge ")
+        if not hasattr(obj,"RailingOffsetRight"):
+            obj.addProperty("App::PropertyLength","RailingOffsetRight","Segment and Parts","Offset of Railing on Right hand side from stairs or landing Edge ")
 
         # structural properties
         if not "Landings" in pl:
@@ -239,7 +433,7 @@ class _Stairs(ArchComponent.Component):
         self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
-        landings = 0
+        landings = 0 # ? Any use - paul 2018.7.15
 
         base = None
 
@@ -269,12 +463,7 @@ class _Stairs(ArchComponent.Component):
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps > 1:
-
-                        if obj.Landings == "At center":
-                            landings = 1
-                            self.makeStraightStairsWithLanding(obj,edge)
-                        else:
-                            self.makeStraightStairs(obj,edge)
+                            self.makeStraightStairsWithLanding(obj,edge)	# all cases use makeStraightStairsWithLanding()
 
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps == 1:
@@ -291,7 +480,7 @@ class _Stairs(ArchComponent.Component):
                             self.makeCurvedStairs(obj,edge)
 
                 elif (len(obj.Base.Shape.Edges) >= 1):
-                      if obj.NumberOfSteps == 1:
+                      #if obj.NumberOfSteps == 1:
                             edges = obj.Base.Shape.Edges
                             self.makeMultiEdgesLanding(obj,edges)
 
@@ -299,11 +488,8 @@ class _Stairs(ArchComponent.Component):
                 if not obj.Length.Value:
                     return
                 edge = Part.LineSegment(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
-                if obj.Landings == "At center":
-                    landings = 1
-                    self.makeStraightStairsWithLanding(obj,edge)
-                else:
-                    self.makeStraightStairs(obj,edge)
+
+                self.makeStraightStairsWithLanding(obj,edge)
 
         if self.structures or self.steps:
             base = Part.makeCompound(self.structures + self.steps)
@@ -319,8 +505,22 @@ class _Stairs(ArchComponent.Component):
                 obj.Shape = base
                 obj.Placement = pl
 
+        if obj.OutlineWireLeft:
+            OutlineWireLeftObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireLeft)
+            if obj.OutlineLeftAll:
+                OutlineWireLeftObject.Points = obj.OutlineLeftAll
+            elif obj.OutlineLeft:
+                OutlineWireLeftObject.Points = obj.OutlineLeft
+        if obj.OutlineWireRight:
+            OutlineWireRightObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireRight)
+            if obj.OutlineRightAll:
+                OutlineWireRightObject.Points = obj.OutlineRightAll
+            elif obj.OutlineRight:
+                OutlineWireRightObject.Points = obj.OutlineRight
+
         # compute step data
-        if obj.NumberOfSteps > 1:
+        #if obj.NumberOfSteps > 1:
+        if False:
             l = obj.Length.Value
             h = obj.Height.Value
             if obj.Base:
@@ -349,81 +549,15 @@ class _Stairs(ArchComponent.Component):
 
         "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
 
-        import Part,DraftGeomUtils
+        # import Again?
+        import Draft, Part
 
-        v, vLength, vWidth, vBase = [], [], [], []
-        p1o, p2o, p1, p2, p3, p4 = [], [], [], [], [], []
-        outline, outlineP1P2, outlineP3P4 = [], [], []
+        outline, outlineL, outlineR, vBase1 = self.returnOutlines(obj, edges, "left", zeroMM, zeroMM, zeroMM, zeroMM, zeroMM)
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edges,"left",zeroMM,obj.RailingOffsetLeft, obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight)
 
-        enum_edges = enumerate(edges)
-        for i, edge in enum_edges:
-            v.append(DraftGeomUtils.vec(edge))
-            vLength.append(Vector(v[i].x,v[i].y,0))
-            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
-            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),obj.Width.Value))
-            vBase.append(edges[i].Vertexes[0].Point)
-            vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
-
-            # step + structure							# assume all left-align first # no nosing
-            p1o.append(vBase[i].add(Vector(0,0,-abs(obj.TreadThickness.Value))))
-            p2o.append(p1o[i].add(vLength[i]))
-            p1.append(self.align(vBase[i],obj.Align,vWidth[i]).add(Vector(0,0,-abs(obj.TreadThickness.Value))))
-            p2.append(p1[i].add(vLength[i]))
-            p3.append(p2[i].add(vWidth[i]))
-            p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])))
-
-
-            if obj.Align == 'Left':
-                outlineP1P2.append(p1[i])
-                outlineP1P2.append(p2[i])					# can better skip 1 'supposedly' overlapping point every pair?
-                if i > 0:
-                    print ("Debug - intersection calculation")
-                    print (p3[i-1])
-                    print (p4[i-1])
-                    print (p3[i])
-                    print (p4[i])
-                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
-                    print (intersection)
-                    outlineP3P4.insert(0, intersection[0])
-                else:
-                    outlineP3P4.insert(0, p4[i])
-
-            elif obj.Align == 'Right':
-                if i > 0:
-                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
-                    outlineP1P2.append(intersection[0])
-                else:
-                    outlineP1P2.append(p1[i])
-                outlineP3P4.insert(0, p4[i])
-                outlineP3P4.insert(0, p3[i])
-
-            elif obj.Align == 'Center':
-                if i > 0:
-                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
-                    outlineP1P2.append(intersection[0])
-                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
-                    outlineP3P4.insert(0, intersection[0])
-                else:
-                    outlineP1P2.append(p1[i])
-                    outlineP3P4.insert(0, p4[i])
-
-            else:
-                outlineP1P2.append(p1[i])
-                outlineP1P2.append(p2[i])
-                outlineP3P4.insert(0, p4[i])
-                outlineP3P4.insert(0, p3[i])
-
-        # add back last/first 'missing' point(s)
-        if obj.Align in ['Left', 'Center']:
-            outlineP3P4.insert(0, p3[i])
-        if obj.Align in ['Right', 'Center']:
-            outlineP1P2.append(p2[i])
-
-        outline = outlineP1P2 + outlineP3P4
-        outline.append(p1[0])
-        print (outlineP1P2)
-        print (outlineP3P4)
-        print (outline)
+        obj.OutlineLeft = outlineRailL
+        obj.OutlineRight = outlineRailR
+        obj.AbsTop = vBase1[0]
 
         stepFace = Part.Face(Part.makePolygon(outline))
 
@@ -440,7 +574,106 @@ class _Stairs(ArchComponent.Component):
         if struct:
             self.structures.append(struct)
 
-        obj.AbsTop = vBase[1]
+        self.connectRailingVector(obj,outlineRailL,outlineRailR)
+
+
+    #@staticmethod
+    def returnOutlines(self, obj, edges, align="left", railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM):
+    # better omit 'obj' latter?- currently only for vbaseFollowLastSement()?
+
+        import DraftGeomUtils
+
+        v, vLength, vWidth, vBase = [], [], [], []
+        p1o, p2o, p1, p2, p3, p4 = [], [], [], [], [], []
+        outline, outlineP1P2, outlineP3P4 = [], [], []
+
+        if not isinstance(edges, list):
+            edges = [edges]
+
+        enum_edges = enumerate(edges)
+        for i, edge in enum_edges:
+            v.append(DraftGeomUtils.vec(edge))
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
+
+            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
+            netWidth = obj.Width.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+
+            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidth))
+
+            vBase.append(edges[i].Vertexes[0].Point)
+            vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
+
+            vBase[i] = vBase[i].add(Vector(0,0,offsetVLeft.Value))
+            vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
+            vOffsetH = DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),offsetHLeft.Value)
+            vBase[i] = self.align(vBase[i], "Right", -vOffsetH)
+
+            # step + structure							# assume all left-align first # no nosing
+            p1o.append(vBase[i].add(Vector(0,0,-abs(obj.TreadThickness.Value))))
+            p2o.append(p1o[i].add(vLength[i]))
+            p1.append(self.align(vBase[i],obj.Align,vWidth[i]).add(Vector(0,0,-abs(obj.TreadThickness.Value))))
+
+            p2.append(p1[i].add(vLength[i]).add(Vector(0,0,-railStartRiser.Value)))
+            p3.append(p2[i].add(vWidth[i]).add(Vector(0,0,(offsetVRight-offsetVLeft).Value)))
+            p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])).add(Vector(0,0,railStartRiser.Value)))
+
+            #if obj.Align == 'Left':
+            if False:
+                outlineP1P2.append(p1[i])
+                outlineP1P2.append(p2[i])					# can better skip 1 'supposedly' overlapping point every pair?
+                if i > 0:
+                    print ("Debug - intersection calculation")
+                    print (p3[i-1])
+                    print (p4[i-1])
+                    print (p3[i])
+                    print (p4[i])
+                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
+                    print (intersection)
+                    outlineP3P4.insert(0, intersection[0])
+                else:
+                    outlineP3P4.insert(0, p4[i])
+
+            #elif obj.Align == 'Right':
+            if False:
+
+                if i > 0:
+                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
+                    outlineP1P2.append(intersection[0])
+                else:
+                    outlineP1P2.append(p1[i])
+                outlineP3P4.insert(0, p4[i])
+                outlineP3P4.insert(0, p3[i])
+
+            #elif obj.Align == 'Center':
+            if True:
+
+                if i > 0:
+                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
+                    outlineP1P2.append(intersection[0])
+                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
+                    outlineP3P4.insert(0, intersection[0])
+                else:
+                    outlineP1P2.append(p1[i])
+                    outlineP3P4.insert(0, p4[i])
+
+            else:
+                outlineP1P2.append(p1[i])
+                outlineP1P2.append(p2[i])
+                outlineP3P4.insert(0, p4[i])
+                outlineP3P4.insert(0, p3[i])
+
+        # add back last/first 'missing' point(s)
+        outlineP3P4.insert(0, p3[i])
+        outlineP1P2.append(p2[i])
+
+        outline = outlineP1P2 + outlineP3P4
+        outline.append(p1[0])
+        print (outlineP1P2)
+        print (outlineP3P4)
+        print (outline)
+
+        return outline, outlineP1P2, outlineP3P4, vBase
+
 
     @staticmethod
     def vbaseFollowLastSement(obj, vBase):
@@ -469,13 +702,35 @@ class _Stairs(ArchComponent.Component):
             obj.AbsTop = vBase
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
-        h = obj.Height.Value
-        l = obj.Length.Value
-        if obj.Base:
+        h = 0
+
+        if obj.RiserHeightEnforce != 0:
+            h = obj.RiserHeightEnforce * numberofsteps
+        elif obj.Base: # TODO - should this happen? - though in original code
             if obj.Base.isDerivedFrom("Part::Feature"):
-                l = obj.Base.Shape.Length
-                if obj.Base.Shape.BoundBox.ZLength:
-                    h = obj.Base.Shape.BoundBox.ZLength
+                #l = obj.Base.Shape.Length
+                #if obj.Base.Shape.BoundBox.ZLength:
+                if round(obj.Base.Shape.BoundBox.ZLength,Draft.precision()) != 0: # ? - need precision
+                    h = obj.Base.Shape.BoundBox.ZLength #.Value?
+                else:
+                    print ("obj.Base has 0 z-value")
+                    print (h)
+        if h==0 and obj.Height.Value != 0:
+            h = obj.Height.Value
+        else:
+            print (h)
+
+        if obj.TreadDepthEnforce != 0:
+                l = obj.TreadDepthEnforce.Value * (numberofsteps-2)
+                if obj.LandingDepth:
+                    l += obj.LandingDepth.Value
+                else:
+                    l += obj.Width.Value
+        elif obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                l = obj.Base.Shape.Length #.Value?
+        elif obj.Length.Value != 0:
+            l = obj.Length.Value
 
         if obj.LandingDepth:
             fLength = float(l-obj.LandingDepth.Value)/(numberofsteps-2)
@@ -500,12 +755,13 @@ class _Stairs(ArchComponent.Component):
             p2o = p2
             p3o = p3
 
-        if obj.Flight == "HalfTurnLeft":
-            p1 = p1.add(-vWidth)
-            p2 = p2.add(-vWidth)
-        elif obj.Flight == "HalfTurnRight":
-            p3 = p3.add(vWidth)
-            p4 = p4.add(vWidth)
+        if callByMakeStraightStairsWithLanding:
+            if obj.Flight == "HalfTurnLeft":
+                p1 = p1.add(-vWidth)
+                p2 = p2.add(-vWidth)
+            elif obj.Flight == "HalfTurnRight":
+                p3 = p3.add(vWidth)
+                p4 = p4.add(vWidth)
 
         step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if obj.TreadThickness.Value:
@@ -750,62 +1006,125 @@ class _Stairs(ArchComponent.Component):
 
     def makeStraightStairsWithLanding(self,obj,edge):
 
-        "builds a straight staircase with a landing in the middle"
+        "builds a straight staircase with/without a landing in the middle"
 
         if obj.NumberOfSteps < 3:
             return
         import Part,DraftGeomUtils
         v = DraftGeomUtils.vec(edge)
-        if obj.LandingDepth:
-            reslength = edge.Length - obj.LandingDepth.Value
+
+        landing = 0
+        if obj.TreadDepthEnforce == 0:
+            if obj.Landings == "At center":
+                if obj.LandingDepth:
+                    reslength = edge.Length - obj.LandingDepth.Value
+                else:
+                    reslength = edge.Length - obj.Width.Value
+
+                treadDepth = float(reslength)/(obj.NumberOfSteps-2)		# why needs 'float'?
+                obj.TreadDepth = treadDepth
+                vLength = DraftVecUtils.scaleTo(v,treadDepth)
+            else:
+                reslength = edge.Length
+                #
+                treadDepth = float(reslength)/(obj.NumberOfSteps-1)		# why needs 'float'?
+                obj.TreadDepth = treadDepth
+                vLength = DraftVecUtils.scaleTo(v,treadDepth)
         else:
-            reslength = edge.Length - obj.Width.Value
-        vLength = DraftVecUtils.scaleTo(v,float(reslength)/(obj.NumberOfSteps-2))
+            obj.TreadDepth = obj.TreadDepthEnforce
+
+            vLength = DraftVecUtils.scaleTo(v,float(obj.TreadDepthEnforce))
         vLength = Vector(vLength.x,vLength.y,0)
+
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         p1 = edge.Vertexes[0].Point
-        if round(v.z,Draft.precision()) != 0:
-            h = v.z
+
+        if obj.RiserHeightEnforce == 0:
+            if round(v.z,Draft.precision()) != 0:
+                h = v.z
+            else:
+                h = obj.Height.Value
+            hstep = h/obj.NumberOfSteps
+            obj.RiserHeight = hstep
         else:
-            h = obj.Height.Value
-        hstep = h/obj.NumberOfSteps
-        landing = int(obj.NumberOfSteps/2)
+            h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps) 
+            hstep = obj.RiserHeightEnforce.Value
+            obj.RiserHeight = hstep
+        if obj.Landings == "At center":
+            landing = int(obj.NumberOfSteps/2)
+        else:
+            landing = obj.NumberOfSteps
+
         if obj.LastSegment:
-                print("obj.LastSegment is: " )
-                print(obj.LastSegment.Name)
-                lastSegmentAbsTop = obj.LastSegment.AbsTop
-                print("lastSegmentAbsTop is: ")
-                print(lastSegmentAbsTop)
-                p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)			# use Last Segment top's z-coordinate 
-                print(p1)
+            lastSegmentAbsTop = obj.LastSegment.AbsTop
+            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)				# use Last Segment top's z-coordinate 
+
         obj.AbsTop = p1.add(Vector(0,0,h))
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
-        if obj.LandingDepth:
-            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
-        else:
-            p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-        if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-            if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
-                p3r = p2
-            elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
-                p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
-            elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
-                p3r = self.align(p2,"Right",2*vWidth)
-            elif (obj.Align == "Center" and obj.Flight == "HalfTurnLeft"):
-                p3r = self.align(p2,"Right",vWidth)
-            elif (obj.Align == "Center" and obj.Flight == "HalfTurnRight"):
-                p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+
+        if obj.Landings == "At center":
+            if obj.LandingDepth:
+                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
-                print("Should have a bug here, if see this")
-            p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
-        else:
-            p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
+   
+            if obj.Flight in ["HalfTurnLeft HalfTurnLeft", "HalfTurnRight"]:
+                if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
+                    p3r = p2
+                elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
+                    p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+                elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
+                    p3r = self.align(p2,"Right",2*vWidth)
+                elif (obj.Align == "Center" and obj.Flight == "HalfTurnLeft"):
+                    p3r = self.align(p2,"Right",vWidth)
+                elif (obj.Align == "Center" and obj.Flight == "HalfTurnRight"):
+                    p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
+                else:
+                    print("Should have a bug here, if see this")
+                p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+            else:
+                p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+            self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
+
+            if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+                self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
+            else:
+                self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
+
         self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
-        self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
-        if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-            self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.NumberOfSteps-landing)
+        print (p1, p2)
+        if obj.Landings == "At center" and obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
+            print (p3, p4)
+        elif obj.Landings == "At center" and obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+            print (p3r, p4r)
+
+        edge = Part.LineSegment(p1,p2).toShape()
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge,"left",obj.RiserHeight,obj.RailingOffsetLeft,obj.RailingOffsetRight,obj.RailingHeightLeft,obj.RailingHeightRight)
+        self.connectRailingVector(obj,outlineRailL,outlineRailR)
+
+
+    def connectRailingVector(self,obj,outlineRailL,outlineRailR):
+
+        obj.OutlineLeft = outlineRailL # outlineL # outlineP1P2
+        obj.OutlineRight = outlineRailR # outlineR # outlineP3P4
+
+        if obj.LastSegment:
+            if obj.LastSegment.OutlineLeftAll:
+                outlineLeftAll = obj.LastSegment.OutlineLeftAll
+            else:
+                outlineLeftAll = []
+            if obj.LastSegment.OutlineRightAll:
+                outlineRightAll = obj.LastSegment.OutlineRightAll
+            else:
+                outlineRightAll = []
         else:
-            self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
+            outlineLeftAll = []
+            outlineRightAll = []
+        outlineLeftAll.extend(outlineRailL)
+        outlineRailR.extend(outlineRightAll)
+        outlineRightAll=outlineRailR
+        obj.OutlineLeftAll = outlineLeftAll
+        obj.OutlineRightAll = outlineRightAll
 
 
     def makeCurvedStairs(self,obj,edge):

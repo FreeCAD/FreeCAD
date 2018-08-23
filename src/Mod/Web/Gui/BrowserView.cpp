@@ -274,13 +274,22 @@ void BrowserView::onLinkClicked (const QUrl & url)
     QFileInfo fi(path);
     QString ext = fi.completeSuffix();
     QUrl exturl(url);
+    
+    // query
+    QString q;
+    if (url.hasQuery())
+#if QT_VERSION >= 0x050000
+        q = url.query();
+#else
+        q = QString::fromAscii(url.encodedQuery().data());
+#endif
 
     //QString fragment = url.	fragment();
 
     if (scheme==QString::fromLatin1("http") || scheme==QString::fromLatin1("https")) {
         load(url);
     }
-    // Small trick to force opening a link in an external browser: use exthttp or exthttp
+    // Small trick to force opening a link in an external browser: use exthttp or exthttps
     // Write your URL as exthttp://www.example.com
     else if (scheme==QString::fromLatin1("exthttp")) {
         exturl.setScheme(QString::fromLatin1("http"));
@@ -297,8 +306,15 @@ void BrowserView::onLinkClicked (const QUrl & url)
             QString ext = fi.completeSuffix();
             if (ext == QString::fromLatin1("py")) {
                 try {
+                    if (!q.isEmpty()) {
+                        // encapsulate the value in quotes
+                        q = q.replace(QString::fromLatin1("="),QString::fromLatin1("=\""))+QString::fromLatin1("\"");
+                        q = q.replace(QString::fromLatin1("%"),QString::fromLatin1("%%"));
+                        // url queries in the form of somescript.py?key=value, the first key=value will be printed in the py console as key="value"
+                        Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str()); 
+                    }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath(). toLocal8Bit());  
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());  
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));

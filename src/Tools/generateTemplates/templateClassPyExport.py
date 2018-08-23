@@ -351,10 +351,11 @@ PyTypeObject @self.export.Name@::Type = {
 PyMethodDef @self.export.Name@::Methods[] = {
 + for i in self.export.Methode:
     {"@i.Name@",
-        (PyCFunction) staticCallback_@i.Name@,
 + if i.Keyword:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
 = else:
+        reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
         METH_VARARGS,
 -
         "@i.Documentation.UserDocu.replace('\\n','\\\\n')@"

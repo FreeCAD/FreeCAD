@@ -3,43 +3,6 @@ include (CheckCXXSourceRuns)
 # ================================================================================
 # == Macros, mostly for special targets ==========================================
 
-MACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
-# Macro to implement copy_if_different for a list of files
-# Arguments - 
-#   FROM_DIR - this is the source directory
-#   TO_DIR   - this is the destination directory
-#   FILES    - names of the files to copy 
-#              TODO: add globing. 
-#   TARGETS  - List of targets
-#   TAGS     - Since only the file name is used
-#              to generate rules, pre-pend a user 
-#              supplied tag to prevent duplicate rule errors. 
-SET(AddTargets)
-FOREACH(SRC ${FILES})
-    GET_FILENAME_COMPONENT(SRCFILE ${SRC} NAME) 
-    # Command to copy the files to ${STEP1}/src, if changed.
-    SET(TARGET  "${TAGS}/${SRCFILE}")
-    IF("${FROM_DIR}" STREQUAL "")
-        SET(FROM ${SRC})
-    ELSE("${FROM_DIR}" STREQUAL "")
-        SET(FROM ${FROM_DIR}/${SRC})
-    ENDIF("${FROM_DIR}" STREQUAL "")        
-    IF("${TO_DIR}" STREQUAL "")
-        SET(TO ${SRCFILE})
-    ELSE("${TO_DIR}" STREQUAL "")
-        SET(TO   ${TO_DIR}/${SRCFILE})
-    ENDIF("${TO_DIR}" STREQUAL "")
-    ADD_CUSTOM_COMMAND(
-        OUTPUT  ${TARGET}
-        COMMAND "${CMAKE_COMMAND}"
-        ARGS    -E copy_if_different "${FROM}" "${TO}"
-        COMMENT "Copying ${SRCFILE} ${TO_DIR}"
-        )
-    list(APPEND AddTargets ${TARGET})
-ENDFOREACH(SRC ${FILES})
-SET(${TARGETS} ${AddTargets})
-ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
-
 MACRO (fc_copy_sources target_name outpath)
 	if(BUILD_VERBOSE_GENERATION)
 		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
@@ -51,21 +14,52 @@ MACRO (fc_copy_sources target_name outpath)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    "${infile}"
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			TARGET    ${target_name}
-			OUTPUTS   "${outfile}"
+			OUTPUT   "${outfile}"
 			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${target_name}
 		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
 ENDMACRO(fc_copy_sources)
 
+MACRO (fc_copy_file_if_different inputfile outputfile)
+    if (EXISTS ${inputfile})
+        if (EXISTS ${outputfile})
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} -E compare_files ${inputfile}
+                                                          ${outputfile}
+                RESULT_VARIABLE DIFFERENT_FILES
+                OUTPUT_QUIET
+                ERROR_QUIET
+            )
+
+            if (DIFFERENT_FILES)
+                execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
+                                                                   "${outputfile}")
+            endif()
+        else()
+            execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${inputfile}"
+                                                               "${outputfile}")
+        endif()
+    endif()
+ENDMACRO(fc_copy_file_if_different)
+
 MACRO (fc_target_copy_resource target_name inpath outpath)
+# Macro to copy a list of files into a nested directory structure
+# Arguments -
+#   target_name - name of the target the files will be added to
+#   inpath      - name of the source directory
+#   outpath     - name of the destination directory
+#   ARGN        - a list of relative file names that will be copied
+#
+#   If a relative file name is foo/bar.txt then the foo directory
+#   part will be kept so that the destination file name will be
+#   ${outpath}/foo/bar.txt
+#
 	if(BUILD_VERBOSE_GENERATION)
 		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
 	else()
@@ -76,61 +70,52 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
-			SOURCE    "${infile}"
 			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			TARGET    ${target_name}
-			OUTPUTS   "${outfile}"
+			OUTPUT   "${outfile}"
 			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${target_name}
 		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
 ENDMACRO(fc_target_copy_resource)
 
-macro(copy_to_local_output_paths SOURCE_PATHS)
-		 if(CMAKE_CFG_INTDIR STREQUAL .)
-		 		 # No Debug/Release output paths
-		 		 set(DEBUG_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
-		 		 set(RELEASE_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
-		 else(CMAKE_CFG_INTDIR STREQUAL .)
-		 		 #set(DEBUG_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-		 		 #set(RELEASE_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/Release)
-		 		 set(DEBUG_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
-		 		 set(RELEASE_LOCAL_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
-		 endif(CMAKE_CFG_INTDIR STREQUAL .)
-		 file(TO_NATIVE_PATH ${SOURCE_PATHS} NATIVE_SOURCE)
-		 file(TO_NATIVE_PATH ${DEBUG_LOCAL_OUTPUT_PATH}/ NATIVE_DEBUG_DESTINATION)
-		 file(TO_NATIVE_PATH ${RELEASE_LOCAL_OUTPUT_PATH}/ NATIVE_RELEASE_DESTINATION)
-		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}")
-		 execute_process(
-		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}
-		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		 if(NOT ${DEBUG_LOCAL_OUTPUT_PATH} STREQUAL ${RELEASE_LOCAL_OUTPUT_PATH})
-		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}")
-		 		 execute_process(
-		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}
-		 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		 endif(NOT ${DEBUG_LOCAL_OUTPUT_PATH} STREQUAL ${RELEASE_LOCAL_OUTPUT_PATH})
-endmacro(copy_to_local_output_paths)
-
-macro(copy_to_main_output_paths SOURCE_PATHS)
-		 file(TO_NATIVE_PATH ${SOURCE_PATHS} NATIVE_SOURCE)
-		 file(TO_NATIVE_PATH ${DEBUG_MAIN_OUTPUT_PATH}/ NATIVE_DEBUG_DESTINATION)
-		 file(TO_NATIVE_PATH ${RELEASE_MAIN_OUTPUT_PATH}/ NATIVE_RELEASE_DESTINATION)
-		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}")
-		 execute_process(
-		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEBUG_DESTINATION}
-		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		 if(NOT ${DEBUG_MAIN_OUTPUT_PATH} STREQUAL ${RELEASE_MAIN_OUTPUT_PATH})
-		 		 message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}")
-		 		 execute_process(
-		 		 		 COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_RELEASE_DESTINATION}
-		 		 		 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		 endif(NOT ${DEBUG_MAIN_OUTPUT_PATH} STREQUAL ${RELEASE_MAIN_OUTPUT_PATH})
-endmacro(copy_to_main_output_paths)
+MACRO (fc_target_copy_resource_flat target_name inpath outpath)
+# Macro to copy a list of files into a flat directory structure
+# Arguments -
+#   target_name - name of the target the files will be added to
+#   inpath      - name of the source directory
+#   outpath     - name of the destination directory
+#   ARGN        - a list of relative file names that will be copied
+#
+#   If a relative file name is foo/bar.txt then the foo directory
+#   part will be removed so that the destination file name will be
+#   ${outpath}/bar.txt
+#
+	if(BUILD_VERBOSE_GENERATION)
+		set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
+	else()
+		set(fc_details "")
+	endif()
+	foreach(it ${ARGN})
+		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+		get_filename_component(outfile "${it}" NAME)
+		get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
+		add_file_dependencies("${infile}" "${outfile}")
+		ADD_CUSTOM_COMMAND(
+			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+			OUTPUT    "${outfile}"
+			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+			MAIN_DEPENDENCY "${infile}"
+		)
+	endforeach(it)
+	ADD_CUSTOM_COMMAND(
+		TARGET    ${target_name}
+		DEPENDS   ${ARGN}
+	)
+ENDMACRO(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
@@ -146,6 +131,7 @@ macro(generate_from_xml BASE_NAME)
     file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
     if(NOT EXISTS "${SOURCE_CPP_PATH}")
         # assures the source files are generated at least once
+        message(STATUS "${SOURCE_CPP_PATH}")
         execute_process(COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
                         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         )
@@ -153,7 +139,7 @@ macro(generate_from_xml BASE_NAME)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp"
         COMMAND ${PYTHON_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.xml
-        MAIN_DEPENDENCY "${SOURCE_PATH}"
+        MAIN_DEPENDENCY "${BASE_NAME}.xml"
         DEPENDS
         "${CMAKE_SOURCE_DIR}/src/Tools/generateTemplates/templateClassPyExport.py"
         "${TOOL_PATH}"

@@ -34,6 +34,7 @@ import PathScripts.PostUtils as PostUtils
 import argparse
 import datetime
 import shlex
+import traceback
 
 
 now = datetime.datetime.now()
@@ -50,6 +51,7 @@ parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up
 parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
+parser.add_argument('--tool-change', help='0 ... suppress all tool change commands\n1 ... insert M6 for all tool changes\n2 ... insert M6 for all tool changes except the initial tool')
 
 TOOLTIP_ARGS=parser.format_help()
 
@@ -93,6 +95,7 @@ POST_OPERATION = ''''''
 
 #Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
+SUPPRESS_TOOL_CHANGE=0
 
 
 # to distinguish python built-in open function from the one declared below
@@ -104,10 +107,12 @@ def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
+    global OUTPUT_TOOL_CHANGE
     global SHOW_EDITOR
     global PRECISION
     global PREAMBLE
     global POSTAMBLE
+    global SUPPRESS_TOOL_CHANGE
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -129,11 +134,15 @@ def processArguments(argstring):
             SHOW_EDITOR = True
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
-        if args.preamble is not None:
+        if not args.preamble is None:
             PREAMBLE = args.preamble
-        if args.postamble is not None:
+        if not args.postamble is None:
             POSTAMBLE = args.postamble
-    except:
+        if not args.tool_change is None:
+            OUTPUT_TOOL_CHANGE = int(args.tool_change) > 0
+            SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)
+    except Exception as e:
+        traceback.print_exc(e)
         return False
 
     return True
@@ -230,6 +239,7 @@ def parse(pathobj):
     out = ""
     lastcommand = None
     precision_string = '.' + str(PRECISION) +'f'
+    global SUPPRESS_TOOL_CHANGE
 
     #params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
     params = ['X','Y','Z','A','B','I','J','F','S','T','Q','R','L'] #linuxcnc doesn't want K properties on XY plane  Arcs need work.
@@ -263,7 +273,7 @@ def parse(pathobj):
                         if command not in RAPID_MOVES:
                             outstring.append(param + format(c.Parameters['F'] * 60, '.2f'))
                     elif param == 'T':
-                        outstring.append(param + str(c.Parameters['T']))
+                        outstring.append(param + str(int(c.Parameters['T'])))
                     else:
                         outstring.append(param + format(c.Parameters[param], precision_string))
 
@@ -272,9 +282,11 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                if OUTPUT_COMMENTS: out += linenumber() + "(begin toolchange)\n"
-                if not OUTPUT_TOOL_CHANGE:
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + "(begin toolchange)\n"
+                if not OUTPUT_TOOL_CHANGE or SUPPRESS_TOOL_CHANGE > 0:
                     outstring.insert(0, ";")
+                    SUPPRESS_TOOL_CHANGE = SUPPRESS_TOOL_CHANGE - 1
                 else:
                     for line in TOOL_CHANGE.splitlines(True):
                         out += linenumber() + line

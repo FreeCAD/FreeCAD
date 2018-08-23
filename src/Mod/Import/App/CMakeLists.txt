@@ -68,26 +68,6 @@ SET(SCL_Resources
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 
-SET(DXF_Plate
-    blocks10.rub
-    blocks112.rub
-    blocks114.rub
-    classes14.rub
-    entities0.rub
-    entities12.rub
-    entities14.rub
-    header0.rub
-    header12.rub
-    header14.rub
-    objects14.rub
-    tables10.rub
-    tables112.rub
-    tables114.rub
-    tables20.rub
-    tables212.rub
-    tables214.rub    
-)
-
 generate_from_xml(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
@@ -101,11 +81,6 @@ fc_target_copy_resource(ImportPy
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${SCL_Resources})
-
-fc_target_copy_resource(Import
-    ${CMAKE_SOURCE_DIR}/src/Mod/Import/DxfPlate
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Import/DxfPlate
-    ${DXF_Plate})
 
 SET_BIN_DIR(Import Import /Mod/Import)
 SET_PYTHON_PREFIX_SUFFIX(Import)

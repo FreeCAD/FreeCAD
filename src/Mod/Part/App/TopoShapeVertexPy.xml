@@ -44,11 +44,5 @@
 			</Documentation>
 			<Parameter Name="Tolerance" Type="Float"/>
 		</Attribute>
-		<Methode Name="setTolerance">
-			<Documentation>
-				<UserDocu>Set the tolerance for the vertex.</UserDocu>
-			</Documentation>
-		</Methode>
-
 	</PythonExport>
 </GenerateModel>

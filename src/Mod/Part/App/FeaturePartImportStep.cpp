@@ -58,7 +58,7 @@ App::DocumentObjectExecReturn *ImportStep::execute(void)
     }
 
     TopoShape aShape;
-    aShape.importStep((const Standard_CString)FileName.getValue());
+    aShape.importStep(FileName.getValue());
     this->Shape.setValue(aShape);
 
     return App::DocumentObject::StdReturn;

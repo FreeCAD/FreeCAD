@@ -726,17 +726,6 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
-{
-    double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
-    BRep_Builder aBuilder;
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
-    aBuilder.UpdateEdge(e, tol);
-    Py_Return;
-}
-
 PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
 {
     PyObject* orient = Py_False;

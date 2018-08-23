@@ -235,7 +235,7 @@ def read_z88_mesh(z88_mesh_input):
                     input_continues = False
                 elif z88_element_type == 16:
                     # volume16 Z88 --> tetra10 FreeCAD
-                    # N1, N2, N4, N3, N5, N8, N10, N7, N6, N9, , Z88 to FC is differend as FC to Z88
+                    # N1, N2, N4, N3, N5, N8, N10, N7, N6, N9, , Z88 to FC is different as FC to Z88
                     nd1 = int(linecolumns[0])
                     nd2 = int(linecolumns[1])
                     nd3 = int(linecolumns[2])
@@ -373,7 +373,7 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
                     n[3], n[1], n[2], n[0]))
         elif z88_element_type == 16:
             # tetra10 FreeCAD --> volume16 Z88
-            # N1, N2, N4, N3, N5, N9, N8, N6, N10, N7, FC to Z88 is differend as Z88 to FC
+            # N1, N2, N4, N3, N5, N9, N8, N6, N10, N7, FC to Z88 is different as Z88 to FC
             f.write("{0} {1}\n".format(element, z88_element_type, element))
             f.write("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}\n".format(
                     n[0], n[1], n[3], n[2], n[4], n[8], n[7], n[5], n[9], n[6]))

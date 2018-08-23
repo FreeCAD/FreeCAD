@@ -1,125 +1,160 @@
 body {
-    background: #basecolor;
-    color: #textcolor;
-    font-family: Arial, Helvetica, Sans;
-    font-size: 11px;
+    background: BACKGROUND;
+    color: BGTCOLOR;
+    font-family: FONTFAMILY;
+    font-size: FONTSIZE;
 }
-
-a {
-    color: #linkcolor;
-    font-weight: bold;
+a, a:link, a:visited {
     text-decoration: none;
-    padding: 2px;
+    color: LINKCOLOR;
+    font-weight: bold;
 }
-
 a:hover {
-    color: white;
-    background: #linkcolor;
-    border-radius: 5px;
+    text-decoration: underline;
 }
-
-p {
-    text-align: justify;
-}
-
-.left {
-    text-align: left;
-}
-
 h1 {
-    font-size: 3em;
-    letter-spacing: 2px;
-    padding: 20px 0 0 80px;
-    align: bottom;
-    color: #ffffff;
+    width: 100%;
+    text-align: center;
 }
-
 h2 {
-    font-size: 1.2em;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#column {
-    margin: 0 350px 0 10px;
-}
-
-#column img {
-    max-width: 14px;
-}
-
-.block {
-    background: #windowcolor !important;
-    border-radius: 5px;
-    padding: 8px;
-    margin-bottom: 10px;
-    color: #windowtextcolor;
-    width: auto;
-    clear: left;
-}
-
-.half-block {
-    background: #windowcolor !important;
-    border-radius: 5px;
-    padding: 8px;
-    margin-bottom: 10px;
-    color: #windowtextcolor;
-}
-
-.options {
+    text-align: center;
     clear: both;
 }
-
-.from {
-    font-size: 0.7em;
-    font-weight: normal;
+hr {
+    height: 20px;
+    border: none;
 }
-
-#versionbox {
+.hidden {
+    display: none;
+}
+.version {
+    font-size: 0.8em;
     float: right;
-    text-align: right;
-    font-size: 0.33em;
-    font-weight: normal;
-    padding-right: 20px;
-    letter-spacing: 0;
-    color: #ffffff;
+    padding-right: 40px;
 }
-
-#description {
-    background: #windowcolor;
-    border-radius: 5px;
-    padding: 8px;
-    color: #windowtextcolor;
-    float: right;
-    width: 316px;
-    right: 10px;
-    height: 640px;
-    position: relative;
+.container {
+    margin: 2%
 }
-
-#description img {
-    max-width: 300px;
+ul.tabs {
+    margin: 9px 0;
+}
+ul.tabs li {
+    list-style: none;
+    display: inline;
+}
+ul.tabs li a {
+    color: TEXTCOLOR;
+    background-color: BOXCOLOR;
+    padding: 8px 14px 8px 14px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    border:1px solid SHADOW;
+    border-radius: 1px;
+    box-shadow: #445 0 -5px 5px;
+    outline: 0;
+}
+ul.tabs li a:hover {
+    background-color: TEXTCOLOR;
+    color: BASECOLOR;
+}
+ul.tabs li a.active, ul.tabs li a.active:hover {
+    color: TEXTCOLOR;
+    background-color: BASECOLOR;
+    border-bottom: 1px solid BASECOLOR;
+}
+.panel {
+    background: BASECOLOR;
+    color: TEXTCOLOR;
+    padding: 15px;
+    clear: both;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    overflow: auto;
+    box-shadow: SHADOW 0 2px 5px;
+}
+ul.icons {
     clear: both;
 }
-
-#description p span {
-    text-align: left;
+.icon {
+    list-style: none;
+    display: inline;
+    float: left;
+    padding: 5px 0px 15px 10px;
+    width: 138px;
+    height: 200px;
+    background: BOXCOLOR;
+    border-radius: 3px;
+    margin: 10px;
+    box-shadow: SHADOW 0 0px 6px;
 }
-
-.disabled {
-    opacity: 0.5;
+.icon h4 {
+    margin: 3px 0;
+    max-width: 90%;
+    word-wrap: break-word;
 }
-
-pre {
-    width: 300px !important;
+.icon img {
+    width: 128px;
+    height: 128px;
+}
+.icon p {
+    margin: 0;
+}
+.docbox {
+    float: left;
+    padding: 10px;
+    max-width: 360px;
+    background: BOXCOLOR;
+    border-radius: 3px;
+    margin: 10px;
+    box-shadow: SHADOW 0 0px 6px;
+}
+.docbox h2 {
+    text-align: center;
+}
+.docbox img {
+    max-width: 24px;
+    max-height: 24px;
+}
+.forum img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+.allwidth {
+    max-width: 98%;
+}
+h3 a {
+    height: 32px;
+    vertical-align: middle;
+    padding-bottom: 18px;
+    padding-left: 5px;
+}
+#commits ul {
+    margin: 30px 0;
+}
+#commits ul li, .forum ul li {
+    margin-bottom: 10px;
+}
+.footnote {
+    text-align: center;
+    display: block;
+    clear: both;
+    padding-top: 10px;
+}
+ul.workbenches, ul.addonslist {
+    overflow: hidden;
+    padding: 10px;
+}
+ul.workbenches li, ul.addonslist li {
+    list-style: none;
+    float: left;
+    display: inline;
+    width: 50%;
+}
+.forum {
+    display: none; /* forum display */
+}
+.forum pre {
     white-space: pre-wrap;
-}
-
-.stick {
-    position: fixed !important;
-    top: 0px;
-    right: 18px !important;
 }

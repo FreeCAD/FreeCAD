@@ -298,11 +298,6 @@ Returns:
 			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-		<Methode Name="setTolerance">
-			<Documentation>
-				<UserDocu>Set the tolerance for the edge.</UserDocu>
-			</Documentation>
-		</Methode>
         <Methode Name="firstVertex">
             <Documentation>
                 <UserDocu>Vertex = firstVertex(Orientation=False)

@@ -1271,26 +1271,54 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 {
     FOREACH_ITEM(item,obj)
         QFont f = item->font(0);
-        switch (high) {
-        case Gui::Bold: f.setBold(set);             break;
-        case Gui::Italic: f.setItalic(set);         break;
-        case Gui::Underlined: f.setUnderline(set);  break;
-        case Gui::Overlined: f.setOverline(set);    break;
-        case Gui::Blue:
+        auto highlight = [&item, &set](const QColor& col){
             if (set)
-                item->setBackgroundColor(0,QColor(200,200,255));
+                item->setBackgroundColor(0, col);
             else
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
+        };
+
+        switch (high) {
+        case Gui::Bold:
+            f.setBold(set);
+            break;
+        case Gui::Italic:
+            f.setItalic(set);
+            break;
+        case Gui::Underlined:
+            f.setUnderline(set);
+            break;
+        case Gui::Overlined:
+            f.setOverline(set);
+            break;
+        case Gui::Blue:
+            highlight(QColor(200,200,255));
             break;
         case Gui::LightBlue:
+            highlight(QColor(230,230,255));
+            break;
+        case Gui::UserDefined:
+        {
+            QColor color(230,230,255);
             if (set) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                bool italic = hGrp->GetBool("TreeActiveItalic",false);
+                bool underlined = hGrp->GetBool("TreeActiveUnderlined",false);
+                bool overlined = hGrp->GetBool("TreeActiveOverlined",false);
+                f.setItalic(italic);
+                f.setUnderline(underlined);
+                f.setOverline(overlined);
+
                 unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
-                item->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
+                color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
             }
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
-            break;
+            else {
+                f.setItalic(false);
+                f.setUnderline(false);
+                f.setOverline(false);
+            }
+            highlight(color);
+        }   break;
         default:
             break;
         }

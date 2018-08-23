@@ -62,24 +62,28 @@ SET(PointsGui_SRCS
     Workbench.h
 )
 
-add_library(PointsGui SHARED ${PointsGui_SRCS})
-target_link_libraries(PointsGui ${PointsGui_LIBS})
-
-
-fc_target_copy_resource(PointsGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Points
-    ${CMAKE_BINARY_DIR}/Mod/Points
-    InitGui.py)
-
-SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
-SET_PYTHON_PREFIX_SUFFIX(PointsGui)
-
-INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+set(PointsGui_Scripts
+    ../InitGui.py
+)
 
 SET(PointsGuiIcon_SVG
     Resources/icons/PointsWorkbench.svg
 )
 
+add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
+target_link_libraries(PointsGui ${PointsGui_LIBS})
+
+
+fc_target_copy_resource_flat(PointsGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Points
+    ${PointsGui_Scripts})
+
+SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
+SET_PYTHON_PREFIX_SUFFIX(PointsGui)
+
 fc_copy_sources(PointsGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Points" ${PointsGuiIcon_SVG})
+
+INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 INSTALL(FILES ${PointsGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Points/Resources/icons")

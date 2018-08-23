@@ -177,6 +177,8 @@ class ObjectOp(object):
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('OpFinalDepth', 2)
 
+        self.opOnDocumentRestored(obj)
+
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
         Can safely be overwritten by subclasses.'''
@@ -195,6 +197,11 @@ class ObjectOp(object):
 
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.
+        Should be overwritten by subclasses.'''
+        pass
+
+    def opOnDocumentRestored(self, obj):
+        '''opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses.'''
         pass
 

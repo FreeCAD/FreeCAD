@@ -590,6 +590,11 @@ pointPair DrawViewDimension::getPointsTwoEdges()
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
     TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+    if ((geom0 == nullptr) ||
+        (geom1 == nullptr) ) {
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return result;
+    }
     result = closestPoints(geom0->occEdge,geom1->occEdge);
     return result;
 }

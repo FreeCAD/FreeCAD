@@ -112,24 +112,9 @@ SET(Sketcher_SRCS
     ${Datatypes_SRCS}
 )
 
-SET(Sketcher_Scripts
-    Init.py
-    SketcherExample.py
-    TestSketcherApp.py
-    Profiles.py
-    ProfileLib/Hexagon.py
-    ProfileLib/RegularPolygon.py
-    ProfileLib/__init__.py
-)
-
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
 
-
-fc_target_copy_resource(Sketcher 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
-    ${CMAKE_BINARY_DIR}/Mod/Sketcher
-    ${Sketcher_Scripts})
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)

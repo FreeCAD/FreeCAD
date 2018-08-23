@@ -165,6 +165,7 @@ protected:
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
     void updateChildren(void);
+    void updateChildrenSource(void);
     void setPropsFromCube(void);
     void setCubeFromProps(void);
     int getViewIndex(const char *viewTypeCStr) const;

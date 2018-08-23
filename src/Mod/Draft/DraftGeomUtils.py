@@ -28,7 +28,7 @@ __url__ = ["http://www.freecadweb.org"]
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
 #  \ingroup DRAFT
 #  \brief Shape manipulation utilities for the Draft workbench
-# 
+#
 # Shapes manipulation utilities
 
 ## \addtogroup DRAFTGEOMUTILS
@@ -415,7 +415,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         rad1 , rad2  = edge1.Curve.Radius, edge2.Curve.Radius
         axis1, axis2 = edge1.Curve.Axis  , edge2.Curve.Axis
         c2c          = cent2.sub(cent1)
-        
+
         if cent1.sub(cent2).Length == 0:
             # circles are concentric
             return []
@@ -641,7 +641,7 @@ def findClosest(basepoint,pointslist):
     an index from the list is returned.
     '''
     npoint = None
-    if not pointslist: 
+    if not pointslist:
         return None
     smallest = 1000000
     for n in range(len(pointslist)):
@@ -899,7 +899,7 @@ def flattenWire(wire):
 
 def findWires(edgeslist):
     return [ Part.Wire(e) for e in Part.sortEdges(edgeslist)]
-    
+
 def findWiresOld2(edgeslist):
     '''finds connected wires in the given list of edges'''
 
@@ -2482,7 +2482,7 @@ def outerSoddyCircle(circle1, circle2, circle3):
 
         z = q4 / (k4 + 0j)
 
-        # If the formula is not solveable, we return no circle.
+        # If the formula is not solvable, we return no circle.
         if (not z or not (1 / k4)):
             return None
 
@@ -2534,7 +2534,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
 
         z = q4 / (k4 + 0j)
 
-        # If the formula is not solveable, we return no circle.
+        # If the formula is not solvable, we return no circle.
         if (not z or not (1 / k4)):
             return None
 

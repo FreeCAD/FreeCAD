@@ -253,30 +253,18 @@ SET(PartGui_SRCS
     TaskAttacher.cpp 
 )
 
-SET(PartGui_Scripts
-    InitGui.py
-    TestPartGui.py
-)
-
-
-add_library(PartGui SHARED ${PartGui_SRCS})
-target_link_libraries(PartGui ${PartGui_LIBS})
-
-
-fc_target_copy_resource(PartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Part
-    ${CMAKE_BINARY_DIR}/Mod/Part
-    ${PartGui_Scripts})
-
-SET_BIN_DIR(PartGui PartGui /Mod/Part)
-SET_PYTHON_PREFIX_SUFFIX(PartGui)
-
-INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(PartGuiIcon_SVG
     Resources/icons/PartWorkbench.svg
 )
 
+add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
+target_link_libraries(PartGui ${PartGui_LIBS})
+
+
+SET_BIN_DIR(PartGui PartGui /Mod/Part)
+SET_PYTHON_PREFIX_SUFFIX(PartGui)
+
 fc_copy_sources(PartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Part" ${PartGuiIcon_SVG})
 
+INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${PartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Part/Resources/icons")
