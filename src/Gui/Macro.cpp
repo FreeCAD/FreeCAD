@@ -54,7 +54,8 @@ MacroManager::MacroManager()
     scriptToPyConsole(true),
     localEnv(true),
     pyConsole(0),
-    pyDebugger(new PythonDebugger())
+    pyDebugger(new PythonDebugger()),
+    totalLines(0)
 {
     // Attach to the Parametergroup regarding macros
     this->params = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro");
@@ -168,6 +169,7 @@ void MacroManager::cancel(void)
 
 void MacroManager::addLine(LineType Type, const char* sLine)
 {
+    ++totalLines;
     if (this->openMacro) {
         bool comment = false;
         if (Type == Gui) {

@@ -306,7 +306,17 @@ void Command::invoke(int i)
     try {
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
+            auto manager = getGuiApplication()->macroManager();
+            auto lines = manager->getLines();
             activated( i );
+            if(manager->getLines() == lines) {
+                std::ostringstream ss;
+                ss << "FreeCADGui.runCommand('" << sName << "')";
+                if(eType & AlterDoc)
+                    manager->addLine(MacroManager::App, ss.str().c_str());
+                else
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+            }
             getMainWindow()->updateActions();
         }
     }

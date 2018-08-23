@@ -93,6 +93,9 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
 
+    /// Return the added lines regardless of recording or not
+    long getLines() const {return totalLines;}
+
 protected:
     QStringList macroInProgress;    /**< Container for the macro */
     QString macroName;              /**< name of the macro */
@@ -104,6 +107,7 @@ protected:
     PythonConsole* pyConsole;       // link to the python console
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
+    long totalLines;
 
     friend struct ApplicationP;
 };
