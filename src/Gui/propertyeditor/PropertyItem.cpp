@@ -2207,7 +2207,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
         QString text(*it);
         text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
-        str << "unicode('" << text << "', 'utf-8'),";
+
+        std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
+        str << "u\"" << pystr.c_str() << "\"";
     }
     str << "]";
     setPropertyValue(data);
