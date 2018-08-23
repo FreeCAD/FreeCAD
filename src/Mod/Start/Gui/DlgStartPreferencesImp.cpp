@@ -91,6 +91,7 @@ void DlgStartPreferencesImp::saveSettings()
     fileChooser_3->onSave();
     radioButton_1->onSave();
     radioButton_2->onSave();
+    checkBox->onSave();
     checkBox_1->onSave();
     checkBox_2->onSave();
     checkBox_3->onSave();
@@ -119,6 +120,7 @@ void DlgStartPreferencesImp::loadSettings()
     fileChooser_3->onRestore();
     radioButton_1->onRestore();
     radioButton_2->onRestore();
+    checkBox->onRestore();
     checkBox_1->onRestore();
     checkBox_2->onRestore();
     checkBox_3->onRestore();

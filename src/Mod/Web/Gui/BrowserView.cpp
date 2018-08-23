@@ -232,6 +232,11 @@ BrowserView::BrowserView(QWidget* parent)
     // set our custom cookie manager
     FcCookieJar* cookiejar = new FcCookieJar(this);
     view->page()->networkAccessManager()->setCookieJar(cookiejar);
+    
+    // enable local storage so we can store stuff across sessions (startpage)
+    QWebSettings* settings = view->settings();
+    settings->setAttribute(QWebSettings::LocalStorageEnabled, true);
+    settings->setLocalStoragePath(QString::fromUtf8((App::Application::getUserAppDataDir()+"webdata").c_str()));
 
     // setting background to white
     QPalette palette = view->palette();

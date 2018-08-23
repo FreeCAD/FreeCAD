@@ -47,23 +47,20 @@ def gethexcolor(color):
 
 
 
-def isplainfile(filename):
+def isOpenableByFreeCAD(filename):
 
-    "check if this is any type we don't want to show"
+    "check if FreeCAD can handle this file type"
 
     if os.path.isdir(filename):
         return False
-    basename = os.path.basename(filename)
-    if basename.startswith("."):
-        return False
-    if basename[-1].isdigit():
-        if basename[-7:-1].lower() == "fcstd": # freecad backup file
-            return False
-    if basename.endswith("~"):
-        return False
-    if basename.lower().endswith(".bak"):
-        return False
-    return True
+    extensions = [key.lower() for key in FreeCAD.getImportType().keys()]
+    ext = os.path.splitext(filename)[1].lower()
+    if ext:
+        if ext[0] == ".":
+            ext = ext[1:]
+    if ext in extensions:
+        return True
+    return False
 
 
 
@@ -72,10 +69,12 @@ def getInfo(filename):
     "returns available file information"
 
     global iconbank,tempfolder
+    
+    tformat = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("TimeFormat","%m/%d/%Y %H:%M:%S")
 
     def getLocalTime(timestamp):
         "returns a local time from a timestamp"
-        return time.strftime("%m/%d/%Y %H:%M:%S",time.localtime(timestamp))
+        return time.strftime(tformat,time.localtime(timestamp))
 
     def getSize(size):
         "returns a human-readable size"
@@ -90,17 +89,18 @@ def getInfo(filename):
     if os.path.exists(filename):
         
         if os.path.isdir(filename):
-            return None,None,None
+            return None
 
         # get normal file info
         s = os.stat(filename)
         size = getSize(s.st_size)
-        #ctime = getLocalTime(s.st_ctime)
-        #mtime = getLocalTime(s.st_mtime)
-        author = TranslationTexts.T_UNKNOWN
-        #company = TranslationTexts.T_UNKNOWN
-        #lic = TranslationTexts.T_UNKNOWN
+        ctime = getLocalTime(s.st_ctime)
+        mtime = getLocalTime(s.st_mtime)
+        author = ""
+        company = TranslationTexts.T_UNKNOWN
+        lic = TranslationTexts.T_UNKNOWN
         image = None
+        descr = ""
 
         # get additional info from fcstd files
         if filename.lower().endswith(".fcstd"):
@@ -113,12 +113,15 @@ def getInfo(filename):
                 r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if r:
                     author = r[0]
-                #r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
-                #if r:
-                #    company = r
-                #r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
-                #if r:
-                #    lic =r
+                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    company = r[0]
+                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    lic = r[0]
+                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    descr = r[0]
                 if "thumbnails/Thumbnail.png" in files:
                     if filename in iconbank:
                         image = iconbank[filename]
@@ -144,9 +147,42 @@ def getInfo(filename):
                 px.save(image)
                 iconbank[t] = image
 
-        return image,size,author
+        return [image,size,author,ctime,mtime,descr,company,lic]
 
-    return None,None,None
+    return None
+
+
+
+def buildCard(filename,method,arg=None):
+    
+    "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
+
+    result = ""
+    if os.path.exists(filename) and isOpenableByFreeCAD(filename):
+        basename = os.path.basename(filename)
+        if not arg:
+            arg = basename
+        finfo = getInfo(filename)
+        if finfo:
+            image = finfo[0]
+            size = finfo[1]
+            author = finfo[2]
+            infostring = TranslationTexts.T_CREATIONDATE+": "+finfo[3]+"\n"
+            infostring += TranslationTexts.T_LASTMODIFIED+": "+finfo[4]
+            if finfo[5]:
+                infostring += "\n\n" + finfo[5]
+            if size:
+                result += '<li class="icon">'
+                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<img src="'+image+'">'
+                result += '<div class="caption">'
+                result += '<h4>'+basename+'</h4>'
+                result += '<p>'+size+'</p>'
+                result += '<p>'+author+'</p>'
+                result += '</div>'
+                result += '</a>'
+                result += '</li>'
+    return result
 
 
 
@@ -155,7 +191,6 @@ def handle():
     "builds the HTML code of the start page"
 
     global iconbank,tempfolder
-
 
     # reuse stuff from previous runs to reduce temp dir clutter
 
@@ -166,7 +201,6 @@ def handle():
         tempfolder = Start.tempfolder
     else:
         tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
-
 
     # build the html page skeleton
 
@@ -188,7 +222,6 @@ def handle():
     HTML = HTML.replace("JS",JS)
     HTML = HTML.replace("CSS",CSS)
 
-
     # get the stylesheet if we are using one
 
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("UseStyleSheet",False):
@@ -198,13 +231,11 @@ def handle():
                 ALTCSS = f.read().decode("utf8")
             HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
-
     # get FreeCAD version
 
     v = FreeCAD.Version()
     VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
     HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
-
 
     # translate texts
 
@@ -212,7 +243,6 @@ def handle():
     HTML = HTML.replace("T_DOCUMENTS",TranslationTexts.T_DOCUMENTS)
     HTML = HTML.replace("T_HELP",TranslationTexts.T_HELP)
     HTML = HTML.replace("T_ACTIVITY",TranslationTexts.T_ACTIVITY)
-    HTML = HTML.replace("T_RECENTFILES",TranslationTexts.T_RECENTFILES)
     HTML = HTML.replace("T_TIP",TranslationTexts.T_TIP)
     HTML = HTML.replace("T_ADJUSTRECENT",TranslationTexts.T_ADJUSTRECENT)
     HTML = HTML.replace("T_GENERALDOCUMENTATION",TranslationTexts.T_GENERALDOCUMENTATION)
@@ -241,7 +271,7 @@ def handle():
     HTML = HTML.replace("T_FORUM",TranslationTexts.T_FORUM)
     HTML = HTML.replace("T_DESCR_FORUM",TranslationTexts.T_DESCR_FORUM)
     HTML = HTML.replace("T_EXTERNALLINKS",TranslationTexts.T_EXTERNALLINKS)
-
+    HTML = HTML.replace("T_NOTES",TranslationTexts.T_NOTES)
 
     # build a "create new" icon with the FreeCAD background color gradient
 
@@ -260,44 +290,29 @@ def handle():
         i.save(createimg)
         iconbank["createimg"] = createimg
 
+    # build SECTION_RECENTFILES
 
-    # build UL_RECENTFILES
-
+    SECTION_RECENTFILES = ""
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
     if rfcount:
-        UL_RECENTFILES = "<ul>"
+        SECTION_RECENTFILES = "<h2>"+TranslationTexts.T_RECENTFILES+"</h2>"
+        SECTION_RECENTFILES += "<ul>"
         for i in range(rfcount):
             filename = rf.GetString("MRU%d" % (i))
-            if os.path.exists(filename):
-                basename = os.path.basename(filename)
-                image,size,author = getInfo(filename)
-                if size:
-                    UL_RECENTFILES += '<li class="icon">'
-                    UL_RECENTFILES += '<a href="LoadMRU.py?MRU='+str(i)+'" title="'+basename+'">'
-                    UL_RECENTFILES += '<img src="'+image+'">'
-                    UL_RECENTFILES += '</a>'
-                    UL_RECENTFILES += '<div class="caption">'
-                    UL_RECENTFILES += '<h4>'+basename+'</h4>'
-                    UL_RECENTFILES += '<p>'+size+'</p>'
-                    UL_RECENTFILES += '<p>'+author+'</p>'
-                    UL_RECENTFILES += '</div>'
-                    UL_RECENTFILES += '</li>'
-
-        UL_RECENTFILES += '<li class="icon">'
-        UL_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
-        UL_RECENTFILES += '<img src="'+iconbank["createimg"]+'">'
-        UL_RECENTFILES += '</a>'
-        UL_RECENTFILES += '<div class="caption">'
-        UL_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
-        UL_RECENTFILES += '</div>'
-        UL_RECENTFILES += '</li>'
-
-        UL_RECENTFILES += '</ul>'
+            SECTION_RECENTFILES += buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i))
+        SECTION_RECENTFILES += '<li class="icon">'
+        SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
+        SECTION_RECENTFILES += '<img src="'+iconbank["createimg"]+'">'
+        SECTION_RECENTFILES += '<div class="caption">'
+        SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
+        SECTION_RECENTFILES += '</div>'
+        SECTION_RECENTFILES += '</li>'
+        SECTION_RECENTFILES += '</a>'
+        SECTION_RECENTFILES += '</ul>'
         if sys.version_info.major < 3:
-            UL_RECENTFILES = UL_RECENTFILES.decode("utf8")
-        HTML = HTML.replace("UL_RECENTFILES",UL_RECENTFILES)
-
+            SECTION_RECENTFILES = SECTION_RECENTFILES.decode("utf8")
+    HTML = HTML.replace("SECTION_RECENTFILES",SECTION_RECENTFILES)
 
     # build SECTION_EXAMPLES
 
@@ -307,24 +322,11 @@ def handle():
         SECTION_EXAMPLES += "<ul>"
         for basename in os.listdir(FreeCAD.getResourceDir()+"examples"):
             filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
-            if filename.endswith(".FCStd") or filename.endswith(".fcstd") or filename.endswith(".stp"):
-                image,size,author = getInfo(filename)
-                if size:
-                    SECTION_EXAMPLES += '<li class="icon">'
-                    SECTION_EXAMPLES += '<a href="LoadExample.py?filename='+basename+'" title="'+basename+'">'
-                    SECTION_EXAMPLES += '<img src="'+image+'">'
-                    SECTION_EXAMPLES += '</a>'
-                    SECTION_EXAMPLES += '<div class="caption">'
-                    SECTION_EXAMPLES += '<h4>'+basename+'</h4>'
-                    SECTION_EXAMPLES += '<p>'+size+'</p>'
-                    SECTION_EXAMPLES += '<p>'+author+'</p>'
-                    SECTION_EXAMPLES += '</div>'
-                    SECTION_EXAMPLES += '</li>'
+            SECTION_EXAMPLES += buildCard(filename,method="LoadExample.py?filename=")
         SECTION_EXAMPLES += "</ul>"
     if sys.version_info.major < 3:
         SECTION_EXAMPLES = SECTION_EXAMPLES.decode("utf8")
     HTML = HTML.replace("SECTION_EXAMPLES",SECTION_EXAMPLES)
-
 
     # build SECTION_CUSTOM
 
@@ -337,24 +339,11 @@ def handle():
         SECTION_CUSTOM += "<ul>"
         for basename in os.listdir(cfolder):
             filename = os.path.join(cfolder,basename)
-            if isplainfile(filename):
-                image,size,author = getInfo(filename)
-                if size:
-                    SECTION_CUSTOM += '<li class="icon">'
-                    SECTION_CUSTOM += '<a href="LoadCustom.py?filename='+urllib.quote(basename)+'" title="'+basename+'">'
-                    SECTION_CUSTOM += '<img src="'+image+'">'
-                    SECTION_CUSTOM += '</a>'
-                    SECTION_CUSTOM += '<div class="caption">'
-                    SECTION_CUSTOM += '<h4>'+basename+'</h4>'
-                    SECTION_CUSTOM += '<p>'+size+'</p>'
-                    SECTION_CUSTOM += '<p>'+author+'</p>'
-                    SECTION_CUSTOM += '</div>'
-                    SECTION_CUSTOM += '</li>'
+            SECTION_CUSTOM += buildCard(filename,method="LoadCustom.py?filename=")
         SECTION_CUSTOM += "</ul>"
     if sys.version_info.major < 3:
         SECTION_CUSTOM = SECTION_CUSTOM.decode("utf8")
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
-
 
     # build UL_WORKBENCHES
 
@@ -401,6 +390,7 @@ def handle():
     HTML = HTML.replace("UL_WORKBENCHES",UL_WORKBENCHES)
     
     # Detect additional addons that are not a workbench
+
     try:
         import dxfLibrary
     except:
@@ -420,7 +410,6 @@ def handle():
     else:
         wblist.append("cadexchanger")
     HTML = HTML.replace("var wblist = [];","var wblist = " + str(wblist) + ";")
-
 
     # set and replace colors and font settings
 
@@ -451,12 +440,10 @@ def handle():
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
 
-
     # enable web access if permitted
 
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
         HTML = HTML.replace("var allowDownloads = 0;","var allowDownloads = 1;")
-
 
     # enable or disable forum
 
@@ -464,12 +451,16 @@ def handle():
         HTML = HTML.replace("var showForum = 0;","var showForum = 1;")
         HTML = HTML.replace("display: none; /* forum display */","display: block; /* forum display */")
 
+    # enable or disable notepad
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowNotes",False):
+        HTML = HTML.replace("display: none; /* notes display */","display: block; /* notes display */")
+        HTML = HTML.replace("width: 100%; /* thumbs display */","width: 70%; /* thumbs display */")
 
     # store variables for further use
 
     Start.iconbank = iconbank
     Start.tempfolder = tempfolder
-
 
     # encode if necessary
 
