@@ -30,6 +30,7 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
+import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
@@ -93,17 +94,97 @@ class ViewProvider:
     def doubleClicked(self, vobj):
         self.setEdit(vobj)
 
+class PropertyEditorDelegate(QtGui.QStyledItemDelegate):
+
+    def paint(self, painter, option, index):
+        #PathLog.track(index.column(), type(option))
+        if False and 2 == index.column():
+            PathLog.track(index.row(), index.data().toString())
+            painter.drawText(option.rect, index.data().toString())
+        else:
+            QtGui.QStyledItemDelegate.paint(self, painter, option, index)
+
+    def createEditor(self, parent, option, index):
+        PathLog.track(index.row(), index.column())
+        if 0 == index.column():
+            return QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
+        return None
+
+    def setEditorData(self, widget, index):
+        PathLog.track(index.row(), index.column())
+        if 0 == index.column():
+            QtGui.QStyledItemDelegate.setEditorData(self, widget, index)
+            isset = widget.isChecked()
+            index.model().item(index.row(), 1).setEnabled(isset)
+            index.model().item(index.row(), 2).setEnabled(isset)
+        print("setEditorData(%s)" % widget)
+
+    def setModelData(self, widget, model, index):
+        PathLog.track(index.row(), index.column())
+        if 0 == index.column():
+            return QtGui.QStyledItemDelegate.setModelData(self, widget, model, index)
+	print("setModelData(%s)" % widget)
+
+    def updateEditorGeometry(self, widget, option, index):
+	#print("is this even called")
+	if widget:
+	    widget.setGeometry(option.rect)
+	else:
+	    print("so sad")
+
 class OpTaskPanel:
+
     def __init__(self, obj, name, op):
         self.name = name
+        self.prefix = PathSetupSheet.OpNamePrefix(name)
         self.obj = obj
         self.op = op
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupOp.ui")
         self.form.setWindowTitle(self.name)
+        self.props = sorted(op.properties())
+        self.prototype = PathSetupSheetOpPrototype.OpPrototype()
+        op.factory("OpPrototype.%s" % name, self.prototype)
+
+    def updateData(self, topLeft, bottomRight):
+        if 0 == topLeft.column():
+            isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
+            self.model.item(topLeft.row(), 1).setEnabled(isset)
+            self.model.item(topLeft.row(), 2).setEnabled(isset)
+
 
     def setupUi(self):
         PathLog.track()
 
+        self.delegate = PropertyEditorDelegate(self.form)
+        self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
+        self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
+
+        for i,name in enumerate(self.props):
+            prop = self.prototype.getProperty(name)
+            isset = hasattr(self.obj, self.propertyName(name))
+            if isset:
+                prop.setValue(getattr(self.obj, self.propertyName(name)))
+
+            self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 2), prop,  QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 2), prop.toString(),  QtCore.Qt.DisplayRole)
+
+            self.model.item(i, 0).setCheckable(True)
+            self.model.item(i, 0).setText('')
+            self.model.item(i, 1).setEditable(False)
+            if not isset:
+                self.model.item(i, 1).setEnabled(False)
+                self.model.item(i, 2).setEnabled(False)
+
+        self.form.table.setModel(self.model)
+        self.form.table.setItemDelegate(self.delegate)
+        self.form.table.resizeColumnsToContents()
+
+        self.model.dataChanged.connect(self.updateData)
+
+    def propertyName(self, prop):
+        return "%{}_%{}".format(self.prefix, prop)
 
 class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole

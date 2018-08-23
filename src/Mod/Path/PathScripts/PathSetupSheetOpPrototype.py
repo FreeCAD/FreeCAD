@@ -39,6 +39,7 @@ class Property(object):
         self.category = category
         self.info = info
         self.editorMode = 0
+        self.value = ''
 
     def setValue(self, value):
         self.value = value
@@ -48,7 +49,20 @@ class Property(object):
     def setEditorMode(self, mode):
         self.editorMode = mode
 
+    def toString(self):
+        if self.value:
+            return str(self.value)
+        t = self.typeString()
+        p = 'an' if t[0] in ['A', 'E', 'I', 'O', 'U'] else 'a'
+        return "%s %s" % (p, t)
+
+    def typeString(self):
+        return "Property"
+
 class PropertyEnumeration(Property):
+    def typeString(self):
+        return "Enumeration"
+
     def setValue(self, value):
         if list == type(value):
             self.enums = value
@@ -59,19 +73,24 @@ class PropertyEnumeration(Property):
         return self.enums
 
 class PropertyDistance(Property):
-    pass
+    def typeString(self):
+        return "Distance"
 
 class PropertyPercent(Property):
-    pass
+    def typeString(self):
+        return "Percent"
 
 class PropertyFloat(Property):
-    pass
+    def typeString(self):
+        return "Float"
 
 class PropertyBool(Property):
-    pass
+    def typeString(self):
+        return "Bool"
 
 class PropertyString(Property):
-    pass
+    def typeString(self):
+        return "String"
 
 class OpPrototype(object):
 
@@ -99,6 +118,8 @@ class OpPrototype(object):
     def setEditorMode(self, name, mode):
         self.properties[name].setEditorMode(mode)
 
+    def getProperty(self, name):
+        return self.properties[name]
 
     def setupProperties(self, setup):
         return [p for p in self.properties if p.name in setup]

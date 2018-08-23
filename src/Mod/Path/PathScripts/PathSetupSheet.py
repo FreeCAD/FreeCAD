@@ -222,3 +222,7 @@ class _RegisteredOp(object):
 def RegisterOperation(name, objFactory, setupProperties):
     global _RegisteredOps
     _RegisteredOps[name] = _RegisteredOp(objFactory, setupProperties)
+
+def OpNamePrefix(name):
+    return name.replace('Path', '').replace(' ', '').replace('_', '')
+
