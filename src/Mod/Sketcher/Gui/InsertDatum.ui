@@ -49,6 +49,19 @@
     </layout>
    </item>
    <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -65,6 +78,9 @@
    <class>Gui::PrefQuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
+   <slots>
+    <signal>showFormulaDialog(bool)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -98,6 +114,22 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelEdit</sender>
+   <signal>showFormulaDialog(bool)</signal>
+   <receiver>buttonBox</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>212</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
