@@ -40,8 +40,9 @@ else:
 
 class Property(object):
     '''Base class for all prototype properties'''
-    def __init__(self, name, category, info):
+    def __init__(self, name, propType, category, info):
         self.name = name
+        self.propType = propType
         self.category = category
         self.info = info
         self.editorMode = 0
@@ -55,15 +56,23 @@ class Property(object):
     def setEditorMode(self, mode):
         self.editorMode = mode
 
-    def toString(self):
-        if not self.value is None:
-            return str(self.value)
-        t = self.typeString()
-        p = 'an' if t[0] in ['A', 'E', 'I', 'O', 'U'] else 'a'
-        return "%s %s" % (p, t)
+    def displayString(self):
+        if self.value is None:
+            t = self.typeString()
+            p = 'an' if t[0] in ['A', 'E', 'I', 'O', 'U'] else 'a'
+            return "%s %s" % (p, t)
+        return self.value
 
     def typeString(self):
         return "Property"
+
+    def setupProperty(self, obj, name, category):
+        if not hasattr(obj, name):
+            obj.addProperty(self.propType, name, category, self.info)
+            self.initProperty(obj, name)
+
+    def initProperty(self, obj, name):
+        pass
 
 class PropertyEnumeration(Property):
     def typeString(self):
@@ -77,6 +86,9 @@ class PropertyEnumeration(Property):
 
     def getEnumValues(self):
         return self.enums
+
+    def initProperty(self, obj, name):
+        setattr(obj, name, self.enums)
 
 class PropertyDistance(Property):
     def typeString(self):
@@ -113,17 +125,18 @@ class OpPrototype(object):
             'Part::PropertyPartShape': Property,
             }
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.properties = {}
         self.DoNotSetDefaultValues = True
 
     def __setattr__(self, name, val):
-        if name in ['properties', 'DoNotSetDefaultValues']:
+        if name in ['name', 'properties', 'DoNotSetDefaultValues']:
             return super(self.__class__, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 
     def addProperty(self, typeString, name, category, info = None):
-        prop = self.PropertyType[typeString](name, category, info)
+        prop = self.PropertyType[typeString](name, typeString, category, info)
         self.properties[name] = prop
 
     def setEditorMode(self, name, mode):

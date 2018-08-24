@@ -68,7 +68,6 @@ class ViewProvider:
         self.obj = vobj.Object
 
     def getIcon(self):
-        PathLog.track()
         return ":/icons/Path-SetupSheet.svg"
 
     def __getstate__(self):
@@ -105,14 +104,6 @@ class Delegate(QtGui.QStyledItemDelegate):
 
     #def paint(self, painter, option, index):
     #    #PathLog.track(index.column(), type(option))
-    #    if False and 2 == index.column():
-    #        PathLog.track(index.row(), index.data().toString())
-    #        option.text = index.data().toString()
-    #        painter.drawText(option.rect, index.data().toString(), option)
-    #    else:
-    #        if 2 == index.column():
-    #            PathLog.track(index.row(), type(index.data(self.PropertyRole)))
-    #        QtGui.QStyledItemDelegate.paint(self, painter, option, index)
 
     def createEditor(self, parent, option, index):
         if index.data(self.EditorRole) is None:
@@ -128,7 +119,7 @@ class Delegate(QtGui.QStyledItemDelegate):
         PathLog.track(index.row(), index.column())
         editor = index.data(self.EditorRole)
         editor.setModelData(widget)
-        index.model().setData(index, editor.prop.toString(), QtCore.Qt.DisplayRole)
+        index.model().setData(index, editor.prop.displayString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
 	widget.setGeometry(option.rect)
@@ -143,7 +134,7 @@ class OpTaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupOp.ui")
         self.form.setWindowTitle(self.name)
         self.props = sorted(op.properties())
-        self.prototype = PathSetupSheetOpPrototype.OpPrototype()
+        self.prototype = PathSetupSheetOpPrototype.OpPrototype(name)
         op.factory("OpPrototype.%s" % name, self.prototype)
 
     def updateData(self, topLeft, bottomRight):
@@ -151,7 +142,6 @@ class OpTaskPanel:
             isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
             self.model.item(topLeft.row(), 1).setEnabled(isset)
             self.model.item(topLeft.row(), 2).setEnabled(isset)
-
 
     def setupUi(self):
         PathLog.track()
@@ -169,12 +159,16 @@ class OpTaskPanel:
             self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
             self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
             self.model.setData(self.model.index(i, 2), prop,  Delegate.PropertyRole)
-            self.model.setData(self.model.index(i, 2), prop.toString(),  QtCore.Qt.DisplayRole)
+            self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
 
             self.model.item(i, 0).setCheckable(True)
             self.model.item(i, 0).setText('')
             self.model.item(i, 1).setEditable(False)
-            if not isset:
+
+            if isset:
+                self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
+            else:
+                self.model.item(i, 0).setCheckState(QtCore.Qt.Unchecked)
                 self.model.item(i, 1).setEnabled(False)
                 self.model.item(i, 2).setEnabled(False)
 
@@ -185,7 +179,24 @@ class OpTaskPanel:
         self.model.dataChanged.connect(self.updateData)
 
     def propertyName(self, prop):
-        return "%{}_%{}".format(self.prefix, prop)
+        return "{}{}".format(self.prefix, prop)
+
+    def categoryName(self):
+        return "Op {}".format(self.name)
+
+    def accept(self):
+        for i,name in enumerate(self.props):
+            prop = self.prototype.getProperty(name)
+            propName = self.propertyName(name)
+            enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
+            if enabled and not prop.getValue() is None:
+                prop.setupProperty(self.obj, propName, self.categoryName())
+                setattr(self.obj, propName, prop.getValue())
+            else:
+                if hasattr(self.obj, propName):
+                    self.obj.removeProperty(propName)
+        return True
+
 
 class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole
@@ -207,12 +218,17 @@ class TaskPanel:
 
     def accept(self):
         self.getFields()
+        [op.accept() for op in self.ops]
+        #if any([op.accept() for op in self.ops]):
+        #    PathLog.track()
+        #    self.obj.touch()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         #FreeCADGui.Selection.removeObserver(self.s)
-        #FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
+        #self.vobj.update()
 
     def getFields(self):
         def updateExpression(name, widget):
