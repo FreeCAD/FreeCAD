@@ -32,6 +32,12 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 class Property(object):
     '''Base class for all prototype properties'''
     def __init__(self, name, category, info):
@@ -39,7 +45,7 @@ class Property(object):
         self.category = category
         self.info = info
         self.editorMode = 0
-        self.value = ''
+        self.value = None
 
     def setValue(self, value):
         self.value = value
@@ -50,7 +56,7 @@ class Property(object):
         self.editorMode = mode
 
     def toString(self):
-        if self.value:
+        if not self.value is None:
             return str(self.value)
         t = self.typeString()
         p = 'an' if t[0] in ['A', 'E', 'I', 'O', 'U'] else 'a'
@@ -95,14 +101,14 @@ class PropertyString(Property):
 class OpPrototype(object):
 
     PropertyType = {
-            'App::PropertyEnumeration': PropertyEnumeration,
-            'App::PropertyDistance': PropertyDistance,
-            'App::PropertyPercent': PropertyPercent,
-            'App::PropertyFloat': PropertyFloat,
             'App::PropertyBool': PropertyBool,
-            'App::PropertyString': PropertyString,
-            'App::PropertyLinkSubListGlobal': Property,
+            'App::PropertyDistance': PropertyDistance,
+            'App::PropertyEnumeration': PropertyEnumeration,
+            'App::PropertyFloat': PropertyFloat,
             'App::PropertyLink': Property,
+            'App::PropertyLinkSubListGlobal': Property,
+            'App::PropertyPercent': PropertyPercent,
+            'App::PropertyString': PropertyString,
             'App::PropertyVectorDistance': Property,
             'Part::PropertyPartShape': Property,
             }
@@ -110,6 +116,11 @@ class OpPrototype(object):
     def __init__(self):
         self.properties = {}
         self.DoNotSetDefaultValues = True
+
+    def __setattr__(self, name, val):
+        if name in ['properties', 'DoNotSetDefaultValues']:
+            return super(self.__class__, self).__setattr__(name, val)
+        self.properties[name].setValue(val)
 
     def addProperty(self, typeString, name, category, info = None):
         prop = self.PropertyType[typeString](name, category, info)
