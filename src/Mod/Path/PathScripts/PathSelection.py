@@ -165,21 +165,7 @@ class ADAPTIVEGate:
             obj = obj.Shape
         except:
             return False
-
-        if obj.ShapeType == 'Edge':
-            adaptive = True
-
-        elif obj.ShapeType == 'Face':
-            adaptive = True
-
-        elif obj.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
-                adaptive = True
-
-        elif obj.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
-                adaptive = True
-
+            
         return adaptive
 
 class CONTOURGate:
