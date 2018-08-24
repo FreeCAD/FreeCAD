@@ -978,6 +978,31 @@ void SelectionSingleton::selStackGoForward(int count) {
     getMainWindow()->updateActions();
 }
 
+std::vector<SelectionObject> SelectionSingleton::selStackGet(
+        const char* pDocName, int resolve, int index) const
+{
+    const SelStackItem *item = 0;
+    if(index>=0) {
+        if(index>=(int)_SelStackBack.size())
+            return {};
+        item = &_SelStackBack[_SelStackBack.size()-1-index];
+    }else{
+        index = -index-1;
+        if(index>=(int)_SelStackForward.size())
+            return {};
+        item = &_SelStackBack[_SelStackForward.size()-1-index];
+    }
+    
+    std::list<_SelObj> selList;
+    for(auto &s : *item) {
+        _SelObj sel;
+        if(checkSelection(s[0].c_str(),s[1].c_str(),s[2].c_str(),0,sel,&selList)==0)
+            selList.push_back(sel);
+    }
+
+    return getObjectList(pDocName,App::DocumentObject::getClassTypeId(),selList,resolve);
+}
+
 bool SelectionSingleton::addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
 {
     if(_PickedList.size()) {
@@ -1330,11 +1355,12 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
 }
 
 int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
-        const char *pSubName, int resolve, _SelObj &sel) const
+        const char *pSubName, int resolve, _SelObj &sel, const std::list<_SelObj> *selList) const
 {
     sel.pDoc = getDocument(pDocName);
     if(!sel.pDoc) {
-        FC_ERR("Cannot find document");
+        if(!selList)
+            FC_ERR("Cannot find document");
         return -1;
     }
     pDocName = sel.pDoc->getName();
@@ -1346,7 +1372,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     } else
         sel.pObject = 0;
     if (!sel.pObject) {
-        FC_ERR("Object not found");
+        if(!selList)
+            FC_ERR("Object not found");
         return -1;
     }
     sel.TypeName = sel.pObject->getTypeId().getName();
@@ -1356,7 +1383,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     sel.pResolvedObject = App::GeoFeature::resolveElement(sel.pObject,
             pSubName,sel.elementName,false,App::GeoFeature::Normal,0,&element);
     if(!sel.pResolvedObject) {
-        FC_ERR("Sub-object not found");
+        if(!selList)
+            FC_ERR("Sub-object not found");
         return -1;
     }
     std::string subname;
@@ -1370,7 +1398,9 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             sel.SubName = subname;
         }
     }
-    for (auto &s : _SelList) {
+    if(!selList)
+        selList = &_SelList;
+    for (auto &s : *selList) {
         if (s.DocName==pDocName && s.FeatName==pObjectName) {
             if(!pSubName || s.SubName==pSubName)
                 return 1;
@@ -1379,7 +1409,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
         }
     }
     if(resolve==1) {
-        for(auto &s : _SelList) {
+        for(auto &s : *selList) {
             if(s.pResolvedObject != sel.pResolvedObject)
                 continue;
             if(!pSubName) 
@@ -1590,6 +1620,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "overwrite: overwrite the top back selection stack with current selection."},
     {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
      "hasSelection(docName=None, resolve=False) -- check if there is any selection\n"},
+    {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, 1,
+     "getSelectionFromStack(docName=None,resolve=1,index=0) -- Return a list of SelectionObjects from selection stack\n"
+     "\ndocName - document name. None means the active document, and '*' means all document"
+     "\nresolve - whether to resolve the subname references."
+     "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
+     "\nindex - select stack index, 0 is the last pushed selection, positive index to trace further back,\n"
+     "          and negative for forward stack item"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -2008,3 +2045,21 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args,
         return Py::new_reference_to(Py::Boolean(ret));
     } PY_CATCH;
 }
+
+PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *documentName=0;
+    int resolve=1;
+    int index=0;
+    PyObject *single = Py_False;
+    if (!PyArg_ParseTuple(args, "|sii", &documentName,&resolve,&index))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+
+    PY_TRY {
+        Py::List list;
+        for(auto &sel : Selection().selStackGet(documentName, resolve, index))
+            list.append(Py::asObject(sel.getPyObject()));
+        return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+

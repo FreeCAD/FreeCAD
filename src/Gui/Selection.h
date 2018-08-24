@@ -433,6 +433,7 @@ public:
 
     int selStackBackSize() const {return _SelStackBack.size();}
     int selStackForwardSize() const {return _SelStackForward.size();}
+    std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=0,int resolve=1,int index=0) const;
     void selStackGoBack(int count=1);
     void selStackGoForward(int count=1);
     void selStackPush(bool clearForward=true, bool overwrite=false);
@@ -472,6 +473,7 @@ protected:
     static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sPushSelStack        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sHasSelection        (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
@@ -511,7 +513,7 @@ protected:
     std::deque<SelStackItem> _SelStackForward;
 
     int checkSelection(const char *pDocName, const char *pObjectName, 
-            const char *pSubName,int resolve, _SelObj &sel) const;
+            const char *pSubName,int resolve, _SelObj &sel, const std::list<_SelObj> *selList=0) const;
 
     std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, std::list<_SelObj> &objs, int resolve, bool single=false) const;
 
