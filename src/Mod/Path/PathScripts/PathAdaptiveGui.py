@@ -4,7 +4,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
-import PathAdaptive
+import PathScripts.PathAdaptive as PathAdaptive
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def initPage(self, obj):
