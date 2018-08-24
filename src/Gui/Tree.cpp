@@ -925,7 +925,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
         // Open command
         Gui::Document* gui = vp->getDocument();
-        gui->openCommand("Drag object");
+        gui->openCommand("Drop object");
         try {
             auto targetObj = targetItemObj->object()->getObject();
             std::string target = targetObj->getNameInDocument();
