@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
-import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathGui as PathGui
@@ -31,9 +29,15 @@ import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
+import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
+
+__title__ = "Setup Sheet Editor"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Task panel editor for a SetupSheet"
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -94,43 +98,40 @@ class ViewProvider:
     def doubleClicked(self, vobj):
         self.setEdit(vobj)
 
-class PropertyEditorDelegate(QtGui.QStyledItemDelegate):
+class Delegate(QtGui.QStyledItemDelegate):
+    PropertyRole = QtCore.Qt.UserRole + 1
+    EditorRole   = QtCore.Qt.UserRole + 2
 
-    def paint(self, painter, option, index):
-        #PathLog.track(index.column(), type(option))
-        if False and 2 == index.column():
-            PathLog.track(index.row(), index.data().toString())
-            painter.drawText(option.rect, index.data().toString())
-        else:
-            QtGui.QStyledItemDelegate.paint(self, painter, option, index)
+
+    #def paint(self, painter, option, index):
+    #    #PathLog.track(index.column(), type(option))
+    #    if False and 2 == index.column():
+    #        PathLog.track(index.row(), index.data().toString())
+    #        option.text = index.data().toString()
+    #        painter.drawText(option.rect, index.data().toString(), option)
+    #    else:
+    #        if 2 == index.column():
+    #            PathLog.track(index.row(), type(index.data(self.PropertyRole)))
+    #        QtGui.QStyledItemDelegate.paint(self, painter, option, index)
 
     def createEditor(self, parent, option, index):
-        PathLog.track(index.row(), index.column())
-        if 0 == index.column():
-            return QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
-        return None
+        if index.data(self.EditorRole) is None:
+            editor = PathSetupSheetOpPrototypeGui.Editor(index.data(self.PropertyRole))
+            index.model().setData(index, editor, self.EditorRole)
+        return index.data(self.EditorRole).widget(parent)
 
     def setEditorData(self, widget, index):
         PathLog.track(index.row(), index.column())
-        if 0 == index.column():
-            QtGui.QStyledItemDelegate.setEditorData(self, widget, index)
-            isset = widget.isChecked()
-            index.model().item(index.row(), 1).setEnabled(isset)
-            index.model().item(index.row(), 2).setEnabled(isset)
-        print("setEditorData(%s)" % widget)
+        index.data(self.EditorRole).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
         PathLog.track(index.row(), index.column())
-        if 0 == index.column():
-            return QtGui.QStyledItemDelegate.setModelData(self, widget, model, index)
-	print("setModelData(%s)" % widget)
+        editor = index.data(self.EditorRole)
+        editor.setModelData(widget)
+        index.model().setData(index, editor.prop.toString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
-	#print("is this even called")
-	if widget:
-	    widget.setGeometry(option.rect)
-	else:
-	    print("so sad")
+	widget.setGeometry(option.rect)
 
 class OpTaskPanel:
 
@@ -155,7 +156,7 @@ class OpTaskPanel:
     def setupUi(self):
         PathLog.track()
 
-        self.delegate = PropertyEditorDelegate(self.form)
+        self.delegate = Delegate(self.form)
         self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
@@ -167,7 +168,7 @@ class OpTaskPanel:
 
             self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
             self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, 2), prop,  QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 2), prop,  Delegate.PropertyRole)
             self.model.setData(self.model.index(i, 2), prop.toString(),  QtCore.Qt.DisplayRole)
 
             self.model.item(i, 0).setCheckable(True)
@@ -178,7 +179,7 @@ class OpTaskPanel:
                 self.model.item(i, 2).setEnabled(False)
 
         self.form.table.setModel(self.model)
-        self.form.table.setItemDelegate(self.delegate)
+        self.form.table.setItemDelegateForColumn(2, self.delegate)
         self.form.table.resizeColumnsToContents()
 
         self.model.dataChanged.connect(self.updateData)
