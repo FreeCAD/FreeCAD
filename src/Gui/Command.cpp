@@ -58,6 +58,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -307,15 +308,25 @@ void Command::invoke(int i)
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
-            auto lines = manager->getLines();
-            activated( i );
-            if(manager->getLines() == lines) {
-                std::ostringstream ss;
-                ss << "FreeCADGui.runCommand('" << sName << "')";
-                if(eType & AlterDoc)
-                    manager->addLine(MacroManager::App, ss.str().c_str());
-                else
-                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+            static bool _busy;
+            if(_busy)
+                activated( i );
+            else {
+                Base::FlagToggler<> flag(_busy);
+                auto lines = manager->getLines();
+                activated( i );
+                if(manager->getLines() == lines) {
+                    // This command does not record any lines, lets do it for
+                    // him. The above static _busy is to prevent nested command
+                    // logging, i.e. we only auto log the first invoking
+                    // command.
+                    std::ostringstream ss;
+                    ss << "FreeCADGui.runCommand('" << sName << "'," << i << ')';
+                    if(eType & AlterDoc)
+                        manager->addLine(MacroManager::App, ss.str().c_str());
+                    else
+                        manager->addLine(MacroManager::Gui, ss.str().c_str());
+                }
             }
             getMainWindow()->updateActions();
         }
