@@ -885,6 +885,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         std::ostringstream selSubname;
         App::DocumentObject *selObj = 0;
         targetItemObj->getSubName(selSubname,selObj);
+        Selection().selStackPush();
         Selection().clearCompleteSelection();
         if(selObj) {
             selSubname << vp->getObject()->getNameInDocument() << '.';
@@ -1023,6 +1024,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
         // Because the existence of subname, we must de-select the drag the
         // object manually. Just do a complete clear here for simplicity
+        Selection().selStackPush();
         Selection().clearCompleteSelection();
 
         // Open command
