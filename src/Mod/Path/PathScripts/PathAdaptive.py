@@ -27,7 +27,6 @@ def connectEdges(edges):
     remaining = []
     pathArray = []
     combined = []
-    #print "Input edges , remove duplicate projections to xy plane"
     for edge in edges:
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt(edge.LastParameter)
@@ -41,16 +40,13 @@ def connectEdges(edges):
                 duplicate = True
         if not duplicate:
             remaining.append(edge)
-    #print "remaining:", remaining
 
     newPath=True
     while len(remaining)>0:
         if newPath:
-            #print "new iteration"
             edge=remaining[0]
             p1 = edge.valueAt(edge.FirstParameter)
             p2 = edge.valueAt(edge.LastParameter)
-            #print edge, p1, p2
             if len(combined)>0: pathArray.append(combined)
             combined = []
             combined.append(discretize(edge))
@@ -62,16 +58,13 @@ def connectEdges(edges):
         for e in remaining:
             p1 = e.valueAt(e.FirstParameter)
             p2 = e.valueAt(e.LastParameter)
-            #print "chk",e, p1, p2
             if IsEqualInXYPlane(lastPoint,p1):
-                #print "last Point equal p1"
                 combined.append(discretize(e))
                 remaining.remove(e)
                 lastPoint=p2
                 anyMatch=True
                 break
             elif IsEqualInXYPlane(lastPoint,p2):
-                #print "reversed"
                 combined.append(discretize(e,True))
                 remaining.remove(e)
                 lastPoint=p1
@@ -193,7 +186,6 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
             op.commandlist.append(Path.Command("(adaptive - depth: %f)"%passEndDepth))
             #add adaptive paths
             for pth in region["AdaptivePaths"]:
-                #print pth.Points
                 motionType = pth[0]  #[0] contains motion type
                 for pt in pth[1]: #[1] contains list of points
                     x=pt[0]
@@ -256,7 +248,6 @@ def Execute(op,obj):
 
         edges=[]
         for base, subs in obj.Base:
-            #print (base,subs)
             for sub in subs:
                 shape=base.Shape.getElement(sub)
                 for edge in shape.Edges:
