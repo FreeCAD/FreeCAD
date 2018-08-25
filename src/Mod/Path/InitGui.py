@@ -47,7 +47,7 @@ class PathWorkbench (Workbench):
     "Path workbench"
 
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Path/Resources/icons/PathWorkbench.svg"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Path/Gui/Resources/icons/PathWorkbench.svg"
         self.__class__.MenuText = "Path"
         self.__class__.ToolTip = "Path workbench"
 

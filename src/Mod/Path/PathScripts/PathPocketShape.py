@@ -53,6 +53,9 @@ def translate(context, text, disambig=None):
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
+    def areaOpFeatures(self, obj):
+        return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
+
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
         obj.addProperty("App::PropertyBool", "UseOutline", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."))
