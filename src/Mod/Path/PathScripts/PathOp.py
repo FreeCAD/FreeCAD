@@ -114,7 +114,7 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyDistance", "OpStockZMin", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the min Z value of Stock"))
             obj.setEditorMode('OpStockZMin', 1)  # read-only
 
-    def __init__(self, obj):
+    def __init__(self, obj, name):
         PathLog.track()
 
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))

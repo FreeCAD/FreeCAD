@@ -170,5 +170,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectPocket(obj)
+    proxy = ObjectPocket(obj, name)
     return obj

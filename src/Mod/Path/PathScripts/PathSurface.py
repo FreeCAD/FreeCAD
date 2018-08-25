@@ -323,5 +323,5 @@ class ObjectSurface(PathOp.ObjectOp):
 def Create(name):
     '''Create(name) ... Creates and returns a Surface operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectSurface(obj)
+    proxy = ObjectSurface(obj, name)
     return obj

@@ -122,6 +122,6 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
 def Create(name):
     '''Create(name) ... Creates and returns a Chamfer operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectChamfer(obj)
+    proxy = ObjectChamfer(obj, name)
     return obj
 

@@ -290,8 +290,8 @@ class TaskPanel:
 def Create(name = 'SetupSheet'):
     '''Create(name = 'SetupSheet') ... creates a new setup sheet'''
     FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
-    ssheet = SetupSheet.Create(name)
-    PathIconViewProvider.Attach(ssheet)
+    ssheet = PathSetupSheet.Create(name)
+    PathIconViewProvider.Attach(ssheet, name)
     return ssheet
 
 PathIconViewProvider.RegisterViewProvider('SetupSheet', ViewProvider)

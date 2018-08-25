@@ -112,5 +112,5 @@ class ObjectContour(PathProfileBase.ObjectProfile):
 def Create(name):
     '''Create(name) ... Creates and returns a Contour operation.'''
     obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectContour(obj)
+    proxy = ObjectContour(obj, name)
     return obj
