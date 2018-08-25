@@ -250,6 +250,7 @@ class TaskPanel:
         self.rapidHorizontal.updateProperty()
 
     def updateUI(self):
+        PathLog.track()
         self.globalForm.startDepthExpr.setText(       self.obj.StartDepthExpression)
         self.globalForm.finalDepthExpr.setText(       self.obj.FinalDepthExpression)
         self.globalForm.stepDownExpr.setText(         self.obj.StepDownExpression)
@@ -261,6 +262,7 @@ class TaskPanel:
         self.rapidHorizontal.updateSpinBox()
 
     def updateModel(self):
+        PathLog.track()
         self.getFields()
         self.updateUI()
         FreeCAD.ActiveDocument.recompute()
