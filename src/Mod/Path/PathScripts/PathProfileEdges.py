@@ -103,5 +103,5 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 def Create(name):
     '''Create(name) ... Creates and returns a Profile based on edges operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj)
+    proxy = ObjectProfile(obj, name)
     return obj

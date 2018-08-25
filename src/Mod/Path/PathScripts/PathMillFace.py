@@ -143,5 +143,5 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 def Create(name):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj)
+    proxy = ObjectFace(obj, name)
     return obj

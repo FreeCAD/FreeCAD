@@ -96,5 +96,5 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 def Create(name):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectPocket(obj)
+    proxy = ObjectPocket(obj, name)
     return obj

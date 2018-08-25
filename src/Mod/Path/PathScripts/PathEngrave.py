@@ -153,6 +153,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 def Create(name):
     '''Create(name) ... Creates and returns an Engrave operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj)
+    proxy = ObjectEngrave(obj, name)
     return obj
 

@@ -195,7 +195,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 def Create(name):
     '''Create(name) ... Creates and returns a Helix operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectHelix(obj)
+    proxy = ObjectHelix(obj, name)
     if obj.Proxy:
         proxy.findAllHoles(obj)
     return obj
