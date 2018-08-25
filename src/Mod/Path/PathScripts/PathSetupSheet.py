@@ -26,6 +26,7 @@ import FreeCAD
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
 
@@ -154,21 +155,48 @@ class SetupSheet:
             if attrs.get(name) is not None:
                 setattr(self.obj, name, attrs[name])
 
-    def templateAttributes(self, includeRapids=True, includeHeights=True, includeDepths=True):
+        for opName,op in PathUtil.keyValueIter(_RegisteredOps):
+            opSetting = attrs.get(opName)
+            if opSetting is not None:
+                prototype = op.prototype(opName)
+                for propName in op.properties():
+                    value = opSetting.get(propName)
+                    if not value is None:
+                        prop = prototype.getProperty(propName)
+                        propertyName = OpPropertyName(opName, propName)
+                        propertyGroup = OpPropertyGroup(opName)
+                        prop.setupProperty(self.obj, propertyName, propertyGroup, prop.valueFromString(value))
+
+
+    def templateAttributes(self, includeRapids=True, includeHeights=True, includeDepths=True, includeOps=None):
         '''templateAttributes(includeRapids, includeHeights, includeDepths) ... answers a dictionary with the default values.'''
         attrs = {}
+
         if includeRapids:
             attrs[Template.VertRapid]  = self.obj.VertRapid.UserString
             attrs[Template.HorizRapid] = self.obj.HorizRapid.UserString
+
         if includeHeights:
             attrs[Template.SafeHeightOffset]          = self.obj.SafeHeightOffset.UserString
             attrs[Template.SafeHeightExpression]      = self.obj.SafeHeightExpression
             attrs[Template.ClearanceHeightOffset]     = self.obj.ClearanceHeightOffset.UserString
             attrs[Template.ClearanceHeightExpression] = self.obj.ClearanceHeightExpression
+
         if includeDepths:
             attrs[Template.StartDepthExpression] = self.obj.StartDepthExpression
             attrs[Template.FinalDepthExpression] = self.obj.FinalDepthExpression
             attrs[Template.StepDownExpression]   = self.obj.StepDownExpression
+
+        if includeOps:
+            for opName in includeOps:
+                settings = {}
+                op = _RegisteredOps[opName]
+                for propName in op.properties():
+                    prop = OpPropertyName(opName, propName)
+                    if hasattr(self.obj, prop):
+                        settings[propName] = getattr(self.obj, prop)
+                attrs[opName] = settings
+
         return attrs
 
     def expressionReference(self):
@@ -208,6 +236,16 @@ class SetupSheet:
         '''decodeTemplateAttributes(attrs) ... expand template attributes to reference the receiver where applicable.'''
         return _traverseTemplateAttributes(attrs, self.decodeAttributeString)
 
+    def operationsWithSettings(self):
+        '''operationsWithSettings() ... returns a list of operations which currently have some settings defined.'''
+        ops = []
+        for name,value in PathUtil.keyValueIter(_RegisteredOps):
+            for prop in value.registeredPropertyNames(name):
+                if hasattr(self.obj, prop):
+                    ops.append(name)
+                    break
+        return ops
+
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
@@ -215,9 +253,18 @@ def Create(name = 'SetupSheet'):
     return obj
 
 class _RegisteredOp(object):
+
     def __init__(self, factory, properties):
         self.factory = factory
         self.properties = properties
+
+    def registeredPropertyNames(self, name):
+        return [OpPropertyName(name, prop) for prop in self.properties()]
+
+    def prototype(self, name):
+        ptt = PathSetupSheetOpPrototype.OpPrototype(name)
+        self.factory("OpPrototype.%s" % name, ptt)
+        return ptt
 
 def RegisterOperation(name, objFactory, setupProperties):
     global _RegisteredOps
@@ -226,3 +273,7 @@ def RegisterOperation(name, objFactory, setupProperties):
 def OpNamePrefix(name):
     return name.replace('Path', '').replace(' ', '').replace('_', '')
 
+def OpPropertyName(opName, propName):
+    return "{}{}".format(OpNamePrefix(opName), propName)
+def OpPropertyGroup(opName):
+    return "Op {}".format(opName)

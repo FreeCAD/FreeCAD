@@ -162,11 +162,16 @@ class DlgJobTemplateExport:
         rapidChanged = not job.SetupSheet.Proxy.hasDefaultToolRapids()
         depthsChanged = not job.SetupSheet.Proxy.hasDefaultOperationDepths()
         heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
-        settingsChanged = rapidChanged or depthsChanged or heightsChanged
+        opsWithSettings = job.SetupSheet.Proxy.operationsWithSettings()
+        settingsChanged = rapidChanged or depthsChanged or heightsChanged or 0 != len(opsWithSettings)
         self.dialog.settingsGroup.setChecked(settingsChanged)
         self.dialog.settingToolRapid.setChecked(rapidChanged)
         self.dialog.settingOperationDepths.setChecked(depthsChanged)
         self.dialog.settingOperationHeights.setChecked(heightsChanged)
+        for op in opsWithSettings:
+            item = QtGui.QListWidgetItem(op)
+            item.setCheckState(QtCore.Qt.CheckState.Checked)
+            self.dialog.settingsOpsList.addItem(item)
 
         for tc in sorted(job.ToolController, key=lambda o: o.Label):
             item = QtGui.QListWidgetItem(tc.Label)
@@ -207,6 +212,14 @@ class DlgJobTemplateExport:
         return self.dialog.settingOperationHeights.isChecked()
     def includeSettingOperationDepths(self):
         return self.dialog.settingOperationDepths.isChecked()
+
+    def includeSettingOpsSettings(self):
+        ops = []
+        for i in range(self.dialog.settingsOpsList.count()):
+            item = self.dialog.settingsOpsList.item(i)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                ops.append(item.text())
+        return ops
 
     def exec_(self):
         return self.dialog.exec_()
@@ -283,7 +296,7 @@ class CommandJobTemplateExport:
         # setup sheet
         setupSheetAttrs = None
         if dialog:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths(), dialog.includeSettingOpsSettings())
         else:
             setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
