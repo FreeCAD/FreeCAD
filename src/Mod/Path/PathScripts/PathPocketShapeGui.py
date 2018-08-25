@@ -23,16 +23,42 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
+import PathScripts.PathOp as PathOp
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
+
+class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
+
+    def initPage(self, obj):
+        self.extensions = [self.form.negXInput, self.form.posXInput, self.form.negYInput, self.form.posYInput]
+        self.setTitle("Pocket Extensions")
+        self.enabled = True
+        self.enable(False)
+
+    def enable(self, ena):
+        if ena != self.enabled:
+            self.enabled = ena
+            if ena:
+                self.form.info.hide()
+                for ext in self.extensions:
+                    ext.setEnabled(True)
+            else:
+                self.form.info.show()
+                for ext in self.extensions:
+                    ext.setEnabled(False)
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpExtensionEdit.ui")
+
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     '''Page controller class for Pocket operation'''
@@ -40,6 +66,16 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     def pocketFeatures(self):
         '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
         return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
+
+    def taskPanelBaseLocationPage(self, obj, features):
+        self.extensionsPanel = TaskPanelExtensionPage(obj, features)
+        return self.extensionsPanel
+
+    def enableExtensions(self):
+        self.extensionsPanel.enable(self.form.useOutline.isChecked())
+
+    def pageRegisterSignalHandlers(self):
+        self.form.useOutline.clicked.connect(self.enableExtensions)
 
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
