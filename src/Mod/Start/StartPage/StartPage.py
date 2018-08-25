@@ -53,6 +53,8 @@ def isOpenableByFreeCAD(filename):
 
     if os.path.isdir(filename):
         return False
+    if os.path.basename(filename)[0] == ".":
+        return False
     extensions = [key.lower() for key in FreeCAD.getImportType().keys()]
     ext = os.path.splitext(filename)[1].lower()
     if ext:
@@ -79,11 +81,11 @@ def getInfo(filename):
     def getSize(size):
         "returns a human-readable size"
         if size > 1024*1024:
-            hsize = str(size/(1024*1024)) + "Mb"
+            hsize = str(int(size/(1024*1024))) + "Mb"
         elif size > 1024:
-            hsize = str(size/1024) + "Kb"
+            hsize = str(int(size/1024)) + "Kb"
         else:
-            hsize = str(size) + "b"
+            hsize = str(int(size)) + "b"
         return hsize
 
     if os.path.exists(filename):
@@ -228,7 +230,9 @@ def handle():
         qssfile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet","")
         if qssfile:
             with open(qssfile, 'r') as f:
-                ALTCSS = f.read().decode("utf8")
+                ALTCSS = f.read()
+                if sys.version_info.major < 3:
+                    ALTCSS = ALTCSS.decode("utf8")
             HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # get FreeCAD version
