@@ -125,7 +125,7 @@ def makeBoreHole():
 
 	App.ActiveDocument.recompute()
 
-	# hide all objets except of the final one
+	# hide all objects except of the final one
 	Gui.ActiveDocument.getObject(Wire.Name).hide()
 	Gui.ActiveDocument.getObject(Face.Name).hide()
 	Gui.ActiveDocument.getObject(Prism.Name).hide()

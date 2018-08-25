@@ -63,7 +63,7 @@ T_DESCR_COMMUNITYHELP1 = translate("StartPage", "The <a href=\"http://forum.free
 T_DESCR_COMMUNITYHELP2 = translate("StartPage", "If it is the first time you are posting on the forum, be sure to <a href=\"https://forum.freecadweb.org/viewtopic.php?f=3&t=2264\">read the guidelines</a> first!")
 T_DESCR_COMMUNITYHELP3 = translate("StartPage", "FreeCAD also maintains a public <a href=\"https://www.freecadweb.org/tracker\">bug tracker</a> where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the <a href=\"https://forum.freecadweb.org/viewtopic.php?f=3&t=5236\">bug submission guide</a> before posting.")
 T_ADDONS = translate("StartPage", "Available addons")
-T_DESCR_ADDONS = translate("StartPage", "Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -> Addons mananger. You can learn more about any of them by clicking the links below.")
+T_DESCR_ADDONS = translate("StartPage", "Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -> Addons manager. You can learn more about any of them by clicking the links below.")
 T_OFFLINEHELP = translate("StartPage", "If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.")
 T_OFFLINEPLACEHOLDER = translate("StartPage", "Cannot fetch information from GitHub. <a href=\"EnableDownload.py\">Authorize FreeCAD to access the internet</a> and reload the Start page.")
 T_RECENTCOMMITS = translate("StartPage", "Recent commits")
