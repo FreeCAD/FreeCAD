@@ -163,7 +163,10 @@ class ObjectOp(object):
         self.initOperation(obj)
 
         if not hasattr(obj, 'DoNotSetDefaultValues') or not obj.DoNotSetDefaultValues:
-            if self.setDefaultValues(obj):
+            job = self.setDefaultValues(obj)
+            if job:
+                job.SetupSheet.Proxy.setOperationProperties(obj, name)
+                obj.recompute()
                 obj.Proxy = self
 
     def setEditorModes(self, obj, features):
@@ -290,7 +293,7 @@ class ObjectOp(object):
             else:
                 obj.ToolController = PathUtils.findToolController(obj)
             if not obj.ToolController:
-                return False
+                return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
 
         if FeatureDepths & features:
@@ -321,8 +324,7 @@ class ObjectOp(object):
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj, job)
-        obj.recompute()
-        return True
+        return job
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)

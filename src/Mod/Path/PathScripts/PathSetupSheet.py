@@ -29,6 +29,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
+import traceback
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
@@ -37,7 +38,7 @@ __doc__ = "A container for all default values and job specific configuration val
 
 _RegisteredOps = {}
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -246,6 +247,18 @@ class SetupSheet:
                     break
         return ops
 
+    def setOperationProperties(self, obj, opName):
+        PathLog.track(obj.Label, opName)
+        try:
+            op = _RegisteredOps[opName]
+            for prop in op.properties():
+                propName = OpPropertyName(opName, prop)
+                if hasattr(self.obj, propName):
+                    setattr(obj, prop, getattr(self.obj, propName))
+        except Exception as exc:
+            PathLog.track(exc)
+            traceback.print_exc(exc)
+            pass
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)

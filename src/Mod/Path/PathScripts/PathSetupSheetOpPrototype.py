@@ -67,12 +67,13 @@ class Property(object):
         return "Property"
 
     def setupProperty(self, obj, name, category, value):
+        created = False
         if not hasattr(obj, name):
             obj.addProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
-            setattr(obj, name, value)
-            return True
-        return False
+            created = True
+        setattr(obj, name, value)
+        return created
 
     def initProperty(self, obj, name):
         pass
