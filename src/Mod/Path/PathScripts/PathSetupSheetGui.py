@@ -128,14 +128,12 @@ class OpTaskPanel:
 
     def __init__(self, obj, name, op):
         self.name = name
-        self.prefix = PathSetupSheet.OpNamePrefix(name)
         self.obj = obj
         self.op = op
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupOp.ui")
         self.form.setWindowTitle(self.name)
         self.props = sorted(op.properties())
-        self.prototype = PathSetupSheetOpPrototype.OpPrototype(name)
-        op.factory("OpPrototype.%s" % name, self.prototype)
+        self.prototype = op.prototype(name)
 
     def updateData(self, topLeft, bottomRight):
         if 0 == topLeft.column():
@@ -179,23 +177,25 @@ class OpTaskPanel:
         self.model.dataChanged.connect(self.updateData)
 
     def propertyName(self, prop):
-        return "{}{}".format(self.prefix, prop)
+        return PathSetupSheet.OpPropertyName(self.name, prop)
 
-    def categoryName(self):
-        return "Op {}".format(self.name)
+    def propertyGroup(self):
+        return PathSetupSheet.OpPropertyGroup(self.name)
 
     def accept(self):
+        propertiesCreatedRemoved = False
         for i,name in enumerate(self.props):
             prop = self.prototype.getProperty(name)
             propName = self.propertyName(name)
             enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
             if enabled and not prop.getValue() is None:
-                prop.setupProperty(self.obj, propName, self.categoryName())
-                setattr(self.obj, propName, prop.getValue())
+                if prop.setupProperty(self.obj, propName, self.propertyGroup(), prop.getValue()):
+                    propertiesCreatedRemoved = True
             else:
                 if hasattr(self.obj, propName):
                     self.obj.removeProperty(propName)
-        return True
+                    propertiesCreatedRemoved = True
+        return propertiesCreatedRemoved
 
 
 class TaskPanel:
@@ -219,16 +219,18 @@ class TaskPanel:
     def accept(self):
         self.getFields()
         [op.accept() for op in self.ops]
-        #if any([op.accept() for op in self.ops]):
-        #    PathLog.track()
-        #    self.obj.touch()
+        if any([op.accept() for op in self.ops]):
+            PathLog.track()
+            #sel = FreeCADGui.Selection.getSelection()
+            #FreeCADGui.Selection.clearSelection()
+            #for o in sel:
+            #    FreeCADGui.Selection.addSelection(o)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         #FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
-        #self.vobj.update()
+        #FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         def updateExpression(name, widget):

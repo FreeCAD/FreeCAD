@@ -66,13 +66,20 @@ class Property(object):
     def typeString(self):
         return "Property"
 
-    def setupProperty(self, obj, name, category):
+    def setupProperty(self, obj, name, category, value):
         if not hasattr(obj, name):
             obj.addProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
+            setattr(obj, name, value)
+            return True
+        return False
 
     def initProperty(self, obj, name):
         pass
+
+
+    def valueFromString(self, string):
+        return string
 
 class PropertyEnumeration(Property):
     def typeString(self):
