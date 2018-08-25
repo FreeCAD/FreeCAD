@@ -85,11 +85,11 @@ ul.icons {
     border-radius: 3px;
     margin: 10px;
     box-shadow: SHADOW 0 0px 6px;
+    word-wrap: break-word;
 }
 .icon h4 {
     margin: 3px 0;
     max-width: 90%;
-    word-wrap: break-word;
 }
 .icon img {
     width: 128px;
