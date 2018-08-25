@@ -25,11 +25,8 @@ __title__="FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import ArchPipe
-from Units import Quantity
-zeroMM = Quantity('0mm')
 
-import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
+import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math,ArchPipe
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -50,6 +47,7 @@ else:
 #
 #  This module provides tools to build Stairs objects.
 
+zeroMM = FreeCAD.Units.Quantity('0mm')
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="Stairs"):
 
