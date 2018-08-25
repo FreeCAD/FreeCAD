@@ -206,6 +206,11 @@ void PropertyItem::appendChild(PropertyItem *item)
     childItems.append(item);
 }
 
+void PropertyItem::insertChild(int index, PropertyItem *child)
+{
+    childItems.insert(index, child);
+}
+
 /*!
  * \brief PropertyItem::removeChildren
  * Deletes the children in the range of [from, to]
