@@ -426,3 +426,10 @@ void PyObjectBase::untrackAttribute(const char* attr)
         PyDict_DelItemString(attrDict, attr);
     }
 }
+
+void PyObjectBase::clearAttributes()
+{
+    if (attrDict) {
+        PyDict_Clear(attrDict);
+    }
+}
