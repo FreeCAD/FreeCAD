@@ -286,6 +286,7 @@ public:
     void setInvalid() { 
         // first bit is not set, i.e. invalid
         StatusBits.reset(Valid);
+        clearAttributes();
         _pcTwinPointer = 0;
     }
 
@@ -320,6 +321,7 @@ private:
     PyObject* getTrackedAttribute(const char* attr);
     void trackAttribute(const char* attr, PyObject* obj);
     void untrackAttribute(const char* attr);
+    void clearAttributes();
 
 protected:
     std::bitset<32> StatusBits;
