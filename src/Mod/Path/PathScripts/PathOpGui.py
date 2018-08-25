@@ -399,36 +399,41 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return 'edges'
         return 'nothing'
 
-    def addBaseGeometrySelection(self, sel):
+    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
+        if len(selection) != 1:
+            if not ignoreErrors:
+                PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+            return False
+        sel = selection[0]
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
-                PathLog.error(translate("PathProject", "Vertexes are not supported"))
+            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Vertexes are not supported"))
                 return False
-            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
-                PathLog.error(translate("PathProject", "Edges are not supported"))
+            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Edges are not supported"))
                 return False
-            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
-                PathLog.error(translate("PathProject", "Faces are not supported"))
+            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
             if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
-                PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
-
-        for sub in sel.SubElementNames:
-            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return True
+
 
     def addBaseGeometry(self, selection):
         PathLog.track(selection)
-        #if len(selection) != 1:
-        #    PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
-        #    return False
-        changed = False
-        for sel in selection:
-            if self.addBaseGeometrySelection(sel):
-                changed = True
-        return changed
+        if self.selectionSupportedAsBaseGeometry(selection, False):
+            sel = selection[0]
+            for sub in sel.SubElementNames:
+                self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+            return True
+        return False
 
     def addBase(self):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
@@ -475,6 +480,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if prop in ['Base']:
             self.setFields(obj)
 
+    def updateSelection(self, obj, sel):
+        if self.selectionSupportedAsBaseGeometry(sel, True):
+            self.form.addBase.setEnabled(True)
+        else:
+            self.form.addBase.setEnabled(False)
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
