@@ -260,9 +260,8 @@ class SetupSheet:
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
         except Exception as exc:
-            PathLog.track(exc)
-            traceback.print_exc(exc)
-            pass
+            PathLog.info("SetupSheet has no support for {}".format(opName))
+            #traceback.print_exc(exc)
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
