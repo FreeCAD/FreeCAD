@@ -543,6 +543,47 @@ bool CmdFemConstraintForce::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintGear);
+
+CmdFemConstraintGear::CmdFemConstraintGear()
+  : Command("FEM_ConstraintGear")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint gear");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
+    sWhatsThis      = "FEM_ConstraintGear";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-gear";
+}
+
+void CmdFemConstraintGear::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+    std::string FeatName = getUniqueObjectName("FemConstraintGear");
+
+    openCommand("Make FEM constraint for gear");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintGear::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
@@ -715,47 +756,6 @@ void CmdFemConstraintPressure::activated(int)
 }
 
 bool CmdFemConstraintPressure::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintGear);
-
-CmdFemConstraintGear::CmdFemConstraintGear()
-  : Command("FEM_ConstraintGear")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint gear");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
-    sWhatsThis      = "FEM_ConstraintGear";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-gear";
-}
-
-void CmdFemConstraintGear::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-    std::string FeatName = getUniqueObjectName("FemConstraintGear");
-
-    openCommand("Make FEM constraint for gear");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintGear::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1653,8 +1653,8 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
-    rcCmdMgr.addCommand(new CmdFemConstraintPressure());
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
+    rcCmdMgr.addCommand(new CmdFemConstraintPressure());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
     rcCmdMgr.addCommand(new CmdFemConstraintTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintHeatflux());
