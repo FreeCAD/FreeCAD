@@ -100,14 +100,19 @@ class PropertyEnumeration(Property):
     def initProperty(self, obj, name):
         setattr(obj, name, self.enums)
 
-class PropertyDistance(Property):
-    def typeString(self):
-        return "Distance"
-
+class PropertyQuantity(Property):
     def displayString(self):
         if self.value is None:
             return Property.displayString(self)
         return self.value.getUserPreferred()[0]
+
+class PropertyDistance(PropertyQuantity):
+    def typeString(self):
+        return "Distance"
+
+class PropertyLength(PropertyQuantity):
+    def typeString(self):
+        return "Length"
 
 class PropertyPercent(Property):
     def typeString(self):
@@ -132,11 +137,14 @@ class OpPrototype(object):
             'App::PropertyDistance': PropertyDistance,
             'App::PropertyEnumeration': PropertyEnumeration,
             'App::PropertyFloat': PropertyFloat,
+            'App::PropertyLength': PropertyLength,
             'App::PropertyLink': Property,
             'App::PropertyLinkSubListGlobal': Property,
             'App::PropertyPercent': PropertyPercent,
             'App::PropertyString': PropertyString,
+            'App::PropertyStringList': Property,
             'App::PropertyVectorDistance': Property,
+            'App::PropertyVectorList': Property,
             'Part::PropertyPartShape': Property,
             }
 
@@ -144,9 +152,12 @@ class OpPrototype(object):
         self.name = name
         self.properties = {}
         self.DoNotSetDefaultValues = True
+        self.Proxy = None
 
     def __setattr__(self, name, val):
-        if name in ['name', 'properties', 'DoNotSetDefaultValues']:
+        if name in ['name', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
+            if name == 'Proxy':
+                val = None # make sure the proxy is never set
             return super(self.__class__, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 

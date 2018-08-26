@@ -120,9 +120,21 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
         obj.RetractHeight = 10
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append("PeckDepth")
+    setup.append("PeckEnabled")
+    setup.append("DwellTime")
+    setup.append("DwellEnabled")
+    setup.append("AddTipLength")
+    setup.append("ReturnLevel")
+    setup.append("RetractHeight")
+    return setup
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
         proxy.findAllHoles(obj)
