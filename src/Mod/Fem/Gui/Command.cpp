@@ -1646,10 +1646,6 @@ void CreateFemCommands(void)
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis()); // Analysis is created in python
     //rcCmdMgr.addCommand(new CmdFemCreateSolver());  // Solver will be extended and created in python
 
-    // mesh
-    rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
-    rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
-
     // constraints
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
@@ -1665,6 +1661,10 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
+
+    // mesh
+    rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
+    rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 
     // vtk post processing
 #ifdef FC_USE_VTK
