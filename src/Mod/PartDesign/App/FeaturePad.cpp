@@ -42,7 +42,8 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Pln.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <BRepLProp_SLProps.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -152,6 +153,12 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.IsNull()) {
+                // This implementation suffers from some problems:
+                // * it explicitly checks for planes only but e.g. a B-spline may work too
+                // * The extracted surface passed to GeomAPI_ProjectPointOnSurf may lack of
+                //   its placement and thus computes a wrong result
+                // * the direction computed by base and projection point must not be transformed
+#if 0
                 // Workaround because BRepFeat_MakePrism requires the base face located on a solid to be able to extrude up to a face
                 // Handle special case of extruding up to a face or plane parallel to the base face
                 BRepAdaptor_Surface adapt(upToFace);
@@ -176,6 +183,34 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 gp_Pnt prjP = prj.NearestPoint();
                 dir = gp_Dir(gp_Vec(basePoint, prjP));
                 dir.Transform(invObjLoc.Transformation());
+#else
+                TopLoc_Location upToFaceLoc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(upToFace, upToFaceLoc);
+                GeomLib_IsPlanarSurface checkSurface(surf);
+                if (surf.IsNull() || !checkSurface.IsPlanar())
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face or plane is only possible if the sketch is located on a face");
+
+                gp_Pln upToPlane = checkSurface.Plan().Transformed(upToFaceLoc);
+                gp_Dir planeNorm = upToPlane.Axis().Direction();
+                gp_Pnt planeBase = upToPlane.Location();
+                double angle = dir.Angle(planeNorm);
+                if (angle > Precision::Confusion())
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch plane is parallel to it");
+
+                // Project basepoint of sketch onto the UpToFace to determine distance and direction
+                gp_Pnt basePoint(SketchPos.getPosition().x, SketchPos.getPosition().y, SketchPos.getPosition().z);
+                Standard_Real pn = planeBase.XYZ().Dot(planeNorm.XYZ());
+                Standard_Real qn = basePoint.XYZ().Dot(planeNorm.XYZ());
+                gp_Pnt projPoint = basePoint.Translated(planeNorm.XYZ().Multiplied(pn-qn));
+
+                // Distance
+                double length = projPoint.Distance(basePoint) + Offset.getValue();
+                if (length < Precision::Confusion())
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed because of zero height");
+
+                // Direction (the distance is always positive)
+                dir = gp_Dir(gp_Vec(basePoint, projPoint));
+#endif
 
                 generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
             } else {
