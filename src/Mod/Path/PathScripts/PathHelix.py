@@ -192,9 +192,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StartSide = "Inside"
         obj.StepOver = 100
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append("Direction")
+    setup.append("StartSide")
+    setup.append("StepOver")
+    return setup
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Helix operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectHelix(obj, name)
     if obj.Proxy:
         proxy.findAllHoles(obj)
