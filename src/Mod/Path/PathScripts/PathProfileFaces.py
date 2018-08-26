@@ -138,8 +138,16 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.processCircles = False
         obj.processPerimeter = True
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append("processHoles")
+    setup.append("processPerimeter")
+    setup.append("processCircles")
+    return PathProfileBase.SetupProperties() + setup
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectProfile(obj, name)
     return obj
