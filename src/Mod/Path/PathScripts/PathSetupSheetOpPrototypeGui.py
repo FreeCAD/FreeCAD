@@ -42,7 +42,7 @@ __doc__ = "Task panel editor for a SetupSheet"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -70,14 +70,81 @@ class _PropertyEnumEditor(_PropertyEditor):
         self.prop.setValue(widget.currentText())
 
 
+class _PropertyBoolEditor(_PropertyEditor):
+    def widget(self, parent):
+        return QtGui.QComboBox(parent)
+
+    def setEditorData(self, widget):
+        widget.clear()
+        widget.addItems(['false', 'true'])
+        if not self.prop.getValue() is None:
+            index = 1 if self.prop.getValue() else 0
+            widget.setCurrentIndex(index)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.currentText() == 'true')
+
+class _PropertyStringEditor(_PropertyEditor):
+
+    def widget(self, parent):
+        return QtGui.QLineEdit(parent)
+
+    def setEditorData(self, widget):
+        text = '' if self.prop.getValue() is None else self.prop.getValue()
+        widget.setText(text)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.text())
+
+class _PropertyDistanceEditor(_PropertyEditor):
+    def widget(self, parent):
+        return QtGui.QLineEdit(parent)
+
+    def setEditorData(self, widget):
+        quantity = self.prop.getValue()
+        if quantity is None:
+            quantity = FreeCAD.Units.Quantity(0, FreeCAD.Units.Length)
+        widget.setText(quantity.getUserPreferred()[0])
+
+    def setModelData(self, widget):
+        self.prop.setValue(FreeCAD.Units.Quantity(widget.text()))
+
+class _PropertyPercentEditor(_PropertyEditor):
+    def widget(self, parent):
+        return QtGui.QSpinBox(parent)
+
+    def setEditorData(self, widget):
+        widget.setRange(0, 100)
+        value = self.prop.getValue()
+        if value is None:
+            value = 0
+        widget.setValue(value)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.value())
+
+class _PropertyFloatEditor(_PropertyEditor):
+
+    def widget(self, parent):
+        return QtGui.QDoubleSpinBox(parent)
+
+    def setEditorData(self, widget):
+        value = self.prop.getValue()
+        if value is None:
+            value = 0.0
+        widget.setValue(value)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.value())
+
 _EditorFactory = {
         PathSetupSheetOpPrototype.Property: None,
-        PathSetupSheetOpPrototype.PropertyBool: None,
-        PathSetupSheetOpPrototype.PropertyDistance: None,
+        PathSetupSheetOpPrototype.PropertyBool: _PropertyBoolEditor,
+        PathSetupSheetOpPrototype.PropertyDistance: _PropertyDistanceEditor,
         PathSetupSheetOpPrototype.PropertyEnumeration: _PropertyEnumEditor,
-        PathSetupSheetOpPrototype.PropertyFloat: None,
-        PathSetupSheetOpPrototype.PropertyPercent: None,
-        PathSetupSheetOpPrototype.PropertyString: None,
+        PathSetupSheetOpPrototype.PropertyFloat: _PropertyFloatEditor,
+        PathSetupSheetOpPrototype.PropertyPercent: _PropertyPercentEditor,
+        PathSetupSheetOpPrototype.PropertyString: _PropertyStringEditor,
         }
 
 X = []

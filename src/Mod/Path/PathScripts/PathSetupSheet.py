@@ -38,7 +38,7 @@ __doc__ = "A container for all default values and job specific configuration val
 
 _RegisteredOps = {}
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -195,7 +195,11 @@ class SetupSheet:
                 for propName in op.properties():
                     prop = OpPropertyName(opName, propName)
                     if hasattr(self.obj, prop):
-                        settings[propName] = getattr(self.obj, prop)
+                        attr = getattr(self.obj, prop)
+                        if hasattr(attr, 'UserString'):
+                            settings[propName] = attr.UserString
+                        else:
+                            settings[propName] = attr
                 attrs[opName] = settings
 
         return attrs
