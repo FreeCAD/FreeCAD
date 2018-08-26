@@ -69,6 +69,9 @@
 using namespace std;
 
 
+//================================================================================================
+//================================================================================================
+// helpers
 bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
 {
     Fem::FemAnalysis* ActiveAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
@@ -99,6 +102,10 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
         amesh.ViewObject.Visibility = False\n";
 }
 
+
+//================================================================================================
+//================================================================================================
+// commands Part, Analysis, Solver
 
 //================================================================================================
 DEF_STD_CMD_A(CmdFemAddPart);
@@ -274,7 +281,10 @@ bool CmdFemCreateSolver::isActive(void)
 */
 
 //================================================================================================
-// Constraints
+//================================================================================================
+// commands Constraints
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintBearing);
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
@@ -884,6 +894,10 @@ bool CmdFemConstraintInitialTemperature::isActive(void)
 
 
 //================================================================================================
+//================================================================================================
+// commands mesh
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemDefineNodesSet);
 
 void DefineNodesCallback(void * ud, SoEventCallback * n)
@@ -1074,7 +1088,13 @@ bool CmdFemCreateNodesSet::isActive(void)
 
 
 //================================================================================================
+//================================================================================================
+// commands vtk post processing
+
 #ifdef FC_USE_VTK
+
+//================================================================================================
+// helper vtk post processing
 
 void setupFilter(Gui::Command* cmd, std::string Name) {
 
@@ -1104,8 +1124,6 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 };
 
 
-//================================================================================================
-// helper
 std::string Plot() {
 
 return "t=t_coords[len(t_coords)-1]\n\
@@ -1622,11 +1640,17 @@ bool CmdFemPostPipelineFromResult::isActive(void)
 void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    // part, analysis, solver
     rcCmdMgr.addCommand(new CmdFemAddPart());
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis()); // Analysis is created in python
     //rcCmdMgr.addCommand(new CmdFemCreateSolver());  // Solver will be extended and created in python
+
+    // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
+
+    // constraints
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
@@ -1641,6 +1665,8 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
+
+    // vtk post processing
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
