@@ -99,7 +99,8 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
         amesh.ViewObject.Visibility = False\n";
 }
 
-//=====================================================================================
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemCreateAnalysis);
 
 CmdFemCreateAnalysis::CmdFemCreateAnalysis()
@@ -160,8 +161,8 @@ bool CmdFemCreateAnalysis::isActive(void)
     return !FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemAddPart);
 
 CmdFemAddPart::CmdFemAddPart()
@@ -223,8 +224,8 @@ bool CmdFemAddPart::isActive(void)
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemCreateSolver);
 
 CmdFemCreateSolver::CmdFemCreateSolver()
@@ -267,9 +268,8 @@ bool CmdFemCreateSolver::isActive(void)
     return hasActiveDocument();
 }
 
-//=====================================================================================
 
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintBearing);
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
@@ -309,8 +309,8 @@ bool CmdFemConstraintBearing::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintFixed);
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
@@ -351,8 +351,8 @@ bool CmdFemConstraintFixed::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
@@ -393,7 +393,8 @@ bool CmdFemConstraintPlaneRotation::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintContact);
 
 CmdFemConstraintContact::CmdFemConstraintContact()
@@ -437,7 +438,8 @@ bool CmdFemConstraintContact::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintTransform);
 
 CmdFemConstraintTransform::CmdFemConstraintTransform()
@@ -481,7 +483,9 @@ bool CmdFemConstraintTransform::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
-//=====================================================================================
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintHeatflux);
 
 CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
@@ -525,7 +529,8 @@ bool CmdFemConstraintHeatflux::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintForce);
 
 CmdFemConstraintForce::CmdFemConstraintForce()
@@ -569,9 +574,7 @@ bool CmdFemConstraintForce::isActive(void)
 }
 
 
-
-//=====================================================================================
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
 
 CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
@@ -614,8 +617,7 @@ bool CmdFemConstraintFluidBoundary::isActive(void)
 }
 
 
-//=====================================================================================
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPressure);
 
 CmdFemConstraintPressure::CmdFemConstraintPressure()
@@ -659,8 +661,8 @@ bool CmdFemConstraintPressure::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintGear);
 
 CmdFemConstraintGear::CmdFemConstraintGear()
@@ -700,8 +702,8 @@ bool CmdFemConstraintGear::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPulley);
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
@@ -745,8 +747,9 @@ bool CmdFemConstraintPulley::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
-//=====================================================================================
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintDisplacement);
 
 CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
@@ -788,8 +791,8 @@ bool CmdFemConstraintDisplacement::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintTemperature);
 
 CmdFemConstraintTemperature::CmdFemConstraintTemperature()
@@ -831,8 +834,8 @@ bool CmdFemConstraintTemperature::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-//=====================================================================================
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintInitialTemperature);
 
 CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
@@ -873,12 +876,10 @@ bool CmdFemConstraintInitialTemperature::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
-// #####################################################################################################
 
 
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemDefineNodesSet);
-
 
 void DefineNodesCallback(void * ud, SoEventCallback * n)
 {
@@ -1019,8 +1020,7 @@ bool CmdFemDefineNodesSet::isActive(void)
 }
 
 
-// #####################################################################################################
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemCreateNodesSet);
 
 CmdFemCreateNodesSet::CmdFemCreateNodesSet()
@@ -1068,8 +1068,7 @@ bool CmdFemCreateNodesSet::isActive(void)
 }
 
 
-// #####################################################################################################
-
+//================================================================================================
 #ifdef FC_USE_VTK
 
 void setupFilter(Gui::Command* cmd, std::string Name) {
@@ -1099,6 +1098,9 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
 };
 
+
+//================================================================================================
+// helper
 std::string Plot() {
 
 return "t=t_coords[len(t_coords)-1]\n\
@@ -1156,6 +1158,8 @@ plt.grid()\n\
 plt.show()\n";
 }
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
 
 CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
@@ -1204,6 +1208,8 @@ bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostCreateDataAtPointFilter);
 
 CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
@@ -1230,6 +1236,8 @@ bool CmdFemPostCreateDataAtPointFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
 
 CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
@@ -1275,6 +1283,8 @@ bool CmdFemPostCreateLinearizedStressesFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostCreateScalarClipFilter);
 
 CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
@@ -1300,7 +1310,7 @@ bool CmdFemPostCreateScalarClipFilter::isActive(void)
 }
 
 
-
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
 
 CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
@@ -1325,6 +1335,8 @@ bool CmdFemPostWarpVectorFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostCutFilter);
 
 CmdFemPostCutFilter::CmdFemPostCutFilter()
@@ -1349,9 +1361,8 @@ bool CmdFemPostCutFilter::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
 
-
+//================================================================================================
 DEF_STD_CMD_ACL(CmdFemPostFunctions);
 
 CmdFemPostFunctions::CmdFemPostFunctions()
@@ -1491,6 +1502,7 @@ bool CmdFemPostFunctions::isActive(void)
 }
 
 
+//================================================================================================
 DEF_STD_CMD_AC(CmdFemPostApllyChanges);
 
 CmdFemPostApllyChanges::CmdFemPostApllyChanges()
@@ -1535,6 +1547,7 @@ Gui::Action * CmdFemPostApllyChanges::createAction(void)
 }
 
 
+//================================================================================================
 DEF_STD_CMD_A(CmdFemPostPipelineFromResult);
 
 CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
@@ -1598,9 +1611,9 @@ bool CmdFemPostPipelineFromResult::isActive(void)
 
 #endif
 
-//--------------------------------------------------------------------------------------
 
-
+//================================================================================================
+//================================================================================================
 void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
