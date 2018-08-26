@@ -43,7 +43,7 @@ __doc__ = "Task panel editor for a SetupSheet"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:

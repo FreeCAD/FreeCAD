@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTableView" name="table">
+     <property name="editTriggers">
+      <set>QAbstractItemView::AllEditTriggers</set>
+     </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>true</bool>
      </attribute>

@@ -78,6 +78,8 @@ class Property(object):
     def initProperty(self, obj, name):
         pass
 
+    def setValueFromString(self, string):
+        self.setValue(self.valueFromString(string))
 
     def valueFromString(self, string):
         return string
@@ -101,6 +103,11 @@ class PropertyEnumeration(Property):
 class PropertyDistance(Property):
     def typeString(self):
         return "Distance"
+
+    def displayString(self):
+        if self.value is None:
+            return Property.displayString(self)
+        return self.value.getUserPreferred()[0]
 
 class PropertyPercent(Property):
     def typeString(self):
