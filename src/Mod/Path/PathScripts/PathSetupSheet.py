@@ -249,7 +249,7 @@ class SetupSheet:
                 if hasattr(self.obj, prop):
                     ops.append(name)
                     break
-        return ops
+        return list(sorted(ops))
 
     def setOperationProperties(self, obj, opName):
         PathLog.track(obj.Label, opName)

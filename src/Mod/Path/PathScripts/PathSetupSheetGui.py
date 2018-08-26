@@ -207,7 +207,7 @@ class TaskPanel:
         self.obj = vobj.Object
         PathLog.track(self.obj.Label)
         self.globalForm = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
-        self.ops = [OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)]
+        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name)
         self.form = [self.globalForm] + [op.form for op in self.ops]
         FreeCAD.ActiveDocument.openTransaction(translate("Path_SetupSheet", "Edit SetupSheet"))
 
