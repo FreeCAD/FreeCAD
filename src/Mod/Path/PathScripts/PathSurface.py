@@ -81,7 +81,8 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
         obj.SampleInterval = (0.04, 0.01, 1.0, 0.01)
 
-        self.setEditorProperties(obj)
+        if not hasattr(obj, 'DoNotSetDefaultValues'):
+            self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
         if obj.Algorithm == 'OCL Dropcutter':
