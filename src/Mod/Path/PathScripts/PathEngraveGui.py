@@ -133,6 +133,7 @@ Command = PathOpGui.SetupOperation('Engrave',
         TaskPanelOpPage,
         'Path-Engrave',
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
-        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"))
+        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
+        PathEngrave.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathEngraveGui... done\n")

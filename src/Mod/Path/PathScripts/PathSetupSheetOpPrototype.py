@@ -122,6 +122,10 @@ class PropertyFloat(Property):
     def typeString(self):
         return "Float"
 
+class PropertyInteger(Property):
+    def typeString(self):
+        return "Integer"
+
 class PropertyBool(Property):
     def typeString(self):
         return "Bool"
@@ -137,8 +141,10 @@ class OpPrototype(object):
             'App::PropertyDistance': PropertyDistance,
             'App::PropertyEnumeration': PropertyEnumeration,
             'App::PropertyFloat': PropertyFloat,
+            'App::PropertyInteger': PropertyInteger,
             'App::PropertyLength': PropertyLength,
             'App::PropertyLink': Property,
+            'App::PropertyLinkList': Property,
             'App::PropertyLinkSubListGlobal': Property,
             'App::PropertyPercent': PropertyPercent,
             'App::PropertyString': PropertyString,
@@ -149,13 +155,13 @@ class OpPrototype(object):
             }
 
     def __init__(self, name):
-        self.name = name
+        self.Label = name
         self.properties = {}
         self.DoNotSetDefaultValues = True
         self.Proxy = None
 
     def __setattr__(self, name, val):
-        if name in ['name', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
+        if name in ['Label', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
             if name == 'Proxy':
                 val = None # make sure the proxy is never set
             return super(self.__class__, self).__setattr__(name, val)
