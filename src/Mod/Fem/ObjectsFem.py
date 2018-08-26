@@ -244,7 +244,6 @@ def makeMaterialFluid(doc, name="FluidMaterial"):
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
-    # doc.recompute()
     return obj
 
 
@@ -269,7 +268,6 @@ def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
-    # doc.recompute()
     return obj
 
 
