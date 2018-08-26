@@ -139,9 +139,12 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             if len(obj.Base) >= 1:
                 obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
 
+def SetupProperties():
+    return PathPocketBase.SetupProperties() + [ "BoundaryShape" ]
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectFace(obj, name)
     return obj
