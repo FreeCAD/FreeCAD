@@ -759,52 +759,6 @@ bool CmdFemConstraintPressure::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTransform);
-
-CmdFemConstraintTransform::CmdFemConstraintTransform()
-  : Command("FEM_ConstraintTransform")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint transform");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
-    sWhatsThis      = "FEM_ConstraintTransform";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-transform";
-}
-
-void CmdFemConstraintTransform::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FemConstraintTransform");
-
-    openCommand("Make FEM constraint transform on face");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.X_rot = 0.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Y_rot = 0.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Z_rot = 0.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                             Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintTransform::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPulley);
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
@@ -845,6 +799,52 @@ void CmdFemConstraintPulley::activated(int)
 }
 
 bool CmdFemConstraintPulley::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintTransform);
+
+CmdFemConstraintTransform::CmdFemConstraintTransform()
+  : Command("FEM_ConstraintTransform")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint transform");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
+    sWhatsThis      = "FEM_ConstraintTransform";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-transform";
+}
+
+void CmdFemConstraintTransform::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintTransform");
+
+    openCommand("Make FEM constraint transform on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.X_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Y_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Z_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintTransform::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
