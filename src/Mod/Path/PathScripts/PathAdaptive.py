@@ -132,8 +132,8 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     passStartDepth=obj.StartDepth.Value
     if stepDown<0.1 : stepDown=0.1
     length = 2*math.pi * helixRadius
-    if obj.HelixAngle<1: obj.HelixAngle=1
-    helixAngleRad = math.pi * obj.HelixAngle/180.0
+    if float(obj.HelixAngle)<1: obj.HelixAngle=1
+    helixAngleRad = math.pi * float(obj.HelixAngle)/180.0
     depthPerOneCircle=length * math.tan(helixAngleRad)
     stepUp =  obj.LiftDistance.Value
     if stepUp<0:
