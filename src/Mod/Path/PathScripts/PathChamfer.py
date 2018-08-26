@@ -119,9 +119,16 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append('Width')
+    setup.append('ExtraDepth')
+    return setup
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Chamfer operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectChamfer(obj, name)
     return obj
 

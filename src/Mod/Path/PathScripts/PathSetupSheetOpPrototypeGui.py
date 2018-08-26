@@ -110,11 +110,26 @@ class _PropertyLengthEditor(_PropertyEditor):
         self.prop.setValue(FreeCAD.Units.Quantity(widget.text()))
 
 class _PropertyPercentEditor(_PropertyEditor):
+
     def widget(self, parent):
         return QtGui.QSpinBox(parent)
 
     def setEditorData(self, widget):
         widget.setRange(0, 100)
+        value = self.prop.getValue()
+        if value is None:
+            value = 0
+        widget.setValue(value)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.value())
+
+class _PropertyIntegerEditor(_PropertyEditor):
+
+    def widget(self, parent):
+        return QtGui.QSpinBox(parent)
+
+    def setEditorData(self, widget):
         value = self.prop.getValue()
         if value is None:
             value = 0
@@ -143,6 +158,7 @@ _EditorFactory = {
         PathSetupSheetOpPrototype.PropertyDistance: _PropertyLengthEditor,
         PathSetupSheetOpPrototype.PropertyEnumeration: _PropertyEnumEditor,
         PathSetupSheetOpPrototype.PropertyFloat: _PropertyFloatEditor,
+        PathSetupSheetOpPrototype.PropertyInteger: _PropertyIntegerEditor,
         PathSetupSheetOpPrototype.PropertyLength: _PropertyLengthEditor,
         PathSetupSheetOpPrototype.PropertyPercent: _PropertyPercentEditor,
         PathSetupSheetOpPrototype.PropertyString: _PropertyStringEditor,

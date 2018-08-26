@@ -150,9 +150,13 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
 
-def Create(name):
+def SetupProperties():
+    return [ "StartVertex" ]
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectEngrave(obj, name)
     return obj
 
