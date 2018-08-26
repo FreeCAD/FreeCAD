@@ -93,8 +93,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 
-def Create(name):
+def SetupProperties():
+    return PathPocketBase.SetupProperties()
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectPocket(obj, name)
     return obj

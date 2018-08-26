@@ -111,7 +111,7 @@ class ObjectContour(PathProfileBase.ObjectProfile):
 def SetupProperties():
     return [p for p in PathProfileBase.SetupProperties() if p != 'Side']
 
-def Create(name, obj=None):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Contour operation.'''
     if obj is None:
         obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)

@@ -47,7 +47,8 @@ Command = PathOpGui.SetupOperation('MillFace',
         TaskPanelOpPage,
         'Path-Face',
         QtCore.QT_TRANSLATE_NOOP("PathFace", "Face"),
-        QtCore.QT_TRANSLATE_NOOP("PathFace", "Create a Facing Operation from a model or face"))
+        QtCore.QT_TRANSLATE_NOOP("PathFace", "Create a Facing Operation from a model or face"),
+        PathMillFace.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
 
