@@ -162,6 +162,8 @@ class OpTaskPanel:
             self.model.item(i, 0).setCheckable(True)
             self.model.item(i, 0).setText('')
             self.model.item(i, 1).setEditable(False)
+            self.model.item(i, 1).setToolTip(prop.info)
+            self.model.item(i, 2).setToolTip(prop.info)
 
             if isset:
                 self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
