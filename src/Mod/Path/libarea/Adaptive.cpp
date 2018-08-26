@@ -34,6 +34,21 @@ namespace AdaptivePath {
 	  return false;
 	}
 
+	int getPathNestingLevel(const Path & path, const Paths & paths) {
+		int nesting = 0;
+		for(const auto & other : paths) {
+			if(path.size() >0 && PointInPolygon(path.front(),other)!=0) nesting++;
+		}
+		return nesting;
+	}
+	void apendDirectChildPaths(Paths & outPaths, const Path &path, const Paths &paths ) {
+		int nesting = getPathNestingLevel(path,paths);
+		for(const auto & other : paths) {
+			if(path.size()>0 && other.size()>0 && PointInPolygon(other.front(),path)!=0) {
+				if(getPathNestingLevel(other,paths)==nesting+1) outPaths.push_back(other);
+			}
+		}
+	}
 	/*********************************************
 	 * Utils
 	 ***********************************************/
@@ -847,24 +862,16 @@ namespace AdaptivePath {
 		if(opType==OperationType::otClearing) {
 				clipof.Clear();
 				clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-				PolyTree initialTree;
-				clipof.Execute(initialTree,-toolRadiusScaled-finishPassOffsetScaled);
-				PolyNode *current = initialTree.GetFirst();
-				while(current!=0) {
-					int nesting = 0;
-					PolyNode *parent = current->Parent;
-					while(parent->Parent) {
-						nesting++;
-						parent=parent->Parent;
-					}
+				Paths paths;
+				clipof.Execute(paths,-toolRadiusScaled-finishPassOffsetScaled);
+				for(const auto & current : paths) {
+					int nesting = getPathNestingLevel(current, paths);
 					//cout<< " nesting:" << nesting << " limit:" << polyTreeNestingLimit <<  endl;
 					if(nesting%2!=0 && (polyTreeNestingLimit==0 || nesting<=polyTreeNestingLimit)) {
-
 						Paths toolBoundPaths;
-						toolBoundPaths.push_back(current->Contour);
+						toolBoundPaths.push_back(current);
 						if(polyTreeNestingLimit != nesting) {
-							for(size_t i=0;i<(size_t)current->ChildCount();i++)
-								toolBoundPaths.push_back(current->Childs[i]->Contour);
+							apendDirectChildPaths(toolBoundPaths,current,paths);
 						}
 
 						// calc bounding paths - i.e. area that must be cleared inside
@@ -875,31 +882,19 @@ namespace AdaptivePath {
 						clipof.Execute(boundPaths,toolRadiusScaled+finishPassOffsetScaled);
 						ProcessPolyNode(boundPaths,toolBoundPaths);
 					}
-					current = current->GetNext();
 				}
 		}
 
 		if(opType==OperationType::otProfilingInside || opType==OperationType::otProfilingOutside) {
 				double offset = opType==OperationType::otProfilingInside  ? -2*(helixRampRadiusScaled+toolRadiusScaled)-RESOLUTION_FACTOR : 2*(helixRampRadiusScaled+toolRadiusScaled) + RESOLUTION_FACTOR;
-				clipof.Clear();
-				clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-				PolyTree initialTree;
-				clipof.Execute(initialTree,0);
-
-				PolyNode *current = initialTree.GetFirst();
-				while(current!=0) {
-					int nesting = 0;
-					PolyNode *parent = current->Parent;
-					while(parent->Parent) {
-						nesting++;
-						parent=parent->Parent;
-					}
+				for(const auto & current : inputPaths) {
+					int nesting = getPathNestingLevel(current,inputPaths);
 					//cout<< " nesting:" << nesting << " limit:" << polyTreeNestingLimit << " processHoles:" << processHoles << endl;
 					if(nesting%2!=0 && (polyTreeNestingLimit==0 || nesting<=polyTreeNestingLimit)) {
 						Paths profilePaths;
-						profilePaths.push_back(current->Contour);
+						profilePaths.push_back(current);
 						if(polyTreeNestingLimit != nesting) {
-							for(size_t i=0;i<(size_t)current->ChildCount();i++) profilePaths.push_back(current->Childs[i]->Contour);
+							apendDirectChildPaths(profilePaths,current,inputPaths);
 						}
 						for(size_t i=0;i<profilePaths.size();i++) {
 									double efOffset= i==0 ? offset : -offset;
@@ -926,8 +921,6 @@ namespace AdaptivePath {
 									ProcessPolyNode(boundPaths,toolBoundPaths);
 						}
 					}
-
-				current = current->GetNext();
 				}
 		}
 		//cout<<" Adaptive2d::Execute finish" << endl;
