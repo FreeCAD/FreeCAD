@@ -805,6 +805,49 @@ bool CmdFemConstraintPulley::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintTemperature);
+
+CmdFemConstraintTemperature::CmdFemConstraintTemperature()
+  : Command("FEM_ConstraintTemperature")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint temperature");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
+    sWhatsThis      = "FEM_ConstraintTemperature";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-temperature";
+}
+
+void CmdFemConstraintTemperature::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintTemperature");
+
+    openCommand("Make FEM constraint temperature on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintTemperature::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintTransform);
 
 CmdFemConstraintTransform::CmdFemConstraintTransform()
@@ -845,49 +888,6 @@ void CmdFemConstraintTransform::activated(int)
 }
 
 bool CmdFemConstraintTransform::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTemperature);
-
-CmdFemConstraintTemperature::CmdFemConstraintTemperature()
-  : Command("FEM_ConstraintTemperature")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint temperature");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
-    sWhatsThis      = "FEM_ConstraintTemperature";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-temperature";
-}
-
-void CmdFemConstraintTemperature::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FemConstraintTemperature");
-
-    openCommand("Make FEM constraint temperature on face");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                             Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintTemperature::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
