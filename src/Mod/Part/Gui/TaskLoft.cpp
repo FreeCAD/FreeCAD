@@ -26,7 +26,12 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QTextStream>
+# include <Precision.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopoDS_Iterator.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 #endif
 
 #include "ui_TaskLoft.h"
@@ -101,18 +106,35 @@ void LoftWidget::findShapes()
         TopoDS_Shape shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
 
-        // also allow compounds with a single face, wire, edge or vertex
+        // also allow compounds with a single face, wire or vertex or
+        // if there are only edges building one wire
         if (shape.ShapeType() == TopAbs_COMPOUND) {
+            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+
             TopoDS_Iterator it(shape);
             int numChilds=0;
             TopoDS_Shape child;
             for (; it.More(); it.Next(), numChilds++) {
-                if (!it.Value().IsNull())
+                if (!it.Value().IsNull()) {
                     child = it.Value();
+                    if (child.ShapeType() == TopAbs_EDGE) {
+                        hEdges->Append(child);
+                    }
+                }
             }
 
-            if (numChilds == 1)
+            // a single child
+            if (numChilds == 1) {
                 shape = child;
+            }
+            // or all children are edges
+            else if (hEdges->Length() == numChilds) {
+                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
+                    Precision::Confusion(), Standard_False, hWires);
+                if (hWires->Length() == 1)
+                    shape = hWires->Value(1);
+            }
         }
 
         if (shape.ShapeType() == TopAbs_FACE ||

@@ -310,12 +310,31 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
             // Extract first element of a compound
             if (shape.ShapeType() == TopAbs_COMPOUND) {
+                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+                Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+
                 TopoDS_Iterator it(shape);
-                for (; it.More(); it.Next()) {
+                int numChilds=0;
+                TopoDS_Shape child;
+                for (; it.More(); it.Next(), numChilds++) {
                     if (!it.Value().IsNull()) {
-                        shape = it.Value();
-                        break;
+                        child = it.Value();
+                        if (child.ShapeType() == TopAbs_EDGE) {
+                            hEdges->Append(child);
+                        }
                     }
+                }
+
+                // a single child
+                if (numChilds == 1) {
+                    shape = child;
+                }
+                // or all children are edges
+                else if (hEdges->Length() == numChilds) {
+                    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
+                        Precision::Confusion(), Standard_False, hWires);
+                    if (hWires->Length() == 1)
+                        shape = hWires->Value(1);
                 }
             }
             if (shape.ShapeType() == TopAbs_FACE) {
