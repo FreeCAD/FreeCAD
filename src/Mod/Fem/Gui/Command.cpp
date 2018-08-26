@@ -326,6 +326,51 @@ bool CmdFemConstraintBearing::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintContact);
+
+CmdFemConstraintContact::CmdFemConstraintContact()
+  : Command("FEM_ConstraintContact")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint contact");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
+    sWhatsThis      = "FEM_ConstraintContact";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-contact";
+}
+
+void CmdFemConstraintContact::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintContact");
+
+    openCommand("Make FEM constraint contact on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Slope = 1000000.00",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Friction = 0.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintContact::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintFixed);
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
@@ -404,51 +449,6 @@ void CmdFemConstraintPlaneRotation::activated(int)
 }
 
 bool CmdFemConstraintPlaneRotation::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintContact);
-
-CmdFemConstraintContact::CmdFemConstraintContact()
-  : Command("FEM_ConstraintContact")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint contact");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
-    sWhatsThis      = "FEM_ConstraintContact";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-contact";
-}
-
-void CmdFemConstraintContact::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FemConstraintContact");
-
-    openCommand("Make FEM constraint contact on face");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Slope = 1000000.00",FeatName.c_str()); //OvG: set default not equal to 0
-    doCommand(Doc,"App.activeDocument().%s.Friction = 0.0",FeatName.c_str()); //OvG: set default not equal to 0
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                             Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintContact::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1648,6 +1648,7 @@ void CreateFemCommands(void)
 
     // constraints
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
+    rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
     rcCmdMgr.addCommand(new CmdFemConstraintPressure());
@@ -1658,7 +1659,6 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintHeatflux());
     rcCmdMgr.addCommand(new CmdFemConstraintInitialTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
-    rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
 
