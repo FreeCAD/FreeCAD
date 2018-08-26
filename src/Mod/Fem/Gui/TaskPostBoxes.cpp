@@ -354,7 +354,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget 
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 
     // get Tranparency from ViewProvider
-    int trans = getTypedView<ViewProviderFemPostObject>()->Transperency.getValue();
+    int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
     Base::Console().Log("Transparency %i: \n", trans);
     // sync the trancparency slider
     ui->Transparency->setValue(trans);
@@ -385,7 +385,7 @@ void TaskPostDisplay::on_VectorMode_activated(int i) {
 
 void TaskPostDisplay::on_Transparency_valueChanged(int i) {
 
-    getTypedView<ViewProviderFemPostObject>()->Transperency.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
 }
 
 void TaskPostDisplay::applyPythonCode() {
