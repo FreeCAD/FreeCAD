@@ -456,6 +456,49 @@ bool CmdFemConstraintFixed::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
+
+CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
+  : Command("FEM_ConstraintFluidBoundary")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Fluid boundary condition");
+    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
+    sWhatsThis      = "FEM_ConstraintFluidBoundary";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-fluid-boundary";
+}
+
+void CmdFemConstraintFluidBoundary::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FluidBoundary");
+
+    openCommand("Create fluid boundary condition");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    //BoundaryValue is already the default value, zero is acceptable
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintFluidBoundary::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
@@ -627,49 +670,6 @@ void CmdFemConstraintForce::activated(int)
 }
 
 bool CmdFemConstraintForce::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
-
-CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
-  : Command("FEM_ConstraintFluidBoundary")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Fluid boundary condition");
-    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
-    sWhatsThis      = "FEM_ConstraintFluidBoundary";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-fluid-boundary";
-}
-
-void CmdFemConstraintFluidBoundary::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FluidBoundary");
-
-    openCommand("Create fluid boundary condition");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    //BoundaryValue is already the default value, zero is acceptable
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                             Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintFluidBoundary::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1651,6 +1651,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
+    rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
     rcCmdMgr.addCommand(new CmdFemConstraintPressure());
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
@@ -1659,7 +1660,6 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintHeatflux());
     rcCmdMgr.addCommand(new CmdFemConstraintInitialTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
-    rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
 
     // mesh
