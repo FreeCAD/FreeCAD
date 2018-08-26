@@ -499,6 +499,50 @@ bool CmdFemConstraintFluidBoundary::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintForce);
+
+CmdFemConstraintForce::CmdFemConstraintForce()
+  : Command("FEM_ConstraintForce")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint force");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
+    sWhatsThis      = "FEM_ConstraintForce";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-force";
+}
+
+void CmdFemConstraintForce::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintForce");
+
+    openCommand("Make FEM constraint force on geometry");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Force = 1.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintForce::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
@@ -626,50 +670,6 @@ void CmdFemConstraintHeatflux::activated(int)
 }
 
 bool CmdFemConstraintHeatflux::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintForce);
-
-CmdFemConstraintForce::CmdFemConstraintForce()
-  : Command("FEM_ConstraintForce")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint force");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
-    sWhatsThis      = "FEM_ConstraintForce";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-force";
-}
-
-void CmdFemConstraintForce::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FemConstraintForce");
-
-    openCommand("Make FEM constraint force on geometry");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Force = 1.0",FeatName.c_str()); //OvG: set default not equal to 0
-    doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintForce::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
