@@ -108,9 +108,13 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         obj.OpStartDepth = obj.OpStockZMax
         obj.OpFinalDepth = obj.OpStockZMin
 
+def SetupProperties():
+    return [p for p in PathProfileBase.SetupProperties() if p != 'Side']
 
-def Create(name):
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Contour operation.'''
-    obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectContour(obj, name)
     return obj
+

@@ -145,3 +145,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.JoinType = "Round"
         obj.MiterLimit = 0.1
 
+def SetupProperties():
+    setup = []
+    setup.append('Side')
+    setup.append('OffsetExtra')
+    setup.append('Direction')
+    setup.append('UseComp')
+    setup.append('JoinType')
+    setup.append('MiterLimit')
+    return setup

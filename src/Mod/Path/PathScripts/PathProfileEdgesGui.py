@@ -47,6 +47,7 @@ Command = PathOpGui.SetupOperation('Profile Edges',
         TaskPanelOpPage,
         'Path-Profile-Edges',
         QtCore.QT_TRANSLATE_NOOP("PathProfile", "Edge Profile"),
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on edges"))
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on edges"),
+        PathProfileEdges.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileEdgesGui... done\n")
