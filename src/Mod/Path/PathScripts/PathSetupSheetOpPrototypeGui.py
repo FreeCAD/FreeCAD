@@ -96,7 +96,7 @@ class _PropertyStringEditor(_PropertyEditor):
     def setModelData(self, widget):
         self.prop.setValue(widget.text())
 
-class _PropertyDistanceEditor(_PropertyEditor):
+class _PropertyLengthEditor(_PropertyEditor):
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
 
@@ -140,9 +140,10 @@ class _PropertyFloatEditor(_PropertyEditor):
 _EditorFactory = {
         PathSetupSheetOpPrototype.Property: None,
         PathSetupSheetOpPrototype.PropertyBool: _PropertyBoolEditor,
-        PathSetupSheetOpPrototype.PropertyDistance: _PropertyDistanceEditor,
+        PathSetupSheetOpPrototype.PropertyDistance: _PropertyLengthEditor,
         PathSetupSheetOpPrototype.PropertyEnumeration: _PropertyEnumEditor,
         PathSetupSheetOpPrototype.PropertyFloat: _PropertyFloatEditor,
+        PathSetupSheetOpPrototype.PropertyLength: _PropertyLengthEditor,
         PathSetupSheetOpPrototype.PropertyPercent: _PropertyPercentEditor,
         PathSetupSheetOpPrototype.PropertyString: _PropertyStringEditor,
         }
