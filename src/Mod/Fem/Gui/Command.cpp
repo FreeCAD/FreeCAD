@@ -1097,11 +1097,31 @@ bool CmdFemCreateNodesSet::isActive(void)
 // helper vtk post processing
 
 void setupFilter(Gui::Command* cmd, std::string Name) {
+    // get the pipeline object the filter should be added too
+    // if nothing is selected and there is exact one FemPostPipeline --> use this
+    // if the user selects a FemPostPipeline --> use this
+    // else --> error message
 
-    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
+    Fem::FemPostPipeline* pipeline = nullptr;
+    Gui::SelectionFilter pipelinesFilter("SELECT Fem::FemPostPipeline COUNT 1");
+    if (pipelinesFilter.match()) {
+        std::vector<Gui::SelectionObject> result = pipelinesFilter.Result[0];
+        pipeline = static_cast<Fem::FemPostPipeline*>(result.front().getObject());
+    }
+    else {
+        std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+        if (pipelines.size() == 1) {
+            pipeline = pipelines.front();
+        }
+    }
 
+    if (pipeline == nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateClipFilter", "Error: Wrong or no or to many vtk post processing objects."),
+            qApp->translate("CmdFemPostCreateClipFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document"));
+        return;
+    }
+    else {
         std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
 
         cmd->openCommand("Create filter");
@@ -1113,14 +1133,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
         cmd->updateActive();
         cmd->doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
     }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
-    }
-
 };
 
 
