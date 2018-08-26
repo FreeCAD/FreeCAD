@@ -371,6 +371,49 @@ bool CmdFemConstraintContact::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintDisplacement);
+
+CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
+  : Command("FEM_ConstraintDisplacement")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint displacement");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
+    sWhatsThis      = "FEM_ConstraintDisplacement";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-displacement";
+}
+
+void CmdFemConstraintDisplacement::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintDisplacement");
+
+    openCommand("Make FEM constraint displacement on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintDisplacement::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintFixed);
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
@@ -759,49 +802,6 @@ void CmdFemConstraintPulley::activated(int)
 }
 
 bool CmdFemConstraintPulley::isActive(void)
-{
-    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintDisplacement);
-
-CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
-  : Command("FEM_ConstraintDisplacement")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint displacement");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
-    sWhatsThis      = "FEM_ConstraintDisplacement";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-displacement";
-}
-
-void CmdFemConstraintDisplacement::activated(int)
-{
-    Fem::FemAnalysis        *Analysis;
-
-    if(getConstraintPrerequisits(&Analysis))
-        return;
-
-    std::string FeatName = getUniqueObjectName("FemConstraintDisplacement");
-
-    openCommand("Make FEM constraint displacement on face");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                             Analysis->getNameInDocument(),FeatName.c_str());
-
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-
-    updateActive();
-
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-}
-
-bool CmdFemConstraintDisplacement::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1649,12 +1649,12 @@ void CreateFemCommands(void)
     // constraints
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
+    rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
     rcCmdMgr.addCommand(new CmdFemConstraintPressure());
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
-    rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
     rcCmdMgr.addCommand(new CmdFemConstraintTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintHeatflux());
     rcCmdMgr.addCommand(new CmdFemConstraintInitialTemperature());
