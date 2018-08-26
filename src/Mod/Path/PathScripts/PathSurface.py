@@ -319,9 +319,18 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OpStartDepth = d.start_depth
             obj.OpFinalDepth = d.final_depth
 
+def SetupProperties():
+    setup = []
+    setup.append("Algorithm")
+    setup.append("DropCutterDir")
+    setup.append("BoundBox")
+    setup.append("StepOver")
+    setup.append("DepthOffset")
+    return setup
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Surface operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectSurface(obj, name)
     return obj
