@@ -109,6 +109,8 @@ public:
     virtual PyObject* getExtensionPyObject(void) override;
 
     virtual void extensionOnChanged(const Property* p) override;
+
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
     
     /// Properties
     PropertyLinkList Group;

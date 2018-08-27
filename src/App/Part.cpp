@@ -90,16 +90,6 @@ PyObject *Part::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-std::vector<std::string> Part::getSubObjects(int) const {
-    std::vector<std::string> ret;
-    for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument())
-            ret.push_back(std::string(obj->getNameInDocument())+'.');
-    }
-    return ret;
-}
-
-
 // Python feature ---------------------------------------------------------
 
 // Not quite sure yet making Part derivable in Python is good Idea!

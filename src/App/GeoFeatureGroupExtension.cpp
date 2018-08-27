@@ -479,6 +479,20 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
     }
 }
 
+bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument()) {
+            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId()) ||
+               obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+            {
+                ret.push_back(std::string(obj->getNameInDocument())+'.');
+            }
+        }
+    }
+    return true;
+}
+
+
 
 // Python feature ---------------------------------------------------------
 

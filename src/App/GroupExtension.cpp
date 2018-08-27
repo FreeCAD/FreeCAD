@@ -334,6 +334,14 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     App::Extension::extensionOnChanged(p);
 }
 
+bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument())
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
+    }
+    return true;
+}
+
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
