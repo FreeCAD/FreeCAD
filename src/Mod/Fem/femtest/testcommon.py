@@ -332,7 +332,8 @@ class FemTest(unittest.TestCase):
         self.assertEqual('Fem::FemEquationElmerFluxsolver', typeOfObj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer)))
         self.assertEqual('Fem::FemEquationElmerHeat', typeOfObj(ObjectsFem.makeEquationHeat(doc, solverelmer)))
         # is = 43 (just copy in empty file to test)
-        # TODO: equation linear missing, equation nonlinear missing, use different type for fluid and solid material
+        # TODO: vtk post objs
+        # TODO: use different type for fluid and solid material
 
     def test_femobjects_isoftypenew(self):
         doc = self.active_doc
