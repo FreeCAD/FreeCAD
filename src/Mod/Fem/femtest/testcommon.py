@@ -273,6 +273,7 @@ class FemTest(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
+        # is = 43 (just copy in empty file to test, or run unit test case, it is printed)
         # TODO if the equations and gmsh mesh childs are added to the analysis,
         # they show up twice on Tree (on solver resp. gemsh mesh obj and on analysis)
         # https://forum.freecadweb.org/viewtopic.php?t=25283
@@ -330,6 +331,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual('Fem::FemEquationElmerFlow', typeOfObj(ObjectsFem.makeEquationFlow(doc, solverelmer)))
         self.assertEqual('Fem::FemEquationElmerFluxsolver', typeOfObj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer)))
         self.assertEqual('Fem::FemEquationElmerHeat', typeOfObj(ObjectsFem.makeEquationHeat(doc, solverelmer)))
+        # is = 43 (just copy in empty file to test)
         # TODO: equation linear missing, equation nonlinear missing, use different type for fluid and solid material
 
     def test_femobjects_isoftypenew(self):
@@ -382,6 +384,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationFlow(doc, solverelmer), 'Fem::FemEquationElmerFlow'))
         self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationFluxsolver(doc, solverelmer), 'Fem::FemEquationElmerFluxsolver'))
         self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationHeat(doc, solverelmer), 'Fem::FemEquationElmerHeat'))
+        # is = 43 (just copy in empty file to test)
 
     def test_femobjects_derivedfromfem(self):
         doc = self.active_doc
@@ -433,6 +436,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationFlow(doc, solverelmer), 'Fem::FemEquationElmerFlow'))
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationFluxsolver(doc, solverelmer), 'Fem::FemEquationElmerFluxsolver'))
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationHeat(doc, solverelmer), 'Fem::FemEquationElmerHeat'))
+        # is = 43 (just copy in empty file to test)
 
     def test_femobjects_derivedfromstd(self):
         doc = self.active_doc
@@ -483,6 +487,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(ObjectsFem.makeEquationFlow(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
         self.assertTrue(ObjectsFem.makeEquationFluxsolver(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
         self.assertTrue(ObjectsFem.makeEquationHeat(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
+        # is = 43 (just copy in empty file to test)
 
     def test_adding_refshaps(self):
         doc = self.active_doc
