@@ -33,34 +33,11 @@
 #include "Document.h"
 #include "WaitCursor.h"
 #include <App/PropertyGeo.h>
-#include <App/DocumentObject.h>
+#include <App/GeoFeature.h>
 
 using namespace Gui::Dialog;
 
 namespace Gui { namespace Dialog {
-class find_geometry_data
-{
-public:
-    bool operator () (const std::pair<std::string, App::Property*>& elem) const
-    {
-        if (elem.first == "Points") {
-            return elem.second->isDerivedFrom
-                (Base::Type::fromName("Points::PropertyPointKernel"));
-        }
-        else if (elem.first == "Mesh") {
-            return elem.second->isDerivedFrom
-                (Base::Type::fromName("Mesh::PropertyMeshKernel"));
-        }
-        else if (elem.first == "Shape") {
-            return elem.second->isDerivedFrom
-                (Base::Type::fromName("Part::PropertyPartShape"));
-        }
-
-        // any other geometry type
-        return elem.second->isDerivedFrom
-            (Base::Type::fromName("App::PropertyGeometry"));
-    }
-};
 class find_transform
 {
 public:
@@ -96,17 +73,16 @@ Base::Vector3d TransformStrategy::getRotationCenter() const
         Base::BoundBox3d bbox;
         bool first=true;
         for (std::set<App::DocumentObject*>::const_iterator it=objects.begin();it!=objects.end();++it) {
-            std::map<std::string,App::Property*> props;
-            (*it)->getPropertyMap(props);
-            // search for a data property
-            std::map<std::string,App::Property*>::iterator jt;
-            jt = std::find_if(props.begin(), props.end(), find_geometry_data());
-            if (jt != props.end()) {
-                if (first)
-                    bbox = (static_cast<App::PropertyGeometry*>(jt->second)->getBoundingBox());
-                else
-                    bbox.Add(static_cast<App::PropertyGeometry*>(jt->second)->getBoundingBox());
-                first = false;
+            if ((*it)->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                // search for a data property
+                const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
+                if (geo) {
+                    if (first)
+                        bbox = geo->getBoundingBox();
+                    else
+                        bbox.Add(geo->getBoundingBox());
+                    first = false;
+                }
             }
         }
 
@@ -151,9 +127,12 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
     }
 
     // Apply the transformation
-    jt = std::find_if(props.begin(), props.end(), find_geometry_data());
-    if (jt != props.end()) {
-        static_cast<App::PropertyGeometry*>(jt->second)->transformGeometry(mat);
+    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        // search for a data property
+        const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(obj)->getPropertyOfGeometry();
+        if (geo) {
+            const_cast<App::PropertyGeometry*>(geo)->transformGeometry(mat);
+        }
     }
 }
 
@@ -250,13 +229,12 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
-        std::map<std::string,App::Property*> props;
-        (*it)->getPropertyMap(props);
-        // search for the placement property
-        std::map<std::string,App::Property*>::iterator jt;
-        jt = std::find_if(props.begin(), props.end(), find_geometry_data());
-        if (jt != props.end()) {
-            update_selection.insert(*it);
+        if ((*it)->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            // search for a data property
+            const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
+            if (geo) {
+                update_selection.insert(*it);
+            }
         }
     }
 
