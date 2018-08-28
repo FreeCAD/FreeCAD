@@ -145,3 +145,5 @@ FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")
+
+FreeCAD.__unit_test__ += [ "TestDraft" ]
