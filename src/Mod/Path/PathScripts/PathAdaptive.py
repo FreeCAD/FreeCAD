@@ -313,10 +313,10 @@ def Execute(op,obj):
         if inputStateChanged or adaptiveResults==None:
             a2d = area.Adaptive2d()
             a2d.stepOverFactor = 0.01*obj.StepOver
-            a2d.toolDiameter = op.tool.Diameter
+            a2d.toolDiameter = float(op.tool.Diameter)
             a2d.helixRampDiameter =  helixDiameter
-            a2d.stockToLeave = obj.StockToLeave
-            a2d.tolerance = obj.Tolerance
+            a2d.stockToLeave =float(obj.StockToLeave)
+            a2d.tolerance = float(obj.Tolerance)
             a2d.opType = opType
             a2d.polyTreeNestingLimit = nestingLimit
             #EXECUTE
