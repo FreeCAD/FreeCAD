@@ -280,15 +280,15 @@ def Execute(op,obj):
         path2d = convertTo2d(pathArray)
         # put here all properties that influence calculation of adaptive base paths,
         inputStateObject = {
-            "tool": op.tool.Diameter,
-            "tolerance": obj.Tolerance,
+            "tool": float(op.tool.Diameter),
+            "tolerance": float(obj.Tolerance),
             "geometry" : path2d,
-            "stepover" :obj.StepOver,
-            "effectiveHelixDiameter": helixDiameter,
+            "stepover" : float(obj.StepOver),
+            "effectiveHelixDiameter": float(helixDiameter),
             "operationType": obj.OperationType,
             "side": obj.Side,
-            "processHoles": obj.ProcessHoles
-
+            "processHoles": obj.ProcessHoles,
+            "stockToLeave": float(obj.StockToLeave)
         }
 
         inputStateChanged=False
@@ -315,6 +315,7 @@ def Execute(op,obj):
             a2d.stepOverFactor = 0.01*obj.StepOver
             a2d.toolDiameter = op.tool.Diameter
             a2d.helixRampDiameter =  helixDiameter
+            a2d.stockToLeave = obj.StockToLeave
             a2d.tolerance = obj.Tolerance
             a2d.opType = opType
             a2d.polyTreeNestingLimit = nestingLimit
@@ -366,6 +367,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyFloat", "Tolerance", "Adaptive",  "Influences accuracy and performance")
         obj.addProperty("App::PropertyPercent", "StepOver", "Adaptive", "Percent of cutter diameter to step over on each pass")
         obj.addProperty("App::PropertyDistance", "LiftDistance", "Adaptive", "Lift distance for rapid moves")
+        obj.addProperty("App::PropertyDistance", "StockToLeave", "Adaptive", "How much stock to leave (i.e. for finishing operation)")
         obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
         obj.addProperty("App::PropertyBool", "Stopped",
                         "Adaptive", "Stop processing")
@@ -398,6 +400,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.HelixDiameterLimit = 0.0
         obj.AdaptiveInputState =""
         obj.AdaptiveOutputState = ""
+        obj.StockToLeave= 0
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.

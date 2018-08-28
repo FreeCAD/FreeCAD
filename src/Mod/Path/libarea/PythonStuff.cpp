@@ -511,6 +511,7 @@ BOOST_PYTHON_MODULE(area) {
 		.def("Execute",&AdaptiveExecute)
 	 	.def_readwrite("stepOverFactor", &Adaptive2d::stepOverFactor)
 	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
+		.def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
 		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
 		.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
 		.def_readwrite("tolerance", &Adaptive2d::tolerance)

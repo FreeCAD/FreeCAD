@@ -71,7 +71,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.HelixDiameterLimit.setMaximum(90)
         form.HelixDiameterLimit.setSingleStep(0.1)
         form.HelixDiameterLimit.setValue(0)
-        form.HelixDiameterLimit.setToolTip("If non zero it limits the size helix diameter, otherwise the tool radius is taken as the helix diameter")
+        form.HelixDiameterLimit.setToolTip("If non zero it limits the size helix diameter, otherwise the tool diameter is taken")
         formLayout.addRow(QtGui.QLabel("Helix Max Diameter"),form.HelixDiameterLimit)
 
         #lift distance
@@ -82,6 +82,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.LiftDistance.setValue(1.0)
         form.LiftDistance.setToolTip("How much to lift the tool up during the rapid repositioning moves (used when no obstacles)")
         formLayout.addRow(QtGui.QLabel("Lift Distance"),form.LiftDistance)
+
+        #stock to leave
+        form.StockToLeave = QtGui.QDoubleSpinBox()
+        form.StockToLeave.setMinimum(0.0)
+        form.StockToLeave.setMaximum(1000)
+        form.StockToLeave.setSingleStep(0.1)
+        form.StockToLeave.setValue(0)
+        form.StockToLeave.setToolTip("How much material to leave (i.e. for finishing operation)")
+        formLayout.addRow(QtGui.QLabel("Stock to Leave"),form.StockToLeave)
 
         #process holes
         form.ProcessHoles = QtGui.QCheckBox()
@@ -110,6 +119,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixDiameterLimit.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
+        signals.append(self.form.StockToLeave.valueChanged)
 
         signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.StopButton.toggled)
@@ -123,6 +133,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.HelixAngle.setValue(obj.HelixAngle)
         self.form.HelixDiameterLimit.setValue(obj.HelixDiameterLimit)
         self.form.LiftDistance.setValue(obj.LiftDistance)
+        if hasattr(obj, 'StockToLeave'):
+            self.form.StockToLeave.setValue(obj.StockToLeave)
 
         self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.setupToolController(obj, self.form.ToolController)
@@ -144,6 +156,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.HelixAngle = self.form.HelixAngle.value()
         obj.HelixDiameterLimit = self.form.HelixDiameterLimit.value()
         obj.LiftDistance = self.form.LiftDistance.value()
+        if hasattr(obj, 'StockToLeave'):
+            obj.StockToLeave = self.form.StockToLeave.value()
 
         obj.ProcessHoles = self.form.ProcessHoles.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
