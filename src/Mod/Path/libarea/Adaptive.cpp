@@ -249,7 +249,7 @@ namespace AdaptivePath {
 	bool IsPointWithinCutRegion(const Paths & toolBoundPaths,const IntPoint & point) {
 		for(size_t i=0; i<toolBoundPaths.size();i++) {
 			int pip=PointInPolygon(point, toolBoundPaths[i]);
-			if(i==0 && pip==0) return false; // is outside boundary
+			if(i==0 && (pip==0 || pip==-1)) return false; // is outside or on boundary
 			if(i>0 && pip!=0) return false; // is inside hole
 		}
 		return true;
@@ -1051,7 +1051,12 @@ namespace AdaptivePath {
 					Clipper clip;
 					mt=MotionType::mtCutting; // asume we can cut trough
 					IntPoint inters; // to hold intersection point
-					if(IntersectionPoint(toolBoundPaths,lastPoint, nextPoint,inters)) {
+					if(
+						!IsPointWithinCutRegion(toolBoundPaths,lastPoint)
+						||
+						!IsPointWithinCutRegion(toolBoundPaths,nextPoint)
+						||
+						IntersectionPoint(toolBoundPaths,lastPoint, nextPoint,inters)) {
 						// if intersect with boundary - its not clear to cut
 						mt=MotionType::mtLinkNotClear;
 					//	cout<<"linking - touches boundary" << endl;
