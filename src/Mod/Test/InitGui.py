@@ -77,3 +77,9 @@ class TestWorkbench ( Workbench ):
         self.appendMenu("Inventor View",list)
 
 Gui.addWorkbench(TestWorkbench())
+
+# Base system tests
+FreeCAD.__unit_test__ += [ "Workbench",
+                           "Menu",
+                           "Menu.MenuDeleteCases",
+                           "Menu.MenuCreateCases" ]
