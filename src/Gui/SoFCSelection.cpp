@@ -711,7 +711,42 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
 void SoFCSelection::GLRender(SoGLRenderAction * action)
 {
+    SoState * state = action->getState();
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
+    if(!useNewSelection.getValue() && selContext == ctx) {
+        ctx->selectionColor = this->colorSelection.getValue();
+        ctx->highlightColor = this->colorHighlight.getValue();
+        if(this->selected.getValue()==SELECTED)
+            ctx->selectAll();
+        else
+            ctx->selectionIndex.clear();
+        ctx->highlightIndex = this->highlighted?0:-1;
+    }
+
+#ifdef NO_FRONTBUFFER
+    // check if preselection is active
+    state->push();
+    this->setOverride(action,ctx);
     inherited::GLRender(action);
+    state->pop();
+#else
+    // Set up state for locate highlighting (if necessary)
+    GLint oldDepthFunc;
+    SbBool drawHighlighted = preRender(action, oldDepthFunc);
+
+    // now invoke the parent method
+    inherited::GLRender(action);
+
+    // Restore old depth buffer model if needed
+    if (drawHighlighted || highlighted)
+        glDepthFunc((GLenum)oldDepthFunc);
+
+    // Clean up state if needed
+    if (drawHighlighted)
+        action->getState()->pop();
+#endif
 }
 
 // doc from parent
