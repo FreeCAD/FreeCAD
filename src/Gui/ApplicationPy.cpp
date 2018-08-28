@@ -100,6 +100,9 @@ PyMethodDef Application::Methods[] = {
   {"addIcon",                 (PyCFunction) Application::sAddIcon,          1,
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
+  {"getIcon",                 (PyCFunction) Application::sGetIcon,          1,
+   "getIcon(string -> QIcon\n\n"
+   "Get an icon in the system"},
   {"getMainWindow",           (PyCFunction) Application::sGetMainWindow,    1,
    "getMainWindow() -> QMainWindow\n\n"
    "Return the main window instance"},
@@ -1015,6 +1018,21 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args,PyObject * /
 
     Py_INCREF(Py_None);
     return Py_None;
+}
+
+PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *iconName;
+    if (!PyArg_ParseTuple(args, "s", &iconName))
+        return NULL;
+    
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
+    auto pixmap = BitmapFactory().pixmap(iconName);
+    if(!pixmap.isNull())
+        return Py::new_reference_to(wrap.fromQIcon(new QIcon(pixmap)));
+    Py_Return;
 }
 
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

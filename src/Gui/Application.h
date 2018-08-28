@@ -218,6 +218,7 @@ public:
     PYFUNCDEF_S(sAddLangPath);              // adds a path to a qm file
     PYFUNCDEF_S(sAddIconPath);              // adds a path to an icon file
     PYFUNCDEF_S(sAddIcon);                  // adds an icon to the cache
+    PYFUNCDEF_S(sGetIcon);                  // get an icon from the cache
 
     PYFUNCDEF_S(sSendActiveView);
 
