@@ -32,5 +32,3 @@ FreeCAD.addImportType("Collada (*.dae)","importDAE")
 FreeCAD.addExportType("Collada (*.dae)","importDAE")
 FreeCAD.addImportType("3D Studio mesh (*.3ds)","import3DS")
 FreeCAD.addImportType("SweetHome3D XML export (*.zip)","importSH3D")
-
-FreeCAD.__unit_test__ += [ "TestArch" ]
