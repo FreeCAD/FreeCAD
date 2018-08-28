@@ -60,6 +60,7 @@ namespace AdaptivePath {
 			double stepOverFactor = 0.2;
 			int polyTreeNestingLimit=0;
 			double tolerance=0.1;
+			double stockToLeave=0;
 			OperationType opType = OperationType::otClearing;
 
 			std::list<AdaptiveOutput> Execute(const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);

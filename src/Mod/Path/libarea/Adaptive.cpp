@@ -854,7 +854,12 @@ namespace AdaptivePath {
 			inputPaths.push_back(cpth);
 		}
 		SimplifyPolygons(inputPaths);
+		if(fabs(stockToLeave)>NTOL) {
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
 
+		}
 		// *******************************
 		//	Resolve hierarchy and run processing
 		// ********************************
