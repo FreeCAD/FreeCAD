@@ -330,6 +330,10 @@ ViewProviderMesh::~ViewProviderMesh()
     pLineColor->unref();
 }
 
+bool ViewProviderMesh::useNewSelectionModel(void) const {
+    return true;
+}
+
 void ViewProviderMesh::onChanged(const App::Property* prop)
 {
     // we're going to change the number of colors to one

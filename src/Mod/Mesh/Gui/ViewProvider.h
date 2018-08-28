@@ -126,7 +126,7 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel(void) const;
     Gui::SoFCSelection* getHighlightNode() const { return pcHighlight; }
     virtual QIcon getIcon() const;
     /// Sets the correct display mode
