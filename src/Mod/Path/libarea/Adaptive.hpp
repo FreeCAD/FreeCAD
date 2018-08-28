@@ -84,7 +84,7 @@ namespace AdaptivePath {
 			double optimalCutAreaPD=0;
 			double minCutAreaPD=0;
 			bool stopProcessing=false;
-
+			long unclearLinkingMoveCount = 0;
 			time_t lastProgressTime = 0;
 			
 			std::function<bool(TPaths)> * progressCallback=NULL;
@@ -93,7 +93,7 @@ namespace AdaptivePath {
 			void ProcessPolyNode(Paths & boundPaths, Paths & toolBoundPaths);
 			bool FindEntryPoint(const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/, IntPoint &entryPoint /*output*/);
 			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths);
-			void AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, bool close=false);
+			void AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
 			bool  CheckCollision(const IntPoint &lastPoint,const IntPoint &nextPoint,const Paths & cleared);
 			friend class EngagePoint; // for CalcCutArea
 

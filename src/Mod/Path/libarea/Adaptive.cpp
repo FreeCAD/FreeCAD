@@ -681,9 +681,9 @@ namespace AdaptivePath {
 							if(PointSideOfLine(fpc2,lpc2,midPoint)>0) {
 								area = __DBL_MAX__;
 								Perf_CalcCutArea.Stop();
-								#ifdef DEV_MODE
-									cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
-								#endif
+								// #ifdef DEV_MODE
+								// 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
+								// #endif
 								return area;
 							}
 						}
@@ -1029,7 +1029,7 @@ namespace AdaptivePath {
 		return collisionArea <= NTOL;
 	}
 
-	void Adaptive2d::AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, bool close) {
+	void Adaptive2d::AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths, bool close) {
 		if(passToolPath.size()<1) return;
 		IntPoint nextPoint(passToolPath[0]);
 
@@ -1037,10 +1037,38 @@ namespace AdaptivePath {
 			auto & lastTPath = output.AdaptivePaths.back();
 			auto & lastTPoint = lastTPath.second.back();
 			IntPoint lastPoint(long(lastTPoint.first*scaleFactor),long(lastTPoint.second*scaleFactor));
-			bool clear = CheckCollision(lastPoint,nextPoint,cleared);
+			MotionType mt = CheckCollision(lastPoint,nextPoint,cleared) ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
+			if(mt==MotionType::mtLinkNotClear) { // if link not clear and distance smaller than toolDiameter check if we can make acutall cut move, optimalCutAreaPD
+				double linkDistance = sqrt(DistanceSqrd(lastPoint,nextPoint));
+				//cout<<"linking distance:" << linkDistance << " toolDia:" << toolRadiusScaled*2 << endl;
+				if(linkDistance<4*toolRadiusScaled) {
+					double stepSize=2*RESOLUTION_FACTOR;
+					Clipper clip;
+					mt=MotionType::mtCutting; // asume we can cut trough
+					IntPoint inters; // to hold intersection point
+					if(IntersectionPoint(toolBoundPaths,lastPoint, nextPoint,inters)) {
+						// if intersect with boundary - its not clear to cut
+						mt=MotionType::mtLinkNotClear;
+					//	cout<<"linking - touches boundary" << endl;
+					} else for(double d=stepSize;d<linkDistance+stepSize;d+=stepSize) {
+						IntPoint toolPos1(long(lastPoint.X + double(nextPoint.X-lastPoint.X)*(d-stepSize)/linkDistance),long(lastPoint.Y + double(nextPoint.Y-lastPoint.Y)*(d-stepSize)/linkDistance));
+						IntPoint toolPos2(long(lastPoint.X + double(nextPoint.X-lastPoint.X)*d/linkDistance),long(lastPoint.Y + double(nextPoint.Y-lastPoint.Y)*d/linkDistance));
+						double areaPD = CalcCutArea(clip,toolPos1,toolPos2, cleared)/stepSize;
+						if(areaPD>optimalCutAreaPD) { // if we are cutting above optimal -> not clear link
+							mt=MotionType::mtLinkNotClear;
+					//		cout<<"linking - overcut" << endl;
+							break;
+						}
+					}
+					//if(mt==MotionType::mtCutting) cout<<"cutting link"<<endl;
+				}
+			}
+
+
 			// add linking move
 			TPath linkPath;
-			linkPath.first = clear ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
+			linkPath.first = mt;
+			if(mt==MotionType::mtLinkNotClear) unclearLinkingMoveCount++;
 			DPoint nextT;
 			nextT.first = double(nextPoint.X)/scaleFactor;
 			nextT.second = double(nextPoint.Y)/scaleFactor;
@@ -1149,6 +1177,7 @@ namespace AdaptivePath {
 		long total_exceeded=0;
 		long total_output_points=0;
 		long over_cut_count =0;
+		unclearLinkingMoveCount=0;
 		//long engage_no_cut_count=0;
 
 		double perf_total_len=0;
@@ -1378,7 +1407,7 @@ namespace AdaptivePath {
 				Path cleaned;
 				CleanPath(passToolPath,cleaned,CLEAN_PATH_TOLERANCE);
 				total_output_points+=cleaned.size();
-				AppendToolPath(output,cleaned,cleared);
+				AppendToolPath(output,cleaned,cleared,toolBoundPaths);
 				CheckReportProgress(progressPaths);
 			}
 			/*****NEXT ENGAGE POINT******/
@@ -1409,7 +1438,7 @@ namespace AdaptivePath {
 			}
 			Path cleaned;
 			CleanPath(pth,cleaned,FINISHING_CLEAN_PATH_TOLERANCE);
-			AppendToolPath(output,cleaned,cleared,true);
+			AppendToolPath(output,cleaned,cleared,toolBoundPaths,true);
 			if(pth.size()>0) {
 				lastPoint.X = pth[pth.size()-1].X;
 				lastPoint.Y = pth[pth.size()-1].Y;
@@ -1437,6 +1466,7 @@ namespace AdaptivePath {
 				<< " total_iterations:" << total_iterations
 				<< " iter_per_point:" << (double(total_iterations)/((double(total_points)+0.001)))
 				<< " total_exceeded:" << total_exceeded  <<  " (" << 100 * double(total_exceeded)/double(total_points) << "%)"
+				<< " linking moves:" << unclearLinkingMoveCount
 				<< endl;
 		#endif
 		results.push_back(output);
