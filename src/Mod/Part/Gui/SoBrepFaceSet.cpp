@@ -738,15 +738,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     {
         state->push();
 
-        if(action->isRenderingDelayedPaths()) {
-            // rendering delayed paths means we are doing annotation (e.g.
-            // always on top rendering). To render transparency correctly in
-            // this case, we shall use openGL transparency blend. Override
-            // using SoLazyElement::setTransparencyType() doesn't seem to work
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDepthMask(false);
-        }
         packedColors.clear();
 
         if(ctx && Gui::Selection().needPickedList()) {
@@ -780,6 +771,16 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
             packedColors.push_back(diffuseColor);
             SoLazyElement::setPacked(state, this,1, &packedColors[0], hasTransparency);
             SoTextureEnabledElement::set(state,this,false);
+
+            if(hasTransparency && action->isRenderingDelayedPaths()) {
+                // rendering delayed paths means we are doing annotation (e.g.
+                // always on top rendering). To render transparency correctly in
+                // this case, we shall use openGL transparency blend. Override
+                // using SoLazyElement::setTransparencyType() doesn't seem to work
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glDepthMask(false);
+            }
             return true;
         }
 
@@ -875,6 +876,16 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
         SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_PART_INDEXED);
         SoLazyElement::setPacked(state, this, packedColors.size(), &packedColors[0], hasTransparency);
         SoTextureEnabledElement::set(state,this,false);
+
+        if(hasTransparency && action->isRenderingDelayedPaths()) {
+            // rendering delayed paths means we are doing annotation (e.g.
+            // always on top rendering). To render transparency correctly in
+            // this case, we shall use openGL transparency blend. Override
+            // using SoLazyElement::setTransparencyType() doesn't seem to work
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDepthMask(false);
+        }
         return true;
     }
     return false;
