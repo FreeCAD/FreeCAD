@@ -60,13 +60,17 @@ def makeSectionPlane(objectslist=None,name="Section"):
     if FreeCAD.GuiUp:
         _ViewProviderSectionPlane(obj.ViewObject)
     if objectslist:
-        g = []
-        for o in objectslist:
-            if o.isDerivedFrom("Part::Feature"):
-                g.append(o)
-            elif o.isDerivedFrom("App::DocumentObjectGroup"):
-                g.append(o)
-        obj.Objects = g
+        obj.Objects = objectslist
+        bb = FreeCAD.BoundBox()
+        for o in Draft.getGroupContents(objectslist):
+            if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+                bb.add(o.Shape.BoundBox)
+        obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()
+        obj.Placement.Base = bb.Center
+        if FreeCAD.GuiUp:
+            margin = bb.XLength*0.1
+            obj.ViewObject.DisplayLength = bb.XLength+margin
+            obj.ViewObject.DisplayHeight = bb.YLength+margin
     return obj
 
 
@@ -385,7 +389,7 @@ class _CommandSectionPlane:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
-        FreeCADGui.doCommand("section.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
+        #FreeCADGui.doCommand("section.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
         #FreeCADGui.doCommand("Arch.makeSectionView(section)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
