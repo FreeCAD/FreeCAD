@@ -424,16 +424,16 @@ class _SectionPlane:
     def execute(self,obj):
 
         import Part
-        if hasattr(obj.ViewObject,"DisplayLength"):
-            l = obj.ViewObject.DisplayLength.Value
-            h = obj.ViewObject.DisplayHeight.Value
-        elif hasattr(obj.ViewObject,"DisplaySize"):
-            # old objects
-            l = obj.ViewObject.DisplaySize.Value
-            h = obj.ViewObject.DisplaySize.Value
-        else:
-            l = 1
-            h = 1
+        l = 1
+        h = 1
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject,"DisplayLength"):
+                l = obj.ViewObject.DisplayLength.Value
+                h = obj.ViewObject.DisplayHeight.Value
+            elif hasattr(obj.ViewObject,"DisplaySize"):
+                # old objects
+                l = obj.ViewObject.DisplaySize.Value
+                h = obj.ViewObject.DisplaySize.Value
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -794,7 +794,6 @@ class SectionPlaneTaskPanel:
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
-        self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.form)
         self.grid.addWidget(self.title, 0, 0, 1, 2)
 
@@ -804,19 +803,36 @@ class SectionPlaneTaskPanel:
         self.tree.setColumnCount(1)
         self.tree.header().hide()
 
-        # buttons
+        # add / remove buttons
         self.addButton = QtGui.QPushButton(self.form)
-        self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.addButton, 3, 0, 1, 1)
 
         self.delButton = QtGui.QPushButton(self.form)
-        self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        
+        # rotate / resize buttons
+        self.rlabel = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.rlabel, 4, 0, 1, 2)
+        self.rotateXButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateXButton, 5, 0, 1, 1)
+        self.rotateYButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateYButton, 5, 1, 1, 1)
+        self.rotateZButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateZButton, 6, 0, 1, 1)
+        self.resizeButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.resizeButton, 7, 0, 1, 1)
+        self.recenterButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.recenterButton, 7, 1, 1, 1)
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.rotateXButton, QtCore.SIGNAL("clicked()"), self.rotateX)
+        QtCore.QObject.connect(self.rotateYButton, QtCore.SIGNAL("clicked()"), self.rotateY)
+        QtCore.QObject.connect(self.rotateZButton, QtCore.SIGNAL("clicked()"), self.rotateZ)
+        QtCore.QObject.connect(self.resizeButton, QtCore.SIGNAL("clicked()"), self.resize)
+        QtCore.QObject.connect(self.recenterButton, QtCore.SIGNAL("clicked()"), self.recenter)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -862,6 +878,51 @@ class SectionPlaneTaskPanel:
                 comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
                 ArchComponent.removeFromComponent(self.obj,comp)
             self.update()
+    
+    def rotate(self,axis):
+        if self.obj and self.obj.Shape and self.obj.Shape.Faces:
+            face = self.obj.Shape.copy()
+            import Part
+            face.rotate(self.obj.Placement.Base, axis, 90)
+            self.obj.Placement = face.Placement
+            self.obj.Proxy.execute(self.obj)
+    
+    def rotateX(self):
+        self.rotate(FreeCAD.Vector(1,0,0))
+
+    def rotateY(self):
+        self.rotate(FreeCAD.Vector(0,1,0))
+
+    def rotateZ(self):
+        self.rotate(FreeCAD.Vector(0,0,1))
+    
+    def getBB(self):
+        bb = FreeCAD.BoundBox()
+        if self.obj:
+            for o in Draft.getGroupContents(self.obj.Objects):
+                if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+                    bb.add(o.Shape.BoundBox)
+        return bb
+
+    def resize(self):
+        if self.obj and self.obj.ViewObject:
+            bb = self.getBB()
+            n = self.obj.Proxy.getNormal(self.obj)
+            margin = bb.XLength*0.1
+            if (n.getAngle(FreeCAD.Vector(1,0,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(-1,0,0)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.YLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
+            elif (n.getAngle(FreeCAD.Vector(0,1,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,-1,0)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.XLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
+            elif (n.getAngle(FreeCAD.Vector(0,0,1)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,0,-1)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.XLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.YLength+margin
+            self.obj.Proxy.execute(self.obj)
+
+    def recenter(self):
+        if self.obj:
+            self.obj.Placement.Base = self.getBB().Center
 
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
@@ -869,10 +930,16 @@ class SectionPlaneTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Objects", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Section plane settings", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane:", None))
+        self.rlabel.setText(QtGui.QApplication.translate("Arch", "Section plane placement:", None))
+        self.rotateXButton.setText(QtGui.QApplication.translate("Arch", "Rotate X", None))
+        self.rotateYButton.setText(QtGui.QApplication.translate("Arch", "Rotate Y", None))
+        self.rotateZButton.setText(QtGui.QApplication.translate("Arch", "Rotate Z", None))
+        self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize", None))
+        self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())
