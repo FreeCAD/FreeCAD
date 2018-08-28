@@ -30,3 +30,5 @@ App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
 App.addImportType("Autodesk DWG 2D (*.dwg)","importDWG") 
 App.addExportType("Autodesk DWG 2D (*.dwg)","importDWG")
+
+FreeCAD.__unit_test__ += [ "TestDraft" ]
