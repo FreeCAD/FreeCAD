@@ -67,6 +67,7 @@
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
+        <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
@@ -75,7 +76,6 @@
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
-        <file>panels/JobEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>

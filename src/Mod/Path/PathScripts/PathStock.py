@@ -66,6 +66,13 @@ class StockType:
         return cls.Unknown
 
 def shapeBoundBox(obj):
+    PathLog.track(type(obj))
+    if list == type(obj) and obj:
+        bb = FreeCAD.BoundBox()
+        for o in obj:
+            bb.add(shapeBoundBox(o))
+        return bb
+
     if hasattr(obj, 'Shape'):
         return obj.Shape.BoundBox
     if obj and 'App::Part' == obj.TypeId:
@@ -115,7 +122,8 @@ class StockFromBase(Stock):
         return None
 
     def execute(self, obj):
-        bb = shapeBoundBox(obj.Base)
+        bb = shapeBoundBox(obj.Base.Group)
+        PathLog.track(obj.Label, bb)
 
         # Sometimes, when the Base changes it's temporarily not assigned when
         # Stock.execute is triggered - it'll be set correctly the next time around.
@@ -212,7 +220,7 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
+    base = job.Model if job and hasattr(job, 'Model') else None
     if base:
         base.Shape.tessellate(0.1)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
@@ -237,7 +245,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
+    base = job.Model.Group if job else None
     if base:
         base.Shape.tessellate(0.1)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
@@ -262,10 +270,10 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
-    if base:
-        base.Shape.tessellate(0.1)
+    base = job.Model.Group if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
+   if base:
+        base.Shape.tessellate(0.1)    obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateCylinder(obj)
 
     if radius:
