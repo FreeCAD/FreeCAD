@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>432</width>
     <height>673</height>
    </rect>
   </property>
@@ -14,55 +14,97 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
     <string>General</string>
    </attribute>
-   <layout class="QGridLayout" name="gridLayout_3">
-    <item row="2" column="1">
-     <widget class="QComboBox" name="jobModel"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Label</string>
+   <layout class="QVBoxLayout" name="verticalLayout_12">
+    <item>
+     <widget class="QToolBox" name="toolBox_3">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="page_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>412</width>
+         <height>549</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Job</string>
+       </attribute>
+       <layout class="QFormLayout" name="formLayout_4">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Label</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="jobLabel"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Model</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="jobModel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPlainTextEdit" name="jobDescription"/>
+        </item>
+        <item row="3" column="1">
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Template Export</string>
+       </attribute>
+      </widget>
      </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Model</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="jobLabel"/>
-    </item>
-    <item row="4" column="0">
-     <spacer name="verticalSpacer_4">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>Description</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QPlainTextEdit" name="jobDescription"/>
     </item>
    </layout>
   </widget>
@@ -137,278 +179,444 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGroupBox" name="stockGroup">
-      <property name="title">
-       <string>Stock</string>
+     <widget class="QToolBox" name="toolBox_2">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <property name="spacing">
-        <number>0</number>
+      <widget class="QWidget" name="page_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>414</width>
+         <height>762</height>
+        </rect>
        </property>
-       <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QComboBox" name="stock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>Create Box</string>
+       <attribute name="label">
+        <string>Layout</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QGroupBox" name="stockGroup">
+          <property name="title">
+           <string>Stock</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="widget_2" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QComboBox" name="stock">
+                <property name="currentIndex">
+                 <number>2</number>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Create Box</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Create Cylinder</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Extend Model's Bound Box</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Use Existing Solid</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="updateStock">
+                <property name="text">
+                 <string>New</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Create Cylinder</string>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>6</height>
+              </size>
              </property>
-            </item>
-            <item>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QFrame" name="stockFromExisting">
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="1">
+               <widget class="QComboBox" name="stockExisting"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="stockFromBase">
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="1" column="3">
+               <widget class="Gui::InputField" name="stockExtYpos"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockExtXLabel">
+                <property name="text">
+                 <string>Ext. X</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="Gui::InputField" name="stockExtXpos">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockExtYLabel">
+                <property name="text">
+                 <string>Ext. Y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockExtXneg"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="stockExtZLabel">
+                <property name="text">
+                 <string>Ext. Z</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockExtZneg"/>
+              </item>
+              <item row="2" column="3">
+               <widget class="Gui::InputField" name="stockExtZpos"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockExtYneg"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="stockCreateCylinder">
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockCylinderRadius"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockCylinderHeight"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockCylinderRadiusLabel">
+                <property name="text">
+                 <string>Radius</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockCylinderHeightLabel">
+                <property name="text">
+                 <string>Height</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="stockCreateBox">
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockBoxLengthLabel">
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockBoxWidthLabel">
+                <property name="text">
+                 <string>Width</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockBoxLength"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockBoxHeight"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockBoxWidth"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="stockBoxHeightLabel">
+                <property name="text">
+                 <string>Height</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="orientGroup">
+          <property name="title">
+           <string>Orientation</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="orientXAxis">
              <property name="text">
-              <string>Extend Model's Bound Box</string>
+              <string>X-Axis</string>
              </property>
-            </item>
-            <item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="orientYAxis">
              <property name="text">
-              <string>Use Existing Solid</string>
+              <string>Y-Axis</string>
              </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="updateStock">
-            <property name="text">
-             <string>New</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>6</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QFrame" name="stockFromExisting">
-         <layout class="QGridLayout" name="gridLayout_8">
-          <item row="0" column="1">
-           <widget class="QComboBox" name="stockExisting"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="stockFromBase">
-         <layout class="QGridLayout" name="gridLayout_9">
-          <item row="1" column="3">
-           <widget class="Gui::InputField" name="stockExtYpos"/>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="stockExtXLabel">
-            <property name="text">
-             <string>Ext. X</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="Gui::InputField" name="stockExtXpos">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="stockExtYLabel">
-            <property name="text">
-             <string>Ext. Y</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="Gui::InputField" name="stockExtXneg"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="stockExtZLabel">
-            <property name="text">
-             <string>Ext. Z</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="Gui::InputField" name="stockExtZneg"/>
-          </item>
-          <item row="2" column="3">
-           <widget class="Gui::InputField" name="stockExtZpos"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="stockExtYneg"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="stockCreateCylinder">
-         <layout class="QGridLayout" name="gridLayout_10">
-          <item row="0" column="2">
-           <widget class="Gui::InputField" name="stockCylinderRadius"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="stockCylinderHeight"/>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="stockCylinderRadiusLabel">
-            <property name="text">
-             <string>Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="stockCylinderHeightLabel">
-            <property name="text">
-             <string>Height</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="stockCreateBox">
-         <layout class="QGridLayout" name="gridLayout_11">
-          <item row="0" column="1">
-           <widget class="QLabel" name="stockBoxLengthLabel">
-            <property name="text">
-             <string>Length</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="stockBoxWidthLabel">
-            <property name="text">
-             <string>Width</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="Gui::InputField" name="stockBoxLength"/>
-          </item>
-          <item row="2" column="2">
-           <widget class="Gui::InputField" name="stockBoxHeight"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="stockBoxWidth"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="stockBoxHeightLabel">
-            <property name="text">
-             <string>Height</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="orientZAxis">
+             <property name="text">
+              <string>Z-Axis</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="alignGroup">
+          <property name="title">
+           <string>Alignment</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="centerInStock">
+             <property name="text">
+              <string>Center in Stock</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="centerInStockXY">
+             <property name="text">
+              <string>XY in Stock</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>195</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>352</width>
+         <height>350</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Default Values</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Depths</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Start Depth</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="setupStartDepthExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Final Depth</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="setupFinalDepthExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Step Down</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="setupStepDownExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Heights</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Safe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Clearance</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="2">
+            <widget class="QLineEdit" name="setupSafeHeightExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" colspan="2">
+            <widget class="QLineEdit" name="setupClearanceHeightExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Offset</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" colspan="2">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>Expression</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="orientGroup">
-      <property name="title">
-       <string>Orientation</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="orientXAxis">
-         <property name="text">
-          <string>X-Axis</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="orientYAxis">
-         <property name="text">
-          <string>Y-Axis</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="orientZAxis">
-         <property name="text">
-          <string>Z-Axis</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="alignGroup">
-      <property name="title">
-       <string>Alignment</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="setOrigin">
-         <property name="text">
-          <string>Set Origin</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="moveToOrigin">
-         <property name="text">
-          <string>Move to Origin</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="centerInStock">
-         <property name="text">
-          <string>Center in Stock</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QPushButton" name="centerInStockXY">
-         <property name="text">
-          <string>XY in Stock</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>195</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>
@@ -418,90 +626,192 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QFrame" name="frame_2">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+     <widget class="QToolBox" name="toolBox">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
-       <item>
-        <widget class="QTableWidget" name="toolControllerList">
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Name</string>
+      <widget class="QWidget" name="page">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>412</width>
+         <height>549</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Tools</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QFrame" name="frame_2">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Nr.</string>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
           </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Feed</string>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QTableWidget" name="toolControllerList">
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Nr.</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Feed</string>
+              </property>
+              <property name="icon">
+               <iconset theme="object-flip-horizontal">
+                <normaloff/>
+               </iconset>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Feed</string>
+              </property>
+              <property name="icon">
+               <iconset theme="object-flip-vertical">
+                <normaloff/>
+               </iconset>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Spindle</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_4" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPushButton" name="toolControllerEdit">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="toolControllerAdd">
+                <property name="text">
+                 <string>Add</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="toolControllerDelete">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>244</width>
+         <height>145</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Default Values</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Rapid Speeds</string>
           </property>
-          <property name="icon">
-           <iconset theme="object-flip-horizontal">
-            <normaloff/>
-           </iconset>
+          <layout class="QFormLayout" name="formLayout_2">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Horizontal</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Vertical</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidVertical">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigne to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Feed</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
           </property>
-          <property name="icon">
-           <iconset theme="object-flip-vertical">
-            <normaloff/>
-           </iconset>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Spindle</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="toolControllerEdit">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Edit</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="toolControllerAdd">
-            <property name="text">
-             <string>Add</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="toolControllerDelete">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Remove</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -635,12 +945,23 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWidget" name="tabOpDefaults">
+   <attribute name="title">
+    <string>Op Defaults</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_11"/>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>gui_quantityspinbox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

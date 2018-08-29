@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
+    <width>500</width>
     <height>721</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabWidgetPage1" native="true">
+     <widget class="QWidget" name="tabWidgetPage1">
       <attribute name="title">
        <string>Operation</string>
       </attribute>
@@ -38,7 +38,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="startDepthExpr">
+           <widget class="QLineEdit" name="setupStartDepthExpr">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -52,7 +52,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="finalDepthExpr">
+           <widget class="QLineEdit" name="setupFinalDepthExpr">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -66,7 +66,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="stepDownExpr">
+           <widget class="QLineEdit" name="setupStepDownExpr">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -96,21 +96,21 @@
            </widget>
           </item>
           <item row="3" column="1" colspan="2">
-           <widget class="QLineEdit" name="safeHeightExpr">
+           <widget class="QLineEdit" name="setupSafeHeightExpr">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1" colspan="2">
-           <widget class="QLineEdit" name="clearanceHeightExpr">
+           <widget class="QLineEdit" name="setupClearanceHeightExpr">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="Gui::QuantitySpinBox" name="clearanceHeightOffs">
+           <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -137,7 +137,7 @@
            </widget>
           </item>
           <item row="3" column="3">
-           <widget class="Gui::QuantitySpinBox" name="safeHeightOffs">
+           <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -161,7 +161,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabWidgetPage2" native="true">
+     <widget class="QWidget" name="tabWidgetPage2">
       <attribute name="title">
        <string>Tool Controller</string>
       </attribute>
@@ -180,7 +180,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="Gui::QuantitySpinBox" name="rapidHorizontal">
+           <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -200,7 +200,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::QuantitySpinBox" name="rapidVertical">
+           <widget class="Gui::QuantitySpinBox" name="setupRapidVertical">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
