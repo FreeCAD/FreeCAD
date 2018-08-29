@@ -106,7 +106,7 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
     static bool init = false;
     static bool vboAvailable = false;
     if (!init) {
-        vboAvailable = Gui::OpenGLBuffer::isVBOSupported();
+        vboAvailable = Gui::OpenGLBuffer::isVBOSupported(action->getCacheContext());
         if (!vboAvailable) {
             SoDebugError::postInfo("MeshRenderer",
                                    "GL_ARB_vertex_buffer_object extension not supported");
