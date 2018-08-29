@@ -1413,7 +1413,7 @@ namespace AdaptivePath {
 				toClearPath.clear();
 				Perf_ExpandCleared.Stop();
 			}
-			if(cumulativeCutArea>MIN_CUT_AREA_FACTOR*stepScaled*stepOverFactor*referenceCutArea) {
+			if(cumulativeCutArea>tolerance*MIN_CUT_AREA_FACTOR*stepScaled*stepOverFactor*referenceCutArea) {
 				Path cleaned;
 				CleanPath(passToolPath,cleaned,CLEAN_PATH_TOLERANCE);
 				total_output_points+=cleaned.size();
