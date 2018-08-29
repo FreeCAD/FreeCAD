@@ -66,7 +66,7 @@ def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
 
 def isResourceClone(obj, propLink, resourceName):
-    if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
+    if hasattr(propLink, 'PathResource') and (resourceName is None or resourceName == propLink.PathResource):
         return True
     return False
 
@@ -175,7 +175,7 @@ class ObjectJob:
 
         # base doesn't depend on anything inside job
         for base in obj.Model.Group:
-            PathLog.debug("taking down base " % base.Label)
+            PathLog.debug("taking down base %s" % base.Label)
             if isResourceClone(obj, base, 'Model'):
                 PathUtil.clearExpressionEngine(base)
                 doc.removeObject(base.Name)
