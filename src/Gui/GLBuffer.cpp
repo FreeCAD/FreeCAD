@@ -71,8 +71,11 @@ OpenGLBuffer::~OpenGLBuffer()
  * When calling this function there must be a current OpenGL context.
  * \return
  */
-bool OpenGLBuffer::isVBOSupported()
+bool OpenGLBuffer::isVBOSupported(uint32_t ctx)
 {
+    auto glue = cc_glglue_instance(ctx);
+    if (!glue || !cc_glglue_has_vertex_buffer_object(glue))
+        return false;
     const GLubyte * str = glGetString(GL_EXTENSIONS);
     if (!str)
         return false;
