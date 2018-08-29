@@ -259,14 +259,17 @@ def Execute(op,obj):
 
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
-                stockBB = op.stock.Shape.BoundBox
-                v=[]
-                v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
-                v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMin,0))
-                v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMax,0))
-                v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMax,0))
-                v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
-                pathArray.append([v])
+                if op.stock.StockType == "CreateCylinder":
+                     pathArray.append([discretize(op.stock.Shape.Edges[0])])
+                else:
+                    stockBB = op.stock.Shape.BoundBox
+                    v=[]
+                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
+                    v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMin,0))
+                    v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMax,0))
+                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMax,0))
+                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
+                    pathArray.append([v])
                 if not obj.ProcessHoles: nestingLimit = 2
             elif not obj.ProcessHoles: nestingLimit = 1
             opType = area.AdaptiveOperationType.Clearing
