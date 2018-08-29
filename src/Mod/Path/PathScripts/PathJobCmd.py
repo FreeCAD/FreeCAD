@@ -40,20 +40,27 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class DlgJobCreate:
+    DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
+        self.items = []
+
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            selected = sel[0].Label
+            selected = [s.Label for s in sel]
         else:
             selected = None
         index = 0
-        for base in PathJob.ObjectJob.baseCandidates():
-            if base.Label == selected:
-                index = self.dialog.cbModel.count()
-            self.dialog.cbModel.addItem(base.Label)
-        self.dialog.cbModel.setCurrentIndex(index)
+        for base in sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label):
+            item = QtGui.QListWidgetItem(base.Label)
+            item.setData(self.DataObject, base)
+            item.setCheckState(QtCore.Qt.CheckState.Checked if base.Label in selected else QtCore.Qt.CheckState.Unchecked)
+            if PathUtil.isSolid(base):
+                self.dialog.solidList.addItem(item)
+            else:
+                self.dialog.twoDList.addItem(item)
+            self.items.append(item)
 
         templateFiles = []
         for path in PathPreferences.searchPaths():
@@ -72,12 +79,12 @@ class DlgJobCreate:
             template[name] = tFile
         selectTemplate = PathPreferences.defaultJobTemplate()
         index = 0
-        self.dialog.cbTemplate.addItem('<none>', '')
+        self.dialog.jobTemplate.addItem('<none>', '')
         for name in sorted(template.keys()):
             if template[name] == selectTemplate:
-                index = self.dialog.cbTemplate.count()
-            self.dialog.cbTemplate.addItem(name, template[name])
-        self.dialog.cbTemplate.setCurrentIndex(index)
+                index = self.dialog.jobTemplate.count()
+            self.dialog.jobTemplate.addItem(name, template[name])
+        self.dialog.jobTemplate.setCurrentIndex(index)
 
     def templateFilesIn(self, path):
         '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
@@ -85,14 +92,13 @@ class DlgJobCreate:
         PathLog.track(path)
         return glob.glob(path + '/job_*.json')
 
-    def getModel(self):
-        '''answer the base model selected for the job'''
-        label = self.dialog.cbModel.currentText()
-        return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
+    def getModels(self):
+        '''answer the base models selected for the job'''
+        return [item.data(self.DataObject) for item in self.items if item.checkState() == QtCore.Qt.CheckState.Checked]
 
     def getTemplate(self):
         '''answer the file name of the template to be assigned'''
-        return self.dialog.cbTemplate.itemData(self.dialog.cbTemplate.currentIndex())
+        return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
 
     def exec_(self):
         return self.dialog.exec_()
@@ -116,8 +122,10 @@ class CommandJobCreate:
     def Activated(self):
         dialog = DlgJobCreate()
         if dialog.exec_() == 1:
-            self.Execute(dialog.getModel(), dialog.getTemplate())
-            FreeCAD.ActiveDocument.recompute()
+            models = dialog.getModels()
+            if models:
+                self.Execute(models, dialog.getTemplate())
+                FreeCAD.ActiveDocument.recompute()
 
     @classmethod
     def Execute(cls, base, template):
@@ -126,7 +134,7 @@ class CommandJobCreate:
             template = "'%s'" % template
         else:
             template = 'None'
-        FreeCADGui.doCommand('PathScripts.PathJobGui.Create(App.ActiveDocument.%s, %s)' % (base.Name, template))
+        FreeCADGui.doCommand('PathScripts.PathJobGui.Create(%s, %s)' % ([o.Name for o in base], template))
 
 
 class DlgJobTemplateExport:

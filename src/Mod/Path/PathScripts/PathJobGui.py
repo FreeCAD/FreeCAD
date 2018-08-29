@@ -139,8 +139,8 @@ class ViewProvider:
 
     def editObject(self, obj):
         if obj:
-            if obj == self.obj.Base:
-                return self.openTaskPanel('Base')
+            if obj in self.obj.Model.Group:
+                return self.openTaskPanel('Model')
             if obj == self.obj.Stock:
                 return self.openTaskPanel('Stock')
             PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
@@ -155,8 +155,7 @@ class ViewProvider:
     def claimChildren(self):
         children = self.obj.ToolController
         children.append(self.obj.Operations)
-        if self.obj.Base:
-            children.append(self.obj.Base)
+        children.append(self.obj.Model)
         if self.obj.Stock:
             children.append(self.obj.Stock)
         if hasattr(self.obj, 'SetupSheet'):
@@ -172,44 +171,65 @@ class ViewProvider:
     def updateData(self, obj, prop):
         PathLog.track(obj.Label, prop)
         # make sure the resource view providers are setup properly
-        if prop == 'Base' and self.obj.Base and self.obj.Base.ViewObject and self.obj.Base.ViewObject.Proxy:
-            if not PathJob.isArchPanelSheet(self.obj.Base):
-                self.obj.Base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
+        if prop == 'Model':
+            for base in self.obj.Model.Group:
+                if base.ViewObject and base.ViewObject.Proxy and not PathJob.isArchPanelSheet(base):
+                    base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
     def baseObjectViewObject(self, obj):
-        return PathUtil.getPublicObject(self.obj.Proxy.baseObject(obj)).ViewObject
+        return [PathUtil.getPublicObject(base).ViewObject for base in self.obj.Proxy.baseObjects(obj)]
 
     def baseObjectSaveVisibility(self, obj):
         baseVO = self.baseObjectViewObject(self.obj)
-        if baseVO:
-            self.baseOrigVisibility = baseVO.Visibility
-            baseVO.Visibility = False
-        if obj.Base and obj.Base.ViewObject:
-            obj.Base.ViewObject.Visibility = True
+        baseOrigVisibility = []
+        for vo in baseVO:
+            baseOrigVisibility = vo.Visibility
+            vo.Visibility = False
+        self.baseOrigVisibility = baseOrigVisibility
+
+        for base in obj.Model.Group:
+            if base.ViewObject:
+                base.ViewObject.Visibility = True
 
     def baseObjectRestoreVisibility(self, obj):
         baseVO = self.baseObjectViewObject(self.obj)
-        if baseVO:
-            baseVO.Visibility = self.baseOrigVisibility
+        if self.baseOrigVisibility:
+            for vo, visibility in zip(baseVO, self.baseOrigVisibility):
+                vo.Visibility = visibility
+        else:
+            for vo in baseVO:
+                vo.Visibility = False
+
+    def setupModelVisibility(self, obj):
+        baseVisibility = []
+        origVisibility = []
+        for base in obj.Model.Group:
+            if base.ViewObject:
+                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
+                PathLog.track(obj.Label, base.Label, orig.Label)
+                origVisibility.append(orig.ViewObject.Visibility)
+                orig.ViewObject.Visibility = False
+                baseVisibility.append(base.ViewObject.Visibility)
+                base.ViewObject.Visibility = True
+        self.baseVisibility = baseVisibility
+        self.baseOrigVisibility = origVisibility
+
 
     def setupEditVisibility(self, obj):
-        self.baseVisibility = False
-        self.baseOrigVisibility = False
-        if obj.Base and obj.Base.ViewObject:
-            self.baseVisibility = obj.Base.ViewObject.Visibility
-            self.baseObjectSaveVisibility(obj)
-
+        self.setupModelVisibility(obj)
         self.stockVisibility = False
         if obj.Stock and obj.Stock.ViewObject:
             self.stockVisibility = obj.Stock.ViewObject.Visibility
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
-        if obj.Base and obj.Base.ViewObject:
-            obj.Base.ViewObject.Visibility = self.baseVisibility
-        self.baseObjectRestoreVisibility(obj)
+        for base, baseVisibility, origVisibility in zip(obj.Model.Group, self.baseVisibility, self.baseOrigVisibility):
+            if base.ViewObject:
+                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
+                base.ViewObject.Visibility = baseVisibility
+                orig.ViewObject.Visibility = origVisibility
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
@@ -422,8 +442,9 @@ class StockFromExistingEdit(StockEdit):
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        if obj.Base in solids and PathJob.isResourceClone(obj, 'Base'):
-            solids.remove(obj.Base)
+        for base in obj.Model.Group:
+            if base in solids and PathJob.isResourceClone(obj, base, 'Model'):
+                solids.remove(base)
         if obj.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
             solids.remove(obj.Stock)
@@ -474,12 +495,8 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        base = self.obj.Base if PathJob.isResourceClone(self.obj, 'Base') else None
-        stock = self.obj.Stock
-        for o in PathJob.ObjectJob.baseCandidates():
-            if o != base and o != stock:
-                self.form.jobModel.addItem(o.Label, o)
-        self.selectComboBoxText(self.form.jobModel, self.obj.Proxy.baseObject(self.obj).Label)
+        for base in self.obj.Model.Group:
+            self.form.jobModel.addItem(base.Label)
 
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
@@ -554,13 +571,13 @@ class TaskPanel:
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
-            selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
-            if self.obj.Proxy.baseObject(self.obj) != selObj:
-                self.vproxy.baseObjectRestoreVisibility(self.obj)
-                if PathJob.isResourceClone(self.obj, 'Base'):
-                    self.obj.Document.removeObject(self.obj.Base.Name)
-                self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
-                self.vproxy.baseObjectSaveVisibility(self.obj)
+            #selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
+            #if self.obj.Proxy.baseObject(self.obj) != selObj:
+            #    self.vproxy.baseObjectRestoreVisibility(self.obj)
+            #    if PathJob.isResourceClone(self.obj, 'Model'):
+            #        self.obj.Document.removeObject(self.obj.Base.Name)
+            #    self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
+            #    self.vproxy.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
@@ -654,14 +671,9 @@ class TaskPanel:
             item.setData(self.DataObject, child)
             self.form.operationsList.addItem(item)
 
-        baseindex = -1
-        if self.obj.Base:
-            baseindex = self.form.jobModel.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
-        else:
-            for o in FreeCADGui.Selection.getCompleteSelection():
-                baseindex = self.form.jobModel.findText(o.Label, QtCore.Qt.MatchFixedString)
-        if baseindex >= 0:
-            self.form.jobModel.setCurrentIndex(baseindex)
+        self.form.jobModel.clear()
+        for base in self.obj.Model.Group:
+            self.form.jobModel.addItem(base.Label)
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
@@ -955,14 +967,10 @@ class TaskPanel:
             self.form.setOrigin.setEnabled(False)
             self.form.moveToOrigin.setEnabled(False)
 
-        if len(sel) == 1 and sel[0].Object == self.obj.Base:
+        if len(sel) == 1 and sel[0].Object in self.obj.Model.Group:
             self.form.centerInStock.setEnabled(True)
             self.form.centerInStockXY.setEnabled(True)
         else:
-            if len(sel) == 1 and self.obj.Base:
-                PathLog.debug("sel = %s / %s" % (sel[0].Object.Label, self.obj.Base.Label))
-            else:
-                PathLog.debug("sel len = %d" % len(sel))
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
 
@@ -983,7 +991,7 @@ class TaskPanel:
 
         # Info
         self.form.jobLabel.editingFinished.connect(self.getFields)
-        self.form.jobModel.currentIndexChanged.connect(self.getFields)
+        #self.form.jobModelEdit.clicked.connect(self.jobModelEdit)
 
         # Post Processor
         self.form.postProcessor.currentIndexChanged.connect(self.getFields)
@@ -1071,7 +1079,7 @@ def Create(base, template=None):
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
     except Exception as exc:
-        PathLog.error(sys.exc_info())
+        PathLog.error(exc)
         traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
 
