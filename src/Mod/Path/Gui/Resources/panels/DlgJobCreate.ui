@@ -67,16 +67,6 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab_2">
-            <attribute name="title">
-             <string>Base Models</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QListWidget" name="modelList"/>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
