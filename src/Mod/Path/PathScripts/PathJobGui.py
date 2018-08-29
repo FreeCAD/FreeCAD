@@ -27,7 +27,7 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
-import PathScripts.PathJobCmd as PathJobCmd
+import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
@@ -171,36 +171,12 @@ class ViewProvider:
     def updateData(self, obj, prop):
         PathLog.track(obj.Label, prop)
         # make sure the resource view providers are setup properly
-        if prop == 'Model':
+        if prop == 'Model' and self.obj.Model:
             for base in self.obj.Model.Group:
                 if base.ViewObject and base.ViewObject.Proxy and not PathJob.isArchPanelSheet(base):
                     base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
-
-    def baseObjectViewObject(self, obj):
-        return [PathUtil.getPublicObject(base).ViewObject for base in self.obj.Proxy.baseObjects(obj)]
-
-    def baseObjectSaveVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        baseOrigVisibility = []
-        for vo in baseVO:
-            baseOrigVisibility = vo.Visibility
-            vo.Visibility = False
-        self.baseOrigVisibility = baseOrigVisibility
-
-        for base in obj.Model.Group:
-            if base.ViewObject:
-                base.ViewObject.Visibility = True
-
-    def baseObjectRestoreVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        if self.baseOrigVisibility:
-            for vo, visibility in zip(baseVO, self.baseOrigVisibility):
-                vo.Visibility = visibility
-        else:
-            for vo in baseVO:
-                vo.Visibility = False
 
     def setupModelVisibility(self, obj):
         baseVisibility = []
@@ -216,6 +192,12 @@ class ViewProvider:
         self.baseVisibility = baseVisibility
         self.baseOrigVisibility = origVisibility
 
+    def resetModelVisibility(self, obj):
+        for base, baseVisibility, origVisibility in zip(obj.Model.Group, self.baseVisibility, self.baseOrigVisibility):
+            if base.ViewObject:
+                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
+                base.ViewObject.Visibility = baseVisibility
+                orig.ViewObject.Visibility = origVisibility
 
     def setupEditVisibility(self, obj):
         self.setupModelVisibility(obj)
@@ -225,11 +207,7 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
-        for base, baseVisibility, origVisibility in zip(obj.Model.Group, self.baseVisibility, self.baseOrigVisibility):
-            if base.ViewObject:
-                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
-                base.ViewObject.Visibility = baseVisibility
-                orig.ViewObject.Visibility = origVisibility
+        self.resetModelVisibility(obj)
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
@@ -974,6 +952,15 @@ class TaskPanel:
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
 
+    def jobModelEdit(self):
+        dialog = PathJobDlg.JobCreate()
+        dialog.setupTitle(translate("Path_Job", "Model Selection"))
+        dialog.setupModel(self.obj)
+        if dialog.exec_() == 1:
+            models = dialog.getModels()
+            if models:
+                PathLog.error("shouldn't you be doing something here")
+
     def tabPageChanged(self, index):
         if index == 0:
             # update the template with potential changes
@@ -984,14 +971,12 @@ class TaskPanel:
             self.template.updateUI()
 
     def setupUi(self, activate):
-        self.setupGlobal.setupUi()
-        self.setupOps.setupUi()
         self.updateStockEditor(-1)
         self.setFields()
 
         # Info
         self.form.jobLabel.editingFinished.connect(self.getFields)
-        #self.form.jobModelEdit.clicked.connect(self.jobModelEdit)
+        self.form.jobModelEdit.clicked.connect(self.jobModelEdit)
 
         # Post Processor
         self.form.postProcessor.currentIndexChanged.connect(self.getFields)
