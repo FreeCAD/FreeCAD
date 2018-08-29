@@ -164,6 +164,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
     if not allOn:
             objs = Draft.removeHidden(objs)
+
     # separate spaces and Draft objects
     spaces = []
     nonspaces = []
@@ -196,73 +197,95 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     fillpattern += ' x="0" y="0" width="10" height="10">'
     fillpattern += '<g>'
     fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    svgLineColor = Draft.getrgb(lineColor)
     svg = ''
+
+    # reading cached version
+    svgcache = None
+    if hasattr(section.Proxy,"svgcache") and section.Proxy.svgcache:
+        svgcache = section.Proxy.svgcache[0]
+        if section.Proxy.svgcache[1] != renderMode:
+            svgcache = None
+        if section.Proxy.svgcache[2] != showHidden:
+            svgcache = None
+        if section.Proxy.svgcache[3] != showFill:
+            svgcache = None
 
     # generating SVG
     if renderMode in ["Solid",1]:
-        # render using the Arch Vector Renderer
-        import ArchVRM, WorkingPlane
-        wp = WorkingPlane.plane()
-        wp.setFromPlacement(section.Placement)
-        #wp.inverse()
-        render = ArchVRM.Renderer()
-        render.setWorkingPlane(wp)
-        render.addObjects(objs)
-        if showHidden:
-            render.cut(section.Shape,showHidden)
-        else:
-            render.cut(section.Shape)
-        svg += '<g transform="scale(1,-1)">\n'
-        svg += render.getViewSVG(linewidth=svgLineWidth)
-        svg += fillpattern
-        svg += render.getSectionSVG(linewidth=svgCutLineWidth,
-                                    fillpattern="sectionfill")
-        if showHidden:
-            svg += render.getHiddenSVG(linewidth=svgLineWidth)
-        svg += '</g>\n'
-        # print(render.info())
-
+        if not svgcache:
+            svgcache = ''
+            # render using the Arch Vector Renderer
+            import ArchVRM, WorkingPlane
+            wp = WorkingPlane.plane()
+            wp.setFromPlacement(section.Placement)
+            #wp.inverse()
+            render = ArchVRM.Renderer()
+            render.setWorkingPlane(wp)
+            render.addObjects(objs)
+            if showHidden:
+                render.cut(section.Shape,showHidden)
+            else:
+                render.cut(section.Shape)
+            svgcache += '<g transform="scale(1,-1)">\n'
+            svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
+            svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",
+                                        fillpattern="sectionfill")
+            if showHidden:
+                svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
+            svgcache += '</g>\n'
+            # print(render.info())
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
-        # render using the Drawing module
-        import Drawing, Part
-        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
-        if shapes:
-            baseshape = Part.makeCompound(shapes)
-            style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': svgLineWidth}
-            svg += Drawing.projectToSVG(
-                baseshape, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
-        if hshapes:
-            hshapes = Part.makeCompound(hshapes)
-            style = {'stroke':           Draft.getrgb(lineColor),
-                     'stroke-width':     svgLineWidth,
-                     'stroke-dasharray': svgHiddenPattern}
-            svg += Drawing.projectToSVG(
-                hshapes, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
-        if sshapes:
-            if showFill:
-                #svg += fillpattern
-                svg += '<g transform="rotate(180)">\n'
-                for s in sshapes:
-                    if s.Edges:
-                        #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
-                        # temporarily disabling fill patterns
-                        svg += Draft.getSVG(s, direction=direction.negative(),
-                                           linewidth=0,
-                                           fillstyle=Draft.getrgb(fillColor),
-                                           color=lineColor)
-                svg += "</g>\n"
-            sshapes = Part.makeCompound(sshapes)
-            style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': svgCutLineWidth}
-            svg += Drawing.projectToSVG(
-                sshapes, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
+        if not svgcache:
+            svgcache = ""
+            # render using the Drawing module
+            import Drawing, Part
+            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+            if shapes:
+                baseshape = Part.makeCompound(shapes)
+                style = {'stroke':       "SVGLINECOLOR",
+                         'stroke-width': "SVGLINEWIDTH"}
+                svgcache += Drawing.projectToSVG(
+                    baseshape, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            if hshapes:
+                hshapes = Part.makeCompound(hshapes)
+                style = {'stroke':           "SVGLINECOLOR",
+                         'stroke-width':     "SVGLINEWIDTH",
+                         'stroke-dasharray': "SVGHIDDENPATTERN"}
+                svgcache += Drawing.projectToSVG(
+                    hshapes, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            if sshapes:
+                if showFill:
+                    #svgcache += fillpattern
+                    svgcache += '<g transform="rotate(180)">\n'
+                    for s in sshapes:
+                        if s.Edges:
+                            #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                            # temporarily disabling fill patterns
+                            svgcache += Draft.getSVG(s, direction=direction.negative(),
+                                linewidth=0,
+                                fillstyle=Draft.getrgb(fillColor),
+                                color=lineColor)
+                    svgcache += "</g>\n"
+                sshapes = Part.makeCompound(sshapes)
+                style = {'stroke':       "SVGLINECOLOR",
+                         'stroke-width': "SVGCUTLINEWIDTH"}
+                svgcache += Drawing.projectToSVG(
+                    sshapes, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
+    svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
+    svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
+    svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
+    svgcache = svgcache.replace("SVGCUTLINEWIDTH",svgCutLineWidth)
+    svg += svgcache
 
     if drafts:
         if not techdraw:
@@ -443,7 +466,9 @@ class _SectionPlane:
 
     def onChanged(self,obj,prop):
 
-        pass
+        # clean svg cache if needed
+        if prop in ["Placement","Objects","OnlySolids"]:
+            self.svgcache = None
 
     def getNormal(self,obj):
 
