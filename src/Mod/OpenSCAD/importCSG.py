@@ -1156,9 +1156,16 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
+        print("pp")
         print(pp)
         w = Part.makePolygon(pp)
-        f = Part.Face(w)
+        print("w")
+        print(w)
+        try:
+           f = Part.Face(w)
+        except:
+            secWireList = w.Edges[:]
+            f = Part.makeFilledFace(Part.__sortEdges__(secWireList))
         #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
