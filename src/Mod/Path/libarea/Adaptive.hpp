@@ -115,7 +115,7 @@ namespace AdaptivePath {
 			const double FINISHING_CLEAN_PATH_TOLERANCE = 0.1;
 
 			// used for filtering out of insignificant cuts:
-			const double MIN_CUT_AREA_FACTOR = 0.02; // influences filtering of cuts that with cumulative area below threshold, reasonable value is between 0.01 and 0.1
+			const double MIN_CUT_AREA_FACTOR = 0.1; // influences filtering of cuts that with cumulative area below threshold, reasonable value is between 0.1 and 1
 
 			const long PASSES_LIMIT = __LONG_MAX__; // limit used while debugging
 			const long POINTS_PER_PASS_LIMIT =  __LONG_MAX__; // limit used while debugging
