@@ -31,6 +31,7 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
@@ -489,6 +490,9 @@ class TaskPanel:
         self.stockCreateCylinder = None
         self.stockEdit = None
 
+        self.setupGlobal = PathSetupSheetGui.GlobalEditor(self.obj.SetupSheet, self.form)
+        self.setupOps = PathSetupSheetGui.OpsDefaultEditor(self.obj.SetupSheet, self.form.tabOpDefaults)
+
     def preCleanup(self):
         PathLog.track()
         FreeCADGui.Selection.removeObserver(self)
@@ -499,12 +503,16 @@ class TaskPanel:
         PathLog.track()
         self.preCleanup()
         self.getFields()
+        self.setupGlobal.accept()
+        self.setupOps.accept()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
 
     def reject(self, resetEdit=True):
         PathLog.track()
         self.preCleanup()
+        self.setupGlobal.reject()
+        self.setupOps.reject()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             PathLog.info("Uncreate Job")
@@ -556,6 +564,9 @@ class TaskPanel:
             self.stockEdit.getFields(self.obj)
 
             self.obj.Proxy.execute(self.obj)
+
+        self.setupGlobal.getFields()
+        self.setupOps.getFields()
 
     def selectComboBoxText(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -652,6 +663,8 @@ class TaskPanel:
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
+        self.setupGlobal.setFields()
+        self.setupOps.setFields()
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -948,6 +961,8 @@ class TaskPanel:
 
 
     def setupUi(self, activate):
+        self.setupGlobal.setupUi()
+        self.setupOps.setupUi()
         self.updateStockEditor(-1)
         self.setFields()
 
@@ -1035,6 +1050,6 @@ def Create(base, template=None):
         return obj
     except Exception as exc:
         PathLog.error(sys.exc_info())
-        #traceback.print_exc(exc)
+        traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
 

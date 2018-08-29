@@ -131,7 +131,7 @@ class OpTaskPanel:
         self.obj = obj
         self.op = op
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SetupOp.ui")
-        self.form.setWindowTitle(self.name)
+        self.form.setWindowTitle("Op {}".format(self.name))
         self.props = sorted(op.properties())
         self.prototype = op.prototype(name)
 
@@ -200,39 +200,60 @@ class OpTaskPanel:
         return propertiesCreatedRemoved
 
 
-class TaskPanel:
-    DataIds = QtCore.Qt.ItemDataRole.UserRole
-    DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
+class OpsDefaultEditor:
 
-    def __init__(self, vobj):
-        self.vobj = vobj
-        self.obj = vobj.Object
-        PathLog.track(self.obj.Label)
-        self.globalForm = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
+    def __init__(self, obj, parent):
+        self.obj = obj
         self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name)
-        self.form = [self.globalForm] + [op.form for op in self.ops]
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_SetupSheet", "Edit SetupSheet"))
+        if parent:
+            self.toolbox = QtGui.QToolBox(parent)
+            for op in self.ops:
+                self.toolbox.addItem(op.form, op.form.windowTitle())
+            self.toolbox.setParent(parent)
+            parent.layout().addWidget(self.toolbox)
 
     def reject(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        pass
 
     def accept(self):
-        self.getFields()
-        [op.accept() for op in self.ops]
         if any([op.accept() for op in self.ops]):
             PathLog.track()
             #sel = FreeCADGui.Selection.getSelection()
             #FreeCADGui.Selection.clearSelection()
             #for o in sel:
             #    FreeCADGui.Selection.addSelection(o)
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        #FreeCADGui.Selection.removeObserver(self.s)
-        #FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        pass
+
+    def updateUI(self):
+        pass
+
+    def updateModel(self, recomp = True):
+        PathLog.track()
+        self.getFields()
+        self.updateUI()
+        if recomp:
+            FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.updateUI()
+
+    def setupUi(self):
+        for op in self.ops:
+            op.setupUi()
+
+class GlobalEditor(object):
+
+    def __init__(self, obj, form):
+        self.form = form
+        self.obj = obj
+
+    def reject(self):
+        pass
+
+    def accept(self):
+        self.getFields()
 
     def getFields(self):
         def updateExpression(name, widget):
@@ -241,11 +262,11 @@ class TaskPanel:
             if val != value:
                 PathGui.setProperty(self.obj, name, value)
 
-        updateExpression('StartDepthExpression',        self.globalForm.startDepthExpr)
-        updateExpression('FinalDepthExpression',        self.globalForm.finalDepthExpr)
-        updateExpression('StepDownExpression',          self.globalForm.stepDownExpr)
-        updateExpression('ClearanceHeightExpression',   self.globalForm.clearanceHeightExpr)
-        updateExpression('SafeHeightExpression',        self.globalForm.safeHeightExpr)
+        updateExpression('StartDepthExpression',        self.form.setupStartDepthExpr)
+        updateExpression('FinalDepthExpression',        self.form.setupFinalDepthExpr)
+        updateExpression('StepDownExpression',          self.form.setupStepDownExpr)
+        updateExpression('ClearanceHeightExpression',   self.form.setupClearanceHeightExpr)
+        updateExpression('SafeHeightExpression',        self.form.setupSafeHeightExpr)
         self.clearanceHeightOffs.updateProperty()
         self.safeHeightOffs.updateProperty()
         self.rapidVertical.updateProperty()
@@ -253,43 +274,83 @@ class TaskPanel:
 
     def updateUI(self):
         PathLog.track()
-        self.globalForm.startDepthExpr.setText(       self.obj.StartDepthExpression)
-        self.globalForm.finalDepthExpr.setText(       self.obj.FinalDepthExpression)
-        self.globalForm.stepDownExpr.setText(         self.obj.StepDownExpression)
-        self.globalForm.clearanceHeightExpr.setText(  self.obj.ClearanceHeightExpression)
-        self.globalForm.safeHeightExpr.setText(       self.obj.SafeHeightExpression)
+        self.form.setupStartDepthExpr.setText(       self.obj.StartDepthExpression)
+        self.form.setupFinalDepthExpr.setText(       self.obj.FinalDepthExpression)
+        self.form.setupStepDownExpr.setText(         self.obj.StepDownExpression)
+        self.form.setupClearanceHeightExpr.setText(  self.obj.ClearanceHeightExpression)
+        self.form.setupSafeHeightExpr.setText(       self.obj.SafeHeightExpression)
         self.clearanceHeightOffs.updateSpinBox()
         self.safeHeightOffs.updateSpinBox()
         self.rapidVertical.updateSpinBox()
         self.rapidHorizontal.updateSpinBox()
 
-    def updateModel(self):
+    def updateModel(self, recomp = True):
         PathLog.track()
         self.getFields()
         self.updateUI()
-        FreeCAD.ActiveDocument.recompute()
-
-    def setupCombo(self, combo, text, items):
-        if items and len(items) > 0:
-            for i in range(combo.count(), -1, -1):
-                combo.removeItem(i)
-            combo.addItems(items)
-        index = combo.findText(text, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            combo.setCurrentIndex(index)
+        if recomp:
+            FreeCAD.ActiveDocument.recompute()
 
     def setFields(self):
         self.updateUI()
 
     def setupUi(self):
-        self.clearanceHeightOffs = PathGui.QuantitySpinBox(self.globalForm.clearanceHeightOffs, self.obj, 'ClearanceHeightOffset')
-        self.safeHeightOffs = PathGui.QuantitySpinBox(self.globalForm.safeHeightOffs, self.obj, 'SafeHeightOffset')
-        self.rapidHorizontal = PathGui.QuantitySpinBox(self.globalForm.rapidHorizontal, self.obj, 'HorizRapid')
-        self.rapidVertical = PathGui.QuantitySpinBox(self.globalForm.rapidVertical, self.obj, 'VertRapid')
+        self.clearanceHeightOffs = PathGui.QuantitySpinBox(self.form.setupClearanceHeightOffs, self.obj, 'ClearanceHeightOffset')
+        self.safeHeightOffs = PathGui.QuantitySpinBox(self.form.setupSafeHeightOffs, self.obj, 'SafeHeightOffset')
+        self.rapidHorizontal = PathGui.QuantitySpinBox(self.form.setupRapidHorizontal, self.obj, 'HorizRapid')
+        self.rapidVertical = PathGui.QuantitySpinBox(self.form.setupRapidVertical, self.obj, 'VertRapid')
         self.setFields()
 
-        for op in self.ops:
-            op.setupUi()
+class TaskPanel:
+
+    def __init__(self, vobj):
+        self.vobj = vobj
+        self.obj = vobj.Object
+        PathLog.track(self.obj.Label)
+        self.globalForm = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
+        self.globalEditor = GlobalEditor(self.obj, self.globalForm)
+        self.opsEditor = OpsDefaultEditor(self.obj, None)
+        self.form = [op.form for op in self.opsEditor.ops] + [self.globalForm]
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_SetupSheet", "Edit SetupSheet"))
+
+    def reject(self):
+        self.globalEditor.reject()
+        self.opsEditor.reject()
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def accept(self):
+        self.globalEditor.accept()
+        self.opsEditor.accept()
+
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        #FreeCADGui.Selection.removeObserver(self.s)
+        #FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        self.globalEditor.getFields()
+        self.opsEditor.getFields()
+
+    def updateUI(self):
+        self.globalEditor.updateUI()
+        self.opsEditor.updateUI()
+
+    def updateModel(self):
+        self.globalEditor.updateModel(False)
+        self.opsEditor.updateModel(False)
+        FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.globalEditor.setFields()
+        self.opsEditor.setFields()
+
+    def setupUi(self):
+        self.globalEditor.setupUi()
+        self.opsEditor.setupUi()
 
 def Create(name = 'SetupSheet'):
     '''Create(name = 'SetupSheet') ... creates a new setup sheet'''
