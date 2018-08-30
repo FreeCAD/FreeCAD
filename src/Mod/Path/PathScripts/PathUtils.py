@@ -130,6 +130,12 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     tooldiameter=float
     """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
+    if list == type(obj):
+        for shape in obj:
+            if isDrillable(shape, candidate, tooldiameter, includePartials):
+                return (True, shape)
+        return (False, None)
+
     drillable = False
     try:
         if candidate.ShapeType == 'Face':

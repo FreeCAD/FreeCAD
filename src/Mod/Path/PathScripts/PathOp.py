@@ -332,12 +332,12 @@ class ObjectOp(object):
             if not ignoreErrors:
                 PathLog.error(translate("Path", "No parent job found for operation."))
             return False
-        if not job.Base:
+        if not job.Model.Group:
             if not ignoreErrors:
                 PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
             return False
         self.job = job
-        self.baseobject = job.Base
+        self.model = job.Model.Group
         self.stock = job.Stock
         return True
 
@@ -385,7 +385,7 @@ class ObjectOp(object):
             # clearing with stock boundaries
             job = PathUtils.findParentJob(obj)
             zmax = stockBB.ZMax
-            zmin = job.Base.Shape.BoundBox.ZMax
+            zmin = job.Proxy.modelBoundBox(job).ZMax
 
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
@@ -419,7 +419,7 @@ class ObjectOp(object):
         Verifies that the operation is assigned to a job and that the job also has a valid Base.
         It also sets the following instance variables that can and should be safely be used by
         implementation of opExecute():
-            self.baseobject   ... Base object of the Job itself
+            self.model        ... List of base objects of the Job itself
             self.stock        ... Stock object fo the Job itself
             self.vertFeed     ... vertical feed rate of assigned tool
             self.vertRapid    ... vertical rapid rate of assigned tool
@@ -489,11 +489,15 @@ class ObjectOp(object):
         base = PathUtil.getPublicObject(base)
 
         if self._setBaseAndStock(obj):
-            if base == self.job.Proxy.baseObject(self.job):
-                base = self.baseobject
+            for model in self.job.Model.Group:
+                if base == self.job.Proxy.baseObject(self.job, model):
+                    base = model
+                    break
+
             baselist = obj.Base
             if baselist is None:
                 baselist = []
+
             for p, el in baselist:
                 if p == base and sub in el:
                     PathLog.notice((translate("Path", "Base object %s.%s already in the list")+"\n") % (base.Label, sub))

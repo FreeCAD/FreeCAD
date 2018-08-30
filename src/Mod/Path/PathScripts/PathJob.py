@@ -160,6 +160,9 @@ class ObjectJob:
                 obj.Model.removeObject(base)
             obj.Document.removeObject(base.Name)
 
+    def modelBoundBox(self, obj):
+        return PathStock.shapeBoundBox(obj.Model.Group)
+
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
         PathLog.track(obj.Label, arg2)
