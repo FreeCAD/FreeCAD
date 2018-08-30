@@ -210,7 +210,8 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                         op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
                     lx=x
                     ly=y
-
+            #return to safe height in this Z pass
+            op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
         passStartDepth=passEndDepth
         #return to safe height in this Z pass
         op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
