@@ -202,15 +202,18 @@ class OpTaskPanel:
 
 class OpsDefaultEditor:
 
-    def __init__(self, obj, parent):
+    def __init__(self, obj, form):
+        self.form = form
         self.obj = obj
         self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name)
-        if parent:
-            self.toolbox = QtGui.QToolBox(parent)
+        if form:
+            parent = form.tabOpDefaults
             for op in self.ops:
-                self.toolbox.addItem(op.form, op.form.windowTitle())
-            self.toolbox.setParent(parent)
-            parent.layout().addWidget(self.toolbox)
+                form.opDefaultOp.addItem(op.form.windowTitle(), op)
+                op.form.setParent(parent)
+                parent.layout().addWidget(op.form)
+                op.form.hide()
+        self.currentOp = None
 
     def reject(self):
         pass
@@ -227,7 +230,14 @@ class OpsDefaultEditor:
         pass
 
     def updateUI(self):
-        pass
+        if self.currentOp:
+            self.currentOp.form.hide()
+            self.currentOp = None
+        current = self.form.opDefaultOp.currentIndex()
+        if current < 0:
+            current = 0
+        self.currentOp = self.form.opDefaultOp.itemData(current)
+        self.currentOp.form.show()
 
     def updateModel(self, recomp = True):
         PathLog.track()
@@ -242,6 +252,8 @@ class OpsDefaultEditor:
     def setupUi(self):
         for op in self.ops:
             op.setupUi()
+        self.updateUI()
+        self.form.opDefaultOp.currentIndexChanged.connect(self.updateUI)
 
 class GlobalEditor(object):
 

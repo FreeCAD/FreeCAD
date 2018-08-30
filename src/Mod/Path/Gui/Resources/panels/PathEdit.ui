@@ -31,8 +31,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>412</width>
-         <height>549</height>
+         <width>410</width>
+         <height>572</height>
         </rect>
        </property>
        <attribute name="label">
@@ -949,7 +949,11 @@
    <attribute name="title">
     <string>Op Defaults</string>
    </attribute>
-   <layout class="QVBoxLayout" name="verticalLayout_11"/>
+   <layout class="QVBoxLayout" name="verticalLayout_11">
+    <item>
+     <widget class="QComboBox" name="opDefaultOp"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <customwidgets>
@@ -972,6 +976,7 @@
   <tabstop>postProcessorSetOutputFile</tabstop>
   <tabstop>postProcessor</tabstop>
   <tabstop>postProcessorArguments</tabstop>
+  <tabstop>stock</tabstop>
   <tabstop>stockExisting</tabstop>
   <tabstop>stockExtXneg</tabstop>
   <tabstop>stockExtXpos</tabstop>
