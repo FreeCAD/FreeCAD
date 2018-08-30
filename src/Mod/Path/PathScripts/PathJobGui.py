@@ -825,10 +825,14 @@ class TaskPanel:
 
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
-        if obj == self.obj.Base and self.obj.Stock:
+
+        for base in self.obj.Model.Group:
+            if base != obj:
+                Draft.move(base, by)
+
+        if obj != self.obj.Stock and self.obj.Stock:
             Draft.move(self.obj.Stock, by)
-        if obj == self.obj.Stock and self.obj.Base:
-            Draft.move(self.obj.Base, by)
+
         placement = FreeCADGui.ActiveDocument.ActiveView.viewPosition()
         placement.Base = placement.Base + by
         FreeCADGui.ActiveDocument.ActiveView.viewPosition(placement, 0)
@@ -903,18 +907,20 @@ class TaskPanel:
     def refreshStock(self):
         self.updateStockEditor(self.form.stock.currentIndex())
 
-    def centerInStock(self):
-        bbb = self.obj.Base.Shape.BoundBox
+    def alignCenterInStock(self):
         bbs = self.obj.Stock.Shape.BoundBox
-        by = bbs.Center - bbb.Center
-        Draft.move(self.obj.Base, by)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            bbb = sel.Object.Shape.BoundBox
+            by = bbs.Center - bbb.Center
+            Draft.move(sel.Object, by)
 
-    def centerInStockXY(self):
-        bbb = self.obj.Base.Shape.BoundBox
+    def alignCenterInStockXY(self):
         bbs = self.obj.Stock.Shape.BoundBox
-        by = bbs.Center - bbb.Center
-        by.z = 0
-        Draft.move(self.obj.Base, by)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            bbb = sel.Object.Shape.BoundBox
+            by = bbs.Center - bbb.Center
+            by.z = 0
+            Draft.move(sel.Object, by)
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -934,12 +940,12 @@ class TaskPanel:
             self.form.setOrigin.setEnabled(False)
             self.form.moveToOrigin.setEnabled(False)
 
-        if len(sel) == 1 and sel[0].Object in self.obj.Model.Group:
-            self.form.centerInStock.setEnabled(True)
-            self.form.centerInStockXY.setEnabled(True)
-        else:
+        if len(sel) == 0 or self.obj.Stock in [s.Object for s in sel]:
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
+        else:
+            self.form.centerInStock.setEnabled(True)
+            self.form.centerInStockXY.setEnabled(True)
 
     def jobModelEdit(self):
         dialog = PathJobDlg.JobCreate()
@@ -1012,8 +1018,8 @@ class TaskPanel:
         self.toolControllerSelect()
 
         # Stock, Orientation and Alignment
-        self.form.centerInStock.clicked.connect(self.centerInStock)
-        self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
+        self.form.centerInStock.clicked.connect(self.alignCenterInStock)
+        self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
         self.form.refreshStock.clicked.connect(self.refreshStock)
