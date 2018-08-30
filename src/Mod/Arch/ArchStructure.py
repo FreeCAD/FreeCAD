@@ -614,6 +614,12 @@ class _Structure(ArchComponent.Component):
                                 normal = baseface.normalAt(0,0)
                         if not baseface:
                             for w in obj.Base.Shape.Wires:
+                                if not w.isClosed():
+                                    p0 = w.OrderedVertexes[0].Point
+                                    p1 = w.OrderedVertexes[-1].Point
+                                    if p0 != p1:
+                                        e = Part.Line(p0,p1).toShape()
+                                        w.add(e)
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(w)
                                 if baseface:
