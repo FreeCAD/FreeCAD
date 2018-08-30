@@ -45,8 +45,10 @@ class TestPathStock(PathTestBase):
         self.base.Width  = 200
         self.base.Height = 300
         self.job = self.doc.addObject('App::FeaturePython', 'Job')
-        self.job.addProperty('App::PropertyLink', 'Base')
-        self.job.Base = self.base
+        self.job.addProperty('App::PropertyLink', 'Model')
+        model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
+        model.addObject(self.base)
+        self.job.Model = model
         self.job.addProperty('App::PropertyLink', 'Proxy')
         self.job.Proxy = FakeJobProxy()
 

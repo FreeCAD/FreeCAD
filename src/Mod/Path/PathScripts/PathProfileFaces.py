@@ -89,27 +89,30 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     if isinstance(shape, Part.Face):
                         faces.append(shape)
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
-                            holes += shape.Wires[1:]
+                            for wire in shape.Wires[1:]:
+                                holes.append((b[0].Shape, wire))
                     else:
                         FreeCAD.Console.PrintWarning("found a base object which is not a face.  Can't continue.")
                         return
 
-            for wire in holes:
+            for shape, wire in holes:
                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                drillable = PathUtils.isDrillable(self.baseobject.Shape, wire)
+                drillable = PathUtils.isDrillable(shape, wire)
                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                    env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
                     shapes.append((env, True))
 
             if len(faces) > 0:
                 profileshape = Part.makeCompound(faces)
 
             if obj.processPerimeter:
-                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=profileshape, depthparams=self.depthparams)
-                shapes.append((env, False))
+                for obj in self.model:
+                    env = PathUtils.getEnvelope(obj.Shape, subshape=profileshape, depthparams=self.depthparams)
+                    shapes.append((env, False))
 
         else:  # Try to build targets from the job base
-            if hasattr(self.baseobject, "Proxy"):
+            # XXX ArchPanels support not implemented yet
+            if False and hasattr(self.baseobject, "Proxy"):
                 if isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
                     if obj.processCircles or obj.processHoles:
                         for shape in self.baseobject.Proxy.getHoles(self.baseobject, transform=True):
