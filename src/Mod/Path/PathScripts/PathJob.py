@@ -85,6 +85,9 @@ def createResourceClone(obj, orig, name, icon):
     obj.Document.recompute() # necessary to create the clone shape
     return clone
 
+def createModelResourceClone(obj, orig):
+    return createResourceClone(obj, orig, 'Model', 'BaseGeometry')
+
 class ObjectJob:
 
     def __init__(self, obj, models, templateFile = None):
@@ -127,7 +130,7 @@ class ObjectJob:
         model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
         if model.ViewObject:
             model.ViewObject.Visibility = False
-        model.addObjects([createResourceClone(obj, base, 'Model', 'BaseGeometry') for base in models])
+        model.addObjects([createModelResourceClone(obj, base) for base in models])
         obj.Model = model
 
         obj.Proxy = self
@@ -149,6 +152,13 @@ class ObjectJob:
             if obj.SetupSheet.ViewObject:
                 PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
+
+    def removeBase(self, obj, base, removeFromModel):
+        if isResourceClone(obj, base, 'Model'):
+            PathUtil.clearExpressionEngine(base)
+            if removeFromModel:
+                obj.Model.removeObject(base)
+            obj.Document.removeObject(base.Name)
 
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
@@ -176,9 +186,7 @@ class ObjectJob:
         # base doesn't depend on anything inside job
         for base in obj.Model.Group:
             PathLog.debug("taking down base %s" % base.Label)
-            if isResourceClone(obj, base, 'Model'):
-                PathUtil.clearExpressionEngine(base)
-                doc.removeObject(base.Name)
+            self.removeBase(obj, base, False)
         obj.Model.Group = []
         doc.removeObject(obj.Model.Name)
         obj.Model = None

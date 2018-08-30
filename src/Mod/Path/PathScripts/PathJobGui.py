@@ -178,36 +178,33 @@ class ViewProvider:
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
-    def setupModelVisibility(self, obj):
-        baseVisibility = []
-        origVisibility = []
-        for base in obj.Model.Group:
-            if base.ViewObject:
-                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
-                PathLog.track(obj.Label, base.Label, orig.Label)
-                origVisibility.append(orig.ViewObject.Visibility)
-                orig.ViewObject.Visibility = False
-                baseVisibility.append(base.ViewObject.Visibility)
-                base.ViewObject.Visibility = True
-        self.baseVisibility = baseVisibility
-        self.baseOrigVisibility = origVisibility
+    def rememberBaseVisibility(self, obj, base):
+        if base.ViewObject:
+            orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
+            self.baseVisibility[base.Name] = (base, base.ViewObject.Visibility, orig, orig.ViewObject.Visibility)
+            orig.ViewObject.Visibility = False
+            base.ViewObject.Visibility = True
 
-    def resetModelVisibility(self, obj):
-        for base, baseVisibility, origVisibility in zip(obj.Model.Group, self.baseVisibility, self.baseOrigVisibility):
-            if base.ViewObject:
-                orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
-                base.ViewObject.Visibility = baseVisibility
-                orig.ViewObject.Visibility = origVisibility
+    def forgetBaseVisibility(self, obj, base):
+        if self.baseVisibility.get(base.Name):
+            visibility = self.baseVisibility[base.Name]
+            visibility[0].ViewObject.Visibility = visibility[1]
+            visibility[2].ViewObject.Visibility = visibility[3]
+            del self.baseVisibility[base.Name]
 
     def setupEditVisibility(self, obj):
-        self.setupModelVisibility(obj)
+        self.baseVisibility = {}
+        for base in obj.Model.Group:
+            self.rememberBaseVisibility(obj, base)
+
         self.stockVisibility = False
         if obj.Stock and obj.Stock.ViewObject:
             self.stockVisibility = obj.Stock.ViewObject.Visibility
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
-        self.resetModelVisibility(obj)
+        for base in obj.Model.Group:
+            self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
@@ -548,14 +545,6 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
-
-            #selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
-            #if self.obj.Proxy.baseObject(self.obj) != selObj:
-            #    self.vproxy.baseObjectRestoreVisibility(self.obj)
-            #    if PathJob.isResourceClone(self.obj, 'Model'):
-            #        self.obj.Document.removeObject(self.obj.Base.Name)
-            #    self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
-            #    self.vproxy.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
@@ -959,7 +948,25 @@ class TaskPanel:
         if dialog.exec_() == 1:
             models = dialog.getModels()
             if models:
-                PathLog.error("shouldn't you be doing something here")
+                obj = self.obj
+                proxy = obj.Proxy
+
+                # first remove all retired base models
+                retired = [base for base in self.obj.Model.Group if not proxy.baseObject(obj, base) in models]
+                for base in retired:
+                    self.vproxy.forgetBaseVisibility(obj, base)
+                    self.obj.Proxy.removeBase(obj, base, True)
+
+                # then add all rookie base models
+                baseOrigNames = [proxy.baseObject(obj, base).Name for base in obj.Model.Group]
+                rookies = [base for base in models if not base.Name in baseOrigNames]
+                for orig in rookies:
+                    base = PathJob.createModelResourceClone(obj, orig)
+                    obj.Model.addObject(base)
+                    self.vproxy.rememberBaseVisibility(obj, base)
+                if retired or rookies:
+                    self.setFields()
+
 
     def tabPageChanged(self, index):
         if index == 0:
