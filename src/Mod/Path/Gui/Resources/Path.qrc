@@ -60,6 +60,16 @@
         <file>icons/Path-BPlay.svg</file>
         <file>icons/Path-BStep.svg</file>
         <file>icons/Path-BStop.svg</file>
+        <file>icons/arrow-ccw.svg</file>
+        <file>icons/arrow-cw.svg</file>
+        <file>icons/arrow-down.svg</file>
+        <file>icons/arrow-left.svg</file>
+        <file>icons/arrow-left-down.svg</file>
+        <file>icons/arrow-left-up.svg</file>
+        <file>icons/arrow-right.svg</file>
+        <file>icons/arrow-right-down.svg</file>
+        <file>icons/arrow-right-up.svg</file>
+        <file>icons/arrow-up.svg</file>
         <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-miter-not.svg</file>
         <file>icons/edge-join-round.svg</file>
