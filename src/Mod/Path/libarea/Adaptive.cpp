@@ -854,12 +854,11 @@ namespace AdaptivePath {
 			inputPaths.push_back(cpth);
 		}
 		SimplifyPolygons(inputPaths);
-		if(fabs(stockToLeave)>NTOL) {
-			clipof.Clear();
-			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
 
-		}
+		clipof.Clear();
+		clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+		clipof.Execute(inputPaths,-stockToLeave*scaleFactor-1);
+
 		// *******************************
 		//	Resolve hierarchy and run processing
 		// ********************************
@@ -1129,9 +1128,9 @@ namespace AdaptivePath {
 		TPaths progressPaths;
 		progressPaths.reserve(10000);
 
-		SimplifyPolygons(toolBoundPaths);
+		//SimplifyPolygons(toolBoundPaths);
 		CleanPolygons(toolBoundPaths);
-		SimplifyPolygons(boundPaths);
+		//SimplifyPolygons(boundPaths);
 		CleanPolygons(toolBoundPaths);
 
 		Paths cleared;
@@ -1152,6 +1151,17 @@ namespace AdaptivePath {
 		IntPoint newToolPos;
 		DoublePoint newToolDir;
 
+		// visualize/progress for boundPath
+		for(const auto & pth :toolBoundPaths) {
+			if(pth.size()>0) {
+				progressPaths.push_back(TPath());
+				for(const auto pt: pth)
+					progressPaths.back().second.push_back(DPoint(double(pt.X)/scaleFactor,double(pt.Y)/scaleFactor));
+				progressPaths.back().second.push_back(DPoint(double(pth.front().X)/scaleFactor,double(pth.front().Y)/scaleFactor));
+			}
+		}
+
+
 		// visualize/progress for helix
 		clipof.Clear();
 		Path hp;
@@ -1165,6 +1175,7 @@ namespace AdaptivePath {
 		for(auto & pt:hps[0]) {
 			progressPaths.back().second.push_back(DPoint(double(pt.X)/scaleFactor,double(pt.Y)/scaleFactor));
 		}
+		CheckReportProgress(progressPaths);
 
 		// find the first tool position and direction
 		toolPos = IntPoint(entryPoint.X,entryPoint.Y - helixRampRadiusScaled);
