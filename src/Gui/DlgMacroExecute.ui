@@ -166,9 +166,6 @@
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="mode" >
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
          </widget>
         </item>
        </layout>
@@ -277,6 +274,16 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QPushButton" name="addonsButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Addons...</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -298,7 +305,10 @@
   <tabstop>createButton</tabstop>
   <tabstop>deleteButton</tabstop>
   <tabstop>editButton</tabstop>
+  <tabstop>renameButton</tabstop>
+  <tabstop>addonsButton</tabstop>
   <tabstop>fileChooser</tabstop>
+
  </tabstops>
  <resources/>
  <connections>
