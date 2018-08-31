@@ -122,7 +122,7 @@ class StockFromBase(Stock):
         return None
 
     def execute(self, obj):
-        bb = shapeBoundBox(obj.Base.Group)
+        bb = shapeBoundBox(obj.Base.Group) if obj.Base else None
         PathLog.track(obj.Label, bb)
 
         # Sometimes, when the Base changes it's temporarily not assigned when

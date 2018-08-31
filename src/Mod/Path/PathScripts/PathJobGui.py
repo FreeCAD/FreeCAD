@@ -773,7 +773,7 @@ class TaskPanel:
 
         self.template.updateUI()
 
-    def orientSelected(self, axis):
+    def modelSetAxis(self, axis):
         def flipSel(sel):
             PathLog.debug("flip")
             p = sel.Object.Placement
@@ -822,6 +822,29 @@ class TaskPanel:
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
+
+    def modelSet0(self, axis):
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            model = sel.Object
+            for name in sel.SubElementNames:
+                feature = model.Shape.getElement(name)
+                bb = feature.BoundBox
+                offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
+                PathLog.track(feature.BoundBox.ZMax, offset)
+                p = model.Placement
+                p.move(offset)
+                model.Placement = p
+
+    def modelMove(self, axis):
+        scale = self.form.modelMoveValue.value()
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            offset = axis * scale
+            Draft.move(sel.Object, offset)
+
+    def modelRotate(self, axis):
+        angle = self.form.modelRotateValue.value()
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
@@ -928,15 +951,21 @@ class TaskPanel:
         PathLog.track(len(sel))
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             if 'Vertex' == sel[0].SubObjects[0].ShapeType:
-                self.form.orientGroup.setEnabled(False)
+                self.form.modelSetXAxis.setEnabled(False)
+                self.form.modelSetYAxis.setEnabled(False)
+                self.form.modelSetZAxis.setEnabled(False)
                 self.form.setOrigin.setEnabled(True)
                 self.form.moveToOrigin.setEnabled(True)
             else:
-                self.form.orientGroup.setEnabled(True)
+                self.form.modelSetXAxis.setEnabled(True)
+                self.form.modelSetYAxis.setEnabled(True)
+                self.form.modelSetZAxis.setEnabled(True)
                 self.form.setOrigin.setEnabled(False)
                 self.form.moveToOrigin.setEnabled(False)
         else:
-            self.form.orientGroup.setEnabled(False)
+            self.form.modelSetXAxis.setEnabled(False)
+            self.form.modelSetYAxis.setEnabled(False)
+            self.form.modelSetZAxis.setEnabled(False)
             self.form.setOrigin.setEnabled(False)
             self.form.moveToOrigin.setEnabled(False)
 
@@ -946,6 +975,19 @@ class TaskPanel:
         else:
             self.form.centerInStock.setEnabled(True)
             self.form.centerInStockXY.setEnabled(True)
+
+        if len(sel) > 0:
+            self.form.modelSetX0.setEnabled(True)
+            self.form.modelSetY0.setEnabled(True)
+            self.form.modelSetZ0.setEnabled(True)
+            self.form.modelMoveGroup.setEnabled(True)
+            self.form.modelRotateGroup.setEnabled(True)
+        else:
+            self.form.modelSetX0.setEnabled(False)
+            self.form.modelSetY0.setEnabled(False)
+            self.form.modelSetZ0.setEnabled(False)
+            self.form.modelMoveGroup.setEnabled(False)
+            self.form.modelRotateGroup.setEnabled(False)
 
     def jobModelEdit(self):
         dialog = PathJobDlg.JobCreate()
@@ -1024,12 +1066,30 @@ class TaskPanel:
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
         self.form.refreshStock.clicked.connect(self.refreshStock)
 
-        self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
-        self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
-        self.form.orientZAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 0, 1)))
+        self.form.modelSetXAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(1, 0, 0)))
+        self.form.modelSetYAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 1, 0)))
+        self.form.modelSetZAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 0, 1)))
+        self.form.modelSetX0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector(-1,  0,  0)))
+        self.form.modelSetY0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector( 0, -1,  0)))
+        self.form.modelSetZ0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector( 0,  0, -1)))
 
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
+
+        self.form.modelMoveLeftUp.clicked.connect(      lambda: self.modelMove(FreeCAD.Vector(-1,  1, 0)))
+        self.form.modelMoveLeft.clicked.connect(        lambda: self.modelMove(FreeCAD.Vector(-1,  0, 0)))
+        self.form.modelMoveLeftDown.clicked.connect(    lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0)))
+
+        self.form.modelMoveUp.clicked.connect(          lambda: self.modelMove(FreeCAD.Vector( 0,  1, 0)))
+        self.form.modelMoveDown.clicked.connect(        lambda: self.modelMove(FreeCAD.Vector( 0, -1, 0)))
+
+        self.form.modelMoveRightUp.clicked.connect(     lambda: self.modelMove(FreeCAD.Vector( 1,  1, 0)))
+        self.form.modelMoveRight.clicked.connect(       lambda: self.modelMove(FreeCAD.Vector( 1,  0, 0)))
+        self.form.modelMoveRightDown.clicked.connect(   lambda: self.modelMove(FreeCAD.Vector( 1, -1, 0)))
+
+        self.form.modelRotateLeft.clicked.connect(      lambda: self.modelRotate(FreeCAD.Vector(0, 0,  1)))
+        self.form.modelRotateRight.clicked.connect(     lambda: self.modelRotate(FreeCAD.Vector(0, 0, -1)))
+
         self.updateSelection()
 
         # set active page
