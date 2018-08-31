@@ -31,6 +31,7 @@
 #include "DlgMacroExecuteImp.h"
 #include "Application.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 #include "MainWindow.h"
 #include "FileDialog.h"
 #include "Macro.h"
@@ -436,6 +437,16 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
             LineEditMacroName->setText(fn);
         }
     }
+}
+/**
+ * convenience link button to open tools -> addon manager
+ * from within macro dialog
+ */
+void DlgMacroExecuteImp::on_addonsButton_clicked()
+{
+    CommandManager& rMgr=Application::Instance->commandManager();
+    rMgr.runCommandByName("Std_AddonMgr");
+    this->fillUpList();
 }
 
 #include "moc_DlgMacroExecuteImp.cpp"
