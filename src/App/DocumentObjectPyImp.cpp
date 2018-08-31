@@ -755,3 +755,10 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
 
     Py_Return;
 }
+
+Py::List DocumentObjectPy::getParents() const {
+    Py::List ret;
+    for(auto &v : getDocumentObjectPtr()->getParents())
+        ret.append(Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second)));
+    return ret;
+}

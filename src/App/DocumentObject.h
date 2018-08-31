@@ -315,6 +315,9 @@ public:
      */
     virtual std::vector<std::string> getSubObjects(int reason=0) const;
 
+    ///Obtain top parents and subnames of this object using its InList
+    std::map<App::DocumentObject*,std::string> getParents(int depth=0) const;
+
     /** Return the linked object with optional transformation
      * 
      * @param recurse: If false, return the immediate linked object, or else

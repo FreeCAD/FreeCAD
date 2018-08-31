@@ -631,6 +631,37 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     return ret;
 }
 
+std::map<App::DocumentObject *,std::string> DocumentObject::getParents(int depth) const {
+    std::map<App::DocumentObject *,std::string> ret;
+    if(!getNameInDocument())
+        return ret;
+    GetApplication().checkLinkDepth(depth);
+    std::string name(getNameInDocument());
+    name += ".";
+    for(auto parent : getInList()) {
+        if(!parent || !parent->getNameInDocument())
+            continue;
+        if(!parent->hasChildElement() && 
+           !parent->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+            continue;
+        if(!parent->getSubObject(name.c_str()))
+            continue;
+
+        auto links = GetApplication().getLinksTo(parent,true);
+        links.insert(parent);
+        for(auto parent : links) {
+            auto parents = parent->getParents(depth+1);
+            if(parents.empty()) {
+                ret.emplace(parent,name);
+                continue;
+            }
+            for(auto &v : parents)
+                ret.emplace(v.first,v.second+name);
+        }
+    }
+    return ret;
+}
+
 DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
