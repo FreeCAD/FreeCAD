@@ -110,14 +110,31 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
         if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
-            if (!activeBody && singleBodyDocument && autoActivate &&
-                activeView->getAppDocument()->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1)
-            {
-                Gui::Command::doCommand( Gui::Command::Gui,
-                    "Gui.activeView().setActiveObject('%s',App.ActiveDocument.findObjects('PartDesign::Body')[0])",
-                    PDBODYKEY);
-                activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
-                return activeBody;
+            if (!activeBody && singleBodyDocument && autoActivate) {
+                auto doc = activeView->getAppDocument();
+                auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+                App::DocumentObject *parent = 0;
+                App::DocumentObject *body = 0;
+                std::string sub;
+                if(bodies.size()==1) {
+                    body = bodies[0];
+                    for(auto &v : body->getParents()) {
+                        if(v.first->getDocument()!=doc)
+                            continue;
+                        if(parent) {
+                            body = 0;
+                            break;
+                        }
+                        parent = v.first;
+                        sub = v.second;
+                    }
+                }
+                if(body) {
+                    auto doc = parent?parent->getDocument():body->getDocument();
+                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
+                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
+                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                }
             }
             if (!activeBody && messageIfNot) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
