@@ -114,9 +114,11 @@ public:
     /// signal on leaving edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
-                                const Gui::HighlightMode&,
-                                bool)>                                   signalHighlightObject;
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&, 
+                                const Gui::HighlightMode&, 
+                                bool,
+                                App::DocumentObject *parent, 
+                                const char *subname)> signalHighlightObject; 
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const Gui::TreeItemMode&)>               signalExpandObject;

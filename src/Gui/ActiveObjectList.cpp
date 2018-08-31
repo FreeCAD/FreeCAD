@@ -59,8 +59,8 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     auto obj = getObject(info,false);
     if(!obj) return;
     auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-    if(vp)
-        vp->getDocument()->signalHighlightObject(*vp, mode, enable);
+    if(!vp) return;
+    vp->getDocument()->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
 }
 
 Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(

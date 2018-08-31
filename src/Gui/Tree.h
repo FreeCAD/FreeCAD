@@ -244,7 +244,8 @@ protected:
     void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
-    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
+    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool,
+                              const App::DocumentObject *parent, const char *subname);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
@@ -327,6 +328,8 @@ public:
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+
+    void setHighlight(bool set, Gui::HighlightMode mode = Gui::LightBlue);
 
     const char *getName() const;
     const char *getTreeName() const;

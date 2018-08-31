@@ -1679,7 +1679,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
-    connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
+    connectHltObject = doc->signalHighlightObject.connect(
+            boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3,_4,_5));
     connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
     auto adoc = doc->getDocument();
@@ -1991,6 +1992,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
 
             found = true;
             if (j!=i) { // fix index if it is changed
+                childItem->setHighlight(false);
                 item->removeChild(ci);
                 item->insertChild(i,ci);
                 assert(ci->parent()==item);
@@ -2038,6 +2040,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
                 continue;
             }
             it->second->rootItem = 0;
+            childItem->setHighlight(false);
             this->removeChild(childItem);
             item->insertChild(i,childItem);
             assert(childItem->parent()==item);
@@ -2049,6 +2052,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         if (ci->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
+                childItem->setHighlight(false);
                 item->removeChild(childItem);
                 this->addChild(childItem);
                 assert(childItem->parent()==this);
@@ -2182,35 +2186,29 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
     END_FOREACH_ITEM
 }
 
-void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, const Gui::HighlightMode& high, bool set)
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
+    const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
+    if(parent && parent->getDocument()!=document()->getDocument()) {
+        auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
+        if(it!=getTree()->DocumentMap.end())
+            it->second->slotHighlightObject(obj,high,set,parent,subname);
+        return;
+    }
     FOREACH_ITEM(item,obj)
-        QFont f = item->font(0);
-        switch (high) {
-        case Gui::Bold: f.setBold(set);             break;
-        case Gui::Italic: f.setItalic(set);         break;
-        case Gui::Underlined: f.setUnderline(set);  break;
-        case Gui::Overlined: f.setOverline(set);    break;
-        case Gui::Blue:
-            if (set)
-                item->setBackgroundColor(0,QColor(200,200,255));
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
-            break;
-        case Gui::LightBlue:
-            if (set) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-                unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
-                item->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
-            }
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
-            break;
-        default:
-            break;
+        if(parent) {
+            App::DocumentObject *topParent = 0;
+            std::ostringstream ss;
+            item->getSubName(ss,topParent);
+            if(!topParent) {
+                if(parent!=obj.getObject())
+                    continue;
+            }else if(topParent!=parent)
+                continue;
         }
-
-        item->setFont(0,f);
+        item->setHighlight(set,high);
+        if(parent)
+            return;
     END_FOREACH_ITEM
 }
 
@@ -2693,6 +2691,34 @@ DocumentObjectItem::~DocumentObjectItem()
         if(it!=_ParentMap.end() && it->second.size())
             myOwner->populateObject(*it->second.begin());
     }
+}
+
+void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
+    QFont f = this->font(0);
+    switch (high) {
+    case Gui::Bold: f.setBold(set);             break;
+    case Gui::Italic: f.setItalic(set);         break;
+    case Gui::Underlined: f.setUnderline(set);  break;
+    case Gui::Overlined: f.setOverline(set);    break;
+    case Gui::Blue:
+        if (set)
+            this->setBackgroundColor(0,QColor(200,200,255));
+        else
+            this->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
+    case Gui::LightBlue:
+        if (set) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+            unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
+            this->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
+        }
+        else
+            this->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
+    default:
+        break;
+    }
+    this->setFont(0,f);
 }
 
 const char *DocumentObjectItem::getTreeName() const {
