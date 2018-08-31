@@ -2051,7 +2051,6 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
     char *documentName=0;
     int resolve=1;
     int index=0;
-    PyObject *single = Py_False;
     if (!PyArg_ParseTuple(args, "|sii", &documentName,&resolve,&index))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
 
