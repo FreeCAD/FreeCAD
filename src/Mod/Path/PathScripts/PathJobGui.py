@@ -43,6 +43,7 @@ import sys
 import traceback
 
 from PySide import QtCore, QtGui
+from contextlib import contextmanager
 from pivy import coin
 
 # Qt tanslation handling
@@ -62,6 +63,17 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             job.ViewObject.Proxy.editObject(obj)
         else:
             job.ViewObject.Proxy.uneditObject(obj)
+
+@contextmanager
+def selectionEx():
+    sel = FreeCADGui.Selection.getSelectionEx()
+    try:
+        yield sel
+    finally:
+        FreeCADGui.Selection.clearSelection()
+        for s in sel:
+            FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+
 
 class ViewProvider:
 
@@ -823,28 +835,36 @@ class TaskPanel:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
 
+    def restoreSelection(self, selection):
+        FreeCADGui.Selection.clearSelection()
+        for sel in selection:
+            FreeCADGui.Selection.addSelection(sel.Object, sel.SubElementNames)
+
     def modelSet0(self, axis):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            model = sel.Object
-            for name in sel.SubElementNames:
-                feature = model.Shape.getElement(name)
-                bb = feature.BoundBox
-                offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
-                PathLog.track(feature.BoundBox.ZMax, offset)
-                p = model.Placement
-                p.move(offset)
-                model.Placement = p
+        with selectionEx() as selection:
+            for sel in selection:
+                model = sel.Object
+                for name in sel.SubElementNames:
+                    feature = model.Shape.getElement(name)
+                    bb = feature.BoundBox
+                    offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
+                    PathLog.track(feature.BoundBox.ZMax, offset)
+                    p = model.Placement
+                    p.move(offset)
+                    model.Placement = p
 
     def modelMove(self, axis):
         scale = self.form.modelMoveValue.value()
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            offset = axis * scale
-            Draft.move(sel.Object, offset)
+        with selectionEx() as selection:
+            for sel in selection:
+                offset = axis * scale
+                Draft.move(sel.Object, offset)
 
     def modelRotate(self, axis):
         angle = self.form.modelRotateValue.value()
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
+        with selectionEx() as selection:
+            for sel in selection:
+                Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
@@ -948,7 +968,6 @@ class TaskPanel:
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
 
-        PathLog.track(len(sel))
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             if 'Vertex' == sel[0].SubObjects[0].ShapeType:
                 self.form.modelSetXAxis.setEnabled(False)
