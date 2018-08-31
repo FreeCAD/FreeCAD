@@ -308,10 +308,6 @@ Application::Application(bool GUIenabled)
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Units");
-        Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
-
         // Check for the symbols for group separator and deciaml point. They must be different otherwise
         // Qt doesn't work properly.
 #if defined(Q_OS_WIN32)

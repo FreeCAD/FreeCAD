@@ -284,22 +284,80 @@ void PropertyModel::appendProperty(const App::Property& prop)
         PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(prop.getEditorName());
         if (!item) {
             qWarning("No property item for type %s found\n", prop.getEditorName());
+            return;
+        }
+
+        const char* group = prop.getGroup();
+        bool isEmpty = (group == 0 || group[0] == '\0');
+        std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
+        QString groupName = QString::fromStdString(grp);
+
+        // go through all group names and check if one matches
+        int index = -1;
+        for (int i=0; i<rootItem->childCount(); i++) {
+            PropertyItem* child = rootItem->child(i);
+            if (child->isSeparator()) {
+                if (groupName == child->propertyName()) {
+                    index = i+1;
+                    break;
+                }
+            }
+        }
+
+        int numChilds = rootItem->childCount();
+        int first = 0;
+        int last = 0;
+        if (index < 0) {
+            // create a new group
+            first = numChilds;
+            last = first + 1;
         }
         else {
-            // notify system to add new row
-            int row = rootItem->childCount();
-            beginInsertRows(QModelIndex(), row, row);
+            // the group exists, determine the position before the next group
+            // or at the end if there is no further group
+            for (int i=index; i<rootItem->childCount(); i++) {
+                index++;
+                PropertyItem* child = rootItem->child(i);
+                if (child->isSeparator()) {
+                    index = i;
+                    break;
+                }
+            }
 
-            PropertyItem* child = static_cast<PropertyItem*>(item);
-            child->setParent(rootItem);
-            rootItem->appendChild(child);
-            child->setPropertyName(QString::fromLatin1(prop.getName()));
-            std::vector<App::Property*> data;
-            data.push_back(const_cast<App::Property*>(&prop));
-            child->setPropertyData(data);
-
-            endInsertRows();
+            first = index;
+            last = index;
         }
+
+        // notify system to add new row
+        beginInsertRows(QModelIndex(), first, last);
+
+        // create a new group at the end with the property
+        if (index < 0) {
+            PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
+            group->setParent(rootItem);
+            rootItem->appendChild(group);
+            group->setPropertyName(groupName);
+
+            item->setParent(rootItem);
+            rootItem->appendChild(item);
+        }
+        // add the property at the end of its group
+        else if (index < numChilds) {
+            item->setParent(rootItem);
+            rootItem->insertChild(index, item);
+        }
+        // add the property at end
+        else {
+            item->setParent(rootItem);
+            rootItem->appendChild(item);
+        }
+
+        std::vector<App::Property*> data;
+        data.push_back(const_cast<App::Property*>(&prop));
+        item->setPropertyName(QString::fromLatin1(prop.getName()));
+        item->setPropertyData(data);
+
+        endInsertRows();
     }
 }
 

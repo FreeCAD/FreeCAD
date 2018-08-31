@@ -215,10 +215,12 @@ void DlgSettingsEditorImp::loadSettings()
     fontSize->setValue(10);
     fontSize->setValue( hGrp->GetInt("FontSize", fontSize->value()) );
 
+    QByteArray fontName = this->font().family().toLatin1();
+
     QFontDatabase fdb;
     QStringList familyNames = fdb.families( QFontDatabase::Any );
     fontFamily->addItems(familyNames);
-    int index = familyNames.indexOf(QString::fromLatin1(hGrp->GetASCII("Font", "Courier").c_str()));
+    int index = familyNames.indexOf(QString::fromLatin1(hGrp->GetASCII("Font", fontName).c_str()));
     if (index < 0) index = 0;
     fontFamily->setCurrentIndex(index);
     on_fontFamily_activated(this->fontFamily->currentText());

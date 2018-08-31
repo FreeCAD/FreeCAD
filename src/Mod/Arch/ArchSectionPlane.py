@@ -60,13 +60,17 @@ def makeSectionPlane(objectslist=None,name="Section"):
     if FreeCAD.GuiUp:
         _ViewProviderSectionPlane(obj.ViewObject)
     if objectslist:
-        g = []
-        for o in objectslist:
-            if o.isDerivedFrom("Part::Feature"):
-                g.append(o)
-            elif o.isDerivedFrom("App::DocumentObjectGroup"):
-                g.append(o)
-        obj.Objects = g
+        obj.Objects = objectslist
+        bb = FreeCAD.BoundBox()
+        for o in Draft.getGroupContents(objectslist):
+            if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+                bb.add(o.Shape.BoundBox)
+        obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()
+        obj.Placement.Base = bb.Center
+        if FreeCAD.GuiUp:
+            margin = bb.XLength*0.1
+            obj.ViewObject.DisplayLength = bb.XLength+margin
+            obj.ViewObject.DisplayHeight = bb.YLength+margin
     return obj
 
 
@@ -160,6 +164,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
     if not allOn:
             objs = Draft.removeHidden(objs)
+
     # separate spaces and Draft objects
     spaces = []
     nonspaces = []
@@ -192,73 +197,95 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     fillpattern += ' x="0" y="0" width="10" height="10">'
     fillpattern += '<g>'
     fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    svgLineColor = Draft.getrgb(lineColor)
     svg = ''
+
+    # reading cached version
+    svgcache = None
+    if hasattr(section.Proxy,"svgcache") and section.Proxy.svgcache:
+        svgcache = section.Proxy.svgcache[0]
+        if section.Proxy.svgcache[1] != renderMode:
+            svgcache = None
+        if section.Proxy.svgcache[2] != showHidden:
+            svgcache = None
+        if section.Proxy.svgcache[3] != showFill:
+            svgcache = None
 
     # generating SVG
     if renderMode in ["Solid",1]:
-        # render using the Arch Vector Renderer
-        import ArchVRM, WorkingPlane
-        wp = WorkingPlane.plane()
-        wp.setFromPlacement(section.Placement)
-        #wp.inverse()
-        render = ArchVRM.Renderer()
-        render.setWorkingPlane(wp)
-        render.addObjects(objs)
-        if showHidden:
-            render.cut(section.Shape,showHidden)
-        else:
-            render.cut(section.Shape)
-        svg += '<g transform="scale(1,-1)">\n'
-        svg += render.getViewSVG(linewidth=svgLineWidth)
-        svg += fillpattern
-        svg += render.getSectionSVG(linewidth=svgCutLineWidth,
-                                    fillpattern="sectionfill")
-        if showHidden:
-            svg += render.getHiddenSVG(linewidth=svgLineWidth)
-        svg += '</g>\n'
-        # print(render.info())
-
+        if not svgcache:
+            svgcache = ''
+            # render using the Arch Vector Renderer
+            import ArchVRM, WorkingPlane
+            wp = WorkingPlane.plane()
+            wp.setFromPlacement(section.Placement)
+            #wp.inverse()
+            render = ArchVRM.Renderer()
+            render.setWorkingPlane(wp)
+            render.addObjects(objs)
+            if showHidden:
+                render.cut(section.Shape,showHidden)
+            else:
+                render.cut(section.Shape)
+            svgcache += '<g transform="scale(1,-1)">\n'
+            svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
+            svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",
+                                        fillpattern="sectionfill")
+            if showHidden:
+                svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
+            svgcache += '</g>\n'
+            # print(render.info())
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
-        # render using the Drawing module
-        import Drawing, Part
-        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
-        if shapes:
-            baseshape = Part.makeCompound(shapes)
-            style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': svgLineWidth}
-            svg += Drawing.projectToSVG(
-                baseshape, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
-        if hshapes:
-            hshapes = Part.makeCompound(hshapes)
-            style = {'stroke':           Draft.getrgb(lineColor),
-                     'stroke-width':     svgLineWidth,
-                     'stroke-dasharray': svgHiddenPattern}
-            svg += Drawing.projectToSVG(
-                hshapes, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
-        if sshapes:
-            if showFill:
-                #svg += fillpattern
-                svg += '<g transform="rotate(180)">\n'
-                for s in sshapes:
-                    if s.Edges:
-                        #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
-                        # temporarily disabling fill patterns
-                        svg += Draft.getSVG(s, direction=direction.negative(),
-                                           linewidth=0,
-                                           fillstyle=Draft.getrgb(fillColor),
-                                           color=lineColor)
-                svg += "</g>\n"
-            sshapes = Part.makeCompound(sshapes)
-            style = {'stroke':       Draft.getrgb(lineColor),
-                     'stroke-width': svgCutLineWidth}
-            svg += Drawing.projectToSVG(
-                sshapes, direction,
-                hStyle=style, h0Style=style, h1Style=style,
-                vStyle=style, v0Style=style, v1Style=style)
+        if not svgcache:
+            svgcache = ""
+            # render using the Drawing module
+            import Drawing, Part
+            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+            if shapes:
+                baseshape = Part.makeCompound(shapes)
+                style = {'stroke':       "SVGLINECOLOR",
+                         'stroke-width': "SVGLINEWIDTH"}
+                svgcache += Drawing.projectToSVG(
+                    baseshape, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            if hshapes:
+                hshapes = Part.makeCompound(hshapes)
+                style = {'stroke':           "SVGLINECOLOR",
+                         'stroke-width':     "SVGLINEWIDTH",
+                         'stroke-dasharray': "SVGHIDDENPATTERN"}
+                svgcache += Drawing.projectToSVG(
+                    hshapes, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            if sshapes:
+                if showFill:
+                    #svgcache += fillpattern
+                    svgcache += '<g transform="rotate(180)">\n'
+                    for s in sshapes:
+                        if s.Edges:
+                            #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                            # temporarily disabling fill patterns
+                            svgcache += Draft.getSVG(s, direction=direction.negative(),
+                                linewidth=0,
+                                fillstyle=Draft.getrgb(fillColor),
+                                color=lineColor)
+                    svgcache += "</g>\n"
+                sshapes = Part.makeCompound(sshapes)
+                style = {'stroke':       "SVGLINECOLOR",
+                         'stroke-width': "SVGCUTLINEWIDTH"}
+                svgcache += Drawing.projectToSVG(
+                    sshapes, direction,
+                    hStyle=style, h0Style=style, h1Style=style,
+                    vStyle=style, v0Style=style, v1Style=style)
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
+    svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
+    svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
+    svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
+    svgcache = svgcache.replace("SVGCUTLINEWIDTH",svgCutLineWidth)
+    svg += svgcache
 
     if drafts:
         if not techdraw:
@@ -385,7 +412,7 @@ class _CommandSectionPlane:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
-        FreeCADGui.doCommand("section.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
+        #FreeCADGui.doCommand("section.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
         #FreeCADGui.doCommand("Arch.makeSectionView(section)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -420,16 +447,16 @@ class _SectionPlane:
     def execute(self,obj):
 
         import Part
-        if hasattr(obj.ViewObject,"DisplayLength"):
-            l = obj.ViewObject.DisplayLength.Value
-            h = obj.ViewObject.DisplayHeight.Value
-        elif hasattr(obj.ViewObject,"DisplaySize"):
-            # old objects
-            l = obj.ViewObject.DisplaySize.Value
-            h = obj.ViewObject.DisplaySize.Value
-        else:
-            l = 1
-            h = 1
+        l = 1
+        h = 1
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject,"DisplayLength"):
+                l = obj.ViewObject.DisplayLength.Value
+                h = obj.ViewObject.DisplayHeight.Value
+            elif hasattr(obj.ViewObject,"DisplaySize"):
+                # old objects
+                l = obj.ViewObject.DisplaySize.Value
+                h = obj.ViewObject.DisplaySize.Value
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -439,7 +466,9 @@ class _SectionPlane:
 
     def onChanged(self,obj,prop):
 
-        pass
+        # clean svg cache if needed
+        if prop in ["Placement","Objects","OnlySolids"]:
+            self.svgcache = None
 
     def getNormal(self,obj):
 
@@ -790,7 +819,6 @@ class SectionPlaneTaskPanel:
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
-        self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.form)
         self.grid.addWidget(self.title, 0, 0, 1, 2)
 
@@ -800,19 +828,36 @@ class SectionPlaneTaskPanel:
         self.tree.setColumnCount(1)
         self.tree.header().hide()
 
-        # buttons
+        # add / remove buttons
         self.addButton = QtGui.QPushButton(self.form)
-        self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.addButton, 3, 0, 1, 1)
 
         self.delButton = QtGui.QPushButton(self.form)
-        self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        
+        # rotate / resize buttons
+        self.rlabel = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.rlabel, 4, 0, 1, 2)
+        self.rotateXButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateXButton, 5, 0, 1, 1)
+        self.rotateYButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateYButton, 5, 1, 1, 1)
+        self.rotateZButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.rotateZButton, 6, 0, 1, 1)
+        self.resizeButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.resizeButton, 7, 0, 1, 1)
+        self.recenterButton = QtGui.QPushButton(self.form)
+        self.grid.addWidget(self.recenterButton, 7, 1, 1, 1)
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.rotateXButton, QtCore.SIGNAL("clicked()"), self.rotateX)
+        QtCore.QObject.connect(self.rotateYButton, QtCore.SIGNAL("clicked()"), self.rotateY)
+        QtCore.QObject.connect(self.rotateZButton, QtCore.SIGNAL("clicked()"), self.rotateZ)
+        QtCore.QObject.connect(self.resizeButton, QtCore.SIGNAL("clicked()"), self.resize)
+        QtCore.QObject.connect(self.recenterButton, QtCore.SIGNAL("clicked()"), self.recenter)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -858,6 +903,51 @@ class SectionPlaneTaskPanel:
                 comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
                 ArchComponent.removeFromComponent(self.obj,comp)
             self.update()
+    
+    def rotate(self,axis):
+        if self.obj and self.obj.Shape and self.obj.Shape.Faces:
+            face = self.obj.Shape.copy()
+            import Part
+            face.rotate(self.obj.Placement.Base, axis, 90)
+            self.obj.Placement = face.Placement
+            self.obj.Proxy.execute(self.obj)
+    
+    def rotateX(self):
+        self.rotate(FreeCAD.Vector(1,0,0))
+
+    def rotateY(self):
+        self.rotate(FreeCAD.Vector(0,1,0))
+
+    def rotateZ(self):
+        self.rotate(FreeCAD.Vector(0,0,1))
+    
+    def getBB(self):
+        bb = FreeCAD.BoundBox()
+        if self.obj:
+            for o in Draft.getGroupContents(self.obj.Objects):
+                if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+                    bb.add(o.Shape.BoundBox)
+        return bb
+
+    def resize(self):
+        if self.obj and self.obj.ViewObject:
+            bb = self.getBB()
+            n = self.obj.Proxy.getNormal(self.obj)
+            margin = bb.XLength*0.1
+            if (n.getAngle(FreeCAD.Vector(1,0,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(-1,0,0)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.YLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
+            elif (n.getAngle(FreeCAD.Vector(0,1,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,-1,0)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.XLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
+            elif (n.getAngle(FreeCAD.Vector(0,0,1)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,0,-1)) < 0.1):
+                self.obj.ViewObject.DisplayLength = bb.XLength+margin
+                self.obj.ViewObject.DisplayHeight = bb.YLength+margin
+            self.obj.Proxy.execute(self.obj)
+
+    def recenter(self):
+        if self.obj:
+            self.obj.Placement.Base = self.getBB().Center
 
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
@@ -865,10 +955,16 @@ class SectionPlaneTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Objects", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Section plane settings", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane:", None))
+        self.rlabel.setText(QtGui.QApplication.translate("Arch", "Section plane placement:", None))
+        self.rotateXButton.setText(QtGui.QApplication.translate("Arch", "Rotate X", None))
+        self.rotateYButton.setText(QtGui.QApplication.translate("Arch", "Rotate Y", None))
+        self.rotateZButton.setText(QtGui.QApplication.translate("Arch", "Rotate Z", None))
+        self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize", None))
+        self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

@@ -306,9 +306,10 @@ class plane:
         # Arch active container
         if FreeCAD.GuiUp:
             import FreeCADGui
-            a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-            if a:
-                p = a.Placement.inverse().multiply(p)
+            if FreeCADGui.ActiveDocument.ActiveView:
+                a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                if a:
+                    p = a.Placement.inverse().multiply(p)
         return p
 
     def getPlacement(self,rotated=False):

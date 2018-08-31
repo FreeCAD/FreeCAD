@@ -63,6 +63,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
     ui->labelConstrainStatus->setOpenExternalLinks(false);
 
     ui->autoUpdate->onRestore();
+    ui->autoRemoveRedundants->onRestore();
 
     if(ui->autoUpdate->isChecked())
         sketchView->getSketchObject()->noRecomputes=false;
@@ -123,6 +124,12 @@ void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
         sketchView->getSketchObject()->noRecomputes=true;
         ui->autoUpdate->onSave();
     }
+}
+
+void TaskSketcherMessages::on_autoRemoveRedundants_stateChanged(int state)
+{
+    Q_UNUSED(state);
+    ui->autoRemoveRedundants->onSave();
 }
 
 void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)

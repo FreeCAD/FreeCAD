@@ -208,6 +208,9 @@ test_ascii = lambda s: all(ord(c) < 128 for c in s)
 #store the cmake variales
 App.__cmake__ = cmake;
 
+#store unit test names
+App.__unit_test__ = []
+
 Log ('Init: starting App::FreeCADInit.py\n')
 
 # init every application by importing Init.py

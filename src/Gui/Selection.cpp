@@ -49,7 +49,7 @@
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 
-
+FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
 using namespace Gui;
 using namespace std;
@@ -83,7 +83,20 @@ void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
         connectSelection = Selection().signalSelectionChanged.connect(boost::bind
-            (&SelectionObserver::onSelectionChanged, this, _1));
+            (&SelectionObserver::_onSelectionChanged, this, _1));
+    }
+}
+
+void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
+    try { 
+        onSelectionChanged(msg);
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        FC_ERR("Unhandled Base::Exception caught in selection observer: ");
+    } catch (std::exception &e) {
+        FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
+    } catch (...) {
+        FC_ERR("Unhandled unknown exception caught in selection observer");
     }
 }
 
@@ -753,7 +766,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         return true;
     }
     else {
-        // neither an existing nor active document available 
+        // neither an existing nor active document available
         // this can often happen when importing .iv files
         Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
         return false;
@@ -1026,7 +1039,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
-     "getSelection([string]) -- Return a list of selected objets\n"
+     "getSelection([string]) -- Return a list of selected objects\n"
      "Return a list of selected objects for a given document name. If no\n"
      "document name is given the selection for the active document is returned."},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,

@@ -64,7 +64,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
      //initialize the properties
     ADD_PROPERTY_TYPE(Field,((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode,((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
-    ADD_PROPERTY(Transperency, (0));
+    ADD_PROPERTY(Transparency, (0));
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -325,7 +325,7 @@ void ViewProviderFemPostObject::update3D() {
     WritePointData(points, normals, tcoords);
     bool ResetColorBarRange = true;
     WriteColorData(ResetColorBarRange);
-    WriteTransperency();
+    WriteTransparency();
 
     // write out polys if any
     if (pd->GetNumberOfPolys() > 0) {
@@ -491,9 +491,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     m_materialBinding->touch();
 }
 
-void ViewProviderFemPostObject::WriteTransperency() {
+void ViewProviderFemPostObject::WriteTransparency() {
 
-    float trans = float(Transperency.getValue()) / 100.;
+    float trans = float(Transparency.getValue()) / 100.;
     m_material->transparency.setValue(trans);
 }
 
@@ -532,14 +532,14 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     if(prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
-        WriteTransperency();
+        WriteTransparency();
     }
     else if(prop == &VectorMode && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
-        WriteTransperency();
+        WriteTransparency();
     }
-    else if(prop == &Transperency) {
-        WriteTransperency();
+    else if(prop == &Transparency) {
+        WriteTransparency();
     }
 
     ViewProviderDocumentObject::onChanged(prop);

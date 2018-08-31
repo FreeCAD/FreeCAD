@@ -32,7 +32,9 @@
 #include <set>
 #include <cstring>
 #include <cstdio>
-
+#include <exception>
+#include "Exception.h"
+#include "Console.h"
 
 namespace Base
 {
@@ -172,7 +174,19 @@ public:
   void Notify(_MessageType rcReason)
   {
     for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();++Iter)
-      (*Iter)->OnChange(*this,rcReason);   // send OnChange-signal
+    {
+      try {
+        (*Iter)->OnChange(*this,rcReason);   // send OnChange-signal
+      } catch (Base::Exception &e) {
+        Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
+                              "The error message is: %s\n", e.what());
+      } catch (std::exception &e) {
+        Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
+                              "The error message is: %s\n", e.what());
+      } catch (...) {
+        Base::Console().Error("Unhandled unknown exception caught in when notifying observer.\n");
+      }
+    }
   }
 
   /** Get an Observer by name

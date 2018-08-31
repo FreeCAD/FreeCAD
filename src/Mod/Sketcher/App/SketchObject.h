@@ -387,7 +387,8 @@ public:
     void makeMissingEquality(bool onebyone = true);
     
     // helper
-    void autoRemoveRedundants(bool updategeo);
+    /// returns the number of redundant constraints detected
+    int autoRemoveRedundants(bool updategeo = true);
     
 protected:
     /// get called by the container when a property has changed
