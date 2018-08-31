@@ -277,6 +277,16 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QPushButton" name="addonsButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Addons...</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -298,7 +308,10 @@
   <tabstop>createButton</tabstop>
   <tabstop>deleteButton</tabstop>
   <tabstop>editButton</tabstop>
+  <tabstop>renameButton</tabstop>
+  <tabstop>addonsButton</tabstop>
   <tabstop>fileChooser</tabstop>
+
  </tabstops>
  <resources/>
  <connections>
