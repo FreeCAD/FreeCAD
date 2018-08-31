@@ -359,8 +359,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
-    if(!feature)
-        return;
     if (prop == &MappedColors ||
         prop == &MapFaceColor ||
         prop == &MapLineColor ||
@@ -492,7 +490,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         else
             pcLineStyle->linePattern = 0xff88;
     }
-    else {
+    else if(feature) {
         // if the object was invisible and has been changed, recreate the visual
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual(feature->Shape.getValue());
