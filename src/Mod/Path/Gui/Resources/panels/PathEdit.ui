@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PathEdit</class>
- <widget class="QTabWidget" name="PathEdit">
+ <class>pathEdit</class>
+ <widget class="QTabWidget" name="pathEdit">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -22,7 +22,7 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_12">
     <item>
-     <widget class="QToolBox" name="toolBox_3">
+     <widget class="QToolBox" name="jobBox">
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -91,7 +91,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_6">
+      <widget class="QWidget" name="templateExport">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -103,6 +103,7 @@
        <attribute name="label">
         <string>Template Export</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_13"/>
       </widget>
      </widget>
     </item>
