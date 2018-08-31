@@ -28,9 +28,10 @@ def connectEdges(edges):
     pathArray = []
     combined = []
     for edge in edges:
+        #print edge
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt(edge.LastParameter)
-        m1 =  edge.valueAt((edge.LastParameter+edge.LastParameter)/2)
+        m1 = edge.valueAt((edge.LastParameter+edge.LastParameter)/2)
         duplicate = False
         for ex in remaining:
             exp1 = ex.valueAt(ex.FirstParameter)
@@ -38,8 +39,11 @@ def connectEdges(edges):
             exm1 = ex.valueAt((ex.FirstParameter + ex.LastParameter)/2)
             if IsEqualInXYPlane(exp1, p1) and IsEqualInXYPlane(exp2, p2) and IsEqualInXYPlane(exm1, m1):
                 duplicate = True
+                #print "duplicate"
             if IsEqualInXYPlane(exp1, p2) and IsEqualInXYPlane(exp2, p1) and IsEqualInXYPlane(exm1, m1):
                 duplicate = True
+                #print "duplicate"
+
         if not duplicate:
             remaining.append(edge)
 
