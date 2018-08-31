@@ -922,7 +922,7 @@ endif()
         if(OPENGL_GLU_FOUND)
             find_package_message(OPENGL_GLU
                 "Found OpenGLU: ${OPENGL_glu_LIBRARY}"
-                "[${OPENGL_glu_LIBRARY}][${OEPNGL_INCLUDE_DIR}]")
+                "[${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
         else(OPENGL_GLU_FOUND)
             message(FATAL_ERROR "======================\n"
                                 "GLU library not found.\n"
