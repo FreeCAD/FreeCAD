@@ -50,6 +50,7 @@ class JobCreate:
     def __init__(self, parent=None, sel=None):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.items = []
+        self.jobs = []
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
 
@@ -80,6 +81,22 @@ class JobCreate:
                 else:
                     self.dialog.twoDList.addItem(item)
                 self.items.append(item)
+
+        activateJobs = False
+        for j in sorted(PathJob.Instances(), key=lambda x: x.Label):
+            if j != job:
+                item = QtGui.QListWidgetItem(j.Label)
+                item.setData(self.DataObject, j)
+                if j.Label in selected:
+                    activateJobs = True
+                    item.setCheckState(QtCore.Qt.CheckState.Checked)
+                else:
+                    item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                self.dialog.jobList.addItem(item)
+                self.jobs.append(item)
+        if activateJobs:
+            self.dialog.models.setCurrentWidget(self.dialog.tabJobs)
+
         self.dialog.modelGroup.show()
 
 
@@ -117,7 +134,10 @@ class JobCreate:
 
     def getModels(self):
         '''answer the base models selected for the job'''
-        return [item.data(self.DataObject) for item in self.items if item.checkState() == QtCore.Qt.CheckState.Checked]
+        models = [item.data(self.DataObject) for item in self.items if item.checkState() == QtCore.Qt.CheckState.Checked]
+        for job in [item.data(self.DataObject) for item in self.jobs if item.checkState() == QtCore.Qt.CheckState.Checked]:
+            models.extend(job.Model.Group)
+        return models
 
     def getTemplate(self):
         '''answer the file name of the template to be assigned'''

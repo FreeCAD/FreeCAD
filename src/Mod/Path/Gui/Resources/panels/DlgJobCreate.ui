@@ -47,7 +47,7 @@
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="tab">
+           <widget class="QWidget" name="tabSolids">
             <attribute name="title">
              <string>Solids</string>
             </attribute>
@@ -57,13 +57,23 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab_3">
+           <widget class="QWidget" name="tabTwoD">
             <attribute name="title">
              <string>2D</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
               <widget class="QListWidget" name="twoDList"/>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabJobs">
+            <attribute name="title">
+             <string>Jobs</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QListWidget" name="jobList"/>
              </item>
             </layout>
            </widget>
