@@ -212,6 +212,22 @@ PyDoc_STRVAR(Base_doc,
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
     );
 
+#if PY_MAJOR_VERSION >= 3
+// This is called via the PyImport_AppendInittab mechanism called
+// during initialization, to make the built-in __FreeCADBase__
+// module known to Python.
+PyMODINIT_FUNC
+init_freecad_base_module(void)
+{
+    static struct PyModuleDef BaseModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCADBase__", Base_doc, -1,
+        NULL, NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&BaseModuleDef);
+}
+#endif
+
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(0)
 {
@@ -265,13 +281,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // remove these types from the FreeCAD module.
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BaseModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "__FreeCADBase__", Base_doc, -1,
-        NULL, NULL, NULL, NULL, NULL
-    };
-    PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
-    _PyImport_FixupBuiltin(pBaseModule, "__FreeCADBase__");
+    PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
@@ -1416,6 +1426,9 @@ void Application::initConfig(int argc, char ** argv)
 #   endif
 
     // init python
+#if PY_MAJOR_VERSION >= 3
+    PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+#endif
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
 
     // Parse the options that have impact on the init process
