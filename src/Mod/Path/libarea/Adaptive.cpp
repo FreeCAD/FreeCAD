@@ -1088,7 +1088,7 @@ namespace AdaptivePath {
 					clipof.Clear();
 					clipof.AddPaths(toolBoundPaths,JoinType::jtRound,EndType::etClosedPolygon);
 					Paths sol2;
-					clipof.Execute(sol2,toolRadiusScaled*stepOverFactor);
+					clipof.Execute(sol2,toolRadiusScaled*stepOverFactor*2);
 					clipof.Clear();
 					clipof.AddPaths(sol2,JoinType::jtRound,EndType::etClosedLine);
 					clipof.Execute(cleared,toolRadiusScaled);
@@ -1304,6 +1304,12 @@ namespace AdaptivePath {
 		#ifdef DEV_MODE
 		clock_t start_clock=clock();
 		#endif
+		if(outsideEntry) {
+			engage.moveToClosestPoint(toolPos,stepScaled+1);
+			firstEngagePoint=false;
+			toolPos = engage.getCurrentPoint();
+			toolDir = engage.getCurrentDir();
+		}
 
 		/*******************************
 		 * LOOP - PASSES
