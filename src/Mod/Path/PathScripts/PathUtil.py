@@ -59,11 +59,8 @@ def isSolid(obj):
     if hasattr(obj, 'Tip'):
         return isSolid(obj.Tip)
     if hasattr(obj, 'Shape'):
-        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
+        if obj.Shape.Volume > 0.0 and obj.Shape.isClosed():
             return True
-        if obj.Shape.ShapeType == 'Compound':
-            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
-                return isSolid(obj.Base) and isSolid(obj.Tool)
     if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
         if not obj.Group or any(hasattr(o, 'Shape') and not isSolid(o) for o in obj.Group):
             return False
