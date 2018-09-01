@@ -898,7 +898,7 @@ namespace AdaptivePath {
 				if(opType==OperationType::otClearingOutside) {
 					clipof.Clear();
 					clipof.AddPaths(stockInputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-					double overshootDistance =2*toolRadiusScaled + toolRadiusScaled*stepOverFactor;
+					double overshootDistance =2*toolRadiusScaled + toolRadiusScaled*stepOverFactor + OVERSHOOT_ADDON_DIST;
 					if(forceInsideOut) overshootDistance=0;
 					Paths stockOvershoot;
 					clipof.Execute(stockOvershoot,overshootDistance);
@@ -1086,13 +1086,13 @@ namespace AdaptivePath {
 				// if point is outside the stock
 				if(PointInPolygon(checkPoint,stockInputPaths.front())==0) {
 					clipof.Clear();
-					clipof.AddPaths(toolBoundPaths,JoinType::jtRound,EndType::etClosedPolygon);
+					clipof.AddPath(pth,JoinType::jtRound,EndType::etClosedPolygon);
 					Paths sol2;
-					clipof.Execute(sol2,toolRadiusScaled*stepOverFactor*2);
+					clipof.Execute(sol2,toolRadiusScaled*stepOverFactor*2 + OVERSHOOT_ADDON_DIST);
 					clipof.Clear();
 					clipof.AddPaths(sol2,JoinType::jtRound,EndType::etClosedLine);
-					clipof.Execute(cleared,toolRadiusScaled);
-					// trim cleared paths to stock boundary (only outside part remain)
+					clipof.Execute(cleared,toolRadiusScaled + OVERSHOOT_ADDON_DIST );
+
 					clip.Clear();
 					clip.AddPaths(cleared,PolyType::ptSubject, true);
 					clip.AddPaths(stockInputPaths,PolyType::ptClip, true);
