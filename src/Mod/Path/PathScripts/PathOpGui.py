@@ -381,20 +381,15 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return 'edges'
         return 'nothing'
 
-    def addBaseGeometry(self, selection):
-        PathLog.track(selection)
-        if len(selection) != 1:
-            PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
-            return False
-        sel = selection[0]
+    def addBaseGeometrySelection(self, sel):
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
                 PathLog.error(translate("PathProject", "Vertexes are not supported"))
                 return False
-            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
                 PathLog.error(translate("PathProject", "Edges are not supported"))
                 return False
-            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
@@ -405,6 +400,17 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for sub in sel.SubElementNames:
             self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return True
+
+    def addBaseGeometry(self, selection):
+        PathLog.track(selection)
+        #if len(selection) != 1:
+        #    PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+        #    return False
+        changed = False
+        for sel in selection:
+            if self.addBaseGeometrySelection(sel):
+                changed = True
+        return changed
 
     def addBase(self):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
