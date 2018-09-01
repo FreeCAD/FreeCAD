@@ -98,7 +98,7 @@ class ObjectContour(PathProfileBase.ObjectProfile):
                     return [(f.extrude(FreeCAD.Vector(0, 0, thickness)), False)]
 
         if not isPanel:
-            return [(PathUtils.getEnvelope(partshape=model.Shape, subshape=None, depthparams=self.depthparams), False) for model in self.model if hasattr(model, 'Shape')]
+            return [(PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthparams), False) for base in self.base if hasattr(base, 'Shape')]
 
     def areaOpAreaParams(self, obj, isHole):
         params = self.baseObject().areaOpAreaParams(obj, isHole)
