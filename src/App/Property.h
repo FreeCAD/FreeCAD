@@ -309,8 +309,10 @@ protected:
         int size = getSize();
         if(index<-1 || index>size)
             throw Base::RuntimeError("index out of bound");
-        if(touch)
-            this->aboutToSetValue();
+        // TODO: we have to always call aboutToSetValue() to make sure undo/redo
+        // works regardless of the value of 'touch'. But this gives unbalanced
+        // calls to hasSetValue(). What to do...
+        this->aboutToSetValue();
         if(index==-1 || index == size) {
             index = size;
             setSize(index+1,value);
