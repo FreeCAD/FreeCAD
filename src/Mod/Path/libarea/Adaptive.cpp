@@ -874,7 +874,10 @@ namespace AdaptivePath {
 		if(stockToLeave>NTOL) {
 			clipof.Clear();
 			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
+			if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
+				clipof.Execute(inputPaths,stockToLeave*scaleFactor);
+			else
+				clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
 		} else {
 			// fix for clipper glitches
 			clipof.Clear();
