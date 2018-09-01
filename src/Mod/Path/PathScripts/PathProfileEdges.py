@@ -96,8 +96,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
                 newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
                 f.Placement = newPlace
-                for model in self.model:
-                    env = PathUtils.getEnvelope(model.Shape, subshape=f, depthparams=self.depthparams)
+                for base in self.model:
+                    env = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)
                     shapes.append((env, False))
         return shapes
 
