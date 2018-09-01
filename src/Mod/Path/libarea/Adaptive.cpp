@@ -1560,13 +1560,15 @@ namespace AdaptivePath {
 		IntPoint lastPoint;
 
 		for(auto & pth: finishingPaths) {
-			// trim finishing passes outside the stock boundary - make no sense to cut where is no material
-			Paths diff;
-			clip.Clear();
-			clip.AddPath(pth,PolyType::ptSubject,true);
-			clip.AddPaths(stockInputPaths,PolyType::ptClip,true);
-			clip.Execute(ClipType::ctDifference,diff);
-			if(diff.size()>0) continue;
+			// skip finishing passes outside the stock boundary - make no sense to cut where is no material
+			bool allPointsOutside=true;
+			for(const auto & pt : pth) {
+				if(IsPointWithinCutRegion(stockInputPaths,pt)) {
+					allPointsOutside=false;
+					break;
+				}
+			}
+			if(allPointsOutside) continue;
 
 			progressPaths.push_back(TPath());
 			// show in progress cb
