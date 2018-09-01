@@ -855,9 +855,20 @@ namespace AdaptivePath {
 		}
 		SimplifyPolygons(inputPaths);
 
-		clipof.Clear();
-		clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-		clipof.Execute(inputPaths,-stockToLeave*scaleFactor-1);
+		if(stockToLeave>NTOL) {
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
+		} else {
+			// fix for clipper glitches
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,-1);
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,1);
+		}
+
 
 		// *******************************
 		//	Resolve hierarchy and run processing
