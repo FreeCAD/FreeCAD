@@ -1098,7 +1098,7 @@ namespace AdaptivePath {
 					clip.AddPaths(stockInputPaths,PolyType::ptClip, true);
 					clip.Execute(ClipType::ctDifference,cleared);
 
-					AddPathsToProgress(progressPaths,cleared);
+					//AddPathsToProgress(progressPaths,cleared);
 					entryPoint=checkPoint;
 					toolPos = entryPoint;
 					// find tool dir
