@@ -226,6 +226,21 @@ init_freecad_base_module(void)
     };
     return PyModule_Create(&BaseModuleDef);
 }
+
+// Set in inside Application
+static PyMethodDef* __AppMethods = nullptr;
+
+PyMODINIT_FUNC
+init_freecad_module(void)
+{
+    static struct PyModuleDef FreeCADModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "FreeCAD", FreeCAD_doc, -1,
+        __AppMethods,
+        NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&FreeCADModuleDef);
+}
 #endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
@@ -239,14 +254,15 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef FreeCADModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "FreeCAD", FreeCAD_doc, -1,
-        Application::Methods,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* pAppModule = PyModule_Create(&FreeCADModuleDef);
-    _PyImport_FixupBuiltin(pAppModule, "FreeCAD");
+    PyObject* modules = PyImport_GetModuleDict();
+
+    __AppMethods = Application::Methods;
+    PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
+    if (!pAppModule) {
+        PyErr_Clear();
+        pAppModule = init_freecad_module();
+        PyDict_SetItemString(modules, "FreeCAD", pAppModule);
+    }
 #else
     PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
 #endif
@@ -282,6 +298,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
 #if PY_MAJOR_VERSION >= 3
     PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
+    if (!pBaseModule) {
+        PyErr_Clear();
+        pBaseModule = init_freecad_base_module();
+        PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
+    }
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
@@ -1427,6 +1448,7 @@ void Application::initConfig(int argc, char ** argv)
 
     // init python
 #if PY_MAJOR_VERSION >= 3
+    PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
 #endif
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
