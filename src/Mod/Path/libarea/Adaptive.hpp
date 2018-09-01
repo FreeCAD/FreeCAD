@@ -29,7 +29,7 @@ namespace AdaptivePath {
 
 	enum MotionType { mtCutting = 0, mtLinkClear = 1, mtLinkNotClear = 2, mtLinkClearAtPrevPass = 3  };
 
-	enum OperationType { otClearing = 0, otProfilingInside = 1, otProfilingOutside = 2 };
+	enum OperationType { otClearingInside = 0, otClearingOutside = 1, otProfilingInside = 2, otProfilingOutside = 3 };
 
 	typedef std::pair<double,double> DPoint;
 	typedef std::vector<DPoint> DPath;
@@ -58,12 +58,12 @@ namespace AdaptivePath {
 			double toolDiameter=5;
 			double helixRampDiameter=0;
 			double stepOverFactor = 0.2;
-			int polyTreeNestingLimit=0;
 			double tolerance=0.1;
 			double stockToLeave=0;
-			OperationType opType = OperationType::otClearing;
+			bool forceInsideOut = true;
+			OperationType opType = OperationType::otClearingInside;
 
-			std::list<AdaptiveOutput> Execute(const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
+			std::list<AdaptiveOutput> Execute(const DPaths &stockPaths, const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
 
 			#ifdef DEV_MODE
 			/*for debugging*/
@@ -75,7 +75,8 @@ namespace AdaptivePath {
 		private:
 			std::list<AdaptiveOutput> results;
 			Paths inputPaths;
-
+			Paths stockInputPaths;
+			int polyTreeNestingLimit=0;
 			double scaleFactor=100;
 			long toolRadiusScaled=10;
 			long finishPassOffsetScaled=0;
@@ -92,14 +93,17 @@ namespace AdaptivePath {
 			Path toolGeometry; // tool geometry at coord 0,0, should not be modified
 
 			void ProcessPolyNode(Paths & boundPaths, Paths & toolBoundPaths);
-			bool FindEntryPoint(const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/, IntPoint &entryPoint /*output*/);
+			bool FindEntryPoint(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
+							IntPoint &entryPoint /*output*/, IntPoint & toolPos, DoublePoint & toolDir);
+			bool FindEntryPointOutside(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
+					IntPoint &entryPoint /*output*/,  IntPoint & toolPos, DoublePoint & toolDir);
 			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths);
 			void AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
 			bool  CheckCollision(const IntPoint &lastPoint,const IntPoint &nextPoint,const Paths & cleared);
 			friend class EngagePoint; // for CalcCutArea
 
 			void CheckReportProgress(TPaths &progressPaths,bool force=false);
-
+			void AddPathsToProgress(TPaths &progressPaths,Paths paths);
 		private: // constants for fine tuning
 			const bool preventConvetionalMode = true;
 			const double RESOLUTION_FACTOR = 8.0;
