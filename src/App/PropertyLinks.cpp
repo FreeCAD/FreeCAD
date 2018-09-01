@@ -212,14 +212,14 @@ void PropertyLink::resetLink() {
 
 void PropertyLink::setValue(App::DocumentObject * lValue)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(parent && lValue && parent->getDocument()!=lValue->getDocument())
+        throw Base::ValueError("PropertyLink does not support external object");
+
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
-    if (_pcScope!=LinkScope::Hidden && 
-        getContainer() && 
-        getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
-    {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if (_pcScope!=LinkScope::Hidden && parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
@@ -435,16 +435,18 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
         return;
     }
 
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkList: invalid document object");
+        if(parent && parent->getDocument()!=obj->getDocument())
+            throw Base::ValueError("PropertyLinkList does not support external object");
     }
     _nameMap.clear();
 
 #ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
@@ -647,10 +649,16 @@ PropertyLinkSub::~PropertyLinkSub()
 void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList, 
         const std::vector<std::pair<std::string,std::string> > *ShadowSubList)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(lValue) {
+        if(!lValue->getNameInDocument())
+            throw Base::ValueError("PropertyLinkSub: invalid document object");
+        if(parent && parent->getDocument()!=lValue->getDocument())
+            throw Base::ValueError("PropertyLinkSub does not support external object");
+    }
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if(parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
@@ -1066,10 +1074,16 @@ int PropertyLinkSubList::getSize(void) const
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(lValue) {
+        if(!lValue->getNameInDocument())
+            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+        if(parent && parent->getDocument()!=lValue->getDocument())
+            throw Base::ValueError("PropertyLinkSubList does not support external object");
+    }
 #ifndef USE_OLD_DAG
     //maintain backlinks
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if(parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
@@ -1099,13 +1113,19 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, const std::vector<const char*>& lSubNames)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    for(auto obj : lValue) {
+        if(!obj || !obj->getNameInDocument())
+            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+        if(parent && parent->getDocument()!=obj->getDocument())
+            throw Base::ValueError("PropertyLinkSubList does not support external object");
+    }
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
 
 #ifndef USE_OLD_DAG
     //maintain backlinks. 
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if(parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
@@ -1138,13 +1158,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
         const std::vector<std::string>& lSubNames, 
         const std::vector<std::pair<std::string,std::string> > *ShadowSubList)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    for(auto obj : lValue) {
+        if(!obj || !obj->getNameInDocument())
+            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+        if(parent && parent->getDocument()!=obj->getDocument())
+            throw Base::ValueError("PropertyLinkSubList does not support external object");
+    }
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
     //maintain backlinks. 
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if(parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
@@ -1173,10 +1199,16 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
+    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(lValue) {
+        if(!lValue->getNameInDocument())
+            throw Base::ValueError("PropertyLinkSubList: invalid document object");
+        if(parent && parent->getDocument()!=lValue->getDocument())
+            throw Base::ValueError("PropertyLinkSubList does not support external object");
+    }
 #ifndef USE_OLD_DAG   
     //maintain backlinks.
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    if(parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
