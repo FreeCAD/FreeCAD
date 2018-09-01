@@ -3834,8 +3834,10 @@ std::string Document::getStandardObjectName(const char *Name, int d) const
     return Base::Tools::getUniqueName(Name, labels, d);
 }
 
-std::vector<DocumentObject*> Document::getObjects() const
+std::vector<DocumentObject*> Document::getObjects(bool includeExternal) const
 {
+    if(includeExternal)
+        return getDependencyList(d->objectArray);
     return d->objectArray;
 }
 

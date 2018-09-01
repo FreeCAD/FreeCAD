@@ -281,7 +281,7 @@ public:
     /// Returns a name of the form prefix_number. d specifies the number of digits.
     std::string getStandardObjectName(const char *Name, int d) const;
     /// Returns a list of all Objects
-    std::vector<DocumentObject*> getObjects() const;
+    std::vector<DocumentObject*> getObjects(bool includeExternal=false) const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
     /// Returns all object with given extensions. If derived=true also all objects with extensions derived from the given one
     std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId, bool derived = true) const;
