@@ -26,14 +26,14 @@ IF (COIN3D_FOUND)
       )
       IF( EXISTS ${COIN3D_DOC_PATH})
         message(STATUS "Coin3D doc is installed")
-        find_file(COIN3D_DOC_TAGFILE coin.tag 
+        find_file(COIN3D_DOC_TAGFILE coin.tag Coin.tag 
             ${COIN3D_DOC_PATH}
         )
         IF( EXISTS ${COIN3D_DOC_TAGFILE})
           SET( COIN3D_DOC_FOUND "YES"
           )
         ELSE( EXISTS ${COIN3D_DOC_TAGFILE})
-          find_file(COIN3D_DOC_TAGFILE_GZ coin.tag.gz 
+          find_file(COIN3D_DOC_TAGFILE_GZ coin.tag.gz Coin.tag.gz 
               ${COIN3D_DOC_PATH}
           )
           IF( EXISTS ${COIN3D_DOC_TAGFILE_GZ})
