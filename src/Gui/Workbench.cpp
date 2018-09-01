@@ -696,9 +696,13 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+
+    //TODO: Add external object support for DAGView
+#if 0
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)
       root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+#endif
     
     return root;
 }
