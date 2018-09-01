@@ -160,35 +160,44 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
             lx=region["HelixCenterPoint"][0]
             ly=region["HelixCenterPoint"][1]
 
-            r = helixRadius - 0.01
-            #helix ramp
             passDepth = (passStartDepth - passEndDepth)
-            maxfi =  passDepth / depthPerOneCircle *  2 * math.pi
-            fi = 0
-            offsetFi =-maxfi + startAngle-math.pi/16
 
-            helixStart = [region["HelixCenterPoint"][0] + r * math.cos(offsetFi), region["HelixCenterPoint"][1] + r * math.sin(offsetFi)]
 
-            op.commandlist.append(Path.Command("(helix to depth: %f)"%passEndDepth))
-            #if step == 1:
-            #rapid move to start point
-            op.commandlist.append(Path.Command(
-                "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
-            #rapid move to safe height
-            op.commandlist.append(Path.Command(
-                "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
+            #helix ramp
+            if helixRadius>0.0001:
+                r = helixRadius - 0.01
+                maxfi =  passDepth / depthPerOneCircle *  2 * math.pi
+                fi = 0
+                offsetFi =-maxfi + startAngle-math.pi/16
 
-            op.commandlist.append(Path.Command("G1", {
-                                  "X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
+                helixStart = [region["HelixCenterPoint"][0] + r * math.cos(offsetFi), region["HelixCenterPoint"][1] + r * math.sin(offsetFi)]
 
-            while fi<maxfi:
-                x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
-                y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
-                z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
-                op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
-                lx=x
-                ly=y
-                fi=fi+math.pi/16
+                op.commandlist.append(Path.Command("(helix to depth: %f)"%passEndDepth))
+                #if step == 1:
+                #rapid move to start point
+                op.commandlist.append(Path.Command(
+                    "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
+                #rapid move to safe height
+                op.commandlist.append(Path.Command(
+                    "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
+
+                op.commandlist.append(Path.Command("G1", {
+                                    "X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
+
+                while fi<maxfi:
+                    x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                    y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                    z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
+                    op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
+                    lx=x
+                    ly=y
+                    fi=fi+math.pi/16
+            else: # no helix entry
+                op.commandlist.append(Path.Command(
+                    "G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
+                op.commandlist.append(Path.Command("G1", {
+                           "X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
+
             op.commandlist.append(Path.Command("(adaptive - depth: %f)"%passEndDepth))
             #add adaptive paths
             for pth in region["AdaptivePaths"]:
@@ -245,10 +254,8 @@ def Execute(op,obj):
     try:
         Console.PrintMessage("Tool diam: %f \n"%op.tool.Diameter)
         helixDiameter = min(op.tool.Diameter,1000.0 if obj.HelixDiameterLimit.Value==0.0 else obj.HelixDiameterLimit.Value )
-        nestingLimit=0
         topZ=op.stock.Shape.BoundBox.ZMax
 
-        opType = area.AdaptiveOperationType.Clearing
         obj.Stopped = False
         obj.StopProcessing = False
         if obj.Tolerance<0.001: obj.Tolerance=0.001
@@ -262,40 +269,45 @@ def Execute(op,obj):
 
         pathArray=connectEdges(edges)
 
+        stockPaths = []
+        if op.stock.StockType == "CreateCylinder":
+            stockPaths.append([discretize(op.stock.Shape.Edges[0])])
+        else:
+            stockBB = op.stock.Shape.BoundBox
+            v=[]
+            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
+            v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMin,0))
+            v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMax,0))
+            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMax,0))
+            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
+            stockPaths.append([v])
+
+        opType = area.AdaptiveOperationType.ClearingInside
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
-                if op.stock.StockType == "CreateCylinder":
-                     pathArray.append([discretize(op.stock.Shape.Edges[0])])
-                else:
-                    stockBB = op.stock.Shape.BoundBox
-                    v=[]
-                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
-                    v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMin,0))
-                    v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMax,0))
-                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMax,0))
-                    v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
-                    pathArray.append([v])
-                if not obj.ProcessHoles: nestingLimit = 2
-            elif not obj.ProcessHoles: nestingLimit = 1
-            opType = area.AdaptiveOperationType.Clearing
+                opType = area.AdaptiveOperationType.ClearingOutside
+            else:
+                opType = area.AdaptiveOperationType.ClearingInside
         else: # profiling
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ProfilingOutside
             else:
                 opType = area.AdaptiveOperationType.ProfilingInside
-            if not obj.ProcessHoles: nestingLimit = 1
 
         path2d = convertTo2d(pathArray)
+        stockPath2d = convertTo2d(stockPaths)
+
         # put here all properties that influence calculation of adaptive base paths,
         inputStateObject = {
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry" : path2d,
+            "stockGeometry": stockPath2d,
             "stepover" : float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
             "operationType": obj.OperationType,
             "side": obj.Side,
-            "processHoles": obj.ProcessHoles,
+            "forceInsideOut" : obj.ForceInsideOut,
             "stockToLeave": float(obj.StockToLeave)
         }
 
@@ -325,10 +337,10 @@ def Execute(op,obj):
             a2d.helixRampDiameter =  helixDiameter
             a2d.stockToLeave =float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
+            a2d.forceInsideOut = obj.ForceInsideOut
             a2d.opType = opType
-            a2d.polyTreeNestingLimit = nestingLimit
             #EXECUTE
-            results = a2d.Execute(path2d,progressFn)
+            results = a2d.Execute(stockPath2d,path2d,progressFn)
 
             #need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -376,7 +388,9 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyPercent", "StepOver", "Adaptive", "Percent of cutter diameter to step over on each pass")
         obj.addProperty("App::PropertyDistance", "LiftDistance", "Adaptive", "Lift distance for rapid moves")
         obj.addProperty("App::PropertyDistance", "StockToLeave", "Adaptive", "How much stock to leave (i.e. for finishing operation)")
-        obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
+        # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
+
+        obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive","Force plunging into material inside and clearing towards the edges")
         obj.addProperty("App::PropertyBool", "Stopped",
                         "Adaptive", "Stop processing")
         obj.setEditorMode('Stopped', 2) #hide this property
@@ -401,7 +415,8 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Tolerance = 0.1
         obj.StepOver = 20
         obj.LiftDistance=1.0
-        obj.ProcessHoles = True
+        # obj.ProcessHoles = True
+        obj.ForceInsideOut = True
         obj.Stopped = False
         obj.StopProcessing = False
         obj.HelixAngle = 5

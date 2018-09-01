@@ -92,10 +92,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.StockToLeave.setToolTip("How much material to leave (i.e. for finishing operation)")
         formLayout.addRow(QtGui.QLabel("Stock to Leave"),form.StockToLeave)
 
-        #process holes
-        form.ProcessHoles = QtGui.QCheckBox()
-        form.ProcessHoles.setChecked(True)
-        formLayout.addRow(QtGui.QLabel("Process Holes"),form.ProcessHoles)
+        # #process holes
+        # form.ProcessHoles = QtGui.QCheckBox()
+        # form.ProcessHoles.setChecked(True)
+        # formLayout.addRow(QtGui.QLabel("Process Holes"),form.ProcessHoles)
+
+        #Force inside out
+        form.ForceInsideOut = QtGui.QCheckBox()
+        form.ForceInsideOut.setChecked(True)
+        formLayout.addRow(QtGui.QLabel("Force Clearing Inside-Out"),form.ForceInsideOut)
 
         layout.addLayout(formLayout)
 
@@ -121,7 +126,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
 
-        signals.append(self.form.ProcessHoles.stateChanged)
+        # signals.append(self.form.ProcessHoles.stateChanged)
+        signals.append(self.form.ForceInsideOut.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -136,7 +142,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, 'StockToLeave'):
             self.form.StockToLeave.setValue(obj.StockToLeave)
 
-        self.form.ProcessHoles.setChecked(obj.ProcessHoles)
+        # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
+        self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.setupToolController(obj, self.form.ToolController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode('AdaptiveInputState', 2) #hide this property
@@ -159,7 +166,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, 'StockToLeave'):
             obj.StockToLeave = self.form.StockToLeave.value()
 
-        obj.ProcessHoles = self.form.ProcessHoles.isChecked()
+        # obj.ProcessHoles = self.form.ProcessHoles.isChecked()
+        obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if(obj.Stopped):
             self.form.StopButton.setChecked(False)  #reset the button

@@ -295,8 +295,21 @@ double AreaGetArea(const CArea& a)
 
 
 // Adaptive2d.Execute wrapper
-bp::list AdaptiveExecute(AdaptivePath::Adaptive2d& ada,const boost::python::list &in_paths,  boost::python::object progressCallbackFn) {
+bp::list AdaptiveExecute(AdaptivePath::Adaptive2d& ada,const boost::python::list &stock_paths, const boost::python::list &in_paths,  boost::python::object progressCallbackFn) {
 	bp::list out_list;
+
+	// convert stock paths
+	AdaptivePath::DPaths stock_dpaths;
+	for(bp::ssize_t i=0;i<bp::len(stock_paths);i++) {
+		bp::list in_path=bp::extract<boost::python::list>(stock_paths[i]);
+		AdaptivePath::DPath dpath;
+		for(bp::ssize_t j=0;j<bp::len(in_path);j++) {
+			bp::list in_point = bp::extract<bp::list>(in_path[j]);
+			dpath.push_back(pair<double,double>(bp::extract<double>(in_point[0]),bp::extract<double>(in_point[1])));
+		}
+		stock_dpaths.push_back(dpath);
+	}
+
 	// convert inputs
 	AdaptivePath::DPaths dpaths;
 	for(bp::ssize_t i=0;i<bp::len(in_paths);i++) {
@@ -309,7 +322,7 @@ bp::list AdaptiveExecute(AdaptivePath::Adaptive2d& ada,const boost::python::list
 		dpaths.push_back(dpath);
 	}
 	// Execute with callback
-	std::list<AdaptivePath::AdaptiveOutput> result=ada.Execute(dpaths,[progressCallbackFn](AdaptivePath::TPaths tp)->bool {
+	std::list<AdaptivePath::AdaptiveOutput> result=ada.Execute(stock_dpaths,dpaths,[progressCallbackFn](AdaptivePath::TPaths tp)->bool {
 		bp::list out_paths;
 		for(const auto & in_pair : tp) {
 			bp::list path;
@@ -495,7 +508,8 @@ BOOST_PYTHON_MODULE(area) {
 	 .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
 
 	bp::enum_<OperationType>("AdaptiveOperationType")
-	 .value("Clearing", OperationType::otClearing)
+	 .value("ClearingInside", OperationType::otClearingInside)
+	 .value("ClearingOutside", OperationType::otClearingOutside)
      .value("ProfilingInside", OperationType::otProfilingInside)
 	 .value("ProfilingOutside", OperationType::otProfilingOutside);
 
@@ -513,7 +527,8 @@ BOOST_PYTHON_MODULE(area) {
 	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
 		.def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
 		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
-		.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
+		.def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
+		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
 		.def_readwrite("tolerance", &Adaptive2d::tolerance)
 		.def_readwrite("opType", &Adaptive2d::opType);
 
