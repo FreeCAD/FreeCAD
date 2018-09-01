@@ -84,7 +84,7 @@ const int TreeWidget::ObjectType = 1001;
 
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(false,false), contextItem(0)
+    : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , editingItem(0), currentDocItem(0),fromOutside(false)
     ,statusUpdateDelay(0),myName(name)
 {

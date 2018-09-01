@@ -341,7 +341,7 @@ public:
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,false),
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,0),
       editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
@@ -350,7 +350,7 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sh
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,false),
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,0),
       editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)

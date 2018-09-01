@@ -55,9 +55,30 @@
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
-
 using namespace Gui;
 using namespace std;
+
+SelectionGateFilterExternal::SelectionGateFilterExternal(const char *docName, const char *objName) {
+    if(docName) {
+        DocName = docName;
+        if(objName)
+            ObjName = objName;
+    }
+}
+
+bool SelectionGateFilterExternal::allow(App::Document *doc ,App::DocumentObject *obj, const char*) {
+    if(!doc || !obj)
+        return true;
+    if(DocName.size() && doc->getName()!=DocName)
+        notAllowedReason = "Cannot select external object";
+    else if(ObjName.size() && ObjName==obj->getNameInDocument())
+        notAllowedReason = "Cannot select self";
+    else
+        return true;
+    return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 SelectionObserver::SelectionObserver(bool attach,int resolve)
     :resolve(resolve)
@@ -65,6 +86,18 @@ SelectionObserver::SelectionObserver(bool attach,int resolve)
     if(attach)
         attachSelection();
 }
+
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject *vp,bool attach,int resolve)
+    :resolve(resolve)
+{
+    if(vp && vp->getObject() && vp->getObject()->getDocument()) {
+        filterDocName = vp->getObject()->getDocument()->getName();
+        filterObjName = vp->getObject()->getNameInDocument();
+    }
+    if(attach)
+        attachSelection();
+}
+
 
 SelectionObserver::~SelectionObserver()
 {
@@ -102,6 +135,9 @@ void SelectionObserver::attachSelection()
                 Selection().signalSelectionChanged);
         connectSelection = signal.connect(boost::bind
             (&SelectionObserver::_onSelectionChanged, this, _1));
+        if(filterDocName.size())
+            Selection().addSelectionGate(
+                    new SelectionGateFilterExternal(filterDocName.c_str(),filterObjName.c_str()));
     }
 }
 
@@ -122,6 +158,8 @@ void SelectionObserver::detachSelection()
 {
     if (connectSelection.connected()) {
         connectSelection.disconnect();
+        if(filterDocName.size())
+            Selection().rmvSelectionGate();
     }
 }
 

@@ -179,6 +179,7 @@ template class GuiExport Base::Subject<const Gui::SelectionChanges&>;
 
 namespace Gui
 {
+    class ViewProviderDocumentObject;
 
 /**
  * The SelectionObserver class simplifies the step to write classes that listen
@@ -192,6 +193,7 @@ class GuiExport SelectionObserver
 public:
     /// Constructor
     SelectionObserver(bool attach = true, int resolve = 1);
+    SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, int resolve=1);
     virtual ~SelectionObserver();
     bool blockConnection(bool block);
     bool isConnectionBlocked() const;
@@ -210,6 +212,8 @@ private:
     typedef boost::signals::connection Connection;
     Connection connectSelection;
     int resolve;
+    std::string filterDocName;
+    std::string filterObjName;
 };
 
 /**
@@ -264,6 +268,18 @@ public:
     std::string notAllowedReason;
 };
 
+/** SelectionGateFilterExternal
+ * The selection gate disallows any external object
+ */
+class GuiExport SelectionGateFilterExternal: public SelectionGate
+{
+public:
+    SelectionGateFilterExternal(const char *docName, const char *objName=0);
+    virtual bool allow(App::Document*,App::DocumentObject*, const char*) override;
+private:
+    std::string DocName;
+    std::string ObjName;
+};
 
 /** The Selection class
  *  The selection singleton keeps track of the selection state of 

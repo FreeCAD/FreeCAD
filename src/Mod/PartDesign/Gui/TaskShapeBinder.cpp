@@ -59,6 +59,7 @@ using namespace Gui;
 TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/, QWidget *parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
                              tr("Datum shape parameters"), true, parent)
+    , SelectionObserver(view)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

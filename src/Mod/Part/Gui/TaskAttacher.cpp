@@ -108,6 +108,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
+      SelectionObserver(ViewProvider),
       ViewProvider(ViewProvider)
 {
     //check if we are attachable
@@ -328,7 +329,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (selObj == ViewProvider->getObject()) return;//prevent self-referencing
+        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
         
         std::string subname = msg.pSubName;
 
