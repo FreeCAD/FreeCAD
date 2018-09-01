@@ -1320,6 +1320,10 @@ Please define another shortcut.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+    <source>Addons</source>
+    <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>User macros</source>
         <translation type="unfinished"></translation>
     </message>
