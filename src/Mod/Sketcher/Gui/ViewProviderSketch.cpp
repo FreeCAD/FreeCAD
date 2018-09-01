@@ -280,7 +280,8 @@ PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
 
 ViewProviderSketch::ViewProviderSketch()
-  : edit(0),
+  : SelectionObserver(false),
+    edit(0),
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
     combrepscalehyst(0),
@@ -1459,6 +1460,10 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?
     if (edit) {
+        // ignore external object
+        if(msg.ObjName.size() && msg.DocName.size() && msg.DocName!=getObject()->getDocument()->getName())
+            return;
+
         bool handled=false;
         if (Mode == STATUS_SKETCH_UseHandler) {
             handled = edit->sketchHandler->onSelectionChanged(msg);
@@ -5466,6 +5471,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
+    
+    this->attachSelection();
 
     // create the container for the additional edit data
     assert(!edit);
@@ -5907,6 +5914,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
         delete edit;
         edit = 0;
+        this->detachSelection();
 
         try {
             // and update the sketch
