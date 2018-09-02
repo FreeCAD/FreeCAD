@@ -43,40 +43,30 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QTabWidget" name="models">
-           <property name="currentIndex">
-            <number>0</number>
+          <widget class="QTreeWidget" name="modelTree">
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
            </property>
-           <widget class="QWidget" name="tabSolids">
-            <attribute name="title">
-             <string>Solids</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QListWidget" name="solidList"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tabTwoD">
-            <attribute name="title">
-             <string>2D</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QListWidget" name="twoDList"/>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tabJobs">
-            <attribute name="title">
-             <string>Jobs</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QListWidget" name="jobList"/>
-             </item>
-            </layout>
-           </widget>
+           <property name="tabKeyNavigation">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
+           </property>
+           <property name="columnCount">
+            <number>1</number>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="headerCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string notr="true">1</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>

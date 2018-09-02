@@ -1046,8 +1046,13 @@ class TaskPanel:
                     base = PathJob.createModelResourceClone(obj, orig)
                     obj.Model.addObject(base)
                     self.vproxy.rememberBaseVisibility(obj, base)
+
+                # refresh the view
                 if retired or rookies:
+                    PathLog.track([o.Label for o in retired], [o.Label for o in rookies])
                     self.setFields()
+                else:
+                    PathLog.track('no changes to model')
 
 
     def tabPageChanged(self, index):

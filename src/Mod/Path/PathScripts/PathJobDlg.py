@@ -49,8 +49,9 @@ class JobCreate:
 
     def __init__(self, parent=None, sel=None):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        self.items = []
-        self.jobs = []
+        self.itemsSolid = QtGui.QTreeWidgetItem([translate('PathJob', 'Solids')])
+        self.itemsTwoD  = QtGui.QTreeWidgetItem([translate('PathJob', '2D')])
+        self.itemsJob   = QtGui.QTreeWidgetItem([translate('PathJob', 'Jobs')])
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
 
@@ -70,33 +71,50 @@ class JobCreate:
         else:
             selected = []
 
+        expandSolids = False
+        expandTwoDs  = False
+        expandJobs   = False
         index = 0
         for base in sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label):
-            if not base in xxx and not PathJob.isResourceClone(job, base, None):
-                item = QtGui.QListWidgetItem(base.Label)
-                item.setData(self.DataObject, base)
-                item.setCheckState(QtCore.Qt.CheckState.Checked if base.Label in selected else QtCore.Qt.CheckState.Unchecked)
+            if not base in xxx and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
+                item = QtGui.QTreeWidgetItem([base.Label])
+                item.setData(0, self.DataObject, base)
+                sel = base.Label in selected
+                item.setCheckState(0, QtCore.Qt.CheckState.Checked if sel else QtCore.Qt.CheckState.Unchecked)
                 if PathUtil.isSolid(base):
-                    self.dialog.solidList.addItem(item)
+                    self.itemsSolid.addChild(item)
+                    if sel:
+                        expandSolids = True
                 else:
-                    self.dialog.twoDList.addItem(item)
-                self.items.append(item)
+                    self.itemsTwoD.addChild(item)
+                    if sel:
+                        expandTwoDs = True
 
-        activateJobs = False
         for j in sorted(PathJob.Instances(), key=lambda x: x.Label):
             if j != job:
-                item = QtGui.QListWidgetItem(j.Label)
-                item.setData(self.DataObject, j)
+                item = QtGui.QTreeWidgetItem([j.Label])
+                item.setData(0, self.DataObject, j)
                 if j.Label in selected:
-                    activateJobs = True
-                    item.setCheckState(QtCore.Qt.CheckState.Checked)
+                    expandJobs = True
+                    item.setCheckState(0, QtCore.Qt.CheckState.Checked)
                 else:
-                    item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-                self.dialog.jobList.addItem(item)
-                self.jobs.append(item)
-        if activateJobs:
-            self.dialog.models.setCurrentWidget(self.dialog.tabJobs)
+                    item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
+                self.itemsJob.addChild(item)
 
+        if self.itemsSolid.childCount() > 0:
+            self.dialog.modelTree.addTopLevelItem(self.itemsSolid)
+            if expandSolids or not (expandTwoDs or expandJobs):
+                PathLog.track()
+                self.itemsSolid.setExpanded(True)
+                expandSolids = True
+        if self.itemsTwoD.childCount() > 0:
+            self.dialog.modelTree.addTopLevelItem(self.itemsTwoD)
+            if expandTwoDs:
+                self.itemsTwoD.setExpanded(True)
+        if self.itemsJob.childCount() > 0:
+            self.dialog.modelTree.addTopLevelItem(self.itemsJob)
+            if expandJobs:
+                self.itemsJob.setExpanded(True)
         self.dialog.modelGroup.show()
 
 
@@ -134,9 +152,20 @@ class JobCreate:
 
     def getModels(self):
         '''answer the base models selected for the job'''
-        models = [item.data(self.DataObject) for item in self.items if item.checkState() == QtCore.Qt.CheckState.Checked]
-        for job in [item.data(self.DataObject) for item in self.jobs if item.checkState() == QtCore.Qt.CheckState.Checked]:
-            models.extend(job.Model.Group)
+        models = []
+
+        for i in range(self.itemsSolid.childCount()):
+            if self.itemsSolid.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
+                models.append(self.itemsSolid.child(i).data(0, self.DataObject))
+
+        for i in range(self.itemsTwoD.childCount()):
+            if self.itemsTwoD.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
+                models.append(self.itemsTwoD.child(i).data(0, self.DataObject))
+
+        for i in range(self.itemsJob.childCount()):
+            if self.itemsJob.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
+                models.extend(self.itemsJob.child(i).data(0, self.DataObject).Model.Group)
+
         return models
 
     def getTemplate(self):
