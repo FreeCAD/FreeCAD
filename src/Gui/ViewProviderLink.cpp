@@ -1963,28 +1963,27 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
     return true;
 }
 
-void ViewProviderLink::dropObjectEx(App::DocumentObject* obj, 
-        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) 
+std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj, 
+    App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) 
 {
     auto ext = getLinkExtension();
     if(isGroup(ext)) {
         ext->setLink(ext->getElementListValue().size(),obj);
         if(obj->getDocument()==getObject()->getDocument() && obj->Visibility.getValue())
             obj->Visibility.setValue(false);
-        return;
+        return std::string();
     }
 
     if(!ext || !ext->getLinkedObjectProperty() || hasElements(ext))
-        return;
+        return std::string();
 
     if(!hasSubName) {
         auto linked = getLinkedView(false,ext);
-        if(linked) {
-            linked->dropObjectEx(obj,owner,subname,elements);
-            return;
-        }
+        if(linked)
+            return linked->dropObjectEx(obj,owner,subname,elements);
     }
     ext->setLink(-1,owner,subname);
+    return std::string();
 }
 
 bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {

@@ -251,9 +251,10 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args)
                 return 0;
             }
         }
-        getViewProviderPtr()->dropObjectEx(static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
+        auto ret = getViewProviderPtr()->dropObjectEx(
+                static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
                 pcOwner, subname,elements.getValues());
-        Py_Return;
+        return Py::new_reference_to(Py::String(ret));
     } PY_CATCH;
 }
 

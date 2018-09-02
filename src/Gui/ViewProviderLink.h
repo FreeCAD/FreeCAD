@@ -234,7 +234,7 @@ public:
     bool canDragAndDropObject(App::DocumentObject*) const override;
     bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements) const override;
-    void dropObjectEx(App::DocumentObject*, App::DocumentObject*, 
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, 
             const char *subname, const std::vector<std::string> &elements) override;
 
     bool onDelete(const std::vector<std::string> &) override;

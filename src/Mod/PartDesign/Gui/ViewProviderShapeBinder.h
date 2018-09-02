@@ -64,7 +64,7 @@ public:
     bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
     bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements) const override;
-    void dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
             const std::vector<std::string> &) override;
     std::vector<App::DocumentObject*> claimChildren(void) const override;
 

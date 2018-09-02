@@ -698,17 +698,16 @@ bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject
     return canDropObject(obj);
 }
 
-void ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements) 
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
-            ext->extensionDropObjectEx(obj, owner, subname, elements);
-            return;
-        }
+        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements))
+            return ext->extensionDropObjectEx(obj, owner, subname, elements);
     }
     dropObject(obj);
+    return std::string();
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {

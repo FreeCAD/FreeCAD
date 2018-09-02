@@ -1348,7 +1348,7 @@ ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
 
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
-        const char *subname, const std::vector<std::string> &elements)
+        const char *subname, const std::vector<std::string> &elements,std::string &ret)
 {
     Base::PyGILStateLocker lock;
     try {
@@ -1360,14 +1360,14 @@ ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::Docume
                 int i=0;
                 for(auto &element : elements)
                     tuple.setItem(i++,Py::String(element));
+                Py::Object res;
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
                     Py::TupleN args(
                             Py::Object(obj->getPyObject(),true),
                             owner?Py::Object(owner->getPyObject(),true):Py::Object(),
                             Py::String(subname?subname:""),tuple);
-                    method.apply(args);
-                    return Accepted;
+                    res = method.apply(args);
                 }
                 else {
                     Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
@@ -1376,9 +1376,11 @@ ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::Docume
                             Py::Object(obj->getPyObject(),true),
                             owner?Py::Object(owner->getPyObject(),true):Py::Object(),
                             Py::String(subname?subname:""),tuple);
-                    method.apply(args);
-                    return Accepted;
+                    res = method.apply(args);
                 }
+                if(!res.isNone())
+                    ret = res.as_string();
+                return Accepted;
             }
         }
         return NotImplemented;

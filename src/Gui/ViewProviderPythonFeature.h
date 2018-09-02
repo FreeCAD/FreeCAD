@@ -111,7 +111,7 @@ public:
             const char *,const std::vector<std::string> &elements) const;
     /** Add an object with full quanlified name to the view provider by drag and drop */
     ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
-            const char *, const std::vector<std::string> &elements);
+            const char *, const std::vector<std::string> &elements, std::string &ret);
     //@}
 
     bool canAddToSceneGraph() const;
@@ -324,15 +324,17 @@ public:
         }
     }
     /** Add an object with full quanlified name to the view provider by drag and drop */
-    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements) {
-        switch (imp->dropObjectEx(obj,owner,subname,elements)) {
+        std::string ret;
+        switch (imp->dropObjectEx(obj,owner,subname,elements,ret)) {
         case ViewProviderPythonFeatureImp::NotImplemented:
-            ViewProviderT::dropObjectEx(obj,owner,subname,elements);
+            ret = ViewProviderT::dropObjectEx(obj,owner,subname,elements);
             break;
         default:
             break;
         }
+        return ret;
     }
     //@}
 

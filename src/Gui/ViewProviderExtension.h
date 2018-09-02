@@ -68,9 +68,9 @@ public:
     virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) const
         { return false; }
-    virtual void extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
+    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) 
-        { extensionDropObject(obj); }
+        { extensionDropObject(obj); return std::string(); }
 
     /// Hides the view provider
     virtual void extensionHide(void) { }

@@ -254,12 +254,43 @@ public:
      * (actually in ViewProviderDocumentObject) inhibites cross document
      * dropping, and calls canDropObject(obj) for the rest. Override this
      * function to enable cross document linking.
+     *
+     * @param obj: the object being dropped
+     *
+     * @param owner: the (grand)parent object of the dropping object. Maybe
+     * null. This may not be the top parent object, as tree view will try to
+     * find a parent of the dropping object realtive to this object to avoid
+     * cyclic dependency
+     *
+     * @param subname: subname reference to the dropping object
+     *
+     * @param elements: non-object sub-elements, e.g. Faces, Edges, selected
+     * when the object is being dropped
+     *
+     * @return Return whether the dropping action is allowed.
      * */
     virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements) const;
 
-    /** Add an object with full quanlified name to the view provider by drag and drop */
-    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    /** Add an object with full quanlified name to the view provider by drag and drop
+     *
+     * @param obj: the object being dropped
+     *
+     * @param owner: the (grand)parent object of the dropping object. Maybe
+     * null. This may not be the top parent object, as tree view will try to
+     * find a parent of the dropping object realtive to this object to avoid
+     * cyclic dependency
+     *
+     * @param subname: subname reference to the dropping object
+     *
+     * @param elements: non-object sub-elements, e.g. Faces, Edges, selected
+     * when the object is being dropped
+     *
+     * @return Return a subname reference to the (grand)child object that
+     * actually holds the dropping object. In case the dropping object is
+     * directly holding under this object, then return an empty string
+     */
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements);
     //@}
 
