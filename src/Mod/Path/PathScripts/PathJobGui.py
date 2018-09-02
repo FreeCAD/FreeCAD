@@ -921,10 +921,10 @@ class TaskPanel:
         if -1 != index:
             self.template.updateUI()
 
-   def updateStock(self):
+    def refreshStock(self):
         self.updateStockEditor(self.form.stock.currentIndex())
 
-   def centerInStock(self):
+    def centerInStock(self):
         bbb = self.obj.Base.Shape.BoundBox
         bbs = self.obj.Stock.Shape.BoundBox
         by = bbs.Center - bbb.Center
@@ -1016,7 +1016,7 @@ class TaskPanel:
         self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
-        self.form.updateStock.clicked.connect(self.updateStock)
+        self.form.refreshStock.clicked.connect(self.refreshStock)
 
         self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
         self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
