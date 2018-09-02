@@ -166,9 +166,6 @@
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="mode" >
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
          </widget>
         </item>
        </layout>
@@ -265,6 +262,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="duplicateButton">
+         <property name="text">
+         <string>Duplicate</string>
+         </property>
+         <property name="enabled">
+         <bool>false</bool>
+         </property>
+         </widget>
+       </item>
+       <item>
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -309,9 +316,9 @@
   <tabstop>deleteButton</tabstop>
   <tabstop>editButton</tabstop>
   <tabstop>renameButton</tabstop>
+  <tabstop>duplicateButton</tabstop>
   <tabstop>addonsButton</tabstop>
   <tabstop>fileChooser</tabstop>
-
  </tabstops>
  <resources/>
  <connections>
