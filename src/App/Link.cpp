@@ -184,8 +184,7 @@ short LinkBaseExtension::extensionMustExecute(void) {
 }
 
 bool LinkBaseExtension::hasElements() const {
-    auto propElements = getElementListProperty();
-    return propElements && propElements->getSize();
+    return getElementListProperty()!=0;
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
