@@ -1024,11 +1024,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     subname.clear();
                 }
 
-                vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
+                std::string droppedName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
                 if(propPlacement) {
-                    std::string droppedName = selSubname.str() + obj->getNameInDocument() + ".";
+                    auto pos = selSubname.tellp();
+                    selSubname << droppedName << obj->getNameInDocument() << '.' << std::ends;
                     Base::Matrix4D newMat;
-                    auto sobj = selObj->getSubObject(droppedName.c_str(),0,&newMat);
+                    auto sobj = selObj->getSubObject(selSubname.str().c_str(),0,&newMat);
+                    selSubname.seekp(pos);
                     if(sobj == obj) {
                         newMat *= propPlacement->getValue().inverse().toMatrix();
                         newMat.inverse();
