@@ -122,7 +122,7 @@ class Delegate(QtGui.QStyledItemDelegate):
         index.model().setData(index, editor.prop.displayString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
-	widget.setGeometry(option.rect)
+        widget.setGeometry(option.rect)
 
 class OpTaskPanel:
 
