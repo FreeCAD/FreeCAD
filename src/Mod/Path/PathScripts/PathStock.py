@@ -112,8 +112,11 @@ class StockFromBase(Stock):
         obj.ExtZpos= 1.0
 
         # placement is only tracked on creation
-        bb = shapeBoundBox(base)
-        obj.Placement = FreeCAD.Placement(FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation())
+        bb = shapeBoundBox(base.Group)
+        if bb:
+            obj.Placement = FreeCAD.Placement(FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation())
+        else:
+            PathLog.track(obj.Label, base.Label)
         obj.Proxy = self
 
     def __getstate__(self):
@@ -210,6 +213,7 @@ class StockCreateCylinder(Stock):
             self.execute(obj)
 
 def SetupStockObject(obj, stockType):
+    PathLog.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:
         obj.addProperty('App::PropertyString', 'StockType', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Internal representation of stock type"))
         obj.StockType = stockType
@@ -220,6 +224,7 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
+    PathLog.track(job.Label, neg, pos, placement)
     base = job.Model if job and hasattr(job, 'Model') else None
     if base:
         base.Shape.tessellate(0.1)

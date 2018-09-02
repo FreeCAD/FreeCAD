@@ -111,23 +111,22 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     shapes.append((env, False))
 
         else:  # Try to build targets from the job base
-            # XXX ArchPanels support not implemented yet
-            if False and hasattr(self.baseobject, "Proxy"):
-                if isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+            if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
+                if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
                     if obj.processCircles or obj.processHoles:
-                        for shape in self.baseobject.Proxy.getHoles(self.baseobject, transform=True):
+                        for shape in self.model[0].Proxy.getHoles(self.model[0], transform=True):
                             for wire in shape.Wires:
-                                drillable = PathUtils.isDrillable(self.baseobject.Proxy, wire)
+                                drillable = PathUtils.isDrillable(self.model[0].Proxy, wire)
                                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                                    env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
                                     shapes.append((env, True))
 
                     if obj.processPerimeter:
-                        for shape in self.baseobject.Proxy.getOutlines(self.baseobject, transform=True):
+                        for shape in self.model[0].Proxy.getOutlines(self.model[0], transform=True):
                             for wire in shape.Wires:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                                env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
                                 shapes.append((env, False))
 
         PathLog.debug("%d shapes" % len(shapes))

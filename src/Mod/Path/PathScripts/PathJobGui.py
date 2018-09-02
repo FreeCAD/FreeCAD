@@ -224,9 +224,10 @@ class StockEdit(object):
     Index = -1
     StockType = PathStock.StockType.Unknown
 
-    def __init__(self, obj, form):
+    def __init__(self, obj, form, force):
         self.obj = obj
         self.form = form
+        self.force = force
         self.setupUi(obj)
 
     @classmethod
@@ -250,6 +251,7 @@ class StockEdit(object):
         self.setFields(obj)
 
     def setStock(self, obj, stock):
+        PathLog.track(obj.Label, stock)
         if obj.Stock:
             obj.Document.removeObject(self.obj.Stock.Name)
         obj.Stock = stock
@@ -272,6 +274,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
     StockType = PathStock.StockType.FromBase
 
     def editorFrame(self):
+        PathLog.track()
         return self.form.stockFromBase
 
     def getFields(self, obj, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
@@ -296,8 +299,11 @@ class StockFromBaseBoundBoxEdit(StockEdit):
             PathLog.error(translate('PathJob', 'Stock not from Base bound box!'))
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        PathLog.track()
+        if self.force or not self.IsStock(obj):
+            PathLog.track()
             self.setStock(obj, PathStock.CreateFromBase(obj))
+            self.force = False
         self.setLengthField(self.form.stockExtXneg, obj.Stock.ExtXneg)
         self.setLengthField(self.form.stockExtXpos, obj.Stock.ExtXpos)
         self.setLengthField(self.form.stockExtYneg, obj.Stock.ExtYneg)
@@ -306,6 +312,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.setLengthField(self.form.stockExtZpos, obj.Stock.ExtZpos)
 
     def setupUi(self, obj):
+        PathLog.track()
         self.setFields(obj)
         self.checkXpos()
         self.checkYpos()
@@ -368,8 +375,9 @@ class StockCreateBoxEdit(StockEdit):
             pass
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        if self.force or not self.IsStock(obj):
             self.setStock(obj, PathStock.CreateBox(obj))
+            self.force = False
         self.setLengthField(self.form.stockBoxLength, obj.Stock.Length)
         self.setLengthField(self.form.stockBoxWidth,  obj.Stock.Width)
         self.setLengthField(self.form.stockBoxHeight, obj.Stock.Height)
@@ -400,8 +408,9 @@ class StockCreateCylinderEdit(StockEdit):
             pass
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        if self.force or not self.IsStock(obj):
             self.setStock(obj, PathStock.CreateCylinder(obj))
+            self.force = False
         self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
         self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
 
@@ -897,22 +906,28 @@ class TaskPanel:
             FreeCADGui.Selection.addSelection(selObject, selFeature)
         return (selObject, p)
 
-    def updateStockEditor(self, index):
+    def updateStockEditor(self, index, force = False):
         def setupFromBaseEdit():
-            if not self.stockFromBase:
-                self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockFromBase:
+                self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form, force)
+            else:
+                PathLog.error('wtf')
             self.stockEdit = self.stockFromBase
         def setupCreateBoxEdit():
-            if not self.stockCreateBox:
-                self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockCreateBox:
+                self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form, force)
             self.stockEdit = self.stockCreateBox
         def setupCreateCylinderEdit():
-            if not self.stockCreateCylinder:
-                self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockCreateCylinder:
+                self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form, force)
             self.stockEdit = self.stockCreateCylinder
         def setupFromExisting():
-            if not self.stockFromExisting:
-                self.stockFromExisting = StockFromExistingEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockFromExisting:
+                self.stockFromExisting = StockFromExistingEdit(self.obj, self.form, force)
             if self.stockFromExisting.candidates(self.obj):
                 self.stockEdit = self.stockFromExisting
                 return True
@@ -1045,7 +1060,7 @@ class TaskPanel:
             self.template.updateUI()
 
     def setupUi(self, activate):
-        self.updateStockEditor(-1)
+        self.updateStockEditor(-1, True)
         self.setFields()
 
         # Info
