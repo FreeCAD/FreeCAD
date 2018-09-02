@@ -112,6 +112,12 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->syncViewAction, SIGNAL(triggered()),
             this, SLOT(onSyncView()));
 
+    this->syncPlacementAction = new QAction(this);
+    this->syncPlacementAction->setCheckable(true);
+    this->syncPlacementAction->setChecked(hGrp->GetBool("SyncPlacement",false));
+    connect(this->syncPlacementAction, SIGNAL(triggered()),
+            this, SLOT(onSyncPlacement()));
+
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
     connect(this->showHiddenAction, SIGNAL(triggered()),
@@ -274,6 +280,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     optionsMenu.addAction(this->preSelectionAction);
     optionsMenu.addAction(this->syncSelectionAction);
     optionsMenu.addAction(this->syncViewAction);
+    optionsMenu.addAction(this->syncPlacementAction);
     contextMenu.insertMenu(topact,&optionsMenu);
     contextMenu.insertSeparator(topact);
 
@@ -809,6 +816,9 @@ struct ItemInfo {
     std::string ownerDoc;
     std::string owner;
     std::string subname;
+    std::string topDoc;
+    std::string topObj;
+    std::string topSubname;
     std::vector<std::string> subs;
 };
 struct ItemInfo2 {
@@ -896,6 +906,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Selection().addSelection(selObj->getDocument()->getName(),
                     selObj->getNameInDocument());
         }
+
+        bool syncPlacement = syncPlacementAction->isChecked() && targetItemObj->isGroup();
+
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
         // and drop some object may delete other objects.
@@ -907,7 +920,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Gui::ViewProviderDocumentObject* vpc = item->object();
             App::DocumentObject* obj = vpc->getObject();
             std::ostringstream str;
-            auto owner = item->getRelativeParent(str,targetItemObj);
+            App::DocumentObject *topParent=0;
+            auto owner = item->getRelativeParent(str,targetItemObj,&topParent,&info.topSubname);
+            if(syncPlacement && topParent) {
+                info.topDoc = topParent->getDocument()->getName();
+                info.topObj = topParent->getNameInDocument();
+            }
             info.subname = str.str();
             info.doc = obj->getDocument()->getName();
             info.obj = obj->getNameInDocument();
@@ -979,12 +997,44 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
+                Base::Matrix4D mat;
+                App::PropertyPlacement *propPlacement = 0;
                 if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
+                    if(syncPlacement) {
+                        if(info.topObj.size()) {
+                            auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
+                            if(doc) {
+                                auto topObj = doc->getObject(info.topObj.c_str());
+                                if(topObj) {
+                                    auto sobj = topObj->getSubObject(info.topSubname.c_str(),0,&mat);
+                                    if(sobj == obj) {
+                                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                                obj->getPropertyByName("Placement"));
+                                    }
+                                }
+                            }
+                        }else{
+                            propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                    obj->getPropertyByName("Placement"));
+                            mat = propPlacement->getValue().toMatrix();
+                        }
+                    }
                     vpp->dragObject(obj);
                     owner = 0;
                     subname.clear();
                 }
+
                 vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
+                if(propPlacement) {
+                    std::string droppedName = selSubname.str() + obj->getNameInDocument() + ".";
+                    Base::Matrix4D newMat;
+                    auto sobj = selObj->getSubObject(droppedName.c_str(),0,&newMat);
+                    if(sobj == obj) {
+                        newMat *= propPlacement->getValue().inverse().toMatrix();
+                        newMat.inverse();
+                        propPlacement->setValue(Base::Placement(newMat*mat));
+                    }
+                }
             }
         } catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
@@ -1332,6 +1382,9 @@ void TreeWidget::setupText() {
     this->syncViewAction->setText(tr("Sync view"));
     this->syncViewAction->setStatusTip(tr("Auto switch to the 3D view containing the selected item"));
 
+    this->syncPlacementAction->setText(tr("Sync placement"));
+    this->syncPlacementAction->setStatusTip(tr("Try to adjust placement on drag and drop objects across coordinate systems"));
+
     this->showHiddenAction->setText(tr("Show hidden items"));
     this->showHiddenAction->setStatusTip(tr("Show hidden tree view items"));
 
@@ -1385,6 +1438,11 @@ void TreeWidget::syncView() {
         MDIView *view = currentDocItem->document()->getActiveView();
         if (view) getMainWindow()->setActiveWindow(view);
     }
+}
+
+void TreeWidget::onSyncPlacement() {
+    GET_TREEVIEW_PARAM(hGrp);
+    hGrp->SetBool("SyncPlacement",syncPlacementAction->isChecked());
 }
 
 void TreeWidget::onShowHidden() {
@@ -2943,11 +3001,13 @@ void DocumentObjectItem::setExpandedStatus(bool on)
 
 void DocumentObjectItem::setData (int column, int role, const QVariant & value)
 {
-    QTreeWidgetItem::setData(column, role, value);
+    QVariant myValue(value);
     if (role == Qt::EditRole) {
         QString label = value.toString();
         object()->getObject()->Label.setValue((const char*)label.toUtf8());
+        myValue = QString::fromUtf8(object()->getObject()->Label.getValue());
     }
+    QTreeWidgetItem::setData(column, role, myValue);
 }
 
 bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
@@ -3100,13 +3160,18 @@ App::DocumentObject *DocumentObjectItem::getFullSubName(
 }
 
 App::DocumentObject *DocumentObjectItem::getRelativeParent(
-        std::ostringstream &str, DocumentObjectItem *cousin) const
+        std::ostringstream &str, DocumentObjectItem *cousin,
+        App::DocumentObject **topParent, std::string *topSubname) const
 {
     std::ostringstream str2;
     App::DocumentObject *top=0,*top2=0;
     getSubName(str,top);
+    if(topParent)
+        *topParent = top;
     if(!top)
         return 0;
+    if(topSubname)
+        *topSubname = str.str() + getName() + '.';
     cousin->getSubName(str2,top2);
     if(top!=top2) {
         str << getName() << '.';

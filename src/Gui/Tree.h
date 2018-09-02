@@ -139,6 +139,7 @@ protected Q_SLOTS:
     void onPreSelection();
     void onPreSelectTimer();
     void onSyncView();
+    void onSyncPlacement();
     void onShowHidden();
     void onHideInTree();
 
@@ -173,6 +174,7 @@ private:
     QAction* preSelectionAction;
     QAction* syncSelectionAction;
     QAction* syncViewAction;
+    QAction* syncPlacementAction;
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
@@ -320,8 +322,11 @@ public:
 
     // return the immediate decendent of the common ancestor of this item and
     // 'cousin'.
-    App::DocumentObject *getRelativeParent(std::ostringstream &str,
-            DocumentObjectItem *cousin) const;
+    App::DocumentObject *getRelativeParent(
+            std::ostringstream &str,
+            DocumentObjectItem *cousin, 
+            App::DocumentObject **topParent=0,
+            std::string *topSubname=0) const;
 
     // return the top most linked group owner's name, and subname.  This method
     // is necssary despite have getFullSubName above is because native geo group
