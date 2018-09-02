@@ -1288,7 +1288,13 @@ namespace AdaptivePath {
 		double angle = M_PI;
 		engagePoint = toolPos;
 		Interpolation interp; // interpolation instance
-		EngagePoint engage(toolBoundPaths); // engage point stepping instance
+
+		Paths engageBounds = toolBoundPaths;
+		// for(size_t i=1;i<engageBounds.size();i++) {
+		// 	ReversePath(engageBounds[i]);
+		// }
+		if(outsideEntry) ReversePath(engageBounds[0]);
+		EngagePoint engage(engageBounds); // engage point stepping instance
 
 		long total_iterations =0;
 		long total_points =0;
@@ -1306,7 +1312,7 @@ namespace AdaptivePath {
 		#endif
 		if(outsideEntry) {
 			engage.moveToClosestPoint(toolPos,stepScaled+1);
-			firstEngagePoint=false;
+			//firstEngagePoint=false;
 			toolPos = engage.getCurrentPoint();
 			toolDir = engage.getCurrentDir();
 		}
@@ -1371,7 +1377,6 @@ namespace AdaptivePath {
 
 
 				// clamp the step size - for stability
-
 				if(stepScaled>min(long(toolRadiusScaled/4), long(RESOLUTION_FACTOR*8)))
 					stepScaled=min(long(toolRadiusScaled/4), long(RESOLUTION_FACTOR*8));
 				if(stepScaled<RESOLUTION_FACTOR) stepScaled=long(RESOLUTION_FACTOR);
