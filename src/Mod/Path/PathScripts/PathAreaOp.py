@@ -136,7 +136,7 @@ class ObjectOp(PathOp.ObjectOp):
         '''areaOpOnDocumentRestored(obj) ... overwrite to fully restore receiver'''
         pass
 
-    def opSetDefaultValues(self, obj):
+    def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj) ... base implementation, do not overwrite.
         The base implementation sets the depths and heights based on the
         areaOpShapeForDepths() return value.
