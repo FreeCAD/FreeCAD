@@ -1462,7 +1462,7 @@ namespace AdaptivePath {
 				double distFromStart = sqrt(DistanceSqrd(toolPos,startPoint));
 				bool distanceTrend = distFromStart > prevDistFromStart ? true : false;
 
-				if(distFromStart!=prevDistTrend) {
+				if(distFromStart!=prevDistTrend || toClearPath.size()>10) {
 						Perf_ExpandCleared.Start();
 						// expand cleared
 						clipof.Clear();
