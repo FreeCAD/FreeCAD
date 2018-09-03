@@ -183,7 +183,20 @@ class JobTemplateExport:
     def __init__(self, job, parent=None):
         self.job = job
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobTemplateExport.ui")
+        if parent:
+            self.dialog.setParent(parent)
+            parent.layout().addWidget(self.dialog)
+            self.dialog.dialogButtonBox.hide()
+        else:
+            self.dialog.exportButtonBox.hide()
+        self.updateUI()
+        self.dialog.toolsGroup.clicked.connect(self.checkUncheckTools)
 
+    def exportButton(self):
+        return self.dialog.exportButton
+
+    def updateUI(self):
+        job = self.job
         if job.PostProcessor:
             ppHint = "%s %s %s" % (job.PostProcessor, job.PostProcessorArgs, job.PostProcessorOutputFile)
             self.dialog.postProcessingHint.setText(ppHint)
@@ -210,19 +223,25 @@ class JobTemplateExport:
         rapidChanged = not job.SetupSheet.Proxy.hasDefaultToolRapids()
         depthsChanged = not job.SetupSheet.Proxy.hasDefaultOperationDepths()
         heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
-        settingsChanged = rapidChanged or depthsChanged or heightsChanged
+        opsWithSettings = job.SetupSheet.Proxy.operationsWithSettings()
+        settingsChanged = rapidChanged or depthsChanged or heightsChanged or 0 != len(opsWithSettings)
         self.dialog.settingsGroup.setChecked(settingsChanged)
         self.dialog.settingToolRapid.setChecked(rapidChanged)
         self.dialog.settingOperationDepths.setChecked(depthsChanged)
         self.dialog.settingOperationHeights.setChecked(heightsChanged)
 
+        self.dialog.settingsOpsList.clear()
+        for op in opsWithSettings:
+            item = QtGui.QListWidgetItem(op)
+            item.setCheckState(QtCore.Qt.CheckState.Checked)
+            self.dialog.settingsOpsList.addItem(item)
+
+        self.dialog.toolsList.clear()
         for tc in sorted(job.ToolController, key=lambda o: o.Label):
             item = QtGui.QListWidgetItem(tc.Label)
             item.setData(self.DataObject, tc)
             item.setCheckState(QtCore.Qt.CheckState.Checked)
             self.dialog.toolsList.addItem(item)
-
-        self.dialog.toolsGroup.clicked.connect(self.checkUncheckTools)
 
     def checkUncheckTools(self):
         state = QtCore.Qt.CheckState.Checked if self.dialog.toolsGroup.isChecked() else QtCore.Qt.CheckState.Unchecked
@@ -255,6 +274,14 @@ class JobTemplateExport:
         return self.dialog.settingOperationHeights.isChecked()
     def includeSettingOperationDepths(self):
         return self.dialog.settingOperationDepths.isChecked()
+
+    def includeSettingOpsSettings(self):
+        ops = []
+        for i in range(self.dialog.settingsOpsList.count()):
+            item = self.dialog.settingsOpsList.item(i)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                ops.append(item.text())
+        return ops
 
     def exec_(self):
         return self.dialog.exec_()
