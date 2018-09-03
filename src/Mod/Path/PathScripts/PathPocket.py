@@ -63,29 +63,29 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
 
+        removalshapes = []
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
-            removalshapes = []
-            for b in obj.Base:
-                PathLog.debug("Base item: {}".format(b))
-                for sub in b[1]:
+            for base in obj.Base:
+                PathLog.debug("Base item: {}".format(base))
+                for sub in base[1]:
                     if "Face" in sub:
-                        shape = Part.makeCompound([getattr(b[0].Shape, sub)])
+                        shape = Part.makeCompound([getattr(base[0].Shape, sub)])
                     else:
-                        edges = [getattr(b[0].Shape, sub) for sub in b[1]]
+                        edges = [getattr(base[0].Shape, sub) for sub in base[1]]
                         shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
 
-                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=shape, depthparams=self.depthparams)
-                    obj.removalshape = env.cut(self.baseobject.Shape)
+                    env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
+                    obj.removalshape = env.cut(base[0].Shape)
                     obj.removalshape.tessellate(0.1)
                     removalshapes.append((obj.removalshape, False))
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-
-            env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=None, depthparams=self.depthparams)
-            obj.removalshape = env.cut(self.baseobject.Shape)
-            obj.removalshape.tessellate(0.1)
-            removalshapes = [(obj.removalshape, False)]
+            for base in self.model:
+                env = PathUtils.getEnvelope(base.Shape, subshape=None, depthparams=self.depthparams)
+                obj.removalshape = env.cut(base.Shape)
+                obj.removalshape.tessellate(0.1)
+                removalshapes.append((obj.removalshape, False))
         return removalshapes
 
     def areaOpSetDefaultValues(self, obj, job):
