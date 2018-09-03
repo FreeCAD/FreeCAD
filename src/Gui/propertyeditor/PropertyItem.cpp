@@ -2215,6 +2215,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
 
         std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
         str << "u\"" << pystr.c_str() << "\"";
+        if (it != values.end()-1){
+            str << QLocale().groupSeparator();
+        }
     }
     str << "]";
     setPropertyValue(data);
