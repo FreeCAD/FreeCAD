@@ -826,6 +826,9 @@ struct ItemInfo2 {
     std::string obj;
     std::string parentDoc;
     std::string parent;
+    std::string topDoc;
+    std::string topObj;
+    std::string topSubname;
 };
 
 void TreeWidget::dropEvent(QDropEvent *event)
@@ -999,26 +1002,29 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                 Base::Matrix4D mat;
                 App::PropertyPlacement *propPlacement = 0;
-                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
-                    if(syncPlacement) {
-                        if(info.topObj.size()) {
-                            auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
-                            if(doc) {
-                                auto topObj = doc->getObject(info.topObj.c_str());
-                                if(topObj) {
-                                    auto sobj = topObj->getSubObject(info.topSubname.c_str(),0,&mat);
-                                    if(sobj == obj) {
-                                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
-                                                obj->getPropertyByName("Placement"));
-                                    }
+                if(syncPlacement) {
+                    if(info.topObj.size()) {
+                        auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
+                        if(doc) {
+                            auto topObj = doc->getObject(info.topObj.c_str());
+                            if(topObj) {
+                                auto sobj = topObj->getSubObject(info.topSubname.c_str(),0,&mat);
+                                if(sobj == obj) {
+                                    propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                            obj->getPropertyByName("Placement"));
                                 }
                             }
-                        }else{
-                            propPlacement = dynamic_cast<App::PropertyPlacement*>(
-                                    obj->getPropertyByName("Placement"));
-                            mat = propPlacement->getValue().toMatrix();
                         }
+                    }else{
+                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                obj->getPropertyByName("Placement"));
+                        mat = propPlacement->getValue().toMatrix();
                     }
+                }
+
+                bool dragged =false;
+                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
+                    dragged = true;
                     vpp->dragObject(obj);
                     owner = 0;
                     subname.clear();
@@ -1027,14 +1033,23 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 std::string droppedName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
                 if(propPlacement) {
                     auto pos = selSubname.tellp();
-                    selSubname << droppedName << obj->getNameInDocument() << '.' << std::ends;
+                    if(droppedName.size())
+                        selSubname << droppedName << std::ends;
+                    else 
+                        selSubname << obj->getNameInDocument() << '.';
                     Base::Matrix4D newMat;
                     auto sobj = selObj->getSubObject(selSubname.str().c_str(),0,&newMat);
                     selSubname.seekp(pos);
-                    if(sobj == obj) {
-                        newMat *= propPlacement->getValue().inverse().toMatrix();
-                        newMat.inverse();
-                        propPlacement->setValue(Base::Placement(newMat*mat));
+                    if((dragged && sobj==obj) || (!dragged && sobj && sobj->getLinkedObject(false)==obj)) {
+                        if(!dragged)
+                            propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                    sobj->getPropertyByName("Placement"));
+                        if(propPlacement) {
+                            newMat *= propPlacement->getValue().inverse().toMatrix();
+                            newMat.inverse();
+                            Base::Placement pla(newMat*mat);
+                            propPlacement->setValue(pla);
+                        }
                     }
                 }
             }
@@ -1050,6 +1065,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     else if (targetitem->type() == TreeWidget::DocumentType) {
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
+        bool syncPlacement = syncPlacementAction->isChecked();
 
         // check if items can be dragged
         for(auto &v : items) {
@@ -1073,6 +1089,18 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto parent = parentItem->object()->getObject();
             info.parentDoc = parent->getDocument()->getName();
             info.parent = parent->getNameInDocument();
+            if(syncPlacement) {
+                std::ostringstream ss;
+                App::DocumentObject *topParent=0;
+                item->getSubName(ss,topParent);
+                if(topParent) {
+                    info.topDoc = topParent->getDocument()->getName();
+                    info.topObj = topParent->getNameInDocument();
+                    ss << obj->getNameInDocument() << '.';
+                    info.topSubname = ss.str();
+                }
+            }
+
         }
         // Because the existence of subname, we must de-select the drag the
         // object manually. Just do a complete clear here for simplicity
@@ -1080,8 +1108,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Selection().clearCompleteSelection();
 
         // Open command
-        App::Document* doc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+        App::Document* thisDoc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
+        Gui::Document* gui = Gui::Application::Instance->getDocument(thisDoc);
         gui->openCommand("Move object");
         try {
             for (auto &info : infos) {
@@ -1108,6 +1136,28 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     continue;
                 }
 
+                Base::Matrix4D mat;
+                App::PropertyPlacement *propPlacement = 0;
+                if(syncPlacement && obj->getDocument()==thisDoc) {
+                    if(info.topObj.size()) {
+                        auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
+                        if(doc) {
+                            auto topObj = doc->getObject(info.topObj.c_str());
+                            if(topObj) {
+                                auto sobj = topObj->getSubObject(info.topSubname.c_str(),0,&mat);
+                                if(sobj == obj) {
+                                    propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                            obj->getPropertyByName("Placement"));
+                                }
+                            }
+                        }
+                    }else{
+                        propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                                obj->getPropertyByName("Placement"));
+                        mat = propPlacement->getValue().toMatrix();
+                    }
+                }
+
                 vpp->dragObject(obj);
 
                 //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
@@ -1118,6 +1168,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     // children view provider maintainace is now handled by
                     // Gui::Document::handleChildren3D()
                 }
+
+                if(propPlacement) 
+                    propPlacement->setValue(Base::Placement(mat));
             }
         } catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),

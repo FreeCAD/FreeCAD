@@ -286,9 +286,9 @@ public:
      * @param elements: non-object sub-elements, e.g. Faces, Edges, selected
      * when the object is being dropped
      *
-     * @return Return a subname reference to the (grand)child object that
-     * actually holds the dropping object. In case the dropping object is
-     * directly holding under this object, then return an empty string
+     * @return Optionally returns a subname reference locating the dropped
+     * object, which may or may not be the actual dropped object, e.g. it may be
+     * a link.
      */
     virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements);
