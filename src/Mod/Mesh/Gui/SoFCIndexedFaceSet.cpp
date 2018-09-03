@@ -106,7 +106,7 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
     static bool init = false;
     static bool vboAvailable = false;
     if (!init) {
-        vboAvailable = Gui::OpenGLBuffer::isVBOSupported();
+        vboAvailable = Gui::OpenGLBuffer::isVBOSupported(action->getCacheContext());
         if (!vboAvailable) {
             SoDebugError::postInfo("MeshRenderer",
                                    "GL_ARB_vertex_buffer_object extension not supported");
@@ -576,6 +576,9 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
 
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
+
+        if(normalCacheUsed)
+            this->readUnlockNormalCache();
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 #endif
@@ -847,6 +850,9 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
     }
 
     render.generateGLArrays(action, matbind, face_vertices, face_indices);
+
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoFCIndexedFaceSet::doAction(SoAction * action)

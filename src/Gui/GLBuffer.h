@@ -34,7 +34,7 @@ public:
     OpenGLBuffer(GLenum type);
     ~OpenGLBuffer();
 
-    static bool isVBOSupported();
+    static bool isVBOSupported(uint32_t ctx);
 
     void setCurrentContext(uint32_t ctx);
     bool create();
