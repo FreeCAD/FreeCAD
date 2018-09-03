@@ -36,7 +36,7 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -75,30 +75,29 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         PathLog.track()
 
         job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            obj.BaseObject = job.Base
 
+        jobshapes = []
         zValues = self.getZValues(obj)
 
         try:
-            if self.baseobject.isDerivedFrom('Sketcher::SketchObject') or \
-                    self.baseobject.isDerivedFrom('Part::Part2DObject') or \
-                    hasattr(self.baseobject, 'ArrayType'):
+            if len(self.model) == 1 and self.model[0].isDerivedFrom('Sketcher::SketchObject') or \
+                    self.model[0].isDerivedFrom('Part::Part2DObject') or \
+                    hasattr(self.model[0], 'ArrayType'):
                 PathLog.track()
 
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
                 # we only consider the outer wire if this is a Face
                 wires = []
-                for w in self.baseobject.Shape.Wires:
+                for w in self.model[0].Shape.Wires:
                     wires.append(Part.Wire(w.Edges))
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
 
-            elif isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+            elif len(self.model) == 1 and isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
                 PathLog.track()
                 wires = []
-                for tag in self.baseobject.Proxy.getTags(self.baseobject, transform=True):
+                for tag in self.model[0].Proxy.getTags(self.model[0], transform=True):
                     self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                     tagWires = []
                     for w in tag.Wires:
@@ -124,18 +123,28 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     for edgelist in Part.sortEdges(edges):
                         basewires.append(Part.Wire(edgelist))
 
-                    wires.extend(self.adjustWirePlacement(obj, base, basewires))
+                    #wires.extend(self.adjustWirePlacement(obj, base, basewires))
+                    wires.extend(basewires)
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
                 PathLog.track()
-                raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
+                if not obj.Base and not obj.BaseShapes:
+                    for base in self.model:
+                        PathLog.track(base.Label)
+                        if base.isDerivedFrom('Part::Part2DObject'):
+                            jobshapes.append(base)
 
-            if obj.BaseShapes:
+                if not jobshapes:
+                    raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
+
+            if obj.BaseShapes or jobshapes:
                 PathLog.track()
                 wires = []
-                for shape in obj.BaseShapes:
-                    shapeWires = self.adjustWirePlacement(obj, shape, shape.Shape.Wires)
+                for shape in obj.BaseShapes + jobshapes:
+                    PathLog.track(shape.Label)
+                    #shapeWires = self.adjustWirePlacement(obj, shape, shape.Shape.Wires)
+                    shapeWires = shape.Shape.Wires
                     self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires

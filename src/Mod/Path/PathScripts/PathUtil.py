@@ -35,22 +35,32 @@ other than PathLog, then it probably doesn't belong here.
 import PathScripts.PathLog as PathLog
 import sys
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-NotValidBaseTypeIds = ['Sketcher::SketchObject']
+# NotValidBaseTypeIds = ['Sketcher::SketchObject']
+NotValidBaseTypeIds = []
+
 
 def isValidBaseObject(obj):
     '''isValidBaseObject(obj) ... returns true if the object can be used as a base for a job.'''
     if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
         # Can't link to anything inside a geo feature group anymore
+        PathLog.debug("%s is inside a geo feature group" % obj.Label)
         return False
     if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
         return obj.Group and any(hasattr(o, 'Shape') for o in obj.Group)
     if not hasattr(obj, 'Shape'):
+        PathLog.debug("%s has no shape" % obj.Label)
         return False
     if obj.TypeId in NotValidBaseTypeIds:
+        PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
     if hasattr(obj, 'Sheets') or hasattr(obj, 'TagText'): # Arch.Panels and Arch.PanelCut
+        PathLog.debug("%s is not an Arch.Panel" % (obj.Label))
         return False
     return True
 
