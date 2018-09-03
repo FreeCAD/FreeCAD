@@ -242,6 +242,9 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
 
 void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
+
+    if(App::GetApplication().isRestoring())
+        return;
     
     if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
         obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are intrested only in Part::Features and not in bodies
