@@ -289,7 +289,7 @@ Return a list of sub-shapes that are direct children of this shape.
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="ancestorsOfType">
+    <Methode Name="ancestorsOfType" Const="true">
       <Documentation>
         <UserDocu>ancestorsOfType(shape, shape type) -> list
 For a sub-shape of this shape get its ancestors of a type.
