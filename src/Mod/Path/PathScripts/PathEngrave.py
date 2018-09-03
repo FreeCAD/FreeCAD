@@ -123,7 +123,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     for edgelist in Part.sortEdges(edges):
                         basewires.append(Part.Wire(edgelist))
 
-                    #wires.extend(self.adjustWirePlacement(obj, base, basewires))
                     wires.extend(basewires)
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
@@ -143,7 +142,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 wires = []
                 for shape in obj.BaseShapes + jobshapes:
                     PathLog.track(shape.Label)
-                    #shapeWires = self.adjustWirePlacement(obj, shape, shape.Shape.Wires)
                     shapeWires = shape.Shape.Wires
                     self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
