@@ -252,6 +252,15 @@ class ObjectJob:
         '''Return the base objects, not their clones.'''
         return [self.baseObject(obj, base) for base in obj.Model.Group]
 
+    def resourceClone(self, obj, base):
+        '''resourceClone(obj, base) ... Return the resource clone for base if it exists.'''
+        if isResourceClone(obj, base, None):
+            return base
+        for b in obj.Model.Group:
+            if base == b.Objects[0]:
+                return b
+        return None
+
     def setFromTemplateFile(self, obj, template):
         '''setFromTemplateFile(obj, template) ... extract the properties from the given template file and assign to receiver.
         This will also create any TCs stored in the template.'''
