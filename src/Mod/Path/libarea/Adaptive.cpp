@@ -645,18 +645,19 @@ namespace AdaptivePath {
 	}
 
 	void ShiftPathToStartWithClosestPoint(const Path & path,IntPoint p1, Path & result) {
-		Paths paths;
-		paths.push_back(path);
-		IntPoint clp;
-		size_t clpPathIndex;
-		size_t clpSegmentIndex1;
-		double clpParameter1;
-		// find closest point
-		double distSqrd=DistancePointToPathsSqrd(paths,p1,clp,clpPathIndex,clpSegmentIndex1,clpParameter1);
+		double minDistSqrd=__DBL_MAX__;
+		long closestPointIndex=0;
+		for(size_t i=0;i<path.size();i++) {
+			double dist=DistanceSqrd(p1,path[i]);
+			if(dist<minDistSqrd) {
+				minDistSqrd=dist;
+				closestPointIndex=i;
+			}
+		}
 		result.clear();
 		// make new path starting with that point
 		for(size_t i=0;i<path.size();i++) {
-			long index=long(clpSegmentIndex1)+i;
+			long index=long(closestPointIndex)+i;
 			if(index>=path.size()) index-=path.size();
 			result.push_back(path[index]);
 		}
