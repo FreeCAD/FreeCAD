@@ -4087,10 +4087,11 @@ class Edit(Modifier):
                 # commented out the following line to disable updating
                 # the object during edit, otherwise it confuses the snapper
                 #self.update(self.trackers[self.editing].get())
-            if self.ui.addButton.isChecked():
-                self.obj.ViewObject.Selectable = True
-            else:
-                self.obj.ViewObject.Selectable = False
+            if hasattr(self.obj.ViewObject,"Selectable"):
+                if self.ui.addButton.isChecked():
+                    self.obj.ViewObject.Selectable = True
+                else:
+                    self.obj.ViewObject.Selectable = False
             redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
