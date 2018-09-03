@@ -577,8 +577,12 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
 
-        if(normalCacheUsed)
+        // getVertexData() internally calls readLockNormalCache() that read locks
+        // the normal cache. When the cache is not needed any more we must call
+        // readUnlockNormalCache()
+        if (normalCacheUsed)
             this->readUnlockNormalCache();
+
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 #endif
@@ -851,7 +855,10 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
 
     render.generateGLArrays(action, matbind, face_vertices, face_indices);
 
-    if(normalCacheUsed)
+    // getVertexData() internally calls readLockNormalCache() that read locks
+    // the normal cache. When the cache is not needed any more we must call
+    // readUnlockNormalCache()
+    if (normalCacheUsed)
         this->readUnlockNormalCache();
 }
 
