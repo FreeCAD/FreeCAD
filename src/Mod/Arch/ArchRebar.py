@@ -342,8 +342,6 @@ class _Rebar(ArchComponent.Component):
         if hasattr(obj,"Distance"):
             if obj.Distance.Value:
                 size = obj.Distance.Value
-        #print(axis)
-        #print(size)
         spacinglist = None
         if hasattr(obj, "CustomSpacing"):
             if obj.CustomSpacing:
@@ -398,7 +396,7 @@ class _Rebar(ArchComponent.Component):
             # Avoid unnecessary checks to pass like. For eg.: when we have values
             # like influenceArea is 100.00001 and reqInflueneArea is 100
             if round(influenceArea) > round(reqInfluenceArea):
-                return FreeCAD.Console.PrintError("Influence area of rebars is greater than "+ str(reqInfluenceArea) + ".\n")
+                FreeCAD.Console.PrintWarning("Influence area of rebars is greater than "+ str(reqInfluenceArea) + ".\n")
             elif round(influenceArea) < round(reqInfluenceArea):
                 FreeCAD.Console.PrintWarning("Last span is greater that end offset.\n")
             for i in range(len(spacinglist)):
