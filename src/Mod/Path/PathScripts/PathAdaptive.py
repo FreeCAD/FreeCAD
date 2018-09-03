@@ -147,7 +147,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
     lx=adaptiveResults[0]["HelixCenterPoint"][0]
     ly=adaptiveResults[0]["HelixCenterPoint"][1]
-
+    lz=passStartDepth
     step=0
     while passStartDepth>obj.FinalDepth.Value and step<1000:
         step=step+1
@@ -198,38 +198,45 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                 op.commandlist.append(Path.Command("G1", {
                            "X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
 
+            lz=passEndDepth
+            z=obj.ClearanceHeight.Value
             op.commandlist.append(Path.Command("(adaptive - depth: %f)"%passEndDepth))
             #add adaptive paths
             for pth in region["AdaptivePaths"]:
                 motionType = pth[0]  #[0] contains motion type
                 for pt in pth[1]: #[1] contains list of points
                     x=pt[0]
-                    y =pt[1]
+                    y=pt[1]
                     dist=math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
                     if motionType == area.AdaptiveMotionType.Cutting:
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":passEndDepth, "F": op.horizFeed}))
+                        z=passEndDepth
+                        if z!=lz:
+                            op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
+                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "F": op.horizFeed}))
                     elif motionType == area.AdaptiveMotionType.LinkClear:
-                         if dist > minLiftDistance:
-                            if lx!=x or ly!=y:
-                                op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passEndDepth+stepUp}))
-                            op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passEndDepth+stepUp}))
+                        z=passEndDepth+stepUp
+                        if z!=lz:
+                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
-                        if lx!=x or ly!=y:
-                            op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
-                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":obj.ClearanceHeight.Value}))
-                    elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
-                        if lx!=x or ly!=y:
-                            op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passStartDepth+stepUp}))
-                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
+                        z=obj.ClearanceHeight.Value
+                        if z!=lz:
+                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
+                    # elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
+                    #     if lx!=x or ly!=y:
+                    #         op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passStartDepth+stepUp}))
+                    #     op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
                     lx=x
                     ly=y
+                    lz=z
             #return to safe height in this Z pass
-            op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
+            op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
         passStartDepth=passEndDepth
         #return to safe height in this Z pass
-        op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
+        op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
 
-    op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":obj.ClearanceHeight.Value}))
+    op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
 
 def Execute(op,obj):
     global sceneGraph
@@ -414,7 +421,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.OperationType = "Clearing"
         obj.Tolerance = 0.1
         obj.StepOver = 20
-        obj.LiftDistance=1.0
+        obj.LiftDistance=0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = True
         obj.Stopped = False

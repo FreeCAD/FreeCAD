@@ -27,7 +27,7 @@
 namespace AdaptivePath {
 	using namespace ClipperLib;
 
-	enum MotionType { mtCutting = 0, mtLinkClear = 1, mtLinkNotClear = 2, mtLinkClearAtPrevPass = 3  };
+	enum MotionType { mtCutting = 0, mtLinkClear = 1, mtLinkNotClear = 2, mtLinkClearAtPrevPass = 3 };
 
 	enum OperationType { otClearingInside = 0, otClearingOutside = 1, otProfilingInside = 2, otProfilingOutside = 3 };
 
@@ -61,6 +61,7 @@ namespace AdaptivePath {
 			double tolerance=0.1;
 			double stockToLeave=0;
 			bool forceInsideOut = true;
+			bool keepToolDown = true;
 			OperationType opType = OperationType::otClearingInside;
 
 			std::list<AdaptiveOutput> Execute(const DPaths &stockPaths, const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
@@ -98,12 +99,14 @@ namespace AdaptivePath {
 			bool FindEntryPointOutside(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
 					IntPoint &entryPoint /*output*/,  IntPoint & toolPos, DoublePoint & toolDir);
 			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths);
-			void AppendToolPath(AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
-			bool  CheckCollision(const IntPoint &lastPoint,const IntPoint &nextPoint,const Paths & cleared);
+			void AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
+			bool  IsClearPath(const Path & path,const Paths & cleared);
 			friend class EngagePoint; // for CalcCutArea
 
 			void CheckReportProgress(TPaths &progressPaths,bool force=false);
-			void AddPathsToProgress(TPaths &progressPaths,Paths paths);
+			void AddPathsToProgress(TPaths &progressPaths,const Paths paths);
+			void AddPathToProgress(TPaths &progressPaths,const Path pth);
+
 		private: // constants for fine tuning
 			const bool preventConvetionalMode = true;
 			const double RESOLUTION_FACTOR = 8.0;
