@@ -123,10 +123,9 @@ class ObjectOp(PathOp.ObjectOp):
         params.update({'Z': z, 'F': self.horizFeed})
         self.commandlist.append(Path.Command(cmd.Name, params))
 
-    def opSetDefaultValues(self, obj):
+    def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj) ... set depths for engraving'''
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            job = PathUtils.findParentJob(obj)
             if job and len(job.Model.Group) > 0:
                 bb = job.Proxy.modelBoundBox(job)
                 obj.OpStartDepth = bb.ZMax
