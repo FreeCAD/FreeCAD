@@ -100,7 +100,8 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
 
             self.basewires.extend(basewires)
 
-            for w in self.adjustWirePlacement(obj, base, basewires):
+            #for w in self.adjustWirePlacement(obj, base, basewires):
+            for w in basewires:
                 self.adjusted_basewires.append(w)
                 wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
                 if wire:

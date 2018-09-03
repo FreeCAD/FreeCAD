@@ -38,7 +38,7 @@ from PySide import QtCore, QtGui
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -76,6 +76,7 @@ class JobCreate:
         expandJobs   = False
         index = 0
         for base in sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label):
+            PathLog.track(base.Label)
             if not base in xxx and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
                 item = QtGui.QTreeWidgetItem([base.Label])
                 item.setData(0, self.DataObject, base)
