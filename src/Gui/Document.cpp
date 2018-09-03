@@ -1219,7 +1219,8 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         if(it->first->isTouched()) {
             isModified = true;
-            FC_LOG("'" << it->first->getNameInDocument() << "' is touched after restore");
+            FC_LOG("'" << getDocument()->getName() << '.'
+                    << it->first->getNameInDocument() << "' is touched after restore");
         }
     }
 
