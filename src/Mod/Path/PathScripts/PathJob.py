@@ -99,7 +99,6 @@ class ObjectJob:
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob","An optional description for this job"))
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("PathJob", "For computing Paths; smaller increases accuracy, but slows down computation"))
 
-        obj.addProperty("App::PropertyLink", "Model", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "The base objects for all operations"))
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
         obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
@@ -126,12 +125,7 @@ class ObjectJob:
         obj.setEditorMode('Placement', 2)
 
         self.setupSetupSheet(obj)
-
-        model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
-        if model.ViewObject:
-            model.ViewObject.Visibility = False
-        model.addObjects([createModelResourceClone(obj, base) for base in models])
-        obj.Model = model
+        self.setupBaseModel(obj, models)
 
         obj.Proxy = self
 
@@ -153,8 +147,25 @@ class ObjectJob:
                 PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
 
+    def setupBaseModel(self, obj, models=None):
+        PathLog.track(obj.Label, models)
+        if not hasattr(obj, 'Model'):
+            obj.addProperty("App::PropertyLink", "Model", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "The base objects for all operations"))
+            model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
+            if model.ViewObject:
+                model.ViewObject.Visibility = False
+            if models:
+                model.addObjects([createModelResourceClone(obj, base) for base in models])
+            obj.Model = model
+
+        if hasattr(obj, 'Base'):
+            PathLog.info("Converting Job.Base to new Job.Model for {}".format(obj.Label))
+            obj.Model.addObject(obj.Base)
+            obj.Base = None
+            obj.removeProperty('Base')
+
     def removeBase(self, obj, base, removeFromModel):
-        if isResourceClone(obj, base, 'Model'):
+        if isResourceClone(obj, base, None):
             PathUtil.clearExpressionEngine(base)
             if removeFromModel:
                 obj.Model.removeObject(base)
@@ -206,13 +217,6 @@ class ObjectJob:
         obj.SetupSheet = None
         return True
 
-    def fixupResourceClone(self, obj, name, icon):
-        #if not isResourceClone(obj, name) and not isArchPanelSheet(obj):
-        #    orig = getattr(obj, name)
-        #    if orig:
-        #        setattr(obj, name, createResourceClone(obj, orig, name, icon))
-        pass
-
     def fixupOperations(self, obj):
         if obj.Operations.ViewObject:
             try:
@@ -230,7 +234,7 @@ class ObjectJob:
 
 
     def onDocumentRestored(self, obj):
-        self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
+        self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
         obj.setEditorMode('Operations', 2) # hide
@@ -244,7 +248,7 @@ class ObjectJob:
 
     def baseObject(self, obj, base):
         '''Return the base object, not its clone.'''
-        if isResourceClone(obj, base, 'Model'):
+        if isResourceClone(obj, base, 'Model') or isResourceClone(obj, base, 'Base'):
             return base.Objects[0]
         return base
 

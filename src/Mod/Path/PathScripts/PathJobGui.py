@@ -168,7 +168,11 @@ class ViewProvider:
     def claimChildren(self):
         children = self.obj.ToolController
         children.append(self.obj.Operations)
-        children.append(self.obj.Model)
+        if hasattr(self.obj, 'Model'):
+            # unfortunately this function is called before the object has been fully loaded
+            # which means we could be dealing with an old job which doesn't have the new Model
+            # yet.
+            children.append(self.obj.Model)
         if self.obj.Stock:
             children.append(self.obj.Stock)
         if hasattr(self.obj, 'SetupSheet'):
@@ -1037,6 +1041,7 @@ class TaskPanel:
                 for base in retired:
                     self.vproxy.forgetBaseVisibility(obj, base)
                     self.obj.Proxy.removeBase(obj, base, True)
+                # do not access any of the retired objects after this point, they don't exist anymore
 
                 # then add all rookie base models
                 baseOrigNames = [proxy.baseObject(obj, base).Name for base in obj.Model.Group]
@@ -1048,7 +1053,6 @@ class TaskPanel:
 
                 # refresh the view
                 if retired or rookies:
-                    PathLog.track([o.Label for o in retired], [o.Label for o in rookies])
                     self.setFields()
                 else:
                     PathLog.track('no changes to model')
