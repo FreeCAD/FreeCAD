@@ -500,26 +500,35 @@ def addToJob(obj, jobname=None):
             job = jobs[0]
         else:
             selected = FreeCADGui.Selection.getSelection()
-            baseSelected = [job for job in jobs if any([job.Base == o for o in selected])]
-            if 1 == len(baseSelected):
-                job = baseSelected[0]
+            if 1 == len(selected) and selected[0] in jobs:
+                job = selected[0]
             else:
-                baseObjectSelected = [job for job in jobs if any([job.Proxy.baseObject(job) == o for o in selected])]
-                if 1 == len(baseObjectSelected):
-                    job = baseObjectSelected[0]
+                modelSelected = []
+                for job in jobs:
+                    if all([o in job.Model.Group for o in selected]):
+                        modelSelected.append(job)
+                if 1 == len(modelSelected):
+                    job = modelSelected[0]
                 else:
-                    # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
-                    form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-                    if baseObjectSelected:
-                        mylist = [j.Label for j in baseObjectSelected]
+                    modelObjectSelected = []
+                    for job in jobs:
+                        if all([o in job.Proxy.baseObjects(job) for o in selected]):
+                            modelObjectSelected.append(job)
+                    if 1 == len(modelObjectSelected):
+                        job = modelObjectSelected[0]
                     else:
-                        mylist = [j.Label for j in jobs]
-                    form.cboProject.addItems(mylist)
-                    r = form.exec_()
-                    if r is False or r == 0:
-                        return None
-                    else:
-                        job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
+                        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+                        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
+                        if modelObjectSelected:
+                            mylist = [j.Label for j in modelObjectSelected]
+                        else:
+                            mylist = [j.Label for j in jobs]
+                        form.cboProject.addItems(mylist)
+                        r = form.exec_()
+                        if r is False or r == 0:
+                            return None
+                        else:
+                            job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
 
     if obj and job:
         job.Proxy.addOperation(obj)
