@@ -3,7 +3,8 @@
 #include <cmath>
 #include <cstring>
 #include <ctime>
-
+#include <algorithm>
+#include <unistd.h>
 
 namespace ClipperLib {
 	 void TranslatePath(const Path& input, Path& output, IntPoint delta);
@@ -75,7 +76,7 @@ namespace AdaptivePath {
 	}
 
 
-	// calculates path length for open path	
+	// calculates path length for open path
 	inline double PathLength(const Path & path) {
 		double len=0;
 		if(path.size()<2) return len;
@@ -443,40 +444,65 @@ namespace AdaptivePath {
 	 ***************************************/
 	class EngagePoint {
 		public:
+			struct EngageState {
+				size_t currentPathIndex;
+				size_t currentSegmentIndex;
+				double segmentPos =0;
+				double totalDistance=0;
+				double currentPathLength=0;
+				int passes=0;
+
+				double metric; // engage point metric
+
+				bool operator < (const EngageState& other) const
+    			{
+     				   return (metric < other.metric);
+    			}
+			};
 			EngagePoint(const Paths & p_toolBoundPaths) {
 				toolBoundPaths=&p_toolBoundPaths;
-				currentPathIndex=0;
-				currentSegmentIndex=0;
-				segmentPos =0;
-				totalDistance=0;
+				state.currentPathIndex=0;
+				state.currentSegmentIndex=0;
+				state.segmentPos =0;
+				state.totalDistance=0;
 				calculateCurrentPathLength();
 			}
 
+		EngageState GetState() {
+			return state;
+		}
 
+		void SetState(const EngageState &new_state ) {
+			state=new_state;
+		}
+
+		void ResetPasses() {
+			state.passes=0;
+		}
 		void moveToClosestPoint(const IntPoint &pt,double step) {
 				double minDistSq = __DBL_MAX__;
-				size_t minPathIndex = currentPathIndex;
-				size_t minSegmentIndex = currentSegmentIndex;
-				double minSegmentPos = segmentPos;
-				totalDistance=0;
+				size_t minPathIndex = state.currentPathIndex;
+				size_t minSegmentIndex = state.currentSegmentIndex;
+				double minSegmentPos = state.segmentPos;
+				state.totalDistance=0;
 				for(;;) {
 					while(moveForward(step)) {
 						double distSqrd = DistanceSqrd(pt,getCurrentPoint());
 						if(distSqrd<minDistSq) {
 							//cout << sqrt(minDistSq) << endl;
 							minDistSq = distSqrd;
-							minPathIndex = currentPathIndex;
-							minSegmentIndex = currentSegmentIndex;
-							minSegmentPos = segmentPos;
+							minPathIndex = state.currentPathIndex;
+							minSegmentIndex = state.currentSegmentIndex;
+							minSegmentPos = state.segmentPos;
 						}
 					}
 					if(!nextPath()) break;
 				}
-				currentPathIndex=minPathIndex;
-				currentSegmentIndex=minSegmentIndex;
-				segmentPos=minSegmentPos ;
+				state.currentPathIndex=minPathIndex;
+				state.currentSegmentIndex=minSegmentIndex;
+				state.segmentPos=minSegmentPos ;
 				calculateCurrentPathLength();
-				passes=0;
+				ResetPasses();
 		}
 		bool nextEngagePoint(Adaptive2d*parent,  const Paths & cleared, double step, double minCutArea, double maxCutArea) {
 			//cout << "nextEngagePoint called step: " << step << endl;
@@ -487,8 +513,8 @@ namespace AdaptivePath {
 			for(;;) {
 				if(!moveForward(step))	 {
 					if(!nextPath()) {
-						passes++;
-						if(passes>1) {
+						state.passes++;
+						if(state.passes>1) {
 							Perf_NextEngagePoint.Stop();
 							return false; // nothin more to cut
 						}
@@ -506,46 +532,46 @@ namespace AdaptivePath {
 			}
 		}
 			IntPoint getCurrentPoint() {
-				const Path * pth = &toolBoundPaths->at(currentPathIndex);
-				const IntPoint * p1=&pth->at(currentSegmentIndex>0?currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(currentSegmentIndex);
+				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
 				double segLength =sqrt(DistanceSqrd(*p1,*p2));
-				return IntPoint(long(p1->X + segmentPos*double(p2->X-p1->X)/segLength),long(p1->Y + segmentPos*double(p2->Y-p1->Y)/segLength));
+				return IntPoint(long(p1->X + state.segmentPos*double(p2->X-p1->X)/segLength),long(p1->Y + state.segmentPos*double(p2->Y-p1->Y)/segLength));
 			}
 
 			DoublePoint getCurrentDir() {
-				const Path * pth = &toolBoundPaths->at(currentPathIndex);
-				const IntPoint * p1=&pth->at(currentSegmentIndex>0?currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(currentSegmentIndex);
+				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
 				double segLength =sqrt(DistanceSqrd(*p1,*p2));
 				return DoublePoint(double(p2->X-p1->X)/segLength,double(p2->Y-p1->Y)/segLength);
 			}
 
 			bool moveForward(double distance) {
-				const Path * pth = &toolBoundPaths->at(currentPathIndex);
+				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
 				if(distance<NTOL) throw std::invalid_argument( "distance must be positive" );
-				totalDistance+=distance;
+				state.totalDistance+=distance;
 				double segmentLength =  currentSegmentLength();
-				while(segmentPos+distance>segmentLength) {
-					currentSegmentIndex++;
-					if(currentSegmentIndex>=pth->size()) {
-						currentSegmentIndex=0;
+				while(state.segmentPos+distance>segmentLength) {
+					state.currentSegmentIndex++;
+					if(state.currentSegmentIndex>=pth->size()) {
+						state.currentSegmentIndex=0;
 					}
-					distance=distance-(segmentLength-segmentPos);
-					segmentPos =0;
+					distance=distance-(segmentLength-state.segmentPos);
+					state.segmentPos =0;
 					segmentLength =currentSegmentLength();
 				}
-				segmentPos+=distance;
-				return totalDistance<=1.2 * currentPathLength;
+				state.segmentPos+=distance;
+				return state.totalDistance<=1.2 * state.currentPathLength;
 			}
 
 			bool nextPath() {
-				currentPathIndex++;
-				currentSegmentIndex=0;
-				segmentPos =0;
-				totalDistance=0;
-				if(currentPathIndex>=toolBoundPaths->size()) {
-					currentPathIndex =0;
+				state.currentPathIndex++;
+				state.currentSegmentIndex=0;
+				state.segmentPos =0;
+				state.totalDistance=0;
+				if(state.currentPathIndex>=toolBoundPaths->size()) {
+					state.currentPathIndex =0;
 					calculateCurrentPathLength();
 					return false;
 				}
@@ -554,30 +580,28 @@ namespace AdaptivePath {
 				return true;
 			}
 
+
+
+
 		private:
 			const Paths * toolBoundPaths;
-			size_t currentPathIndex;
-			size_t currentSegmentIndex;
-			double segmentPos =0;
-			double totalDistance=0;
-			double currentPathLength=0;
-			int passes=0;
+			EngageState state;
 			Clipper clip;
 			void calculateCurrentPathLength() {
-				const Path * pth = &toolBoundPaths->at(currentPathIndex);
+				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
 				size_t size=pth->size();
-				currentPathLength=0;
+				state.currentPathLength=0;
 				for(size_t i=0;i<size;i++) {
 					const IntPoint * p1=&pth->at(i>0?i-1:size-1);
 					const IntPoint * p2=&pth->at(i);
-					currentPathLength += sqrt(DistanceSqrd(*p1,*p2));
+					state.currentPathLength += sqrt(DistanceSqrd(*p1,*p2));
 				}
 			}
 
 			double currentSegmentLength() {
-				const Path * pth = &toolBoundPaths->at(currentPathIndex);
-				const IntPoint * p1=&pth->at(currentSegmentIndex>0?currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(currentSegmentIndex);
+				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
 				return sqrt(DistanceSqrd(*p1,*p2));
 			}
 
@@ -665,22 +689,24 @@ namespace AdaptivePath {
 				}
 			}
 		}
+
 		result.clear();
 		// make new path starting with that point
 		Path & closestPath = paths.at(closestPathIndex);
 		for(size_t i=0;i<closestPath.size();i++) {
 			long index=long(closestPointIndex)+i;
-			if(index>=closestPath.size()) index-=closestPath.size();
+			if(index>=long(closestPath.size())) index-=closestPath.size();
 			result.push_back(closestPath.at(index));
 		}
 		// remove the closest path
 		paths.erase(paths.begin()+closestPathIndex);
+		return true;
 	}
 
 	/****************************************
 	// Adaptive2d - constructor
 	*****************************************/
-	Adaptive2d::Adaptive2d() {				
+	Adaptive2d::Adaptive2d() {
 	}
 
 	double Adaptive2d::CalcCutArea(Clipper & clip,const IntPoint &c1, const IntPoint &c2, const Paths &cleared_paths) {
@@ -1242,7 +1268,7 @@ namespace AdaptivePath {
 		for(auto &p : crossing) {
 			collisionArea += fabs(Area(p));
 		}
-		return collisionArea <= NTOL;
+		return collisionArea <= optimalCutAreaPD*RESOLUTION_FACTOR/2;
 	}
 
 	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths, bool close) {
@@ -1315,11 +1341,10 @@ namespace AdaptivePath {
 				bool keepDownLinkTooLong = true;
 				for(int i=1;i<10;i++) {
 					clipof.Execute(clearedOff,-toolRadiusScaled-offset/i);
-					keepDownLinkExists = FindPathBetweenClosestPoints(clearedOff,lastPoint,nextPoint,toolRadiusScaled + 1.2*offset,keepToolDownLinkPath);
+					keepDownLinkExists = FindPathBetweenClosestPoints(clearedOff,lastPoint,nextPoint,toolRadiusScaled + 2*offset/i ,keepToolDownLinkPath);
 					keepDownLinkTooLong = (PathLength(keepToolDownLinkPath) > 3*linkDistance) && (linkDistance>4*toolRadiusScaled) ;
-					if(keepDownLinkExists && !keepDownLinkTooLong) break;
+					if(keepDownLinkExists) break;
 				}
-
 				if(keepDownLinkExists)  {
 					lastInterimPoint=keepToolDownLinkPath.front();
 					nextInterimPoint=keepToolDownLinkPath.back();
@@ -1354,7 +1379,39 @@ namespace AdaptivePath {
 						output.AdaptivePaths.push_back(linkPath3);
 						linkFound=true;
 					}
+					if(!linkFound && keepDownLinkTooLong) { // make link through interim points with tool raise
+						tp.clear();
+						tp << lastPoint;
+						tp << lastInterimPoint;
+						if(IsClearPath(tp,cleared)) {
+							tp.clear();
+							tp << nextInterimPoint;
+							tp << nextPoint;
+							if(IsClearPath(tp,cleared)) {
+								// add disengage moves
+								TPath linkPath1;
+								linkPath1.first = MotionType::mtCutting;
+								linkPath1.second.push_back(lastTPoint);
+								linkPath1.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
+								output.AdaptivePaths.push_back(linkPath1);
 
+								// add linking move at clear height
+								TPath linkPath2;
+								linkPath2.first = MotionType::mtLinkNotClear;
+								linkPath2.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
+								linkPath2.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
+								output.AdaptivePaths.push_back(linkPath2);
+
+								// add engage move
+								TPath linkPath3;
+								linkPath3.first = MotionType::mtCutting;
+								linkPath3.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
+								linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
+								output.AdaptivePaths.push_back(linkPath3);
+								linkFound=true;
+							}
+						}
+					}
 					if(!linkFound && !keepDownLinkTooLong && !inefficientInterimLink) { // if direct link over interim points not clear
 						tp.clear();
 						tp << lastPoint;
@@ -1384,6 +1441,8 @@ namespace AdaptivePath {
 								linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
 								output.AdaptivePaths.push_back(linkPath3);
 								linkFound= true;
+						} else {
+							cout << "interim keeptool down link not clear" << endl;
 						}
 					}
 				}
@@ -1460,7 +1519,7 @@ namespace AdaptivePath {
 	}
 
 
-	void Adaptive2d::ProcessPolyNode(Paths & boundPaths, Paths & toolBoundPaths) {
+	void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths) {
 		//cout << " Adaptive2d::ProcessPolyNode" << endl;
 		Perf_ProcessPolyNode.Start();
 		// node paths are already constrained to tool boundary path for adaptive path before finishing pass
@@ -1469,10 +1528,12 @@ namespace AdaptivePath {
 		TPaths progressPaths;
 		progressPaths.reserve(10000);
 
-		//SimplifyPolygons(toolBoundPaths);
 		CleanPolygons(toolBoundPaths);
-		//SimplifyPolygons(boundPaths);
-		//CleanPolygons(toolBoundPaths);
+		SimplifyPolygons(toolBoundPaths);
+
+		CleanPolygons(boundPaths);
+		SimplifyPolygons(boundPaths);
+
 
 		AddPathsToProgress(progressPaths,toolBoundPaths);
 
@@ -1529,6 +1590,7 @@ namespace AdaptivePath {
 		long total_exceeded=0;
 		long total_output_points=0;
 		long over_cut_count =0;
+		long bad_engage_count=0;
 		unclearLinkingMoveCount=0;
 		//long engage_no_cut_count=0;
 		double prevDistFromStart =0;
@@ -1775,13 +1837,18 @@ namespace AdaptivePath {
 				total_output_points+=cleaned.size();
 				AppendToolPath(progressPaths, output,cleaned,cleared,toolBoundPaths);
 				CheckReportProgress(progressPaths);
+				bad_engage_count=0;
+				engage.ResetPasses();
 				//firstEngagePoint=true;
+			} else {
+				bad_engage_count++;
 			}
 			/*****NEXT ENGAGE POINT******/
 			if(firstEngagePoint) {
 				engage.moveToClosestPoint(newToolPos,stepScaled+1);
 				firstEngagePoint=false;
 			} else {
+				// check which is better to find next cut from closest point or to continue from current
 				double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * RESOLUTION_FACTOR * 8;
 				if(!engage.nextEngagePoint(this, cleared,moveDistance,ENGAGE_AREA_THR_FACTOR*optimalCutAreaPD*RESOLUTION_FACTOR,4*referenceCutArea*stepOverFactor)) break;
 			}
@@ -1791,12 +1858,15 @@ namespace AdaptivePath {
 		/**********************************/
 		/*  FINISHING PASS                */
 		/**********************************/
+
 		clipof.Clear();
 		clipof.AddPaths(boundPaths,JoinType::jtRound,EndType::etClosedPolygon);
 		Paths finishingPaths;
 		clipof.Execute(finishingPaths,-toolRadiusScaled);
 		IntPoint lastPoint = toolPos;
 		Path finShiftedPath;
+
+
 		while(PopPathWithClosestPoint(finishingPaths,lastPoint,finShiftedPath)) {
 			// skip finishing passes outside the stock boundary - make no sense to cut where is no material
 			bool allPointsOutside=true;
