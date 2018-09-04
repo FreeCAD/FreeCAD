@@ -1352,6 +1352,17 @@ const Property * VariableExpression::getProperty() const
         throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
+App::DocumentObject * VariableExpression::getDocumentObject() const
+{
+    auto obj = var.getDocumentObject();
+
+    if (obj)
+        return obj;
+    else
+        throw Expression::Exception(var.resolveErrorString().c_str());
+}
+
+
 /**
   * Evaluate the expression. For a VariableExpression, this means to return the
   * value of the referenced Property. Quantities are converted to NumberExpression with unit,

@@ -976,6 +976,10 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
     }
     if(!obj)
         return 0;
+    if(strcmp(propertyName,"Shape_")==0)
+        propertyName = "Shape";
+    else if(strcmp(propertyName,"Placement_")==0)
+        propertyName = "Placement";
     auto prop = obj->getPropertyByName(propertyName);
     if(prop && 
        !prop->testStatus(Property::Hidden) &&
@@ -984,12 +988,16 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
 
     auto linked = obj->getLinkedObject(true);
     if(!linked || linked==obj) {
+#if 0
         auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true);
         if(!ext)
             return prop;
         linked = ext->getTrueLinkedObject(true);
         if(!linked || linked==obj)
             return prop;
+#else
+        return prop;
+#endif
     }
 
     auto linkedProp = linked->getPropertyByName(propertyName);
@@ -1122,14 +1130,38 @@ std::string ObjectIdentifier::String::toString() const
 
 std::string ObjectIdentifier::getPythonAccessor() const
 {
-    std::stringstream s;
-    DocumentObject * docObj = getDocumentObject();
+    std::stringstream ss;
+    ResolveResults result(*this);
+    if(!result.resolvedDocumentObject ||
+       (subObjectName.getString().size() && !result.resolvedSubObject))
+        return std::string();
 
-    s << "App.getDocument('" << getDocumentName() << "')."
-      << "getObject('" << docObj->getNameInDocument() << "')."
-      << getPropertyName() << getSubPathStr();
+    ss << "App.getDocument('" << result.resolvedDocument->getName()
+      << "').getObject('"  << result.resolvedDocumentObject->getNameInDocument() << "').";
 
-    return s.str();
+    if(subObjectName.getString().size()) {
+        ss << "getSubObject('" << result.subObjectName.getString();
+        if(result.propertyName == "Shape_")
+            ss << "')";
+        else if(result.propertyName == "Placement_")
+            ss << "',retType=3)";
+        else {
+            ss << "',retType=1).";
+            if(result.resolvedProperty == 0)
+                return std::string();
+            if(result.resolvedProperty->getContainer()!=result.resolvedSubObject)
+                ss << "getLinkedObject(True).";
+            ss << result.propertyName;
+        }
+        ss << getSubPathStr();
+    }else{
+        if(result.resolvedProperty == 0)
+            return std::string();
+        if(result.resolvedProperty->getContainer()!=result.resolvedDocumentObject)
+            ss << "getLinkedObject(True).";
+        ss << result.propertyName << getSubPathStr();
+    }
+    return ss.str();
 }
 
 /**

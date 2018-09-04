@@ -417,6 +417,8 @@ public:
 
     const App::Property *getProperty() const;
 
+    App::DocumentObject *getDocumentObject() const;
+
 protected:
 
     ObjectIdentifier var; /**< Variable name  */
