@@ -93,7 +93,7 @@ namespace AdaptivePath {
 			std::function<bool(TPaths)> * progressCallback=NULL;
 			Path toolGeometry; // tool geometry at coord 0,0, should not be modified
 
-			void ProcessPolyNode(Paths & boundPaths, Paths & toolBoundPaths);
+			void ProcessPolyNode(Paths  boundPaths, Paths toolBoundPaths);
 			bool FindEntryPoint(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
 							IntPoint &entryPoint /*output*/, IntPoint & toolPos, DoublePoint & toolDir);
 			bool FindEntryPointOutside(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
