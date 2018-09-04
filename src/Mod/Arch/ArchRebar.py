@@ -368,10 +368,7 @@ class _Rebar(ArchComponent.Component):
         shapes = []
         placementlist = []
         self.wires = []
-        if father:
-            rot = father.Placement.Rotation
-        else:
-            rot = FreeCAD.Rotation()
+        rot = FreeCAD.Rotation()
         if obj.Amount == 1:
             barplacement = CalculatePlacement(obj.Amount, 1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
