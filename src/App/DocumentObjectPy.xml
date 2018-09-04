@@ -63,7 +63,7 @@ getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
 * subname(string|list|tuple): dot separated string or sequence of strings
 referencing subobject.
 
-* retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject
+* retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject, 3=Placement
 
     PyObject: return a python binding object for the (sub)object referenced in
     each 'subname' The actual type of 'PyObject' is impelementation dependent.
@@ -75,6 +75,8 @@ referencing subobject.
     the accumulated transformation matrix for the sub object.
 
     DocAndPyObject: return a tuple (object, matrix, pyobj) for each subname
+
+    Placement: return a trasformed placement of the sub-object
 
 * matrix: the initial transformation to be applied to the sub object.
 
