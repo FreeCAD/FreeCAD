@@ -82,7 +82,7 @@ void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property 
             return;
 
         isUpdating.insert(name);
-        sheet->recomputeDependants(&Prop);
+        sheet->recomputeDependants(&Obj,&Prop);
         isUpdating.erase(name);
     }
 }

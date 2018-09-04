@@ -191,9 +191,7 @@ private:
 
     void removeDependencies(App::CellAddress key);
 
-    void recomputeDependants(const App::Property * prop);
-
-    void recomputeDependants(const App::DocumentObject * docObj);
+    void recomputeDependants(const App::DocumentObject *obj, const App::Property * prop);
 
     void rebuildDocDepList();
 
