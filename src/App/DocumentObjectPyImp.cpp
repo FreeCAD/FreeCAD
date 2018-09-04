@@ -487,11 +487,13 @@ PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
     if (!PyArg_ParseTuple(args, "|i", &reason))
         return NULL;
 
-    auto names = getDocumentObjectPtr()->getSubObjects(reason);
-    Py::Tuple pyObjs(names.size());
-    for(size_t i=0;i<names.size();++i)
-        pyObjs.setItem(i,Py::String(names[i]));
-    return Py::new_reference_to(pyObjs);
+    PY_TRY {
+        auto names = getDocumentObjectPtr()->getSubObjects(reason);
+        Py::Tuple pyObjs(names.size());
+        for(size_t i=0;i<names.size();++i)
+            pyObjs.setItem(i,Py::String(names[i]));
+        return Py::new_reference_to(pyObjs);
+    }PY_CATCH;
 }
 
 PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
@@ -515,18 +517,21 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
         _mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
         mat = &_mat;
     }
-    auto linked = getDocumentObjectPtr()->getLinkedObject(
-            PyObject_IsTrue(recursive), mat, PyObject_IsTrue(transform),depth);
-    if(!linked)
-        linked = getDocumentObjectPtr();
-    auto pyObj = Py::Object(linked->getPyObject(),true);
-    if(mat) {
-        Py::Tuple ret(2);
-        ret.setItem(0,pyObj);
-        ret.setItem(1,Py::Object(new Base::MatrixPy(*mat)));
-        return Py::new_reference_to(ret);
-    }
-    return Py::new_reference_to(pyObj);
+
+    PY_TRY {
+        auto linked = getDocumentObjectPtr()->getLinkedObject(
+                PyObject_IsTrue(recursive), mat, PyObject_IsTrue(transform),depth);
+        if(!linked)
+            linked = getDocumentObjectPtr();
+        auto pyObj = Py::Object(linked->getPyObject(),true);
+        if(mat) {
+            Py::Tuple ret(2);
+            ret.setItem(0,pyObj);
+            ret.setItem(1,Py::Object(new Base::MatrixPy(*mat)));
+            return Py::new_reference_to(ret);
+        }
+        return Py::new_reference_to(pyObj);
+    } PY_CATCH;
 }
 
 PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)

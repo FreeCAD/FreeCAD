@@ -343,12 +343,14 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }else
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
 
-    auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec),PyObject_IsTrue(keep));
+    PY_TRY {
+        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec),PyObject_IsTrue(keep));
 
-    Py::Tuple tuple(ret.size());
-    for(size_t i=0;i<ret.size();++i) 
-        tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
-    return Py::new_reference_to(tuple);
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    }PY_CATCH
 }
 
 PyObject*  DocumentPy::importLinks(PyObject *args)
@@ -378,12 +380,14 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
     if(objs.empty())
         objs = getDocumentPtr()->getObjects();
 
-    auto ret = getDocumentPtr()->importLinks(objs);
+    PY_TRY {
+        auto ret = getDocumentPtr()->importLinks(objs);
 
-    Py::Tuple tuple(ret.size());
-    for(size_t i=0;i<ret.size();++i) 
-        tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
-    return Py::new_reference_to(tuple);
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    }PY_CATCH
 }
 
 PyObject*  DocumentPy::moveObject(PyObject *args)
@@ -841,15 +845,17 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!|Oh", &DocumentObjectPy::Type,&obj,&recursive, &count))
         return NULL;
 
-    std::set<DocumentObject *> links;
-    getDocumentPtr()->getLinksTo(links,
-            static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
-            PyObject_IsTrue(recursive),count);
-    Py::Tuple ret(links.size());
-    int i=0;
-    for(auto o : links) 
-        ret.setItem(i++,Py::Object(o->getPyObject(),true));
-    return Py::new_reference_to(ret);
+    PY_TRY {
+        std::set<DocumentObject *> links;
+        getDocumentPtr()->getLinksTo(links,
+                static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
+                PyObject_IsTrue(recursive),count);
+        Py::Tuple ret(links.size());
+        int i=0;
+        for(auto o : links) 
+            ret.setItem(i++,Py::Object(o->getPyObject(),true));
+        return Py::new_reference_to(ret);
+    }PY_CATCH
 }
 
 Py::List DocumentPy::getInList(void) const

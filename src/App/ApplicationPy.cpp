@@ -786,7 +786,9 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args, PyOb
     if (!PyArg_ParseTuple(args, "h", &depth))
         return NULL;
 
-    return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+    PY_TRY {
+        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+    }PY_CATCH;
 }
 
 PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -797,13 +799,15 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args, PyObject
     if (!PyArg_ParseTuple(args, "O!|Oh", &DocumentObjectPy::Type,&obj,&recursive, &count))
         return NULL;
 
-    auto links = GetApplication().getLinksTo(
-        static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),PyObject_IsTrue(recursive),count);
-    Py::Tuple ret(links.size());
-    int i=0;
-    for(auto o : links) 
-        ret.setItem(i++,Py::Object(o->getPyObject(),true));
-    return Py::new_reference_to(ret);
+    PY_TRY {
+        auto links = GetApplication().getLinksTo(
+            static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr(),PyObject_IsTrue(recursive),count);
+        Py::Tuple ret(links.size());
+        int i=0;
+        for(auto o : links) 
+            ret.setItem(i++,Py::Object(o->getPyObject(),true));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
 }
 
 PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -831,12 +835,14 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args,
     }else
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
 
-    auto ret = App::Document::getDependencyList(objs,PyObject_IsTrue(noExternal),PyObject_IsTrue(sort));
+    PY_TRY {
+        auto ret = App::Document::getDependencyList(objs,PyObject_IsTrue(noExternal),PyObject_IsTrue(sort));
 
-    Py::Tuple tuple(ret.size());
-    for(size_t i=0;i<ret.size();++i) 
-        tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
-    return Py::new_reference_to(tuple);
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    } PY_CATCH;
 }
 
 
