@@ -146,13 +146,13 @@ def InitApplications():
 						Log('Init: Initializing ' + freecad_module_name + '... done\n')
 					except Exception as inst:
 						Err('During initialization the error ' + str(inst) + ' occurred in ' + freecad_module_name + '\n')
-						Err('-'*100+'\n')
+						Err('-'*80+'\n')
 						Err(traceback.format_exc())
-						Err('-'*100+'\n')
+						Err('-'*80+'\n')
 						Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
-						Log('-'*100+'\n')
+						Log('-'*80+'\n')
 						Log(traceback.format_exc())
-						Log('-'*100+'\n')
+						Log('-'*80+'\n')
 				else:
 					Log('Init: No init_gui module found in ' + freecad_module_name + ', skipping\n')
 	except ImportError as inst:
