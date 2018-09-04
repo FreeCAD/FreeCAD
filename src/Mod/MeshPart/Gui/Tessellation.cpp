@@ -253,11 +253,10 @@ bool Tessellation::accept()
                 double devAngle = ui->spinAngularDeviation->value().getValue();
                 devAngle = Base::toRadians<double>(devAngle);
                 bool relative = ui->relativeDeviation->isChecked();
-                QString param = QString::fromLatin1("Shape=__doc__.getObject(\"%1\").Shape, "
-                                                    "LinearDeflection=%2, "
-                                                    "AngularDeflection=%3, "
-                                                    "Relative=%4")
-                    .arg(shape)
+                QString param = QString::fromLatin1("Shape=__shape__, "
+                                                    "LinearDeflection=%1, "
+                                                    "AngularDeflection=%2, "
+                                                    "Relative=%3")
                     .arg(devFace)
                     .arg(devAngle)
                     .arg(relative ? QString::fromLatin1("True") : QString::fromLatin1("False"));
@@ -269,11 +268,15 @@ bool Tessellation::accept()
                 cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__mesh__.Mesh=MeshPart.meshFromShape(%2)\n"
-                    "__mesh__.Label=\"%3 (Meshed)\"\n"
+                    "__part__=__doc__.getObject(\"%2\")\n"
+                    "__shape__=__part__.Shape.copy(False)\n"
+                    "__shape__.Placement=__part__.getGlobalPlacement()\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(%3)\n"
+                    "__mesh__.Label=\"%4 (Meshed)\"\n"
                     "__mesh__.ViewObject.CreaseAngle=25.0\n"
-                    "del __doc__, __mesh__\n")
+                    "del __doc__, __mesh__, __part__, __shape__\n")
                     .arg(this->document)
+                    .arg(shape)
                     .arg(param)
                     .arg(label);
             }
@@ -284,10 +287,13 @@ bool Tessellation::accept()
                 cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,MaxLength=%3)\n"
+                    "__part__=__doc__.getObject(\"%2\")\n"
+                    "__shape__=__part__.Shape.copy(False)\n"
+                    "__shape__.Placement=__part__.getGlobalPlacement()\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,MaxLength=%3)\n"
                     "__mesh__.Label=\"%4 (Meshed)\"\n"
                     "__mesh__.ViewObject.CreaseAngle=25.0\n"
-                    "del __doc__, __mesh__\n")
+                    "del __doc__, __mesh__, __part__, __shape__\n")
                     .arg(this->document)
                     .arg(shape)
                     .arg(maxEdge)
@@ -305,11 +311,14 @@ bool Tessellation::accept()
                     cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"
+                        "__part__=__doc__.getObject(\"%2\")\n"
+                        "__shape__=__part__.Shape.copy(False)\n"
+                        "__shape__.Placement=__part__.getGlobalPlacement()\n"
+                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
                         "Fineness=%3,SecondOrder=%4,Optimize=%5,AllowQuad=%6)\n"
                         "__mesh__.Label=\"%7 (Meshed)\"\n"
                         "__mesh__.ViewObject.CreaseAngle=25.0\n"
-                        "del __doc__, __mesh__\n")
+                        "del __doc__, __mesh__, __part__, __shape__\n")
                         .arg(this->document)
                         .arg(shape)
                         .arg(fineness)
@@ -322,11 +331,14 @@ bool Tessellation::accept()
                     cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"
+                        "__part__=__doc__.getObject(\"%2\")\n"
+                        "__shape__=__part__.Shape.copy(False)\n"
+                        "__shape__.Placement=__part__.getGlobalPlacement()\n"
+                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
                         "GrowthRate=%3,SegPerEdge=%4,SegPerRadius=%5,SecondOrder=%6,Optimize=%7,AllowQuad=%8)\n"
                         "__mesh__.Label=\"%9 (Meshed)\"\n"
                         "__mesh__.ViewObject.CreaseAngle=25.0\n"
-                        "del __doc__, __mesh__\n")
+                        "del __doc__, __mesh__, __part__, __shape__\n")
                         .arg(this->document)
                         .arg(shape)
                         .arg(growthRate)
