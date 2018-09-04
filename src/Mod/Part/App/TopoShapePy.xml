@@ -539,7 +539,13 @@ into B-spline surfaces.</UserDocu>
     </Methode>
     <Methode Name="copy" Const="true">
       <Documentation>
-        <UserDocu>Create a copy of this shape</UserDocu>
+        <UserDocu>Create a copy of this shape
+copy(copyGeom=True, copyMesh=False) -> Shape
+If copyMesh is True, triangulation contained in original shape will be
+copied along with geometry.
+If copyGeom is False, only topological objects will be copied, while
+geometry and triangulation will be shared with original shape.
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="cleaned" Const="true">
