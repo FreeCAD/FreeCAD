@@ -6037,7 +6037,7 @@ class _PathArray(_DraftObject):
             b = nullv
             FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Cannot calculate Path normal.\n")
         lnodes = z.cross(b)
-        if lnodes != nullv:
+        if not lnodes.isEqual(nullv,1e-7):
             lnodes.normalize()                                       # Can't normalize null vector.
                                                                      # pathological cases:
         if n == nullv:                                               # 1) can't determine normal, don't align.
