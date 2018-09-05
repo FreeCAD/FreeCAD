@@ -327,12 +327,21 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             // redirect that reference to the first array element
             auto linked = getTrueLinkedObject(true);
             if(!linked || !linked->getNameInDocument()) return -1;
+            std::string sub(subname,dot-subname);
             if(subname[0]=='$') {
-                if(std::string(subname+1,dot-subname-1) != linked->Label.getValue())
+                if(strcmp(sub.c_str()+1,linked->Label.getValue())==0)
+                    idx = 0;
+            }else if(sub==linked->getNameInDocument())
+                idx = 0;
+            if(idx<0) {
+                // Lastly, try to get sub object directly from the linked object
+                auto sobj = linked->getSubObject(sub.c_str());
+                if(!sobj)
                     return -1;
-            }else if(std::string(subname,dot-subname)!=linked->getNameInDocument())
-                return -1;
-            idx = 0;
+                if(psubname)
+                    *psubname = subname;
+                return 0;
+            }
         }
     }else if(subname[0]!='$') {
         // Try search by element objects' name
@@ -441,8 +450,8 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     bool isElement = false;
     int idx = getElementIndex(subname,&subname);
     if(idx>=0) {
-        if(hasElements()) {
-            const auto &elements = getElementListValue();
+        const auto &elements = getElementListValue();
+        if(elements.size()) {
             if(idx>=(int)elements.size() || !elements[idx] || !elements[idx]->getNameInDocument())
                 return true;
             if(!subname || !subname[0])
