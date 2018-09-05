@@ -331,7 +331,10 @@ def Execute(op,obj):
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
             for path in tpaths: #path[0] contains the MotionType,#path[1] contains list of points
-                sceneDrawPath(path[1])
+                if path[0] == area.AdaptiveMotionType.Cutting:
+                    sceneDrawPath(path[1],(0,0,1))
+                else:
+                    sceneDrawPath(path[1],(1,0,1))
             FreeCADGui.updateGui()
             return  obj.StopProcessing
 
