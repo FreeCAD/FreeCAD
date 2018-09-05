@@ -88,7 +88,7 @@ public:
     static const int ObjectType;
 
     void markItem(const App::DocumentObject* Obj,bool mark);
-    void syncView();
+    void syncView(ViewProviderDocumentObject *vp);
 
     const char *getTreeName() const;
 

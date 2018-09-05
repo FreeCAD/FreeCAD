@@ -623,10 +623,8 @@ void TreeWidget::onActivateDocument(QAction* active)
     // activate the specified document
     QByteArray docname = active->data().toByteArray();
     Gui::Document* doc = Application::Instance->getDocument((const char*)docname);
-    if (!doc) return;
-    MDIView *view = doc->getActiveView();
-    if (!view) return;
-    getMainWindow()->setActiveWindow(view);
+    if (doc)
+        doc->setActiveView();
 }
 
 Qt::DropActions TreeWidget::supportedDropActions () const
@@ -671,14 +669,11 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
             onReloadDoc();
             return;
         }
-        MDIView *view = doc->getActiveView();
-        if (!view) return;
-        getMainWindow()->setActiveWindow(view);
+        doc->setActiveView();
     }
     else if (item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-        auto view = objitem->getOwnerDocument()->document()->getActiveView();
-        if (view) getMainWindow()->setActiveWindow(view);
+        objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
         if (!objitem->object()->doubleClicked())
             QTreeWidget::mouseDoubleClickEvent(event);
     }
@@ -1488,11 +1483,9 @@ void TreeWidget::onSyncView() {
     hGrp->SetBool("SyncView",syncViewAction->isChecked());
 }
 
-void TreeWidget::syncView() {
-    if(currentDocItem && syncViewAction->isChecked()) {
-        MDIView *view = currentDocItem->document()->getActiveView();
-        if (view) getMainWindow()->setActiveWindow(view);
-    }
+void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
+    if(currentDocItem && syncViewAction->isChecked())
+        currentDocItem->document()->setActiveView(vp);
 }
 
 void TreeWidget::onSyncPlacement() {
@@ -1773,10 +1766,8 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
     if(linkedDoc->showItem(linkedItem,true))
         scrollToItem(linkedItem);
 
-    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument()) {
-        MDIView *view = linkedDoc->pDocument->getActiveView();
-        if (view) getMainWindow()->setActiveWindow(view);
-    }
+    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument())
+        linkedDoc->document()->setActiveView(linkedItem->object());
 }
 
 // ----------------------------------------------------------------------------
@@ -2545,7 +2536,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         item->setSelected(false);
         item->mySubs.clear();
     }else 
-        getTree()->syncView();
+        getTree()->syncView(item->object());
 }
 
 void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char *subname) 
@@ -2667,7 +2658,7 @@ void DocumentItem::selectItems(bool sync) {
             first = last;
         if(first) {
             getTree()->scrollToItem(first);
-            getTree()->syncView();
+            getTree()->syncView(first->object());
         }
     }
 }

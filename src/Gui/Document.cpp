@@ -1767,6 +1767,42 @@ MDIView* Document::getActiveView(void) const
     return active;
 }
 
+MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) const {
+    MDIView *view = 0;
+    if(vp) {
+        view = vp->getMDIView();
+        if(!view) {
+            auto obj = vp->getObject();
+            if(obj) {
+                auto linked = obj->getLinkedObject(true);
+                auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
+                            Application::Instance->getViewProvider(linked));
+                if(vpLinked) {
+                    view = vpLinked->getMDIView();
+                    if(!view) {
+                        // TODO: will this slow down on large selection??
+                        view = getViewOfViewProvider(vp);
+                    }
+                }
+            }
+        }
+    }
+    if(!view)
+        view = getActiveView();
+    if(!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
+        view = 0;
+        for (auto *v : d->baseViews) {
+            if(v->isDerivedFrom(MDIView::getClassTypeId()) && v->isDerivedFrom(typeId)) {
+                view = static_cast<MDIView*>(v);
+                break;
+            }
+        }
+    }
+    if(view)
+        getMainWindow()->setActiveWindow(view);
+    return view;
+}
+
 Gui::MDIView* Document::getViewOfNode(SoNode* node) const
 {
     std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());

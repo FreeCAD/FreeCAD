@@ -208,6 +208,8 @@ public:
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
     //@}
 
+    MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type()) const;
+
     /** @name View provider handling  */
     //@{
     /// Get the view provider for that object
