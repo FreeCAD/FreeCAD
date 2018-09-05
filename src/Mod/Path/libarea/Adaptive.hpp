@@ -98,17 +98,18 @@ namespace AdaptivePath {
 							IntPoint &entryPoint /*output*/, IntPoint & toolPos, DoublePoint & toolDir);
 			bool FindEntryPointOutside(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
 					IntPoint &entryPoint /*output*/,  IntPoint & toolPos, DoublePoint & toolDir);
-			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths);
+			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths, bool preventConvetionalMode=true);
 			void AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
-			bool  IsClearPath(const Path & path,const Paths & cleared);
+			bool IsClearPath(const Path & path,const Paths & cleared);
+			bool IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared,const Paths & toolBoundPaths);
+
 			friend class EngagePoint; // for CalcCutArea
 
 			void CheckReportProgress(TPaths &progressPaths,bool force=false);
-			void AddPathsToProgress(TPaths &progressPaths,const Paths paths);
-			void AddPathToProgress(TPaths &progressPaths,const Path pth);
+			void AddPathsToProgress(TPaths &progressPaths,const Paths paths, MotionType mt=MotionType::mtCutting);
+			void AddPathToProgress(TPaths &progressPaths,const Path pth, MotionType mt=MotionType::mtCutting);
 
-		private: // constants for fine tuning
-			const bool preventConvetionalMode = true;
+		private: // constants for fine tuning			
 			const double RESOLUTION_FACTOR = 8.0;
 			const int MAX_ITERATIONS = 16;
 			const double AREA_ERROR_FACTOR = 0.05; /* how precise to match the cut area to optimal, reasonable value: 0.05 = 5%*/
