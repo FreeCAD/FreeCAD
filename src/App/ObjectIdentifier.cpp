@@ -1139,7 +1139,10 @@ std::string ObjectIdentifier::getPythonAccessor() const
     ss << "App.getDocument('" << result.resolvedDocument->getName()
       << "').getObject('"  << result.resolvedDocumentObject->getNameInDocument() << "').";
 
-    if(subObjectName.getString().size()) {
+    if(subObjectName.getString().size() || 
+       result.propertyName=="Shape_" || 
+       result.propertyName=="Placement_") 
+    {
         ss << "getSubObject('" << result.subObjectName.getString();
         if(result.propertyName == "Shape_")
             ss << "')";
