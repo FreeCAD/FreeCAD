@@ -77,14 +77,18 @@ class JobCreate:
         expandTwoDs  = False
         expandJobs   = False
         index = 0
-        for base in sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label):
+        candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
+        for base in candidates:
             PathLog.track(base.Label)
             if not base in xxx and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
                 PathLog.track('base', base.Label)
                 item = QtGui.QTreeWidgetItem([base.Label])
                 item.setData(0, self.DataObject, base)
                 sel = base.Label in selected
-                item.setCheckState(0, QtCore.Qt.CheckState.Checked if sel else QtCore.Qt.CheckState.Unchecked)
+                if sel or (1 == len(candidates) and not selected):
+                    item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+                else:
+                    item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
                 if PathUtil.isSolid(base):
                     self.itemsSolid.addChild(item)
                     if sel:
