@@ -428,6 +428,8 @@ public:
     static Base::Matrix4D convert(const SbMatrix &sbMat);
     //@}
 
+    virtual MDIView *getMDIView() {return 0;}
+
 public:
     // this method is called by the viewer when the ViewProvider is in edit
     static void eventCallback(void * ud, SoEventCallback * node);

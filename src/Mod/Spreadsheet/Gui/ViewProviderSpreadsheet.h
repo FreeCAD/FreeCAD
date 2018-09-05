@@ -65,6 +65,8 @@ public:
 
     virtual bool isShow(void) const { return true; }
 
+    virtual Gui::MDIView *getMDIView() override;
+
 protected:
     SheetView* showSpreadsheetView();
     void updateData(const App::Property *prop);

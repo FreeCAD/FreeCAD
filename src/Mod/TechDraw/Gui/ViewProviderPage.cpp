@@ -347,3 +347,7 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
 }
+
+Gui::MDIView *ViewProviderPage::getMDIView() {
+    return m_mdiView.data();
+}

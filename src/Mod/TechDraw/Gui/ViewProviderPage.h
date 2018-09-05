@@ -81,6 +81,8 @@ public:
     MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();
 
+    virtual Gui::MDIView *getMDIView() override;
+
 protected:
     bool setEdit(int ModNum);
 
