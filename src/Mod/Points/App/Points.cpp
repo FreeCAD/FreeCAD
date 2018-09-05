@@ -49,6 +49,13 @@ using namespace std;
 
 TYPESYSTEM_SOURCE(Points::PointKernel, Data::ComplexGeoData)
 
+PointKernel::PointKernel(const PointKernel& pts)
+  : _Mtrx(pts._Mtrx)
+  , _Points(pts._Points)
+{
+
+}
+
 std::vector<const char*> PointKernel::getElementTypes(void) const
 {
     std::vector<const char*> temp;
