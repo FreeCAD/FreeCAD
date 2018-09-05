@@ -13,7 +13,11 @@ namespace ClipperLib {
 namespace AdaptivePath {
 	using namespace ClipperLib;
 	using namespace std;
+	#define SAME_POINT_TOL_SQRD_SCALED 16.0
 
+	/*********************************************
+	 * Utils - inline
+	 ***********************************************/
 
 	inline double DistanceSqrd(const IntPoint& pt1, const IntPoint& pt2)
 	{
@@ -50,10 +54,8 @@ namespace AdaptivePath {
 			}
 		}
 	}
-	/*********************************************
-	 * Utils
-	 ***********************************************/
-	/* inline util*/
+
+
 	inline bool HasAnyPath(const Paths &paths) {
 		for(Paths::size_type i=0;i<paths.size();i++) {
 			if(paths[i].size()>0) return true;
@@ -75,7 +77,6 @@ namespace AdaptivePath {
 	   return DoublePoint(c*in.X-s*in.Y,s*in.X + c*in.Y);
 	}
 
-
 	// calculates path length for open path
 	inline double PathLength(const Path & path) {
 		double len=0;
@@ -86,7 +87,22 @@ namespace AdaptivePath {
 		return len;
 	}
 
-	/* geom utils */
+	inline double PointSideOfLine(const IntPoint& p1, const IntPoint& p2,const IntPoint& pt) {
+		return double((pt.X - p1.X)*(p2.Y-p1.Y) - (pt.Y - p2.Y)*(p2.X-p1.X));
+	}
+
+	inline double Angle3Points(const DoublePoint & p1,const DoublePoint& p2, const DoublePoint& p3) {
+		  double t1= atan2(p1.Y-p2.Y,p1.X-p2.X);
+    	  double t2=atan2(p3.Y-p2.Y,p3.X-p2.X);
+		  double  a = fabs( t2 - t1 );
+    	  return min(a,2*M_PI-a);
+	}
+
+	/*********************************************
+	 * Utils
+	 ***********************************************/
+
+
 	void AverageDirection(const vector<DoublePoint> &unityVectors, DoublePoint& output) {
 		int size=unityVectors.size();
 		output.X =0;
@@ -198,16 +214,6 @@ namespace AdaptivePath {
 		return true;
 	}
 
-	inline double PointSideOfLine(const IntPoint& p1, const IntPoint& p2,const IntPoint& pt) {
-		return double((pt.X - p1.X)*(p2.Y-p1.Y) - (pt.Y - p2.Y)*(p2.X-p1.X));
-	}
-
-	inline double Angle3Points(const DoublePoint & p1,const DoublePoint& p2, const DoublePoint& p3) {
-		  double t1= atan2(p1.Y-p2.Y,p1.X-p2.X);
-    	  double t2=atan2(p3.Y-p2.Y,p3.X-p2.X);
-		  double  a = fabs( t2 - t1 );
-    	  return min(a,2*M_PI-a);
-	}
 
 	bool Line2CircleIntersect(const IntPoint &c, double radius,const IntPoint &p1, const IntPoint &p2, vector<DoublePoint> & result, bool clamp=true)
 	{
@@ -703,6 +709,87 @@ namespace AdaptivePath {
 		return true;
 	}
 
+	void DeduplicatePaths(const Paths & inputs,Paths & outputs) {
+		outputs.clear();
+		for(const auto & new_pth :inputs) {
+			bool duplicate=false;
+			// aff all points of new path exist on some of the old paths, path is considered duplicate
+			for(const auto & old_pth  :outputs) {
+				bool all_points_exists=true;
+				for(const auto pt1:new_pth) {
+					bool pointExists=false;
+					for(const auto pt2:old_pth) {
+						if(DistanceSqrd(pt1,pt2)<SAME_POINT_TOL_SQRD_SCALED) {
+							pointExists=true;
+							break;
+						}
+					}
+					if(!pointExists) {
+						 all_points_exists=false;
+						 break;
+					}
+				}
+				if(all_points_exists) {
+					duplicate=true;
+					break;
+				}
+			}
+
+			if(!duplicate && new_pth.size()>0) {
+				outputs.push_back(new_pth);
+			}
+		}
+	}
+
+	void ConnectPaths(Paths input,Paths & output) {
+		// remove duplicate paths
+		output.clear();
+		bool newPath = true;
+		Path joined;
+		while(input.size()>0) {
+			if(newPath) {
+				auto p1=input.front().front();
+				auto p2=input.front().back();
+				if(joined.size()>0) output.push_back(joined);
+				joined.clear();
+				for(auto pt:input.front()) {
+					joined.push_back(pt);
+				}
+				input.erase(input.begin());
+				newPath=false;
+			}
+			bool anyMatch=false;
+			for(size_t i=0;i<input.size();i++) {
+				Path & n= input.at(i);
+				if(DistanceSqrd(n.front(),joined.back())<SAME_POINT_TOL_SQRD_SCALED) {
+					for(auto pt:n) joined.push_back(pt);
+					input.erase(input.begin()+i);
+					anyMatch=true;
+					break;
+				} else if(DistanceSqrd(n.back(),joined.back())<SAME_POINT_TOL_SQRD_SCALED) {
+					ReversePath(n);
+					for(auto pt:n) joined.push_back(pt);
+					input.erase(input.begin()+i);
+					anyMatch=true;
+					break;
+				}  else if(DistanceSqrd(n.front(),joined.front())<SAME_POINT_TOL_SQRD_SCALED) {
+					for(auto pt:n) joined.insert(joined.begin(),pt);
+					input.erase(input.begin()+i);
+					anyMatch=true;
+					break;
+				} else if(DistanceSqrd(n.back(),joined.front())<SAME_POINT_TOL_SQRD_SCALED) {
+					ReversePath(n);
+					for(auto pt:n) joined.insert(joined.begin(),pt);
+					input.erase(input.begin()+i);
+					anyMatch=true;
+					break;
+				}
+			}
+			if(!anyMatch) newPath = true;
+		}
+		if(joined.size()>0) output.push_back(joined);
+	}
+
 	/****************************************
 	// Adaptive2d - constructor
 	*****************************************/
@@ -984,15 +1071,18 @@ namespace AdaptivePath {
 		// **********************
 		// Convert input paths to clipper
 		//************************
-		inputPaths.clear();
+		Paths converted;
 		for(size_t i=0;i<paths.size();i++) {
 			Path cpth;
 			for(size_t j=0;j<paths[i].size();j++) {
 				std::pair<double,double> pt = paths[i][j];
 				cpth.push_back(IntPoint(long(pt.first*scaleFactor),long(pt.second*scaleFactor)));
-			}
-			inputPaths.push_back(cpth);
+			}			
+			converted.push_back(cpth);
 		}
+
+		DeduplicatePaths(converted,inputPaths);
+		ConnectPaths(inputPaths,inputPaths);
 		SimplifyPolygons(inputPaths);
 
 		//************************
@@ -1392,7 +1482,7 @@ namespace AdaptivePath {
 						output.AdaptivePaths.push_back(linkPath3);
 						linkFound=true;
 					}
-					if(!linkFound && keepDownLinkTooLong) { // if to long make link through interim points with tool raise
+					if(!linkFound && keepDownLinkTooLong) { // if keeptooldown link too long make link through interim points with tool raise
 						// add disengage moves
 						TPath linkPath1;
 						linkPath1.first = MotionType::mtCutting;
@@ -1441,7 +1531,7 @@ namespace AdaptivePath {
 					}
 				}
 			}
-			if(!linkFound) { // noting clear so far - check direct link with no interim points - either this is clear or we need to raise the tool
+			if(!linkFound) { // nothing clear so far - check direct link with no interim points - either this is clear or we need to raise the tool
 					//cerr << "keepToolDownLinkPath NOT CLEAR" << endl;
 					Path tp;
 					tp << lastPoint;

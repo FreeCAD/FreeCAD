@@ -130,6 +130,8 @@ namespace AdaptivePath {
 			const time_t PROGRESS_TICKS = CLOCKS_PER_SEC/20; // progress report interval
 
 			const long OVERSHOOT_ADDON_DIST=2;
+
+			
 	};
 }
 #endif
