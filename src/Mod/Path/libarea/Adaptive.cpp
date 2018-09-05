@@ -709,7 +709,7 @@ namespace AdaptivePath {
 	Adaptive2d::Adaptive2d() {
 	}
 
-	double Adaptive2d::CalcCutArea(Clipper & clip,const IntPoint &c1, const IntPoint &c2, const Paths &cleared_paths) {
+	double Adaptive2d::CalcCutArea(Clipper & clip,const IntPoint &c1, const IntPoint &c2, const Paths &cleared_paths, bool preventConvetional) {
 		Perf_CalcCutArea.Start();
 
 		double dist = DistanceSqrd(c1,c2);
@@ -812,7 +812,7 @@ namespace AdaptivePath {
 				double maxFi=fi2;
 				if(maxFi<minFi) maxFi += 2*M_PI;
 
-				if(preventConvetionalMode) {
+				if(preventConvetional) {
 					// detect conventional mode cut - we want only climb mode
 					if(interPathLen>=RESOLUTION_FACTOR && !IsPointWithinCutRegion(cleared_paths,c2)) {
 						if(PointSideOfLine(fpc2,lpc2,c2)<0) {
@@ -1252,7 +1252,7 @@ namespace AdaptivePath {
 	}
 
 	/**
-	 * returns true if line from lastPoint to nextPoint  is clear from obstacles
+	 * returns true if path is clear from obstacles
 	*/
 	bool  Adaptive2d::IsClearPath(const Path &tp,const Paths & cleared) {
 		Clipper clip;
@@ -1271,66 +1271,61 @@ namespace AdaptivePath {
 		return collisionArea <= optimalCutAreaPD*RESOLUTION_FACTOR/2;
 	}
 
-	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths, bool close) {
-		if(passToolPath.size()<1) return;
-		IntPoint nextPoint(passToolPath[0]);
-
-		// to hold results
+	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths) {
+		double stepSize=2*RESOLUTION_FACTOR;
+		Clipper clip;
 		size_t clpPathIndex;
 		size_t clpSegmentIndex;
 		double clpParameter;
 		IntPoint clp;
+		double distance = sqrt(DistanceSqrd(p1,p2));
+		if(!IsPointWithinCutRegion(toolBoundPaths,p1) // check with some tolerance
+			&& sqrt(DistancePointToPathsSqrd(toolBoundPaths,p1,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
+			) {
+			// first point outside boundary - its not clear to cut
+			return false;
+		} else for(double d=stepSize;d<distance;d+=stepSize) {
+			IntPoint toolPos1(long(p1.X + double(p2.X-p1.X)*(d-stepSize)/distance),long(p1.Y + double(p2.Y-p1.Y)*(d-stepSize)/distance));
+			IntPoint toolPos2(long(p1.X + double(p2.X-p1.X)*d/distance),long(p1.Y + double(p2.Y-p1.Y)*d/distance));
+			double area = CalcCutArea(clip,toolPos1,toolPos2, cleared,false);
+			// if we are cutting above optimal -> not clear to cut
+			if(area>1.5*stepSize*optimalCutAreaPD) return false;
 
-		if(output.AdaptivePaths.size()>0 && output.AdaptivePaths.back().second.size()>0) { // if there is a previous path
+			//if tool is outside boundary -> its not clear to cut
+			if(!IsPointWithinCutRegion(toolBoundPaths,toolPos2)
+				&& sqrt(DistancePointToPathsSqrd(toolBoundPaths,toolPos2,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
+				) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths, bool close) {
+		if(passToolPath.size()<1) return;
+		IntPoint nextPoint(passToolPath[0]);
+
+		// if there is a previous path - need to resolve linking move to new path
+		if(output.AdaptivePaths.size()>0 && output.AdaptivePaths.back().second.size()>0) {
 			auto & lastTPath = output.AdaptivePaths.back();
 			auto & lastTPoint = lastTPath.second.back();
 			IntPoint lastPoint(long(lastTPoint.first*scaleFactor),long(lastTPoint.second*scaleFactor));
 
-			// try to cut through
-			bool linkFound = true;
+			//first we try to cut through the linking move for short distances
+			bool linkFound = false;
 			double linkDistance = sqrt(DistanceSqrd(lastPoint,nextPoint));
-			if(linkDistance<4*toolRadiusScaled) {
-				double stepSize=RESOLUTION_FACTOR;
-				Clipper clip;
-				IntPoint inters; // to hold intersection point
-				if(!IsPointWithinCutRegion(toolBoundPaths,lastPoint) // check with some tolerance
-					&& sqrt(DistancePointToPathsSqrd(toolBoundPaths,lastPoint,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
-					) {
-					// outside boundary - its not clear to cut
-					linkFound=false;
-				} else for(double d=stepSize;d<linkDistance+stepSize;d+=stepSize) {
-					IntPoint toolPos1(long(lastPoint.X + double(nextPoint.X-lastPoint.X)*(d-stepSize)/linkDistance),long(lastPoint.Y + double(nextPoint.Y-lastPoint.Y)*(d-stepSize)/linkDistance));
-					IntPoint toolPos2(long(lastPoint.X + double(nextPoint.X-lastPoint.X)*d/linkDistance),long(lastPoint.Y + double(nextPoint.Y-lastPoint.Y)*d/linkDistance));
-					double areaPD = CalcCutArea(clip,toolPos1,toolPos2, cleared)/stepSize;
-					if(areaPD>1.2*optimalCutAreaPD) { // if we are cutting above optimal -> not clear link
-						linkFound=false;
-						//cout<<"linking - overcut" << endl;
-						break;
-					}
-					if(!IsPointWithinCutRegion(toolBoundPaths,toolPos2)
-					 && sqrt(DistancePointToPathsSqrd(toolBoundPaths,toolPos2,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
-						) {
-						//outside boundary - its not clear to cut
-						linkFound=false;
-						break;
-					}
-				}
-				if(linkFound) {
+			if(linkDistance<4*toolRadiusScaled && IsAllowedToCutTrough(lastPoint,nextPoint,cleared,toolBoundPaths)) {
 					//cout << "cleared through" << endl;
 					TPath linkPath;
 					linkPath.first = MotionType::mtCutting;
 					linkPath.second.push_back(DPoint(double(lastPoint.X)/scaleFactor,double(lastPoint.Y)/scaleFactor));
 					linkPath.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
 					output.AdaptivePaths.push_back(linkPath);
-				}
-			} else {
-				linkFound=false;
+					linkFound=true;
 			}
-
 			if(!linkFound) {
 				IntPoint lastInterimPoint =lastPoint;
 				IntPoint nextInterimPoint =nextPoint;
-
 				// find the closes cleared path within stepover distance, this will be keepToolDownPath if stright line is not possible
 				Path keepToolDownLinkPath;
 				ClipperOffset clipof;
@@ -1341,22 +1336,40 @@ namespace AdaptivePath {
 				bool keepDownLinkTooLong = true;
 				for(int i=1;i<10;i++) {
 					clipof.Execute(clearedOff,-toolRadiusScaled-offset/i);
+					// AddPathsToProgress(progressPaths,clearedOff, MotionType::mtLinkClear);
+					// CheckReportProgress(progressPaths,true);
+					// usleep(100000);
 					keepDownLinkExists = FindPathBetweenClosestPoints(clearedOff,lastPoint,nextPoint,toolRadiusScaled + 2*offset/i ,keepToolDownLinkPath);
+					if(keepDownLinkExists) {
+						lastInterimPoint=keepToolDownLinkPath.front();
+						nextInterimPoint=keepToolDownLinkPath.back();
+						if(!IsAllowedToCutTrough(lastPoint,lastInterimPoint,cleared,toolBoundPaths)) {
+							//cout << "not IsAllowedToCutTrough1" << endl;
+							keepDownLinkExists=false;
+						}
+						if(!IsAllowedToCutTrough(nextPoint,nextInterimPoint,cleared,toolBoundPaths)) {
+							//cout << "not IsAllowedToCutTrough2" << endl;
+							keepDownLinkExists=false;
+						}
+						if(!IsClearPath(keepToolDownLinkPath,cleared)) {
+							//cout << "not IsClearPath keepToolDownLinkPath" << endl;
+							keepDownLinkExists=false;
+						}
+						// is inefficient to link through interim points?
+						if(sqrt(DistanceSqrd(lastPoint,lastInterimPoint))+sqrt(DistanceSqrd(nextInterimPoint,nextPoint))
+							> sqrt(DistanceSqrd(lastPoint,nextPoint))) keepDownLinkExists=false;
+					}
 					keepDownLinkTooLong = (PathLength(keepToolDownLinkPath) > 3*linkDistance) && (linkDistance>4*toolRadiusScaled) ;
 					if(keepDownLinkExists) break;
 				}
 				if(keepDownLinkExists)  {
-					lastInterimPoint=keepToolDownLinkPath.front();
-					nextInterimPoint=keepToolDownLinkPath.back();
+					// check direct link
 					Path tp;
-					tp << lastPoint;
 					tp << lastInterimPoint;
 					tp << nextInterimPoint;
-					tp << nextPoint;
 
-					bool inefficientInterimLink = sqrt(DistanceSqrd(lastPoint,lastInterimPoint))+sqrt(DistanceSqrd(nextInterimPoint,nextPoint)) > sqrt(DistanceSqrd(lastPoint,nextPoint));
-					bool directLinkInterimLinkClear = IsClearPath(tp,cleared);
-					if(directLinkInterimLinkClear && !inefficientInterimLink) { // shouldn't apply keep down link
+					bool directLinkInterimLinkClear = IsClearPath(tp,cleared); // cleared direct line between interim points?
+					if(directLinkInterimLinkClear) { // if direct link is ok
 						// add disengage moves
 						TPath linkPath1;
 						linkPath1.first = MotionType::mtCutting;
@@ -1379,83 +1392,63 @@ namespace AdaptivePath {
 						output.AdaptivePaths.push_back(linkPath3);
 						linkFound=true;
 					}
-					if(!linkFound && keepDownLinkTooLong) { // make link through interim points with tool raise
-						tp.clear();
-						tp << lastPoint;
-						tp << lastInterimPoint;
-						if(IsClearPath(tp,cleared)) {
-							tp.clear();
-							tp << nextInterimPoint;
-							tp << nextPoint;
-							if(IsClearPath(tp,cleared)) {
-								// add disengage moves
-								TPath linkPath1;
-								linkPath1.first = MotionType::mtCutting;
-								linkPath1.second.push_back(lastTPoint);
-								linkPath1.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
-								output.AdaptivePaths.push_back(linkPath1);
+					if(!linkFound && keepDownLinkTooLong) { // if to long make link through interim points with tool raise
+						// add disengage moves
+						TPath linkPath1;
+						linkPath1.first = MotionType::mtCutting;
+						linkPath1.second.push_back(lastTPoint);
+						linkPath1.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath1);
 
-								// add linking move at clear height
-								TPath linkPath2;
-								linkPath2.first = MotionType::mtLinkNotClear;
-								linkPath2.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
-								linkPath2.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
-								output.AdaptivePaths.push_back(linkPath2);
+						// add linking move at clear height
+						TPath linkPath2;
+						linkPath2.first = MotionType::mtLinkNotClear;
+						linkPath2.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
+						linkPath2.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath2);
 
-								// add engage move
-								TPath linkPath3;
-								linkPath3.first = MotionType::mtCutting;
-								linkPath3.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
-								linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
-								output.AdaptivePaths.push_back(linkPath3);
-								linkFound=true;
-							}
-						}
+						// add engage move
+						TPath linkPath3;
+						linkPath3.first = MotionType::mtCutting;
+						linkPath3.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
+						linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath3);
+						linkFound=true;
 					}
-					if(!linkFound && !keepDownLinkTooLong && !inefficientInterimLink) { // if direct link over interim points not clear
-						tp.clear();
-						tp << lastPoint;
-						for(auto & p : keepToolDownLinkPath) tp << p;
-						tp << nextPoint;
-						if(IsClearPath(tp,cleared)) { // clear
-								//AddPathToProgress(progressPaths,keepToolDownLinkPath);
-								// add disengage move
-								TPath linkPath1;
-								linkPath1.first = MotionType::mtCutting;
-								linkPath1.second.push_back(DPoint(double(lastPoint.X)/scaleFactor,double(lastPoint.Y)/scaleFactor));
-								linkPath1.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
-								output.AdaptivePaths.push_back(linkPath1);
+					if(!linkFound) { // if direct link over interim points not clear and keepToolDownLinkPath not too long - make it through keep tool down link
+						// add disengage move
+						TPath linkPath1;
+						linkPath1.first = MotionType::mtCutting;
+						linkPath1.second.push_back(DPoint(double(lastPoint.X)/scaleFactor,double(lastPoint.Y)/scaleFactor));
+						linkPath1.second.push_back(DPoint(double(lastInterimPoint.X)/scaleFactor,double(lastInterimPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath1);
 
-								// add linking path
-								TPath linkPath2;
-								linkPath2.first = MotionType::mtLinkClear;
-								for(auto & p : keepToolDownLinkPath) {
-									linkPath2.second.push_back(DPoint(double(p.X)/scaleFactor,double(p.Y)/scaleFactor));
-								}
-								output.AdaptivePaths.push_back(linkPath2);
-
-								// add engage move
-								TPath linkPath3;
-								linkPath3.first = MotionType::mtCutting;
-								linkPath3.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
-								linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
-								output.AdaptivePaths.push_back(linkPath3);
-								linkFound= true;
-						} else {
-							cout << "interim keeptool down link not clear" << endl;
+						// add linking path
+						TPath linkPath2;
+						linkPath2.first = MotionType::mtLinkClear;
+						for(auto & p : keepToolDownLinkPath) {
+							linkPath2.second.push_back(DPoint(double(p.X)/scaleFactor,double(p.Y)/scaleFactor));
 						}
+						output.AdaptivePaths.push_back(linkPath2);
+
+						// add engage move
+						TPath linkPath3;
+						linkPath3.first = MotionType::mtCutting;
+						linkPath3.second.push_back(DPoint(double(nextInterimPoint.X)/scaleFactor,double(nextInterimPoint.Y)/scaleFactor));
+						linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath3);
+						linkFound= true;
 					}
 				}
 			}
-		// first we find the last point
-			if(!linkFound) { // not clear - check direct link with no interim points - either clear or we neet to raise the tool
+			if(!linkFound) { // noting clear so far - check direct link with no interim points - either this is clear or we need to raise the tool
 					//cerr << "keepToolDownLinkPath NOT CLEAR" << endl;
 					Path tp;
 					tp << lastPoint;
 					tp << nextPoint;
 					MotionType mt = IsClearPath(tp,cleared) ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
 
-					// cut through small clear links
+					// make cutting move through small clear links
 					if(mt==MotionType::mtLinkClear && linkDistance<toolRadiusScaled) mt=MotionType::mtCutting;
 
 					TPath linkPath;
@@ -1496,13 +1489,15 @@ namespace AdaptivePath {
 		DPoint next(lastPoint->first,lastPoint->second);
 		while(progressPaths.size()>1) progressPaths.pop_back();
 		while(progressPaths.front().second.size()>0) progressPaths.front().second.pop_back();
+		progressPaths.front().first = MotionType::mtCutting;
 		progressPaths.front().second.push_back(next);
 	}
 
-	void Adaptive2d::AddPathsToProgress(TPaths &progressPaths,Paths paths) {
+	void Adaptive2d::AddPathsToProgress(TPaths &progressPaths,Paths paths, MotionType mt) {
 		for(const auto & pth :paths) {
 			if(pth.size()>0) {
 				progressPaths.push_back(TPath());
+				progressPaths.back().first = mt;
 				for(const auto pt: pth)
 					progressPaths.back().second.push_back(DPoint(double(pt.X)/scaleFactor,double(pt.Y)/scaleFactor));
 				progressPaths.back().second.push_back(DPoint(double(pth.front().X)/scaleFactor,double(pth.front().Y)/scaleFactor));
@@ -1510,9 +1505,10 @@ namespace AdaptivePath {
 		}
 	}
 
-	void Adaptive2d::AddPathToProgress(TPaths &progressPaths,const Path pth) {
+	void Adaptive2d::AddPathToProgress(TPaths &progressPaths,const Path pth, MotionType mt) {
 		if(pth.size()>0) {
 				progressPaths.push_back(TPath());
+				progressPaths.back().first = mt;
 				for(const auto pt: pth)
 					progressPaths.back().second.push_back(DPoint(double(pt.X)/scaleFactor,double(pt.Y)/scaleFactor));
 		}
@@ -1535,7 +1531,7 @@ namespace AdaptivePath {
 		SimplifyPolygons(boundPaths);
 
 
-		AddPathsToProgress(progressPaths,toolBoundPaths);
+		AddPathsToProgress(progressPaths,toolBoundPaths, MotionType::mtLinkClear);
 
 		IntPoint toolPos;
 		DoublePoint toolDir;
@@ -1636,6 +1632,7 @@ namespace AdaptivePath {
 			size_t clpPathIndex;
 			size_t clpSegmentIndex;
 			double clpParamter;
+			Paths clearedBeforePass = cleared;
 			/*******************************
 			 * LOOP - POINTS
 			 *******************************/
@@ -1835,7 +1832,7 @@ namespace AdaptivePath {
 				Path cleaned;
 				CleanPath(passToolPath,cleaned,CLEAN_PATH_TOLERANCE);
 				total_output_points+=cleaned.size();
-				AppendToolPath(progressPaths, output,cleaned,cleared,toolBoundPaths);
+				AppendToolPath(progressPaths, output,cleaned,clearedBeforePass,toolBoundPaths);
 				CheckReportProgress(progressPaths);
 				bad_engage_count=0;
 				engage.ResetPasses();
