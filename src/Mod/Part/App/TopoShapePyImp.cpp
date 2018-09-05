@@ -62,6 +62,7 @@
 #include <BRepAlgo_NormalProjection.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
+#include <Standard_Version.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -172,9 +173,14 @@ PyObject* TopoShapePy::copy(PyObject *args)
     }
 
     if (!shape.IsNull()) {
+#if OCC_VERSION_HEX >= 0x070000
         BRepBuilderAPI_Copy c(shape,
                               PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False,
                               PyObject_IsTrue(copyMesh) ? Standard_True : Standard_False);
+#else
+        BRepBuilderAPI_Copy c(shape,
+                              PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False);
+#endif
         static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
     }
     return cpy;
