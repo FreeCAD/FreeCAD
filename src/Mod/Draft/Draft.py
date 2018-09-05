@@ -5925,6 +5925,8 @@ class _DraftLink(_DraftObject):
             obj.ExpandArray = showElement
             obj.configLinkProperty(ShowElement='ExpandArray')
             obj.removeProperty('ShowElement')
+        else:
+            obj.configLinkProperty(ShowElement='ExpandArray')
         if getattr(obj,'ExpandArray',False):
             obj.setPropertyStatus('PlacementList','Immutable')
         else:
@@ -5992,8 +5994,9 @@ class _DraftLink(_DraftObject):
             else:
                 obj.setPropertyStatus('Shape','Transient')
         elif prop == 'ExpandArray':
-            obj.setPropertyStatus('PlacementList',
-                    '-Immutable' if obj.ExpandArray else 'Immutable')
+            if hasattr(obj,'PlacementList'):
+                obj.setPropertyStatus('PlacementList',
+                        '-Immutable' if obj.ExpandArray else 'Immutable')
 
 
 class _Array(_DraftLink):
