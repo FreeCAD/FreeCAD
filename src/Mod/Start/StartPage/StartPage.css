@@ -48,18 +48,20 @@ ul.tabs li a {
     font-weight: bold;
     text-transform: uppercase;
     border:1px solid BOXCOLOR;
-    border-radius: 1px;
+    border-radius: 3px 3px 0px 0px;
     box-shadow: #445 0 -5px 5px;
     outline: 0;
 }
 ul.tabs li a:hover {
     background-color: TEXTCOLOR;
     color: BASECOLOR;
+    border-color: TEXTCOLOR;
 }
 ul.tabs li a.active, ul.tabs li a.active:hover {
     color: TEXTCOLOR;
     background-color: BASECOLOR;
     border-bottom: 1px solid BASECOLOR;
+    border-color: BASECOLOR;
 }
 .panel {
     background: BASECOLOR;
@@ -67,7 +69,7 @@ ul.tabs li a.active, ul.tabs li a.active:hover {
     padding: 15px;
     clear: both;
     margin-bottom: 10px;
-    border-radius: 3px;
+    border-radius: 0px 3px 3px 3px;
     overflow: auto;
     box-shadow: SHADOW 0 2px 5px;
 }
@@ -105,6 +107,11 @@ a .caption, a .caption:link, a .caption:visited {
     color: TEXTCOLOR;
     text-decoration-color: TEXTCOLOR;
 }
+
+.caption p {
+    font-weight: normal;
+}
+
 .docbox a:hover {
     text-decoration: underline;
 }
@@ -181,4 +188,5 @@ ul.workbenches li, ul.addonslist li {
     background: BOXCOLOR;
     border: none;
     padding: 5px;
+    border-radius: 3px;
 }
