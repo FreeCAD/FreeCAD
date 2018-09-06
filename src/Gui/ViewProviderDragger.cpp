@@ -43,6 +43,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h> 
 #endif
+# include <Inventor/SoEventManager.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderDragger.h"
@@ -178,6 +179,10 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 
 void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+  SoEventManager* mgr = viewer->getSoEventManager();
+  SoHandleEventAction* heaction = mgr->getHandleEventAction();
+  if (heaction && heaction->getGrabber())
+      heaction->releaseGrabber();
   SoFCUnifiedSelection* selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
   SoNode *child = selection->getChild(0);
   if (child && child->isOfType(SoPickStyle::getClassTypeId())) {
