@@ -2819,6 +2819,42 @@ void CmdViewMeasureToggleAll::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_TreeHideInactiveDocs
+//===========================================================================
+
+DEF_STD_CMD_C(StdTreeHideInactiveDocs);
+
+StdTreeHideInactiveDocs::StdTreeHideInactiveDocs()
+  : Command("Std_TreeHideInactiveDocs")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Hide inactive documents in tree");
+    sToolTipText  = QT_TR_NOOP("Toggles hiding inactive documents in document tree");
+    sWhatsThis    = "Std_TreeHideInactiveDocs";
+    sStatusTip    = QT_TR_NOOP("Toggles hiding inactive documents in document tree");
+    eType         = 0;
+}
+
+Action * StdTreeHideInactiveDocs::createAction(void)
+{
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+    pcAction->setChecked(group->GetBool("TreeHideInactiveDocs", false));
+
+    return pcAction;
+}
+
+void StdTreeHideInactiveDocs::activated(int iMsg)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+    group->SetBool("TreeHideInactiveDocs", iMsg != 0);
+    App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -2886,6 +2922,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
+    rcCmdMgr.addCommand(new StdTreeHideInactiveDocs());
 }
 
 } // namespace Gui
