@@ -79,7 +79,7 @@ DrawPage::DrawPage(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
 
-    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_None), "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
 
