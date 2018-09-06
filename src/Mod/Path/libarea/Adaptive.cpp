@@ -4,7 +4,6 @@
 #include <cstring>
 #include <ctime>
 #include <algorithm>
-#include <unistd.h>
 
 namespace ClipperLib {
 	 void TranslatePath(const Path& input, Path& output, IntPoint delta);
@@ -1077,7 +1076,7 @@ namespace AdaptivePath {
 			for(size_t j=0;j<paths[i].size();j++) {
 				std::pair<double,double> pt = paths[i][j];
 				cpth.push_back(IntPoint(long(pt.first*scaleFactor),long(pt.second*scaleFactor)));
-			}			
+			}
 			converted.push_back(cpth);
 		}
 
