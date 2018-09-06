@@ -707,14 +707,14 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool hideInactive = hGrp->GetBool("TreeHideInactiveDocs", false);
+    int displayMode = hGrp->GetInt("TreeViewDocument", 0);
     for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
         it->second->setFont(0,f);
-        it->second->setHidden(hideInactive && it != jt);
+        it->second->setHidden(0 == displayMode && it != jt);
     }
 }
 

@@ -550,7 +550,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
-          << "Std_TreeHideInactiveDocs"
+          << "Std_TreeViewDocument"
           << "Std_ViewStatusBar";
 
     // Tools
