@@ -61,7 +61,7 @@ namespace AdaptivePath {
 			double tolerance=0.1;
 			double stockToLeave=0;
 			bool forceInsideOut = true;
-			bool keepToolDown = true;
+			int keepToolDownDistRatio = 3; // keep tool down distance ratio
 			OperationType opType = OperationType::otClearingInside;
 
 			std::list<AdaptiveOutput> Execute(const DPaths &stockPaths, const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
@@ -88,6 +88,7 @@ namespace AdaptivePath {
 			double minCutAreaPD=0;
 			bool stopProcessing=false;
 			long unclearLinkingMoveCount = 0;
+
 			time_t lastProgressTime = 0;
 			
 			std::function<bool(TPaths)> * progressCallback=NULL;
@@ -131,7 +132,7 @@ namespace AdaptivePath {
 
 			const long OVERSHOOT_ADDON_DIST=2;
 
-			
+
 	};
 }
 #endif
