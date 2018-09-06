@@ -347,271 +347,6 @@ namespace AdaptivePath {
 		return false;
 	}
 
-	// helper class for measuring performance
-	class PerfCounter {
-		public:
-			PerfCounter(string p_name) {
-				name = p_name;
-				count =0;
-			}
-			void Start() {
-				start_ticks=clock();
-			}
-			void Stop() {
-				total_ticks+=clock()-start_ticks;
-				count++;
-			}
-			void DumpResults() {
-				double total_time=double(total_ticks)/CLOCKS_PER_SEC;
-				cout<<"Perf: " << name.c_str() << " total_time: " <<  total_time  << " sec, call_count:" << count << " per_call:" << double(total_time/count) << endl;
-			}
-		private:
-			string name;
-			clock_t start_ticks;
-			clock_t total_ticks;
-			size_t count;
-	};
-
-	PerfCounter Perf_ProcessPolyNode("ProcessPolyNode");
-	PerfCounter Perf_CalcCutArea("CalcCutArea");
-	PerfCounter Perf_NextEngagePoint("NextEngagePoint");
-	PerfCounter Perf_PointIterations("PointIterations");
-	PerfCounter Perf_ExpandCleared("ExpandCleared");
-	PerfCounter Perf_DistanceToBoundary("DistanceToBoundary");
-
-	/*****************************************
-	 * Linear Interpolation - area vs angle
-	 * ***************************************/
-	class Interpolation {
-		public:
-			const double MIN_ANGLE = -M_PI/4;
-			const double MAX_ANGLE = M_PI/4;
-
-			void clear() {
-				angles.clear();
-				areas.clear();
-			}
-			// adds point keeping the incremental order of areas for interpolation to work correctly
-			void addPoint(double area, double angle) {
-				std::size_t size = areas.size();
-				if(size==0 || area > areas[size-1] + NTOL) { // first point or largest area point
-					areas.push_back(area);
-					angles.push_back(angle);
-					return;
-				}
-
-				for(std::size_t i=0;i<size;i++) {
-					if(area<areas[i] - NTOL && (i==0 || area > areas[i-1] + NTOL)) {
-						areas.insert(areas.begin() + i,area);
-						angles.insert(angles.begin() + i,angle);
-					}
-				}
-			}
-
-			double interpolateAngle(double targetArea) {
-				std::size_t size = areas.size();
-				if(size<2 || targetArea>areas[size-1]) return MIN_ANGLE; //max engage angle - convinient value to initially measure cut area
-				if(targetArea<areas[0]) return MAX_ANGLE; // min engage angle
-
-				for(size_t i=1;i<size;i++) {
-					// find 2 subsequent points where target area is between
-					if(areas[i-1]<=targetArea && areas[i]>targetArea) {
-						// linear interpolation
-						double af = (targetArea-areas[i-1])/(areas[i] - areas[i-1]);
-						double a = angles[i-1]  + af*(angles[i] - angles[i-1]);
-						return a;
-					}
-				}
-				return MIN_ANGLE;
-			}
-
-			double clampAngle(double angle) {
-				if(angle<MIN_ANGLE) return MIN_ANGLE;
-				if(angle>MAX_ANGLE) return MAX_ANGLE;
-				return angle;
-			}
-
-			double getRandomAngle() {
-				return MIN_ANGLE + (MAX_ANGLE-MIN_ANGLE)*double(rand())/double(RAND_MAX);
-			}
-			size_t getPointCount() {
-				return areas.size();
-			}
-
-		private:
-			vector<double> angles;
-			vector<double> areas;
-
-	};
-
-	/****************************************
-	 * Engage Point
-	 ***************************************/
-	class EngagePoint {
-		public:
-			struct EngageState {
-				size_t currentPathIndex;
-				size_t currentSegmentIndex;
-				double segmentPos =0;
-				double totalDistance=0;
-				double currentPathLength=0;
-				int passes=0;
-
-				double metric; // engage point metric
-
-				bool operator < (const EngageState& other) const
-    			{
-     				   return (metric < other.metric);
-    			}
-			};
-			EngagePoint(const Paths & p_toolBoundPaths) {
-				toolBoundPaths=&p_toolBoundPaths;
-				state.currentPathIndex=0;
-				state.currentSegmentIndex=0;
-				state.segmentPos =0;
-				state.totalDistance=0;
-				calculateCurrentPathLength();
-			}
-
-		EngageState GetState() {
-			return state;
-		}
-
-		void SetState(const EngageState &new_state ) {
-			state=new_state;
-		}
-
-		void ResetPasses() {
-			state.passes=0;
-		}
-		void moveToClosestPoint(const IntPoint &pt,double step) {
-				double minDistSq = __DBL_MAX__;
-				size_t minPathIndex = state.currentPathIndex;
-				size_t minSegmentIndex = state.currentSegmentIndex;
-				double minSegmentPos = state.segmentPos;
-				state.totalDistance=0;
-				for(;;) {
-					while(moveForward(step)) {
-						double distSqrd = DistanceSqrd(pt,getCurrentPoint());
-						if(distSqrd<minDistSq) {
-							//cout << sqrt(minDistSq) << endl;
-							minDistSq = distSqrd;
-							minPathIndex = state.currentPathIndex;
-							minSegmentIndex = state.currentSegmentIndex;
-							minSegmentPos = state.segmentPos;
-						}
-					}
-					if(!nextPath()) break;
-				}
-				state.currentPathIndex=minPathIndex;
-				state.currentSegmentIndex=minSegmentIndex;
-				state.segmentPos=minSegmentPos ;
-				calculateCurrentPathLength();
-				ResetPasses();
-		}
-		bool nextEngagePoint(Adaptive2d*parent,  const Paths & cleared, double step, double minCutArea, double maxCutArea) {
-			//cout << "nextEngagePoint called step: " << step << endl;
-			Perf_NextEngagePoint.Start();
-			double prevArea = 0; // we want to make sure that we catch the point where the area is on raising slope
-			//IntPoint initialPoint = getCurrentPoint();
-			IntPoint initialPoint(-1000000000,-1000000000);
-			for(;;) {
-				if(!moveForward(step))	 {
-					if(!nextPath()) {
-						state.passes++;
-						if(state.passes>1) {
-							Perf_NextEngagePoint.Stop();
-							return false; // nothin more to cut
-						}
-					 prevArea=0;
-					}
-				}
-				IntPoint cpt = getCurrentPoint();
-				double area=parent->CalcCutArea(clip,initialPoint,cpt,cleared);
-				//cout << "engage scan path: " << currentPathIndex << " distance:" << totalDistance << " area:" << area << " areaPD:" << area/step << " min:" << minCutArea << " max:" << maxCutArea << endl;
-				if(area>minCutArea && area<maxCutArea && area>prevArea) {
-					Perf_NextEngagePoint.Stop();
-					return true;
-				}
-				prevArea=area;
-			}
-		}
-			IntPoint getCurrentPoint() {
-				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
-				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
-				double segLength =sqrt(DistanceSqrd(*p1,*p2));
-				return IntPoint(long(p1->X + state.segmentPos*double(p2->X-p1->X)/segLength),long(p1->Y + state.segmentPos*double(p2->Y-p1->Y)/segLength));
-			}
-
-			DoublePoint getCurrentDir() {
-				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
-				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
-				double segLength =sqrt(DistanceSqrd(*p1,*p2));
-				return DoublePoint(double(p2->X-p1->X)/segLength,double(p2->Y-p1->Y)/segLength);
-			}
-
-			bool moveForward(double distance) {
-				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
-				if(distance<NTOL) throw std::invalid_argument( "distance must be positive" );
-				state.totalDistance+=distance;
-				double segmentLength =  currentSegmentLength();
-				while(state.segmentPos+distance>segmentLength) {
-					state.currentSegmentIndex++;
-					if(state.currentSegmentIndex>=pth->size()) {
-						state.currentSegmentIndex=0;
-					}
-					distance=distance-(segmentLength-state.segmentPos);
-					state.segmentPos =0;
-					segmentLength =currentSegmentLength();
-				}
-				state.segmentPos+=distance;
-				return state.totalDistance<=1.2 * state.currentPathLength;
-			}
-
-			bool nextPath() {
-				state.currentPathIndex++;
-				state.currentSegmentIndex=0;
-				state.segmentPos =0;
-				state.totalDistance=0;
-				if(state.currentPathIndex>=toolBoundPaths->size()) {
-					state.currentPathIndex =0;
-					calculateCurrentPathLength();
-					return false;
-				}
-				calculateCurrentPathLength();
-				//cout << "nextPath:" << currentPathIndex << endl;
-				return true;
-			}
-
-
-
-
-		private:
-			const Paths * toolBoundPaths;
-			EngageState state;
-			Clipper clip;
-			void calculateCurrentPathLength() {
-				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
-				size_t size=pth->size();
-				state.currentPathLength=0;
-				for(size_t i=0;i<size;i++) {
-					const IntPoint * p1=&pth->at(i>0?i-1:size-1);
-					const IntPoint * p2=&pth->at(i);
-					state.currentPathLength += sqrt(DistanceSqrd(*p1,*p2));
-				}
-			}
-
-			double currentSegmentLength() {
-				const Path * pth = &toolBoundPaths->at(state.currentPathIndex);
-				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
-				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
-				return sqrt(DistanceSqrd(*p1,*p2));
-			}
-
-	};
-
 
 	// finds the section (sub-path) of the one path between points that are closest to p1 and p2, if that distance is lower than distanceLmit
 	bool FindPathBetweenClosestPoints(const Paths & paths,IntPoint p1,IntPoint p2, double distanceLmit, Path & res) {
@@ -747,8 +482,6 @@ namespace AdaptivePath {
 		Path joined;
 		while(input.size()>0) {
 			if(newPath) {
-				auto p1=input.front().front();
-				auto p2=input.front().back();
 				if(joined.size()>0) output.push_back(joined);
 				joined.clear();
 				for(auto pt:input.front()) {
@@ -788,6 +521,284 @@ namespace AdaptivePath {
 		}
 		if(joined.size()>0) output.push_back(joined);
 	}
+
+
+	// helper class for measuring performance
+	class PerfCounter {
+		public:
+			PerfCounter(string p_name) {
+				name = p_name;
+				count =0;
+			}
+			void Start() {
+				start_ticks=clock();
+			}
+			void Stop() {
+				total_ticks+=clock()-start_ticks;
+				count++;
+			}
+			void DumpResults() {
+				double total_time=double(total_ticks)/CLOCKS_PER_SEC;
+				cout<<"Perf: " << name.c_str() << " total_time: " <<  total_time  << " sec, call_count:" << count << " per_call:" << double(total_time/count) << endl;
+			}
+		private:
+			string name;
+			clock_t start_ticks;
+			clock_t total_ticks;
+			size_t count;
+	};
+
+	PerfCounter Perf_ProcessPolyNode("ProcessPolyNode");
+	PerfCounter Perf_CalcCutArea("CalcCutArea");
+	PerfCounter Perf_NextEngagePoint("NextEngagePoint");
+	PerfCounter Perf_PointIterations("PointIterations");
+	PerfCounter Perf_ExpandCleared("ExpandCleared");
+	PerfCounter Perf_DistanceToBoundary("DistanceToBoundary");
+
+	/*****************************************
+	 * Linear Interpolation - area vs angle
+	 * ***************************************/
+	class Interpolation {
+		public:
+			const double MIN_ANGLE = -M_PI/4;
+			const double MAX_ANGLE = M_PI/4;
+
+			void clear() {
+				angles.clear();
+				areas.clear();
+			}
+			// adds point keeping the incremental order of areas for interpolation to work correctly
+			void addPoint(double area, double angle) {
+				std::size_t size = areas.size();
+				if(size==0 || area > areas[size-1] + NTOL) { // first point or largest area point
+					areas.push_back(area);
+					angles.push_back(angle);
+					return;
+				}
+
+				for(std::size_t i=0;i<size;i++) {
+					if(area<areas[i] - NTOL && (i==0 || area > areas[i-1] + NTOL)) {
+						areas.insert(areas.begin() + i,area);
+						angles.insert(angles.begin() + i,angle);
+					}
+				}
+			}
+
+			double interpolateAngle(double targetArea) {
+				std::size_t size = areas.size();
+				if(size<2 || targetArea>areas[size-1]) return MIN_ANGLE; //max engage angle - convinient value to initially measure cut area
+				if(targetArea<areas[0]) return MAX_ANGLE; // min engage angle
+
+				for(size_t i=1;i<size;i++) {
+					// find 2 subsequent points where target area is between
+					if(areas[i-1]<=targetArea && areas[i]>targetArea) {
+						// linear interpolation
+						double af = (targetArea-areas[i-1])/(areas[i] - areas[i-1]);
+						double a = angles[i-1]  + af*(angles[i] - angles[i-1]);
+						return a;
+					}
+				}
+				return MIN_ANGLE;
+			}
+
+			double clampAngle(double angle) {
+				if(angle<MIN_ANGLE) return MIN_ANGLE;
+				if(angle>MAX_ANGLE) return MAX_ANGLE;
+				return angle;
+			}
+
+			double getRandomAngle() {
+				return MIN_ANGLE + (MAX_ANGLE-MIN_ANGLE)*double(rand())/double(RAND_MAX);
+			}
+			size_t getPointCount() {
+				return areas.size();
+			}
+
+		private:
+			vector<double> angles;
+			vector<double> areas;
+
+	};
+
+	/****************************************
+	 * Engage Point
+	 ***************************************/
+	class EngagePoint {
+		public:
+			struct EngageState {
+				size_t currentPathIndex;
+				size_t currentSegmentIndex;
+				double segmentPos =0;
+				double totalDistance=0;
+				double currentPathLength=0;
+				int passes=0;
+
+				double metric; // engage point metric
+
+				bool operator < (const EngageState& other) const
+    			{
+     				   return (metric < other.metric);
+    			}
+			};
+			EngagePoint(const Paths & p_toolBoundPaths) {
+				toolBoundPaths = p_toolBoundPaths;
+				state.currentPathIndex=0;
+				state.currentSegmentIndex=0;
+				state.segmentPos =0;
+				state.totalDistance=0;
+				calculateCurrentPathLength();
+			}
+
+		EngageState GetState() {
+			return state;
+		}
+
+		void SetState(const EngageState &new_state ) {
+			state=new_state;
+		}
+
+		void ResetPasses() {
+			state.passes=0;
+		}
+		void moveToClosestPoint(const IntPoint &pt,double step) {
+
+				Path result;
+				IntPoint current=pt;
+				// chain paths according to distance in between
+				Paths toChain = toolBoundPaths;
+				toolBoundPaths.clear();
+				while(PopPathWithClosestPoint(toChain,current,result)) {
+					toolBoundPaths.push_back(result);
+					if(result.size()>0) current = result.back();
+				}
+
+				double minDistSq = __DBL_MAX__;
+				size_t minPathIndex = state.currentPathIndex;
+				size_t minSegmentIndex = state.currentSegmentIndex;
+				double minSegmentPos = state.segmentPos;
+				state.totalDistance=0;
+				for(;;) {
+					while(moveForward(step)) {
+						double distSqrd = DistanceSqrd(pt,getCurrentPoint());
+						if(distSqrd<minDistSq) {
+							//cout << sqrt(minDistSq) << endl;
+							minDistSq = distSqrd;
+							minPathIndex = state.currentPathIndex;
+							minSegmentIndex = state.currentSegmentIndex;
+							minSegmentPos = state.segmentPos;
+						}
+					}
+					if(!nextPath()) break;
+				}
+				state.currentPathIndex=minPathIndex;
+				state.currentSegmentIndex=minSegmentIndex;
+				state.segmentPos=minSegmentPos ;
+				calculateCurrentPathLength();
+				ResetPasses();
+		}
+		bool nextEngagePoint(Adaptive2d*parent,  const Paths & cleared, double step, double minCutArea, double maxCutArea) {
+			//cout << "nextEngagePoint called step: " << step << endl;
+			Perf_NextEngagePoint.Start();
+			double prevArea = 0; // we want to make sure that we catch the point where the area is on raising slope
+			//IntPoint initialPoint = getCurrentPoint();
+			IntPoint initialPoint(-1000000000,-1000000000);
+			for(;;) {
+				if(!moveForward(step))	 {
+					if(!nextPath()) {
+						state.passes++;
+						if(state.passes>1) {
+							Perf_NextEngagePoint.Stop();
+							return false; // nothin more to cut
+						}
+					 prevArea=0;
+					}
+				}
+				IntPoint cpt = getCurrentPoint();
+				double area=parent->CalcCutArea(clip,initialPoint,cpt,cleared);
+				//cout << "engage scan path: " << currentPathIndex << " distance:" << totalDistance << " area:" << area << " areaPD:" << area/step << " min:" << minCutArea << " max:" << maxCutArea << endl;
+				if(area>minCutArea && area<maxCutArea && area>prevArea) {
+					Perf_NextEngagePoint.Stop();
+					return true;
+				}
+				prevArea=area;
+			}
+		}
+			IntPoint getCurrentPoint() {
+				const Path * pth = &toolBoundPaths.at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
+				double segLength =sqrt(DistanceSqrd(*p1,*p2));
+				return IntPoint(long(p1->X + state.segmentPos*double(p2->X-p1->X)/segLength),long(p1->Y + state.segmentPos*double(p2->Y-p1->Y)/segLength));
+			}
+
+			DoublePoint getCurrentDir() {
+				const Path * pth = &toolBoundPaths.at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
+				double segLength =sqrt(DistanceSqrd(*p1,*p2));
+				return DoublePoint(double(p2->X-p1->X)/segLength,double(p2->Y-p1->Y)/segLength);
+			}
+
+			bool moveForward(double distance) {
+				const Path * pth = &toolBoundPaths.at(state.currentPathIndex);
+				if(distance<NTOL) throw std::invalid_argument( "distance must be positive" );
+				state.totalDistance+=distance;
+				double segmentLength =  currentSegmentLength();
+				while(state.segmentPos+distance>segmentLength) {
+					state.currentSegmentIndex++;
+					if(state.currentSegmentIndex>=pth->size()) {
+						state.currentSegmentIndex=0;
+					}
+					distance=distance-(segmentLength-state.segmentPos);
+					state.segmentPos =0;
+					segmentLength =currentSegmentLength();
+				}
+				state.segmentPos+=distance;
+				return state.totalDistance<=1.2 * state.currentPathLength;
+			}
+
+			bool nextPath() {
+				state.currentPathIndex++;
+				state.currentSegmentIndex=0;
+				state.segmentPos =0;
+				state.totalDistance=0;
+				if(state.currentPathIndex>=toolBoundPaths.size()) {
+					state.currentPathIndex =0;
+					calculateCurrentPathLength();
+					return false;
+				}
+				calculateCurrentPathLength();
+				//cout << "nextPath:" << currentPathIndex << endl;
+				return true;
+			}
+
+
+
+
+		private:
+			Paths toolBoundPaths;
+			EngageState state;
+			Clipper clip;
+			void calculateCurrentPathLength() {
+				const Path * pth = &toolBoundPaths.at(state.currentPathIndex);
+				size_t size=pth->size();
+				state.currentPathLength=0;
+				for(size_t i=0;i<size;i++) {
+					const IntPoint * p1=&pth->at(i>0?i-1:size-1);
+					const IntPoint * p2=&pth->at(i);
+					state.currentPathLength += sqrt(DistanceSqrd(*p1,*p2));
+				}
+			}
+
+			double currentSegmentLength() {
+				const Path * pth = &toolBoundPaths.at(state.currentPathIndex);
+				const IntPoint * p1=&pth->at(state.currentSegmentIndex>0?state.currentSegmentIndex-1:pth->size()-1);
+				const IntPoint * p2=&pth->at(state.currentSegmentIndex);
+				return sqrt(DistanceSqrd(*p1,*p2));
+			}
+
+	};
+
 
 	/****************************************
 	// Adaptive2d - constructor
@@ -1448,7 +1459,7 @@ namespace AdaptivePath {
 						if(sqrt(DistanceSqrd(lastPoint,lastInterimPoint))+sqrt(DistanceSqrd(nextInterimPoint,nextPoint))
 							> sqrt(DistanceSqrd(lastPoint,nextPoint))) keepDownLinkExists=false;
 					}
-					keepDownLinkTooLong = (PathLength(keepToolDownLinkPath) > 3*linkDistance) && (linkDistance>4*toolRadiusScaled) ;
+					keepDownLinkTooLong = (PathLength(keepToolDownLinkPath) > linkDistance*keepToolDownDistRatio) && (linkDistance>4*toolRadiusScaled) ;
 					if(keepDownLinkExists) break;
 				}
 				if(keepDownLinkExists)  {
@@ -1570,7 +1581,7 @@ namespace AdaptivePath {
 		lastProgressTime=clock();
 		if(progressPaths.size()==0) return;
 		if(progressCallback)
-			if((*progressCallback)(progressPaths)) stopProcessing=true; // call python function, if returns true signal stop processing
+		if((*progressCallback)(progressPaths)) stopProcessing=true; // call python function, if returns true signal stop processing
 		// clean the paths - keep the last point
 		if(progressPaths.back().second.size()==0) return;
 		TPath * lastPath = &progressPaths.back();
