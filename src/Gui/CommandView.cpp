@@ -2862,6 +2862,28 @@ void StdTreeMultiDocument::activated(int iMsg)
 
 
 //===========================================================================
+// Std_TreeCollapseDocument
+//===========================================================================
+DEF_STD_CMD(StdTreeCollapseDocument)
+
+StdTreeCollapseDocument::StdTreeCollapseDocument()
+  : Command("Std_TreeCollapseDocument")
+{
+    sGroup       = QT_TR_NOOP("View");
+    sMenuText    = QT_TR_NOOP("Collapse/Expand");
+    sToolTipText = QT_TR_NOOP("Expand active document and collapse all others");
+    sWhatsThis   = "Std_TreeCollapseDocument";
+    sStatusTip   = QT_TR_NOOP("Expand active document and collapse all others");
+    eType        = 0;
+}
+
+void StdTreeCollapseDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+}
+
+
+//===========================================================================
 // Std_TreeViewDocument
 //===========================================================================
 
@@ -2880,6 +2902,7 @@ StdTreeViewDocument::StdTreeViewDocument()
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdTreeSingleDocument());
     rcCmdMgr.addCommand(new StdTreeMultiDocument());
+    rcCmdMgr.addCommand(new StdTreeCollapseDocument());
 }
 
 Action * StdTreeViewDocument::createAction(void)
@@ -2891,8 +2914,10 @@ Action * StdTreeViewDocument::createAction(void)
     CommandManager &grp = Application::Instance->commandManager();
     Command* cmd0 = grp.getCommandByName("Std_TreeSingleDocument");
     Command* cmd1 = grp.getCommandByName("Std_TreeMultiDocument");
+    Command* cmd2 = grp.getCommandByName("Std_TreeCollapseDocument");
     cmd0->addToGroup(pcAction, true);
     cmd1->addToGroup(pcAction, true);
+    cmd2->addToGroup(pcAction, true);
 
     return pcAction;
 }
