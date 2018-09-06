@@ -1422,7 +1422,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             pSubName,sel.elementName,false,App::GeoFeature::Normal,0,&element);
     if(!sel.pResolvedObject) {
         if(!selList)
-            FC_ERR("Sub-object not found");
+            FC_ERR("Sub-object " << sel.DocName << '#' << sel.FeatName << '.' << sel.SubName << " not found");
         return -1;
     }
     std::string subname;
