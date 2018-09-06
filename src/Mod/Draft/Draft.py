@@ -5957,10 +5957,8 @@ class _DraftLink(_DraftObject):
         if obj.Base:
             shape = Part.getShape(obj.Base)
             if shape.isNull():
-                FreeCAD.Console.PrintError (
-                    "'{}' cannot build shape of '{}'\n".format(
+                raise RuntimeError("'{}' cannot build shape of '{}'\n".format(
                         obj.Name,obj.Base.Name))
-                raise RuntimeError('Cannot build shape')
             else:
                 shape = shape.copy()
                 shape.Placement = FreeCAD.Placement()
