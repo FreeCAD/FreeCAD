@@ -5955,25 +5955,22 @@ class _DraftLink(_DraftObject):
                 obj.Count = len(pls)
 
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
-                shape = obj.Base.Shape
-            else:
-                shape = obj.Base.getSubObject('')
-
-            if not isinstance(shape,Part.Shape) or shape.isNull():
+            shape = Part.getShape(obj.Base)
+            if shape.isNull():
                 FreeCAD.Console.PrintError (
-                    "'{}' cannot build shape of '{}'".format(
+                    "'{}' cannot build shape of '{}'\n".format(
                         obj.Name,obj.Base.Name))
+                raise RuntimeError('Cannot build shape')
             else:
+                shape = shape.copy()
+                shape.Placement = FreeCAD.Placement()
                 base = []
                 for i,pla in enumerate(pls):
                     vis = getattr(obj,'VisibilityList',[])
                     if len(vis)>i and not vis[i]:
                         continue;
                     # 'I' is a prefix for disambiguation when mapping element names
-                    s = shape.copy('I{}'.format(i))
-                    s.Placement = pla
-                    base.append(s)
+                    base.append(shape.makeTransform(pla.toMatrix(),op='I{}'.format(i)))
                 if getattr(obj,'Fuse',False) and len(base) > 1:
                     obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
                 else:
