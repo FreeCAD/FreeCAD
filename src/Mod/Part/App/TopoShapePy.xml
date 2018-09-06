@@ -341,6 +341,15 @@ If checkScale is True, it will use transformGeometry if non-uniform
 scaling is detected.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeTransform" Const="true"  Keyword="true">
+      <Documentation>
+          <UserDocu>
+makeTransform(Matrix,copy=False,checkScale=False,op=None) -> shape
+
+Create a new transformed shape
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="translate">
       <Documentation>
         <UserDocu>Apply the translation to the current location of this shape.</UserDocu>

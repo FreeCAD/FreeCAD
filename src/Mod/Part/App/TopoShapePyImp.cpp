@@ -1575,6 +1575,23 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
     }
 }
 
+PyObject* TopoShapePy::makeTransform(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"matrix", "copy", "checkScale", "op", NULL};
+    PyObject* pymat;
+    PyObject* copy = Py_False;
+    PyObject* checkScale = Py_False;
+    const char *op = 0;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|OOs", kwlist,
+                &Base::MatrixPy::Type, &pymat,&copy,&checkScale,&op))
+        return 0;
+    Base::Matrix4D mat = static_cast<Base::MatrixPy*>(pymat)->value();
+    PY_TRY {
+        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makETransform(
+                        mat,op,PyObject_IsTrue(checkScale),PyObject_IsTrue(copy))));
+    }PY_CATCH_OCC
+}
+
 PyObject*  TopoShapePy::translate(PyObject *args)
 {
     PyObject *obj;
