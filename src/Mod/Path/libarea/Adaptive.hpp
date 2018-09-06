@@ -109,7 +109,7 @@ namespace AdaptivePath {
 			void CheckReportProgress(TPaths &progressPaths,bool force=false);
 			void AddPathsToProgress(TPaths &progressPaths,const Paths paths, MotionType mt=MotionType::mtCutting);
 			void AddPathToProgress(TPaths &progressPaths,const Path pth, MotionType mt=MotionType::mtCutting);
-
+			void ApplyStockToLeave(Paths &inputPaths);
 		private: // constants for fine tuning			
 			const double RESOLUTION_FACTOR = 8.0;
 			const int MAX_ITERATIONS = 16;
@@ -129,8 +129,6 @@ namespace AdaptivePath {
 			const long PASSES_LIMIT = __LONG_MAX__; // limit used while debugging
 			const long POINTS_PER_PASS_LIMIT =  __LONG_MAX__; // limit used while debugging
 			const time_t PROGRESS_TICKS = CLOCKS_PER_SEC/20; // progress report interval
-
-			const long OVERSHOOT_ADDON_DIST=2;
 
 
 	};

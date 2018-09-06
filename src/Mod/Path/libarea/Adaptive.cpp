@@ -4,6 +4,8 @@
 #include <cstring>
 #include <ctime>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 
 namespace ClipperLib {
 	 void TranslatePath(const Path& input, Path& output, IntPoint delta);
@@ -398,13 +400,13 @@ namespace AdaptivePath {
 		Path fwd_result;
 		fwd_result << clp1;
 		size_t maxIndex = clpSegmentIndex2;
-		if(maxIndex <= clpSegmentIndex1) maxIndex = closestPath.size() + clpSegmentIndex2-1;
+		if(maxIndex <= clpSegmentIndex1) maxIndex = closestPath.size() + clpSegmentIndex2;
 		for(size_t i=clpSegmentIndex1;i<maxIndex;i++) {
 			size_t index=i;
 			if(index>=closestPath.size()) index-= closestPath.size();
 			if(sqrt(DistanceSqrd(fwd_result.back(),closestPath.at(index)))>NTOL) fwd_result << closestPath.at(index);
 		}
-		if(sqrt(DistanceSqrd(rev_result.back(),clp2))>NTOL) fwd_result << clp2;
+		if(sqrt(DistanceSqrd(fwd_result.back(),clp2))>NTOL) fwd_result << clp2;
 
 		res = (PathLength(rev_result) < PathLength(fwd_result)) ? rev_result: fwd_result; // take shortest
 		return res.size()>1;
@@ -667,10 +669,15 @@ namespace AdaptivePath {
 				// chain paths according to distance in between
 				Paths toChain = toolBoundPaths;
 				toolBoundPaths.clear();
+				// if(toChain.size()>0) {
+				// 	toolBoundPaths.push_back(toChain.front());
+				// 	toChain.erase(toChain.begin());
+				// }
 				while(PopPathWithClosestPoint(toChain,current,result)) {
 					toolBoundPaths.push_back(result);
 					if(result.size()>0) current = result.back();
 				}
+
 
 				double minDistSq = __DBL_MAX__;
 				size_t minPathIndex = state.currentPathIndex;
@@ -1026,6 +1033,26 @@ namespace AdaptivePath {
 		return area;
 	}
 
+	void Adaptive2d::ApplyStockToLeave(Paths &inputPaths) {
+		ClipperOffset clipof;
+		if(stockToLeave>NTOL) {
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
+				clipof.Execute(inputPaths,stockToLeave*scaleFactor);
+			else
+				clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
+		} else {
+			// fix for clipper glitches
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,-1);
+			clipof.Clear();
+			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(inputPaths,1);
+		}
+	}
+
 	/****************************************
 	// Adaptive2d - Execute
 	*****************************************/
@@ -1093,7 +1120,6 @@ namespace AdaptivePath {
 
 		DeduplicatePaths(converted,inputPaths);
 		ConnectPaths(inputPaths,inputPaths);
-		SimplifyPolygons(inputPaths);
 
 		//************************
 		// convert stock paths
@@ -1107,43 +1133,59 @@ namespace AdaptivePath {
 			}
 			stockInputPaths.push_back(cpth);
 		}
+
 		SimplifyPolygons(stockInputPaths);
-
-
-		if(stockToLeave>NTOL) {
-			clipof.Clear();
-			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
-				clipof.Execute(inputPaths,stockToLeave*scaleFactor);
-			else
-				clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
-		} else {
-			// fix for clipper glitches
-			clipof.Clear();
-			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			clipof.Execute(inputPaths,-1);
-			clipof.Clear();
-			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			clipof.Execute(inputPaths,1);
-		}
-
 
 		// *******************************
 		//	Resolve hierarchy and run processing
 		// ********************************
 
 		if(opType==OperationType::otClearingInside || opType==OperationType::otClearingOutside) {
-				// add stock paths, with overshooting
+
+				// prepare stock boundary overshooted paths
+				clipof.Clear();
+				clipof.AddPaths(stockInputPaths,JoinType::jtSquare,EndType::etClosedPolygon);
+				double overshootDistance =4*toolRadiusScaled ;
+				if(forceInsideOut) overshootDistance=0;
+				Paths stockOvershoot;
+				clipof.Execute(stockOvershoot,overshootDistance);
+				ReversePaths(stockOvershoot);
+
+
 				if(opType==OperationType::otClearingOutside) {
-					clipof.Clear();
-					clipof.AddPaths(stockInputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-					double overshootDistance =2*toolRadiusScaled + toolRadiusScaled*stepOverFactor + OVERSHOOT_ADDON_DIST;
-					if(forceInsideOut) overshootDistance=0;
-					Paths stockOvershoot;
-					clipof.Execute(stockOvershoot,overshootDistance);
-					ReversePaths(stockOvershoot);
+					// add stock paths, with overshooting
 					for(auto p : stockOvershoot) inputPaths.push_back(p);
+				} else if(opType==OperationType::otClearingInside)  {
+					// check if there are open paths, and try to close it through overshooted stock boundary
+
+					// Paths openInputPaths; // open paths will be removed by simplify
+					// Paths closedInputPaths;
+					// for(const auto & pth:inputPaths) {
+					// 	if(DistanceSqrd(pth.front(),pth.back())>SAME_POINT_TOL_SQRD_SCALED) {
+					// 		openInputPaths.push_back(pth);
+					// 	} else {
+					// 			closedInputPaths.push_back(pth);
+					// 	}
+					// }
+					// if(openInputPaths.size()==1) {
+					// 	cout << "SINGLE OPEN PATH MODE" << endl;
+					// 	Path & op = openInputPaths.front();
+					// 	Path connect;
+					// 	FindPathBetweenClosestPoints(stockOvershoot,op.back(),op.front(),scaleFactor*100000,connect);
+					// 	Paths cl;
+					// 	cout << op;
+					// 	cout << connect;
+					// 	cl.push_back(op);
+					// 	cl.push_back(connect);
+					// 	ConnectPaths(cl,inputPaths);
+					// 	for(auto &p: closedInputPaths) inputPaths.push_back(p);
+					// }
 				}
+
+				SimplifyPolygons(inputPaths);
+				// apply stock to leave
+				ApplyStockToLeave(inputPaths);
+
 				clipof.Clear();
 				clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
 				Paths paths;
@@ -1170,6 +1212,10 @@ namespace AdaptivePath {
 		}
 
 		if(opType==OperationType::otProfilingInside || opType==OperationType::otProfilingOutside) {
+				SimplifyPolygons(inputPaths);
+				// apply stock to leave
+				ApplyStockToLeave(inputPaths);
+
 				double offset = opType==OperationType::otProfilingInside  ? -2*(helixRampRadiusScaled+toolRadiusScaled)-RESOLUTION_FACTOR : 2*(helixRampRadiusScaled+toolRadiusScaled) + RESOLUTION_FACTOR;
 				for(const auto & current : inputPaths) {
 					int nesting = getPathNestingLevel(current,inputPaths);
@@ -1324,19 +1370,17 @@ namespace AdaptivePath {
 				IntPoint lastPoint = i>0 ? pth[i-1] : pth.back();
 				// if point is outside the stock
 				if(PointInPolygon(checkPoint,stockInputPaths.front())==0) {
+
 					clipof.Clear();
-					clipof.AddPath(pth,JoinType::jtRound,EndType::etClosedPolygon);
-					Paths sol2;
-					clipof.Execute(sol2,toolRadiusScaled*stepOverFactor*2 + OVERSHOOT_ADDON_DIST);
-					clipof.Clear();
-					clipof.AddPaths(sol2,JoinType::jtRound,EndType::etClosedLine);
-					clipof.Execute(cleared,toolRadiusScaled + OVERSHOOT_ADDON_DIST );
+					clipof.AddPaths(stockInputPaths,JoinType::jtSquare,EndType::etClosedPolygon);
+					clipof.Execute(cleared,1000*toolRadiusScaled);
 
 					clip.Clear();
 					clip.AddPaths(cleared,PolyType::ptSubject, true);
 					clip.AddPaths(stockInputPaths,PolyType::ptClip, true);
 					clip.Execute(ClipType::ctDifference,cleared);
-
+					CleanPolygons(cleared);
+					SimplifyPolygons(cleared);
 					//AddPathsToProgress(progressPaths,cleared);
 					entryPoint=checkPoint;
 					toolPos = entryPoint;
@@ -1619,10 +1663,16 @@ namespace AdaptivePath {
 		//cout << " Adaptive2d::ProcessPolyNode" << endl;
 		Perf_ProcessPolyNode.Start();
 		// node paths are already constrained to tool boundary path for adaptive path before finishing pass
+		Clipper clip;
+		ClipperOffset clipof;
 
 		IntPoint entryPoint;
 		TPaths progressPaths;
 		progressPaths.reserve(10000);
+
+		// AddPathsToProgress(progressPaths,boundPaths, MotionType::mtLinkClear);
+		// CheckReportProgress(progressPaths, true);
+		// std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 		CleanPolygons(toolBoundPaths);
 		SimplifyPolygons(toolBoundPaths);
@@ -1637,17 +1687,39 @@ namespace AdaptivePath {
 		DoublePoint toolDir;
 		Paths cleared;
 		bool outsideEntry = false;
+		bool firstEngagePoint=true;
+		Paths engageBounds = toolBoundPaths;
+
+
 		if(FindEntryPointOutside(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos,toolDir)) {
-			toolPos = IntPoint(entryPoint.X,entryPoint.Y);
-			toolDir = DoublePoint(1.0,0.0);
+			if( Orientation(engageBounds[0])<0) ReversePath(engageBounds[0]);
+			//engageBounds.erase(engageBounds.begin());
+			// add initial offset of cleared area to engage paths
+			Paths outsideEngage;
+			clipof.Clear();
+			clipof.AddPaths(stockInputPaths,JoinType::jtRound,EndType::etClosedPolygon);
+			clipof.Execute(outsideEngage,toolRadiusScaled - stepOverFactor*toolRadiusScaled);
+			CleanPolygons(outsideEngage);
+			ReversePaths(outsideEngage);
+			for(auto p:outsideEngage) engageBounds.push_back(p);
 			outsideEntry=true;
 		} else {
 			if(!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos,toolDir)) return;
 		}
 
-		//cout << "Entry point:" << entryPoint << endl;
-		Clipper clip;
-		ClipperOffset clipof;
+		EngagePoint engage(engageBounds); // engage point stepping instance
+
+
+		if(outsideEntry) {
+			engage.moveToClosestPoint(toolPos,2*RESOLUTION_FACTOR);
+			engage.moveForward(RESOLUTION_FACTOR);
+			toolPos = engage.getCurrentPoint();
+			toolDir = engage.getCurrentDir();
+			entryPoint=toolPos;
+		}
+
+		cout << "Entry point:" << double(entryPoint.X)/scaleFactor << "," << double(entryPoint.Y)/scaleFactor << endl;
+
 		AdaptiveOutput output;
 		output.HelixCenterPoint.first = double(entryPoint.X)/scaleFactor;
 		output.HelixCenterPoint.second =double(entryPoint.Y)/scaleFactor;
@@ -1664,7 +1736,7 @@ namespace AdaptivePath {
 		IntPoint startPoint = toolPos;
 		output.StartPoint =DPoint(double(startPoint.X)/scaleFactor,double(startPoint.Y)/scaleFactor);
 
-		bool firstEngagePoint=true;
+
 		Path passToolPath; // to store pass toolpath
 		Path toClearPath; // to clear toolpath
 		IntPoint clp; // to store closest point
@@ -1673,13 +1745,6 @@ namespace AdaptivePath {
 		double angle = M_PI;
 		engagePoint = toolPos;
 		Interpolation interp; // interpolation instance
-
-		Paths engageBounds = toolBoundPaths;
-		// for(size_t i=1;i<engageBounds.size();i++) {
-		// 	ReversePath(engageBounds[i]);
-		// }
-		if(outsideEntry) ReversePath(engageBounds[0]);
-		EngagePoint engage(engageBounds); // engage point stepping instance
 
 		long total_iterations =0;
 		long total_points =0;
@@ -1696,12 +1761,6 @@ namespace AdaptivePath {
 		#ifdef DEV_MODE
 		clock_t start_clock=clock();
 		#endif
-		if(outsideEntry) {
-			engage.moveToClosestPoint(toolPos,stepScaled+1);
-			//firstEngagePoint=false;
-			toolPos = engage.getCurrentPoint();
-			toolDir = engage.getCurrentDir();
-		}
 
 		/*******************************
 		 * LOOP - PASSES
@@ -1884,15 +1943,22 @@ namespace AdaptivePath {
 					cumulativeCutArea+=area;
 
 					// append to toolpaths
-					if(passToolPath.size()==0) passToolPath.push_back(toolPos);
+					if(passToolPath.size()==0) {
+						// in outside entry first successfull cut defines the helix center and start point
+						if(output.AdaptivePaths.size()==0 && outsideEntry) {
+								entryPoint=toolPos;
+								output.HelixCenterPoint.first = double(entryPoint.X)/scaleFactor;
+								output.HelixCenterPoint.second =double(entryPoint.Y)/scaleFactor;
+								output.StartPoint =DPoint(double(entryPoint.X)/scaleFactor,double(entryPoint.Y)/scaleFactor);
+						}
+						passToolPath.push_back(toolPos);
+					}
 					passToolPath.push_back(newToolPos);
 					perf_total_len+=stepScaled;
 					toolPos=newToolPos;
 
 					// append to progress info paths
-					if(progressPaths.size()==0) {
-						progressPaths.push_back(TPath());
-					}
+					if(progressPaths.size()==0) progressPaths.push_back(TPath());
 					progressPaths.back().second.push_back(DPoint(double(newToolPos.X)/scaleFactor,double(newToolPos.Y)/scaleFactor));
 
 					// apend gyro
