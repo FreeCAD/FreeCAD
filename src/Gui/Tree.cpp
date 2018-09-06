@@ -1013,7 +1013,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }else{
                         propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                 obj->getPropertyByName("Placement"));
-                        mat = propPlacement->getValue().toMatrix();
+                        if(propPlacement)
+                            mat = propPlacement->getValue().toMatrix();
                     }
                 }
 
