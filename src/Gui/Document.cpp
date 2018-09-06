@@ -66,6 +66,7 @@
 #include "Selection.h"
 #include "WaitCursor.h"
 #include "Thumbnail.h"
+#include "ViewProviderLink.h"
 
 FC_LOG_LEVEL_INIT("Gui::Document",true,true)
 
@@ -1219,7 +1220,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         if(it->first->isTouched()) {
             isModified = true;
-            FC_LOG("'" << getDocument()->getName() << '.'
+            FC_LOG("'" << getDocument()->getName() << '#'
                     << it->first->getNameInDocument() << "' is touched after restore");
         }
     }
@@ -1769,30 +1770,33 @@ MDIView* Document::getActiveView(void) const
 
 MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) const {
     MDIView *view = 0;
-    if(vp) {
+    if(!vp)
+        view = getActiveView();
+    else{
         view = vp->getMDIView();
         if(!view) {
             auto obj = vp->getObject();
-            if(obj) {
+            if(!obj)
+                view = getActiveView();
+            else {
                 auto linked = obj->getLinkedObject(true);
-                auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
-                            Application::Instance->getViewProvider(linked));
-                if(vpLinked) {
-                    view = vpLinked->getMDIView();
-                    if(!view) {
-                        // TODO: will this slow down on large selection??
-                        view = getViewOfViewProvider(vp);
-                    }
+                if(linked!=obj) {
+                    auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
+                                Application::Instance->getViewProvider(linked));
+                    if(vpLinked)
+                        view = vpLinked->getMDIView();
                 }
+                if(!view && typeId.isBad())
+                    typeId = View3DInventor::getClassTypeId();
             }
         }
     }
-    if(!view)
-        view = getActiveView();
     if(!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
         view = 0;
         for (auto *v : d->baseViews) {
-            if(v->isDerivedFrom(MDIView::getClassTypeId()) && v->isDerivedFrom(typeId)) {
+            if(v->isDerivedFrom(MDIView::getClassTypeId()) && 
+               (typeId.isBad() || v->isDerivedFrom(typeId))) 
+            {
                 view = static_cast<MDIView*>(v);
                 break;
             }
