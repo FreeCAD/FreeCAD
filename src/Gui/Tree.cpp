@@ -2017,8 +2017,7 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
         }
     }
 
-    if(items.empty())
-        ObjectMap.erase(it);
+    ObjectMap.erase(it);
 }
 
 bool DocumentItem::populateObject(App::DocumentObject *obj) {
@@ -2054,6 +2053,14 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
 
     if (!item->populated && !item->isExpanded()) {
         bool doPopulate = false;
+        bool external = item->object()->getDocument()!=item->getOwnerDocument()->document();
+        if(external)
+            return;
+        auto obj = item->object()->getObject();
+        auto linked = obj->getLinkedObject(true);
+        if (linked && linked->getDocument()!=obj->getDocument())
+            return;
+
         for(auto child : item->myData->children) {
             auto it = ObjectMap.find(child);
             if(it == ObjectMap.end() || it->second->items.empty()) {
