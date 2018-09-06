@@ -325,7 +325,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         if(idx<0) {
             // Then check for the actual linked object's name or label, and
             // redirect that reference to the first array element
-            auto linked = getTrueLinkedObject(true);
+            auto linked = getTrueLinkedObject(false);
             if(!linked || !linked->getNameInDocument()) return -1;
             std::string sub(subname,dot-subname);
             if(subname[0]=='$') {
