@@ -149,10 +149,12 @@ short GeomFillSurface::mustExecute() const
 
 void GeomFillSurface::onChanged(const App::Property* prop)
 {
-    if (prop == &BoundaryList) {
-        // auto-adjusting size of this list
-        if (BoundaryList.getSize() != ReversedList.getSize()) {
-            ReversedList.setSize(BoundaryList.getSize());
+    if (isRestoring()) {
+        if (prop == &BoundaryList) {
+            // auto-adjusting size of this list
+            if (BoundaryList.getSize() != ReversedList.getSize()) {
+                ReversedList.setSize(BoundaryList.getSize());
+            }
         }
     }
     Part::Spline::onChanged(prop);
