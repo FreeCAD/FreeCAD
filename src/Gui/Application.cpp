@@ -139,9 +139,9 @@ namespace Gui {
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP() : 
-    activeDocument(0L), 
-    isClosing(false), 
+    ApplicationP() :
+    activeDocument(0L),
+    isClosing(false),
     startingUp(true)
     {
         // create the macro manager
@@ -162,7 +162,7 @@ struct ApplicationP
     std::list<Gui::BaseView*> passive;
     bool isClosing;
     bool startingUp;
-    /// Handles all commands 
+    /// Handles all commands
     CommandManager commandManager;
 };
 
@@ -315,7 +315,7 @@ Application::Application(bool GUIenabled)
             (void)coin_setenv("COIN_VBO", "0", true);
         }
 
-        // Check for the symbols for group separator and deciaml point. They must be different otherwise
+        // Check for the symbols for group separator and decimal point. They must be different otherwise
         // Qt doesn't work properly.
 #if defined(Q_OS_WIN32)
         if (QLocale::system().groupSeparator() == QLocale::system().decimalPoint()) {
@@ -435,7 +435,7 @@ Application::Application(bool GUIenabled)
 
     d = new ApplicationP;
 
-    // global access 
+    // global access
     Instance = this;
 
     // instantiate the workbench dictionary
@@ -457,7 +457,7 @@ Application::~Application()
     BitmapFactoryInst::destruct();
 
 #if 0
-    // we must run the garbage collector before shutting down the SoDB 
+    // we must run the garbage collector before shutting down the SoDB
     // subsystem because we may reference some class objects of them in Python
     Base::Interpreter().cleanupSWIG("SoBase *");
     // finish also Inventor subsystem
@@ -703,7 +703,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 
-    // If the active document gets destructed we must set it to 0. If there are further existing documents then the 
+    // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
@@ -832,19 +832,19 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     }
     d->activeDocument = pcDocument;
     std::string nameApp, nameGui;
- 
+
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument){
         nameApp += "App.setActiveDocument(\"";
-        nameApp += pcDocument->getDocument()->getName(); 
+        nameApp += pcDocument->getDocument()->getName();
         nameApp +=  "\")\n";
         nameApp += "App.ActiveDocument=App.getDocument(\"";
-        nameApp += pcDocument->getDocument()->getName(); 
+        nameApp += pcDocument->getDocument()->getName();
         nameApp +=  "\")";
         macroManager()->addLine(MacroManager::Cmt,nameApp.c_str());
         nameGui += "Gui.ActiveDocument=Gui.getDocument(\"";
-        nameGui += pcDocument->getDocument()->getName(); 
+        nameGui += pcDocument->getDocument()->getName();
         nameGui +=  "\")";
         macroManager()->addLine(MacroManager::Cmt,nameGui.c_str());
     }
@@ -1028,10 +1028,10 @@ void Application::tryClose(QCloseEvent * e)
  * Activate the matching workbench to the registered workbench handler with name \a name.
  * The handler must be an instance of a class written in Python.
  * Normally, if a handler gets activated a workbench with the same name gets created unless it
- * already exists. 
+ * already exists.
  *
  * The old workbench gets deactivated before. If the workbench to the handler is already
- * active or if the switch fails false is returned. 
+ * active or if the switch fails false is returned.
  */
 bool Application::activateWorkbench(const char* name)
 {
@@ -1149,7 +1149,7 @@ bool Application::activateWorkbench(const char* name)
         Base::Console().Error("%s\n", e.getStackTrace().c_str());
         if (!d->startingUp) {
             wc.restoreCursor();
-            QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"), 
+            QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"),
                 QObject::tr("%1").arg(msg));
             wc.setWaitCursor();
         }
@@ -1290,13 +1290,13 @@ QStringList Application::workbenches(void) const
     std::map<std::string, std::string>::const_iterator st = config.find("StartWorkbench");
     const char* start = (st != config.end() ? st->second.c_str() : "<none>");
     QStringList hidden, extra;
-    if (ht != config.end()) { 
+    if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (hidden.isEmpty())
             hidden.push_back(QLatin1String(""));
     }
-    if (et != config.end()) { 
+    if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (extra.isEmpty())
@@ -1322,7 +1322,7 @@ QStringList Application::workbenches(void) const
         if (!hidden.isEmpty()&&ok) {
             ok = (hidden.indexOf(QString::fromLatin1(wbName)) == -1);
         }
-    
+
         // okay the item is visible
         if (ok)
             wb.push_back(QString::fromLatin1(wbName));
@@ -1338,7 +1338,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
 {
     Workbench* actWb = WorkbenchManager::instance()->active();
     if (actWb) {
-        // when populating the context-menu of a Python workbench invoke the method 
+        // when populating the context-menu of a Python workbench invoke the method
         // 'ContextMenu' of the handler object
         if (actWb->getTypeId().isDerivedFrom(PythonWorkbench::getClassTypeId())) {
             static_cast<PythonWorkbench*>(actWb)->clearContextMenu();
@@ -1540,7 +1540,7 @@ void Application::initTypes(void)
     Gui::ViewProviderGroupExtension             ::init();
     Gui::ViewProviderGroupExtensionPython       ::init();
     Gui::ViewProviderGeoFeatureGroupExtension   ::init();
-    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();
     Gui::ViewProviderOriginGroupExtension       ::init();
     Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
