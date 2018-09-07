@@ -83,6 +83,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.LiftDistance.setToolTip("How much to lift the tool up during the rapid repositioning moves (used when no obstacles)")
         formLayout.addRow(QtGui.QLabel("Lift Distance"),form.LiftDistance)
 
+        #KeepToolDownRatio
+        form.KeepToolDownRatio = QtGui.QDoubleSpinBox()
+        form.KeepToolDownRatio.setMinimum(1.0)
+        form.KeepToolDownRatio.setMaximum(10)
+        form.KeepToolDownRatio.setSingleStep(1)
+        form.KeepToolDownRatio.setValue(3.0)
+        form.KeepToolDownRatio.setToolTip("Max length of keep tool down path compared to direct distance between points")
+        formLayout.addRow(QtGui.QLabel("Keep Tool Down Ratio"),form.KeepToolDownRatio)
+
         #stock to leave
         form.StockToLeave = QtGui.QDoubleSpinBox()
         form.StockToLeave.setMinimum(0.0)
@@ -124,6 +133,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixDiameterLimit.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
+        signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
 
         # signals.append(self.form.ProcessHoles.stateChanged)
@@ -139,6 +149,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.HelixAngle.setValue(obj.HelixAngle)
         self.form.HelixDiameterLimit.setValue(obj.HelixDiameterLimit)
         self.form.LiftDistance.setValue(obj.LiftDistance)
+        if hasattr(obj, 'KeepToolDownRatio'):
+            self.form.KeepToolDownRatio.setValue(obj.KeepToolDownRatio)
+
         if hasattr(obj, 'StockToLeave'):
             self.form.StockToLeave.setValue(obj.StockToLeave)
 
@@ -163,6 +176,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.HelixAngle = self.form.HelixAngle.value()
         obj.HelixDiameterLimit = self.form.HelixDiameterLimit.value()
         obj.LiftDistance = self.form.LiftDistance.value()
+
+        if hasattr(obj, 'KeepToolDownRatio'):
+            obj.KeepToolDownRatio = self.form.KeepToolDownRatio.value()
+
         if hasattr(obj, 'StockToLeave'):
             obj.StockToLeave = self.form.StockToLeave.value()
 

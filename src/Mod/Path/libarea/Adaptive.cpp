@@ -412,6 +412,23 @@ namespace AdaptivePath {
 		return res.size()>1;
 	}
 
+
+		// finds interim points not neccesarily on the same keeptooldown linking path
+	bool FindClosestClearPoints(const Paths & paths,IntPoint p1,IntPoint p2, double distanceLmit, IntPoint &interim1,IntPoint &interim2) {
+		size_t clpPathIndex;
+		size_t clpSegmentIndex1;
+		double clpParameter1;
+		size_t clpSegmentIndex2;
+		double clpParameter2;
+		double limitSqrd = distanceLmit*distanceLmit;
+		double distSqrd=DistancePointToPathsSqrd(paths,p1,interim1,clpPathIndex,clpSegmentIndex1,clpParameter1);
+		if(distSqrd>limitSqrd) return false; // too far
+		// find second point
+		distSqrd=DistancePointToPathsSqrd(paths,p2,interim2,clpPathIndex,clpSegmentIndex2,clpParameter2);
+		if(distSqrd>limitSqrd) return false; // still too far
+		return true;
+	}
+
 	bool PopPathWithClosestPoint(Paths & paths	 /*closest path is removed from collection */
 			,IntPoint p1, Path & result) {
 
@@ -1038,10 +1055,10 @@ namespace AdaptivePath {
 		if(stockToLeave>NTOL) {
 			clipof.Clear();
 			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
-				clipof.Execute(inputPaths,stockToLeave*scaleFactor);
-			else
-				clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
+			// if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
+			// 	clipof.Execute(inputPaths,stockToLeave*scaleFactor);
+			// else
+			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
 		} else {
 			// fix for clipper glitches
 			clipof.Clear();
@@ -1145,7 +1162,7 @@ namespace AdaptivePath {
 				// prepare stock boundary overshooted paths
 				clipof.Clear();
 				clipof.AddPaths(stockInputPaths,JoinType::jtSquare,EndType::etClosedPolygon);
-				double overshootDistance =4*toolRadiusScaled ;
+				double overshootDistance =4*toolRadiusScaled + stockToLeave*scaleFactor ;
 				if(forceInsideOut) overshootDistance=0;
 				Paths stockOvershoot;
 				clipof.Execute(stockOvershoot,overshootDistance);
@@ -1156,30 +1173,7 @@ namespace AdaptivePath {
 					// add stock paths, with overshooting
 					for(auto p : stockOvershoot) inputPaths.push_back(p);
 				} else if(opType==OperationType::otClearingInside)  {
-					// check if there are open paths, and try to close it through overshooted stock boundary
-
-					// Paths openInputPaths; // open paths will be removed by simplify
-					// Paths closedInputPaths;
-					// for(const auto & pth:inputPaths) {
-					// 	if(DistanceSqrd(pth.front(),pth.back())>SAME_POINT_TOL_SQRD_SCALED) {
-					// 		openInputPaths.push_back(pth);
-					// 	} else {
-					// 			closedInputPaths.push_back(pth);
-					// 	}
-					// }
-					// if(openInputPaths.size()==1) {
-					// 	cout << "SINGLE OPEN PATH MODE" << endl;
-					// 	Path & op = openInputPaths.front();
-					// 	Path connect;
-					// 	FindPathBetweenClosestPoints(stockOvershoot,op.back(),op.front(),scaleFactor*100000,connect);
-					// 	Paths cl;
-					// 	cout << op;
-					// 	cout << connect;
-					// 	cl.push_back(op);
-					// 	cl.push_back(connect);
-					// 	ConnectPaths(cl,inputPaths);
-					// 	for(auto &p: closedInputPaths) inputPaths.push_back(p);
-					// }
+					// potential TODO: check if there are open paths, and try to close it through overshooted stock boundary
 				}
 
 				SimplifyPolygons(inputPaths);
@@ -1398,12 +1392,12 @@ namespace AdaptivePath {
 	/**
 	 * returns true if path is clear from obstacles
 	*/
-	bool  Adaptive2d::IsClearPath(const Path &tp,const Paths & cleared) {
+	bool  Adaptive2d::IsClearPath(const Path &tp,const Paths & cleared, double safetyDistanceScaled) {
 		Clipper clip;
 		ClipperOffset clipof;
 		clipof.AddPath(tp,JoinType::jtRound,EndType::etOpenRound);
 		Paths toolShape;
-		clipof.Execute(toolShape,toolRadiusScaled-2);
+		clipof.Execute(toolShape,toolRadiusScaled+safetyDistanceScaled);
 		clip.AddPaths(toolShape,PolyType::ptSubject,true);
 		clip.AddPaths(cleared,PolyType::ptClip,true);
 		Paths crossing;
@@ -1412,7 +1406,7 @@ namespace AdaptivePath {
 		for(auto &p : crossing) {
 			collisionArea += fabs(Area(p));
 		}
-		return collisionArea <= optimalCutAreaPD*RESOLUTION_FACTOR/2;
+		return collisionArea < optimalCutAreaPD*RESOLUTION_FACTOR/10+1;
 	}
 
 	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths) {
@@ -1445,7 +1439,7 @@ namespace AdaptivePath {
 		return true;
 	}
 
-	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths, bool close) {
+	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths) {
 		if(passToolPath.size()<1) return;
 		IntPoint nextPoint(passToolPath[0]);
 
@@ -1458,7 +1452,7 @@ namespace AdaptivePath {
 			//first we try to cut through the linking move for short distances
 			bool linkFound = false;
 			double linkDistance = sqrt(DistanceSqrd(lastPoint,nextPoint));
-			if(linkDistance<4*toolRadiusScaled && IsAllowedToCutTrough(lastPoint,nextPoint,cleared,toolBoundPaths)) {
+			if(linkDistance<toolRadiusScaled && IsAllowedToCutTrough(lastPoint,nextPoint,cleared,toolBoundPaths)) {
 					//cout << "cleared through" << endl;
 					TPath linkPath;
 					linkPath.first = MotionType::mtCutting;
@@ -1478,7 +1472,7 @@ namespace AdaptivePath {
 				double offset=stepOverFactor*toolRadiusScaled;
 				bool keepDownLinkExists = false;
 				bool keepDownLinkTooLong = true;
-				for(int i=1;i<10;i++) {
+				for(int i=1;i<10;i+=2) {
 					clipof.Execute(clearedOff,-toolRadiusScaled-offset/i);
 					// AddPathsToProgress(progressPaths,clearedOff, MotionType::mtLinkClear);
 					// CheckReportProgress(progressPaths,true);
@@ -1495,7 +1489,7 @@ namespace AdaptivePath {
 							//cout << "not IsAllowedToCutTrough2" << endl;
 							keepDownLinkExists=false;
 						}
-						if(!IsClearPath(keepToolDownLinkPath,cleared)) {
+						if(!IsClearPath(keepToolDownLinkPath,cleared,stepOverFactor*toolRadiusScaled/2)) {
 							//cout << "not IsClearPath keepToolDownLinkPath" << endl;
 							keepDownLinkExists=false;
 						}
@@ -1512,7 +1506,7 @@ namespace AdaptivePath {
 					tp << lastInterimPoint;
 					tp << nextInterimPoint;
 
-					bool directLinkInterimLinkClear = IsClearPath(tp,cleared); // cleared direct line between interim points?
+					bool directLinkInterimLinkClear = IsClearPath(tp,cleared,stepOverFactor*toolRadiusScaled/2); // cleared direct line between interim points?
 					if(directLinkInterimLinkClear) { // if direct link is ok
 						// add disengage moves
 						TPath linkPath1;
@@ -1585,8 +1579,46 @@ namespace AdaptivePath {
 					}
 				}
 			}
+			if(!linkFound) { // keeptool down link not found, try lift through (any) clear interim points
+				ClipperOffset clipof;
+				clipof.AddPaths(cleared,JoinType::jtRound,EndType::etClosedPolygon);
+				Paths clearedOff;
+				double offset=stepOverFactor*toolRadiusScaled;
+
+				// see if link through interim points is possible,
+				clipof.Execute(clearedOff,-toolRadiusScaled-offset);
+				IntPoint interim1;
+				IntPoint interim2;
+				if(FindClosestClearPoints(clearedOff,lastPoint,nextPoint,toolRadiusScaled + 2*offset,interim1,interim2)) {
+						if(IsAllowedToCutTrough(lastPoint,interim1,cleared,toolBoundPaths)
+							&& IsAllowedToCutTrough(nextPoint,interim2,cleared,toolBoundPaths)) {
+
+						// add disengage moves
+						TPath linkPath1;
+						linkPath1.first = MotionType::mtCutting;
+						linkPath1.second.push_back(lastTPoint);
+						linkPath1.second.push_back(DPoint(double(interim1.X)/scaleFactor,double(interim1.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath1);
+
+						// add linking move
+						TPath linkPath2;
+						linkPath2.first = MotionType::mtLinkNotClear;
+						linkPath2.second.push_back(DPoint(double(interim1.X)/scaleFactor,double(interim1.Y)/scaleFactor));
+						linkPath2.second.push_back(DPoint(double(interim2.X)/scaleFactor,double(interim2.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath2);
+
+						// add engage move
+						TPath linkPath3;
+						linkPath3.first = MotionType::mtCutting;
+						linkPath3.second.push_back(DPoint(double(interim2.X)/scaleFactor,double(interim2.Y)/scaleFactor));
+						linkPath3.second.push_back(DPoint(double(nextPoint.X)/scaleFactor,double(nextPoint.Y)/scaleFactor));
+						output.AdaptivePaths.push_back(linkPath3);
+						linkFound=true;
+						}
+
+				}
+			}
 			if(!linkFound) { // nothing clear so far - check direct link with no interim points - either this is clear or we need to raise the tool
-					//cerr << "keepToolDownLinkPath NOT CLEAR" << endl;
 					Path tp;
 					tp << lastPoint;
 					tp << nextPoint;
@@ -1611,12 +1643,12 @@ namespace AdaptivePath {
 			cutPath.second.push_back(nextT);
 		}
 
-		if(close) {
-			DPoint nextT;
-			nextT.first = double(passToolPath[0].X)/scaleFactor;
-			nextT.second = double(passToolPath[0].Y)/scaleFactor;
-			cutPath.second.push_back(nextT);
-		}
+		// if(close) {
+		// 	DPoint nextT;
+		// 	nextT.first = double(passToolPath[0].X)/scaleFactor;
+		// 	nextT.second = double(passToolPath[0].Y)/scaleFactor;
+		// 	cutPath.second.push_back(nextT);
+		// }
 		if(cutPath.second.size()>0) output.AdaptivePaths.push_back(cutPath);
 	}
 
@@ -1761,7 +1793,7 @@ namespace AdaptivePath {
 		#ifdef DEV_MODE
 		clock_t start_clock=clock();
 		#endif
-
+		Paths clearedBeforePass;
 		/*******************************
 		 * LOOP - PASSES
 		 *******************************/
@@ -1791,7 +1823,7 @@ namespace AdaptivePath {
 			size_t clpPathIndex;
 			size_t clpSegmentIndex;
 			double clpParamter;
-			Paths clearedBeforePass = cleared;
+			clearedBeforePass = cleared;
 			/*******************************
 			 * LOOP - POINTS
 			 *******************************/
@@ -2022,14 +2054,14 @@ namespace AdaptivePath {
 		/*  FINISHING PASS                */
 		/**********************************/
 
+		Paths finishingPaths;
 		clipof.Clear();
 		clipof.AddPaths(boundPaths,JoinType::jtRound,EndType::etClosedPolygon);
-		Paths finishingPaths;
 		clipof.Execute(finishingPaths,-toolRadiusScaled);
 		IntPoint lastPoint = toolPos;
 		Path finShiftedPath;
 
-
+		bool allCutsAllowed=true;
 		while(PopPathWithClosestPoint(finishingPaths,lastPoint,finShiftedPath)) {
 			// skip finishing passes outside the stock boundary - make no sense to cut where is no material
 			bool allPointsOutside=true;
@@ -2048,25 +2080,40 @@ namespace AdaptivePath {
 			for(auto & pt:finShiftedPath) {
 				progressPaths.back().second.push_back(DPoint(double(pt.X)/scaleFactor,double(pt.Y)/scaleFactor));
 			}
-			Path cleaned;
-			CleanPath(finShiftedPath,cleaned,FINISHING_CLEAN_PATH_TOLERANCE);
-			AppendToolPath(progressPaths,output,cleaned,cleared,toolBoundPaths,true);
 
-			// expand cleared for finishing path
-			clipof.Clear();
-			clipof.AddPath(cleaned,JoinType::jtRound,EndType::etOpenRound);
-			Paths toolCoverPoly;
-			clipof.Execute(toolCoverPoly,toolRadiusScaled+1);
-			clip.Clear();
-			clip.AddPaths(cleared,PolyType::ptSubject,true);
-			clip.AddPaths(toolCoverPoly,PolyType::ptClip,true);
-			clip.Execute(ClipType::ctUnion,cleared);
-			CleanPolygons(cleared);
+			if(!finShiftedPath.empty()) finShiftedPath << finShiftedPath.front(); // make sure its closed
 
-			if(finShiftedPath.size()>0) {
-				lastPoint.X = finShiftedPath.back().X;
-				lastPoint.Y = finShiftedPath.back().Y;
+			Path finCleaned;
+			CleanPath(finShiftedPath,finCleaned,FINISHING_CLEAN_PATH_TOLERANCE);
+
+			//safety check for finishing paths
+
+			for(size_t i=1;i<finCleaned.size();i++) {
+				if(!IsAllowedToCutTrough(finCleaned.at(i-1),finCleaned.at(i),clearedBeforePass,toolBoundPaths)) {
+					allCutsAllowed=false;
+					break;
+				}
 			}
+
+			if(allCutsAllowed) {
+					AppendToolPath(progressPaths,output,finCleaned,clearedBeforePass,toolBoundPaths);
+					//expand cleared for finishing path
+					clipof.Clear();
+					clipof.AddPath(finCleaned,JoinType::jtRound,EndType::etOpenRound);
+					Paths toolCoverPoly;
+					clipof.Execute(toolCoverPoly,toolRadiusScaled+1);
+					clip.Clear();
+					clip.AddPaths(cleared,PolyType::ptSubject,true);
+					clip.AddPaths(toolCoverPoly,PolyType::ptClip,true);
+					clip.Execute(ClipType::ctUnion,cleared);
+					CleanPolygons(cleared);
+					lastPoint.X = finCleaned.back().X;
+					lastPoint.Y = finCleaned.back().Y;
+			 } else {
+				 cerr << "UNABLE TO ADD FINISHING PASS! Please try increasing accuracy." << endl;
+				 break;
+			 }
+			clearedBeforePass=cleared;
 		}
 
 		Path returnPath;
@@ -2096,6 +2143,10 @@ namespace AdaptivePath {
 				<< " linking moves:" << unclearLinkingMoveCount
 				<< endl;
 		#endif
+
+		// make sure invalid paths are not used
+		if(!allCutsAllowed) output.AdaptivePaths.clear();
+
 		results.push_back(output);
 	}
 
