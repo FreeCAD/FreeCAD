@@ -1409,7 +1409,7 @@ namespace AdaptivePath {
 		return collisionArea < optimalCutAreaPD*RESOLUTION_FACTOR/10+1;
 	}
 
-	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths) {
+	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths, double areaFactor) {
 		double stepSize=2*RESOLUTION_FACTOR;
 		Clipper clip;
 		size_t clpPathIndex;
@@ -1427,7 +1427,7 @@ namespace AdaptivePath {
 			IntPoint toolPos2(long(p1.X + double(p2.X-p1.X)*d/distance),long(p1.Y + double(p2.Y-p1.Y)*d/distance));
 			double area = CalcCutArea(clip,toolPos1,toolPos2, cleared,false);
 			// if we are cutting above optimal -> not clear to cut
-			if(area>1.5*stepSize*optimalCutAreaPD) return false;
+			if(area>areaFactor*stepSize*optimalCutAreaPD) return false;
 
 			//if tool is outside boundary -> its not clear to cut
 			if(!IsPointWithinCutRegion(toolBoundPaths,toolPos2)
@@ -2087,15 +2087,18 @@ namespace AdaptivePath {
 			CleanPath(finShiftedPath,finCleaned,FINISHING_CLEAN_PATH_TOLERANCE);
 
 			//safety check for finishing paths
-
+			bool cutOK = true;
+			int invalidPoints=0;
 			for(size_t i=1;i<finCleaned.size();i++) {
-				if(!IsAllowedToCutTrough(finCleaned.at(i-1),finCleaned.at(i),clearedBeforePass,toolBoundPaths)) {
+				if(!IsAllowedToCutTrough(finCleaned.at(i-1),finCleaned.at(i),cleared,toolBoundPaths,2.0)) {
+					cerr << "Invalid cut at: " << double(finCleaned.at(i).X)/scaleFactor << "," <<  double(finCleaned.at(i).Y)/scaleFactor << endl;
 					allCutsAllowed=false;
-					break;
+					invalidPoints++;
+					if(invalidPoints>3) cutOK=false;
 				}
 			}
 
-			if(allCutsAllowed) {
+			if(cutOK) {
 					AppendToolPath(progressPaths,output,finCleaned,clearedBeforePass,toolBoundPaths);
 					//expand cleared for finishing path
 					clipof.Clear();
@@ -2111,11 +2114,7 @@ namespace AdaptivePath {
 						lastPoint.X = finCleaned.back().X;
 						lastPoint.Y = finCleaned.back().Y;
 					}
-			 } else {
-				 cerr << "UNABLE TO ADD FINISHING PASS! Please try increasing accuracy." << endl;
-				 break;
 			 }
-			clearedBeforePass=cleared;
 		}
 
 		Path returnPath;
@@ -2147,7 +2146,9 @@ namespace AdaptivePath {
 		#endif
 
 		// make sure invalid paths are not used
-		if(!allCutsAllowed) output.AdaptivePaths.clear();
+		if(!allCutsAllowed) {
+			cerr << "INVALID CUTS DETECTED! Please try to modify accuracy and/or step-over." << endl;
+		}
 
 		results.push_back(output);
 	}
