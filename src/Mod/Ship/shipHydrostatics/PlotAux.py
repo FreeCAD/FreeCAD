@@ -309,7 +309,7 @@ class Plot(object):
         s.set("A1", "displacement [ton]")
         s.set("B1", "draft [m]")
         s.set("C1", "wetted surface [m^2]")
-        s.set("D1", "1cm triming ship moment [ton*m]")
+        s.set("D1", "1cm trimming ship moment [ton*m]")
         s.set("E1", "Floating area [m^2]")
         s.set("F1", "KBl [m]")
         s.set("G1", "KBt [m]")
