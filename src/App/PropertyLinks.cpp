@@ -1750,9 +1750,11 @@ public:
 
         auto it = _DocInfoMap.find(path);
         DocInfoPtr info;
-        if(it != _DocInfoMap.end()) 
+        if(it != _DocInfoMap.end()) {
             info = it->second;
-        else {
+            if(!info->pcDoc)
+                info->pcDoc = pDoc;
+        } else {
             info = std::make_shared<DocInfo>();
             auto ret = _DocInfoMap.insert(std::make_pair(path,info));
             info->init(ret.first,objName);
