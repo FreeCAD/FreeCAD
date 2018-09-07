@@ -63,10 +63,12 @@ class GeomFillSurface : public Part::Spline
 
 public:
     GeomFillSurface();
-    App::PropertyLinkSubList BoundaryList;  //curves to be turned into a face (2-4 curves allowed).
-    App::PropertyEnumeration FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
+    App::PropertyLinkSubList BoundaryList;  // Curves to be turned into a face (2-4 curves allowed).
+    App::PropertyBoolList ForwardList;      // Booleans to handle orientation of the curves
+    App::PropertyEnumeration FillType;      // Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;
+    void onChanged(const App::Property*);
     App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the view provider
