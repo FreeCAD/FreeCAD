@@ -2078,13 +2078,24 @@ namespace AdaptivePath {
 
 		bool allCutsAllowed=true;
 		while(PopPathWithClosestPoint(finishingPaths,lastPoint,finShiftedPath)) {
+			if(finShiftedPath.empty()) continue;
 			// skip finishing passes outside the stock boundary - make no sense to cut where is no material
 			bool allPointsOutside=true;
+			IntPoint p1 = finShiftedPath.front();
 			for(const auto & pt : finShiftedPath) {
+
+				// midpoint
+				if(IsPointWithinCutRegion(stockInputPaths,IntPoint((p1.X+pt.X)/2,(p1.Y+pt.Y)/2))) {
+					allPointsOutside=false;
+					break;
+				}
+				//current point
 				if(IsPointWithinCutRegion(stockInputPaths,pt)) {
 					allPointsOutside=false;
 					break;
 				}
+
+				p1=pt;
 			}
 			if(allPointsOutside) continue;
 
