@@ -61,7 +61,7 @@ namespace AdaptivePath {
 			double tolerance=0.1;
 			double stockToLeave=0;
 			bool forceInsideOut = true;
-			int keepToolDownDistRatio = 3; // keep tool down distance ratio
+			double keepToolDownDistRatio = 3.0; // keep tool down distance ratio
 			OperationType opType = OperationType::otClearingInside;
 
 			std::list<AdaptiveOutput> Execute(const DPaths &stockPaths, const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
@@ -100,8 +100,8 @@ namespace AdaptivePath {
 			bool FindEntryPointOutside(TPaths &progressPaths,const Paths & toolBoundPaths,const Paths &bound, Paths &cleared /*output*/,
 					IntPoint &entryPoint /*output*/,  IntPoint & toolPos, DoublePoint & toolDir);
 			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths, bool preventConvetionalMode=true);
-			void AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths, bool close=false);
-			bool IsClearPath(const Path & path,const Paths & cleared);
+			void AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths);
+			bool IsClearPath(const Path & path,const Paths & cleared, double safetyDistanceScaled=0);
 			bool IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared,const Paths & toolBoundPaths);
 
 			friend class EngagePoint; // for CalcCutArea
