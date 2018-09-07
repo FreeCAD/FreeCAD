@@ -132,7 +132,7 @@ def getUnderwaterSide(shape, force=True):
             i += 1
             box.Height = length_format.format(
                 - zmin + H + random.uniform(-random_bounds, random_bounds))
-            App.ActiveDocument.recompute() 
+            App.ActiveDocument.recompute()
 
     out = common.Shape
     App.ActiveDocument.removeObject(common.Name)
@@ -143,7 +143,7 @@ def getUnderwaterSide(shape, force=True):
 
 
 def areas(ship, n, draft=None,
-                   roll=Units.parseQuantity("0 deg"), 
+                   roll=Units.parseQuantity("0 deg"),
                    trim=Units.parseQuantity("0 deg")):
     """Compute the ship transversal areas
 
@@ -213,7 +213,7 @@ def areas(ship, n, draft=None,
 
 
 def displacement(ship, draft=None,
-                       roll=Units.parseQuantity("0 deg"), 
+                       roll=Units.parseQuantity("0 deg"),
                        trim=Units.parseQuantity("0 deg")):
     """Compute the ship displacement
 
@@ -310,7 +310,7 @@ def wettedArea(shape, draft, roll=Units.parseQuantity("0 deg"),
 
 
 def moment(ship, draft=None,
-                 roll=Units.parseQuantity("0 deg"), 
+                 roll=Units.parseQuantity("0 deg"),
                  trim=Units.parseQuantity("0 deg")):
     """Compute the moment required to trim the ship 1cm
 
@@ -344,7 +344,7 @@ def moment(ship, draft=None,
 
 
 def floatingArea(ship, draft=None,
-                       roll=Units.parseQuantity("0 deg"), 
+                       roll=Units.parseQuantity("0 deg"),
                        trim=Units.parseQuantity("0 deg")):
     """Compute the ship floating area
 
@@ -490,7 +490,7 @@ class Point:
     disp -- Ship displacement
     xcb -- Bouyance center X coordinate
     wet -- Wetted ship area
-    mom -- Triming 1cm ship moment
+    mom -- Trimming 1cm ship moment
     farea -- Floating area
     KBt -- Transversal KB height
     BMt -- Transversal BM height
