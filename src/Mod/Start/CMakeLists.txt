@@ -26,6 +26,7 @@ if(BUILD_GUI)
         images/manual.png
         images/freecad.png
         images/installed.png
+        images/new_file_thumbnail.svg
     )
 
     list(APPEND Start_Scripts InitGui.py)

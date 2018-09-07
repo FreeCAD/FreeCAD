@@ -32,14 +32,12 @@
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
-//#include "Cube.h"
 #include "DrawViewCollection.h"
 
 namespace TechDraw
 {
 
 class DrawProjGroupItem;
-class Cube;
 
 /**
  * Class super-container for managing a collection of DrawProjGroupItem
@@ -64,8 +62,6 @@ public:
     App::PropertyFloat spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
-    App::PropertyVectorList  CubeDirs;
-    App::PropertyVectorList  CubeRotations;
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
@@ -116,9 +112,10 @@ public:
     void setAnchorDirection(Base::Vector3d dir);
     Base::Vector3d getAnchorDirection(void);
     TechDraw::DrawProjGroupItem* getAnchor(void);
+    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
+    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(std::string viewType);
 
     void updateSecondaryDirs();
-    void resetCube(void);
 
     void rotateRight(void);
     void rotateLeft(void);
@@ -166,11 +163,8 @@ protected:
     TechDraw::DrawPage * getPage(void) const;
     void updateChildren(void);
     void updateChildrenSource(void);
-    void setPropsFromCube(void);
-    void setCubeFromProps(void);
     int getViewIndex(const char *viewTypeCStr) const;
-    
-    TechDraw::Cube* m_cube;
+
 };
 
 } //namespace TechDraw
