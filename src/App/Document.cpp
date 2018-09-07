@@ -1044,7 +1044,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     if(What) {
                         auto parent = What->getContainer();
                         auto parentObj = dynamic_cast<DocumentObject*>(parent);
-                        if((parentObj && What != &parentObj->Label) && 
+                        if((!parentObj || What != &parentObj->Label) && 
                            (What->testStatus(Property::Output) || (parent->getPropertyType(What) & Prop_Output)))
                             ignore = true;
                     }
