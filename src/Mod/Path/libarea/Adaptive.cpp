@@ -660,13 +660,24 @@ namespace AdaptivePath {
     			}
 			};
 			EngagePoint(const Paths & p_toolBoundPaths) {
-				toolBoundPaths = p_toolBoundPaths;
+				SetPaths(p_toolBoundPaths);
+
 				state.currentPathIndex=0;
 				state.currentSegmentIndex=0;
 				state.segmentPos =0;
 				state.totalDistance=0;
 				calculateCurrentPathLength();
 			}
+
+		void SetPaths(const Paths & paths) {
+			toolBoundPaths = paths;
+			state.currentPathIndex=0;
+			state.currentSegmentIndex=0;
+			state.segmentPos =0;
+			state.totalDistance=0;
+			state.passes =0;
+			calculateCurrentPathLength();
+		}
 
 		EngageState GetState() {
 			return state;
@@ -720,7 +731,7 @@ namespace AdaptivePath {
 				calculateCurrentPathLength();
 				ResetPasses();
 		}
-		bool nextEngagePoint(Adaptive2d*parent,  const Paths & cleared, double step, double minCutArea, double maxCutArea) {
+		bool nextEngagePoint(Adaptive2d*parent,  const Paths & cleared, double step, double minCutArea, double maxCutArea, int maxPases=2) {
 			//cout << "nextEngagePoint called step: " << step << endl;
 			Perf_NextEngagePoint.Start();
 			double prevArea = 0; // we want to make sure that we catch the point where the area is on raising slope
@@ -730,7 +741,7 @@ namespace AdaptivePath {
 				if(!moveForward(step))	 {
 					if(!nextPath()) {
 						state.passes++;
-						if(state.passes>1) {
+						if(state.passes>=maxPases) {
 							Perf_NextEngagePoint.Stop();
 							return false; // nothin more to cut
 						}
@@ -1093,7 +1104,7 @@ namespace AdaptivePath {
 		if(helixRampDiameter<toolDiameter/8) helixRampDiameter = toolDiameter/8;
 
 		helixRampRadiusScaled=long(helixRampDiameter*scaleFactor/2);
-		finishPassOffsetScaled=long(tolerance*scaleFactor/2);
+		finishPassOffsetScaled=long(tolerance*scaleFactor/2)+1;
 
 
 		ClipperOffset clipof;
@@ -1409,7 +1420,7 @@ namespace AdaptivePath {
 		return collisionArea < optimalCutAreaPD*RESOLUTION_FACTOR/10+1;
 	}
 
-	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths, double areaFactor) {
+	bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared, const Paths & toolBoundPaths, double areaFactor, bool skipBoundsCheck) {
 		double stepSize=2*RESOLUTION_FACTOR;
 		Clipper clip;
 		size_t clpPathIndex;
@@ -1417,7 +1428,7 @@ namespace AdaptivePath {
 		double clpParameter;
 		IntPoint clp;
 		double distance = sqrt(DistanceSqrd(p1,p2));
-		if(!IsPointWithinCutRegion(toolBoundPaths,p1) // check with some tolerance
+		if(!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths,p1) // check with some tolerance
 			&& sqrt(DistancePointToPathsSqrd(toolBoundPaths,p1,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
 			) {
 			// first point outside boundary - its not clear to cut
@@ -1430,7 +1441,7 @@ namespace AdaptivePath {
 			if(area>areaFactor*stepSize*optimalCutAreaPD) return false;
 
 			//if tool is outside boundary -> its not clear to cut
-			if(!IsPointWithinCutRegion(toolBoundPaths,toolPos2)
+			if(!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths,toolPos2)
 				&& sqrt(DistancePointToPathsSqrd(toolBoundPaths,toolPos2,clp,clpPathIndex,clpSegmentIndex,clpParameter))>RESOLUTION_FACTOR
 				) {
 				return false;
@@ -2033,7 +2044,7 @@ namespace AdaptivePath {
 				AppendToolPath(progressPaths, output,cleaned,clearedBeforePass,toolBoundPaths);
 				CheckReportProgress(progressPaths);
 				bad_engage_count=0;
-				engage.ResetPasses();
+				//engage.ResetPasses();
 				//firstEngagePoint=true;
 			} else {
 				bad_engage_count++;
@@ -2045,7 +2056,11 @@ namespace AdaptivePath {
 			} else {
 				// check which is better to find next cut from closest point or to continue from current
 				double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * RESOLUTION_FACTOR * 8;
-				if(!engage.nextEngagePoint(this, cleared,moveDistance,ENGAGE_AREA_THR_FACTOR*optimalCutAreaPD*RESOLUTION_FACTOR,4*referenceCutArea*stepOverFactor)) break;
+				if(!engage.nextEngagePoint(this, cleared,moveDistance,
+					ENGAGE_AREA_THR_FACTOR*optimalCutAreaPD*RESOLUTION_FACTOR,
+					4*referenceCutArea*stepOverFactor)) {
+					break;
+				}
 			}
 			toolPos = engage.getCurrentPoint();
 			toolDir = engage.getCurrentDir();
@@ -2083,38 +2098,31 @@ namespace AdaptivePath {
 
 			if(!finShiftedPath.empty()) finShiftedPath << finShiftedPath.front(); // make sure its closed
 
+			//safety check for finishing paths - check the area of finishing cut
+			for(size_t i=1;i<finShiftedPath.size();i++) {
+				if(!IsAllowedToCutTrough(finShiftedPath.at(i-1),finShiftedPath.at(i),cleared,toolBoundPaths,2.0,true)) allCutsAllowed=false;
+			}
+
 			Path finCleaned;
 			CleanPath(finShiftedPath,finCleaned,FINISHING_CLEAN_PATH_TOLERANCE);
 
-			//safety check for finishing paths
-			bool cutOK = true;
-			int invalidPoints=0;
-			for(size_t i=1;i<finCleaned.size();i++) {
-				if(!IsAllowedToCutTrough(finCleaned.at(i-1),finCleaned.at(i),cleared,toolBoundPaths,2.0)) {
-					cerr << "Invalid cut at: " << double(finCleaned.at(i).X)/scaleFactor << "," <<  double(finCleaned.at(i).Y)/scaleFactor << endl;
-					allCutsAllowed=false;
-					invalidPoints++;
-					if(invalidPoints>3) cutOK=false;
-				}
-			}
 
-			if(cutOK) {
-					AppendToolPath(progressPaths,output,finCleaned,clearedBeforePass,toolBoundPaths);
-					//expand cleared for finishing path
-					clipof.Clear();
-					clipof.AddPath(finCleaned,JoinType::jtRound,EndType::etOpenRound);
-					Paths toolCoverPoly;
-					clipof.Execute(toolCoverPoly,toolRadiusScaled+1);
-					clip.Clear();
-					clip.AddPaths(cleared,PolyType::ptSubject,true);
-					clip.AddPaths(toolCoverPoly,PolyType::ptClip,true);
-					clip.Execute(ClipType::ctUnion,cleared);
-					CleanPolygons(cleared);
-					if(!finCleaned.empty()) {
-						lastPoint.X = finCleaned.back().X;
-						lastPoint.Y = finCleaned.back().Y;
-					}
-			 }
+			AppendToolPath(progressPaths,output,finCleaned,clearedBeforePass,toolBoundPaths);
+			//expand cleared for finishing path
+			clipof.Clear();
+			clipof.AddPath(finCleaned,JoinType::jtRound,EndType::etOpenRound);
+			Paths toolCoverPoly;
+			clipof.Execute(toolCoverPoly,toolRadiusScaled+1);
+
+			clip.Clear();
+			clip.AddPaths(cleared,PolyType::ptSubject,true);
+			clip.AddPaths(toolCoverPoly,PolyType::ptClip,true);
+			clip.Execute(ClipType::ctUnion,cleared);
+			CleanPolygons(cleared);
+			if(!finCleaned.empty()) {
+				lastPoint.X = finCleaned.back().X;
+				lastPoint.Y = finCleaned.back().Y;
+			}
 		}
 
 		Path returnPath;
@@ -2148,6 +2156,7 @@ namespace AdaptivePath {
 		// make sure invalid paths are not used
 		if(!allCutsAllowed) {
 			cerr << "INVALID CUTS DETECTED! Please try to modify accuracy and/or step-over." << endl;
+			output.AdaptivePaths.clear();
 		}
 
 		results.push_back(output);

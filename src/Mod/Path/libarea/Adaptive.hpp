@@ -102,7 +102,7 @@ namespace AdaptivePath {
 			double CalcCutArea(Clipper & clip,const IntPoint &toolPos, const IntPoint &newToolPos, const Paths &cleared_paths, bool preventConvetionalMode=true);
 			void AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared,const Paths & toolBoundPaths);
 			bool IsClearPath(const Path & path,const Paths & cleared, double safetyDistanceScaled=0);
-			bool IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared,const Paths & toolBoundPaths, double areaFactor=1.5);
+			bool IsAllowedToCutTrough(const IntPoint &p1,const IntPoint &p2,const Paths & cleared,const Paths & toolBoundPaths, double areaFactor=1.5, bool skipBoundsCheck=false);
 
 			friend class EngagePoint; // for CalcCutArea
 
