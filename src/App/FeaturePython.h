@@ -26,6 +26,7 @@
 #define APP_FEATUREPYTHON_H
 
 
+#include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <App/GeoFeature.h>
 #include <App/DynamicProperty.h>
