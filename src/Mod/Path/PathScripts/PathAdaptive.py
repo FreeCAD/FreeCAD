@@ -236,7 +236,10 @@ def Execute(op,obj):
                 opType = area.AdaptiveOperationType.ProfilingInside
 
 
+        keepToolDownRatio=3.0
+        if hasattr(obj, 'KeepToolDownRatio'): keepToolDownRatio = float(obj.KeepToolDownRatio)
         # put here all properties that influence calculation of adaptive base paths,
+
         inputStateObject = {
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
@@ -247,6 +250,7 @@ def Execute(op,obj):
             "operationType": obj.OperationType,
             "side": obj.Side,
             "forceInsideOut" : obj.ForceInsideOut,
+            "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave)
         }
 
@@ -277,6 +281,7 @@ def Execute(op,obj):
             a2d.stepOverFactor = 0.01*obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)
             a2d.helixRampDiameter =  helixDiameter
+            a2d.keepToolDownDistRatio = keepToolDownRatio
             a2d.stockToLeave =float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
             a2d.forceInsideOut = obj.ForceInsideOut
@@ -329,6 +334,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyFloat", "Tolerance", "Adaptive",  "Influences accuracy and performance")
         obj.addProperty("App::PropertyPercent", "StepOver", "Adaptive", "Percent of cutter diameter to step over on each pass")
         obj.addProperty("App::PropertyDistance", "LiftDistance", "Adaptive", "Lift distance for rapid moves")
+        obj.addProperty("App::PropertyDistance", "KeepToolDownRatio", "Adaptive", "Max length of keep tool down path compared to direct distance between points")
         obj.addProperty("App::PropertyDistance", "StockToLeave", "Adaptive", "How much stock to leave (i.e. for finishing operation)")
         # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
 
@@ -366,6 +372,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.AdaptiveInputState =""
         obj.AdaptiveOutputState = ""
         obj.StockToLeave= 0
+        obj.KeepToolDownRatio=3.0
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.

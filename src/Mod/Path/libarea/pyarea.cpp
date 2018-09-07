@@ -391,6 +391,7 @@ void init_pyarea(py::module &m){
         .def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
 		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
 		.def_readwrite("tolerance", &Adaptive2d::tolerance)
+        .def_readwrite("keepToolDownDistRatio", &Adaptive2d::keepToolDownDistRatio)
 		.def_readwrite("opType", &Adaptive2d::opType);
 }
 
