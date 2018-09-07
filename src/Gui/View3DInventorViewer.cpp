@@ -76,6 +76,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <Inventor/SoEventManager.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -506,6 +507,7 @@ void View3DInventorViewer::init()
     pcEditingTransform = new SoTransform;
     pcEditingTransform->ref();
     restoreEditingRoot = false;
+    pcEditingRoot->addChild(pcEditingTransform);
     pcViewProviderRoot->addChild(pcEditingRoot);
 
     // Set our own render action which show a bounding box if
@@ -965,7 +967,6 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
     if(!editViewProvider) 
         return;
     resetEditingRoot(false);
-    pcEditingRoot->addChild(pcEditingTransform);
     if(mat)
         setEditingTransform(*mat);
     else
@@ -987,10 +988,10 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
 }
 
 void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
-    if(!editViewProvider || !pcEditingRoot->getNumChildren())
+    if(!editViewProvider || pcEditingRoot->getNumChildren()<=1)
         return;
     if(!restoreEditingRoot) {
-        pcEditingRoot->removeAllChildren();
+        pcEditingRoot->getChildren()->truncate(1);
         return;
     }
     restoreEditingRoot = false;
@@ -998,12 +999,9 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
     if(root->getNumChildren()) 
         FC_ERR("WARNING!!! Editing view provider root node is tampered");
     root->addChild(editViewProvider->getTransformNode());
-    for(int i=0,count=pcEditingRoot->getNumChildren();i<count;++i) {
-        SoNode *node = pcEditingRoot->getChild(i);
-        if(node != pcEditingTransform)
-            root->addChild(node);
-    }
-    pcEditingRoot->removeAllChildren();
+    for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
+        root->addChild(pcEditingRoot->getChild(i));
+    pcEditingRoot->getChildren()->truncate(1);
     if(updateLinks)
         ViewProviderLink::updateLinks(editViewProvider);
 }
@@ -1011,7 +1009,7 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
 {
     SoPath *path;
-    if(vp == editViewProvider && pcEditingRoot->getNumChildren()) {
+    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
         path = new SoPath(1);
         path->ref();
         path->append(pcEditingRoot);
@@ -1060,7 +1058,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     // to fail to get intersections between the ray and a line
     
     SoPath *path;
-    if(vp == editViewProvider && pcEditingRoot->getNumChildren()) {
+    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
         path = new SoPath(1);
         path->ref();
         path->append(pcEditingRoot);
@@ -1116,6 +1114,11 @@ void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModN
 void View3DInventorViewer::resetEditingViewProvider()
 {
     if (!this->editViewProvider) return;
+
+    SoEventManager* mgr = getSoEventManager();
+    SoHandleEventAction* heaction = mgr->getHandleEventAction();
+    if (heaction && heaction->getGrabber())
+        heaction->releaseGrabber();
 
     resetEditingRoot();
 
