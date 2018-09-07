@@ -3048,9 +3048,7 @@ const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 // call the recompute of the Feature and handle the exceptions and errors.
 bool Document::_recomputeFeature(DocumentObject* Feat)
 {
-#ifdef FC_LOGFEATUREUPDATE
-    std::clog << "Solv: Executing Feature: " << Feat->getNameInDocument() << std::endl;;
-#endif
+    FC_LOG("Recomputing " << Feat->getDocument()->getName() << '#' << Feat->getNameInDocument());
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
