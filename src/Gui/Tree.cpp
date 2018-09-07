@@ -3058,7 +3058,11 @@ void DocumentObjectItem::setData (int column, int role, const QVariant & value)
     QVariant myValue(value);
     if (role == Qt::EditRole) {
         QString label = value.toString();
+        std::ostringstream ss;
+        ss << "Change " << getName() << ".Label";
+        App::GetApplication().setActiveTransaction(ss.str().c_str());
         object()->getObject()->Label.setValue((const char*)label.toUtf8());
+        App::GetApplication().closeActiveTransaction();
         myValue = QString::fromUtf8(object()->getObject()->Label.getValue());
     }
     QTreeWidgetItem::setData(column, role, myValue);
