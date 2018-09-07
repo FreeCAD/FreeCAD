@@ -2107,8 +2107,10 @@ namespace AdaptivePath {
 					clip.AddPaths(toolCoverPoly,PolyType::ptClip,true);
 					clip.Execute(ClipType::ctUnion,cleared);
 					CleanPolygons(cleared);
-					lastPoint.X = finCleaned.back().X;
-					lastPoint.Y = finCleaned.back().Y;
+					if(!finCleaned.empty()) {
+						lastPoint.X = finCleaned.back().X;
+						lastPoint.Y = finCleaned.back().Y;
+					}
 			 } else {
 				 cerr << "UNABLE TO ADD FINISHING PASS! Please try increasing accuracy." << endl;
 				 break;
