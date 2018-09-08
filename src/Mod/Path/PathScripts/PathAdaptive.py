@@ -408,8 +408,9 @@ class PathAdaptive(PathOp.ObjectOp):
 
 
 
-def Create(name):
-    '''Create(name) ... Creates and returns a Pocket operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = PathAdaptive(obj)
+def Create(name, obj = None):
+    '''Create(name) ... Creates and returns a Adaptive operation.'''
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = PathAdaptive(obj,name)
     return obj
