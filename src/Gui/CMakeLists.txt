@@ -106,6 +106,12 @@ else()
 endif()
 
 IF(SPNAV_FOUND)
+    if (BUILD_QT5 AND UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras REQUIRED)
+        include_directories(${Qt5X11Extras_INCLUDE_DIRS})
+        list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
+    endif()
+
     add_definitions(-DSPNAV_FOUND)
     include_directories(
         ${SPNAV_INCLUDE_DIR}
