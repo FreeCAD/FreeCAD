@@ -1752,8 +1752,15 @@ public:
         DocInfoPtr info;
         if(it != _DocInfoMap.end()) {
             info = it->second;
-            if(!info->pcDoc)
-                info->pcDoc = pDoc;
+            if(!info->pcDoc) {
+                QString fullpath(info->getFullPath());
+                for(App::Document *doc : App::GetApplication().getDocuments()) {
+                    if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                        info->attach(doc);
+                        break;
+                    }
+                }
+            }
         } else {
             info = std::make_shared<DocInfo>();
             auto ret = _DocInfoMap.insert(std::make_pair(path,info));
