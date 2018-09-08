@@ -29,6 +29,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token DOCUMENT OBJECT
      %token EXPONENT
      %type <arguments> args
+     %type <arguments> args0
      %type <expr> input exp unit_exp cond
      %type <quantity> UNIT
      %type <string> STRING IDENTIFIER CELLADDRESS
@@ -81,7 +82,7 @@ exp:      num                			{ $$ = $1;                                      
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' exp ')'     			{ $$ = $2;                                                                        }
-        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                   }
+        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1.second, $2);                   }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         ;
 
@@ -97,6 +98,10 @@ args: exp                                       { $$.push_back($1);             
     | args ',' range                            { $1.push_back($3);  $$ = $1;                                                     }
     | args ';' range                            { $1.push_back($3);  $$ = $1;                                                     }
     ;
+
+args0: ')'                                      { $$.clear(); }
+     | args ')'                                 { $$ = $1; }
+     ;
 
 range: CELLADDRESS ':' CELLADDRESS              { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
      | CELLADDRESS ':' IDENTIFIER               { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
@@ -182,12 +187,20 @@ subpath: IDENTIFIER                                       { $$.push_front(Object
     | STRING                                              { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
     | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
     | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3));                      }
-    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
+    | IDENTIFIER '[' integer ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
     | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true)));          }
     | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::Component::MapComponent($1, $3));                        }
-    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
-    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
-    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
+    | IDENTIFIER '[' STRING ']' '.' subpath            { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath        { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
+    | IDENTIFIER '.' subpath                           { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
+    | FUNC args0 '[' integer ']'                    { $$.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, $4));}
+    | FUNC args0 '[' integer ']' '.' subpath        { $7.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, $4)); $$ = $7;}
+    | FUNC args0 '[' STRING ']'                     { $$.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, ObjectIdentifier::String($4, true)));          }
+    | FUNC args0 '[' STRING ']' '.' subpath         { $7.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, ObjectIdentifier::String($4, true))); $$ = $7; }
+    | FUNC args0 '[' IDENTIFIER ']'                 { $$.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, $4));}
+    | FUNC args0 '[' IDENTIFIER ']' '.' subpath     { $7.push_front(ObjectIdentifier::Component::CallableComponent($1.first, $2, $4)); $$ = $7;}
+    | FUNC args0 '.' subpath                        { $4.push_front(ObjectIdentifier::Component::CallableComponent($1.first,$2)); $$ = $4;}
+    | FUNC args0                                    { $$.push_front(ObjectIdentifier::Component::CallableComponent($1.first,$2));}
     ;
 
 document: STRING                                       { $$ = ObjectIdentifier::String($1, true); }

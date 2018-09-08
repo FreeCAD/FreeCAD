@@ -273,10 +273,10 @@ $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDR
                             s.erase(i + 1);
                             std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
-                              yylval.func = j->second;
+                              yylval.func = *j;
                             else
-                              yylval.func = FunctionExpression::NONE;
+                              yylval.func = std::make_pair(s,FunctionExpression::NONE);
                             return FUNC;
                         }
 
-({L}{M}*)({L}{M}*|{N}|_)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;
+({L}{M}*|_)({L}{M}*|{N}|_)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;

@@ -1362,7 +1362,6 @@ App::DocumentObject * VariableExpression::getDocumentObject() const
         throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
-
 /**
   * Evaluate the expression. For a VariableExpression, this means to return the
   * value of the referenced Property. Quantities are converted to NumberExpression with unit,
@@ -1427,6 +1426,9 @@ Expression * VariableExpression::eval() const
 
         return new StringExpression(owner, svalue);
     }
+    else if (value.type() == typeid(Py::Object)) {
+        return new PyObjectExpression(owner, boost::any_cast<Py::Object>(value));
+    }
 
     throw ExpressionError("Property is of invalid type.");
 }
@@ -1468,7 +1470,7 @@ int VariableExpression::priority() const
 
 void VariableExpression::getDeps(std::set<ObjectIdentifier> &props) const
 {
-    props.insert(var);
+    var.getDeps(props);
 }
 
 void VariableExpression::setPath(const ObjectIdentifier &path)
@@ -1495,6 +1497,44 @@ bool VariableExpression::renameDocument(const std::string &oldName, const std::s
 {
     return var.renameDocument(oldName, newName);
 }
+
+//
+// PyObjectExpression class
+//
+
+TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression);
+
+PyObjectExpression::PyObjectExpression(const DocumentObject *_owner, Py::Object obj)
+    : Expression(_owner)
+    , pyObj(obj)
+{
+}
+
+Expression * PyObjectExpression::eval() const
+{
+    return copy();
+}
+
+Expression *PyObjectExpression::simplify() const
+{
+    return copy();
+}
+
+std::string PyObjectExpression::toString() const
+{
+    return pyObj.as_string();
+}
+
+int PyObjectExpression::priority() const
+{
+    return 20;
+}
+
+Expression *PyObjectExpression::copy() const
+{
+    return new PyObjectExpression(owner, pyObj);
+}
+
 
 //
 // StringExpression class

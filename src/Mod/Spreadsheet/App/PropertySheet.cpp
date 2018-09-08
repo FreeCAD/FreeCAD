@@ -59,16 +59,15 @@ public:
     }
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr) {
+        std::set<ObjectIdentifier> ids;
+        node->getDeps(ids);
+        for(auto &id : ids) {
             try {
-                App::DocumentObject * docObj = expr->getDocumentObject();
-
-                if (docObj) {
-                    setExpressionChanged();
-                    docDeps.insert(docObj);
-                }
+                App::DocumentObject * docObj = id.getDocumentObject();
+                if (!docObj || docObj == prop.getContainer())
+                    continue;
+                setExpressionChanged();
+                docDeps.insert(docObj);
             }
             catch (const Base::Exception &) {
                 // Ignore this type of exception; it means that the property was not found, which is ok here

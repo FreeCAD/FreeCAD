@@ -419,6 +419,8 @@ public:
 
     App::DocumentObject *getDocumentObject() const;
 
+    virtual boost::any getValueAsAny() const { return var.getValue(); }
+
 protected:
 
     ObjectIdentifier var; /**< Variable name  */
@@ -480,6 +482,34 @@ protected:
     Range range;
 };
 
+class AppExport PyObjectExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+
+    PyObjectExpression(const App::DocumentObject * _owner=0, Py::Object obj=Py::Object());
+
+    virtual Expression * eval() const;
+
+    virtual std::string toString() const;
+
+    virtual Expression * copy() const;
+
+    virtual int priority() const;
+
+    virtual Expression * simplify() const;
+
+    virtual boost::any getValueAsAny() const { return boost::any(pyObj); }
+
+    Py::Object getPyObject() const {
+        return pyObj;
+    }
+
+protected:
+    Py::Object pyObj;
+};
+
+
 namespace ExpressionParser {
 AppExport Expression * parse(const App::DocumentObject *owner, const char *buffer);
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
@@ -510,9 +540,9 @@ public:
   std::vector<Expression*> arguments;
   std::vector<Expression*> list;
   std::string string;
-  FunctionExpression::Function func;
+  std::pair<std::string,FunctionExpression::Function> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
+  semantic_type() : expr(0), ivalue(0), fvalue(0), func("",FunctionExpression::NONE) {}
 };
 
 }

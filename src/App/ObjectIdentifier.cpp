@@ -44,6 +44,17 @@
 using namespace App;
 using namespace Base;
 
+PythonVariables::~PythonVariables() {
+    Base::Interpreter().removeVariables(names);
+}
+
+const std::string &PythonVariables::add(Py::Object obj) {
+    static size_t idx;
+    names.push_back(prefix + std::to_string(idx++));
+    Base::Interpreter().addVariable(names.back().c_str(),obj);
+    return names.back();
+}
+
 /**
  * @brief Compute a hash value for the object identifier given by \a path.
  * @param path Inputn path
@@ -336,7 +347,7 @@ std::string ObjectIdentifier::toString() const
     if(subObjectName.getString().size())
         s << subObjectName.toString() << '.';
 
-    s << getPropertyName() << getSubPathStr();
+    s << getPropertyName() << getSubPathStr(result);
 
     return s.str();
 }
@@ -492,18 +503,20 @@ bool ObjectIdentifier::validDocumentRename(const std::string &oldName, const std
  * @return String representation of path.
  */
 
-std::string ObjectIdentifier::getSubPathStr() const
+std::string ObjectIdentifier::getSubPathStr(const ResolveResults &result, PythonVariables *vars) const
 {
-    ResolveResults result(*this);
-
     std::stringstream s;
     std::vector<Component>::const_iterator i = components.begin() + result.propertyIndex + 1;
     while (i != components.end()) {
-        s << "." << i->toString();
+        s << "." << i->toString(vars);
         ++i;
     }
 
     return s.str();
+}
+
+std::string ObjectIdentifier::getSubPathStr() const {
+    return getSubPathStr(ResolveResults(*this));
 }
 
 /**
@@ -514,13 +527,15 @@ std::string ObjectIdentifier::getSubPathStr() const
  * @param _key Key index, if type is map, ir empty if simple or array.
  */
 
-ObjectIdentifier::Component::Component(const String &_component, ObjectIdentifier::Component::typeEnum _type, int _index, String _key)
+ObjectIdentifier::Component::Component(const String &_component, ObjectIdentifier::Component::typeEnum _type, int _index, String _key, const std::vector<Expression*> &args)
     : name(_component)
     , type(_type)
     , index(_index)
     , key(_key)
-    , keyIsString(false)
 {
+    arguments.reserve(args.size());
+    for(auto expr : args)
+        arguments.emplace_back(expr);
 }
 
 /**
@@ -569,6 +584,25 @@ ObjectIdentifier::Component ObjectIdentifier::Component::MapComponent(const Obje
     return Component(_component, MAP, -1, _key);
 }
 
+ObjectIdentifier::Component ObjectIdentifier::Component::CallableComponent(
+        const std::string &name, const std::vector<Expression*> &args)
+{
+    return Component(String(name), CALLABLE, -1, String(), args);
+}
+
+ObjectIdentifier::Component ObjectIdentifier::Component::CallableComponent(
+        const std::string &name, const std::vector<Expression*> &args, int index)
+{
+    return Component(String(name), CALLABLE_ARRAY, index, String(), args);
+}
+
+ObjectIdentifier::Component ObjectIdentifier::Component::CallableComponent(
+        const std::string &name, const std::vector<Expression*> &args, const String &key)
+{
+    return Component(String(name), CALLABLE_MAP, -1, key, args);
+}
+
+
 /**
  * @brief Comparison operator for Component objects.
  * @param other The object we want to compare to.
@@ -583,12 +617,23 @@ bool ObjectIdentifier::Component::operator ==(const ObjectIdentifier::Component 
     if (name != other.name)
         return false;
 
+    if(arguments.size() != other.arguments.size())
+        return false;
+
+    for(size_t i=0;i<arguments.size();++i) {
+        if(arguments[i]->toString()!=other.arguments[i]->toString())
+            return false;
+    }
+
     switch (type) {
+    case CALLABLE:
     case SIMPLE:
         return true;
     case ARRAY:
+    case CALLABLE_ARRAY:
         return index == other.index;
     case MAP:
+    case CALLABLE_MAP:
         return key == other.key;
     default:
         assert(0);
@@ -596,22 +641,75 @@ bool ObjectIdentifier::Component::operator ==(const ObjectIdentifier::Component 
     }
 }
 
+static Py::Object pyObjectFromAny(boost::any value) {
+    if (value.type() == typeid(Py::Object))
+        return boost::any_cast<Py::Object>(value);
+    else if (value.type() == typeid(Quantity))
+        return Py::Float(boost::any_cast<Quantity>(value).getValue());
+    else if (value.type() == typeid(double))
+        return Py::Float(boost::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        return Py::Float(boost::any_cast<float>(value));
+    else if (value.type() == typeid(int)) 
+        return Py::Int(boost::any_cast<int>(value));
+    else if (value.type() == typeid(long))
+        return Py::Long(boost::any_cast<int>(value));
+    else if (value.type() == typeid(bool))
+        return Py::Boolean(boost::any_cast<bool>(value));
+    else if (value.type() == typeid(std::string))
+        return Py::String(boost::any_cast<string>(value));
+    else if (value.type() == typeid(char*))
+        return Py::String(boost::any_cast<char*>(value));
+    else if (value.type() == typeid(const char*))
+        return Py::String(boost::any_cast<const char*>(value));
+    else
+        throw Base::TypeError("Unknown type");
+}
+
+#define NO_CALLABLE ((PythonVariables*)-1)
+
 /**
  * @brief Create a string representation of a component.
  * @return A string representing the component.
  */
 
-std::string ObjectIdentifier::Component::toString() const
+std::string ObjectIdentifier::Component::toString(PythonVariables *vars) const
 {
     std::stringstream s;
-
     s << name.toString();
+
+    if(isCallable()) {
+        if(vars == NO_CALLABLE)
+            throw Base::RuntimeError("Callable identifier is not allowed here");
+        s << '(';
+        if(arguments.size()) {
+            bool first = true;
+            for(auto expr : arguments) {
+                if(!first)
+                    s << ',';
+                else
+                    first = false;
+                if(vars) 
+                    s << vars->add(pyObjectFromAny(expr->getValueAsAny()));
+                else
+                    s << expr->toString();
+            }
+        }
+        s << ')';
+    }
+
     switch (type) {
+    case Component::CALLABLE:
     case Component::SIMPLE:
         break;
+    case Component::CALLABLE_MAP:
     case Component::MAP:
-        s << "[" << key.toString() << "]";
+        if(vars)
+            s << "['" << key.getString() << "']";
+        else
+            s << "[" << key.toString() << "]";
         break;
+    case Component::CALLABLE_ARRAY:
     case Component::ARRAY:
         s << "[" << index << "]";
         break;
@@ -1128,7 +1226,7 @@ std::string ObjectIdentifier::String::toString() const
  * @return Python code as a string
  */
 
-std::string ObjectIdentifier::getPythonAccessor() const
+std::string ObjectIdentifier::getPythonAccessor(PythonVariables *vars) const
 {
     std::stringstream ss;
     ResolveResults result(*this);
@@ -1156,13 +1254,13 @@ std::string ObjectIdentifier::getPythonAccessor() const
                 ss << "getLinkedObject(True).";
             ss << result.propertyName;
         }
-        ss << getSubPathStr();
+        ss << getSubPathStr(result,vars);
     }else{
         if(result.resolvedProperty == 0)
             return std::string();
         if(result.resolvedProperty->getContainer()!=result.resolvedDocumentObject)
             ss << "getLinkedObject(True).";
-        ss << result.propertyName << getSubPathStr();
+        ss << result.propertyName << getSubPathStr(result,vars);
     }
     return ss.str();
 }
@@ -1177,21 +1275,17 @@ std::string ObjectIdentifier::getPythonAccessor() const
 
 boost::any ObjectIdentifier::getValue() const
 {
-    std::string s = "_path_value_temp_ = " + getPythonAccessor();
+    PythonVariables vars;
+    std::string s = "_path_value_temp_ = " + getPythonAccessor(&vars);
     PyObject * pyvalue = Base::Interpreter().getValue(s.c_str(), "_path_value_temp_");
-
-    class destructor {
-    public:
-        destructor(PyObject * _p) : p(_p) { }
-        ~destructor() { Py_DECREF(p); }
-    private:
-        PyObject * p;
-    };
-
-    destructor d1(pyvalue);
 
     if (!pyvalue)
         throw Base::RuntimeError("Failed to get property value.");
+
+    Py::Object value(pyvalue,true);
+    if(value.isNone())
+        throw Base::RuntimeError("Property returns None.");
+
 #if PY_MAJOR_VERSION < 3
     if (PyInt_Check(pyvalue))
         return boost::any(PyInt_AsLong(pyvalue));
@@ -1207,7 +1301,9 @@ boost::any ObjectIdentifier::getValue() const
 #endif
     else if (PyUnicode_Check(pyvalue)) {
         PyObject * s = PyUnicode_AsUTF8String(pyvalue);
-        destructor d2(s);
+        if(!s) 
+            throw Base::ValueError("Invalid unicode string");
+        Py::Object o(s,true);
 
 #if PY_MAJOR_VERSION >= 3
         return boost::any(PyUnicode_AsUTF8(s));
@@ -1222,7 +1318,8 @@ boost::any ObjectIdentifier::getValue() const
         return boost::any(*q);
     }
     else {
-        throw Base::TypeError("Invalid property type.");
+        return boost::any(value);
+        // throw Base::TypeError("Invalid property type.");
     }
 }
 
@@ -1240,9 +1337,12 @@ void ObjectIdentifier::setValue(const boost::any &value) const
 {
     std::stringstream ss;
 
-    ss << getPythonAccessor() + " = ";
+    PythonVariables vars;
+    ss << getPythonAccessor(NO_CALLABLE) + " = ";
 
-    if (value.type() == typeid(Base::Quantity))
+    if (value.type() == typeid(Py::Object)) {
+        ss <<  vars.add(boost::any_cast<Py::Object>(value));
+    }else if (value.type() == typeid(Base::Quantity))
         ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<Base::Quantity>(value).getValue();
     else if (value.type() == typeid(double))
         ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<double>(value);
@@ -1268,6 +1368,31 @@ void ObjectIdentifier::setValue(const boost::any &value) const
         throw std::bad_cast();
 
     Base::Interpreter().runString(ss.str().c_str());
+}
+
+void ObjectIdentifier::getDeps(std::set<ObjectIdentifier> &props) const {
+    ObjectIdentifier id(owner);
+    id.documentName = documentName;
+    id.documentNameSet = documentNameSet;
+    id.documentObjectName = documentObjectName;
+    id.documentObjectNameSet = documentObjectNameSet;
+    id.subObjectName = subObjectName;
+    bool inserted = false;
+    for(auto &component : components) {
+        if(!component.isCallable()) {
+            if(!inserted)
+                id.components.push_back(component);
+            continue;
+        }
+        if(!inserted) {
+            inserted = true;
+            props.insert(id);
+        }
+        for(auto expr : component.arguments)
+            expr->getDeps(props);
+    }
+    if(!inserted)
+        props.insert(id);
 }
 
 /** Construct and initialize a ResolveResults object, given an ObjectIdentifier instance.

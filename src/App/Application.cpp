@@ -1515,6 +1515,7 @@ void Application::initTypes(void)
     App ::FunctionExpression        ::init();
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
+    App ::PyObjectExpression        ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>

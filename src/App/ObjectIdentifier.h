@@ -24,13 +24,20 @@
 #ifndef APP_PATH_H
 #define APP_PATH_H
 
+#include <memory>
 #include <vector>
 #include <string>
+#include <set>
 #ifndef BOOST_105400
 #include <boost/any.hpp>
 #else
 #include <boost_any_1_55.hpp>
 #endif
+#include <CXX/Objects.hxx>
+
+namespace Base {
+class PythonVariables;
+}
 
 namespace App
 {
@@ -39,6 +46,8 @@ class Property;
 class Document;
 class PropertyContainer;
 class DocumentObject;
+class Expression;
+typedef Base::PythonVariables PythonVariables;
 
 AppExport std::string quote(const std::string &input);
 
@@ -104,14 +113,18 @@ public:
         enum typeEnum {
             SIMPLE,
             MAP,
-            ARRAY
+            ARRAY,
+            CALLABLE,
+            CALLABLE_MAP,
+            CALLABLE_ARRAY,
         } ;
 
     public:
 
         // Constructors
 
-        Component(const String &_component, typeEnum _type = SIMPLE, int _index = -1, String _key = String());
+        Component(const String &_component, typeEnum _type = SIMPLE, int _index = -1, String _key = String(),
+                const std::vector<Expression*> &args = {});
 
         static Component SimpleComponent(const char * _component);
 
@@ -121,6 +134,13 @@ public:
 
         static Component MapComponent(const String &_component, const String &_key);
 
+        static Component CallableComponent(const std::string &name, 
+                const std::vector<Expression*> &args);
+        static Component CallableComponent(const std::string &name, 
+                const std::vector<Expression*> &args, int index);
+        static Component CallableComponent(const std::string &name, 
+                const std::vector<Expression*> &args, const String &_key);
+
         // Type queries
 
         bool isSimple() const { return type == SIMPLE; }
@@ -129,17 +149,19 @@ public:
 
         bool isArray() const { return type == ARRAY; }
 
+        bool isCallable() const {
+            return type==CALLABLE || type==CALLABLE_ARRAY || type==CALLABLE_MAP;
+        }
+
         // Accessors
 
-        std::string toString() const;
+        std::string toString(Base::PythonVariables *vars=0) const;
 
         std::string getName() const { return name.getString(); }
 
         std::size_t getIndex() const { return static_cast<std::size_t>(index); }
 
         String getKey() const { return key; }
-
-        bool getKeyIsString() const { return keyIsString; }
 
         // Operators
 
@@ -151,7 +173,7 @@ public:
         typeEnum type;
         int index;
         String key;
-        bool keyIsString;
+        std::vector<std::shared_ptr<Expression> > arguments;
 
         friend class ObjectIdentifier;
 
@@ -217,6 +239,8 @@ public:
 
     App::DocumentObject *getDocumentObject() const;
 
+    void getDeps(std::set<ObjectIdentifier> &props) const;
+
     std::vector<std::string> getStringList() const;
 
     App::ObjectIdentifier relativeTo(const App::ObjectIdentifier & other) const;
@@ -266,7 +290,9 @@ protected:
         void getProperty(const ObjectIdentifier &oi);
     };
 
-    std::string getPythonAccessor() const;
+    std::string getSubPathStr(const ResolveResults &result, PythonVariables *var=0) const;
+
+    std::string getPythonAccessor(PythonVariables *vars=0) const;
 
     void resolve(ResolveResults & results) const;
 

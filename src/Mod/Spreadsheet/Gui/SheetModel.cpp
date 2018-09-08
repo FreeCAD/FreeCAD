@@ -389,6 +389,37 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
+    else if (prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+        auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
+
+        switch (role) {
+        case  Qt::TextColorRole: {
+            Color color;
+
+            if (cell->getForeground(color))
+                return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
+            else 
+                return QVariant(QColor(textFgColor));
+        }
+        case Qt::TextAlignmentRole: {
+            if (alignment & Cell::ALIGNMENT_HIMPLIED) {
+                qtAlignment &= ~(Qt::AlignLeft | Qt::AlignHCenter | Qt::AlignRight);
+                qtAlignment |= Qt::AlignHCenter;
+            }
+            if (alignment & Cell::ALIGNMENT_VIMPLIED) {
+                qtAlignment &= ~(Qt::AlignTop | Qt::AlignVCenter | Qt::AlignBottom);
+                qtAlignment |= Qt::AlignVCenter;
+            }
+            return QVariant::fromValue(qtAlignment);
+        }
+        case Qt::DisplayRole: {
+            Base::PyGILStateLocker lock;
+            return QVariant(QString::fromUtf8(pyProp->getValue().as_string().c_str()));
+        }
+        default:
+            return QVariant();
+        }
+    }
 
     return QVariant();
 }

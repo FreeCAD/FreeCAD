@@ -254,6 +254,8 @@ protected:
 
     App::Property *setStringProperty(App::CellAddress key, const std::string & value) ;
 
+    App::Property *setObjectProperty(App::CellAddress key, Py::Object obj) ;
+
     App::Property *setFloatProperty(App::CellAddress key, double value);
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);

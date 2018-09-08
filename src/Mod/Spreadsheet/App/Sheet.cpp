@@ -568,6 +568,25 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
     return stringProp;
 }
 
+Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
+{
+    Property * prop = props.getPropertyByName(key.toString().c_str());
+    PropertyPythonObject * pyProp = freecad_dynamic_cast<PropertyPythonObject>(prop);
+
+    if (!pyProp) {
+        if (prop) {
+            this->removeDynamicProperty(key.toString().c_str());
+            propAddress.erase(prop);
+        }
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(props.addDynamicProperty("App::PropertyPythonObject", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
+    }
+
+    propAddress[pyProp] = key;
+    pyProp->setValue(object);
+
+    return pyProp;
+}
+
 /**
  * @brief Update the alias for the cell at \a key.
  * @param key Cell to update.
@@ -629,7 +648,8 @@ void Sheet::updateProperty(CellAddress key)
                 output = new StringExpression(this, "");
         }
 
-        /* Eval returns either NumberExpression or StringExpression objects */
+        /* Eval returns either NumberExpression or StringExpression, or
+         * PyObjectExpression objects */
         if (freecad_dynamic_cast<NumberExpression>(output)) {
             NumberExpression * number = static_cast<NumberExpression*>(output);
             if (number->getUnit().isEmpty())
@@ -637,8 +657,14 @@ void Sheet::updateProperty(CellAddress key)
             else
                 setQuantityProperty(key, number->getValue(), number->getUnit());
         }
-        else
-            setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
+        else if(freecad_dynamic_cast<StringExpression>(output)) {
+            auto expr = static_cast<StringExpression*>(output);
+            setStringProperty(key, expr->getText().c_str());
+        }else if(freecad_dynamic_cast<PyObjectExpression>(output)) {
+            auto expr = static_cast<PyObjectExpression*>(output);
+            setObjectProperty(key, expr->getPyObject());
+        }else
+            assert(0);
 
         delete output;
     }
