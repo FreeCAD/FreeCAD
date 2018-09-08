@@ -27,7 +27,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.Side = QtGui.QComboBox()
         form.Side.addItem("Inside")
         form.Side.addItem("Outside")
-        form.Side.setToolTip("Cut inside or outside of the selected face")
+        form.Side.setToolTip("Cut inside or outside of the selected shapes")
         formLayout.addRow(QtGui.QLabel("Cut Region"),form.Side)
 
         #operation type
@@ -43,7 +43,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.StepOver.setMaximum(50)
         form.StepOver.setSingleStep(1)
         form.StepOver.setValue(25)
-        form.StepOver.setToolTip("Tool step over percentage")
+        form.StepOver.setToolTip("Optimal value for tool stepover")
         formLayout.addRow(QtGui.QLabel("Step Over Percent"),form.StepOver)
 
         #tolerance
@@ -53,7 +53,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.Tolerance.setTickInterval(1)
         form.Tolerance.setValue(10)
         form.Tolerance.setTickPosition(QtGui.QSlider.TicksBelow)
-        form.Tolerance.setToolTip("Influences calculation performace vs stability and accuracy")
+        form.Tolerance.setToolTip("Influences calculation performace vs stability and accuracy.")
         formLayout.addRow(QtGui.QLabel("Accuracy vs Performance"),form.Tolerance)
 
         #helix angle
@@ -71,7 +71,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.HelixDiameterLimit.setMaximum(90)
         form.HelixDiameterLimit.setSingleStep(0.1)
         form.HelixDiameterLimit.setValue(0)
-        form.HelixDiameterLimit.setToolTip("If non zero it limits the size helix diameter, otherwise the tool diameter is taken")
+        form.HelixDiameterLimit.setToolTip("If >0 it limits the helix ramp diameter\notherwise the tool diameter is used as helix diameter")
         formLayout.addRow(QtGui.QLabel("Helix Max Diameter"),form.HelixDiameterLimit)
 
         #lift distance
@@ -80,7 +80,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.LiftDistance.setMaximum(1000)
         form.LiftDistance.setSingleStep(0.1)
         form.LiftDistance.setValue(1.0)
-        form.LiftDistance.setToolTip("How much to lift the tool up during the rapid repositioning moves (used when no obstacles)")
+        form.LiftDistance.setToolTip("How much to lift the tool up during the rapid linking moves over cleared regions.\nIf linking path is not clear tool is raised to clearence height.")
         formLayout.addRow(QtGui.QLabel("Lift Distance"),form.LiftDistance)
 
         #KeepToolDownRatio
@@ -89,7 +89,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.KeepToolDownRatio.setMaximum(10)
         form.KeepToolDownRatio.setSingleStep(1)
         form.KeepToolDownRatio.setValue(3.0)
-        form.KeepToolDownRatio.setToolTip("Max length of keep tool down path compared to direct distance between points")
+        form.KeepToolDownRatio.setToolTip("Max length of keep-tool-down linking path compared to direct distance between points.\nIf exceeded link will be done by raising the tool to clearence height.")
         formLayout.addRow(QtGui.QLabel("Keep Tool Down Ratio"),form.KeepToolDownRatio)
 
         #stock to leave
