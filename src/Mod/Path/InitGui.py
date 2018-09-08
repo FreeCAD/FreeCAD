@@ -109,7 +109,7 @@ class PathWorkbench (Workbench):
         projcmdlist = ["Path_Job", "Path_Post"]
         toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
-        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive"]
+        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix" ]
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
@@ -130,6 +130,8 @@ class PathWorkbench (Workbench):
             threedopcmdlist.append("Path_Surface")
             threedcmdgroup = ['Path_3dTools']
             FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
+
+            twodopcmdlist.append("Path_Adaptive")
         else:
             engravecmdgroup = engravecmdlist
             threedcmdgroup = threedopcmdlist
