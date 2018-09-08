@@ -676,6 +676,47 @@ PyObject * InterpreterSingleton::getValue(const char * key, const char * result_
     return PyObject_GetAttrString(module, result_var);
 }
 
+void InterpreterSingleton::addVariable(const char * key, Py::Object value) {
+    PyObject *module, *dict;
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");
+    if (module == NULL)
+        throw PyException();
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        throw PyException();
+
+    if(PyDict_SetItemString(dict,key,value.ptr())!=0)
+        throw PyException();
+}
+
+void InterpreterSingleton::removeVariable(const char *key) {
+    PyObject *module, *dict;
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");
+    if (module == NULL)
+        throw PyException();
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        throw PyException();
+
+    PyDict_DelItemString(dict,key);
+}
+
+void InterpreterSingleton::removeVariables(const std::vector<std::string> &keys) {
+    PyObject *module, *dict;
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");
+    if (module == NULL)
+        throw PyException();
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        throw PyException();
+
+    for(auto &key : keys)
+        PyDict_DelItemString(dict,key.c_str());
+}
+
 void InterpreterSingleton::dbgObserveFile(const char* sFileName)
 {
     if (sFileName)
