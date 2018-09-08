@@ -70,9 +70,12 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         self.baseObject().initAreaOp(obj)
         obj.setEditorMode('Side', 2) # it's always outside
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... call super's implementation and set Side="Outside".'''
-        self.baseObject().areaOpSetDefaultValues(obj)
+    def areaOpOnDocumentRestored(self, obj):
+        obj.setEditorMode('Side', 2) # it's always outside
+
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... call super's implementation and set Side="Outside".'''
+        self.baseObject().areaOpSetDefaultValues(obj, job)
         obj.Side = 'Outside'
 
     def areaOpShapes(self, obj):
@@ -101,16 +104,17 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         params['Coplanar'] = 2
         return params
 
-    def updateDepths(self, obj, ignoreErrors=False):
-        if not hasattr(self, 'stock'):
-            self.stock = self.getJob(obj).Stock
-        stockBB = self.stock.Shape.BoundBox
-        obj.OpFinalDepth = stockBB.ZMin
-        obj.OpStartDepth = stockBB.ZMax
+    def opUpdateDepths(self, obj):
+        obj.OpStartDepth = obj.OpStockZMax
+        obj.OpFinalDepth = obj.OpStockZMin
 
+def SetupProperties():
+    return [p for p in PathProfileBase.SetupProperties() if p != 'Side']
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Contour operation.'''
-    obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectContour(obj)
+    if obj is None:
+        obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectContour(obj, name)
     return obj
+

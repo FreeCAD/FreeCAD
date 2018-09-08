@@ -132,3 +132,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['threshold'] = self.radius * 2
         return params
 
+def SetupProperties():
+    setup = []
+    setup.append('CutMode')
+    setup.append('ExtraOffset')
+    setup.append('StepOver')
+    setup.append('ZigZagAngle')
+    setup.append('OffsetPattern')
+    return setup
+

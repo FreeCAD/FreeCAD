@@ -80,6 +80,9 @@ class ObjectDressup:
         else:
             obj.setEditorMode('CustomFeedRate', 2)
 
+    def onDocumentRestored(self, obj):
+        self.setEditorProperties(obj)
+
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2

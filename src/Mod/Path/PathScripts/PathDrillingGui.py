@@ -111,6 +111,7 @@ Command = PathOpGui.SetupOperation('Drilling',
         TaskPanelOpPage,
         'Path-Drilling',
         QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Drilling"),
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Creates a Path Drilling object from a features of a base object"))
+        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Creates a Path Drilling object from a features of a base object"),
+        PathDrilling.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")

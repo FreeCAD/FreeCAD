@@ -6354,10 +6354,19 @@ void SketchObject::makeMissingEquality(bool onebyone)
         analyser->makeMissingEquality(onebyone);
 }
 
-void SketchObject::autoRemoveRedundants(bool updategeo)
+int SketchObject::autoRemoveRedundants(bool updategeo)
 {
-    if(analyser)
-        analyser->autoRemoveRedundants(updategeo);
+    auto redundants = getLastRedundant();
+
+    if(redundants.size() == 0)
+        return 0;
+    
+    for(size_t i=0;i<redundants.size();i++) // getLastRedundant is base 1, while delConstraints is base 0
+        redundants[i]--;
+
+    delConstraints(redundants,updategeo);
+    
+    return redundants.size();
 }
 
 // Python Sketcher feature ---------------------------------------------------------

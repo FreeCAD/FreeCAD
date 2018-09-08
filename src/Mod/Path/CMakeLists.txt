@@ -89,6 +89,9 @@ SET(PathScripts_SRCS
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSetupSheet.py
+    PathScripts/PathSetupSheetGui.py
+    PathScripts/PathSetupSheetOpPrototype.py
+    PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py

@@ -81,7 +81,8 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
         obj.SampleInterval = (0.04, 0.01, 1.0, 0.01)
 
-        self.setEditorProperties(obj)
+        if not hasattr(obj, 'DoNotSetDefaultValues'):
+            self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
         if obj.Algorithm == 'OCL Dropcutter':
@@ -94,6 +95,9 @@ class ObjectSurface(PathOp.ObjectOp):
     def onChanged(self, obj, prop):
         if prop == "Algorithm":
             self.setEditorProperties(obj)
+
+    def opOnDocumentRestored(self, obj):
+        self.setEditorProperties(obj)
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
@@ -305,21 +309,29 @@ class ObjectSurface(PathOp.ObjectOp):
     def pocketInvertExtraOffset(self):
         return True
 
-    def opSetDefaultValues(self, obj):
-        '''opSetDefaultValues(obj) ... initialize defauts'''
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj, job) ... initialize defauts'''
 
         # obj.ZigZagAngle = 45.0
         obj.StepOver = 50
         # need to overwrite the default depth calculations for facing
-        job = PathUtils.findParentJob(obj)
         if job and job.Base:
             d = PathUtils.guessDepths(job.Base.Shape, None)
             obj.OpStartDepth = d.start_depth
             obj.OpFinalDepth = d.final_depth
 
+def SetupProperties():
+    setup = []
+    setup.append("Algorithm")
+    setup.append("DropCutterDir")
+    setup.append("BoundBox")
+    setup.append("StepOver")
+    setup.append("DepthOffset")
+    return setup
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Surface operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectSurface(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectSurface(obj, name)
     return obj

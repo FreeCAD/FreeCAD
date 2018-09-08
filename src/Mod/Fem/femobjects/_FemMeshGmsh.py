@@ -52,7 +52,7 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyLinkList", "MeshGroupList", "Base", "Mesh groups of the mesh")
         obj.MeshGroupList = []
 
-        obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
+        obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Geometry object, the mesh is made from. The geometry object has to have a Shape.")
         obj.Part = None
 
         obj.addProperty("App::PropertyLength", "CharacteristicLengthMax", "FEM Gmsh Mesh Params", "Max mesh element size (0.0 = infinity)")

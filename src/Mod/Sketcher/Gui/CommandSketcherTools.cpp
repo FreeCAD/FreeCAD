@@ -183,7 +183,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -267,7 +267,7 @@ void CmdSketcherConnect::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();

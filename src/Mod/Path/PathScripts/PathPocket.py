@@ -88,13 +88,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             removalshapes = [(obj.removalshape, False)]
         return removalshapes
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... set default values'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
 
-def Create(name):
+def SetupProperties():
+    return PathPocketBase.SetupProperties()
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectPocket(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectPocket(obj, name)
     return obj

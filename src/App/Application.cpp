@@ -212,6 +212,37 @@ PyDoc_STRVAR(Base_doc,
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
     );
 
+#if PY_MAJOR_VERSION >= 3
+// This is called via the PyImport_AppendInittab mechanism called
+// during initialization, to make the built-in __FreeCADBase__
+// module known to Python.
+PyMODINIT_FUNC
+init_freecad_base_module(void)
+{
+    static struct PyModuleDef BaseModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCADBase__", Base_doc, -1,
+        NULL, NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&BaseModuleDef);
+}
+
+// Set in inside Application
+static PyMethodDef* __AppMethods = nullptr;
+
+PyMODINIT_FUNC
+init_freecad_module(void)
+{
+    static struct PyModuleDef FreeCADModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "FreeCAD", FreeCAD_doc, -1,
+        __AppMethods,
+        NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&FreeCADModuleDef);
+}
+#endif
+
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(0)
 {
@@ -223,14 +254,15 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef FreeCADModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "FreeCAD", FreeCAD_doc, -1,
-        Application::Methods,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* pAppModule = PyModule_Create(&FreeCADModuleDef);
-    _PyImport_FixupBuiltin(pAppModule, "FreeCAD");
+    PyObject* modules = PyImport_GetModuleDict();
+
+    __AppMethods = Application::Methods;
+    PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
+    if (!pAppModule) {
+        PyErr_Clear();
+        pAppModule = init_freecad_module();
+        PyDict_SetItemString(modules, "FreeCAD", pAppModule);
+    }
 #else
     PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
 #endif
@@ -265,13 +297,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // remove these types from the FreeCAD module.
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BaseModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "__FreeCADBase__", Base_doc, -1,
-        NULL, NULL, NULL, NULL, NULL
-    };
-    PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
-    _PyImport_FixupBuiltin(pBaseModule, "__FreeCADBase__");
+    PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
+    if (!pBaseModule) {
+        PyErr_Clear();
+        pBaseModule = init_freecad_base_module();
+        PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
+    }
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
@@ -1416,6 +1447,10 @@ void Application::initConfig(int argc, char ** argv)
 #   endif
 
     // init python
+#if PY_MAJOR_VERSION >= 3
+    PyImport_AppendInittab ("FreeCAD", init_freecad_module);
+    PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+#endif
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
 
     // Parse the options that have impact on the init process
@@ -1539,6 +1574,7 @@ void Application::initApplication(void)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
+    UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
 #if defined (_DEBUG)
     Console().Log("Application is built with debug information\n");

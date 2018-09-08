@@ -1037,6 +1037,9 @@ void MainWindow::delayedStartup()
         try {
             Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
         }
+        catch (const Base::SystemExitException&) {
+            throw;
+        }
         catch (const Base::Exception& e) {
             e.ReportException();
         }

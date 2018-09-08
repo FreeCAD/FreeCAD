@@ -9,9 +9,6 @@ a, a:link, a:visited {
     color: LINKCOLOR;
     font-weight: bold;
 }
-a:hover {
-    text-decoration: underline;
-}
 h1 {
     width: 100%;
     text-align: center;
@@ -50,19 +47,21 @@ ul.tabs li a {
     font-size: 1em;
     font-weight: bold;
     text-transform: uppercase;
-    border:1px solid SHADOW;
-    border-radius: 1px;
+    border:1px solid BOXCOLOR;
+    border-radius: 3px 3px 0px 0px;
     box-shadow: #445 0 -5px 5px;
     outline: 0;
 }
 ul.tabs li a:hover {
     background-color: TEXTCOLOR;
     color: BASECOLOR;
+    border-color: TEXTCOLOR;
 }
 ul.tabs li a.active, ul.tabs li a.active:hover {
     color: TEXTCOLOR;
     background-color: BASECOLOR;
     border-bottom: 1px solid BASECOLOR;
+    border-color: BASECOLOR;
 }
 .panel {
     background: BASECOLOR;
@@ -70,7 +69,7 @@ ul.tabs li a.active, ul.tabs li a.active:hover {
     padding: 15px;
     clear: both;
     margin-bottom: 10px;
-    border-radius: 3px;
+    border-radius: 0px 3px 3px 3px;
     overflow: auto;
     box-shadow: SHADOW 0 2px 5px;
 }
@@ -88,11 +87,11 @@ ul.icons {
     border-radius: 3px;
     margin: 10px;
     box-shadow: SHADOW 0 0px 6px;
+    word-wrap: break-word;
 }
 .icon h4 {
     margin: 3px 0;
     max-width: 90%;
-    word-wrap: break-word;
 }
 .icon img {
     width: 128px;
@@ -100,6 +99,21 @@ ul.icons {
 }
 .icon p {
     margin: 0;
+}
+.caption {
+    clear: both;
+}
+a .caption, a .caption:link, a .caption:visited {
+    color: TEXTCOLOR;
+    text-decoration-color: TEXTCOLOR;
+}
+
+.caption p {
+    font-weight: normal;
+}
+
+.docbox a:hover {
+    text-decoration: underline;
 }
 .docbox {
     float: left;
@@ -153,8 +167,26 @@ ul.workbenches li, ul.addonslist li {
     width: 50%;
 }
 .forum {
-    display: none; /* forum display */
+    display: none; /* forum display */ /* don't change this line */
 }
 .forum pre {
     white-space: pre-wrap;
+}
+.thumbnails {
+    float: left;
+    width: 100%; /* thumbs display */ /* don't change this line */
+}
+.notes {
+    display: none; /* notes display */ /* don't change this line */
+    float: right;
+    width: 30%;
+}
+#notepad {
+    width: 100%;
+    height: 100%;
+    color: TEXTCOLOR;
+    background: BOXCOLOR;
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
 }

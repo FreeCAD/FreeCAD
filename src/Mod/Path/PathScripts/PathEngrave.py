@@ -56,19 +56,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
             obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseShapes', 2) # hide
+        obj.setEditorMode('BaseShapes', 2) # hide
         if not hasattr(obj, 'BaseObject'):
             obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseObject', 2) # hide
+        obj.setEditorMode('BaseObject', 2) # hide
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
         self.setupAdditionalProperties(obj)
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         # upgrade ...
-        super(self.__class__, self).onDocumentRestored(obj)
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -146,13 +145,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             traceback.print_exc()
             PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
-    def updateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
-        self.opSetDefaultValues(obj)
+        job = PathUtils.findParentJob(obj)
+        self.opSetDefaultValues(obj, job)
 
-def Create(name):
+def SetupProperties():
+    return [ "StartVertex" ]
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectEngrave(obj, name)
     return obj
 

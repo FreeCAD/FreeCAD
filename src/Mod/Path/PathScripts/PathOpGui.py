@@ -31,6 +31,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSelection as PathSelection
+import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
@@ -996,8 +997,8 @@ def SetupOperation(name,
                    pixmap,
                    menuText,
                    toolTip,
-                   accelKey=None):
-    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, accelKey=None)
+                   setupProperties=None):
+    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
     (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
@@ -1005,10 +1006,14 @@ def SetupOperation(name,
     It is not expected to be called manually.
     '''
 
-    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip)
+    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
 
     command = CommandPathOp(res)
     FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), command)
+
+    if not setupProperties is None:
+        PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
+
     return command
 
 

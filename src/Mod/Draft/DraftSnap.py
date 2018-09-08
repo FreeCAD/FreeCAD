@@ -95,6 +95,8 @@ class Snapper:
         self.holdTracker = None
         self.holdPoints = []
         self.running = False
+        self.callbackClick = None
+        self.callbackMove = None
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -1135,8 +1137,10 @@ class Snapper:
         FreeCADGui.Snapper.getPoint(callback=cb)
 
         If the callback function accepts more than one argument, it will also receive
-        the last snapped object. Finally, a pyqt dialog can be passed as extra taskbox.
-
+        the last snapped object. Finally, a qt widget can be passed as an extra taskbox.
+        
+        If getPoint() is invoked without any argument, nothing is done but the callbacks
+        are removed, so it can be used as a cancel function.
         """
 
         import inspect
@@ -1145,6 +1149,14 @@ class Snapper:
         self.lastSnappedObject = None
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
+
+        # remove any previous leftover callbacks
+        if self.callbackClick:
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+        if self.callbackMove:
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+        self.callbackClick = None
+        self.callbackMove = None
 
         def move(event_cb):
             event = event_cb.getEvent()
@@ -1171,8 +1183,12 @@ class Snapper:
                     accept()
 
         def accept():
-            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            if self.callbackClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            if self.callbackMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            self.callbackClick = None
+            self.callbackMove = None
             obj = FreeCADGui.Snapper.lastSnappedObject
             FreeCADGui.Snapper.off()
             self.ui.offUi()
@@ -1184,8 +1200,12 @@ class Snapper:
             self.pt = None
 
         def cancel():
-            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            if self.callbackClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            if self.callbackMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            self.callbackClick = None
+            self.callbackMove = None
             FreeCADGui.Snapper.off()
             self.ui.offUi()
             if callback:
@@ -1193,11 +1213,12 @@ class Snapper:
                     callback(None,None)
                 else:
                     callback(None)
-            
+
         # adding callback functions
-        self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
-        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
-        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
+        if callback:
+            self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
+            self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
+            self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"

@@ -80,7 +80,7 @@ PROPERTY_SOURCE(Fem::FemMeshShapeObject, Fem::FemMeshObject)
 
 FemMeshShapeObject::FemMeshShapeObject()
 {
-    ADD_PROPERTY_TYPE(Shape,(0), "Shape",Prop_None,"Shape for the analysis");
+    ADD_PROPERTY_TYPE(Shape,(0), "FEM Mesh",Prop_None,"Geometry object, the mesh is made from. The geometry object has to have a Shape.");
 }
 
 FemMeshShapeObject::~FemMeshShapeObject()

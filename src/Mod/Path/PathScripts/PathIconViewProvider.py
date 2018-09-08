@@ -22,12 +22,20 @@
 # *                                                                         *
 # ***************************************************************************
 
+import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 import importlib
 
 __title__ = "Path Icon ViewProvider"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class ViewProvider(object):
     '''Generic view provider to assign an icon.'''
@@ -71,4 +79,26 @@ class ViewProvider(object):
 
     def unsetEdit(self, arg1, arg2):
         self._onEditCallback(False)
+
+_factory = {}
+
+def Attach(vobj, name):
+    '''Attach(vobj, name) ... attach the appropriate view provider to the view object.
+    If no view provider was registered for the given name a default IconViewProvider is created.'''
+
+    PathLog.track(name)
+    global _factory
+    for key,value in PathUtil.keyValueIter(_factory):
+        if key == name:
+            return value(vobj, name)
+    PathLog.track(name, 'PathIconViewProvider')
+    return ViewProvider(vobj, name)
+
+def RegisterViewProvider(name, provider):
+    '''RegisterViewProvider(name, provider) ... if an IconViewProvider is created for an object with the given name
+    an instance of provider is used instead.'''
+
+    PathLog.track(name)
+    global _factory
+    _factory[name] = provider
 

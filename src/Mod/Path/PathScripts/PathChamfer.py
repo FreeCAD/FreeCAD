@@ -72,6 +72,9 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         obj.Join = ['Round', 'Miter']
         obj.setEditorMode('Join', 2) # hide for now
 
+    def opOnDocumentRestored(self, obj):
+        obj.setEditorMode('Join', 2) # hide for now
+
     def opExecute(self, obj):
         PathLog.track(obj.Label)
         (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
@@ -110,15 +113,22 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
         return base != self.baseobject
 
-    def opSetDefaultValues(self, obj):
-        PathLog.track(obj.Label)
+    def opSetDefaultValues(self, obj, job):
+        PathLog.track(obj.Label, job.Label)
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'
 
-def Create(name):
+def SetupProperties():
+    setup = []
+    setup.append('Width')
+    setup.append('ExtraDepth')
+    return setup
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Chamfer operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectChamfer(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectChamfer(obj, name)
     return obj
 

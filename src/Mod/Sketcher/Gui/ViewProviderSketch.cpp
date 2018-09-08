@@ -3728,14 +3728,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             }
 
-            double temprepscale = ( 0.5 * maxdisttocenterofmass ) / maxcurv; // just a factor to make a comb reasonably visible
-            
-            if( temprepscale > combrepscale )
+            double temprepscale = 0;
+            if (maxcurv > 0)
+                temprepscale = (0.5 * maxdisttocenterofmass) / maxcurv; // just a factor to make a comb reasonably visible
+
+            if (temprepscale > combrepscale)
                 combrepscale = temprepscale;
-            
-            
-        }
-        else {
         }
     }
     

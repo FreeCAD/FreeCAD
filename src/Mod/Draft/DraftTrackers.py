@@ -886,11 +886,13 @@ class gridTracker(Tracker):
     
 class boxTracker(Tracker):                
     "A box tracker, can be based on a line object"
-    def __init__(self,line=None,width=0.1,height=1):
+    def __init__(self,line=None,width=0.1,height=1,shaded=False):
         self.trans = coin.SoTransform()
         m = coin.SoMaterial()
         m.transparency.setValue(0.8)
         m.diffuseColor.setValue([0.4,0.4,0.6])
+        w = coin.SoDrawStyle()
+        w.style = coin.SoDrawStyle.LINES
         self.cube = coin.SoCube()
         self.cube.height.setValue(width)
         self.cube.depth.setValue(height)
@@ -898,7 +900,10 @@ class boxTracker(Tracker):
         if line:
             self.baseline = line
             self.update()
-        Tracker.__init__(self,children=[self.trans,m,self.cube],name="boxTracker")
+        if shaded:
+            Tracker.__init__(self,children=[self.trans,m,self.cube],name="boxTracker")
+        else:
+            Tracker.__init__(self,children=[self.trans,w,self.cube],name="boxTracker")
 
     def update(self,line=None,normal=None):
         import WorkingPlane, DraftGeomUtils

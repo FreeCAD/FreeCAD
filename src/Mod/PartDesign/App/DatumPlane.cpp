@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
- *                                                                         *
+ *   Copyright (c) 2013                                                    *
+ *                Jan Rheinländer <jrheinlaender[at]users.sourceforge.net> *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -42,10 +42,14 @@ PROPERTY_SOURCE(PartDesign::Plane, Part::Datum)
 
 Plane::Plane()
 {
-    ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_None, "Automatic or manual resizing");
+    // These properties are only relevant for the visual appearance.
+    // Since they are getting changed from within its view provider
+    // their type is set to "Output" to avoid that they are marked as
+    // touched all the time.
+    ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_Output, "Automatic or manual resizing");
     ResizeMode.setEnums(ResizeModeEnums);
-    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_None, "Length of the plane");
-    ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_None, "Width of the plane");
+    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the plane");
+    ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_Output, "Width of the plane");
 
     Length.setReadOnly(true);
     Width.setReadOnly(true);

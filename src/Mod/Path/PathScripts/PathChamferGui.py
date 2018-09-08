@@ -104,7 +104,8 @@ Command = PathOpGui.SetupOperation('Chamfer',
         TaskPanelOpPage,
         'Path-Chamfer',
         QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Chamfer"),
-        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Creates a Chamfer Path along Edges or around Faces"))
+        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Creates a Chamfer Path along Edges or around Faces"),
+        PathChamfer.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathChamferGui... done\n")
 

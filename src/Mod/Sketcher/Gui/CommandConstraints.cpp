@@ -176,7 +176,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                         sketch->solve();
                     }
 
-                    tryAutoRecompute();
+                    tryAutoRecompute(sketch);
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
@@ -225,7 +225,7 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
         cmd->commitCommand();
     }
 
-    tryAutoRecompute();
+    tryAutoRecompute(sketch);
     cmd->getSelection().clearSelection();
 }
 
@@ -366,7 +366,7 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
+void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                              const Part::Geometry *geom1, 
                                              const Part::Geometry *geom2,
                                              int geoId1,
@@ -418,12 +418,12 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* 
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
         
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
         return;
     }
 
     Gui::Command::commitCommand();
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
@@ -432,7 +432,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* 
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
+void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                              const Part::Geometry *geom1, 
                                              const Part::Geometry *geom2,
                                              int geoId1,
@@ -482,12 +482,12 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
         return;
     }
 
     Gui::Command::commitCommand();
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
@@ -496,7 +496,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchObject* Obj,
+void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
                                                        const Part::Geometry *geom1, 
                                                        const Part::Geometry *geom2,
                                                        int geoId1,
@@ -563,13 +563,13 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchO
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
         return;
     }
 
     Gui::Command::commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
@@ -578,7 +578,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchO
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchObject* Obj,
+void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
                                                        const Part::Geometry *geom1, 
                                                        const Part::Geometry *geom2,
                                                        int geoId1,
@@ -650,12 +650,12 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchOb
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
         return;
     }
 
     Gui::Command::commitCommand();
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 }
 
 std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception e)
@@ -669,21 +669,41 @@ std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception 
         return msg;
 }
 
-bool SketcherGui::tryAutoRecompute()
+bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants",false);
 
+    if(autoRemoveRedundants)
+        obj->autoRemoveRedundants();
+    
     if (autoRecompute)
         Gui::Command::updateActive();
-
+    
+    autoremoveredundants = autoRemoveRedundants;
+    
     return autoRecompute;
 }
 
-void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
+bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj)
 {
-    if(!tryAutoRecompute())
+    bool autoremoveredundants;
+    
+    return tryAutoRecompute(obj,autoremoveredundants);
+}
+
+void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
+{   
+    bool autoremoveredundants;
+    
+    if(!tryAutoRecompute(obj,autoremoveredundants)) {
         obj->solve();
+        
+        if(autoremoveredundants) {
+            obj->autoRemoveRedundants();
+        }
+    }
 }
 
 bool SketcherGui::checkConstraint(const std::vector< Sketcher::Constraint * > &vals, ConstraintType type, int geoid, PointPos pos) 
@@ -1301,7 +1321,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -1355,7 +1375,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
             // finish the transaction and update
             Gui::Command::commitCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
         }
 
         break;
@@ -1548,7 +1568,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -1601,7 +1621,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
                       sketchgui->getObject()->getNameInDocument(),CrvId);
             // finish the transaction and update
             Gui::Command::commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
         }
 
         break;
@@ -1809,7 +1829,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // finish the transaction and update
     commitCommand();
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -2030,12 +2050,12 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
             Gui::Command::abortCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             return;
         }
 
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
     }
 
     // clear the selection (convenience)
@@ -2076,12 +2096,12 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
                 Gui::Command::abortCommand();
 
-                tryAutoRecompute();
+                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                 return;
             }
 
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
         }
         break;
     default:
@@ -2373,7 +2393,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     else
         abortCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -2975,7 +2995,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
                 sketchgui->getObject()->getNameInDocument(), GeoIdVt, PosIdVt, GeoIdCrv);
 
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
     }
     else {
         abortCommand();
@@ -3631,7 +3651,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
     
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -3670,7 +3690,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
             sketchgui->getObject()->getNameInDocument(), GeoId1, GeoId2);
         // finish the transaction and update
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
     }
 }
 
@@ -3855,12 +3875,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                                      QString::fromLatin1(e.what()));
                 Gui::Command::abortCommand();
 
-                tryAutoRecompute();
+                tryAutoRecompute(Obj);
                 return;
             }
 
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
 
@@ -3900,7 +3920,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
             return;
@@ -3932,7 +3952,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             
             getSelection().clearSelection();
             return;
@@ -4064,12 +4084,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
 
-                    tryAutoRecompute();
+                    tryAutoRecompute(Obj);
                     return;
                 }
 
                 commitCommand();
-                tryAutoRecompute();
+                tryAutoRecompute(Obj);
 
                 getSelection().clearSelection();
                 return;
@@ -4081,7 +4101,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             
             getSelection().clearSelection();
             return;
@@ -4244,7 +4264,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             }
 
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
             return;
@@ -4257,7 +4277,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             Obj->getNameInDocument(),GeoId1,GeoId2);
         commitCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
         return;
     }
     case 4: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
@@ -4320,12 +4340,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
                                  QString::fromLatin1(e.what()));
             Gui::Command::abortCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             return;
         }
 
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -4475,12 +4495,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                                      QObject::tr("Error"),
                                      QString::fromLatin1(e.what()));
                 Gui::Command::abortCommand();
-                tryAutoRecompute();
+                tryAutoRecompute(Obj);
                 return;
             }
 
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             
             getSelection().clearSelection();
 
@@ -4503,7 +4523,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             openCommand("add tangent constraint");
             doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
             return;
@@ -4535,7 +4555,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             
             getSelection().clearSelection();
             return;
@@ -4683,7 +4703,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2);
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
             return;
@@ -4828,7 +4848,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
             Obj->getNameInDocument(),GeoId1,GeoId2);
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         return;
     }
@@ -4887,7 +4907,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
             Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
         return;
@@ -4930,12 +4950,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                                  QString::fromLatin1(e.what()));
             Gui::Command::abortCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
             return;
         }
 
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -5230,7 +5250,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                         Obj->solve();
                     }
 
-                    tryAutoRecompute();
+                    tryAutoRecompute(Obj);
                     
                     commitNeeded=false;
                     updateNeeded=false;
@@ -5363,7 +5383,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
                         Obj->solve();
                     }
 
-                    tryAutoRecompute();
+                    tryAutoRecompute(Obj);
 
                     commitNeeded=false;
                     updateNeeded=false;
@@ -5701,7 +5721,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
                         Obj->solve();
                     }
                     
-                    tryAutoRecompute();
+                    tryAutoRecompute(Obj);
                     
                     commitNeeded=false;
                     updateNeeded=false;
@@ -5834,7 +5854,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                             Obj->solve();
                         }
                         
-                        tryAutoRecompute();
+                        tryAutoRecompute(Obj);
                         
                         commitNeeded=false;
                         updateNeeded=false;
@@ -6642,7 +6662,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
     // finish the transaction and update
     commitCommand();
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -6675,7 +6695,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
             Obj->getNameInDocument(), GeoId1, GeoId2);
         // finish the transaction and update
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         return;
     }
@@ -6789,7 +6809,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // finish the transaction and update
                 commitCommand();
-                tryAutoRecompute();
+                tryAutoRecompute(Obj);
 
                 // clear the selection (convenience)
                 getSelection().clearSelection();
@@ -6839,7 +6859,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // finish the transaction and update
                 commitCommand();
-                tryAutoRecompute();
+                tryAutoRecompute(Obj);
 
                 // clear the selection (convenience)
                 getSelection().clearSelection();
@@ -6855,7 +6875,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
             // finish the transaction and update
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             // clear the selection (convenience)
             getSelection().clearSelection();
@@ -6924,7 +6944,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
             // finish the transaction and update
             commitCommand();
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -6960,7 +6980,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
     // finish the transaction and update
     commitCommand();
 
-    tryAutoRecompute();
+    tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -7104,7 +7124,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         }*/            
         
         commitCommand();
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         // clear the selection (convenience)
         getSelection().clearSelection();
@@ -7351,7 +7371,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             // finish the transaction and update
             commitCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             if(extra_elements){
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Extra elements"),
@@ -7510,7 +7530,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             // finish the transaction and update
             commitCommand();
 
-            tryAutoRecompute();
+            tryAutoRecompute(Obj);
 
             if(extra_elements){
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Extra elements"),
@@ -7616,6 +7636,8 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
     }
     else // toggle the selected constraint(s)
     {
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
@@ -7648,7 +7670,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         else
             abortCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         // clear the selection (convenience)
         getSelection().clearSelection();

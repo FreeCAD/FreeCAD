@@ -124,12 +124,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         return [(env, False)]
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... initialize mill facing properties'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
-
-        job = PathUtils.findParentJob(obj)
 
         # need to overwrite the default depth calculations for facing
         if job and job.Base:
@@ -141,9 +139,12 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             if len(obj.Base) >= 1:
                 obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
 
+def SetupProperties():
+    return PathPocketBase.SetupProperties() + [ "BoundaryShape" ]
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectFace(obj, name)
     return obj

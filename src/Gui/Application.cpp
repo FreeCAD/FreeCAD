@@ -308,9 +308,12 @@ Application::Application(bool GUIenabled)
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Units");
-        Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
+        // so we can try to override the workaround by setting COIN_VBO
+        ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        if (hViewGrp->GetBool("UseVBO",false)) {
+            (void)coin_setenv("COIN_VBO", "0", true);
+        }
 
         // Check for the symbols for group separator and deciaml point. They must be different otherwise
         // Qt doesn't work properly.
@@ -349,7 +352,8 @@ Application::Application(bool GUIenabled)
 #if PY_MAJOR_VERSION >= 3
         // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
         // otherwise the executable was launched
-        PyObject *module = PyImport_AddModule("FreeCADGui");
+        PyObject* modules = PyImport_GetModuleDict();
+        PyObject* module = PyDict_GetItemString(modules, "FreeCADGui");
         if (!module) {
             static struct PyModuleDef FreeCADGuiModuleDef = {
                 PyModuleDef_HEAD_INIT,
@@ -358,7 +362,8 @@ Application::Application(bool GUIenabled)
                 NULL, NULL, NULL, NULL
             };
             module = PyModule_Create(&FreeCADGuiModuleDef);
-            _PyImport_FixupBuiltin(module, "FreeCADGui");
+
+            PyDict_SetItemString(modules, "FreeCADGui", module);
         }
         else {
             // extend the method list

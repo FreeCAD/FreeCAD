@@ -100,8 +100,12 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 shapes.append((env, False))
         return shapes
 
-def Create(name):
+def SetupProperties():
+    return PathProfileBase.SetupProperties()
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Profile based on edges operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectProfile(obj, name)
     return obj

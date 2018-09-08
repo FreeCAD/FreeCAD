@@ -27,10 +27,12 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
+import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
@@ -38,6 +40,7 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import sys
+import traceback
 
 from PySide import QtCore, QtGui
 from pivy import coin
@@ -454,6 +457,7 @@ class TaskPanel:
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
+        self.template = PathJobCmd.DlgJobTemplateExport(self.obj, self.form.jobBox.widget(1))
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText('#')
@@ -488,6 +492,9 @@ class TaskPanel:
         self.stockCreateCylinder = None
         self.stockEdit = None
 
+        self.setupGlobal = PathSetupSheetGui.GlobalEditor(self.obj.SetupSheet, self.form)
+        self.setupOps = PathSetupSheetGui.OpsDefaultEditor(self.obj.SetupSheet, self.form)
+
     def preCleanup(self):
         PathLog.track()
         FreeCADGui.Selection.removeObserver(self)
@@ -498,12 +505,16 @@ class TaskPanel:
         PathLog.track()
         self.preCleanup()
         self.getFields()
+        self.setupGlobal.accept()
+        self.setupOps.accept()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
 
     def reject(self, resetEdit=True):
         PathLog.track()
         self.preCleanup()
+        self.setupGlobal.reject()
+        self.setupOps.reject()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             PathLog.info("Uncreate Job")
@@ -555,6 +566,9 @@ class TaskPanel:
             self.stockEdit.getFields(self.obj)
 
             self.obj.Proxy.execute(self.obj)
+
+        self.setupGlobal.getFields()
+        self.setupOps.getFields()
 
     def selectComboBoxText(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -651,6 +665,8 @@ class TaskPanel:
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
+        self.setupGlobal.setFields()
+        self.setupOps.setFields()
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -776,6 +792,8 @@ class TaskPanel:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
+        self.template.updateUI()
+
     def orientSelected(self, axis):
         def flipSel(sel):
             PathLog.debug("flip")
@@ -900,6 +918,12 @@ class TaskPanel:
                 PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
         self.stockEdit.activate(self.obj, index == -1)
 
+        if -1 != index:
+            self.template.updateUI()
+
+    def refreshStock(self):
+        self.updateStockEditor(self.form.stock.currentIndex())
+
     def centerInStock(self):
         bbb = self.obj.Base.Shape.BoundBox
         bbs = self.obj.Stock.Shape.BoundBox
@@ -942,8 +966,18 @@ class TaskPanel:
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
 
+    def tabPageChanged(self, index):
+        if index == 0:
+            # update the template with potential changes
+            self.getFields()
+            self.setupGlobal.accept()
+            self.setupOps.accept()
+            self.obj.Document.recompute()
+            self.template.updateUI()
 
     def setupUi(self, activate):
+        self.setupGlobal.setupUi()
+        self.setupOps.setupUi()
         self.updateStockEditor(-1)
         self.setFields()
 
@@ -982,6 +1016,7 @@ class TaskPanel:
         self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
+        self.form.refreshStock.clicked.connect(self.refreshStock)
 
         self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
         self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
@@ -1002,6 +1037,13 @@ class TaskPanel:
             self.form.setCurrentIndex(3)
         if activate in ['Workplan', 'Operations']:
             self.form.setCurrentIndex(4)
+
+        self.form.currentChanged.connect(self.tabPageChanged)
+        self.template.exportButton().clicked.connect(self.templateExport)
+
+    def templateExport(self):
+        self.getFields()
+        PathJobCmd.CommandJobTemplateExport.SaveDialog(self.obj, self.template)
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)
@@ -1028,7 +1070,8 @@ def Create(base, template=None):
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except:
+    except Exception as exc:
         PathLog.error(sys.exc_info())
+        traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
 
