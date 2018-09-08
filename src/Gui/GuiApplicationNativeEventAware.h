@@ -32,21 +32,35 @@
 
 class QMainWindow;
 
+#if defined(Q_OS_UNIX)
+  #include <X11/Xlib.h>
+  #undef Bool
+  #undef CursorShape
+  #undef Expose
+  #undef KeyPress
+  #undef KeyRelease
+  #undef FocusIn
+  #undef FocusOut
+  #undef FontChange
+  #undef None
+  #undef Status
+  #undef Unsorted
+  #undef False
+  #undef True
+  #undef Complex
+  #include <functional>
 
-#ifdef _USE_3DCONNEXION_SDK
-
-#ifdef Q_OS_WIN
+#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
 #include "3Dconnexion/MouseParameters.h"
 
 #include <vector>
 #include <map>
 
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
-
 #include <Windows.h>
-#endif // Q_OS_WIN
 
-#ifdef Q_OS_MACX
+#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
+
 #include <IOKit/IOKitLib.h>
 #include <ConnexionClientAPI.h>
 // Note that InstallConnexionHandlers will be replaced with
@@ -59,9 +73,7 @@ extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode
                                       UInt32 mask) __attribute__((weak_import));
 extern void UnregisterConnexionClient(UInt16 clientID) __attribute__((weak_import));
 extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
-#endif // Q_OS_MACX
-
-#endif // _USE_3DCONNEXION_SDK
+#endif // Platform switch
 
 namespace Gui
 {
@@ -82,7 +94,7 @@ namespace Gui
     private:
         EventFilter eventFilter;
     };
-#endif
+#endif // if QT_VERSION >= 0x050000
 
     class GUIApplicationNativeEventAware : public QApplication
     {
@@ -102,10 +114,14 @@ namespace Gui
         float convertPrefToSensitivity(int value);
 
 // For X11
-#ifdef Q_WS_X11
+#ifdef Q_OS_UNIX
     public:
+  #if QT_VERSION >= 0x050000
+        bool xcbEventFilter(void *message, long *result);
+  #else
         bool x11EventFilter(XEvent *event);
-#endif // Q_WS_X11
+  #endif // if/else QT_VERSION >= 0x050000
+#endif // Q_OS_UNIX
 
 #ifdef _USE_3DCONNEXION_SDK
 // For Windows
@@ -168,7 +184,7 @@ namespace Gui
 
 #endif// Q_OS_MACX
 #endif // _USE_3DCONNEXION_SDK
-    };
-}
+    }; // end class GUIApplicationNativeEventAware
+} // end namespace Gui
 
 #endif // GUIAPPLICATIONNATIVEEVENTAWARE_H
