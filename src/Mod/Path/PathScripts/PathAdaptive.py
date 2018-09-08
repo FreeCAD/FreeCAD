@@ -131,7 +131,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
             lz=passEndDepth
             z=obj.ClearanceHeight.Value
-            op.commandlist.append(Path.Command("(adaptive - depth: %f)"%passEndDepth))
+            op.commandlist.append(Path.Command("(Adaptive - depth: %f)"%passEndDepth))
             #add adaptive paths
             for pth in region["AdaptivePaths"]:
                 motionType = pth[0]  #[0] contains motion type
@@ -141,18 +141,15 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     dist=math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
                     if motionType == area.AdaptiveMotionType.Cutting:
                         z=passEndDepth
-                        if z!=lz:
-                            op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
+                        if z!=lz: op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
                         op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "F": op.horizFeed}))
                     elif motionType == area.AdaptiveMotionType.LinkClear:
                         z=passEndDepth+stepUp
-                        if z!=lz:
-                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
                         op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
                         z=obj.ClearanceHeight.Value
-                        if z!=lz:
-                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
                         op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
                     # elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
                     #     if lx!=x or ly!=y:
@@ -162,12 +159,18 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     ly=y
                     lz=z
             #return to safe height in this Z pass
-            op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
+            z=obj.ClearanceHeight.Value
+            if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
+            lz=z
         passStartDepth=passEndDepth
         #return to safe height in this Z pass
-        op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
+        z=obj.ClearanceHeight.Value
+        if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
+        lz=z
+    z=obj.ClearanceHeight.Value
+    if z!=lz: op.commandlist.append(Path.Command("G0", { "Z":z}))
+    lz=z
 
-    op.commandlist.append(Path.Command("G0", { "Z":obj.ClearanceHeight.Value}))
 
 def Execute(op,obj):
     global sceneGraph
