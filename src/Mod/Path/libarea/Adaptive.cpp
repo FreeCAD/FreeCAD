@@ -1,3 +1,24 @@
+/**************************************************************************
+*   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
+*   This file is part of the FreeCAD CAx development system.              *
+*                                                                         *
+*   This library is free software; you can redistribute it and/or         *
+*   modify it under the terms of the GNU Library General Public           *
+*   License as published by the Free Software Foundation; either          *
+*   version 2 of the License, or (at your option) any later version.      *
+*                                                                         *
+*   This library  is distributed in the hope that it will be useful,      *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU Library General Public License for more details.                  *
+*                                                                         *
+*   You should have received a copy of the GNU Library General Public     *
+*   License along with this library; see the file COPYING.LIB. If not,    *
+*   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+*   Suite 330, Boston, MA  02111-1307, USA                                *
+*                                                                         *
+***************************************************************************/
+
 #include "Adaptive.hpp"
 #include <iostream>
 #include <cmath>
@@ -15,7 +36,7 @@ namespace AdaptivePath {
 	using namespace ClipperLib;
 	using namespace std;
 	#define SAME_POINT_TOL_SQRD_SCALED 16.0
-
+	#define UNUSED(expr) (void)(expr)
 	/*********************************************
 	 * Utils - inline
 	 ***********************************************/
@@ -1362,6 +1383,10 @@ namespace AdaptivePath {
 				Paths &cleared /*output-initial cleard area by helix*/,
 				IntPoint &entryPoint /*output*/,
 				IntPoint & toolPos, DoublePoint & toolDir) {
+
+	    UNUSED(progressPaths);  // to silence compiler warning
+		UNUSED(boundPaths); // to silence compiler warning
+
 		Clipper clip;
 		ClipperOffset clipof;
 		// check if boundary shape to cut is outside the stock
@@ -1452,6 +1477,9 @@ namespace AdaptivePath {
 
 	void Adaptive2d::AppendToolPath(TPaths &progressPaths,AdaptiveOutput & output,const Path & passToolPath,const Paths & cleared, const Paths & toolBoundPaths) {
 		if(passToolPath.size()<1) return;
+
+		UNUSED(progressPaths); // to silence compiler warning,var is occasionally used in dev. for debugging
+
 		IntPoint nextPoint(passToolPath[0]);
 
 		// if there is a previous path - need to resolve linking move to new path
@@ -1761,7 +1789,7 @@ namespace AdaptivePath {
 			entryPoint=toolPos;
 		}
 
-		cout << "Entry point:" << double(entryPoint.X)/scaleFactor << "," << double(entryPoint.Y)/scaleFactor << endl;
+		//cout << "Entry point:" << double(entryPoint.X)/scaleFactor << "," << double(entryPoint.Y)/scaleFactor << endl;
 
 		AdaptiveOutput output;
 		output.HelixCenterPoint.first = double(entryPoint.X)/scaleFactor;
@@ -2077,7 +2105,7 @@ namespace AdaptivePath {
 		Path finShiftedPath;
 
 		bool allCutsAllowed=true;
-		while(PopPathWithClosestPoint(finishingPaths,lastPoint,finShiftedPath)) {
+		while(!stopProcessing && PopPathWithClosestPoint(finishingPaths,lastPoint,finShiftedPath)) {
 			if(finShiftedPath.empty()) continue;
 			// skip finishing passes outside the stock boundary - make no sense to cut where is no material
 			bool allPointsOutside=true;
@@ -2167,7 +2195,6 @@ namespace AdaptivePath {
 		// make sure invalid paths are not used
 		if(!allCutsAllowed) {
 			cerr << "INVALID CUTS DETECTED! Please try to modify accuracy and/or step-over." << endl;
-			output.AdaptivePaths.clear();
 		}
 
 		results.push_back(output);
