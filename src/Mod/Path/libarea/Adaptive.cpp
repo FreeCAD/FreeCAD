@@ -1734,7 +1734,7 @@ namespace AdaptivePath {
 		Paths engageBounds = toolBoundPaths;
 
 
-		if(FindEntryPointOutside(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos,toolDir)) {
+		if(!forceInsideOut && FindEntryPointOutside(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos,toolDir)) {
 			if( Orientation(engageBounds[0])<0) ReversePath(engageBounds[0]);
 			//engageBounds.erase(engageBounds.begin());
 			// add initial offset of cleared area to engage paths
