@@ -3982,7 +3982,7 @@ bool Document::mustExecute() const
     }
 
     for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched() || (*It)->mustExecute())
+        if ((*It)->isTouched() || (*It)->mustExecute()==1)
             return true;
     return false;
 }
