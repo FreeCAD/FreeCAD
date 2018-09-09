@@ -95,6 +95,7 @@ private:
     Connection connectApplicationRedoDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
+    Connection connectDocumentBeforeChangeObject;
     Connection connectDocumentChangedObject;
     Connection connectDocumentObjectRecomputed;
     Connection connectDocumentRecomputed;

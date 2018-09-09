@@ -1309,3 +1309,204 @@ class DocumentExpressionCases(unittest.TestCase):
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument(self.Doc.Name)
+
+
+class DocumentObserverCases(unittest.TestCase):
+
+  class Observer():
+    
+    signal = []
+    parameter = None
+    parameter2 = None
+    
+    def slotCreatedDocument(self, doc):
+      self.signal.append('DocCreated');
+      self.parameter = doc;
+      
+    def slotDeletedDocument(self, doc):
+      self.signal.append('DocDeleted');
+      self.parameter = doc;
+      
+    def slotRelabelDocument(self, doc):
+      self.signal.append('DocRelabled');
+      self.parameter = doc;
+      
+    def slotActivateDocument(self, doc):
+      self.signal.append('DocActivated');
+      self.parameter = doc;
+      
+    def slotRecomputedDocument(self, doc):
+      self.signal.append('DocRecomputed');
+      self.parameter = doc;
+
+    def slotUndoDocument(self, doc):
+      self.signal.append('DocUndo');
+      self.parameter = doc;
+      
+    def slotRedoDocument(self, doc):
+      self.signal.append('DocRedo');
+      self.parameter = doc;
+
+    def slotOpenTransaction(self, doc, name):
+      self.signal.append('DocOpenTransaction');
+      self.parameter = doc;
+      self.parameter2 = name;
+      
+    def slotCommitTransaction(self, doc):
+      self.signal.append('DocCommitTransaction');
+      self.parameter = doc;
+      
+    def slotAbortTransaction(self, doc):
+      self.signal.append('DocAbortTransaction');
+      self.parameter = doc;
+      
+    def slotCreatedObject(self, obj):
+      self.signal.append('ObjCreated');
+      self.parameter = obj;
+
+    def slotDeletedObject(self, obj):
+      self.signal.append('ObjDeleted');
+      self.parameter = obj;
+
+    def slotChangedObject(self, obj, prop):
+      self.signal.append('ObjChanged');
+      self.parameter = obj;
+      self.parameter2 = prop;
+      
+    def slotBeforeChangeObject(self, obj, prop):
+      self.signal.append('ObjBeforeChange');
+      self.parameter = obj;
+      self.parameter2 = prop;
+
+    def slotRecomputedObject(self, obj):
+      self.signal.append('ObjRecomputed');
+      self.parameter = obj;
+      
+    
+  def setUp(self):
+    self.Obs = self.Observer();
+    FreeCAD.addDocumentObserver(self.Obs);
+
+  def testDocument(self):
+
+    # testing document level signals
+    self.Doc1 = FreeCAD.newDocument("Observer1");    
+    self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
+    self.failUnless(self.Obs.parameter is self.Doc1)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2 = FreeCAD.newDocument("Observer2");
+    self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    FreeCAD.setActiveDocument('Observer1')
+    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
+    self.failUnless(self.Obs.parameter is self.Doc1)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.openTransaction('test')
+    self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(self.Obs.parameter2 == 'test')
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.commitTransaction()
+    self.failUnless(self.Obs.signal.pop() == 'DocCommitTransaction')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.openTransaction('test2')
+    self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.abortTransaction()
+    self.failUnless(self.Obs.signal.pop() == 'DocAbortTransaction')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.undo()
+    self.failUnless(self.Obs.signal.pop() == 'DocUndo')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    self.Doc2.redo()
+    self.failUnless(self.Obs.signal.pop() == 'DocRedo')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    FreeCAD.closeDocument('Observer2')
+    self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
+    self.failUnless(self.Obs.parameter is self.Doc2)
+    self.failUnless(not self.Obs.signal)
+    
+    FreeCAD.closeDocument('Observer1')
+    self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
+    self.failUnless(self.Obs.parameter is self.Doc1)
+    self.failUnless(not self.Obs.signal)
+       
+  def testObject(self):
+    #testing signal on object changes
+    
+    self.Doc1 = FreeCAD.newDocument("Observer1")
+    self.Obs.signal = []
+    
+    obj = self.Doc1.addObject("App::DocumentObject","obj")
+    self.failUnless(self.Obs.signal.pop() == 'ObjCreated')
+    self.failUnless(self.Obs.parameter is obj)
+    #there are multiple object change signals
+    self.Obs.signal = []
+    
+    obj.Label = "myobj"
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjBeforeChange')
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjChanged')
+    self.failUnless(self.Obs.parameter is obj)
+    self.failUnless(self.Obs.parameter2 == "Label")
+    self.failUnless(not self.Obs.signal)
+    
+    obj.touch()
+    obj.recompute()
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjRecomputed')
+    self.failUnless(self.Obs.parameter is obj)
+    self.failUnless(not self.Obs.signal)
+    
+    obj.touch()
+    self.Doc1.recompute()
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjRecomputed')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocRecomputed')
+    self.failUnless(self.Obs.parameter is self.Doc1)
+    self.failUnless(not self.Obs.signal)
+    
+    FreeCAD.ActiveDocument.removeObject(obj.Name)
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
+    self.failUnless(self.Obs.parameter is obj)
+    self.failUnless(not self.Obs.signal)
+    
+    FreeCAD.closeDocument('Observer1')
+    self.Obs.signal = []
+    
+  def testUndoDisabledDocument(self):
+
+    # testing document level signals
+    self.Doc1 = FreeCAD.newDocument("Observer1"); 
+    self.Doc1.UndoMode = 0
+    self.Obs.signal = []
+     
+    self.Doc1.openTransaction('test')  
+    self.Doc1.commitTransaction()
+    self.Doc1.undo()
+    self.Doc1.redo()    
+    self.failUnless(not self.Obs.signal)
+  
+    FreeCAD.closeDocument('Observer1')
+    self.Obs.signal = []
+
+  def tearDown(self):
+    #closing doc
+    FreeCAD.removeDocumentObserver(self.Obs)
+    self.Obs = None
