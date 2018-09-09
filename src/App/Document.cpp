@@ -962,7 +962,7 @@ void Document::openTransaction(const char* name)
         else
             d->activeUndoTransaction->Name = "<empty>";
         
-        signalOpenTransaction(*this, name);
+        signalOpenTransaction(*this, d->activeUndoTransaction->Name);
     }
 }
 
@@ -1140,8 +1140,8 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
-    if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId())
-        signalBeforeChangeObject(*static_cast<App::DocuemntObject*>(Who), *What);
+    if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
     
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
@@ -2252,7 +2252,7 @@ int Document::recompute()
 
         if ((*objIt)->isTouched() || doRecompute) {
             (*objIt)->purgeTouched();
-            signalObjectRecomputed(*(*objOt));
+            signalRecomputedObject(*(*objIt));
             // force recompute of all dependent objects
             for (auto inObjIt : (*objIt)->getInList())
                 inObjIt->enforceRecompute();
@@ -2520,8 +2520,10 @@ void Document::recomputeFeature(DocumentObject* Feat)
     _RecomputeLog.clear();
 
     // verify that the feature is (active) part of the document
-    if (Feat->getNameInDocument())
+    if (Feat->getNameInDocument()) {
         _recomputeFeature(Feat);
+        signalRecomputedObject(*Feat);
+    }
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)

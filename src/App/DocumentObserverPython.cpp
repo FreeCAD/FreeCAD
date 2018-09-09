@@ -76,7 +76,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotCreatedObject, this, _1));
     this->connectDocumentDeletedObject = App::GetApplication().signalDeletedObject.connect(boost::bind
         (&DocumentObserverPython::slotDeletedObject, this, _1));
-    this->connectDocumentChangedObject = App::GetApplication().signalBeforeChangeObject.connect(boost::bind
+    this->connectDocumentBeforeChangeObject = App::GetApplication().signalBeforeChangeObject.connect(boost::bind
         (&DocumentObserverPython::slotBeforeChangeObject, this, _1, _2));
     this->connectDocumentChangedObject = App::GetApplication().signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
@@ -105,6 +105,7 @@ DocumentObserverPython::~DocumentObserverPython()
 
     this->connectDocumentCreatedObject.disconnect();
     this->connectDocumentDeletedObject.disconnect();
+    this->connectDocumentBeforeChangeObject.disconnect();
     this->connectDocumentChangedObject.disconnect();
     this->connectDocumentObjectRecomputed.disconnect();
     this->connectDocumentRecomputed.disconnect();
