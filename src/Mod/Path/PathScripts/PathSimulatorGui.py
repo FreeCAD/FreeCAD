@@ -133,6 +133,7 @@ class PathSimulation:
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         # self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
         self.cutTool.Placement = self.curpos
+        self.opCommands =  self.operation.Path.Commands
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
@@ -242,7 +243,7 @@ class PathSimulation:
             return
         self.busy = True
 
-        cmd = self.operation.Path.Commands[self.icmd]
+        cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
         if cmd.Name in ['G0', 'G1', 'G2', 'G3']:
             self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
@@ -265,7 +266,7 @@ class PathSimulation:
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
-        if self.icmd >= len(self.operation.Path.Commands):
+        if self.icmd >= len(self.opCommands):
             # self.cutMaterial.Shape = self.stock.removeSplitter()
             self.ioperation += 1
             if self.ioperation >= len(self.activeOps):
