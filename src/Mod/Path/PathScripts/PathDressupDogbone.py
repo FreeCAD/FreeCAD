@@ -42,6 +42,9 @@ LOG_MODULE = PathLog.thisModule()
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+else:
+    PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
 
 
 # Qt tanslation handling
@@ -808,12 +811,19 @@ class ObjectDressup:
                 # dressing up a bone dressup
                 obj.Side = obj.Base.Side
             else:
+                PathLog.info("Default side = right")
                 # otherwise dogbones are opposite of the base path's side
                 side = Side.Right
                 if hasattr(obj.Base, 'Side') and obj.Base.Side == 'Inside':
+                    PathLog.info("inside -> side = left")
                     side = Side.Left
-                if hasattr(obj.Base, 'Directin') and obj.Base.Direction == 'CCW':
+                else:
+                    PathLog.info("not inside -> side stays right")
+                if hasattr(obj.Base, 'Direction') and obj.Base.Direction == 'CCW':
+                    PathLog.info("CCW -> switch sides")
                     side = Side.oppositeOf(side)
+                else:
+                    PathLog.info("CW -> stay on side")
                 obj.Side = side
 
         self.toolRadius = 5
