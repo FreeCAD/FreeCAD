@@ -964,32 +964,39 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         return ret;
     }
 
-    auto target = link;
     size_t pos=0,linkPos=0;
-    while(1) {
-        pos = subname.find('.',pos);
-        if(pos == std::string::npos)
-            return 0;
-        ++pos;
-        auto ssub = subname.substr(0,pos);
+    std::string linkssub,ssub;
+    do {
         linkPos = linkSub.find('.',linkPos);
-        if(linkPos == std::string::npos)
+        if(linkPos == std::string::npos) {
+            link = 0;
             return 0;
+        }
         ++linkPos;
-        auto linkssub = linkSub.substr(0,linkPos);
-        if(linkssub==ssub)
-            continue;
-        ret = getSubObject(ssub.c_str());
-        if(!ret)
+        pos = subname.find('.',pos);
+        if(pos == std::string::npos) {
+            subname.clear();
+            ret = 0;
+            break;
+        }
+        ++pos;
+    }while(subname.compare(0,pos,linkSub,0,linkPos)==0);
+
+    if(pos != std::string::npos) {
+        ret = getSubObject(subname.substr(0,pos).c_str());
+        if(!ret) {
+            link = 0;
             return 0;
-        target = link->getSubObject(linkssub.c_str());
-        if(!target)
-            return 0;
-        subname = subname.substr(ssub.size());
-        link = target;
-        linkSub = linkSub.substr(linkssub.size());
-        return ret;
+        }
+        subname = subname.substr(pos);
     }
+    if(linkPos) {
+        link = link->getSubObject(linkSub.substr(0,linkPos).c_str());
+        if(!link)
+            return 0;
+        linkSub = linkSub.substr(linkPos);
+    }
+    return ret;
 }
 
 std::string DocumentObject::getElementMapVersion(const App::Property *_prop) const {
