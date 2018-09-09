@@ -967,19 +967,15 @@ namespace AdaptivePath {
 
 				if(preventConvetional && interPathLen>=RESOLUTION_FACTOR) {
 					// detect conventional mode cut - we want only climb mode
-						if(!IsPointWithinCutRegion(cleared_paths,c2)) {
-							if(PointSideOfLine(fpc2,lpc2,c2)<0) {
-								IntPoint midPoint(long(c2.X + toolRadiusScaled*cos(0.5*(maxFi+minFi))),long(c2.Y + toolRadiusScaled*sin(0.5*(maxFi+minFi))));
-								if(PointSideOfLine(fpc2,lpc2,midPoint)>0) {
+						IntPoint midPoint(long(c2.X + toolRadiusScaled*cos(0.5*(maxFi+minFi))),long(c2.Y + toolRadiusScaled*sin(0.5*(maxFi+minFi))));
+						if(PointSideOfLine(c1,c2,midPoint)<0) {
 									area = __DBL_MAX__;
 									Perf_CalcCutArea.Stop();
 									// #ifdef DEV_MODE
 									// 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
 									// #endif
 									return area;
-								}
 						}
-					}
 				}
 
 				double scanDistance = 2.5*toolRadiusScaled;
