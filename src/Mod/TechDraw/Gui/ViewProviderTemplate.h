@@ -57,6 +57,7 @@ public:
     QGITemplate* getQTemplate(void);
     TechDraw::DrawTemplate* getTemplate() const;
     MDIViewPage* getMDIViewPage(void);
+    virtual Gui::MDIView *getMDIView() override;
 
 };
 

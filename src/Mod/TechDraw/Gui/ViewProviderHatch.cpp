@@ -38,6 +38,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 //#include <Gui/SoFCSelection.h>
 //#include <Gui/Selection.h>
 
@@ -114,3 +115,12 @@ TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawHatch*>(pcObject);
 }
+
+Gui::MDIView *ViewProviderHatch::getMDIView() {
+    auto obj = getViewObject();
+    if(!obj) return 0;
+    auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
+    if(!vp) return 0;
+    return vp->getMDIView();
+}
+

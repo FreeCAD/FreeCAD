@@ -173,6 +173,10 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
     return myMdi;
 }
 
+Gui::MDIView *ViewProviderTemplate::getMDIView() {
+    return getMDIViewPage();
+}
+
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const
 {
     return dynamic_cast<TechDraw::DrawTemplate*>(pcObject);

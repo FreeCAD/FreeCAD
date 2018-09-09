@@ -56,6 +56,8 @@ public:
     virtual void updateData(const App::Property*);
 
     TechDraw::DrawHatch* getViewObject() const;
+
+    virtual Gui::MDIView *getMDIView() override;
     
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

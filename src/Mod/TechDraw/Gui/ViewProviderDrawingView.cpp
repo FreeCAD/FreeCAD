@@ -236,6 +236,10 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
     return result;
 }
 
+Gui::MDIView *ViewProviderDrawingView::getMDIView() {
+    return getMDIViewPage();
+}
+
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
     if (dv == getViewObject()) {
