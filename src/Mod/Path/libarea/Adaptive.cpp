@@ -965,19 +965,19 @@ namespace AdaptivePath {
 				double maxFi=fi2;
 				if(maxFi<minFi) maxFi += 2*M_PI;
 
-				if(preventConvetional) {
+				if(preventConvetional && interPathLen>=RESOLUTION_FACTOR) {
 					// detect conventional mode cut - we want only climb mode
-					if(interPathLen>=RESOLUTION_FACTOR && !IsPointWithinCutRegion(cleared_paths,c2)) {
-						if(PointSideOfLine(fpc2,lpc2,c2)<0) {
-							IntPoint midPoint(long(c2.X + toolRadiusScaled*cos(0.5*(maxFi+minFi))),long(c2.Y + toolRadiusScaled*sin(0.5*(maxFi+minFi))));
-							if(PointSideOfLine(fpc2,lpc2,midPoint)>0) {
-								area = __DBL_MAX__;
-								Perf_CalcCutArea.Stop();
-								// #ifdef DEV_MODE
-								// 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
-								// #endif
-								return area;
-							}
+						if(!IsPointWithinCutRegion(cleared_paths,c2)) {
+							if(PointSideOfLine(fpc2,lpc2,c2)<0) {
+								IntPoint midPoint(long(c2.X + toolRadiusScaled*cos(0.5*(maxFi+minFi))),long(c2.Y + toolRadiusScaled*sin(0.5*(maxFi+minFi))));
+								if(PointSideOfLine(fpc2,lpc2,midPoint)>0) {
+									area = __DBL_MAX__;
+									Perf_CalcCutArea.Stop();
+									// #ifdef DEV_MODE
+									// 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
+									// #endif
+									return area;
+								}
 						}
 					}
 				}
@@ -1087,10 +1087,10 @@ namespace AdaptivePath {
 		if(stockToLeave>NTOL) {
 			clipof.Clear();
 			clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
-			// if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
-			// 	clipof.Execute(inputPaths,stockToLeave*scaleFactor);
-			// else
-			clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
+			if(opType==OperationType::otClearingOutside || opType==OperationType::otProfilingOutside)
+				clipof.Execute(inputPaths,stockToLeave*scaleFactor);
+			else
+				clipof.Execute(inputPaths,-stockToLeave*scaleFactor);
 		} else {
 			// fix for clipper glitches
 			clipof.Clear();
@@ -1131,7 +1131,6 @@ namespace AdaptivePath {
 		ClipperOffset clipof;
 		Clipper clip;
 
-		clip.PreserveCollinear(false);
 		// generate tool shape
 		clipof.Clear();
 		Path p;
@@ -1169,6 +1168,8 @@ namespace AdaptivePath {
 
 		DeduplicatePaths(converted,inputPaths);
 		ConnectPaths(inputPaths,inputPaths);
+		SimplifyPolygons(inputPaths);
+		ApplyStockToLeave(inputPaths);
 
 		//************************
 		// convert stock paths
@@ -1200,17 +1201,12 @@ namespace AdaptivePath {
 				clipof.Execute(stockOvershoot,overshootDistance);
 				ReversePaths(stockOvershoot);
 
-
 				if(opType==OperationType::otClearingOutside) {
 					// add stock paths, with overshooting
 					for(auto p : stockOvershoot) inputPaths.push_back(p);
 				} else if(opType==OperationType::otClearingInside)  {
 					// potential TODO: check if there are open paths, and try to close it through overshooted stock boundary
 				}
-
-				SimplifyPolygons(inputPaths);
-				// apply stock to leave
-				ApplyStockToLeave(inputPaths);
 
 				clipof.Clear();
 				clipof.AddPaths(inputPaths,JoinType::jtRound,EndType::etClosedPolygon);
@@ -1238,10 +1234,6 @@ namespace AdaptivePath {
 		}
 
 		if(opType==OperationType::otProfilingInside || opType==OperationType::otProfilingOutside) {
-				SimplifyPolygons(inputPaths);
-				// apply stock to leave
-				ApplyStockToLeave(inputPaths);
-
 				double offset = opType==OperationType::otProfilingInside  ? -2*(helixRampRadiusScaled+toolRadiusScaled)-RESOLUTION_FACTOR : 2*(helixRampRadiusScaled+toolRadiusScaled) + RESOLUTION_FACTOR;
 				for(const auto & current : inputPaths) {
 					int nesting = getPathNestingLevel(current,inputPaths);
