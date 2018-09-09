@@ -370,11 +370,6 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             auto link = obj;
             auto linkSub = binderSub;
             auto res = binderParent->resolveRelativeLink(linkSub,link,sub);
-            if(!res) {
-                QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
-                        QObject::tr("Cannot resolve parent"));
-                return;
-            }
             if(!sobj) {
                 sobj = link;
                 parent = res;
@@ -386,9 +381,11 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             }
         }
         obj = sobj;
-        binderParent = parent;
-        binderSub = parentSub;
-        binderParent->getSubObject(binderSub.c_str(),0,&mat);
+        if(parent) {
+            binderParent = parent;
+            binderSub = parentSub;
+            binderParent->getSubObject(binderSub.c_str(),0,&mat);
+        }
     }
         
     try {

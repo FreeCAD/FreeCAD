@@ -276,13 +276,16 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         std::string linkSub;
         auto obj = sel[0].pObject->resolveRelativeLink(subname,link,linkSub);
         if(!obj) {
-            FC_ERR("cannot resolve relative link");
-            return;
-        }
-        auto sobj = obj->getSubObject(subname.c_str(),0,&mat);
-        if(sobj!=self) {
-            FC_ERR("invalid selection " << subname);
-            return;
+            if(!link) {
+                FC_ERR("cannot resolve relative link");
+                return;
+            }
+        }else{
+            auto sobj = obj->getSubObject(subname.c_str(),0,&mat);
+            if(sobj!=self) {
+                FC_ERR("invalid selection " << subname);
+                return;
+            }
         }
     }
     if(!transaction) {
