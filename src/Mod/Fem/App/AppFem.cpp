@@ -133,61 +133,61 @@ PyMOD_INIT_FUNC(Fem)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
-    Fem::FemAnalysis                ::init();
-    Fem::FemAnalysisPython          ::init();
-    Fem::DocumentObject             ::init();
-    Fem::FeaturePython              ::init();
-    Fem::FemMesh                    ::init();
-    Fem::FemMeshObject              ::init();
-    Fem::FemMeshObjectPython        ::init();
-    Fem::FemMeshShapeObject         ::init();
-    Fem::FemMeshShapeNetgenObject   ::init();
-    Fem::PropertyFemMesh            ::init();
+    Fem::FemAnalysis                          ::init();
+    Fem::FemAnalysisPython                    ::init();
+    Fem::DocumentObject                       ::init();
+    Fem::FeaturePython                        ::init();
+    Fem::FemMesh                              ::init();
+    Fem::FemMeshObject                        ::init();
+    Fem::FemMeshObjectPython                  ::init();
+    Fem::FemMeshShapeObject                   ::init();
+    Fem::FemMeshShapeNetgenObject             ::init();
+    Fem::PropertyFemMesh                      ::init();
 
-    Fem::FemSetObject               ::init();
-    Fem::FemSetElementsObject       ::init();
-    Fem::FemSetFacesObject          ::init();
-    Fem::FemSetGeometryObject       ::init();
-    Fem::FemSetNodesObject          ::init();
+    Fem::FemSetObject                         ::init();
+    Fem::FemSetElementsObject                 ::init();
+    Fem::FemSetFacesObject                    ::init();
+    Fem::FemSetGeometryObject                 ::init();
+    Fem::FemSetNodesObject                    ::init();
 
-    Fem::Constraint                 ::init();
-    Fem::ConstraintPython           ::init();
+    Fem::Constraint                           ::init();
+    Fem::ConstraintPython                     ::init();
 
-    Fem::ConstraintBearing          ::init();
-    Fem::ConstraintContact          ::init();
-    Fem::ConstraintFixed            ::init();
-    Fem::ConstraintFluidBoundary    ::init();
-    Fem::ConstraintForce            ::init();
-    Fem::ConstraintDisplacement     ::init();
-    Fem::ConstraintGear             ::init();
-    Fem::ConstraintHeatflux         ::init();
-    Fem::ConstraintInitialTemperature ::init();
-    Fem::ConstraintPlaneRotation    ::init();
-    Fem::ConstraintPressure         ::init();
-    Fem::ConstraintPulley           ::init();
-    Fem::ConstraintTemperature      ::init();
-    Fem::ConstraintTransform        ::init();
+    Fem::ConstraintBearing                    ::init();
+    Fem::ConstraintContact                    ::init();
+    Fem::ConstraintFixed                      ::init();
+    Fem::ConstraintFluidBoundary              ::init();
+    Fem::ConstraintForce                      ::init();
+    Fem::ConstraintDisplacement               ::init();
+    Fem::ConstraintGear                       ::init();
+    Fem::ConstraintHeatflux                   ::init();
+    Fem::ConstraintInitialTemperature         ::init();
+    Fem::ConstraintPlaneRotation              ::init();
+    Fem::ConstraintPressure                   ::init();
+    Fem::ConstraintPulley                     ::init();
+    Fem::ConstraintTemperature                ::init();
+    Fem::ConstraintTransform                  ::init();
 
-    Fem::FemResultObject            ::init();
-    Fem::FemResultObjectPython      ::init();
-    Fem::FemSolverObject            ::init();
-    Fem::FemSolverObjectPython      ::init();
+    Fem::FemResultObject                      ::init();
+    Fem::FemResultObjectPython                ::init();
+    Fem::FemSolverObject                      ::init();
+    Fem::FemSolverObjectPython                ::init();
 
 #ifdef FC_USE_VTK
-    Fem::FemPostObject              ::init();
-    Fem::FemPostPipeline            ::init();
-    Fem::FemPostFilter              ::init();
-    Fem::FemPostClipFilter          ::init();
-    Fem::FemPostDataAlongLineFilter ::init();
-    Fem::FemPostDataAtPointFilter   ::init();
-    Fem::FemPostScalarClipFilter    ::init();
-    Fem::FemPostWarpVectorFilter    ::init();
-    Fem::FemPostCutFilter           ::init();
-    Fem::FemPostFunction            ::init();
-    Fem::FemPostFunctionProvider    ::init();
-    Fem::FemPostPlaneFunction       ::init();
-    Fem::FemPostSphereFunction      ::init();
-    Fem::PropertyPostDataObject     ::init();
+    Fem::FemPostObject                        ::init();
+    Fem::FemPostPipeline                      ::init();
+    Fem::FemPostFilter                        ::init();
+    Fem::FemPostClipFilter                    ::init();
+    Fem::FemPostDataAlongLineFilter           ::init();
+    Fem::FemPostDataAtPointFilter             ::init();
+    Fem::FemPostScalarClipFilter              ::init();
+    Fem::FemPostWarpVectorFilter              ::init();
+    Fem::FemPostCutFilter                     ::init();
+    Fem::FemPostFunction                      ::init();
+    Fem::FemPostFunctionProvider              ::init();
+    Fem::FemPostPlaneFunction                 ::init();
+    Fem::FemPostSphereFunction                ::init();
+    Fem::PropertyPostDataObject               ::init();
 #endif
 
     PyMOD_Return(femModule);
