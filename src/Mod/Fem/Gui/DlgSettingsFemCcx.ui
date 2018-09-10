@@ -236,7 +236,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-static-analysis.svg</normaloff>:/icons/fem-static-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-static.svg</normaloff>:/icons/fem-solver-analysis-static.svg</iconset>
              </property>
             </item>
             <item>
