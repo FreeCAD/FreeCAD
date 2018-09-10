@@ -1247,9 +1247,10 @@ bool CmdFemPostCutFilter::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter);
 
-CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
+CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
   : Command("FEM_PostCreateDataAlongLineFilter")
 {
     sAppModule      = "Fem";
@@ -1261,12 +1262,12 @@ CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
     sPixmap         = "fem-post-filter-data-along-line";
 }
 
-void CmdFemPostCreateDataAlongLineFilter::activated(int)
+void CmdFemPostDataAlongLineFilter::activated(int)
 {
     setupFilter(this, "DataAlongLine");
 }
 
-bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
+bool CmdFemPostDataAlongLineFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1684,7 +1685,7 @@ void CreateFemCommands(void)
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
+    rcCmdMgr.addCommand(new CmdFemPostDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
