@@ -1301,9 +1301,9 @@ bool CmdFemPostDataAtPointFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
+DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter);
 
-CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
+CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
   : Command("FEM_PostCreateLinearizedStressesFilter")
 {
     sAppModule      = "Fem";
@@ -1315,7 +1315,7 @@ CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilt
     sPixmap         = "fem-post-filter-linearized-stresses";
 }
 
-void CmdFemPostCreateLinearizedStressesFilter::activated(int)
+void CmdFemPostLinearizedStressesFilter::activated(int)
 {
 
     Gui::SelectionFilter DataAlongLineFilter("SELECT Fem::FemPostDataAlongLineFilter COUNT 1");
@@ -1329,19 +1329,19 @@ void CmdFemPostCreateLinearizedStressesFilter::activated(int)
              doCommand(Gui::Command::Doc, Plot().c_str());
         } else {
                 QMessageBox::warning(Gui::getMainWindow(),
-                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
-                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+                    qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
+                    qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
         }
 }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+            qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
     }
 
 }
 
-bool CmdFemPostCreateLinearizedStressesFilter::isActive(void)
+bool CmdFemPostLinearizedStressesFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1686,7 +1686,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
+    rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
