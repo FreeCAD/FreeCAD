@@ -218,11 +218,11 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         int       minden; 
 
         // Outputs
-        int              feet;    // whole feet
-        int              inches;  // whole inches
-        int              num,den; // numerator and denominator of fractional val
+        int       feet;    // whole feet
+        int       inches;  // whole inches
+        int       num,den; // numerator and denominator of fractional val
         std::stringstream output; // output stream
-        //
+        
         // Intermediate values
         int       ntot;    // total fractional units
         int       a,b,d;   // used to compute greatest common denominator
