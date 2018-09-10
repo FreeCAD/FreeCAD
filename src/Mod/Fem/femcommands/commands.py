@@ -255,7 +255,7 @@ class _CommandFemElementGeometry2D(CommandManager):
     "The FEM_ElementGeometry2D command definition"
     def __init__(self):
         super(_CommandFemElementGeometry2D, self).__init__()
-        self.resources = {'Pixmap': 'fem-shell-thickness',
+        self.resources = {'Pixmap': 'fem-element-geometry-2d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell plate thickness"),
                           'Accel': "C, S",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Creates a FEM shell plate thickness")}

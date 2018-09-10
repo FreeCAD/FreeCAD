@@ -32,6 +32,7 @@
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-element-fluid-1d.svg</file>
         <file>icons/fem-element-geometry-1d.svg</file>
+        <file>icons/fem-element-geometry-2d.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
@@ -66,7 +67,6 @@
         <file>icons/fem-post-geo-sphere.svg</file>
         <file>icons/fem-post-result-show.svg</file>
         <file>icons/fem-post-results-purge.svg</file>
-        <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>
