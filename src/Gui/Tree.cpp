@@ -2054,6 +2054,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
 
     if (!item->populated && !item->isExpanded()) {
         bool doPopulate = false;
+
+        // The following external object optimization is disabled because it
+        // disables the function of scroll to error object, in case it is an
+        // external one.
+#if 0
         bool external = item->object()->getDocument()!=item->getOwnerDocument()->document();
         if(external)
             return;
@@ -2061,7 +2066,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         auto linked = obj->getLinkedObject(true);
         if (linked && linked->getDocument()!=obj->getDocument())
             return;
-
+#endif
         for(auto child : item->myData->children) {
             auto it = ObjectMap.find(child);
             if(it == ObjectMap.end() || it->second->items.empty()) {
