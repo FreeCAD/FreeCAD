@@ -1273,9 +1273,9 @@ bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateDataAtPointFilter);
+DEF_STD_CMD_A(CmdFemPostDataAtPointFilter);
 
-CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
+CmdFemPostDataAtPointFilter::CmdFemPostDataAtPointFilter()
   : Command("FEM_PostCreateDataAtPointFilter")
 {
     sAppModule      = "Fem";
@@ -1287,14 +1287,14 @@ CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
     sPixmap         = "fem-post-filter-data-at-point";
 }
 
-void CmdFemPostCreateDataAtPointFilter::activated(int)
+void CmdFemPostDataAtPointFilter::activated(int)
 {
 
    setupFilter(this, "DataAtPoint");
 
 }
 
-bool CmdFemPostCreateDataAtPointFilter::isActive(void)
+bool CmdFemPostDataAtPointFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1685,7 +1685,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
+    rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
