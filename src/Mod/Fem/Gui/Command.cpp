@@ -248,7 +248,7 @@ CmdFemCreateSolver::CmdFemCreateSolver()
     sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
     sWhatsThis      = "FEM_CreateSolver";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-solver";
+    sPixmap         = "fem-solver-standard";
 }
 
 void CmdFemCreateSolver::activated(int)
