@@ -16,10 +16,6 @@ if(BUILD_TEMPLATE)
 endif(BUILD_TEMPLATE)
 
 
-if(FREECAD_MAINTAINERS_BUILD AND WIN32)
-    #add_subdirectory(WindowsInstaller)
-endif(FREECAD_MAINTAINERS_BUILD AND WIN32)
-
 if(FREECAD_CREATE_MAC_APP)
     add_subdirectory(MacAppBundle)
 endif(FREECAD_CREATE_MAC_APP)
