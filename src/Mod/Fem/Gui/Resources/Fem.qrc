@@ -48,7 +48,6 @@
         <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
-        <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
@@ -73,6 +72,7 @@
         <file>icons/fem-solver-cfd.svg</file>
         <file>icons/fem-solver-control.svg</file>
         <file>icons/fem-solver-elmer.svg</file>
+        <file>icons/fem-solver-inp-editor.svg</file>
         <file>icons/fem-solver-run.svg</file>
         <file>icons/fem-solver-standard.svg</file>
 
