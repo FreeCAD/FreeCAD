@@ -31,6 +31,7 @@
         <file>icons/fem-constraint-selfweight.svg</file>
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
+        <file>icons/fem-element-fluid-1d.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
@@ -46,7 +47,6 @@
         <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
-        <file>icons/fem-fluid-section.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
