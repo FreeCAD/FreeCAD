@@ -245,7 +245,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-frequency-analysis.svg</normaloff>:/icons/fem-frequency-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-frequency.svg</normaloff>:/icons/fem-solver-analysis-frequency.svg</iconset>
              </property>
             </item>
             <item>
