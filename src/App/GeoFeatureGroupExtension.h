@@ -50,11 +50,15 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
+    typedef App::GroupExtension inherited;
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
+    PropertyBool _GroupTouched;
     PropertyPlacement& placement();
     
+    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+
     virtual void initExtension(ExtensionContainer* obj) override;
 
     /**

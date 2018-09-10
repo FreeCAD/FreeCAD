@@ -50,11 +50,20 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
+    EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
+            PropertyType(Prop_Hidden|Prop_Transient),0);
     Group.setScope(LinkScope::Child);
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
 {
+}
+
+App::DocumentObjectExecReturn *GeoFeatureGroupExtension::extensionExecute(void) {
+    // This is touch property is for propagating changes to upper group, which
+    // is a must for Part::Feature::getTopoShape() caching to work
+    _GroupTouched.touch();
+    return inherited::extensionExecute();
 }
 
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
@@ -154,6 +163,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<Ap
                 group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
             
             if (!hasObject(obj)) {
+                obj->Visibility.setStatus(App::Property::Output,false);
                 grp.push_back(obj);
                 ret.push_back(obj);
             }
@@ -170,6 +180,9 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     std::vector<DocumentObject*> grp = Group.getValues();
     
     for(auto object : objects) {
+        if(object)
+            object->Visibility.setStatus(App::Property::Output,true);
+
         //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
         std::vector< DocumentObject* > links = getCSRelevantLinks(object);
         links.push_back(object);
