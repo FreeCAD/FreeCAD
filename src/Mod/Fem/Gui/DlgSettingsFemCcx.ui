@@ -254,7 +254,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-thermomechanical-analysis.svg</normaloff>:/icons/fem-thermomechanical-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-thermomechanical.svg</normaloff>:/icons/fem-solver-analysis-thermomechanical.svg</iconset>
              </property>
             </item>
            </widget>
