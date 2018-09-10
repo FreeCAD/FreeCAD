@@ -1196,9 +1196,9 @@ plt.show()\n";
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
+DEF_STD_CMD_A(CmdFemPostClipFilter);
 
-CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
+CmdFemPostClipFilter::CmdFemPostClipFilter()
   : Command("FEM_PostCreateClipFilter")
 {
     sAppModule      = "Fem";
@@ -1210,12 +1210,12 @@ CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
     sPixmap         = "fem-post-filter-clip-region";
 }
 
-void CmdFemPostCreateClipFilter::activated(int)
+void CmdFemPostClipFilter::activated(int)
 {
     setupFilter(this, "Clip");
 }
 
-bool CmdFemPostCreateClipFilter::isActive(void)
+bool CmdFemPostClipFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1474,8 +1474,8 @@ void CmdFemPostFunctions::activated(int iMsg)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
+            qApp->translate("CmdFemPostClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostClipFilter", "Select a pipeline, please."));
     }
 
     // Since the default icon is reset when enabing/disabling the command we have
@@ -1682,7 +1682,7 @@ void CreateFemCommands(void)
 
     // vtk post processing
 #ifdef FC_USE_VTK
-    rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
