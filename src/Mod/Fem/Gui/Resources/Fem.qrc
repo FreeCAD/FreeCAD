@@ -33,7 +33,6 @@
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-control-solver.svg</file>
-        <file>icons/fem-elmer.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
@@ -72,6 +71,7 @@
         <file>icons/fem-post-results-purge.svg</file>
         <file>icons/fem-run-solver.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
+        <file>icons/fem-solver-elmer.svg</file>
         <file>icons/fem-solver.svg</file>
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
