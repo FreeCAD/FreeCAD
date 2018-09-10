@@ -30,9 +30,12 @@
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
 #include <boost/bind.hpp>
+
+FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
@@ -105,17 +108,34 @@ boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
     return docObj->getExpression(path).expression;
 }
 
-std::string ExpressionBinding::getExpressionString() const
+std::string ExpressionBinding::getExpressionString(bool no_throw) const
 {
-    if (!getExpression())
-        throw Base::RuntimeError("No expression found.");
-
-    return getExpression()->toString();
+    try {
+        if (!getExpression())
+            throw Base::RuntimeError("No expression found.");
+        return getExpression()->toString();
+    } catch (Base::Exception &e) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: " << e.what());
+        else
+            throw;
+    } catch (std::exception &e) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: " << e.what());
+        else
+            throw;
+    } catch (...) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: unknown exception");
+        else
+            throw;
+    }
+    return std::string();
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const
 {
-    return Base::Tools::escapedUnicodeFromUtf8(getExpressionString().c_str());
+    return Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
 }
 
 QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
