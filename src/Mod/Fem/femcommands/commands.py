@@ -753,7 +753,7 @@ class _CommandFemSolverRun(CommandManager):
     "The FEM_SolverRun command definition"
     def __init__(self):
         super(_CommandFemSolverRun, self).__init__()
-        self.resources = {'Pixmap': 'fem-run-solver',
+        self.resources = {'Pixmap': 'fem-solver-run',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run solver calculations"),
                           'Accel': "R, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Runs the calculations for the selected solver")}
