@@ -674,7 +674,7 @@ class _CommandFemSolverCalculixCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
     def __init__(self):
         super(_CommandFemSolverCalculixCxxtools, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX Standard"),
                           'Accel': "S, X",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a standard FEM solver CalculiX with ccx tools")}
@@ -703,7 +703,7 @@ class _CommandFemSolverCalculiX(CommandManager):
     "The FEM_SolverCalculix command definition"
     def __init__(self):
         super(_CommandFemSolverCalculiX, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX (experimental)"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Creates a FEM solver CalculiX (experimental)")}
@@ -812,7 +812,7 @@ class _CommandFemSolverZ88(CommandManager):
     "The FEM_SolverZ88 command definition"
     def __init__(self):
         super(_CommandFemSolverZ88, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
                           'Accel': "S, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
