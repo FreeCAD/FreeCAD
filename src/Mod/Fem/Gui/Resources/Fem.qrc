@@ -48,7 +48,6 @@
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-fluid-section.svg</file>
-        <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
@@ -69,6 +68,7 @@
         <file>icons/fem-post-result-show.svg</file>
         <file>icons/fem-post-results-purge.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
+        <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>
         <file>icons/fem-solver-control.svg</file>
