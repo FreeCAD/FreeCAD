@@ -956,7 +956,8 @@ void PropertySheet::addDependencies(CellAddress key)
 
     std::set<ObjectIdentifier>::const_iterator i = expressionDeps.begin();
     while (i != expressionDeps.end()) {
-        const Property * prop = i->getProperty();
+        ObjectIdentifier::PseudoPropertyType ptype;
+        const Property * prop = i->getProperty(&ptype);
         const App::DocumentObject * docObj = i->getDocumentObject();
         App::Document * doc = i->getDocument();
 
@@ -967,7 +968,7 @@ void PropertySheet::addDependencies(CellAddress key)
         if (!prop)
             cell->setResolveException("Unresolved dependency");
         else {
-            if(prop->getContainer() == docObj)
+            if(ptype==App::ObjectIdentifier::PseudoNone && prop->getContainer()==docObj)
                 propName += i->getPropertyName();
 
             documentObjectName[docObj] = docObj->Label.getValue();

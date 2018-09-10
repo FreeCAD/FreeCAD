@@ -276,15 +276,15 @@ const ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdent
     if (!docObj)
         throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
 
-    Property * prop = p.getProperty();
+    ObjectIdentifier::PseudoPropertyType ptype;
+    Property * prop = p.getProperty(&ptype);
 
     // p pointing to a property...?
     if (!prop)
         throw Base::RuntimeError("Property not found");
 
-    // ... in the same container as I?
-    if (prop->getContainer() != getContainer())
-        throw Base::RuntimeError("Property does not belong to same container as PropertyExpressionEngine");
+    if(ptype != ObjectIdentifier::PseudoNone || prop->getContainer()!=getContainer())
+        return p;
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
     if (prop->isDerivedFrom(PropertyExpressionEngine::classTypeId))

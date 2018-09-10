@@ -206,10 +206,16 @@ public:
 
     std::string toEscapedString() const;
 
-    App::Property *getProperty() const;
-
-    App::Property *resolveProperty(const App::DocumentObject *obj, 
-        const char *propertyName, App::DocumentObject *&sobj) const;
+    enum PseudoPropertyType {
+        PseudoNone,
+        PseudoShape,
+        PseudoPlacement,
+        PseudoMatrix,
+        PseudoLinkPlacement,
+        PseudoLinkMatrix,
+        PseudoSelf,
+    };
+    App::Property *getProperty(PseudoPropertyType *ptype=0) const;
 
     App::ObjectIdentifier canonicalPath() const;
 
@@ -285,10 +291,16 @@ protected:
         App::DocumentObject * resolvedSubObject;
         App::Property * resolvedProperty;
         std::string propertyName;
+        PseudoPropertyType propertyType;
 
         std::string resolveErrorString() const;
         void getProperty(const ObjectIdentifier &oi);
     };
+
+    friend class ResolveResults;
+
+    App::Property *resolveProperty(const App::DocumentObject *obj, 
+        const char *propertyName, App::DocumentObject *&sobj,PseudoPropertyType &ptype) const;
 
     std::string getSubPathStr(const ResolveResults &result, PythonVariables *var=0) const;
 

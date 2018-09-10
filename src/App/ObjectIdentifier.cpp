@@ -864,7 +864,8 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                     // interpret the first component as the property name.
                     auto docObj = static_cast<const DocumentObject*>(owner);
                     DocumentObject *sobj = 0;
-                    results.resolvedProperty = resolveProperty(docObj,components[0].name,sobj);
+                    results.resolvedProperty = resolveProperty(
+                            docObj,components[0].name,sobj,results.propertyType);
                     if(results.resolvedProperty) {
                         results.propertyName = components[0].name.getString();
                         results.resolvedDocument = docObj->getDocument();
@@ -1058,15 +1059,16 @@ ObjectIdentifier &ObjectIdentifier::operator <<(const ObjectIdentifier::Componen
  * @return Point to property if it is uniquely defined, or 0 otherwise.
  */
 
-Property *ObjectIdentifier::getProperty() const
+Property *ObjectIdentifier::getProperty(PseudoPropertyType *ptype) const
 {
     ResolveResults result(*this);
-
+    if(ptype)
+        *ptype = result.propertyType;
     return result.resolvedProperty;
 }
 
 Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj, 
-        const char *propertyName, App::DocumentObject *&sobj) const 
+        const char *propertyName, App::DocumentObject *&sobj, PseudoPropertyType &ptype) const 
 {
     if(obj && subObjectName.getString().size()) {
         sobj = obj->getSubObject(subObjectName);
@@ -1074,14 +1076,25 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
     }
     if(!obj)
         return 0;
-    if(strcmp(propertyName,"Shape_")==0)
-        propertyName = "Shape";
-    else if(strcmp(propertyName,"Placement_")==0)
-        propertyName = "Placement";
+
+    static std::map<std::string,PseudoPropertyType> _props = {
+        {"Shape_",PseudoShape}, 
+        {"Placement_",PseudoPlacement},
+        {"Matrix_",PseudoMatrix},
+        {"Placement__",PseudoLinkPlacement},
+        {"Matrix__",PseudoLinkMatrix},
+        {"Self_",PseudoSelf},
+    };
+    auto it = _props.find(propertyName);
+    if(it == _props.end())
+        ptype = PseudoNone;
+    else {
+        ptype = it->second;
+        return &const_cast<App::DocumentObject*>(obj)->Label; //fake the property
+    }
+    
     auto prop = obj->getPropertyByName(propertyName);
-    if(prop && 
-       !prop->testStatus(Property::Hidden) &&
-       !(prop->getType() & PropertyType::Prop_Hidden))
+    if(prop && !prop->testStatus(Property::Hidden) && !(prop->getType() & PropertyType::Prop_Hidden))
         return prop;
 
     auto linked = obj->getLinkedObject(true);
@@ -1230,38 +1243,49 @@ std::string ObjectIdentifier::getPythonAccessor(PythonVariables *vars) const
 {
     std::stringstream ss;
     ResolveResults result(*this);
-    if(!result.resolvedDocumentObject ||
+    if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
         return std::string();
 
     ss << "App.getDocument('" << result.resolvedDocument->getName()
-      << "').getObject('"  << result.resolvedDocumentObject->getNameInDocument() << "').";
+      << "').getObject('"  << result.resolvedDocumentObject->getNameInDocument() << "')";
 
-    if(subObjectName.getString().size() || 
-       result.propertyName=="Shape_" || 
-       result.propertyName=="Placement_") 
-    {
-        ss << "getSubObject('" << result.subObjectName.getString();
-        if(result.propertyName == "Shape_")
+    auto ptype = result.propertyType;
+
+    if(result.resolvedSubObject || (ptype!=PseudoSelf && ptype!=PseudoNone)) {
+        ss << ".getSubObject('" << result.subObjectName.getString();
+        switch(ptype) {
+        case PseudoShape:
+            ptype = PseudoSelf;
             ss << "')";
-        else if(result.propertyName == "Placement_")
+            break;
+        case PseudoPlacement:
+            ptype = PseudoSelf;
             ss << "',retType=3)";
-        else {
-            ss << "',retType=1).";
-            if(result.resolvedProperty == 0)
-                return std::string();
-            if(result.resolvedProperty->getContainer()!=result.resolvedSubObject)
-                ss << "getLinkedObject(True).";
-            ss << result.propertyName;
+            break;
+        case PseudoMatrix:
+            ptype = PseudoSelf;
+            ss << "',retType=4)";
+            break;
+        case PseudoLinkPlacement:
+            ptype = PseudoSelf;
+            ss << "',retType=5)";
+            break;
+        case PseudoLinkMatrix:
+            ptype = PseudoSelf;
+            ss << "',retType=6)";
+            break;
+        default:
+            ss << "',retType=1)";
         }
-        ss << getSubPathStr(result,vars);
-    }else{
-        if(result.resolvedProperty == 0)
-            return std::string();
-        if(result.resolvedProperty->getContainer()!=result.resolvedDocumentObject)
-            ss << "getLinkedObject(True).";
-        ss << result.propertyName << getSubPathStr(result,vars);
     }
+    if(ptype != PseudoSelf) {
+        auto container = result.resolvedProperty->getContainer();
+        if(container!=result.resolvedDocumentObject && container!=result.resolvedSubObject)
+            ss << ".getLinkedObject(True)";
+        ss << '.' << result.propertyName;
+    }
+    ss << getSubPathStr(result,vars);
     return ss.str();
 }
 
@@ -1430,6 +1454,7 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 }
 
 void ObjectIdentifier::ResolveResults::getProperty(const ObjectIdentifier &oi) {
-    resolvedProperty = oi.resolveProperty(resolvedDocumentObject,propertyName.c_str(),resolvedSubObject);
+    resolvedProperty = oi.resolveProperty(
+            resolvedDocumentObject,propertyName.c_str(),resolvedSubObject,propertyType);
 }
 
