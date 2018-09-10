@@ -2529,19 +2529,27 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
 }
 
 std::vector<App::Document*> Document::getDependentDocuments(bool sort) {
+    return getDependentDocuments({this},sort);
+}
+
+std::vector<App::Document*> Document::getDependentDocuments(
+        std::vector<App::Document*> pending, bool sort) 
+{
     DependencyList depList;
     std::map<Document*,Vertex> docMap;
     std::map<Vertex,Document*> vertexMap;
 
-    std::vector<App::Document*> ret,pending;
+    std::vector<App::Document*> ret;
+    if(pending.empty())
+        return ret;
+
     auto outLists = PropertyXLink::getDocumentOutList();
     std::set<App::Document*> docs;
-    docs.insert(this);
-    pending.push_back(this);
-
-    if(sort)
-        docMap[this] = add_vertex(depList);
-
+    docs.insert(pending.begin(),pending.end());
+    if(sort) {
+        for(auto doc : pending)
+            docMap[doc] = add_vertex(depList);
+    }
     while(pending.size()) {
         auto doc = pending.back();
         pending.pop_back();
@@ -2562,10 +2570,7 @@ std::vector<App::Document*> Document::getDependentDocuments(bool sort) {
     }
 
     if(!sort) {
-        for(auto doc : docs) {
-            if(doc!=this)
-                ret.push_back(doc);
-        }
+        ret.insert(ret.end(),docs.begin(),docs.end());
         return ret;
     }
 

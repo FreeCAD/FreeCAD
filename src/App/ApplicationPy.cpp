@@ -129,8 +129,8 @@ PyMethodDef Application::Methods[] = {
      "Get a document by its name or raise an exception\n"
      "if there is no document with the given name."},
     {"listDocuments",  (PyCFunction) Application::sListDocuments  ,1,
-     "listDocuments() -> list\n\n"
-     "Return a list of names of all documents."},
+     "listDocuments(sort=False) -> list\n\n"
+     "Return a list of names of all documents, optionally sort in dependency order."},
     {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver  ,1,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
@@ -643,22 +643,26 @@ PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject
 
 PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+    PyObject *sort = Py_False;
+    if (!PyArg_ParseTuple(args, "|O",&sort))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
     PY_TRY {
         PyObject *pDict = PyDict_New();
         PyObject *pKey;
         Base::PyObjectBase* pValue;
 
-        for (std::map<std::string,Document*>::const_iterator It = GetApplication().DocMap.begin();
-             It != GetApplication().DocMap.end();++It) {
+        std::vector<Document*> docs = GetApplication().getDocuments();;
+        if(PyObject_IsTrue(sort))
+            docs = Document::getDependentDocuments(docs,true);
+
+        for (auto doc : docs) {
 #if PY_MAJOR_VERSION >= 3
-            pKey   = PyUnicode_FromString(It->first.c_str());
+            pKey   = PyUnicode_FromString(doc->getName());
 #else
-            pKey   = PyString_FromString(It->first.c_str());
+            pKey   = PyString_FromString(doc->getName());
 #endif
             // GetPyObject() increments
-            pValue = static_cast<Base::PyObjectBase*>(It->second->getPyObject());
+            pValue = static_cast<Base::PyObjectBase*>(doc->getPyObject());
             PyDict_SetItem(pDict, pKey, pValue);
             // now we can decrement again as PyDict_SetItem also has incremented
             pValue->DecRef();

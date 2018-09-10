@@ -430,6 +430,7 @@ public:
          bool noExternal=false, bool sort=false, bool *hasExternal=0);
 
     std::vector<App::Document*> getDependentDocuments(bool sort=true);
+    static std::vector<App::Document*> getDependentDocuments(std::vector<App::Document*> docs, bool sort);
 
     // set Changed
     //void setChanged(DocumentObject* change);
