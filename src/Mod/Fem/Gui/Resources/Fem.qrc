@@ -69,9 +69,9 @@
         <file>icons/fem-post-geo-sphere.svg</file>
         <file>icons/fem-post-result-show.svg</file>
         <file>icons/fem-post-results-purge.svg</file>
-        <file>icons/fem-run-solver.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-solver-elmer.svg</file>
+        <file>icons/fem-solver-run.svg</file>
         <file>icons/fem-solver.svg</file>
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
