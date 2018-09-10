@@ -23,10 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Standard_Failure.hxx>
 #endif
 
 
+#include <Base/Parameter.h>
+#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <Mod/Part/App/modelRefine.h>
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
 
@@ -42,11 +46,39 @@ FeatureAddSub::FeatureAddSub()
   :  addSubType(Additive)
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    //init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
 {
     return addSubType;
+}
+
+short FeatureAddSub::mustExecute() const
+{
+    if (Refine.isTouched())
+        return 1;
+    return PartDesign::Feature::mustExecute();
+}
+
+TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    if (this->Refine.getValue()) {
+        try {
+            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            TopoDS_Shape resShape = mkRefine.Shape();
+            return resShape;
+        }
+        catch (Standard_Failure&) {
+            return oldShape;
+        }
+    }
+
+    return oldShape;
 }
 
 }
