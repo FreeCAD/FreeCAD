@@ -1220,6 +1220,33 @@ bool CmdFemPostCreateClipFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostCutFilter);
+
+CmdFemPostCutFilter::CmdFemPostCutFilter()
+  : Command("FEM_PostCreateCutFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Function cut filter");
+    sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
+    sWhatsThis      = "FEM_PostCreateCutFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-cut-function";
+}
+
+void CmdFemPostCutFilter::activated(int)
+{
+    setupFilter(this, "Cut");
+}
+
+bool CmdFemPostCutFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
 DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
 
 CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
@@ -1367,32 +1394,6 @@ void CmdFemPostWarpVectorFilter::activated(int)
 }
 
 bool CmdFemPostWarpVectorFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemPostCutFilter);
-
-CmdFemPostCutFilter::CmdFemPostCutFilter()
-  : Command("FEM_PostCreateCutFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Function cut filter");
-    sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
-    sWhatsThis      = "FEM_PostCreateCutFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-cut-function";
-}
-
-void CmdFemPostCutFilter::activated(int)
-{
-    setupFilter(this, "Cut");
-}
-
-bool CmdFemPostCutFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1682,6 +1683,7 @@ void CreateFemCommands(void)
     // vtk post processing
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
@@ -1690,6 +1692,5 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
-    rcCmdMgr.addCommand(new CmdFemPostCutFilter);
 #endif
 }
