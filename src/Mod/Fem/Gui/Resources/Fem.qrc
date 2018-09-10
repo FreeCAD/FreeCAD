@@ -10,7 +10,6 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-beam-rotation.svg</file>
-        <file>icons/fem-beam-section.svg</file>
         <file>icons/fem-clipping-plane-add.svg</file>
         <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
@@ -32,6 +31,7 @@
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-element-fluid-1d.svg</file>
+        <file>icons/fem-element-geometry-1d.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
