@@ -25,13 +25,16 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QMenu>
 # include <QPixmap>
+# include <boost/bind.hpp>
 #endif
 
 #include <App/Part.h>
 #include <App/Document.h>
 
 #include "ActiveObjectList.h"
+#include "ActionFunction.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 
@@ -66,6 +69,15 @@ ViewProviderPart::~ViewProviderPart()
  */
 void ViewProviderPart::onChanged(const App::Property* prop) {
     ViewProviderDragger::onChanged(prop);
+}
+
+void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Toggle active part"));
+    func->trigger(act, boost::bind(&ViewProviderPart::doubleClicked, this));
+
+    ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPart::doubleClicked(void)
