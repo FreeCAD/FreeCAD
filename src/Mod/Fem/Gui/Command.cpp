@@ -1348,9 +1348,9 @@ bool CmdFemPostLinearizedStressesFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateScalarClipFilter);
+DEF_STD_CMD_A(CmdFemPostScalarClipFilter);
 
-CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
+CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
   : Command("FEM_PostCreateScalarClipFilter")
 {
     sAppModule      = "Fem";
@@ -1362,12 +1362,12 @@ CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
     sPixmap         = "fem-post-filter-clip-scalar";
 }
 
-void CmdFemPostCreateScalarClipFilter::activated(int)
+void CmdFemPostScalarClipFilter::activated(int)
 {
     setupFilter(this, "ScalarClip");
 }
 
-bool CmdFemPostCreateScalarClipFilter::isActive(void)
+bool CmdFemPostScalarClipFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1687,7 +1687,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
