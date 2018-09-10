@@ -1808,7 +1808,7 @@ static void _loadDeps(const std::string &name,
             objs.emplace(name,false);
         return;
     }
-    objs.emplace(name,true);
+    objs[name] = true;
     // If cannot load partial, then recurse to load all children dependency
     for(auto &dep : it->second.deps) {
         auto it = objs.find(dep);
