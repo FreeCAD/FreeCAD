@@ -217,7 +217,7 @@ class _CommandFemElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
     def __init__(self):
         super(_CommandFemElementFluid1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-fluid-section',
+        self.resources = {'Pixmap': 'fem-element-fluid-1d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid section for 1D flow"),
                           'Accel': "C, B",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Creates a FEM fluid section for 1D flow")}
