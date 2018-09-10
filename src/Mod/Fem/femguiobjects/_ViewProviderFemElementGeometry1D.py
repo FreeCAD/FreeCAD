@@ -45,7 +45,7 @@ class _ViewProviderFemElementGeometry1D:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-beam-section.svg"
+        return ":/icons/fem-element-geometry-1d.svg"
 
     def attach(self, vobj):
         from pivy import coin

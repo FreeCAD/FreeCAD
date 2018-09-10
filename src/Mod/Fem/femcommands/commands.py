@@ -236,7 +236,7 @@ class _CommandFemElementGeometry1D(CommandManager):
     "The Fem_ElementGeometry1D command definition"
     def __init__(self):
         super(_CommandFemElementGeometry1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-section',
+        self.resources = {'Pixmap': 'fem-element-geometry-1d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam cross section"),
                           'Accel': "C, B",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Creates a FEM beam cross section")}
