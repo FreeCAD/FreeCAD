@@ -69,11 +69,11 @@
         <file>icons/fem-post-result-show.svg</file>
         <file>icons/fem-post-results-purge.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
+        <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-control.svg</file>
         <file>icons/fem-solver-elmer.svg</file>
         <file>icons/fem-solver-run.svg</file>
         <file>icons/fem-solver-standard.svg</file>
-        <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
 
         <file>translations/Fem_af.qm</file>
