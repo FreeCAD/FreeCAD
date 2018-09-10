@@ -75,10 +75,6 @@
 #include "ViewProviderFemPostFilter.h"
 #endif
 
-#ifdef FC_USE_VTK
-#include "ViewProviderFemPostObject.h"
-#endif
-
 
 // use a different name to CreateCommand()
 void CreateFemCommands(void);
