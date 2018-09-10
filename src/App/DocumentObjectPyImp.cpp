@@ -369,8 +369,8 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                 &obj,&retType,&pyMat,&doTransform,&depth))
         return 0;
 
-    if(retType<0 || retType>3) {
-        PyErr_SetString(PyExc_TypeError, "invalid retType, can only be integer 0, 1 or 2");
+    if(retType<0 || retType>6) {
+        PyErr_SetString(PyExc_TypeError, "invalid retType, can only be integer 0~6");
         return 0;
     }
 
@@ -416,6 +416,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     bool transform = PyObject_IsTrue(doTransform);
 
     struct SubInfo {
+        App::DocumentObject *sobj;
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
@@ -437,12 +438,12 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             ret.emplace_back(mat);
             auto &info = ret.back();
             PyObject *pyObj = 0;
-            auto obj = getDocumentObjectPtr()->getSubObject(
-                    sub.c_str(),retType==1||retType==3?0:&pyObj,&info.mat,transform,depth);
+            info.sobj = getDocumentObjectPtr()->getSubObject(
+                    sub.c_str(),retType!=0&&retType!=2?0:&pyObj,&info.mat,transform,depth);
             if(pyObj)
                 info.pyObj = Py::Object(pyObj,true);
-            if(obj) 
-                info.obj = Py::Object(obj->getPyObject(),true);
+            if(info.sobj) 
+                info.obj = Py::Object(info.sobj->getPyObject(),true);
         }
         if(ret.empty())
             Py_Return;
@@ -454,6 +455,16 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                 return Py::new_reference_to(ret[0].obj);
             else if(retType==3)
                 return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
+            else if(retType==4)
+                return Py::new_reference_to(Py::Matrix(ret[0].mat));
+            else if(retType==5 || retType==6) {
+                if(ret[0].sobj)
+                    ret[0].sobj->getLinkedObject(true,&ret[0].mat,false);
+                if(retType==5)
+                    return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
+                else
+                    return Py::new_reference_to(Py::Matrix(ret[0].mat));
+            }
             Py::Tuple rret(retType==1?2:3);
             rret.setItem(0,ret[0].obj);
             rret.setItem(1,Py::Object(new Base::MatrixPy(ret[0].mat)));
@@ -469,7 +480,16 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                 tuple.setItem(i,ret[i].obj);
             else if(retType==3)
                 tuple.setItem(i,Py::Placement(Base::Placement(ret[0].mat)));
-            else {
+            else if(retType==4)
+                tuple.setItem(i,Py::Matrix(ret[0].mat));
+            else if(retType==5 || retType==6) {
+                if(ret[i].sobj)
+                    ret[i].sobj->getLinkedObject(true,&ret[i].mat,false);
+                if(retType==5)
+                    tuple.setItem(i,Py::Placement(Base::Placement(ret[i].mat)));
+                else
+                    tuple.setItem(i,Py::Matrix(ret[i].mat));
+            } else {
                 Py::Tuple rret(retType==1?2:3);
                 rret.setItem(0,ret[i].obj);
                 rret.setItem(1,Py::Object(new Base::MatrixPy(ret[i].mat)));
