@@ -721,7 +721,7 @@ class _CommandFemSolverControl(CommandManager):
     "The FEM_SolverControl command definition"
     def __init__(self):
         super(_CommandFemSolverControl, self).__init__()
-        self.resources = {'Pixmap': 'fem-control-solver',
+        self.resources = {'Pixmap': 'fem-solver-control',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
