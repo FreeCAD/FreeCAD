@@ -534,6 +534,33 @@ bool StdCmdSaveCopy::isActive(void)
 }
 
 //===========================================================================
+// Std_SaveAll
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSaveAll);
+
+StdCmdSaveAll::StdCmdSaveAll()
+  :Command("Std_SaveAll")
+{
+  sGroup        = QT_TR_NOOP("File");
+  sMenuText     = QT_TR_NOOP("Save All");
+  sToolTipText  = QT_TR_NOOP("Save all opened document");
+  sWhatsThis    = "Std_SaveAll";
+  sStatusTip    = QT_TR_NOOP("Save all opened document");
+}
+
+void StdCmdSaveAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    Gui::Document::saveAll();
+}
+
+bool StdCmdSaveAll::isActive(void)
+{
+  return ( getActiveGuiDocument() ? true : false );
+}
+
+
+//===========================================================================
 // Std_Revert
 //===========================================================================
 DEF_STD_CMD_A(StdCmdRevert);
@@ -1475,6 +1502,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
     rcCmdMgr.addCommand(new StdCmdSaveCopy());
+    rcCmdMgr.addCommand(new StdCmdSaveAll());
     rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());

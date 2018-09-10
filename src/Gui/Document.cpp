@@ -1029,6 +1029,50 @@ bool Document::saveAs(void)
     }
 }
 
+void Document::saveAll() {
+    std::vector<App::Document*> docs;
+    try {
+        docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        int ret = QMessageBox::critical(getMainWindow(), QObject::tr("Failed to save document"),
+                QObject::tr("Documents contains cyclic dependices. Do you still want to save them?"),
+                QMessageBox::Yes,QMessageBox::No);
+        if(ret!=QMessageBox::Yes)
+            return;
+        docs = App::GetApplication().getDocuments();
+    }
+    std::map<App::Document *, bool> dmap;
+    for(auto doc : docs)
+        dmap[doc] = doc->mustExecute();
+    for(auto doc : docs) {
+        if(doc->testStatus(App::Document::PartialDoc))
+            continue;
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(!gdoc)
+            continue;
+        if(!doc->isSaved()) {
+            if(!gdoc->saveAs())
+                break;
+        }
+        Gui::WaitCursor wc;
+
+        try {
+            // Changed 'mustExecute' status may be triggered by saving external document
+            if(!dmap[doc] && doc->mustExecute())
+                Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
+            Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
+            gdoc->setModified(false);
+        } catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), 
+                    QObject::tr("Failed to save document") + 
+                        QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())), 
+                    QString::fromLatin1(e.what()));
+            break;
+        }
+    }
+}
+
 /// Save a copy of the document under a new file name
 bool Document::saveCopy(void)
 {
