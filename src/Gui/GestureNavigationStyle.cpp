@@ -61,7 +61,7 @@
 # include <QRegExp>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/SoPath.h>
+# include <Inventor/SoFullPath.h>
 # include <Inventor/draggers/SoDragger.h>
 #endif
 
@@ -635,8 +635,14 @@ bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
     rp.setPoint(pos);
     rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
     SoPickedPoint* pick = rp.getPickedPoint();
-    if (pick)
-        return pick->getPath()->getTail()->isOfType(SoDragger::getClassTypeId());
-    else
+    if (pick){
+        const SoFullPath* fullpath = static_cast<const SoFullPath*>(pick->getPath());
+        for(int i = 0; i < fullpath->getLength(); ++i){
+            if(fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId()))
+                return true;
+        }
         return false;
+    } else {
+        return false;
+    }
 }
