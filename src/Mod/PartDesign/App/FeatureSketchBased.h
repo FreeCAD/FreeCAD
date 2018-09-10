@@ -54,8 +54,6 @@ public:
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
 
-    App::PropertyBool Refine;
-
     short mustExecute() const;
 
     /** calculates and updates the Placement property based on the features
@@ -111,7 +109,6 @@ public:
     
 protected:
     void remapSupportShape(const TopoDS_Shape&);
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,

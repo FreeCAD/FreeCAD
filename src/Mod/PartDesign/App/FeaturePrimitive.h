@@ -55,7 +55,6 @@ public:
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape& oldShape) const;    
     virtual void onChanged(const App::Property* prop);
     virtual PyObject* getPyObject();
     
