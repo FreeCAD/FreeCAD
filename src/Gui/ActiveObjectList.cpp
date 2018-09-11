@@ -40,16 +40,29 @@ using namespace Gui;
 
 void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name, const Gui::HighlightMode& mode)
 {
-    if (hasObject(name)){
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    bool autoExpand = hGrp->GetBool("TreeActiveAutoExpand", true);
+
+    if (hasObject(name)) {
         App::DocumentObject* act = getObject<App::DocumentObject*>(name);
         Gui::Document* doc = Application::Instance->getDocument(act->getDocument());
-        doc->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(doc->getViewProvider(act)), mode, false);
+        Gui::ViewProviderDocumentObject* viewProvider = static_cast
+                <Gui::ViewProviderDocumentObject*>(doc->getViewProvider(act));
+        doc->signalHighlightObject(*viewProvider, mode, false);
+        if (autoExpand)
+            doc->signalExpandObject(*viewProvider, Gui::Collapse);
     }
-    if (obj){
+
+    if (obj) {
         Gui::Document* doc = Application::Instance->getDocument(obj->getDocument());
-        doc->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(doc->getViewProvider(obj)), mode, true);
+        Gui::ViewProviderDocumentObject* viewProvider = static_cast
+                <Gui::ViewProviderDocumentObject*>(doc->getViewProvider(obj));
+        doc->signalHighlightObject(*viewProvider, mode, true);
+        if (autoExpand)
+            doc->signalExpandObject(*viewProvider, Gui::Expand);
         _ObjectMap[name] = obj;
-    } else {
+    }
+    else {
         if (hasObject(name))
             _ObjectMap.erase(name);
     }
