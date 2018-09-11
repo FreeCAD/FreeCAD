@@ -82,7 +82,8 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
         else if(UnitValue < 914.4) {
             unitString = QString::fromLatin1("\'");
             factor = 304.8;
-        }else if(UnitValue < 1609344.0){
+        }
+        else if(UnitValue < 1609344.0) {
             unitString = QString::fromLatin1("yd");
             factor = 914.4;
         }
@@ -131,7 +132,7 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
         unitString = QString::fromLatin1("in/min");
         factor = 25.4/60;
     }
-    else{
+    else {
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
@@ -213,7 +214,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
 
         // Total number of inches to format
         double totalInches = std::abs(quant.getValue())/factor;
-        
+
         // minimum denominator (8 for 1/8, 16 for 1/16, etc)
         int       minden; 
 
@@ -222,7 +223,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         int       inches;  // whole inches
         int       num,den; // numerator and denominator of fractional val
         std::stringstream output; // output stream
-        
+
         // Intermediate values
         int       ntot;    // total fractional units
         int       a,b,d;   // used to compute greatest common denominator
@@ -230,14 +231,14 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
 
         // TEMPORARY: This will be replaced by a user setting when time permits.
         // For now, it will be hardcoded to emulate the previous (1/8")
-        // behavior. 
-        minden = 8; // 1/8" 
+        // behavior.
+        minden = 8; // 1/8"
 
         // Compute and round the total number of fractional units
         ntot = (int)std::round(totalInches * (double)minden);
 
         // If this is zero, nothing to do but return
-        if( ntot==0 ) 
+        if( ntot==0 )
             return QString::fromLatin1("0");
 
         // Compute the whole number of feet and remaining units
@@ -247,7 +248,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         // Compute the remaining number of whole inches
         inches = (int)std::floor(ntot/minden);
 
-        // Lastly the fractional quantities 
+        // Lastly the fractional quantities
         num = ntot - inches*minden;
         den = minden;
 
@@ -255,11 +256,11 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         // fraction
         if( num!=0 )
         {
-            // initialize 
+            // initialize
             a = num;
             b = den;
             while (b != 0)
-            {   
+            {
                 tmp = a % b;
 
                 a = b;
@@ -271,7 +272,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
             den /= d;
         }
 
-        // Process into string. Start with negative sign if quantity is less 
+        // Process into string. Start with negative sign if quantity is less
         // than zero
         if( quant.getValue() < 0 )
             output << "-";
