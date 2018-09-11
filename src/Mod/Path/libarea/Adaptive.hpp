@@ -108,7 +108,7 @@ namespace AdaptivePath {
 			long bbox_size=0;
 			double referenceCutArea=0;
 			double optimalCutAreaPD=0;
-			double minCutAreaPD=0;
+			//double minCutAreaPD=0;
 			bool stopProcessing=false;
 			long unclearLinkingMoveCount = 0;
 
