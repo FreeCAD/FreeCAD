@@ -43,6 +43,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoEventManager.h>
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
