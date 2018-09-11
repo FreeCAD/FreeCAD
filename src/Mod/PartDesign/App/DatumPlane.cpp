@@ -60,7 +60,9 @@ Plane::Plane()
     BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
     if (!builder.IsDone())
         return;
-    Shape.setValue(builder.Shape());
+    TopoDS_Shape myShape = builder.Shape();
+    myShape.Infinite(Standard_True);
+    Shape.setValue(myShape);
 }
 
 Plane::~Plane()
