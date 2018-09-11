@@ -1254,6 +1254,7 @@ void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 {
+#if 0
     std::string objectName = obj.getObject()->getNameInDocument();
     if (ObjectMap.find(objectName) == ObjectMap.end())
         return; // signal is emitted before the item gets created
@@ -1265,6 +1266,9 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
             item->setFont(0,f);
         }
     }
+#else
+    Q_UNUSED(obj);
+#endif
 }
 
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, const Gui::HighlightMode& high, bool set)
@@ -1302,9 +1306,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
             QColor color(230,230,255);
             if (set) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                bool bold = hGrp->GetBool("TreeActiveBold",true);
                 bool italic = hGrp->GetBool("TreeActiveItalic",false);
                 bool underlined = hGrp->GetBool("TreeActiveUnderlined",false);
                 bool overlined = hGrp->GetBool("TreeActiveOverlined",false);
+                f.setBold(bold);
                 f.setItalic(italic);
                 f.setUnderline(underlined);
                 f.setOverline(overlined);
@@ -1313,6 +1319,7 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
                 color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
             }
             else {
+                f.setBold(false);
                 f.setItalic(false);
                 f.setUnderline(false);
                 f.setOverline(false);

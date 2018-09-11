@@ -770,16 +770,16 @@ class UndoRedoCases(unittest.TestCase):
     self.Doc.UndoMode = 1
 
     self.Doc.openTransaction("Box")
-    self.Box = self.Doc.addObject('Part::Box')
+    self.Box = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Cylinder")
-    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Cylinder = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Fuse")
-    self.Fuse1 = self.Doc.addObject('Part::MultiFuse', 'Fuse')
-    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Fuse1 = self.Doc.addObject('App::FeatureTest', 'Fuse')
+    self.Fuse1.LinkList = [self.Box, self.Cylinder]
     self.Doc.commitTransaction()
 
     self.Doc.undo()
@@ -797,26 +797,26 @@ class UndoRedoCases(unittest.TestCase):
     self.Doc.UndoMode = 1
 
     self.Doc.openTransaction("Box")
-    self.Box = self.Doc.addObject('Part::Box')
+    self.Box = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Cylinder")
-    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Cylinder = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Fuse")
-    self.Fuse1 = self.Doc.addObject('Part::MultiFuse')
-    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Fuse1 = self.Doc.addObject('App::FeatureTest')
+    self.Fuse1.LinkList = [self.Box, self.Cylinder]
     self.Doc.commitTransaction()
     self.Doc.recompute()
 
     self.Doc.openTransaction("Sphere")
-    self.Sphere = self.Doc.addObject('Part::Sphere')
+    self.Sphere = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Fuse")
-    self.Fuse2 = self.Doc.addObject('Part::MultiFuse')
-    self.Fuse2.Shapes = [self.Fuse1, self.Sphere]
+    self.Fuse2 = self.Doc.addObject('App::FeatureTest')
+    self.Fuse2.LinkList = [self.Fuse1, self.Sphere]
     self.Doc.commitTransaction()
     self.Doc.recompute()
 
@@ -974,25 +974,25 @@ class DocumentGroupCases(unittest.TestCase):
 
     #cross linking between GeoFeatureGroups is not allowed
     self.Doc.recompute()
-    box = self.Doc.addObject("Part::Box","Box")
-    cyl = self.Doc.addObject("Part::Cylinder","Cylinder")
-    fus = self.Doc.addObject("Part::MultiFuse","Fusion")
-    fus.Shapes = [cyl, box]
+    box = self.Doc.addObject("App::FeatureTest","Box")
+    cyl = self.Doc.addObject("App::FeatureTest","Cylinder")
+    fus = self.Doc.addObject("App::FeatureTest","Fusion")
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     self.failUnless(fus.State[0] == 'Up-to-date')
-    fus.Shapes = [] #remove all links as addObject would otherwise transfer all linked objects
+    fus.LinkList = [] #remove all links as addObject would otherwise transfer all linked objects
     prt1.addObject(cyl)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     #self.failUnless(fus.State[0] == 'Invalid')
-    fus.Shapes = []
+    fus.LinkList = []
     prt1.addObject(box)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     #self.failUnless(fus.State[0] == 'Invalid')
-    fus.Shapes = []
+    fus.LinkList = []
     prt1.addObject(fus)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     self.failUnless(fus.State[0] == 'Up-to-date')
     prt2.addObject(box) #this time addObject should move all dependencies to the new part
@@ -1016,15 +1016,15 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.recompute()
 
   def testIssue0003150Part2(self):
-    self.box = self.Doc.addObject("Part::Box")
-    self.cyl = self.Doc.addObject("Part::Cylinder")
-    self.sph = self.Doc.addObject("Part::Sphere")
+    self.box = self.Doc.addObject("App::FeatureTest")
+    self.cyl = self.Doc.addObject("App::FeatureTest")
+    self.sph = self.Doc.addObject("App::FeatureTest")
 
-    self.fus1 = self.Doc.addObject("Part::MultiFuse")
-    self.fus2 = self.Doc.addObject("Part::MultiFuse")
+    self.fus1 = self.Doc.addObject("App::FeatureTest")
+    self.fus2 = self.Doc.addObject("App::FeatureTest")
 
-    self.fus1.Shapes = [self.box, self.cyl];
-    self.fus2.Shapes = [self.sph, self.cyl];
+    self.fus1.LinkList = [self.box, self.cyl];
+    self.fus2.LinkList = [self.sph, self.cyl];
 
     self.prt = self.Doc.addObject("App::Part")
     self.prt.addObject(self.fus1)
