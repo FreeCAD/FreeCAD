@@ -31,14 +31,14 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Path to Teigha File Converter</string>
+           <string>Path to ODA (formerly Teigha) File Converter</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
           <property name="toolTip">
-           <string>The path to your Teigha File Converter executable</string>
+           <string>The path to your ODA (formerly Teigha) File Converter executable</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>TeighaFileConverter</cstring>
