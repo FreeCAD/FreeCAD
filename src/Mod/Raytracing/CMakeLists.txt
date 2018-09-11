@@ -48,6 +48,6 @@ INSTALL(
     FILES
         ${Raytracing_Templates}
     DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/Raytracing
+        ${CMAKE_INSTALL_DATADIR}/Mod/Raytracing/Templates
 )
 
