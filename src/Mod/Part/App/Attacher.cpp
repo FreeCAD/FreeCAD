@@ -1547,7 +1547,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                     orderString
                 );
         if(this->mapReverse){
-            rot = rot * Base::Rotation(Base::Vector3d(0,1,0),180);
+            rot = rot * Base::Rotation(Base::Vector3d(0,1,0),D_PI);
         }
 
         Base::Placement plm =
