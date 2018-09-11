@@ -126,11 +126,11 @@ namespace AdaptivePath {
 
 
 	void AverageDirection(const vector<DoublePoint> &unityVectors, DoublePoint& output) {
-		int size=unityVectors.size();
+		std::size_t size=unityVectors.size();
 		output.X =0;
 		output.Y=0;
 		// sum vectors
-		for(int i=0;i<size;i++) {
+		for(std::size_t i=0;i<size;i++) {
 			DoublePoint v= unityVectors[i];
 			output.X += v.X;
 			output.Y += v.Y;
@@ -409,10 +409,10 @@ namespace AdaptivePath {
 		Path rev_result;
 		rev_result << clp1;
 		long minIndex = long(clpSegmentIndex2);
-		if(minIndex >= long(clpSegmentIndex1-1)) minIndex -= closestPath.size();
-		for(long i=clpSegmentIndex1-1;i>=minIndex;i--) {
+		if(minIndex >= long(clpSegmentIndex1-1)) minIndex -= long(closestPath.size());
+		for(long i=long(clpSegmentIndex1)-1;i>=minIndex;i--) {
 			long index=i;
-			if(index<0) index+= closestPath.size();
+			if(index<0) index+= long(closestPath.size());
 			if(sqrt(DistanceSqrd(rev_result.back(),closestPath.at(index)))>NTOL) rev_result << closestPath.at(index);
 		}
 		if(sqrt(DistanceSqrd(rev_result.back(),clp2)) >NTOL) rev_result << clp2;
@@ -465,7 +465,7 @@ namespace AdaptivePath {
 				if(dist<minDistSqrd) {
 					minDistSqrd=dist;
 					closestPathIndex=pathIndex;
-					closestPointIndex=i;
+					closestPointIndex=long(i);
 				}
 			}
 		}
@@ -474,8 +474,8 @@ namespace AdaptivePath {
 		// make new path starting with that point
 		Path & closestPath = paths.at(closestPathIndex);
 		for(size_t i=0;i<closestPath.size();i++) {
-			long index=long(closestPointIndex)+i;
-			if(index>=long(closestPath.size())) index-=closestPath.size();
+			long index=closestPointIndex+long(i);
+			if(index>=long(closestPath.size())) index-=long(closestPath.size());
 			result.push_back(closestPath.at(index));
 		}
 		// remove the closest path
@@ -1751,7 +1751,7 @@ namespace AdaptivePath {
 
 
 		if(!forceInsideOut && FindEntryPointOutside(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos,toolDir)) {
-			if( Orientation(engageBounds[0])<0) ReversePath(engageBounds[0]);
+			if( Orientation(engageBounds[0]) == false) ReversePath(engageBounds[0]);
 			//engageBounds.erase(engageBounds.begin());
 			// add initial offset of cleared area to engage paths
 			Paths outsideEngage;
@@ -1976,7 +1976,7 @@ namespace AdaptivePath {
 				double distFromStart = sqrt(DistanceSqrd(toolPos,startPoint));
 				bool distanceTrend = distFromStart > prevDistFromStart ? true : false;
 
-				if(distFromStart!=prevDistTrend || toClearPath.size()>10) {
+				if(distanceTrend!=prevDistTrend || toClearPath.size()>10) {
 						Perf_ExpandCleared.Start();
 						// expand cleared
 						clipof.Clear();
@@ -2056,7 +2056,7 @@ namespace AdaptivePath {
 			if(cumulativeCutArea>tolerance*MIN_CUT_AREA_FACTOR*stepScaled*stepOverFactor*referenceCutArea) {
 				Path cleaned;
 				CleanPath(passToolPath,cleaned,CLEAN_PATH_TOLERANCE);
-				total_output_points+=cleaned.size();
+				total_output_points+=long(cleaned.size());
 				AppendToolPath(progressPaths, output,cleaned,clearedBeforePass,toolBoundPaths);
 				CheckReportProgress(progressPaths);
 				bad_engage_count=0;
