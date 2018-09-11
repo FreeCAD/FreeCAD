@@ -54,8 +54,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
-    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
-    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
+    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(onItemActivated(QModelIndex)));
+    connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onItemActivated(QModelIndex)));
 }
 
 PropertyEditor::~PropertyEditor()
