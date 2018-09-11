@@ -236,7 +236,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-static-analysis.svg</normaloff>:/icons/fem-static-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-static.svg</normaloff>:/icons/fem-solver-analysis-static.svg</iconset>
              </property>
             </item>
             <item>
@@ -245,7 +245,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-frequency-analysis.svg</normaloff>:/icons/fem-frequency-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-frequency.svg</normaloff>:/icons/fem-solver-analysis-frequency.svg</iconset>
              </property>
             </item>
             <item>
@@ -254,7 +254,7 @@
              </property>
              <property name="icon">
               <iconset resource="Resources/Fem.qrc">
-               <normaloff>:/icons/fem-thermomechanical-analysis.svg</normaloff>:/icons/fem-thermomechanical-analysis.svg</iconset>
+               <normaloff>:/icons/fem-solver-analysis-thermomechanical.svg</normaloff>:/icons/fem-solver-analysis-thermomechanical.svg</iconset>
              </property>
             </item>
            </widget>

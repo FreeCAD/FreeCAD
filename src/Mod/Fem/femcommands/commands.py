@@ -217,7 +217,7 @@ class _CommandFemElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
     def __init__(self):
         super(_CommandFemElementFluid1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-fluid-section',
+        self.resources = {'Pixmap': 'fem-element-fluid-1d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid section for 1D flow"),
                           'Accel': "C, B",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Creates a FEM fluid section for 1D flow")}
@@ -236,7 +236,7 @@ class _CommandFemElementGeometry1D(CommandManager):
     "The Fem_ElementGeometry1D command definition"
     def __init__(self):
         super(_CommandFemElementGeometry1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-section',
+        self.resources = {'Pixmap': 'fem-element-geometry-1d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam cross section"),
                           'Accel': "C, B",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Creates a FEM beam cross section")}
@@ -255,7 +255,7 @@ class _CommandFemElementGeometry2D(CommandManager):
     "The FEM_ElementGeometry2D command definition"
     def __init__(self):
         super(_CommandFemElementGeometry2D, self).__init__()
-        self.resources = {'Pixmap': 'fem-shell-thickness',
+        self.resources = {'Pixmap': 'fem-element-geometry-2d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell plate thickness"),
                           'Accel': "C, S",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Creates a FEM shell plate thickness")}
@@ -274,7 +274,7 @@ class _CommandFemElementRotation1D(CommandManager):
     "The Fem_ElementRotation1D command definition"
     def __init__(self):
         super(_CommandFemElementRotation1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-beam-rotation',
+        self.resources = {'Pixmap': 'fem-element-rotation-1d',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam rotation"),
                           'Accel': "C, R",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a FEM beam rotation")}
@@ -674,7 +674,7 @@ class _CommandFemSolverCalculixCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
     def __init__(self):
         super(_CommandFemSolverCalculixCxxtools, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX Standard"),
                           'Accel': "S, X",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a standard FEM solver CalculiX with ccx tools")}
@@ -703,7 +703,7 @@ class _CommandFemSolverCalculiX(CommandManager):
     "The FEM_SolverCalculix command definition"
     def __init__(self):
         super(_CommandFemSolverCalculiX, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX (experimental)"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Creates a FEM solver CalculiX (experimental)")}
@@ -721,7 +721,7 @@ class _CommandFemSolverControl(CommandManager):
     "The FEM_SolverControl command definition"
     def __init__(self):
         super(_CommandFemSolverControl, self).__init__()
-        self.resources = {'Pixmap': 'fem-control-solver',
+        self.resources = {'Pixmap': 'fem-solver-control',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
@@ -735,7 +735,7 @@ class _CommandFemSolverElmer(CommandManager):
     "The FEM_SolverElmer command definition"
     def __init__(self):
         super(_CommandFemSolverElmer, self).__init__()
-        self.resources = {'Pixmap': 'fem-elmer',
+        self.resources = {'Pixmap': 'fem-solver-elmer',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Solver Elmer"),
                           'Accel': "S, E",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Creates a FEM solver Elmer")}
@@ -753,7 +753,7 @@ class _CommandFemSolverRun(CommandManager):
     "The FEM_SolverRun command definition"
     def __init__(self):
         super(_CommandFemSolverRun, self).__init__()
-        self.resources = {'Pixmap': 'fem-run-solver',
+        self.resources = {'Pixmap': 'fem-solver-run',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run solver calculations"),
                           'Accel': "R, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Runs the calculations for the selected solver")}
@@ -812,7 +812,7 @@ class _CommandFemSolverZ88(CommandManager):
     "The FEM_SolverZ88 command definition"
     def __init__(self):
         super(_CommandFemSolverZ88, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
+        self.resources = {'Pixmap': 'fem-solver-standard',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
                           'Accel': "S, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
