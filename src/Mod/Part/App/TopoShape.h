@@ -38,6 +38,7 @@ class BRepOffsetAPI_ThruSections;
 class BRepFeat_MakePrism;
 class BRepOffsetAPI_MakePipeShell;
 class BRepOffsetAPI_DraftAngle;
+class BRepPrimAPI_MakeHalfSpace; 
 class gp_Ax1;
 class gp_Ax2;
 class gp_Vec;
@@ -338,6 +339,12 @@ public:
 
     TopoShape &makEShape(BRepOffsetAPI_MakePipeShell &mkShape, 
             const std::vector<TopoShape> &source, const char *op=0);
+
+    TopoShape &makEShape(BRepPrimAPI_MakeHalfSpace &mkShape, 
+            const TopoShape &source, const char *op=0);
+    TopoShape makEShape(BRepPrimAPI_MakeHalfSpace  &mkShape, const char *op=0) const {
+        return TopoShape(0,Hasher).makEShape(mkShape,*this,op);
+    }
 
     TopoShape &makEShape(BRepFeat_MakePrism &mkShape, const TopoShape &source,
             const char *op=0);

@@ -158,6 +158,7 @@
 # include <ShapeAnalysis.hxx>
 # include <BRepFill.hxx>
 # include <BRepOffsetAPI_DraftAngle.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
 #endif
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
@@ -2574,6 +2575,13 @@ TopoShape &TopoShape::makEShape(BRepFeat_MakePrism &mkShape,
 {
     if(!op) op = TOPOP_PRISM;
     return makESHAPE(mkShape.Shape(),MapperMaker(mkShape),{source},op);
+}
+
+TopoShape &TopoShape::makEShape(BRepPrimAPI_MakeHalfSpace &mkShape, 
+        const TopoShape &source, const char *op) 
+{
+    if(!op) op = TOPOP_HALF_SPACE;
+    return makESHAPE(mkShape.Solid(),MapperMaker(mkShape),{source},op);
 }
 
 TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoShape> &_faces,
