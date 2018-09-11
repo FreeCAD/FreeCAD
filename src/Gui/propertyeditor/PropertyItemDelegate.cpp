@@ -29,17 +29,21 @@
 # include <QPainter>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
 
+FC_LOG_LEVEL_INIT("PropertyItem",true,true);
+
 using namespace Gui::PropertyEditor;
 
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
-    : QItemDelegate(parent), pressed(false), activeTransactionID(0)
+    : QItemDelegate(parent), pressed(false), activeTransactionID(0),changed(false)
 {
 
     connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
@@ -182,8 +186,10 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 void PropertyItemDelegate::valueChanged()
 {
     QWidget* editor = qobject_cast<QWidget*>(sender());
-    if (editor)
+    if (editor) {
+        Base::FlagToggler<> flag(changed);
         commitData(editor);
+    }
 }
 
 void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -200,7 +206,7 @@ void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
 
 void PropertyItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !changed)
         return;
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     QVariant data = childItem->editorData(editor);

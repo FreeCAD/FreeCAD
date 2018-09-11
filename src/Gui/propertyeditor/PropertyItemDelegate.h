@@ -52,6 +52,7 @@ public Q_SLOTS:
 private:
     mutable bool pressed;
     mutable int activeTransactionID;
+    bool changed;
 };
 
 } // namespace PropertyEditor
