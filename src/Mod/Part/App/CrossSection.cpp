@@ -217,12 +217,12 @@ void TopoCrossSection::slice(int idx, double d, std::vector<TopoShape> &wires) c
     }
     if(!found) {
         for(auto &s : shape.getSubTopoShapes(TopAbs_SHELL)) {
-            sliceSolid(idx, d, s, wires);
+            sliceNonSolid(idx, d, s, wires);
             found = true;
         }
         if(!found) {
             for(auto &s : shape.getSubTopoShapes(TopAbs_FACE))
-                sliceSolid(idx, d, s, wires);
+                sliceNonSolid(idx, d, s, wires);
         }
     }
 }
