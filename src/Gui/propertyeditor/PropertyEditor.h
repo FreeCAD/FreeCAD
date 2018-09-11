@@ -81,6 +81,9 @@ public:
     QColor groupTextColor() const;
     void setGroupTextColor(const QColor& c);
 
+public Q_SLOTS:
+    void onItemActivated(const QModelIndex &index);
+
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
     virtual void commitData (QWidget * editor);
