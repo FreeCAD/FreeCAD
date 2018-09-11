@@ -1101,7 +1101,10 @@ PyObject*  TopoShapePy::slice(PyObject *args)
 
 #if !defined(FC_NO_ELEMENT_MAP)
     PY_TRY {
-        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makESlice(vec,d)));
+        Py::List wires;
+        for(auto &w : getTopoShapePtr()->makESlice(vec,d).getSubTopoShapes(TopAbs_WIRE))
+            wires.append(shape2pyshape(w));
+        return Py::new_reference_to(wires);
     }PY_CATCH_OCC
 #else
     try {
