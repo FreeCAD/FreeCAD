@@ -47,7 +47,7 @@ PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
 {
 
     connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
-            this, SLOT(editorClosed()));
+            this, SLOT(editorClosed(QWidget*)));
 }
 
 PropertyItemDelegate::~PropertyItemDelegate()
@@ -149,8 +149,14 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         editor->setAutoFillBackground(true);
     if (editor && childItem->isReadOnly())
         editor->setDisabled(true);
-    else if (editor && this->pressed)
+    // else if (editor && this->pressed)
+    else if(editor) {
+        // We changed the way editor is activated in PropertyEditor (in response
+        // of signal activated and clicked), so now we should grab focus
+        // regardless of "preseed" or not (e.g. when activated by keyboard
+        // enter)
         editor->setFocus();
+    }
     this->pressed = false;
 
     auto &app = App::GetApplication();

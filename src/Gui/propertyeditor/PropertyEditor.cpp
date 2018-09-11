@@ -53,6 +53,9 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     QStyleOptionViewItem opt = viewOptions();
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
+
+    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
+    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
 }
 
 PropertyEditor::~PropertyEditor()
@@ -127,8 +130,17 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
     QTreeView::currentChanged(current, previous);
     if (previous.isValid())
         closePersistentEditor(model()->buddy(previous));
-    if (current.isValid())
-        openPersistentEditor(model()->buddy(current));
+
+    // DO NOT activate editor here, use onItemActivate() which response to
+    // signals of activated and clicked.
+    //
+    // if (current.isValid())
+    //     openPersistentEditor(model()->buddy(current));
+}
+
+void PropertyEditor::onItemActivated ( const QModelIndex & index )
+{
+    openPersistentEditor(model()->buddy(index));
 }
 
 void PropertyEditor::reset()

@@ -47,7 +47,7 @@ public:
 
 public Q_SLOTS:
     void valueChanged();
-    void editorClosed();
+    void editorClosed(QWidget *);
 
 private:
     mutable bool pressed;
