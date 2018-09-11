@@ -33,6 +33,7 @@
 # include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
+# include <Inventor/SoEventManager.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoHandleEventAction.h>
@@ -720,6 +721,13 @@ SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int Mo
 void View3DInventorViewer::resetEditingViewProvider()
 {
     if (this->editViewProvider) {
+        // In case the event action still has grabbed a node when leaving edit mode
+        // force to release it now
+        SoEventManager* mgr = this->getSoEventManager();
+        SoHandleEventAction* heaction = mgr->getHandleEventAction();
+        if (heaction && heaction->getGrabber())
+            heaction->releaseGrabber();
+
         this->editViewProvider->unsetEditViewer(this);
         removeEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
         this->editViewProvider = 0;
