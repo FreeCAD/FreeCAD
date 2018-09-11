@@ -36,8 +36,11 @@ import numpy
 from PathScripts.PathUtils import depth_params
 from PySide import QtCore
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -79,54 +82,60 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         shapes = []
+        self.profileshape = []
 
         if obj.Base:  # The user has selected subobjects from the base.  Process each.
-            holes = []
-            faces = []
-            for b in obj.Base:
-                for sub in b[1]:
-                    shape = getattr(b[0].Shape, sub)
+            for base in obj.Base:
+                holes = []
+                faces = []
+                for sub in base[1]:
+                    shape = getattr(base[0].Shape, sub)
                     if isinstance(shape, Part.Face):
                         faces.append(shape)
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
-                            holes += shape.Wires[1:]
+                            for wire in shape.Wires[1:]:
+                                holes.append((base[0].Shape, wire))
                     else:
                         FreeCAD.Console.PrintWarning("found a base object which is not a face.  Can't continue.")
                         return
 
-            for wire in holes:
-                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                drillable = PathUtils.isDrillable(self.baseobject.Shape, wire)
-                if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
-                    shapes.append((env, True))
+                for shape, wire in holes:
+                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                    drillable = PathUtils.isDrillable(shape, wire)
+                    if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
+                        env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
+                        PathLog.track()
+                        shapes.append((env, True))
 
-            if len(faces) > 0:
-                profileshape = Part.makeCompound(faces)
+                if len(faces) > 0:
+                    profileshape = Part.makeCompound(faces)
+                    self.profileshape.append(profileshape)
 
-            if obj.processPerimeter:
-                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=profileshape, depthparams=self.depthparams)
-                shapes.append((env, False))
+                if obj.processPerimeter:
+                    env = PathUtils.getEnvelope(base[0].Shape, subshape=profileshape, depthparams=self.depthparams)
+                    PathLog.track()
+                    shapes.append((env, False))
 
         else:  # Try to build targets from the job base
-            if hasattr(self.baseobject, "Proxy"):
-                if isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+            if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
+                if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
                     if obj.processCircles or obj.processHoles:
-                        for shape in self.baseobject.Proxy.getHoles(self.baseobject, transform=True):
+                        for shape in self.model[0].Proxy.getHoles(self.model[0], transform=True):
                             for wire in shape.Wires:
-                                drillable = PathUtils.isDrillable(self.baseobject.Proxy, wire)
+                                drillable = PathUtils.isDrillable(self.model[0].Proxy, wire)
                                 if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                                    env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
                                     shapes.append((env, True))
 
                     if obj.processPerimeter:
-                        for shape in self.baseobject.Proxy.getOutlines(self.baseobject, transform=True):
+                        for shape in self.model[0].Proxy.getOutlines(self.model[0], transform=True):
                             for wire in shape.Wires:
                                 f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
+                                env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
                                 shapes.append((env, False))
 
+        self.removalshapes = shapes
         PathLog.debug("%d shapes" % len(shapes))
         return shapes
 

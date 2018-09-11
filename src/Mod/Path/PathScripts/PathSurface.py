@@ -127,41 +127,42 @@ class ObjectSurface(PathOp.ObjectOp):
         if parentJob is None:
             return
 
-        print("base object: " + self.baseobject.Name)
+        for base in self.model:
+            print("base object: " + base.Name)
 
-        if self.baseobject.TypeId.startswith('Mesh'):
-            mesh = self.baseobject.Mesh
-        else:
-            # try/except is for Path Jobs created before GeometryTolerance
-            try:
-                deflection = parentJob.GeometryTolerance
-            except AttributeError:
-                import PathScripts.PathPreferences as PathPreferences
-                deflection = PathPreferences.defaultGeometryTolerance()
-            self.baseobject.Shape.tessellate(0.5)
-            mesh = MeshPart.meshFromShape(self.baseobject.Shape, Deflection=deflection)
-        if obj.BoundBox == "BaseBoundBox":
-            bb = mesh.BoundBox
-        else:
-            bb = parentJob.Stock.Shape.BoundBox
+            if base.TypeId.startswith('Mesh'):
+                mesh = base.Mesh
+            else:
+                # try/except is for Path Jobs created before GeometryTolerance
+                try:
+                    deflection = parentJob.GeometryTolerance
+                except AttributeError:
+                    import PathScripts.PathPreferences as PathPreferences
+                    deflection = PathPreferences.defaultGeometryTolerance()
+                base.Shape.tessellate(0.5)
+                mesh = MeshPart.meshFromShape(base.Shape, Deflection=deflection)
+            if obj.BoundBox == "BaseBoundBox":
+                bb = mesh.BoundBox
+            else:
+                bb = parentJob.Stock.Shape.BoundBox
 
-        s = ocl.STLSurf()
-        for f in mesh.Facets:
-            p = f.Points[0]
-            q = f.Points[1]
-            r = f.Points[2]
-            # offset the triangle in Z with DepthOffset
-            t = ocl.Triangle(ocl.Point(p[0], p[1], p[2] + obj.DepthOffset.Value),
-                             ocl.Point(q[0], q[1], q[2] + obj.DepthOffset.Value),
-                             ocl.Point(r[0], r[1], r[2] + obj.DepthOffset.Value))
-            s.addTriangle(t)
+            s = ocl.STLSurf()
+            for f in mesh.Facets:
+                p = f.Points[0]
+                q = f.Points[1]
+                r = f.Points[2]
+                # offset the triangle in Z with DepthOffset
+                t = ocl.Triangle(ocl.Point(p[0], p[1], p[2] + obj.DepthOffset.Value),
+                                 ocl.Point(q[0], q[1], q[2] + obj.DepthOffset.Value),
+                                 ocl.Point(r[0], r[1], r[2] + obj.DepthOffset.Value))
+                s.addTriangle(t)
 
-        if obj.Algorithm == 'OCL Dropcutter':
-            output = self._dropcutter(obj, s, bb)
-        elif obj.Algorithm == 'OCL Waterline':
-            output = self._waterline(obj, s, bb)
+            if obj.Algorithm == 'OCL Dropcutter':
+                output = self._dropcutter(obj, s, bb)
+            elif obj.Algorithm == 'OCL Waterline':
+                output = self._waterline(obj, s, bb)
 
-        self.commandlist.extend(output)
+            self.commandlist.extend(output)
 
     def _waterline(self, obj, s, bb):
         import time
@@ -315,8 +316,9 @@ class ObjectSurface(PathOp.ObjectOp):
         # obj.ZigZagAngle = 45.0
         obj.StepOver = 50
         # need to overwrite the default depth calculations for facing
-        if job and job.Base:
-            d = PathUtils.guessDepths(job.Base.Shape, None)
+        job = PathUtils.findParentJob(obj)
+        if job and job.Stock:
+            d = PathUtils.guessDepths(job.Stock.Shape, None)
             obj.OpStartDepth = d.start_depth
             obj.OpFinalDepth = d.final_depth
 

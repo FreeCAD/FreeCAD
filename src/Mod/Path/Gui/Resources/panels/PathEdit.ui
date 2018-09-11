@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>432</width>
-    <height>673</height>
+    <height>1160</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -32,62 +32,78 @@
          <x>0</x>
          <y>0</y>
          <width>412</width>
-         <height>549</height>
+         <height>1036</height>
         </rect>
        </property>
        <attribute name="label">
         <string>Job</string>
        </attribute>
-       <layout class="QFormLayout" name="formLayout_4">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
+       <layout class="QVBoxLayout" name="verticalLayout_17">
+        <item>
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
            <string>Label</string>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <widget class="QLineEdit" name="jobLabel"/>
+           </item>
+          </layout>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="jobLabel"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
            <string>Model</string>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_14">
+           <item>
+            <widget class="QListWidget" name="jobModel">
+             <property name="selectionMode">
+              <enum>QAbstractItemView::MultiSelection</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_3" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>334</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="jobModelEdit">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="jobModel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
+        <item>
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
            <string>Description</string>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_15">
+           <item>
+            <widget class="QPlainTextEdit" name="jobDescription"/>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPlainTextEdit" name="jobDescription"/>
-        </item>
-        <item row="3" column="1">
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -190,7 +206,7 @@
          <x>0</x>
          <y>0</y>
          <width>418</width>
-         <height>762</height>
+         <height>1117</height>
         </rect>
        </property>
        <attribute name="label">
@@ -392,55 +408,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="orientGroup">
-          <property name="title">
-           <string>Orientation</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="orientXAxis">
-             <property name="text">
-              <string>X-Axis</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="orientYAxis">
-             <property name="text">
-              <string>Y-Axis</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="orientZAxis">
-             <property name="text">
-              <string>Z-Axis</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="alignGroup">
+         <widget class="QGroupBox" name="modelAlignGroup">
           <property name="title">
            <string>Alignment</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="1" column="0">
-            <widget class="QPushButton" name="setOrigin">
-             <property name="text">
-              <string>Set Origin</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="moveToOrigin">
-             <property name="text">
-              <string>Move to Origin</string>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QPushButton" name="centerInStock">
              <property name="text">
@@ -452,6 +424,285 @@
             <widget class="QPushButton" name="centerInStockXY">
              <property name="text">
               <string>XY in Stock</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="modelSetGroup">
+          <property name="title">
+           <string>Set</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelSetXAxis">
+             <property name="text">
+              <string>X-Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="modelSetYAxis">
+             <property name="text">
+              <string>Y-Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="modelSetZAxis">
+             <property name="text">
+              <string>Z-Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="modelSetY0">
+             <property name="text">
+              <string>Y=0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="modelSetZ0">
+             <property name="text">
+              <string>Z=0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelSetX0">
+             <property name="text">
+              <string>X=0</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="modelMoveGroup">
+          <property name="title">
+           <string>Move - XY</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="1">
+            <widget class="QPushButton" name="modelMoveUp">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-up.svg</normaloff>:/icons/arrow-up.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="modelMoveRightUp">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-right-up.svg</normaloff>:/icons/arrow-right-up.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelMoveLeftUp">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="modelMoveRight">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDoubleSpinBox" name="modelMoveValue">
+             <property name="minimum">
+              <double>-1000.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>1000.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelMoveLeft">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="modelMoveLeftDown">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-left-down.svg</normaloff>:/icons/arrow-left-down.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="modelMoveDown">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-down.svg</normaloff>:/icons/arrow-down.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="modelMoveRightDown">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-right-down.svg</normaloff>:/icons/arrow-right-down.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="modelRotateGroup">
+          <property name="title">
+           <string>Rotate - XY</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelRotateLeft">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QDoubleSpinBox" name="modelRotateValue">
+             <property name="minimum">
+              <double>-180.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>360.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>90.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="modelRotateRight">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-cw.svg</normaloff>:/icons/arrow-cw.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -642,8 +893,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>412</width>
-         <height>549</height>
+         <width>312</width>
+         <height>169</height>
         </rect>
        </property>
        <attribute name="label">
@@ -976,9 +1227,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>jobLabel</tabstop>
-  <tabstop>jobModel</tabstop>
-  <tabstop>jobDescription</tabstop>
   <tabstop>postProcessorOutputFile</tabstop>
   <tabstop>postProcessorSetOutputFile</tabstop>
   <tabstop>postProcessor</tabstop>
@@ -996,13 +1244,6 @@
   <tabstop>stockBoxLength</tabstop>
   <tabstop>stockBoxWidth</tabstop>
   <tabstop>stockBoxHeight</tabstop>
-  <tabstop>orientXAxis</tabstop>
-  <tabstop>orientYAxis</tabstop>
-  <tabstop>orientZAxis</tabstop>
-  <tabstop>setOrigin</tabstop>
-  <tabstop>moveToOrigin</tabstop>
-  <tabstop>centerInStock</tabstop>
-  <tabstop>centerInStockXY</tabstop>
   <tabstop>toolControllerEdit</tabstop>
   <tabstop>toolControllerAdd</tabstop>
   <tabstop>toolControllerDelete</tabstop>
@@ -1015,6 +1256,7 @@
  </tabstops>
  <resources>
   <include location="../../../../../Gui/Icons/resource.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>

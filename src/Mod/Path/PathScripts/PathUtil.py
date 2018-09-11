@@ -35,22 +35,32 @@ other than PathLog, then it probably doesn't belong here.
 import PathScripts.PathLog as PathLog
 import sys
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-NotValidBaseTypeIds = ['Sketcher::SketchObject']
+# NotValidBaseTypeIds = ['Sketcher::SketchObject']
+NotValidBaseTypeIds = []
+
 
 def isValidBaseObject(obj):
     '''isValidBaseObject(obj) ... returns true if the object can be used as a base for a job.'''
     if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
         # Can't link to anything inside a geo feature group anymore
+        PathLog.debug("%s is inside a geo feature group" % obj.Label)
         return False
     if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
         return obj.Group and any(hasattr(o, 'Shape') for o in obj.Group)
     if not hasattr(obj, 'Shape'):
+        PathLog.debug("%s has no shape" % obj.Label)
         return False
     if obj.TypeId in NotValidBaseTypeIds:
+        PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
     if hasattr(obj, 'Sheets') or hasattr(obj, 'TagText'): # Arch.Panels and Arch.PanelCut
+        PathLog.debug("%s is not an Arch.Panel" % (obj.Label))
         return False
     return True
 
@@ -59,11 +69,8 @@ def isSolid(obj):
     if hasattr(obj, 'Tip'):
         return isSolid(obj.Tip)
     if hasattr(obj, 'Shape'):
-        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
+        if obj.Shape.Volume > 0.0 and obj.Shape.isClosed():
             return True
-        if obj.Shape.ShapeType == 'Compound':
-            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
-                return isSolid(obj.Base) and isSolid(obj.Tool)
     if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
         if not obj.Group or any(hasattr(o, 'Shape') and not isSolid(o) for o in obj.Group):
             return False
