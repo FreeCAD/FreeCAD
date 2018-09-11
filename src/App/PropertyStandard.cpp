@@ -1353,6 +1353,8 @@ void PropertyString::setValue(const char* newLabel)
     if(_cValue == newLabel)
         return;
 
+    std::string _newLabel;
+
     std::vector<std::pair<PropertyXLink*,std::string> > linkChange;
     std::string label;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
@@ -1362,6 +1364,18 @@ void PropertyString::setValue(const char* newLabel)
        obj && obj->getNameInDocument() && this==&obj->Label &&
        !obj->getDocument()->isPerformingTransaction()) 
     {
+        const char *dot = strchr(newLabel,'.');
+        if(dot) {
+            _newLabel = newLabel;
+            for(size_t i=dot-newLabel;i<_newLabel.size();++i) {
+                if(_newLabel[i]=='.')
+                    _newLabel[i] = '_';
+            }
+            if(_cValue == _newLabel)
+                return;
+            newLabel = _newLabel.c_str();
+        }
+
         // allow object to control label change
 
         static ParameterGrp::handle _hPGrp;
