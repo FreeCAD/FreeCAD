@@ -800,8 +800,9 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             geof->Placement.getValue().multVec(Base::Vector3d(),org);
             //make shape - an local-XY plane infinite face
             gp_Pln pl = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
-            BRepBuilderAPI_MakeFace builder(pl);
-            storage.push_back( builder.Shape() );
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(pl).Shape();
+            myShape.Infinite(true);
+            storage.push_back(myShape);
             shapes[i] = &(storage[storage.size()-1]);
         } else if (  geof->isDerivedFrom(App::Line::getClassTypeId())  ){
             //obtain X axis and origin of placement
@@ -812,8 +813,9 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             geof->Placement.getValue().multVec(Base::Vector3d(),org);
             //make shape - an infinite line along local X axis
             gp_Lin l = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
-            BRepBuilderAPI_MakeEdge builder(l);
-            storage.push_back( builder.Shape() );
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(l).Shape();
+            myShape.Infinite(true);
+            storage.push_back(myShape);
             shapes[i] = &(storage[storage.size()-1]);
         } else {
             Base::Console().Warning("Attacher: linked object %s is unexpected, assuming it has no shape.\n",geof->getNameInDocument());
@@ -2011,7 +2013,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
             } else if (sh.ShapeType() == TopAbs_EDGE) {
                 const TopoDS_Edge &e = TopoDS::Edge(sh);
                 BRepAdaptor_Curve crv(e);
-                BasePoint = crv.Value(crv.FirstParameter());
+                double u = crv.FirstParameter();
+                if(Precision::IsInfinite(u))
+                    throw Base::ValueError("Edge is infinite");
+                BasePoint = crv.Value(u);
             }
 
         }break;
