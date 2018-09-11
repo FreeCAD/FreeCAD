@@ -65,12 +65,9 @@ class JobTemplate:
 def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
 
-def isResourceClone(obj, propName, resourceName=None):
-    '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
-    if hasattr(obj, propName):
-        propLink =  getattr(obj, propName)
-        if hasattr(propLink, 'PathResource') and ((resourceName and resourceName == propLink.PathResource) or (resourceName is None and propName == propLink.PathResource)):
-            return True
+def isResourceClone(obj, propLink, resourceName):
+    if hasattr(propLink, 'PathResource') and (resourceName is None or resourceName == propLink.PathResource):
+        return True
     return False
 
 def createResourceClone(obj, orig, name, icon):
@@ -88,18 +85,20 @@ def createResourceClone(obj, orig, name, icon):
     obj.Document.recompute() # necessary to create the clone shape
     return clone
 
+def createModelResourceClone(obj, orig):
+    return createResourceClone(obj, orig, 'Model', 'BaseGeometry')
+
 class ObjectJob:
 
-    def __init__(self, obj, base, templateFile = None):
+    def __init__(self, obj, models, templateFile = None):
         self.obj = obj
-        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
-        obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
-        obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
+        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","The NC output file for this project"))
+        obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","Select the Post Processor"))
+        obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
 
-        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
-        obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("App::Property", "For computing Paths; smaller increases accuracy, but slows down computation"))
+        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob","An optional description for this job"))
+        obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("PathJob", "For computing Paths; smaller increases accuracy, but slows down computation"))
 
-        obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "The base object for all operations"))
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
         obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
@@ -120,13 +119,14 @@ class ObjectJob:
         if ops.ViewObject:
             ops.ViewObject.Proxy = 0
             ops.ViewObject.Visibility = False
+
         obj.Operations = ops
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
         self.setupSetupSheet(obj)
+        self.setupBaseModel(obj, models)
 
-        obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
         self.setFromTemplateFile(obj, templateFile)
@@ -147,10 +147,38 @@ class ObjectJob:
                 PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
 
+    def setupBaseModel(self, obj, models=None):
+        PathLog.track(obj.Label, models)
+        if not hasattr(obj, 'Model'):
+            obj.addProperty("App::PropertyLink", "Model", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "The base objects for all operations"))
+            model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
+            if model.ViewObject:
+                model.ViewObject.Visibility = False
+            if models:
+                model.addObjects([createModelResourceClone(obj, base) for base in models])
+            obj.Model = model
+
+        if hasattr(obj, 'Base'):
+            PathLog.info("Converting Job.Base to new Job.Model for {}".format(obj.Label))
+            obj.Model.addObject(obj.Base)
+            obj.Base = None
+            obj.removeProperty('Base')
+
+    def removeBase(self, obj, base, removeFromModel):
+        if isResourceClone(obj, base, None):
+            PathUtil.clearExpressionEngine(base)
+            if removeFromModel:
+                obj.Model.removeObject(base)
+            obj.Document.removeObject(base.Name)
+
+    def modelBoundBox(self, obj):
+        return PathStock.shapeBoundBox(obj.Model.Group)
+
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
         PathLog.track(obj.Label, arg2)
         doc = obj.Document
+
         # the first to tear down are the ops, they depend on other resources
         PathLog.debug('taking down ops: %s' % [o.Name for o in self.allOperations()])
         while obj.Operations.Group:
@@ -161,19 +189,22 @@ class ObjectJob:
         obj.Operations.Group = []
         doc.removeObject(obj.Operations.Name)
         obj.Operations = None
-        # stock could depend on Base
+
+        # stock could depend on Model, so delete it first
         if obj.Stock:
             PathLog.debug('taking down stock')
             PathUtil.clearExpressionEngine(obj.Stock)
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
+
         # base doesn't depend on anything inside job
-        if obj.Base:
-            PathLog.debug('taking down base')
-            if isResourceClone(obj, 'Base'):
-                PathUtil.clearExpressionEngine(obj.Base)
-                doc.removeObject(obj.Base.Name)
-            obj.Base = None
+        for base in obj.Model.Group:
+            PathLog.debug("taking down base %s" % base.Label)
+            self.removeBase(obj, base, False)
+        obj.Model.Group = []
+        doc.removeObject(obj.Model.Name)
+        obj.Model = None
+
         # Tool controllers don't depend on anything
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
@@ -185,12 +216,6 @@ class ObjectJob:
         doc.removeObject(obj.SetupSheet.Name)
         obj.SetupSheet = None
         return True
-
-    def fixupResourceClone(self, obj, name, icon):
-        if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
-            orig = getattr(obj, name)
-            if orig:
-                setattr(obj, name, createResourceClone(obj, orig, name, icon))
 
     def fixupOperations(self, obj):
         if obj.Operations.ViewObject:
@@ -209,7 +234,7 @@ class ObjectJob:
 
 
     def onDocumentRestored(self, obj):
-        self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
+        self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
         obj.setEditorMode('Operations', 2) # hide
@@ -221,11 +246,24 @@ class ObjectJob:
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
 
-    def baseObject(self, obj):
+    def baseObject(self, obj, base):
         '''Return the base object, not its clone.'''
-        if isResourceClone(obj, 'Base', 'Base'):
-            return obj.Base.Objects[0]
-        return obj.Base
+        if isResourceClone(obj, base, 'Model') or isResourceClone(obj, base, 'Base'):
+            return base.Objects[0]
+        return base
+
+    def baseObjects(self, obj):
+        '''Return the base objects, not their clones.'''
+        return [self.baseObject(obj, base) for base in obj.Model.Group]
+
+    def resourceClone(self, obj, base):
+        '''resourceClone(obj, base) ... Return the resource clone for base if it exists.'''
+        if isResourceClone(obj, base, None):
+            return base
+        for b in obj.Model.Group:
+            if base == b.Objects[0]:
+                return b
+        return None
 
     def setFromTemplateFile(self, obj, template):
         '''setFromTemplateFile(obj, template) ... extract the properties from the given template file and assign to receiver.
@@ -351,7 +389,13 @@ def Instances():
 def Create(name, base, templateFile = None):
     '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template.'''
+    if str == type(base[0]):
+        models = []
+        for baseName in base:
+            models.append(FreeCAD.ActiveDocument.getObject(baseName))
+    else:
+        models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, base, templateFile)
+    proxy = ObjectJob(obj, models, templateFile)
     return obj
 

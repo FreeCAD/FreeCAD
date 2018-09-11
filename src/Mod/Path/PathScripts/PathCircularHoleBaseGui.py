@@ -118,7 +118,6 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         selected = [self.form.baseList.row(item) for item in self.form.baseList.selectedItems()]
         self.form.baseList.blockSignals(True)
         for row in sorted(list(set(selected)), key=lambda row: -row):
-            print("row = %d" % row)
             self.form.baseList.removeRow(row)
         self.updateBase()
         self.form.baseList.resizeColumnToContents(0)

@@ -248,7 +248,7 @@ CmdFemCreateSolver::CmdFemCreateSolver()
     sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
     sWhatsThis      = "FEM_CreateSolver";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-solver";
+    sPixmap         = "fem-solver-standard";
 }
 
 void CmdFemCreateSolver::activated(int)
@@ -1117,8 +1117,8 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
     if (pipeline == nullptr) {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Error: Wrong or no or to many vtk post processing objects."),
-            qApp->translate("CmdFemPostCreateClipFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document"));
+            qApp->translate("setupFilter", "Error: Wrong or no or to many vtk post processing objects."),
+            qApp->translate("setupFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document."));
         return;
     }
     else {
@@ -1196,9 +1196,9 @@ plt.show()\n";
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
+DEF_STD_CMD_A(CmdFemPostClipFilter);
 
-CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
+CmdFemPostClipFilter::CmdFemPostClipFilter()
   : Command("FEM_PostCreateClipFilter")
 {
     sAppModule      = "Fem";
@@ -1210,163 +1210,12 @@ CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
     sPixmap         = "fem-post-filter-clip-region";
 }
 
-void CmdFemPostCreateClipFilter::activated(int)
+void CmdFemPostClipFilter::activated(int)
 {
     setupFilter(this, "Clip");
 }
 
-bool CmdFemPostCreateClipFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
-
-CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
-  : Command("FEM_PostCreateDataAlongLineFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Line clip filter");
-    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
-    sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-data-along-line";
-}
-
-void CmdFemPostCreateDataAlongLineFilter::activated(int)
-{
-    setupFilter(this, "DataAlongLine");
-}
-
-bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateDataAtPointFilter);
-
-CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
-  : Command("FEM_PostCreateDataAtPointFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Data at point clip filter");
-    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
-    sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-data-at-point";
-}
-
-void CmdFemPostCreateDataAtPointFilter::activated(int)
-{
-
-   setupFilter(this, "DataAtPoint");
-
-}
-
-bool CmdFemPostCreateDataAtPointFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
-
-CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
-  : Command("FEM_PostCreateLinearizedStressesFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Stress linearization plot");
-    sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
-    sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-linearized-stresses";
-}
-
-void CmdFemPostCreateLinearizedStressesFilter::activated(int)
-{
-
-    Gui::SelectionFilter DataAlongLineFilter("SELECT Fem::FemPostDataAlongLineFilter COUNT 1");
-
-    if (DataAlongLineFilter.match()) {
-        Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
-        std::string FieldName = DataAlongLine->PlotData.getValue();
-        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
-             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
-             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
-             doCommand(Gui::Command::Doc, Plot().c_str());
-        } else {
-                QMessageBox::warning(Gui::getMainWindow(),
-                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
-                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
-        }
-}
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
-    }
-
-}
-
-bool CmdFemPostCreateLinearizedStressesFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemPostCreateScalarClipFilter);
-
-CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
-  : Command("FEM_PostCreateScalarClipFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Scalar clip filter");
-    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
-    sWhatsThis      = "FEM_PostCreateScalarClipFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-clip-scalar";
-}
-
-void CmdFemPostCreateScalarClipFilter::activated(int)
-{
-    setupFilter(this, "ScalarClip");
-}
-
-bool CmdFemPostCreateScalarClipFilter::isActive(void)
-{
-    return hasActiveDocument();
-}
-
-
-//================================================================================================
-DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
-
-CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
-  : Command("FEM_PostCreateWarpVectorFilter")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Warp filter");
-    sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
-    sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-warp";
-}
-
-void CmdFemPostWarpVectorFilter::activated(int)
-{
-    setupFilter(this, "WarpVector");
-}
-
-bool CmdFemPostWarpVectorFilter::isActive(void)
+bool CmdFemPostClipFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1393,6 +1242,159 @@ void CmdFemPostCutFilter::activated(int)
 }
 
 bool CmdFemPostCutFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter);
+
+CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
+  : Command("FEM_PostCreateDataAlongLineFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Line clip filter");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-data-along-line";
+}
+
+void CmdFemPostDataAlongLineFilter::activated(int)
+{
+    setupFilter(this, "DataAlongLine");
+}
+
+bool CmdFemPostDataAlongLineFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostDataAtPointFilter);
+
+CmdFemPostDataAtPointFilter::CmdFemPostDataAtPointFilter()
+  : Command("FEM_PostCreateDataAtPointFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Data at point clip filter");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-data-at-point";
+}
+
+void CmdFemPostDataAtPointFilter::activated(int)
+{
+
+   setupFilter(this, "DataAtPoint");
+
+}
+
+bool CmdFemPostDataAtPointFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter);
+
+CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
+  : Command("FEM_PostCreateLinearizedStressesFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Stress linearization plot");
+    sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
+    sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-linearized-stresses";
+}
+
+void CmdFemPostLinearizedStressesFilter::activated(int)
+{
+
+    Gui::SelectionFilter DataAlongLineFilter("SELECT Fem::FemPostDataAlongLineFilter COUNT 1");
+
+    if (DataAlongLineFilter.match()) {
+        Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
+        std::string FieldName = DataAlongLine->PlotData.getValue();
+        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
+             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
+             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
+             doCommand(Gui::Command::Doc, Plot().c_str());
+        } else {
+                QMessageBox::warning(Gui::getMainWindow(),
+                    qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
+                    qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+        }
+}
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+    }
+
+}
+
+bool CmdFemPostLinearizedStressesFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostScalarClipFilter);
+
+CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
+  : Command("FEM_PostCreateScalarClipFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Scalar clip filter");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
+    sWhatsThis      = "FEM_PostCreateScalarClipFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-clip-scalar";
+}
+
+void CmdFemPostScalarClipFilter::activated(int)
+{
+    setupFilter(this, "ScalarClip");
+}
+
+bool CmdFemPostScalarClipFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
+
+CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
+  : Command("FEM_PostCreateWarpVectorFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Warp filter");
+    sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
+    sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-post-filter-warp";
+}
+
+void CmdFemPostWarpVectorFilter::activated(int)
+{
+    setupFilter(this, "WarpVector");
+}
+
+bool CmdFemPostWarpVectorFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1473,8 +1475,8 @@ void CmdFemPostFunctions::activated(int iMsg)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
+            qApp->translate("CmdFemPostClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostClipFilter", "Select a pipeline, please."));
     }
 
     // Since the default icon is reset when enabing/disabling the command we have
@@ -1681,15 +1683,15 @@ void CreateFemCommands(void)
 
     // vtk post processing
 #ifdef FC_USE_VTK
-    rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
-    rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCutFilter);
+    rcCmdMgr.addCommand(new CmdFemPostDataAlongLineFilter);
+    rcCmdMgr.addCommand(new CmdFemPostDataAtPointFilter);
+    rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
+    rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
-    rcCmdMgr.addCommand(new CmdFemPostCutFilter);
 #endif
 }

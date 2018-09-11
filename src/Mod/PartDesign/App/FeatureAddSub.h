@@ -46,11 +46,16 @@ public:
     FeatureAddSub();
 
     Type getAddSubType();
-    
+
+    virtual short mustExecute() const override;
+
     Part::PropertyPartShape   AddSubShape;
+    App::PropertyBool Refine;
 
 protected:
     Type addSubType;
+
+    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 };
 
 typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;

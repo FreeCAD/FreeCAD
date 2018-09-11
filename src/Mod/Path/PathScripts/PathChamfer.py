@@ -100,7 +100,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
 
             self.basewires.extend(basewires)
 
-            for w in self.adjustWirePlacement(obj, base, basewires):
+            for w in basewires:
                 self.adjusted_basewires.append(w)
                 wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
                 if wire:
@@ -111,7 +111,7 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
 
     def opRejectAddBase(self, obj, base, sub):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
-        return base != self.baseobject
+        return not base in self.model
 
     def opSetDefaultValues(self, obj, job):
         PathLog.track(obj.Label, job.Label)

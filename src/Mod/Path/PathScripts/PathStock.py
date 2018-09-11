@@ -66,6 +66,13 @@ class StockType:
         return cls.Unknown
 
 def shapeBoundBox(obj):
+    PathLog.track(type(obj))
+    if list == type(obj) and obj:
+        bb = FreeCAD.BoundBox()
+        for o in obj:
+            bb.add(shapeBoundBox(o))
+        return bb
+
     if hasattr(obj, 'Shape'):
         return obj.Shape.BoundBox
     if obj and 'App::Part' == obj.TypeId:
@@ -105,8 +112,11 @@ class StockFromBase(Stock):
         obj.ExtZpos= 1.0
 
         # placement is only tracked on creation
-        bb = shapeBoundBox(base)
-        obj.Placement = FreeCAD.Placement(FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation())
+        bb = shapeBoundBox(base.Group) if base else None
+        if bb:
+            obj.Placement = FreeCAD.Placement(FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation())
+        else:
+            PathLog.track(obj.Label, base.Label)
         obj.Proxy = self
 
     def __getstate__(self):
@@ -115,7 +125,8 @@ class StockFromBase(Stock):
         return None
 
     def execute(self, obj):
-        bb = shapeBoundBox(obj.Base)
+        bb = shapeBoundBox(obj.Base.Group) if obj.Base and hasattr(obj.Base, 'Group') else None
+        PathLog.track(obj.Label, bb)
 
         # Sometimes, when the Base changes it's temporarily not assigned when
         # Stock.execute is triggered - it'll be set correctly the next time around.
@@ -202,6 +213,7 @@ class StockCreateCylinder(Stock):
             self.execute(obj)
 
 def SetupStockObject(obj, stockType):
+    PathLog.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:
         obj.addProperty('App::PropertyString', 'StockType', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Internal representation of stock type"))
         obj.StockType = stockType
@@ -212,9 +224,8 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.DisplayMode = 'Wireframe'
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
-    if base:
-        base.Shape.tessellate(0.1)
+    PathLog.track(job.Label, neg, pos, placement)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockFromBase(obj, base)
 
@@ -237,9 +248,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
-    if base:
-        base.Shape.tessellate(0.1)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateBox(obj)
 
@@ -248,23 +257,23 @@ def CreateBox(job, extent=None, placement=None):
         obj.Width  = extent.y
         obj.Height = extent.z
     elif base:
-        bb = shapeBoundBox(base)
+        bb = shapeBoundBox(base.Group)
         obj.Length = max(bb.XLength, 1)
         obj.Width  = max(bb.YLength, 1)
         obj.Height = max(bb.ZLength, 1)
+
     if placement:
         obj.Placement = placement
     elif base:
-        bb = shapeBoundBox(base)
+        bb = shapeBoundBox(base.Group)
         origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
+
     SetupStockObject(obj, StockType.CreateBox)
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = job.Base if job and hasattr(job, 'Base') else None
-    if base:
-        base.Shape.tessellate(0.1)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     proxy = StockCreateCylinder(obj)
 
@@ -274,14 +283,14 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
     if height:
         obj.Height = height
     elif base:
-        bb = shapeBoundBox(base)
+        bb = shapeBoundBox(base.Group)
         obj.Radius = math.sqrt(bb.XLength ** 2 + bb.YLength ** 2) / 2.0
         obj.Height = max(bb.ZLength, 1)
 
     if placement:
         obj.Placement = placement
     elif base:
-        bb = shapeBoundBox(base)
+        bb = shapeBoundBox(base.Group)
         origin = FreeCAD.Vector((bb.XMin + bb.XMax)/2, (bb.YMin + bb.YMax)/2, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
 

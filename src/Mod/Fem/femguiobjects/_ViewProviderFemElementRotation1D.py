@@ -43,7 +43,7 @@ class _ViewProviderFemElementRotation1D:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-beam-rotation.svg"
+        return ":/icons/fem-element-rotation-1d.svg"
 
     def attach(self, vobj):
         from pivy import coin

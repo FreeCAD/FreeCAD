@@ -90,9 +90,12 @@ CombiView::~CombiView()
 
 void CombiView::showDialog(Gui::TaskView::TaskDialog *dlg)
 {
+    static QIcon icon = Gui::BitmapFactory().pixmap("edit-edit.svg");
+
     // switch to the TaskView tab
     oldTabIndex = tabs->currentIndex();
     tabs->setCurrentIndex(1);
+    tabs->setTabIcon(1, icon);
     // set the dialog
     taskPanel->showDialog(dlg);
 }
@@ -105,8 +108,11 @@ void CombiView::closeDialog()
 
 void CombiView::closedDialog()
 {
+    static QIcon icon = QIcon();
+
     // dialog has been closed
     tabs->setCurrentIndex(oldTabIndex);
+    tabs->setTabIcon(1, icon);
 }
 
 void CombiView::showTreeView()

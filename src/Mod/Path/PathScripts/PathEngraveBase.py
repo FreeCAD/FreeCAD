@@ -46,33 +46,6 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-def adjustPlacement(obj, shape, wires):
-    job = PathUtils.findParentJob(obj)
-    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
-        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
-            pmntShape   = shape.Placement
-            pmntSupport = shape.Support[0][0].getGlobalPlacement()
-            #pmntSupport = shape.Support[0][0].Placement
-            pmntBase    = job.Base.Placement
-            pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
-            #PathLog.debug("pmnt = %s" % pmnt)
-            newWires = []
-            for w in wires:
-                edges = []
-                for e in w.Edges:
-                    e = e.copy()
-                    e.Placement = FreeCAD.Placement()
-                    edges.append(e)
-                w = Part.Wire(edges)
-                w.Placement = pmnt
-                newWires.append(w)
-            wires = newWires
-        else:
-            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
-    else:
-        PathLog.debug("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'None')) 
-    return wires
-
 class ObjectOp(PathOp.ObjectOp):
     '''Proxy base class for engrave operations.'''
 
@@ -151,14 +124,12 @@ class ObjectOp(PathOp.ObjectOp):
         self.commandlist.append(Path.Command(cmd.Name, params))
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj, job) ... set depths for engraving'''
+        '''opSetDefaultValues(obj) ... set depths for engraving'''
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            if job and job.Base:
-                bb = job.Base.Shape.BoundBox
+            if job and len(job.Model.Group) > 0:
+                bb = job.Proxy.modelBoundBox(job)
                 obj.OpStartDepth = bb.ZMax
                 obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
             else:
                 obj.OpFinalDepth = -0.1
 
-    def adjustWirePlacement(self, obj, shape, wires):
-        return adjustPlacement(obj, shape, wires)

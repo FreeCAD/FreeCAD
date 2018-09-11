@@ -31,6 +31,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Ax1.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 #include "Body.h"
@@ -38,7 +39,10 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
 #include <App/Document.h>
+#include <Mod/Part/App/modelRefine.h>
 
 using namespace PartDesign;
 
@@ -52,6 +56,11 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
+
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 
     initExtension(this);
 }
@@ -142,6 +151,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         result = boolOp; // Use result of this operation for fuse/cut of next body
     }
 
+    result = refineShapeIfActive(result);
+
     int solidCount = countSolids(result);
     if (solidCount > 1) {
         return new App::DocumentObjectExecReturn("Boolean: Result has multiple solids. This is not supported at this time.");
@@ -166,6 +177,22 @@ void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * Ty
     if (Group.getClassTypeId() == type && strcmp(PropName, "Bodies") == 0) {
         Group.Restore(reader);
     }
+}
+
+TopoDS_Shape Boolean::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    if (this->Refine.getValue()) {
+        try {
+            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            TopoDS_Shape resShape = mkRefine.Shape();
+            return resShape;
+        }
+        catch (Standard_Failure&) {
+            return oldShape;
+        }
+    }
+
+    return oldShape;
 }
 
 }

@@ -133,12 +133,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-            self.outline = Part.Face(TechDraw.findShapeOutline(self.baseobject.Shape, 1, FreeCAD.Vector(0, 0, 1)))
+            self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model]
             stockBB = self.stock.Shape.BoundBox
 
-            self.outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
-            self.body  = self.outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
-            self.removalshapes = [(self.stock.Shape.cut(self.body), False)]
+            self.removalshapes = []
+            self.bodies = []
+            for outline in self.outlines:
+                outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
+                body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
+                self.bodies.append(body)
+                self.removalshapes.append((self.stock.Shape.cut(body), False))
 
         for (shape,hole) in self.removalshapes:
             shape.tessellate(0.1)
