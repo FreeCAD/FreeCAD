@@ -310,6 +310,13 @@ void Placement::on_applyIncrementalPlacement_toggled(bool on)
     }
 }
 
+void Placement::keyPressEvent(QKeyEvent* ke)
+{
+    // The placement dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
+}
+
 void Placement::reject()
 {
     Base::Placement plm;
