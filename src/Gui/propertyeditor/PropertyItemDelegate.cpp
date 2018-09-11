@@ -122,14 +122,17 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
-void PropertyItemDelegate::editorClosed() {
+void PropertyItemDelegate::editorClosed(QWidget *editor) {
     int id = 0;
     auto &app = App::GetApplication();
-    app.getActiveTransaction(&id);
+    const char *name = app.getActiveTransaction(&id);
     if(id && id==activeTransactionID) {
+        FC_LOG("editor close transaction " << name);
         app.closeActiveTransaction(false,id);
         activeTransactionID = 0;
-    }
+    }else
+        FC_LOG("editor close");
+    editor->close();
 }
 
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
@@ -151,15 +154,25 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     this->pressed = false;
 
     auto &app = App::GetApplication();
-    if(app.autoTransaction() && !app.getActiveTransaction()) {
+    if(!app.autoTransaction()) 
+        FC_LOG("create editor");
+    else if(app.getActiveTransaction())
+        FC_LOG("create editor, already transacting " << app.getActiveTransaction());
+    else {
         auto items = childItem->getPropertyData();
         for(auto propItem=childItem->parent();items.empty() && propItem;propItem=propItem->parent())
             items = propItem->getPropertyData();
-        if(items.size()) {
+        if(items.empty()) 
+            FC_LOG("create editor, no item");
+        else {
             auto prop = items[0];
             auto parent = prop->getContainer();
             auto obj  = dynamic_cast<App::DocumentObject*>(parent);
-            if(obj && obj->getDocument() && !obj->getDocument()->hasPendingTransaction()) {
+            if(!obj || !obj->getDocument())
+                FC_LOG("invalid object");
+            else if(obj->getDocument()->hasPendingTransaction())
+                FC_LOG("pending transaction");
+            else {
                 std::ostringstream str;
                 str << "Change ";
                 for(auto prop : items) {
@@ -177,6 +190,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
                 if(items.size()>1)
                     str << "...";
                 activeTransactionID = app.setActiveTransaction(str.str().c_str());
+                FC_LOG("create editor transaction " << app.getActiveTransaction());
             }
         }
     }
