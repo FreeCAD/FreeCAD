@@ -332,6 +332,11 @@ QModelIndexList SheetView::selectedIndexes() const
     return ui->cells->selectionModel()->selectedIndexes();
 }
 
+void SheetView::deleteSelection()
+{
+    ui->cells->deleteSelection();
+}
+
 QModelIndex SheetView::currentIndex() const
 {
     return ui->cells->currentIndex();

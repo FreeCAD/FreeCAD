@@ -328,8 +328,57 @@ bool SheetTableView::event(QEvent *event)
                 return true;
             }
         }
+        else if (kevent->key() == Qt::Key_Delete) {
+            deleteSelection();
+            return true;
+        }
+    }
+    else if (event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->modifiers() == Qt::NoModifier ||
+            kevent->modifiers() == Qt::ShiftModifier ||
+            kevent->modifiers() == Qt::KeypadModifier) {
+            switch (kevent->key()) {
+                case Qt::Key_Return:
+                case Qt::Key_Enter:
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                case Qt::Key_Up:
+                case Qt::Key_Down:
+                case Qt::Key_Tab:
+                    kevent->accept();
+                default:
+                    break;
+            }
+
+            if (kevent->key() < Qt::Key_Escape) {
+                kevent->accept();
+            }
+        }
     }
     return QTableView::event(event);
+}
+
+void SheetTableView::deleteSelection()
+{
+    QModelIndexList selection = selectionModel()->selectedIndexes();
+
+    if (selection.size() > 0) {
+        Gui::Command::openCommand("Clear cell(s)");
+        std::vector<Range> ranges = selectedRanges();
+        std::vector<Range>::const_iterator i = ranges.begin();
+
+        for (; i != ranges.end(); ++i) {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
+                                    i->rangeString().c_str());
+        }
+        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
