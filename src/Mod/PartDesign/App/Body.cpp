@@ -133,22 +133,25 @@ App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
 
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 {
-    if ( !start ) { // default to tip
+    if (!start) { // default to tip
         start = Tip.getValue();
     }
 
-    if ( !start ) { // No Tip
+    if (!start) { // No Tip
         return nullptr;
     }
+
     if (!hasObject(start))
         return nullptr;
 
     const std::vector<App::DocumentObject*> & features = Group.getValues();
 
-    auto startIt = std::find ( features.rbegin(), features.rend(), start );
-    assert ( startIt != features.rend() );
-    auto rvIt = std::find_if ( startIt + 1, features.rend(), isSolidFeature );
+    auto startIt = std::find (features.rbegin(), features.rend(), start);
+    if (startIt == features.rend()) { // object not found
+        return nullptr;
+    }
 
+    auto rvIt = std::find_if (startIt + 1, features.rend(), isSolidFeature);
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
     }
@@ -158,33 +161,32 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 
 App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
 {
-    if ( !start ) { // default to tip
+    if (!start) { // default to tip
         start = Tip.getValue();
     }
 
-    if ( !start || !hasObject(start) ) { // no or faulty tip
+    if (!start || !hasObject(start)) { // no or faulty tip
         return nullptr;
     }
-
-    assert ( hasObject ( start ) );
 
     const std::vector<App::DocumentObject*> & features = Group.getValues();
     std::vector<App::DocumentObject*>::const_iterator startIt;
 
-    startIt = std::find ( features.begin(), features.end(), start );
-    assert ( startIt != features.end() );
-    startIt++;
-
-    if (startIt == features.end() ) { // features list is empty
+    startIt = std::find (features.begin(), features.end(), start);
+    if (startIt == features.end()) { // object not found
         return nullptr;
     }
 
-    auto rvIt = std::find_if ( startIt, features.end(), isSolidFeature );
+    startIt++;
+    if (startIt == features.end()) { // features list has only one element
+        return nullptr;
+    }
 
+    auto rvIt = std::find_if (startIt, features.end(), isSolidFeature);
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
     }
-    
+
     return nullptr;
 }
 
