@@ -1239,10 +1239,9 @@ std::string ObjectIdentifier::String::toString() const
  * @return Python code as a string
  */
 
-std::string ObjectIdentifier::getPythonAccessor(PythonVariables *vars) const
+std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, PythonVariables *vars) const
 {
     std::stringstream ss;
-    ResolveResults result(*this);
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
         return std::string();
@@ -1292,15 +1291,34 @@ std::string ObjectIdentifier::getPythonAccessor(PythonVariables *vars) const
 /**
  * @brief Get the value of the property or field pointed to by this object identifier.
  *
- * Only a limited number of types are supported: Int, Float, String, Unicode String, and Quantities.
+ * All type of objects are supported. Some types are casted to FC native
+ * type, including: Int, Float, String, Unicode String, and Quantities. Others
+ * are just kept as Python object wrapped by boost::any.
+ *
+ * @param checkCallable: if true, calls the property's getPathValue() (which is
+ * necessary for Qunatities to work) if and only if there is no Python callable
+ * component inside. Otherwise, just use python accessor to evaluate result.
  *
  * @return The value of the property or field.
  */
 
-boost::any ObjectIdentifier::getValue() const
+boost::any ObjectIdentifier::getValue(bool checkCallable) const
 {
+    ResolveResults rs(*this);
+
+    if(rs.resolvedProperty && rs.propertyType==PseudoNone && checkCallable) {
+        for(auto &component : components) {
+            if(component.isCallable()) {
+                checkCallable = false;
+                break;
+            }
+        }
+        if(checkCallable)
+            return rs.resolvedProperty->getPathValue(*this);
+    }
+
     PythonVariables vars;
-    std::string s = "_path_value_temp_ = " + getPythonAccessor(&vars);
+    std::string s = "_path_value_temp_ = " + getPythonAccessor(rs,&vars);
     PyObject * pyvalue = Base::Interpreter().getValue(s.c_str(), "_path_value_temp_");
 
     if (!pyvalue)
@@ -1360,9 +1378,9 @@ boost::any ObjectIdentifier::getValue() const
 void ObjectIdentifier::setValue(const boost::any &value) const
 {
     std::stringstream ss;
-
+    ResolveResults rs(*this);
     PythonVariables vars;
-    ss << getPythonAccessor(NO_CALLABLE) + " = ";
+    ss << getPythonAccessor(rs,NO_CALLABLE) + " = ";
 
     if (value.type() == typeid(Py::Object)) {
         ss <<  vars.add(boost::any_cast<Py::Object>(value));
@@ -1430,8 +1448,10 @@ ObjectIdentifier::ResolveResults::ResolveResults(const ObjectIdentifier &oi)
     , resolvedDocumentName()
     , resolvedDocumentObject(0)
     , resolvedDocumentObjectName()
+    , resolvedSubObject(0)
     , resolvedProperty(0)
     , propertyName()
+    , propertyType(PseudoNone)
 {
     oi.resolve(*this);
 }

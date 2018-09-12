@@ -29,7 +29,7 @@ namespace App {
 
 struct CellAddress;
 
-AppExport CellAddress stringToAddress(const char *strAddress);
+AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
 AppExport int decodeColumn(const std::string &colstr);
 AppExport int decodeRow(const std::string &rowstr);
 AppExport int validColumn(const std::string &colstr);

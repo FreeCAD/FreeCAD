@@ -201,7 +201,7 @@ int App::validColumn(const std::string &colstr)
   *
   */
 
-App::CellAddress App::stringToAddress(const char * strAddress)
+App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 {
     static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
     boost::cmatch cm;
@@ -214,6 +214,8 @@ App::CellAddress App::stringToAddress(const char * strAddress)
 
         return CellAddress(decodeRow(rowstr.str()), decodeColumn(colstr.str()));
     }
+    else if(silent)
+        return CellAddress();
     else
         throw Base::RuntimeError("Invalid cell specifier.");
 }

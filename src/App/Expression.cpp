@@ -1373,13 +1373,7 @@ App::DocumentObject * VariableExpression::getDocumentObject() const
 
 Expression * VariableExpression::eval() const
 {
-    const Property * prop = getProperty();
-    PropertyContainer * parent = prop->getContainer();
-
-    if (!parent->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        throw ExpressionError("Property must belong to a document object.");
-
-    boost::any value = var.getValue();
+    boost::any value = var.getValue(true);
 
     if (value.type() == typeid(Quantity)) {
         Quantity qvalue = boost::any_cast<Quantity>(value);

@@ -965,9 +965,11 @@ void PropertySheet::addDependencies(CellAddress key)
         std::string docObjName = docName + "#" + (docObj ? docObj->getNameInDocument() : i->getDocumentObjectName().getString());
         std::string propName = docObjName + ".";
 
-        if (!prop)
+        if (!prop) {
             cell->setResolveException("Unresolved dependency");
-        else {
+            if(docObj == owner)
+                propName += i->getPropertyName();
+        } else {
             if(ptype==App::ObjectIdentifier::PseudoNone && prop->getContainer()==docObj)
                 propName += i->getPropertyName();
 

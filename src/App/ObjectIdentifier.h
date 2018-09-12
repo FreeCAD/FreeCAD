@@ -263,7 +263,7 @@ public:
 
     // Getter
 
-    boost::any getValue() const;
+    boost::any getValue(bool checkCallable=false) const;
 
     // Setter; is const because it does not alter the object state,
     // but does have a aide effect.
@@ -304,7 +304,7 @@ protected:
 
     std::string getSubPathStr(const ResolveResults &result, PythonVariables *var=0) const;
 
-    std::string getPythonAccessor(PythonVariables *vars=0) const;
+    std::string getPythonAccessor(const ResolveResults &rs, PythonVariables *vars=0) const;
 
     void resolve(ResolveResults & results) const;
 
