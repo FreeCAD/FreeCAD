@@ -80,7 +80,16 @@ void DlgSettingsUnitsImp::saveSettings()
         ("User parameter:BaseApp/Preferences/Units");
     hGrp->SetInt("UserSchema", ui->comboBox_ViewSystem->currentIndex());
     hGrp->SetInt("Decimals", ui->spinBoxDecimals->value());
+    hGrp->SetInt("FracInchIndex", ui->comboBox_FracInch->currentIndex());
+
+    // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
+    
+    // Convert the combobox index to the its integer denominator. Currently
+    // with 1/2, 1/4, through 1/128, this little equation directly computes the
+    // denominator given the combobox integer.
+    int minFracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+    hGrp->SetInt("minFracInch", minFracInch);
 }
 
 void DlgSettingsUnitsImp::loadSettings()
@@ -89,6 +98,7 @@ void DlgSettingsUnitsImp::loadSettings()
         ("User parameter:BaseApp/Preferences/Units");
     ui->comboBox_ViewSystem->setCurrentIndex(hGrp->GetInt("UserSchema",0));
     ui->spinBoxDecimals->setValue(hGrp->GetInt("Decimals",Base::UnitsApi::getDecimals()));
+    ui->comboBox_FracInch->setCurrentIndex(hGrp->GetInt("FracInchIndex",2)); // 2==1/8"
 }
 
 /**
