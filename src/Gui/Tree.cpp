@@ -713,11 +713,12 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
-        it->second->setFont(0, f);
         it->second->setHidden(0 == displayMode && it != jt);
         if (2 == displayMode) {
             it->second->setExpanded(it == jt);
         }
+        // this must be done as last step
+        it->second->setFont(0, f);
     }
 }
 
