@@ -161,6 +161,9 @@ PyMethodDef Application::Methods[] = {
   {"activeView", (PyCFunction)Application::sActiveView, METH_VARARGS,
    "activeView() -> object or None\n\n"
    "Return the active view of the active document or None if no one exists"},
+  {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
+   "activateView(type)\n\n"
+   "Activate a view of the given type of the active document"},
   {"getDocument",             (PyCFunction) Application::sGetDocument, METH_VARARGS,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
@@ -208,14 +211,24 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    Document *pcDoc = Instance->activeDocument();
-    if (pcDoc) {
-        Gui::MDIView *pcView = pcDoc->getActiveView();
-        if (pcView)
-            // already incremented in getPyObject().
-            return pcView->getPyObject();
+    Gui::MDIView* mdiView = Instance->activeView();
+    if (mdiView) {
+        // already incremented in getPyObject().
+        return mdiView->getPyObject();
     }
 
+    Py_Return;
+}
+
+PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
+{
+    char* typeStr;
+    PyObject *create = Py_False;
+    if (!PyArg_ParseTuple(args, "sO!", &typeStr, &PyBool_Type, &create))
+        return NULL;
+
+    Base::Type type = Base::Type::fromName(typeStr);
+    Instance->activateView(type, PyObject_IsTrue(create) ? true : false);
     Py_Return;
 }
 
