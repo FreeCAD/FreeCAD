@@ -541,7 +541,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator" 
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
-          << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
+          << "Std_ViewDockUndockFullscreen" << "Std_TreeViewDocument" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
 #ifdef BUILD_VR
           << "Std_ViewVR"
@@ -550,7 +550,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
-          << "Std_TreeViewDocument"
           << "Std_ViewStatusBar";
 
     // Tools
