@@ -55,6 +55,7 @@
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/GLBuffer.h>
 #include "SoFCIndexedFaceSet.h"
 
 #define RENDER_GL_VAO
@@ -66,141 +67,10 @@ using namespace MeshGui;
 
 #if defined RENDER_GL_VAO
 
-class CoinOpenGLBuffer {
-public:
-    CoinOpenGLBuffer(GLenum type)
-      : target(type)
-      , bufferId(0)
-      , context(-1)
-      , currentContext(-1)
-      , glue(0)
-    {
-        SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
-    }
-    ~CoinOpenGLBuffer()
-    {
-        SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
-
-        destroy();
-    }
-    void setCurrentContext(uint32_t ctx)
-    {
-        currentContext = ctx;
-        glue = cc_glglue_instance(currentContext);
-    }
-    bool create()
-    {
-        if (bufferId > 0)
-            return true;
-#ifdef FC_OS_WIN32
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
-        glGenBuffersARB(1, &bufferId);
-        context = currentContext;
-        return true;
-    }
-    bool isCreated() const
-    {
-        return (bufferId > 0);
-    }
-    void destroy()
-    {
-        // schedule delete for all allocated GL resources
-        if (bufferId > 0) {
-            void * ptr0 = (void*) ((uintptr_t) bufferId);
-            SoGLCacheContextElement::scheduleDeleteCallback(context, buffer_delete, ptr0);
-            bufferId = 0;
-        }
-    }
-    void allocate(const void *data, int count)
-    {
-        if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-            PFNGLBUFFERDATAPROC glBufferDataARB = (PFNGLBUFFERDATAPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
-            glBufferDataARB(target, count, data, GL_STATIC_DRAW);
-        }
-    }
-    bool bind()
-    {
-        if (bufferId) {
-            if (context != currentContext) {
-                SoDebugError::postWarning("CoinOpenGLBuffer::bind",
-                                          "buffer not created");
-                return false;
-            }
-#ifdef FC_OS_WIN32
-            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-            glBindBufferARB(target, bufferId);
-            return true;
-        }
-        return false;
-    }
-    void release()
-    {
-        if (bufferId) {
-#ifdef FC_OS_WIN32
-            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-            glBindBufferARB(target, 0);
-        }
-    }
-    GLuint getBufferId() const
-    {
-        return bufferId;
-    }
-    uint32_t getBoundContext() const
-    {
-        return context;
-    }
-    int size() const
-    {
-        GLint value = -1;
-        if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-            PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(glue, "glGetBufferParameterivARB");
-#endif
-            glGetBufferParameteriv(target, GL_BUFFER_SIZE, &value);
-        }
-        return value;
-    }
-
-private:
-    static void context_destruction_cb(uint32_t context, void * userdata)
-    {
-        CoinOpenGLBuffer * self = static_cast<CoinOpenGLBuffer*>(userdata);
-
-        if (self->context == context && self->bufferId) {
-#ifdef FC_OS_WIN32
-            const cc_glglue * glue = cc_glglue_instance((int) context);
-            PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-#endif
-
-            GLuint buffer = self->bufferId;
-            glDeleteBuffersARB(1, &buffer);
-            self->context = -1;
-            self->bufferId = 0;
-        }
-    }
-    static void buffer_delete(void * closure, uint32_t contextid)
-    {
-        const cc_glglue * glue = cc_glglue_instance((int) contextid);
-        GLuint id = (GLuint) ((uintptr_t) closure);
-        cc_glglue_glDeleteBuffers(glue, 1, &id);
-    }
-
-    GLenum target;
-    GLuint bufferId;
-    uint32_t context;
-    uint32_t currentContext;
-    const cc_glglue* glue;
-};
-
 class MeshRenderer::Private {
 public:
-    CoinOpenGLBuffer vertices;
-    CoinOpenGLBuffer indices;
+    Gui::OpenGLBuffer vertices;
+    Gui::OpenGLBuffer indices;
     const SbColor * pcolors;
     SoMaterialBindingElement::Binding matbinding;
     bool initialized;
@@ -236,8 +106,11 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
     static bool init = false;
     static bool vboAvailable = false;
     if (!init) {
-        std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
-        vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        vboAvailable = Gui::OpenGLBuffer::isVBOSupported(action->getCacheContext());
+        if (!vboAvailable) {
+            SoDebugError::postInfo("MeshRenderer",
+                                   "GL_ARB_vertex_buffer_object extension not supported");
+        }
         init = true;
     }
 
@@ -507,14 +380,26 @@ bool MeshRenderer::canRenderGLArray(SoGLRenderAction *action) const
 
 bool MeshRenderer::matchMaterial(SoState* state) const
 {
+    // FIXME: There is sometimes a minor problem that in wireframe
+    // mode the colors do not match. The steps to reproduce
+    // * set mesh to shaded mode
+    // * open function to remove components and select an area
+    // * set to wireframe mode
+    // => the material of the shaded mode instead of that of the
+    // wireframe mode
     SoMaterialBindingElement::Binding matbind =
         SoMaterialBindingElement::get(state);
+    if (p->matbinding != matbind)
+        return false;
+    // the buffer doesn't contain color information
+    if (matbind == SoMaterialBindingElement::OVERALL)
+        return true;
     const SbColor * pcolors = 0;
     SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
     if (gl) {
         pcolors = gl->getDiffusePointer();
     }
-    return p->matbinding == matbind && p->pcolors == pcolors;
+    return p->pcolors == pcolors;
 }
 
 bool MeshRenderer::shouldRenderDirectly(bool direct)
@@ -596,26 +481,57 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
+#if defined(RENDER_GL_VAO)
+    SoState * state = action->getState();
+
+    // get the VBO status of the viewer
+    SbBool useVBO = true;
+    Gui::SoGLVBOActivatedElement::get(state, useVBO);
+
+    // Check for a matching OpenGL context
+    if (!render.canRenderGLArray(action))
+        useVBO = false;
+
+    // use VBO for fast rendering if possible
+    if (useVBO) {
+        if (updateGLArray.getValue()) {
+            updateGLArray = false;
+            generateGLArrays(action);
+        }
+
+        if (render.matchMaterial(state)) {
+            SoMaterialBundle mb(action);
+            mb.sendFirst();
+            render.renderFacesGLArray(action);
+        }
+        else {
+            drawFaces(action);
+        }
+    }
+    else {
+        drawFaces(action);
+    }
+#else
+    drawFaces(action);
+#endif
+}
+
+void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
+{
     SoState * state = action->getState();
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
 
-#if defined(RENDER_GL_VAO)
-    if (mode == false || render.matchMaterial(state)) {
-#else
     unsigned int num = this->coordIndex.getNum()/4;
     if (mode == false || num <= this->renderTriangleLimit) {
-#endif
-#if defined (RENDER_GLARRAYS) || defined(RENDER_GL_VAO)
-
-        SbBool matchCtx = render.canRenderGLArray(action);
-#if 0
+#ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
 
+        SbBool matchCtx = render.canRenderGLArray(action);
         if (matbind == SoMaterialBindingElement::OVERALL && matchCtx) {
             SoMaterialBundle mb(action);
             mb.sendFirst();
-            if (updateGLArray) {
+            if (updateGLArray.getValue()) {
                 updateGLArray = false;
                 generateGLArrays(action);
             }
@@ -624,27 +540,6 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         else {
             inherited::GLRender(action);
         }
-#else
-        // get the VBO status of the viewer
-        SbBool hasVBO = true;
-        //Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-        if (!matchCtx)
-            hasVBO = false;
-
-        if (hasVBO && updateGLArray.getValue()) {
-            updateGLArray = false;
-            generateGLArrays(action);
-        }
-
-        if (hasVBO && render.matchMaterial(state)) {
-            SoMaterialBundle mb(action);
-            mb.sendFirst();
-            render.renderFacesGLArray(action);
-        }
-        else {
-            inherited::GLRender(action);
-        }
-#endif
 #else
         inherited::GLRender(action);
 #endif
@@ -682,8 +577,12 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
 
-        if(normalCacheUsed)
+        // getVertexData() internally calls readLockNormalCache() that read locks
+        // the normal cache. When the cache is not needed any more we must call
+        // readUnlockNormalCache()
+        if (normalCacheUsed)
             this->readUnlockNormalCache();
+
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 #endif
@@ -956,7 +855,10 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
 
     render.generateGLArrays(action, matbind, face_vertices, face_indices);
 
-    if(normalCacheUsed)
+    // getVertexData() internally calls readLockNormalCache() that read locks
+    // the normal cache. When the cache is not needed any more we must call
+    // readUnlockNormalCache()
+    if (normalCacheUsed)
         this->readUnlockNormalCache();
 }
 

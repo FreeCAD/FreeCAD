@@ -46,6 +46,8 @@ public:
     /// The type of the boolean operation
     App::PropertyEnumeration    Type;
 
+    App::PropertyBool Refine;
+
    /** @name methods override feature */
     //@{
     /// Recalculate the feature
@@ -60,6 +62,7 @@ public:
 
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+
 
 private:
     static const char* TypeEnums[];

@@ -322,7 +322,7 @@ class TempoVis(FrozenClass):
     def _enableClipPlane(self, obj, enable, placement = None, offset = 0.0):
         """Enables or disables clipping for an object. Placement specifies the plane (plane 
         is placement's XY plane), and should be in global CS. 
-        Offest shifts the plane; positive offset reveals more material, negative offset 
+        Offset shifts the plane; positive offset reveals more material, negative offset 
         hides more material."""
         if not hasattr(obj, 'getGlobalPlacement'):
             print("    {obj} has no attribute 'getGlobalPlacement'".format(obj= obj.Name))

@@ -695,7 +695,7 @@ void TopoShape::importBinary(std::istream& str)
         this->_Shape.Location(theShapeSet.Locations().Location (locId));
         this->_Shape.Orientation (anOrient);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Base::RuntimeError("Failed to read shape from binary stream");
     }
 }
@@ -762,7 +762,7 @@ void TopoShape::exportStep(const char *filename) const
             throw Base::Exception("Error in transferring STEP");
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
-        makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)(encodeFilename(filename).c_str())));
+        makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));

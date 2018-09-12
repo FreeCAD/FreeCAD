@@ -55,7 +55,6 @@ using namespace std;
 
 //#include <vtkDebugLeaks.h>
 
-SMESH_Gen* SMESH_Gen::generator = nullptr;
 
 //=============================================================================
 /*!
@@ -74,15 +73,6 @@ SMESH_Gen::SMESH_Gen()
   _compute_canceled = false;
   //vtkDebugLeaks::SetExitError(0);
 }
-
-SMESH_Gen* SMESH_Gen::get() {
-
-    if(!generator)
-        generator = new SMESH_Gen();
-    
-    return generator;
-}
-
 
 //=============================================================================
 /*!
@@ -1037,7 +1027,7 @@ std::vector< std::string > SMESH_Gen::GetPluginXMLPaths()
       xmlPath += sep + plugin + ".xml";
       bool fileOK;
 #ifdef WIN32
-      fileOK = (GetFileAttributes(xmlPath.c_str()) != INVALID_FILE_ATTRIBUTES);
+      fileOK = (GetFileAttributesA(xmlPath.c_str()) != INVALID_FILE_ATTRIBUTES);
 #else
       fileOK = (access(xmlPath.c_str(), F_OK) == 0);
 #endif

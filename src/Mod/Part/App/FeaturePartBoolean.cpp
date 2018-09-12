@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
                 history[0].join(hist);
                 history[1].join(hist);
             }
-            catch (Standard_Failure) {
+            catch (Standard_Failure&) {
                 // do nothing
             }
         }

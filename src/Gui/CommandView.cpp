@@ -3074,6 +3074,135 @@ bool StdCmdSelForward::isActive(void)
 {
   return !!Selection().selStackForwardSize();
 }
+
+// Std_TreeSingleDocument
+//===========================================================================
+DEF_STD_CMD(StdTreeSingleDocument)
+
+StdTreeSingleDocument::StdTreeSingleDocument()
+  : Command("Std_TreeSingleDocument")
+{
+    sGroup       = QT_TR_NOOP("View");
+    sMenuText    = QT_TR_NOOP("Single Document");
+    sToolTipText = QT_TR_NOOP("Only display the active document in the tree view");
+    sWhatsThis   = "Std_TreeSingleDocument";
+    sStatusTip   = QT_TR_NOOP("Only display the active document in the tree view");
+    eType        = 0;
+}
+
+void StdTreeSingleDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+}
+
+//===========================================================================
+// Std_TreeMultiDocument
+//===========================================================================
+DEF_STD_CMD(StdTreeMultiDocument)
+
+StdTreeMultiDocument::StdTreeMultiDocument()
+  : Command("Std_TreeMultiDocument")
+{
+    sGroup       = QT_TR_NOOP("View");
+    sMenuText    = QT_TR_NOOP("Multi Document");
+    sToolTipText = QT_TR_NOOP("Display all documents in the tree view");
+    sWhatsThis   = "Std_TreeMultiDocument";
+    sStatusTip   = QT_TR_NOOP("Display all documents in the tree view");
+    eType        = 0;
+}
+
+void StdTreeMultiDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+}
+
+
+//===========================================================================
+// Std_TreeCollapseDocument
+//===========================================================================
+DEF_STD_CMD(StdTreeCollapseDocument)
+
+StdTreeCollapseDocument::StdTreeCollapseDocument()
+  : Command("Std_TreeCollapseDocument")
+{
+    sGroup       = QT_TR_NOOP("View");
+    sMenuText    = QT_TR_NOOP("Collapse/Expand");
+    sToolTipText = QT_TR_NOOP("Expand active document and collapse all others");
+    sWhatsThis   = "Std_TreeCollapseDocument";
+    sStatusTip   = QT_TR_NOOP("Expand active document and collapse all others");
+    eType        = 0;
+}
+
+void StdTreeCollapseDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+}
+
+
+//===========================================================================
+// Std_TreeViewDocument
+//===========================================================================
+
+DEF_STD_CMD_AC(StdTreeViewDocument);
+
+StdTreeViewDocument::StdTreeViewDocument()
+  : Command("Std_TreeViewDocument")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Document Tree");
+    sToolTipText  = QT_TR_NOOP("Set visiblity of inactive documents in tree view");
+    sWhatsThis    = "Std_TreeViewDocument";
+    sStatusTip    = QT_TR_NOOP("Set visiblity of inactive documents in tree view");
+    eType         = 0;
+
+    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new StdTreeSingleDocument());
+    rcCmdMgr.addCommand(new StdTreeMultiDocument());
+    rcCmdMgr.addCommand(new StdTreeCollapseDocument());
+}
+
+Action * StdTreeViewDocument::createAction(void)
+{
+    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setText(QCoreApplication::translate(this->className(), sMenuText));
+
+    CommandManager &grp = Application::Instance->commandManager();
+    Command* cmd0 = grp.getCommandByName("Std_TreeSingleDocument");
+    Command* cmd1 = grp.getCommandByName("Std_TreeMultiDocument");
+    Command* cmd2 = grp.getCommandByName("Std_TreeCollapseDocument");
+    cmd0->addToGroup(pcAction, true);
+    cmd1->addToGroup(pcAction, true);
+    cmd2->addToGroup(pcAction, true);
+
+    return pcAction;
+}
+
+void StdTreeViewDocument::activated(int iMsg)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+    group->SetInt("TreeViewDocument", iMsg);
+    App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
+}
+
+
+bool StdTreeViewDocument::isActive(void)
+{
+    ActionGroup* grp = qobject_cast<ActionGroup*>(_pcAction);
+    if (grp) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+        int mode = group->GetInt("TreeViewDocument", 0);
+        int index = grp->checkedAction();
+        if (index != mode) {
+            grp->setCheckedAction(mode);
+        }
+    }
+
+    return true;
+}
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -3148,6 +3277,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
+    rcCmdMgr.addCommand(new StdTreeViewDocument());
 }
 
 } // namespace Gui

@@ -38,6 +38,7 @@ public:
     ~ViewProviderTextDocument() {}
 
     bool doubleClicked();
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     bool isShow() const { return true; }
 private:
     bool activateView() const;

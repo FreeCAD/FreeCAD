@@ -139,7 +139,7 @@ def cmdCreateImageScaling(name):
             sel = FreeCADGui.Selection.getSelection()
             try:
                 locale=QtCore.QLocale.system()
-                d, ok = locale.toFloat(self.lineEdit.text())
+                d, ok = locale.toFloat(str(eval(self.lineEdit.text())))
                 if not ok:
                     raise ValueError
                 s=d/self.distance

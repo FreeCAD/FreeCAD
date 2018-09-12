@@ -124,9 +124,10 @@ MergeExporter::~MergeExporter()
 bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 {
     const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
+    Base::Placement plm = static_cast<Mesh::Feature *>(obj)->globalPlacement();
 
-    MeshCore::MeshKernel kernel( mesh.getKernel() );
-    kernel.Transform(mesh.getTransform());
+    MeshCore::MeshKernel kernel(mesh.getKernel());
+    kernel.Transform(plm.toMatrix());
 
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
@@ -173,7 +174,6 @@ bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 {
     auto *shape(obj->getPropertyByName("Shape"));
-
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -183,12 +183,26 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
         if (geoData) {
             App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
             Base::Placement plm = gf->globalPlacement();
-            
+            Base::Placement pl  = gf->Placement.getValue();
+            bool applyGlobal = false;
+            if (pl == plm) {
+               //no extension placement
+               applyGlobal = false;
+            } else {
+               //there is a placement from extension
+               applyGlobal = true;
+            }
+
             std::vector<Base::Vector3d> aPoints;
             std::vector<Data::ComplexGeoData::Facet> aTopo;
             geoData->getFaces(aPoints, aTopo, tol);
-            for (auto& it : aPoints)
-                plm.multVec(it, it);
+
+            if (applyGlobal) {
+                Base::Placement diff_plm = plm * pl.inverse();
+                for (auto& it : aPoints) {
+                    diff_plm.multVec(it,it);
+                }
+            }
 
             mesh->addFacets(aTopo, aPoints, false);
             if (countFacets == 0)

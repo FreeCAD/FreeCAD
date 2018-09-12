@@ -104,7 +104,7 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
-    char *attr;
+    const char *attr;
 #if PY_MAJOR_VERSION >= 3
     attr = PyUnicode_AsUTF8(attro);
 #else
@@ -127,7 +127,7 @@ int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyO
 
 
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::_setattr(const char *attr, PyObject *value)
 {
     App::Property *prop = FeaturePyT::getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop && !value) {
@@ -162,7 +162,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
+PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(const char *attr)
 {
     // See CallTipsList::extractTips
     if (Base::streq(attr, "__fc_template__")) {

@@ -368,15 +368,17 @@ void LinkViewPy::setVisibilities(Py::Object value) {
         linked->setElementVisible(i,i>=(int)vis.size()||vis[i]);
 }
 
-Py::Object LinkViewPy::getChildren() const {
+PyObject* LinkViewPy::getChildren(PyObject *args) {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
     auto children = getLinkViewPtr()->getChildren();
     if(children.empty())
-        return Py::Object();
+        Py_Return;
     Py::Tuple ret(children.size());
     int i=0;
     for(auto vp : children)
         ret.setItem(i++,Py::Object(vp->getPyObject(),true));
-    return ret;
+    return Py::new_reference_to(ret);
 }
 
 Py::Int LinkViewPy::getCount() const {

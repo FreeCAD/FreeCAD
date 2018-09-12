@@ -71,6 +71,9 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true);
 
 using namespace Gui;
 
+// #0003564: Python objects: updateData calls to proxy instance that should have been deleted
+// See https://forum.freecadweb.org/viewtopic.php?f=22&t=30429&p=252429#p252429
+#if 0
 namespace Gui {
 
 struct ProxyInfo {
@@ -280,13 +283,16 @@ ViewProviderPythonFeatureObserver::ViewProviderPythonFeatureObserver()
 ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
 {
 }
+#endif
 
 // ----------------------------------------------------------------------------
 
 ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(ViewProviderDocumentObject* vp)
   : object(vp)
 {
+#if 0
     (void)ViewProviderPythonFeatureObserver::instance();
+#endif
 }
 
 ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()

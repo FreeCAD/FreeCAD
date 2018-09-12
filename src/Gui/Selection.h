@@ -157,14 +157,14 @@ public:
 
 
 
-// Export an instance of the base class (to avoid warning C4275, see also 
+// Export an instance of the base class (to avoid warning C4275, see also
 // C++ Language Reference/General Rules and Limitations on MSDN for more details.)
 //
 // For compiler gcc4.1 we need to define the template class outside namespace 'Gui'
-// otherwise we get the compiler error: 
+// otherwise we get the compiler error:
 // 'explicit instantiation of 'class Base::Subject<const Gui::SelectionChanges&>'
 // in namespace 'Gui' (which does not enclose namespace 'Base')
-// 
+//
 // It seems that this construct is not longer needed for gcc4.4 and even leads to
 // errors under Mac OS X. Thus, we check for version between 4.1 and 4.4.
 // It seems that for Mac OS X this can be completely ignored
@@ -282,18 +282,18 @@ private:
 };
 
 /** The Selection class
- *  The selection singleton keeps track of the selection state of 
+ *  The selection singleton keeps track of the selection state of
  *  the whole application. It gets messages from all entities which can
  *  alter the selection (e.g. tree view and 3D-view) and sends messages
- *  to entities which need to keep track on the selection state. 
- * 
- *  The selection consists mainly out of following information per selected object: 
+ *  to entities which need to keep track on the selection state.
+ *
+ *  The selection consists mainly out of following information per selected object:
  *  - document (pointer)
  *  - Object   (pointer)
  *  - list of subelements (list of strings)
  *  - 3D coordinates where the user clicks to select (Vector3d)
  *
- *  Also the preselection is managed. That means you can add a filter to prevent selection 
+ *  Also the preselection is managed. That means you can add a filter to prevent selection
  *  of unwanted objects or subelements.
  */
 class GuiExport SelectionSingleton : public Base::Subject<const SelectionChanges&>
@@ -338,9 +338,9 @@ public:
             const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
     void rmvPreselect();
-    /// sets different coords for the preselection 
+    /// sets different coords for the preselection
     void setPreselectCoord(float x, float y, float z);
-    /// returns the present preselection 
+    /// returns the present preselection
     const SelectionChanges& getPreselection(void) const;
     /// add a SelectionGate to control what is selectable
     void addSelectionGate(Gui::SelectionGate *gate, int resolve = 1);
@@ -349,8 +349,8 @@ public:
 
 
     /** Returns the number of selected objects with a special object type
-     * It's the convenient way to check if the right objects are selected to 
-     * perform an operation (GuiCommand). The check also detects base types. 
+     * It's the convenient way to check if the right objects are selected to
+     * perform an operation (GuiCommand). The check also detects base types.
      * E.g. "Part" also fits on "PartImport" or "PartTransform types.
      * If no document name is given the active document is assumed.
      *
@@ -442,7 +442,7 @@ public:
     bool hasSelection(const char* doc, bool resolve=true) const;
     bool hasPreselection() const;
 
-    /// Size of selcted entities for all documents
+    /// Size of selected entities for all documents
     unsigned int size(void) const {
         return static_cast<unsigned int>(_SelList.size());
     }
@@ -467,29 +467,29 @@ public:
     static PyMethodDef    Methods[];
 
 protected:
-    static PyObject *sAddSelection        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sUpdateSelection     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sRemoveSelection     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sClearSelection      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sIsSelected          (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSelection        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetPreselection     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sRemPreselection     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetCompleteSelection(PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSelectionEx      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSelectionObject  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sAddSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sRemSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sAddSelectionGate    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sRemoveSelectionGate (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetPickedList       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sEnablePickedList    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPushSelStack        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sHasSelection        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sAddSelection        (PyObject *self,PyObject *args);
+    static PyObject *sUpdateSelection     (PyObject *self,PyObject *args);
+    static PyObject *sRemoveSelection     (PyObject *self,PyObject *args);
+    static PyObject *sClearSelection      (PyObject *self,PyObject *args);
+    static PyObject *sIsSelected          (PyObject *self,PyObject *args);
+    static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args);
+    static PyObject *sGetSelection        (PyObject *self,PyObject *args);
+    static PyObject *sGetPreselection     (PyObject *self,PyObject *args);
+    static PyObject *sRemPreselection     (PyObject *self,PyObject *args);
+    static PyObject *sGetCompleteSelection(PyObject *self,PyObject *args);
+    static PyObject *sGetSelectionEx      (PyObject *self,PyObject *args);
+    static PyObject *sGetSelectionObject  (PyObject *self,PyObject *args);
+    static PyObject *sAddSelObserver      (PyObject *self,PyObject *args);
+    static PyObject *sRemSelObserver      (PyObject *self,PyObject *args);
+    static PyObject *sAddSelectionGate    (PyObject *self,PyObject *args);
+    static PyObject *sRemoveSelectionGate (PyObject *self,PyObject *args);
+    static PyObject *sGetPickedList       (PyObject *self,PyObject *args);
+    static PyObject *sEnablePickedList    (PyObject *self,PyObject *args);
+    static PyObject *sPreselect           (PyObject *self,PyObject *args);
+    static PyObject *sSetVisible          (PyObject *self,PyObject *args);
+    static PyObject *sPushSelStack        (PyObject *self,PyObject *args);
+    static PyObject *sHasSelection        (PyObject *self,PyObject *args);
+    static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args);
 
 protected:
     /// Construction

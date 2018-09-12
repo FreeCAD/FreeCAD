@@ -1003,6 +1003,13 @@ class InstallWorker(QtCore.QThread):
             # metadata.txt found
             depsfile = mu.read()
             mu.close()
+            
+            # urllib2 gives us a bytelike object instead of a string. Have to consider that
+            try:
+                depsfile = depsfile.decode('utf-8')
+            except AttributeError:
+                pass
+            
             deps = depsfile.split("\n")
             for l in deps:
                 if l.startswith("workbenches="):

@@ -27,6 +27,8 @@
 #endif
 
 #include <gp_Ax2.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Trsf.hxx>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 
@@ -63,10 +65,11 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ADD_PROPERTY_TYPE(RotationVector ,(1.0,0.0,0.0)    ,"Base",App::Prop_None,"Controls rotation of item in view. ");
 
     //projection group controls these
-    Direction.setStatus(App::Property::ReadOnly,true);
-    RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+//    Direction.setStatus(App::Property::ReadOnly,true);
+//    RotationVector.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::ReadOnly,true);
+    ScaleType.setValue("Custom");
+    ScaleType.setStatus(App::Property::ReadOnly,true);
 }
 
 short DrawProjGroupItem::mustExecute() const
@@ -75,7 +78,8 @@ short DrawProjGroupItem::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     RotationVector.isTouched() ||
-                    Source.isTouched()  );
+                    Source.isTouched()  ||
+                    Scale.isTouched());
     }
 
     if (result) {
@@ -96,6 +100,15 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
+    if (DrawUtil::checkParallel(Direction.getValue(),
+                                RotationVector.getValue())) {
+        Base::Console().Message("TRACE - DPGI::execute - Projdir: %s X: %s\n",
+                        TechDraw::DrawUtil::formatVector(Direction.getValue()).c_str(),
+                        TechDraw::DrawUtil::formatVector(RotationVector.getValue()).c_str());
+
+        return new App::DocumentObjectExecReturn("DPGI: Direction and RotationVector are parallel");
+    }
+
     App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
     delete ret;
 
@@ -109,16 +122,19 @@ void DrawProjGroupItem::autoPosition()
 {
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if (isAnchor()) {
-        X.setValue(0.0);
-        Y.setValue(0.0);
-    } else if ((pgroup != nullptr) && 
+//    if (isAnchor()) {
+//        X.setValue(0.0);
+//        Y.setValue(0.0);
+//    } else 
+    if ((pgroup != nullptr) && 
         (pgroup->AutoDistribute.getValue()) &&
         (!LockPosition.getValue())) {
         newPos = pgroup->getXYPosition(Type.getValueAsString());
         X.setValue(newPos.x);
         Y.setValue(newPos.y);
     }
+    requestPaint();
+    purgeTouched();
 }
 
 void DrawProjGroupItem::onDocumentRestored()
@@ -155,21 +171,43 @@ bool DrawProjGroupItem::isAnchor(void)
     return result;
 }
 
+/// get a coord system aligned with Direction and Rotation Vector
 gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis, 
                                  const bool flip) const
 {
+     (void) flip;
      gp_Ax2 viewAxis;
      Base::Vector3d x = RotationVector.getValue();
      Base::Vector3d nx = x;
      x.Normalize();
      Base::Vector3d na = axis;
      na.Normalize();
-     viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //default orientation
 
-     if (!DrawUtil::checkParallel(nx,na)) {                         //!parallel/antiparallel
-         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
+     if (DrawUtil::checkParallel(nx,na)) {
+         Base::Console().Warning("DPGI::getVA - axis and X parallel. using defaults\n");
+         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,false);
+     } else {
+         viewAxis = TechDrawGeometry::getViewAxis(pt,na,nx,false);
      }
+//     gp_Dir va_Main = viewAxis.Direction();
+//     gp_Dir va_X    = viewAxis.XDirection();
+//     gp_Ax3 R3;
+//     gp_Ax3 viewCS(viewAxis);
+//     gp_Trsf txTo, txFrom;
+//     txTo.SetTransformation(R3,viewCS);
+//     txFrom = txTo.Inverted();
+//     gp_Dir dirFrom = va_Main.Transformed(txFrom);
+//     gp_Dir dirTo   = va_Main.Transformed(txTo);
+//     Base::Console().Message("TRACE - DPGI::getVA - dirFrom: %s dirTo: %s\n",
+//                             DrawUtil::formatVector(dirFrom).c_str(),
+//                             DrawUtil::formatVector(dirTo).c_str());
+//     gp_Dir xFrom = va_X.Transformed(txFrom);
+//     gp_Dir xTo   = va_X.Transformed(txTo);
+//     Base::Console().Message("TRACE - DPGI::getVA - xFrom: %s xTo: %s\n",
+//                             DrawUtil::formatVector(xFrom).c_str(),
+//                             DrawUtil::formatVector(xTo).c_str());
+
      return viewAxis;
 }
 

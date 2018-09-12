@@ -444,17 +444,26 @@ void SelectionView::showPart(void)
 
 QString SelectionView::getModule(const char* type) const
 {
-    Base::Type partType = Base::Type::fromName("Part::Feature");
-    Base::Type meshType = Base::Type::fromName("Mesh::Feature");
-    Base::Type pntsType = Base::Type::fromName("Points::Feature");
+    // go up the inheritance tree and find the module name of the first
+    // sub-class that has not the prefix "App::"
+    std::string prefix;
     Base::Type typeId = Base::Type::fromName(type);
-    if (typeId.isDerivedFrom(partType))
-        return QString::fromLatin1("Part");
-    if (typeId.isDerivedFrom(meshType))
-        return QString::fromLatin1("Mesh");
-    if (typeId.isDerivedFrom(pntsType))
-        return QString::fromLatin1("Points");
-    return QString();
+
+    while (!typeId.isBad()) {
+        std::string temp(typeId.getName());
+        std::string::size_type pos = temp.find_first_of("::");
+
+        std::string module;
+        if (pos != std::string::npos)
+            module = std::string(temp,0,pos);
+        if (module != "App")
+            prefix = module;
+        else
+            break;
+        typeId = typeId.getParent();
+    }
+
+    return QString::fromStdString(prefix);
 }
 
 QString SelectionView::getProperty(App::DocumentObject* obj) const

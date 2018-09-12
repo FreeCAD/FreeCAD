@@ -76,7 +76,6 @@
 #include <App/Application.h>
 #include <App/OriginFeature.h>
 #include <App/Document.h>
-#include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
@@ -95,12 +94,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
-    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 short ProfileBased::mustExecute() const
@@ -836,7 +830,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
                 try {
                     element = shape.getSubShape(it->c_str());
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                     // This shape doesn't even exist, so no chance to do some tests
                     newSubValues.push_back(*it);
                     continue;
@@ -849,7 +843,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
                         success = true;
                     }
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                 }
                 // try an exact matching
                 if (!success) {

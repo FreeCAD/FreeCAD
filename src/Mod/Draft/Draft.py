@@ -6200,9 +6200,10 @@ class _PathArray(_DraftLink):
             b = nullv
             FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Cannot calculate Path normal.\n")
         lnodes = z.cross(b)
-        if lnodes != nullv:
+        try:
             lnodes.normalize()                                       # Can't normalize null vector.
-                                                                     # pathological cases:
+        except:
+            pass                                                     # pathological cases:
         if n == nullv:                                               # 1) can't determine normal, don't align.
             psi = 0.0
             theta = 0.0
@@ -6903,7 +6904,8 @@ class ViewProviderWorkingPlaneProxy:
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
-        vobj.LineColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
+        c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
+        vobj.LineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
         vobj.Proxy = self
 
     def getIcon(self):
@@ -7177,6 +7179,7 @@ class ViewProviderDraftLabel:
         vobj.addProperty("App::PropertyEnumeration","TextAlignment","Base",QT_TRANSLATE_NOOP("App::Property","The vertical alignment of the text"))
         vobj.addProperty("App::PropertyEnumeration","ArrowType","Base",QT_TRANSLATE_NOOP("App::Property","The type of arrow of this label"))
         vobj.addProperty("App::PropertyEnumeration","Frame","Base",QT_TRANSLATE_NOOP("App::Property","The type of frame around the text of this object"))
+        vobj.addProperty("App::PropertyBool","Line","Base",QT_TRANSLATE_NOOP("App::Property","Display a leader line or not"))
         vobj.addProperty("App::PropertyFloat","LineWidth","Base",QT_TRANSLATE_NOOP("App::Property","Line width"))
         vobj.addProperty("App::PropertyColor","LineColor","Base",QT_TRANSLATE_NOOP("App::Property","Line color"))
         vobj.addProperty("App::PropertyColor","TextColor","Base",QT_TRANSLATE_NOOP("App::Property","Text color"))
@@ -7192,6 +7195,7 @@ class ViewProviderDraftLabel:
         vobj.ArrowType = arrowtypes
         vobj.ArrowType = arrowtypes[getParam("dimsymbol")]
         vobj.Frame = ["None","Rectangle"]
+        vobj.Line = True
 
     def getIcon(self):
         import Draft_rc
@@ -7222,13 +7226,18 @@ class ViewProviderDraftLabel:
         self.text3d.justification = coin.SoAsciiText.RIGHT
         self.fcoords = coin.SoCoordinate3()
         self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        self.lineswitch = coin.SoSwitch()
+        switchnode = coin.SoSeparator()
+        switchnode.addChild(self.line)
+        switchnode.addChild(self.arrow)
+        self.lineswitch.addChild(switchnode)
+        self.lineswitch.whichChild = 0
         self.node2d = coin.SoGroup()
         self.node2d.addChild(self.matline)
         self.node2d.addChild(self.arrow)
         self.node2d.addChild(self.drawstyle)
         self.node2d.addChild(self.lcoords)
-        self.node2d.addChild(self.line)
-        self.node2d.addChild(self.arrow)
+        self.node2d.addChild(self.lineswitch)
         self.node2d.addChild(self.mattext)
         self.node2d.addChild(textdrawstyle)
         self.node2d.addChild(self.textpos)
@@ -7241,8 +7250,7 @@ class ViewProviderDraftLabel:
         self.node3d.addChild(self.arrow)
         self.node3d.addChild(self.drawstyle)
         self.node3d.addChild(self.lcoords)
-        self.node3d.addChild(self.line)
-        self.node3d.addChild(self.arrow)
+        self.node3d.addChild(self.lineswitch)
         self.node3d.addChild(self.mattext)
         self.node3d.addChild(textdrawstyle)
         self.node3d.addChild(self.textpos)
@@ -7330,6 +7338,12 @@ class ViewProviderDraftLabel:
                 pos = vobj.Object.Placement.Base.add(v)
                 self.textpos.translation.setValue(pos)
                 self.textpos.rotation.setValue(vobj.Object.Placement.Rotation.Q)
+        elif prop == "Line":
+            if hasattr(vobj,"Line"):
+                if vobj.Line:
+                    self.lineswitch.whichChild = 0
+                else:
+                    self.lineswitch.whichChild = -1
         elif prop == "ArrowType":
             if hasattr(vobj,"ArrowType"):
                 if len(vobj.Object.Points) > 1:

@@ -113,7 +113,7 @@ class TestDressupDogbone(PathTestBase):
             if f.Surface.Axis == FreeCAD.Vector(0,0,1) and f.Orientation == 'Forward':
                 break
 
-        job = PathJob.Create('Job', cut, None)
+        job = PathJob.Create('Job', [cut], None)
 
         profile = PathProfileFaces.Create('Profile Faces')
         profile.Base = (cut, face)

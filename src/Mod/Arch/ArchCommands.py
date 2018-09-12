@@ -117,7 +117,7 @@ def addComponents(objectsList,host):
     if hostType in ["Floor","Building","Site","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
+    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -161,7 +161,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
+        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -1253,13 +1253,14 @@ def getExtrusionData(shape):
                 if round(f[1].getAngle(faces[pair[0]][1]),4) != 1.5708:
                     ok = False
         if ok:
-            valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
-    for v in valids:
-        # prefer vertical extrusions
-        if v[1].getAngle(FreeCAD.Vector(0,0,1)) < 0.0001:
-            return v
-    # otherwise return the first found
+            # prefer the face with the lowest z
+            if faces[pair[0]][0].CenterOfMass.z < faces[pair[1]][0].CenterOfMass.z:
+                valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
+            else:
+                valids.append([faces[pair[1]][0],faces[pair[0]][0].CenterOfMass.sub(faces[pair[1]][0].CenterOfMass)])
     if valids:
+        # sort by smallest area
+        valids.sort(key=lambda v: v[0].Area)
         return valids[0]
     return None
 

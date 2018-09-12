@@ -208,9 +208,13 @@ void Sequencer::setValue(int step)
         }
     }
     else {
+        // FIXME: This check causes the progress bar
+        // to never appear when loading a STEP file
+#if 1
         int elapsed = d->progressTime.elapsed();
         if (elapsed > 100) {
             d->progressTime.restart();
+#endif
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
                 QGenericReturnArgument(), Q_ARG(int,step));
@@ -224,7 +228,9 @@ void Sequencer::setValue(int step)
                 d->bar->resetObserveEventFilter();
                 qApp->processEvents();
             }
+#if 1
         }
+#endif
     }
 }
 

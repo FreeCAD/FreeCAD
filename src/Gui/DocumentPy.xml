@@ -128,11 +128,11 @@ Add or remove view object from scene graph of all views depending on its canAddT
 	  </Documentation>
 	  <Parameter Name="EditingTransform" Type="Object" />
 	</Attribute>
-    <Attribute Name="InEdit">
+    <Attribute Name="InEditInfo">
       <Documentation>
         <UserDocu>A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit</UserDocu>
       </Documentation>
-	  <Parameter Name="InEdit" Type="Object" />
+	  <Parameter Name="InEditInfo" Type="Object" />
     </Attribute>
     <Attribute Name="EditMode" ReadOnly="true">
       <Documentation>

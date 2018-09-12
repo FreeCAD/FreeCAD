@@ -79,6 +79,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
+    def areaOpOnDocumentRestored(self, obj):
+        for prop in ['UseComp', 'JoinType']:
+            self.areaOpOnChanged(obj, prop)
+
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
         Do not overwrite.'''
@@ -131,8 +135,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         '''areaOpUseProjection(obj) ... returns True'''
         return True
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... sets default values.
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... sets default values.
         Do not overwrite.'''
         obj.Side = "Outside"
         obj.OffsetExtra = 0.0
@@ -141,3 +145,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.JoinType = "Round"
         obj.MiterLimit = 0.1
 
+def SetupProperties():
+    setup = []
+    setup.append('Side')
+    setup.append('OffsetExtra')
+    setup.append('Direction')
+    setup.append('UseComp')
+    setup.append('JoinType')
+    setup.append('MiterLimit')
+    return setup

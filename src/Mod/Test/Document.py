@@ -98,7 +98,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.Float-47.11<0.001)
     self.failUnless(L1.Bool    == True)
     self.failUnless(L1.String  == "4711")
-    #temporarily not checked because of strange behavior of boost::fielesystem JR
+    #temporarily not checked because of strange behavior of boost::filesystem JR
     #self.failUnless(L1.Path  == "c:/temp")
     self.failUnless(float(L1.Angle)-3.0<0.001)
     self.failUnless(float(L1.Distance)-47.11<0.001)
@@ -189,12 +189,12 @@ class DocumentBasicCases(unittest.TestCase):
     else:
       self.failUnless(False)
     del L2
-    
+
   def testExtensions(self):
-    #we try to create a normal python object and add a extension to it 
+    #we try to create a normal python object and add an extension to it
     obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
     grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
-    #we should have all methods we need to handle extensions 
+    #we should have all methods we need to handle extensions
     try:
       self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
       grp.addExtension("App::GroupExtensionPython", self)
@@ -205,36 +205,36 @@ class DocumentBasicCases(unittest.TestCase):
       self.failUnless(grp.Group[0] == obj)
     except:
       self.failUnless(False)
-      
+
     #test if the method override works
     class SpecialGroup():
         def allowObject(self, obj):
             return False;
-    
+
     callback = SpecialGroup()
-    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")  
+    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")
     grp2.addExtension("App::GroupExtensionPython", callback)
-    
+
     try:
       self.failUnless(grp2.hasExtension("App::GroupExtension"))
       grp2.addObject(obj)
       self.failUnless(len(grp2.Group) == 0)
     except:
       self.failUnless(True)
-    
+
     self.Doc.removeObject(grp.Name)
     self.Doc.removeObject(grp2.Name)
     self.Doc.removeObject(obj.Name)
     del obj
     del grp
     del grp2
-    
+
   def testExtensionBug0002785(self):
-        
+
         class MyExtension():
             def __init__(self, obj):
                 obj.addExtension("App::GroupExtensionPython", self)
-             
+
         obj = self.Doc.addObject("App::DocumentObject", "myObj")
         MyExtension(obj)
         self.failUnless(obj.hasExtension("App::GroupExtension"))
@@ -248,7 +248,7 @@ class DocumentBasicCases(unittest.TestCase):
     grp.addExtension("App::GroupExtensionPython", None)
     grp.Group = [obj]
     self.assertTrue(obj in grp.Group)
-    
+
   def testExtensionBugViewProvider(self):
 
     class Layer():
@@ -259,7 +259,7 @@ class DocumentBasicCases(unittest.TestCase):
       def __init__(self, obj):
         obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         obj.Proxy = self
-    
+
     obj = self.Doc.addObject("App::FeaturePython","Layer")
     Layer(obj)
     self.failUnless(obj.hasExtension("App::GroupExtension"))
@@ -268,10 +268,10 @@ class DocumentBasicCases(unittest.TestCase):
         LayerViewProvider(obj.ViewObject)
         self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtension"))
         self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
-    
+
     self.Doc.removeObject(obj.Name)
     del obj
-    
+
   def testPropertyLink_Issue2902Part1(self):
     o1 = self.Doc.addObject("App::FeatureTest","test1")
     o2 = self.Doc.addObject("App::FeatureTest","test2")
@@ -339,19 +339,19 @@ class SaveRestoreSpecialGroup():
     def __init__(self, obj):
         obj.addExtension("App::GroupExtensionPython", self)
         obj.Proxy = self
-        
+
     def allowObject(self, obj):
         return False;
 
-# class must be defined in global scope to allow it to be reloaded on document open    
+# class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroupViewProvider():
     def __init__(self, obj):
         obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         obj.Proxy = self
-        
+
     def testFunction(self):
         pass
-        
+
 class DocumentSaveRestoreCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("SaveRestoreTests")
@@ -410,26 +410,26 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     except:
         # Okay, no document open
         self.failUnless(True)
-        
+
   def testExtensionSaveRestore(self):
     # saving and restoring
     SaveName = self.TempPath + os.sep + "SaveRestoreExtensions.FCStd"
     Doc = FreeCAD.newDocument("SaveRestoreExtensions")
-    #we try to create a normal python object and add a extension to it 
-    obj  = Doc.addObject("App::DocumentObject", "Obj") 
+    #we try to create a normal python object and add an extension to it
+    obj  = Doc.addObject("App::DocumentObject", "Obj")
     grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
-    grp2 = Doc.addObject("App::FeaturePython", "Extension_2") 
-    
+    grp2 = Doc.addObject("App::FeaturePython", "Extension_2")
+
     grp1.addExtension("App::GroupExtensionPython", None)
     SaveRestoreSpecialGroup(grp2)
     if FreeCAD.GuiUp:
         SaveRestoreSpecialGroupViewProvider(grp2.ViewObject)
     grp2.Group = [obj]
-    
+
     Doc.saveAs(SaveName)
     FreeCAD.closeDocument("SaveRestoreExtensions")
     Doc = FreeCAD.open(SaveName)
-    
+
     self.failUnless(Doc.Extension_1.hasExtension("App::GroupExtension"))
     self.failUnless(Doc.Extension_2.hasExtension("App::GroupExtension"))
     self.failUnless(Doc.Extension_1.ExtensionProxy is None)
@@ -463,7 +463,7 @@ class DocumentRecomputeCases(unittest.TestCase):
     self.L2.Link = self.L3
 
   def testRecompute(self):
-      
+
     # sequence to test recompute behaviour
     #       L1---\    L7
     #      /  \   \    |
@@ -496,7 +496,7 @@ class DocumentRecomputeCases(unittest.TestCase):
         seqDic[obj] = i
         print(obj)
         i += 1
-        
+
     self.failUnless(seqDic[L2] > seqDic[L1])
     self.failUnless(seqDic[L3] > seqDic[L1])
     self.failUnless(seqDic[L5] > seqDic[L2])
@@ -526,7 +526,7 @@ class DocumentRecomputeCases(unittest.TestCase):
     L1.touch()
     self.failUnless(self.Doc.recompute()==1)
     self.failUnless((7, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-     
+
     self.Doc.removeObject(L1.Name)
     self.Doc.removeObject(L2.Name)
     self.Doc.removeObject(L3.Name)
@@ -780,57 +780,57 @@ class UndoRedoCases(unittest.TestCase):
     self.assertEqual(self.Doc.RedoCount,0)
 
   def testUndoInList(self):
-    
+
     self.Doc.UndoMode = 1
-      
+
     self.Doc.openTransaction("Box")
-    self.Box = self.Doc.addObject('Part::Box')
+    self.Box = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Cylinder")
-    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Cylinder = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
-    
+
     self.Doc.openTransaction("Fuse")
-    self.Fuse1 = self.Doc.addObject('Part::MultiFuse', 'Fuse')
-    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Fuse1 = self.Doc.addObject('App::FeatureTest', 'Fuse')
+    self.Fuse1.LinkList = [self.Box, self.Cylinder]
     self.Doc.commitTransaction()
-    
+
     self.Doc.undo()
     self.failUnless(len(self.Box.InList) == 0)
-    self.failUnless(len(self.Cylinder.InList) == 0)      
-    
+    self.failUnless(len(self.Cylinder.InList) == 0)
+
     self.Doc.redo()
     self.failUnless(len(self.Box.InList) == 1)
     self.failUnless(self.Box.InList[0] == self.Doc.Fuse)
-    self.failUnless(len(self.Cylinder.InList) == 1)  
+    self.failUnless(len(self.Cylinder.InList) == 1)
     self.failUnless(self.Cylinder.InList[0] == self.Doc.Fuse)
-      
+
   def testUndoIssue0003150Part1(self):
-  
+
     self.Doc.UndoMode = 1
-  
+
     self.Doc.openTransaction("Box")
-    self.Box = self.Doc.addObject('Part::Box')
+    self.Box = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Cylinder")
-    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Cylinder = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Fuse")
-    self.Fuse1 = self.Doc.addObject('Part::MultiFuse')
-    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Fuse1 = self.Doc.addObject('App::FeatureTest')
+    self.Fuse1.LinkList = [self.Box, self.Cylinder]
     self.Doc.commitTransaction()
     self.Doc.recompute()
 
     self.Doc.openTransaction("Sphere")
-    self.Sphere = self.Doc.addObject('Part::Sphere')
+    self.Sphere = self.Doc.addObject('App::FeatureTest')
     self.Doc.commitTransaction()
 
     self.Doc.openTransaction("Fuse")
-    self.Fuse2 = self.Doc.addObject('Part::MultiFuse')
-    self.Fuse2.Shapes = [self.Fuse1, self.Sphere]
+    self.Fuse2 = self.Doc.addObject('App::FeatureTest')
+    self.Fuse2.LinkList = [self.Fuse1, self.Sphere]
     self.Doc.commitTransaction()
     self.Doc.recompute()
 
@@ -853,7 +853,7 @@ class UndoRedoCases(unittest.TestCase):
     FreeCAD.closeDocument("UndoTest")
 
 class DocumentGroupCases(unittest.TestCase):
-    
+
   def setUp(self):
     self.Doc = FreeCAD.newDocument("GroupTests")
 
@@ -932,9 +932,9 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.removeObject("Label_2")
     self.Doc.removeObject("Label_3")
-    
+
   def testGroupAndGeoFeatureGroup(self):
-    
+
     # an object can only be in one group at once, that must be enforced
     obj1 = self.Doc.addObject("App::FeatureTest","obj1")
     grp1 = self.Doc.addObject("App::DocumentObjectGroup","Group1")
@@ -946,19 +946,19 @@ class DocumentGroupCases(unittest.TestCase):
     grp2.addObject(obj1)
     self.failUnless(grp1.hasObject(obj1)==False)
     self.failUnless(grp2.hasObject(obj1))
-    
+
     # an object is allowed to be in a group and a geofeaturegroup
     prt1 = self.Doc.addObject("App::Part","Part1")
     prt2 = self.Doc.addObject("App::Part","Part2")
-    
+
     prt1.addObject(grp2)
     self.failUnless(grp2.getParentGeoFeatureGroup()==prt1)
     self.failUnless(grp2.getParentGroup()==None)
     self.failUnless(grp2.hasObject(obj1))
     self.failUnless(prt1.hasObject(grp2))
     self.failUnless(prt1.hasObject(obj1))
-    
-    #it is not allowed to be in 2 geofeaturegroups 
+
+    #it is not allowed to be in 2 geofeaturegroups
     prt2.addObject(grp2)
     self.failUnless(grp2.hasObject(obj1))
     self.failUnless(prt1.hasObject(grp2)==False)
@@ -974,7 +974,7 @@ class DocumentGroupCases(unittest.TestCase):
         self.failUnless(prt1.Group == grp)
     else:
         self.fail("No exception thrown when object is in multiple Groups")
-          
+
     #it is not allowed to be in 2 Groups
     prt2.addObject(grp1)
     grp = grp1.Group
@@ -985,34 +985,34 @@ class DocumentGroupCases(unittest.TestCase):
         pass
     else:
         self.fail("No exception thrown when object is in multiple Groups")
-          
+
     #cross linking between GeoFeatureGroups is not allowed
     self.Doc.recompute()
-    box = self.Doc.addObject("Part::Box","Box")
-    cyl = self.Doc.addObject("Part::Cylinder","Cylinder")
-    fus = self.Doc.addObject("Part::MultiFuse","Fusion")
-    fus.Shapes = [cyl, box]
+    box = self.Doc.addObject("App::FeatureTest","Box")
+    cyl = self.Doc.addObject("App::FeatureTest","Cylinder")
+    fus = self.Doc.addObject("App::FeatureTest","Fusion")
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     self.failUnless(fus.State[0] == 'Up-to-date')
-    fus.Shapes = [] #remove all links as addObject would otherwise transfer all linked objects
+    fus.LinkList = [] #remove all links as addObject would otherwise transfer all linked objects
     prt1.addObject(cyl)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     #self.failUnless(fus.State[0] == 'Invalid')
-    fus.Shapes = []
+    fus.LinkList = []
     prt1.addObject(box)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     #self.failUnless(fus.State[0] == 'Invalid')
-    fus.Shapes = []
+    fus.LinkList = []
     prt1.addObject(fus)
-    fus.Shapes = [cyl, box]
+    fus.LinkList = [cyl, box]
     self.Doc.recompute()
     self.failUnless(fus.State[0] == 'Up-to-date')
     prt2.addObject(box) #this time addObject should move all dependencies to the new part
     self.Doc.recompute()
     self.failUnless(fus.State[0] == 'Up-to-date')
-    
+
     #grouping must be resilient against cyclic links and not crash: #issue 0002567
     prt1.addObject(prt2)
     grp = prt2.Group
@@ -1026,26 +1026,26 @@ class DocumentGroupCases(unittest.TestCase):
         pass
     else:
         self.fail("Exception is expected")
-        
+
     self.Doc.recompute()
-    
+
   def testIssue0003150Part2(self):
-    self.box = self.Doc.addObject("Part::Box")
-    self.cyl = self.Doc.addObject("Part::Cylinder")
-    self.sph = self.Doc.addObject("Part::Sphere")
+    self.box = self.Doc.addObject("App::FeatureTest")
+    self.cyl = self.Doc.addObject("App::FeatureTest")
+    self.sph = self.Doc.addObject("App::FeatureTest")
 
-    self.fus1 = self.Doc.addObject("Part::MultiFuse")
-    self.fus2 = self.Doc.addObject("Part::MultiFuse")
+    self.fus1 = self.Doc.addObject("App::FeatureTest")
+    self.fus2 = self.Doc.addObject("App::FeatureTest")
 
-    self.fus1.Shapes = [self.box, self.cyl];
-    self.fus2.Shapes = [self.sph, self.cyl];
+    self.fus1.LinkList = [self.box, self.cyl];
+    self.fus2.LinkList = [self.sph, self.cyl];
 
     self.prt = self.Doc.addObject("App::Part")
     self.prt.addObject(self.fus1)
     self.failUnless(len(self.prt.Group)==5)
     self.failUnless(self.fus2.getParentGeoFeatureGroup() == self.prt)
     self.failUnless(self.prt.hasObject(self.sph))
-    
+
     self.prt.removeObject(self.fus1)
     self.failUnless(len(self.prt.Group)==0)
 
@@ -1300,7 +1300,7 @@ class DocumentExpressionCases(unittest.TestCase):
     if (math.fabs(v2-v1) > 1E-12) :
       self.assertEqual(v1,v2)
 
-			
+
   def testExpression(self):
     # set the object twice to test that the backlinks are removed when overwriting the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
@@ -1308,7 +1308,7 @@ class DocumentExpressionCases(unittest.TestCase):
     self.Obj1.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,0,1),10))
     self.Doc.recompute()
     self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
-	
+
     # clear the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', None)
     self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)

@@ -130,6 +130,12 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     tooldiameter=float
     """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
+    if list == type(obj):
+        for shape in obj:
+            if isDrillable(shape, candidate, tooldiameter, includePartials):
+                return (True, shape)
+        return (False, None)
+
     drillable = False
     try:
         if candidate.ShapeType == 'Face':
@@ -493,16 +499,36 @@ def addToJob(obj, jobname=None):
         elif len(jobs) == 1:
             job = jobs[0]
         else:
-            # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
-            form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-            mylist = [i.Label for i in jobs]
-            form.cboProject.addItems(mylist)
-            r = form.exec_()
-            if r is False:
-                return None
+            selected = FreeCADGui.Selection.getSelection()
+            if 1 == len(selected) and selected[0] in jobs:
+                job = selected[0]
             else:
-                print(form.cboProject.currentText())
-                job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
+                modelSelected = []
+                for job in jobs:
+                    if all([o in job.Model.Group for o in selected]):
+                        modelSelected.append(job)
+                if 1 == len(modelSelected):
+                    job = modelSelected[0]
+                else:
+                    modelObjectSelected = []
+                    for job in jobs:
+                        if all([o in job.Proxy.baseObjects(job) for o in selected]):
+                            modelObjectSelected.append(job)
+                    if 1 == len(modelObjectSelected):
+                        job = modelObjectSelected[0]
+                    else:
+                        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+                        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
+                        if modelObjectSelected:
+                            mylist = [j.Label for j in modelObjectSelected]
+                        else:
+                            mylist = [j.Label for j in jobs]
+                        form.cboProject.addItems(mylist)
+                        r = form.exec_()
+                        if r is False or r == 0:
+                            return None
+                        else:
+                            job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
 
     if obj and job:
         job.Proxy.addOperation(obj)

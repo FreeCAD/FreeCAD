@@ -29,6 +29,11 @@ __url__ = "http://www.freecadweb.org"
 from . import equation
 
 
+# the linear equation object defines some attributes for some various elmer equations
+# these various elmer equations are based on the linear equation object
+# thus in ObjectsFem module is no method to add a linear equation object
+
+
 LINEAR_SOLVER = ["Direct", "Iterative"]
 LINEAR_DIRECT = ["Banded", "umfpack"]
 LINEAR_ITERATIVE = [

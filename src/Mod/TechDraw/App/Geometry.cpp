@@ -41,8 +41,11 @@
 #include <gp_Ax2.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Geometry.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
+#include <GeomLProp_CLProps.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -57,6 +60,8 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
+
+#include <Mod/Part/App/Geometry.h>
 
 #include "Geometry.h"
 #include "DrawUtil.h"
@@ -236,12 +241,20 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
                 result = gen;
                 delete bspline;
                 bspline = nullptr;
-            } else {
+            } else if (bspline->isCircle()) {
+//                bool circ,arc;
+//                double rad;
+//                Base::Vector3d center;
+//                bspline->getCircleParms(circ,rad,center,arc);
+//                Base::Console().Message("TRACE - GEO;:factory - spline is a Circle - radius: %.3f center: %s\n",
+//                                        rad, DrawUtil::formatVector(center).c_str());
+                result = bspline;
+            }else {
                 result = bspline;
             }
             break;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             if (bspline != nullptr) {
                 delete bspline;
                 bspline = nullptr;
@@ -470,10 +483,35 @@ BSpline::BSpline(const TopoDS_Edge &e)
 {
     geomType = BSPLINE;
     BRepAdaptor_Curve c(e);
+    isArc = !c.IsClosed();
+    Handle(Geom_BSplineCurve) cSpline = c.BSpline();
     occEdge = e;
     Handle(Geom_BSplineCurve) spline;
+
     double f,l;
-    gp_Pnt s,ePt;
+    f = c.FirstParameter();
+    l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt m = c.Value((l+f)/2.0);
+    gp_Pnt ePt = c.Value(l);
+    startPnt = Base::Vector2d(s.X(), s.Y());
+    endPnt = Base::Vector2d(ePt.X(), ePt.Y());
+    midPnt = Base::Vector2d(m.X(), m.Y());
+    gp_Vec v1(m,s);
+    gp_Vec v2(m,ePt);
+    gp_Vec v3(0,0,1);
+    double a = v3.DotCross(v1,v2);
+    cw = (a < 0) ? true: false;
+
+    startAngle = atan2(startPnt.y,startPnt.x);
+    if (startAngle < 0) {
+         startAngle += 2.0 * M_PI;
+    }
+    endAngle = atan2(endPnt.y,endPnt.x);
+    if (endAngle < 0) {
+         endAngle += 2.0 * M_PI;
+    }
+
 
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
     Standard_Integer maxDegree = 3, maxSegment = 100;
@@ -510,6 +548,8 @@ BSpline::BSpline(const TopoDS_Edge &e)
         if (bezier->Degree() > 3) {
             Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
         }
+//        Base::Console().Message("TRACE - Geo::BSpline - bezier degree: %d bezier poles: %d\n",
+//                            bezier->Degree(),bezier->NbPoles());
         tempSegment.poles = bezier->NbPoles();
         tempSegment.degree = bezier->Degree();
         for (int pole = 1; pole <= tempSegment.poles; ++pole) {
@@ -532,6 +572,109 @@ bool BSpline::isLine()
     }
     return result;
 }
+
+bool BSpline::isCircle()
+{
+    bool result = false;
+    double radius;
+    Base::Vector3d center;
+    bool isArc = false;
+    getCircleParms(result,radius,center,isArc);
+    return result;
+}
+
+void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc)
+{
+//    bool result = false;
+    double curveLimit = 0.0001;
+    BRepAdaptor_Curve c(occEdge);
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
+    double f,l;
+    f = c.FirstParameter();
+    l = c.LastParameter();
+    double parmRange = fabs(l - f);
+    int testCount = 6;
+    double parmStep = parmRange/testCount;
+    std::vector<double> curvatures;
+    std::vector<gp_Pnt> centers;
+    gp_Pnt curveCenter;
+    double sumCurvature = 0;
+    Base::Vector3d sumCenter, valueAt;
+    try {
+        GeomLProp_CLProps prop(spline,f,3,Precision::Confusion());
+        curvatures.push_back(prop.Curvature());
+        sumCurvature += prop.Curvature();
+        prop.CentreOfCurvature(curveCenter);
+        centers.push_back(curveCenter);
+        sumCenter += Base::Vector3d(curveCenter.X(),curveCenter.Y(),curveCenter.Z());
+
+        for (int i = 1; i < (testCount - 1); i++) {
+            prop.SetParameter(parmStep * i);
+            curvatures.push_back(prop.Curvature());
+            sumCurvature += prop.Curvature();
+            prop.CentreOfCurvature(curveCenter);
+            centers.push_back(curveCenter);
+            sumCenter += Base::Vector3d(curveCenter.X(),curveCenter.Y(),curveCenter.Z());
+        }
+        prop.SetParameter(l);
+        curvatures.push_back(prop.Curvature());
+        sumCurvature += prop.Curvature();
+        prop.CentreOfCurvature(curveCenter);
+        centers.push_back(curveCenter);
+        sumCenter += Base::Vector3d(curveCenter.X(),curveCenter.Y(),curveCenter.Z());
+    }
+    catch (Standard_Failure&) {
+        Base::Console().Log("TechDraw - GEO::BSpline::getCircleParms - CLProps failed\n");
+        isCircle = false;
+        return;
+//        throw Base::RuntimeError(e.GetMessageString());
+    }
+    Base::Vector3d avgCenter = sumCenter/testCount;
+    double errorCenter = 0;
+    for (auto& c: centers) {
+        errorCenter += (avgCenter - Base::Vector3d(c.X(), c.Y(), c.Z())).Length();
+    }
+    errorCenter = errorCenter/testCount;
+
+    double avgCurve = sumCurvature/testCount;
+    double errorCurve  = 0;
+    for (auto& cv: curvatures) {
+        errorCurve += fabs(avgCurve - cv);    //fabs???
+    }
+    errorCurve  = errorCurve/testCount;
+
+    isArc = !c.IsClosed();
+    isCircle = false;
+    if ( errorCurve < curveLimit ) {
+        isCircle = true;
+        radius = 1.0/avgCurve;
+        center = avgCenter;
+    }
+}
+
+bool BSpline::intersectsArc(Base::Vector3d p1,Base::Vector3d p2)
+{
+    bool result = false;
+    double minDist = -1.0;
+    gp_Pnt pnt1(p1.x,p1.y,p1.z);
+    TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
+    gp_Pnt pnt2(p2.x,p2.y,p2.z);
+    TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(pnt2);
+    BRepBuilderAPI_MakeEdge mkEdge(v1,v2);
+    TopoDS_Edge line = mkEdge.Edge();
+    BRepExtrema_DistShapeShape extss(occEdge, line);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            minDist = extss.Value();
+            if (minDist < Precision::Confusion()) {
+                result = true;
+            }
+        }
+    }
+    return result;
+}
+
 
 BezierSegment::BezierSegment(const TopoDS_Edge &e)
 {

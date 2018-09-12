@@ -340,6 +340,13 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("PovProject");
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (pcAction->actions().isEmpty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdRaytracingWriteView","No template"),
+            qApp->translate("CmdRaytracingWriteView","Cannot create a project because there is no template installed."));
+        return;
+    }
+
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
@@ -731,6 +738,13 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("LuxProject");
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (pcAction->actions().isEmpty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdRaytracingWriteView","No template"),
+            qApp->translate("CmdRaytracingWriteView","Cannot create a project because there is no template installed."));
+        return;
+    }
+
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {

@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -38,7 +37,9 @@
 
 #include <BRep_Tool.hxx>
 #include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #include <Precision.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -50,6 +51,10 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <GProp_GProps.hxx>
+#include <GeomLProp_SLProps.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepLProp_SLProps.hxx>
+#include <BRepGProp_Face.hxx>
 
 #endif
 
@@ -59,6 +64,10 @@
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
+
+#include "GeometryObject.h"
 #include "DrawUtil.h"
 
 using namespace TechDraw;
@@ -70,6 +79,9 @@ using namespace TechDraw;
    boost::match_flag_type flags = boost::match_default;
    char* endChar;
    std::string::const_iterator begin = geomName.begin();
+   auto pos = geomName.rfind('.');
+   if(pos!=std::string::npos)
+       begin += pos+1;
    std::string::const_iterator end = geomName.end();
    std::stringstream ErrorMsg;
 
@@ -290,6 +302,27 @@ std::string DrawUtil::formatVector(const Base::Vector2d& v)
     result = builder.str();
     return result;
 }
+
+std::string DrawUtil::formatVector(const gp_Dir& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    result = builder.str();
+    return result;
+}
+
+std::string DrawUtil::formatVector(const gp_Vec& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    result = builder.str();
+    return result;
+}
+
 
 //! compare 2 vectors for sorting - true if v1 < v2
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  

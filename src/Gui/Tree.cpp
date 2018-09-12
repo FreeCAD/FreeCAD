@@ -1292,12 +1292,18 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int displayMode = hGrp->GetInt("TreeViewDocument", 0);
     for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
-        it->second->setFont(0,f);
+        it->second->setFont(0, f);
+        it->second->setHidden(0 == displayMode && it != jt);
+        if (2 == displayMode) {
+            it->second->setExpanded(it == jt);
+        }
     }
 }
 
@@ -2294,6 +2300,7 @@ void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 {
+#if 0
     if(ObjectMap.find(obj.getObject()) == ObjectMap.end())
         return; // signal is emitted before the item gets created
     FOREACH_ITEM_ALL(item);
@@ -2301,6 +2308,9 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
         f.setBold(item->object() == &obj);
         item->setFont(0,f);
     END_FOREACH_ITEM
+#else
+    Q_UNUSED(obj);
+#endif
 }
 
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
@@ -2812,30 +2822,60 @@ DocumentObjectItem::~DocumentObjectItem()
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
-    switch (high) {
-    case Gui::Bold: f.setBold(set);             break;
-    case Gui::Italic: f.setItalic(set);         break;
-    case Gui::Underlined: f.setUnderline(set);  break;
-    case Gui::Overlined: f.setOverline(set);    break;
-    case Gui::Blue:
+    auto highlight = [=](const QColor& col){
         if (set)
-            this->setBackgroundColor(0,QColor(200,200,255));
+            this->setBackgroundColor(0, col);
         else
             this->setData(0, Qt::BackgroundColorRole,QVariant());
+    };
+
+    switch (high) {
+    case Gui::Bold:
+        f.setBold(set);
+        break;
+    case Gui::Italic:
+        f.setItalic(set);
+        break;
+    case Gui::Underlined:
+        f.setUnderline(set);
+        break;
+    case Gui::Overlined:
+        f.setOverline(set);
+        break;
+    case Gui::Blue:
+        highlight(QColor(200,200,255));
         break;
     case Gui::LightBlue:
+        highlight(QColor(230,230,255));
+        break;
+    case Gui::UserDefined:
+    {
+        QColor color(230,230,255);
         if (set) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+            bool bold = hGrp->GetBool("TreeActiveBold",true);
+            bool italic = hGrp->GetBool("TreeActiveItalic",false);
+            bool underlined = hGrp->GetBool("TreeActiveUnderlined",false);
+            bool overlined = hGrp->GetBool("TreeActiveOverlined",false);
+            f.setBold(bold);
+            f.setItalic(italic);
+            f.setUnderline(underlined);
+            f.setOverline(overlined);
+
             unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
-            this->setBackgroundColor(0,QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff));
+            color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
         }
-        else
-            this->setData(0, Qt::BackgroundColorRole,QVariant());
-        break;
+        else {
+            f.setBold(false);
+            f.setItalic(false);
+            f.setUnderline(false);
+            f.setOverline(false);
+        }
+        highlight(color);
+    }   break;
     default:
         break;
     }
-    this->setFont(0,f);
 }
 
 const char *DocumentObjectItem::getTreeName() const {

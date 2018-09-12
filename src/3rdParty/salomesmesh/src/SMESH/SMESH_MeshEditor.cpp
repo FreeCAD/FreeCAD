@@ -11178,7 +11178,7 @@ double SMESH_MeshEditor::OrientedAngle(const gp_Pnt& p0, const gp_Pnt& p1, const
   try {
     return n2.AngleWithRef(n1, vref);
   }
-  catch ( Standard_Failure ) {
+  catch ( Standard_Failure &) {
   }
   return Max( v1.Magnitude(), v2.Magnitude() );
 }

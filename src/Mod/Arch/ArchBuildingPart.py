@@ -35,6 +35,9 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
+import sys
+if sys.version_info.major >= 3:
+    unicode = str
 
 ## @package ArchBuildingPart
 #  \ingroup ARCH
@@ -190,7 +193,7 @@ BuildingTypes = ['Undefined',
 ]
 
 
-def makeBuildingPart(objectslist=None):
+def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
 
     '''makeBuildingPart(objectslist): creates a buildingPart including the
     objects from the given list.'''

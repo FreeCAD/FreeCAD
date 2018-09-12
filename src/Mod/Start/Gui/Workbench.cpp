@@ -73,7 +73,7 @@ void StartGui::Workbench::activated()
         QByteArray utf8Title = title.toUtf8();
         QByteArray cmd;
         QTextStream str(&cmd);
-        str << "import WebGui" << endl;
+        str << "import WebGui,sys,Start" << endl;
         str << "from StartPage import StartPage" << endl;
         str << endl;
         str << "class WebPage(object):" << endl;
@@ -101,6 +101,7 @@ void StartGui::Workbench::activated()
         str << "        self.pargrp.Detach(self.webPage)" << endl;
         str << endl;
         str << "webView=WebView()" << endl;
+        str << "StartPage.checkPostOpenStartPage()" << endl;
 
         Base::Interpreter().runString(cmd);
         // Gui::Command::runCommand(Gui::Command::Gui, cmd);
@@ -128,7 +129,8 @@ Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
     // web navigation toolbar
     Gui::ToolBarItem* navigation = new Gui::ToolBarItem(root);
     navigation->setCommand("Navigation");
-    *navigation << "Web_OpenWebsite" 
+    *navigation << "Web_OpenWebsite"
+                << "Start_StartPage"
                 << "Separator" 
                 << "Web_BrowserBack" 
                 << "Web_BrowserNext" 

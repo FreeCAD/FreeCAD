@@ -84,11 +84,6 @@ of curve and and parameter range is returned.
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="setTolerance">
-			<Documentation>
-				<UserDocu>Set the tolerance for the face.</UserDocu>
-			</Documentation>
-		</Methode>
 		<Attribute Name="Tolerance">
 			<Documentation>
 				<UserDocu>Set or get the tolerance of the vertex</UserDocu>

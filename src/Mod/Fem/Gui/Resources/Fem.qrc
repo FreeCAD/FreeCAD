@@ -8,13 +8,8 @@
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
+
         <file>icons/fem-analysis.svg</file>
-        <file>icons/fem-beam-rotation.svg</file>
-        <file>icons/fem-beam-section.svg</file>
-        <file>icons/fem-box.svg</file>
-        <file>icons/fem-cfd-analysis.svg</file>
-        <file>icons/fem-clip.svg</file>
-        <file>icons/fem-clip-scalar.svg</file>
         <file>icons/fem-clipping-plane-add.svg</file>
         <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
@@ -35,13 +30,10 @@
         <file>icons/fem-constraint-selfweight.svg</file>
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
-        <file>icons/fem-control-solver.svg</file>
-        <file>icons/fem-cut.svg</file>
-        <file>icons/fem-cylinder.svg</file>
-        <file>icons/fem-DataAlongLine.svg</file>
-        <file>icons/fem-DataAtPoint.png</file>
-        <file>icons/fem-data.svg</file>
-        <file>icons/fem-elmer.svg</file>
+        <file>icons/fem-element-fluid-1d.svg</file>
+        <file>icons/fem-element-geometry-1d.svg</file>
+        <file>icons/fem-element-geometry-2d.svg</file>
+        <file>icons/fem-element-rotation-1d.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
@@ -57,24 +49,33 @@
         <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
-        <file>icons/fem-fluid-section.svg</file>
-        <file>icons/fem-frequency-analysis.svg</file>
-        <file>icons/fem-inp-editor.svg</file>
-        <file>icons/fem-isosurface.svg</file>
-        <file>icons/fem-linearizedstresses.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
-        <file>icons/fem-plane.svg</file>
-        <file>icons/fem-purge-results.svg</file>
-        <file>icons/fem-result.svg</file>
-        <file>icons/fem-run-solver.svg</file>
-        <file>icons/fem-shell-thickness.svg</file>
-        <file>icons/fem-solver.svg</file>
-        <file>icons/fem-sphere.svg</file>
-        <file>icons/fem-static-analysis.svg</file>
-        <file>icons/fem-thermomechanical-analysis.svg</file>
-        <file>icons/fem-warp.svg</file>
+        <file>icons/fem-post-data-pipline.svg</file>
+        <file>icons/fem-post-filter-clip-region.svg</file>
+        <file>icons/fem-post-filter-clip-scalar.svg</file>
+        <file>icons/fem-post-filter-cut-function.svg</file>
+        <file>icons/fem-post-filter-data-along-line.svg</file>
+        <file>icons/fem-post-filter-data-at-point.png</file>
+        <file>icons/fem-post-filter-linearized-stresses.svg</file>
+        <file>icons/fem-post-filter-warp.svg</file>
+        <file>icons/fem-post-geo-box.svg</file>
+        <file>icons/fem-post-geo-cylinder.svg</file>
+        <file>icons/fem-post-geo-isosurface.svg</file>
+        <file>icons/fem-post-geo-plane.svg</file>
+        <file>icons/fem-post-geo-sphere.svg</file>
+        <file>icons/fem-post-result-show.svg</file>
+        <file>icons/fem-post-results-purge.svg</file>
+        <file>icons/fem-solver-analysis-frequency.svg</file>
+        <file>icons/fem-solver-analysis-static.svg</file>
+        <file>icons/fem-solver-analysis-thermomechanical.svg</file>
+        <file>icons/fem-solver-cfd.svg</file>
+        <file>icons/fem-solver-control.svg</file>
+        <file>icons/fem-solver-elmer.svg</file>
+        <file>icons/fem-solver-inp-editor.svg</file>
+        <file>icons/fem-solver-run.svg</file>
+        <file>icons/fem-solver-standard.svg</file>
 
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>

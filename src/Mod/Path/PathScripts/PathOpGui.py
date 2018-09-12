@@ -31,6 +31,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSelection as PathSelection
+import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
@@ -380,20 +381,15 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return 'edges'
         return 'nothing'
 
-    def addBaseGeometry(self, selection):
-        PathLog.track(selection)
-        if len(selection) != 1:
-            PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
-            return False
-        sel = selection[0]
+    def addBaseGeometrySelection(self, sel):
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
                 PathLog.error(translate("PathProject", "Vertexes are not supported"))
                 return False
-            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
                 PathLog.error(translate("PathProject", "Edges are not supported"))
                 return False
-            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
@@ -404,6 +400,17 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for sub in sel.SubElementNames:
             self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return True
+
+    def addBaseGeometry(self, selection):
+        PathLog.track(selection)
+        #if len(selection) != 1:
+        #    PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+        #    return False
+        changed = False
+        for sel in selection:
+            if self.addBaseGeometrySelection(sel):
+                changed = True
+        return changed
 
     def addBase(self):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
@@ -996,8 +1003,8 @@ def SetupOperation(name,
                    pixmap,
                    menuText,
                    toolTip,
-                   accelKey=None):
-    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, accelKey=None)
+                   setupProperties=None):
+    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
     (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
@@ -1005,10 +1012,14 @@ def SetupOperation(name,
     It is not expected to be called manually.
     '''
 
-    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip)
+    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
 
     command = CommandPathOp(res)
     FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), command)
+
+    if not setupProperties is None:
+        PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
+
     return command
 
 

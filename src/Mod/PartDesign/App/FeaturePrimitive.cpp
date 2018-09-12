@@ -29,7 +29,6 @@
 #include "FeaturePrimitive.h"
 #include "DatumPoint.h"
 #include "DatumCS.h"
-#include <Mod/Part/App/modelRefine.h>
 #include "FeaturePy.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>

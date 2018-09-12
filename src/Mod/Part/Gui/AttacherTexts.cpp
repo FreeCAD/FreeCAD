@@ -369,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
 
 // --------------------Py interface---------------------
 
-PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
 {
     int modeIndex = 0;
     char* attacherType;
@@ -400,7 +400,7 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, Py
     }
 }
 
-PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args)
 {
     int refTypeIndex = 0;
     if (!PyArg_ParseTuple(args, "i", &refTypeIndex))
@@ -419,9 +419,9 @@ PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObje
 
 
 PyMethodDef AttacherGuiPy::Methods[] = {
-    {"getModeStrings",             (PyCFunction) AttacherGuiPy::sGetModeStrings, 1,
+    {"getModeStrings",             (PyCFunction) AttacherGuiPy::sGetModeStrings, METH_VARARGS,
      "getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."},
-    {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, 1,
+    {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, METH_VARARGS,
      "getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };

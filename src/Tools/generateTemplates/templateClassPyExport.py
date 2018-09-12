@@ -224,8 +224,8 @@ public:
     /// setter for special attributes (e.g. dynamic ones)
     /// Output: Success=1, Failure=-1, Ignore=0
     int setCustomAttributes(const char* attr, PyObject *obj);
-    PyObject *_getattr(char *attr);              // __getattr__ function
-    int _setattr(char *attr, PyObject *value);        // __setattr__ function
+    PyObject *_getattr(const char *attr);              // __getattr__ function
+    int _setattr(const char *attr, PyObject *value);        // __setattr__ function
 -
 
     /// getter for the object handled by this class
@@ -351,10 +351,11 @@ PyTypeObject @self.export.Name@::Type = {
 PyMethodDef @self.export.Name@::Methods[] = {
 + for i in self.export.Methode:
     {"@i.Name@",
-        (PyCFunction) staticCallback_@i.Name@,
 + if i.Keyword:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
 = else:
+        reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
         METH_VARARGS,
 -
         "@i.Documentation.UserDocu.replace('\\n','\\\\n')@"
@@ -726,7 +727,7 @@ PyObject *@self.export.Name@::_repr(void)
 //--------------------------------------------------------------------------
 // @self.export.Name@ Attributes
 //--------------------------------------------------------------------------
-PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: note only need to handle new state
+PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ function: note only need to handle new state
 {
     try {
         // getter method for special Attributes (e.g. dynamic ones)
@@ -794,7 +795,7 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
     return @self.export.Father@::_getattr(attr);
 }
 
-int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ function: note only need to handle new state
+int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr__ function: note only need to handle new state
 {
     try {
         // setter for  special Attributes (e.g. dynamic ones)

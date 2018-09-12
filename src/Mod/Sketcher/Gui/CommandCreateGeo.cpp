@@ -1192,6 +1192,8 @@ public:
                     createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::end);
                     sugConstr2.clear();
                 }
+                
+                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                 unsetCursor();
 
@@ -5812,7 +5814,7 @@ public:
                         Gui::Command::abortCommand();
                     }
 
-                    tryAutoRecompute();
+                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                     
                     if(construction) {
                         FCMD_OBJ_CMD2("toggleConstruction(%d) ",
@@ -5987,7 +5989,7 @@ public:
                               sketchgui->getObject(),
                               GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
-                    tryAutoRecompute();
+                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("Failed to trim edge: %s\n", e.what());
@@ -7047,7 +7049,7 @@ public:
                 Base::Console().Error("Failed to add slot: %s\n", e.what());
                 Gui::Command::abortCommand();
 
-                tryAutoRecompute();
+                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -7277,7 +7279,7 @@ public:
                 Base::Console().Error("Failed to add hexagon: %s\n", e.what());
                 Gui::Command::abortCommand();
 
-                tryAutoRecompute();
+                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");

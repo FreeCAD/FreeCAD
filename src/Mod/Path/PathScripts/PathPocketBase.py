@@ -79,7 +79,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"))
         obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."))
+        obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."))
 
         self.initPocketOp(obj)
 
@@ -131,4 +131,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['sort_mode'] = 3
             params['threshold'] = self.radius * 2
         return params
+
+def SetupProperties():
+    setup = []
+    setup.append('CutMode')
+    setup.append('ExtraOffset')
+    setup.append('StepOver')
+    setup.append('ZigZagAngle')
+    setup.append('OffsetPattern')
+    return setup
 

@@ -55,7 +55,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
-        pass
+        obj.addProperty("App::PropertyBool", "UseOutline", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."))
+        obj.UseOutline = False
+
+    def opOnDocumentRestored(self, obj):
+        '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
+        if not hasattr(obj, 'UseOutline'):
+            self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
@@ -114,9 +120,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             for shape in PathGeom.combineConnectedShapes(self.horiz):
                 shape.sewShape()
                 shape.tessellate(0.1)
-                wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
-                wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
-                self.horizontal.append(Part.Face(wire))
+                if obj.UseOutline:
+                    wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
+                    wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
+                    self.horizontal.append(Part.Face(wire))
+                else:
+                    self.horizontal.append(shape)
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
@@ -124,12 +133,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-            self.outline = Part.Face(TechDraw.findShapeOutline(self.baseobject.Shape, 1, FreeCAD.Vector(0, 0, 1)))
+            self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model]
             stockBB = self.stock.Shape.BoundBox
 
-            self.outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
-            self.body  = self.outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
-            self.removalshapes = [(self.stock.Shape.cut(self.body), False)]
+            self.removalshapes = []
+            self.bodies = []
+            for outline in self.outlines:
+                outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
+                body = outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
+                self.bodies.append(body)
+                self.removalshapes.append((self.stock.Shape.cut(body), False))
 
         for (shape,hole) in self.removalshapes:
             shape.tessellate(0.1)
@@ -138,18 +151,21 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.removalshape = self.removalshapes[0][0]
         return self.removalshapes
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... set default values'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-        job = PathUtils.findParentJob(obj)
         if job and job.Stock:
             bb = job.Stock.Shape.BoundBox
             obj.OpFinalDepth = bb.ZMin
             obj.OpStartDepth = bb.ZMax
 
-def Create(name):
+def SetupProperties():
+    return PathPocketBase.SetupProperties() + [ 'UseOutline' ]
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectPocket(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectPocket(obj, name)
     return obj

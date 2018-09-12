@@ -451,7 +451,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    if (ptr->Length() < 1.0e-6) {
+    if (ptr->Length() < Vector3d::epsilon()) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot normalize null vector");
         return 0;
     }
@@ -612,7 +612,7 @@ void  VectorPy::setLength(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     double len = ptr->Length();
-    if (len < 1.0e-6) {
+    if (len < Vector3d::epsilon()) {
         throw Py::RuntimeError(std::string("Cannot set length of null vector"));
     }
 

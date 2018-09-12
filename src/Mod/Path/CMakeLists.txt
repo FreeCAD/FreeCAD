@@ -6,13 +6,19 @@ if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
+set(Path_Scripts
+    Init.py
+    PathCommands.py
+    TestPathApp.py
+)
+
+if(BUILD_GUI)
+    list (APPEND Path_Scripts InitGui.py)
+endif(BUILD_GUI)
+
 INSTALL(
     FILES
-        Init.py
-        InitGui.py
-        PathCommands.py
-        TestPathApp.py
-
+        ${Path_Scripts}
     DESTINATION
         Mod/Path
 )
@@ -54,6 +60,7 @@ SET(PathScripts_SRCS
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathJobCmd.py
+    PathScripts/PathJobDlg.py
     PathScripts/PathJobGui.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
@@ -83,6 +90,9 @@ SET(PathScripts_SRCS
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSetupSheet.py
+    PathScripts/PathSetupSheetGui.py
+    PathScripts/PathSetupSheetOpPrototype.py
+    PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
@@ -95,6 +105,8 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PostUtils.py
+    PathScripts/PathAdaptiveGui.py
+    PathScripts/PathAdaptive.py
     PathScripts/__init__.py
 )
 
@@ -165,7 +177,7 @@ ADD_CUSTOM_TARGET(PathScripts ALL
 )
 
 SET(test_files
-  TestPathApp.py
+  ${Path_Scripts}
   ${PathTests_SRCS}
 )
 

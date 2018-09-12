@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2012                                                    * 
-#*   Yorik van Havre <yorik@uncreated.net>                                 * 
+#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,297 +20,504 @@
 #*                                                                         *
 #***************************************************************************
 
-# This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
-from PySide import QtGui
-from xml.etree.ElementTree import parse
+# This is the start page template. It builds a HTML global variable that contains
+# the html code of the start page. It is built only once per FreeCAD session for now...
 
-from .TranslationTexts import (text01, text02, text03, text04, text05, text06,
-                              text07, text08, text09, text10, text11, text12,
-                              text13, text14, text15, text16, text17, text18,
-                              text19, text20, text21, text22, text23, text24,
-                              text25, text26, text27, text28, text29, text30,
-                              text31, text32, text33, text34, text35, text36,
-                              text37, text38, text39, text40, text41, text42,
-                              text43, text44, text45, text46, text47, text48,
-                              text49, text50, text51, text52, text53, text54,
-                              text55, text56, text57, text58, text59, text60,
-                              text61, text62, text63, text64, text65, text66,
-                              text67, text68, text69, text70, text71)
-
-try:
-    import io as cStringIO
-except:
-    import cStringIO
+import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+from . import TranslationTexts
+from PySide import QtCore,QtGui
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
-# get FreeCAD version
-v = FreeCAD.Version()
-vmajor, vminor = v[0], v[1]
-vbuild = v[2].split(" ")[0]
+iconprovider = QtGui.QFileIconProvider()
+iconbank = {} # to store already created icons so we don't overpollute the temp dir
+tempfolder = None # store icons inside a subfolder in temp dir
 
-# here is the html page skeleton
-resources_dir = os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage")
-html_filename = os.path.join(resources_dir, "StartPage.html")
-js_filename = os.path.join(resources_dir, "StartPage.js")
-css_filename = os.path.join(resources_dir, "StartPage.css")
 
-with open(html_filename, 'r') as f:
-    startpage_html = f.read()
+def gethexcolor(color):
 
-with open(js_filename, 'r') as f:
-    startpage_js = f.read()
+    "returns a color hex value #000000"
 
-with open(css_filename, 'r') as f:
-    startpage_css = f.read()
+    r = str(hex(int(((color>>24)&0xFF))))[2:].zfill(2)
+    g = str(hex(int(((color>>16)&0xFF))))[2:].zfill(2)
+    b = str(hex(int(((color>>8)&0xFF))))[2:].zfill(2)
+    return "#"+r+g+b
+
+
+
+def isOpenableByFreeCAD(filename):
+
+    "check if FreeCAD can handle this file type"
+
+    if os.path.isdir(filename):
+        return False
+    if os.path.basename(filename)[0] == ".":
+        return False
+    extensions = [key.lower() for key in FreeCAD.getImportType().keys()]
+    ext = os.path.splitext(filename)[1].lower()
+    if ext:
+        if ext[0] == ".":
+            ext = ext[1:]
+    if ext in extensions:
+        return True
+    return False
+
+
 
 def getInfo(filename):
+
     "returns available file information"
 
+    global iconbank,tempfolder
+
+    tformat = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("TimeFormat","%m/%d/%Y %H:%M:%S")
+
     def getLocalTime(timestamp):
-        "returns a local time from a timestamp"       
-        return time.strftime("%m/%d/%Y %H:%M:%S",time.localtime(timestamp))
+        "returns a local time from a timestamp"
+        return time.strftime(tformat,time.localtime(timestamp))
 
     def getSize(size):
-        "returns a human-readable size" 
+        "returns a human-readable size"
         if size > 1024*1024:
-            hsize = str(size/(1024*1024)) + "Mb"
+            hsize = str(int(size/(1024*1024))) + "Mb"
         elif size > 1024:
-            hsize = str(size/1024) + "Kb"
+            hsize = str(int(size/1024)) + "Kb"
         else:
-            hsize = str(size) + "b"
+            hsize = str(int(size)) + "b"
         return hsize
-        
-    html = '<h3>'+os.path.basename(filename)+'</h3>'
-    
+
     if os.path.exists(filename):
+
+        if os.path.isdir(filename):
+            return None
+
         # get normal file info
         s = os.stat(filename)
-        html += "<p>" + text33 + " " + getSize(s.st_size) + "<br/>"
-        html += text34 + " " + getLocalTime(s.st_ctime) + "<br/>"
-        html += text35 + " " + getLocalTime(s.st_mtime) + "<br/>"
-        html += "<span>" + text36 + " " + filename + "</span></p>"
+        size = getSize(s.st_size)
+        ctime = getLocalTime(s.st_ctime)
+        mtime = getLocalTime(s.st_mtime)
+        author = ""
+        company = TranslationTexts.T_UNKNOWN
+        lic = TranslationTexts.T_UNKNOWN
+        image = None
+        descr = ""
+
         # get additional info from fcstd files
-        if os.path.splitext(filename)[1].upper() in [".FCSTD"]:
+        if filename.lower().endswith(".fcstd"):
             zfile=zipfile.ZipFile(filename)
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                html += "<p><b>" + text65 + "</b></p>"
-                image="thumbnails/Thumbnail.png"
                 doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
-                author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
-                if author: 
-                    html += "<p>" + text66 + ": " + author[0] + "</p>"
-                company = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
-                if company: 
-                    html += "<p>" + text67 + ": " + company[0] + "</p>"
-                lic = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
-                if lic: 
-                    html += "<p>" + text68 + ": " + lic[0] + "</p>"
-                if image in files:
-                    image=zfile.read(image)
-                    thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                    thumb = open(thumbfile,"wb")
-                    thumb.write(image)
-                    thumb.close()
-                    html += '<img src=file://'
-                    html += thumbfile + '><br/>'
-        else:
-            print ("not a freecad file: "+os.path.splitext(filename)[1].upper())
-    else:
-        html += "<p>" + text41 + "</p>"
-    return html
+                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    author = r[0]
+                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    company = r[0]
+                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    lic = r[0]
+                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"\/>",doc)
+                if r:
+                    descr = r[0]
+                if "thumbnails/Thumbnail.png" in files:
+                    if filename in iconbank:
+                        image = iconbank[filename]
+                    else:
+                        imagedata=zfile.read("thumbnails/Thumbnail.png")
+                        image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+                        thumb = open(image,"wb")
+                        thumb.write(imagedata)
+                        thumb.close()
+                        iconbank[filename] = image
 
-def getRecentFiles():
-    "returns a list of 3 latest recent files"
-    rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
-    ct = rf.GetInt("RecentFiles")
-    html = '<ul>'
-    for i in range(4):
-        if i < ct:
-            mr = rf.GetString("MRU%d" % (i))
-            if os.path.exists(mr):
-                fn = os.path.basename(mr)
-                html += '<li>'
-                if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
-                else:
-                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
-                html += '<a '
-                html += 'onMouseover="show(\''+getInfo(mr).replace("'","&rsquo;")+'\')" '
-                html += 'onMouseout="show(\'\')" '
-                html += 'href="LoadMRU'+str(i)+'.py">'
-                html += fn
-                html += '</a></li>'
+        # retrieve default mime icon if needed
+        if not image:
+            i = QtCore.QFileInfo(filename)
+            t = iconprovider.type(i)
+            if t in iconbank:
+                image = iconbank[t]
             else:
-                fn = os.path.basename(mr)
-                html += '<li>'
-                if mr[-5:].upper() == "FCSTD":
-                    html += '<img src="images/freecad-doc.png" style="width: 16px">&nbsp;'
+                icon = iconprovider.icon(i)
+                preferred = icon.actualSize(QtCore.QSize(128,128))
+                px = icon.pixmap(preferred)
+                image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+                px.save(image)
+                iconbank[t] = image
+
+        return [image,size,author,ctime,mtime,descr,company,lic]
+
+    return None
+
+
+
+def buildCard(filename,method,arg=None):
+
+    "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
+
+    result = ""
+    if os.path.exists(filename) and isOpenableByFreeCAD(filename):
+        basename = os.path.basename(filename)
+        if not arg:
+            arg = basename
+        finfo = getInfo(filename)
+        if finfo:
+            image = finfo[0]
+            size = finfo[1]
+            author = finfo[2]
+            infostring = TranslationTexts.T_CREATIONDATE+": "+finfo[3]+"\n"
+            infostring += TranslationTexts.T_LASTMODIFIED+": "+finfo[4]
+            if finfo[5]:
+                infostring += "\n\n" + finfo[5]
+            if size:
+                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<li class="icon">'
+                result += '<img src="'+image+'">'
+                result += '<div class="caption">'
+                result += '<h4>'+basename+'</h4>'
+                result += '<p>'+size+'</p>'
+                result += '<p>'+author+'</p>'
+                result += '</div>'
+                result += '</li>'
+                result += '</a>'
+    return result
+
+
+
+def handle():
+
+    "builds the HTML code of the start page"
+
+    global iconbank,tempfolder
+
+    # reuse stuff from previous runs to reduce temp dir clutter
+
+    import Start
+    if hasattr(Start,"iconbank"):
+        iconbank = Start.iconbank
+    if hasattr(Start,"tempfolder"):
+        tempfolder = Start.tempfolder
+    else:
+        tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
+
+    # build the html page skeleton
+
+    resources_dir = os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage")
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+    template = p.GetString("Template","")
+    if template:
+        html_filename = template
+    else:
+        html_filename = os.path.join(resources_dir, "StartPage.html")
+    js_filename = os.path.join(resources_dir, "StartPage.js")
+    css_filename = os.path.join(resources_dir, "StartPage.css")
+    with open(html_filename, 'r') as f:
+        HTML = f.read()
+    with open(js_filename, 'r') as f:
+        JS = f.read()
+    with open(css_filename, 'r') as f:
+        CSS = f.read()
+    HTML = HTML.replace("JS",JS)
+    HTML = HTML.replace("CSS",CSS)
+
+    # get the stylesheet if we are using one
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("UseStyleSheet",False):
+        qssfile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet","")
+        if qssfile:
+            with open(qssfile, 'r') as f:
+                ALTCSS = f.read()
+                if sys.version_info.major < 3:
+                    ALTCSS = ALTCSS.decode("utf8")
+            HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+
+    # get FreeCAD version
+
+    v = FreeCAD.Version()
+    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
+    HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
+
+    # translate texts
+
+    HTML = HTML.replace("T_TITLE",TranslationTexts.T_TITLE)
+    HTML = HTML.replace("T_DOCUMENTS",TranslationTexts.T_DOCUMENTS)
+    HTML = HTML.replace("T_HELP",TranslationTexts.T_HELP)
+    HTML = HTML.replace("T_ACTIVITY",TranslationTexts.T_ACTIVITY)
+    HTML = HTML.replace("T_TIP",TranslationTexts.T_TIP)
+    HTML = HTML.replace("T_ADJUSTRECENT",TranslationTexts.T_ADJUSTRECENT)
+    HTML = HTML.replace("T_GENERALDOCUMENTATION",TranslationTexts.T_GENERALDOCUMENTATION)
+    HTML = HTML.replace("T_USERHUB",TranslationTexts.T_USERHUB)
+    HTML = HTML.replace("T_DESCR_USERHUB",TranslationTexts.T_DESCR_USERHUB)
+    HTML = HTML.replace("T_POWERHUB",TranslationTexts.T_POWERHUB)
+    HTML = HTML.replace("T_DESCR_POWERHUB",TranslationTexts.T_DESCR_POWERHUB)
+    HTML = HTML.replace("T_DEVHUB",TranslationTexts.T_DEVHUB)
+    HTML = HTML.replace("T_DESCR_DEVHUB",TranslationTexts.T_DESCR_DEVHUB)
+    HTML = HTML.replace("T_MANUAL",TranslationTexts.T_MANUAL)
+    HTML = HTML.replace("T_DESCR_MANUAL",TranslationTexts.T_DESCR_MANUAL)
+    HTML = HTML.replace("T_WBHELP",TranslationTexts.T_WBHELP)
+    HTML = HTML.replace("T_DESCR_WBHELP",TranslationTexts.T_DESCR_WBHELP)
+    HTML = HTML.replace("T_COMMUNITYHELP",TranslationTexts.T_COMMUNITYHELP)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP1",TranslationTexts.T_DESCR_COMMUNITYHELP1)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP2",TranslationTexts.T_DESCR_COMMUNITYHELP2)
+    HTML = HTML.replace("T_DESCR_COMMUNITYHELP3",TranslationTexts.T_DESCR_COMMUNITYHELP3)
+    HTML = HTML.replace("T_ADDONS",TranslationTexts.T_ADDONS)
+    HTML = HTML.replace("T_DESCR_ADDONS",TranslationTexts.T_DESCR_ADDONS)
+    HTML = HTML.replace("T_OFFLINEHELP",TranslationTexts.T_OFFLINEHELP)
+    HTML = HTML.replace("T_OFFLINEPLACEHOLDER",TranslationTexts.T_OFFLINEPLACEHOLDER)
+    HTML = HTML.replace("T_RECENTCOMMITS",TranslationTexts.T_RECENTCOMMITS)
+    HTML = HTML.replace("T_DESCR_RECENTCOMMITS",TranslationTexts.T_DESCR_RECENTCOMMITS)
+    HTML = HTML.replace("T_SEEONGITHUB",TranslationTexts.T_SEEONGITHUB)
+    HTML = HTML.replace("T_CUSTOM",TranslationTexts.T_CUSTOM)
+    HTML = HTML.replace("T_FORUM",TranslationTexts.T_FORUM)
+    HTML = HTML.replace("T_DESCR_FORUM",TranslationTexts.T_DESCR_FORUM)
+    HTML = HTML.replace("T_EXTERNALLINKS",TranslationTexts.T_EXTERNALLINKS)
+    HTML = HTML.replace("T_NOTES",TranslationTexts.T_NOTES)
+
+    # build a "create new" icon with the FreeCAD background color gradient
+
+    if not "createimg" in iconbank:
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        c1 = gethexcolor(p.GetUnsigned("BackgroundColor2"))
+        c2 = gethexcolor(p.GetUnsigned("BackgroundColor3"))
+        gradient = QtGui.QLinearGradient(0, 0, 0, 128)
+        gradient.setColorAt(0.0, QtGui.QColor(c1))
+        gradient.setColorAt(1.0, QtGui.QColor(c2))
+        i = QtGui.QImage(128,128,QtGui.QImage.Format_RGB16)
+        pa = QtGui.QPainter(i)
+        pa.fillRect(i.rect(),gradient)
+        pa.end()
+        createimg = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+        i.save(createimg)
+        iconbank["createimg"] = createimg
+
+    # build SECTION_RECENTFILES
+
+    SECTION_RECENTFILES = ""
+    rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
+    rfcount = rf.GetInt("RecentFiles",0)
+    if rfcount:
+        SECTION_RECENTFILES = "<h2>"+TranslationTexts.T_RECENTFILES+"</h2>"
+        SECTION_RECENTFILES += "<ul>"
+        SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
+        SECTION_RECENTFILES += '<li class="icon">'
+        SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
+        SECTION_RECENTFILES += '<div class="caption">'
+        SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
+        SECTION_RECENTFILES += '</div>'
+        SECTION_RECENTFILES += '</li>'
+        SECTION_RECENTFILES += '</a>'
+        for i in range(rfcount):
+            filename = rf.GetString("MRU%d" % (i))
+            SECTION_RECENTFILES += buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i))
+        SECTION_RECENTFILES += '</ul>'
+        if sys.version_info.major < 3:
+            SECTION_RECENTFILES = SECTION_RECENTFILES.decode("utf8")
+    HTML = HTML.replace("SECTION_RECENTFILES",SECTION_RECENTFILES)
+
+    # build SECTION_EXAMPLES
+
+    SECTION_EXAMPLES = ""
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowExamples",True):
+        SECTION_EXAMPLES = "<h2>"+TranslationTexts.T_EXAMPLES+"</h2>"
+        SECTION_EXAMPLES += "<ul>"
+        for basename in os.listdir(FreeCAD.getResourceDir()+"examples"):
+            filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
+            SECTION_EXAMPLES += buildCard(filename,method="LoadExample.py?filename=")
+        SECTION_EXAMPLES += "</ul>"
+    if sys.version_info.major < 3:
+        SECTION_EXAMPLES = SECTION_EXAMPLES.decode("utf8")
+    HTML = HTML.replace("SECTION_EXAMPLES",SECTION_EXAMPLES)
+
+    # build SECTION_CUSTOM
+
+    SECTION_CUSTOM = ""
+    cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+    if cfolder:
+        if not os.path.isdir(cfolder):
+            cfolder = os.path.dirname(cfolder)
+        SECTION_CUSTOM = "<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>"
+        SECTION_CUSTOM += "<ul>"
+        for basename in os.listdir(cfolder):
+            filename = os.path.join(cfolder,basename)
+            SECTION_CUSTOM += buildCard(filename,method="LoadCustom.py?filename=")
+        SECTION_CUSTOM += "</ul>"
+    if sys.version_info.major < 3:
+        SECTION_CUSTOM = SECTION_CUSTOM.decode("utf8")
+    HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
+
+    # build UL_WORKBENCHES
+
+    wblist = []
+    UL_WORKBENCHES = '<ul class="workbenches">'
+    FreeCAD.getResourceDir()
+    for wb in sorted(FreeCADGui.listWorkbenches().keys()):
+        if wb.endswith("Workbench"):
+            wn = wb[:-9]
+        else:
+            wn = wb
+        if wn == "flamingoTools":
+            wn = "flamingo"
+        if wn == "Geodat":
+            wn = "geodata"
+        if wn == "None":
+            continue
+        wblist.append(wn.lower())
+        if wb in iconbank:
+            img = iconbank[wb]
+        else:
+            img = os.path.join(FreeCAD.getResourceDir(),"data","Mod",wn,"Resources","icons",wn+"Workbench.svg")
+            if not os.path.exists(img):
+                w = FreeCADGui.listWorkbenches()[wb]
+                if hasattr(w,"Icon"):
+                    xpm = w.Icon
+                    if "XPM" in xpm:
+                        xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
+                        r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
+                        p = QtGui.QPixmap(r)
+                        p = p.scaled(24,24)
+                        img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+                        p.save(img)
+                    else:
+                        img = xpm
                 else:
-                    html += '<img src="images/blank.png" style="width: 16px">&nbsp;'
-                html += '<span class="disabled">'
-                html += fn
-                html += '</span></li>'
-                
-    html += '</ul>'
-    return html
+                    img="images/freecad.png"
+            iconbank[wb] = img
+        UL_WORKBENCHES += '<li>'
+        UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
+        UL_WORKBENCHES += '</li>'
+    UL_WORKBENCHES += '</ul>'
+    HTML = HTML.replace("UL_WORKBENCHES",UL_WORKBENCHES)
 
-def getFeed(url,numitems=3):
-    "returns a html list with links from the given RSS feed url"
-    xml = parse(urllib.urlopen(url)).getroot()
-    items = []
-    channel = xml.find('channel')
-    for element in channel.findall('item'):
-        items.append({'title': element.find('title').text,
-                      'description': element.find('description').text,
-                      'link': element.find('link').text})
-    if len(items) > numitems:
-        items = items[:numitems]
-    resp = '<ul>'
-    for item in items:
-        descr = re.compile("style=\".*?\"").sub('',item['description'])
-        descr = re.compile("alt=\".*?\"").sub('',descr)
-        descr = re.compile("\"").sub('',descr)
-        d1 = re.findall("<img.*?>",descr)[0]
-        d2 = re.findall("<span>.*?</span>",descr)[0]
-        descr = "<h3>" + item['title'] + "</h3>"
-        descr += d1 + "<br/>"
-        descr += d2
-        resp += '<li><a onMouseover="show(\''
-        resp += descr
-        resp += '\')" onMouseout="show(\'\')" href="'
-        resp += item['link']
-        resp += '">'
-        resp += item['title']
-        resp += '</a></li>'
-    resp += '</ul>'
-    print(resp)
-    return resp
+    # Detect additional addons that are not a workbench
 
-def getCustomBlocks():
-    "fetches custom html files in FreeCAD user dir"
-    output = ""
-    return output
-
-def setColors(html):
-    "gets theme colors from the system, and sets appropriate styles"
-    defaults = {"#basecolor":"#191B26",
-                "#linkcolor":"#0092E8",
-                "#textcolor":"#FFFFFF",
-                "#windowcolor":"#FFFFFF",
-                "#windowtextcolor":"#000000"}
     try:
-        palette = QtGui.QApplication.palette()
+        import dxfLibrary
     except:
         pass
     else:
-        #defaults["#basecolor"] = palette.base().color().name()
-        defaults["#basecolor"] = "#171A2B url(images/Background.jpg)"
-        #defaults["#linkcolor"] = palette.link().color().name() # UGLY!!
-        defaults["#textcolor"] = palette.text().color().name()
-        defaults["#windowcolor"] = palette.window().color().name()
-        defaults["#windowtextcolor"] = palette.windowText().color().name()
-    for k,v in defaults.items():
-        html = html.replace(k,str(v))
-    return html
+        wblist.append("dxf-library")
+    try:
+        import RebarTools
+    except:
+        pass
+    else:
+        wblist.append("reinforcement")
+    try:
+        import CADExchangerIO
+    except:
+        pass
+    else:
+        wblist.append("cadexchanger")
+    HTML = HTML.replace("var wblist = [];","var wblist = " + str(wblist) + ";")
 
-def insert_page_resources(html):
-    html = html.replace("startpage_js", startpage_js)
-    html = html.replace("startpage_css", startpage_css)
-    return html
+    # set and replace colors and font settings
 
-def replace_html_text(html):
-    html = html.replace("text01", text01)
-    html = html.replace("text02", text02)
-    html = html.replace("text03", text03)
-    html = html.replace("text05", text05)
-    html = html.replace("text06", text06)
-    html = html.replace("text07", text07)
-    html = html.replace("text08", text08)
-    html = html.replace("text09", text09)
-    html = html.replace("text10", text10)
-    html = html.replace("text11", text11)
-    html = html.replace("text12", text12)
-    html = html.replace("text13", text13)
-    html = html.replace("text17", text17)
-    html = html.replace("text18", text18)
-    html = html.replace("text19", text19)
-    html = html.replace("text20", text20)
-    html = html.replace("text21", text21)
-    html = html.replace("text22", text22)
-    html = html.replace("text23", text23)
-    html = html.replace("text24", text24)
-    html = html.replace("text25", text25)
-    html = html.replace("text26", text26)
-    html = html.replace("text27", text27)
-    html = html.replace("text28", text28)
-    html = html.replace("text29", text29)
-    html = html.replace("text37", text37)
-    html = html.replace("text38", text38)
-    html = html.replace("text39", text39)
-    html = html.replace("text40", text40)
-    html = html.replace("text43", text43)
-    html = html.replace("text45", text45)
-    html = html.replace("text46", text46)
-    html = html.replace("text47", text47)
-    html = html.replace("text48", text48)
-    html = html.replace("text49", text49)
-    html = html.replace("text50", text50)
-    html = html.replace("text51", text51)
-    html = html.replace("text52", text52)
-    html = html.replace("text53", text53)
-    html = html.replace("text54", text54)
-    html = html.replace("text55", text55)
-    html = html.replace("text56", text56)
-    html = html.replace("text57", text57)
-    html = html.replace("text60", text60)
-    html = html.replace("text61", text61)
-    html = html.replace("text62", text62)
-    html = html.replace("text64", text64)
-    html = html.replace("text69", text69)
-    return html
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+    if p.GetString("BackgroundImage",""):
+        BACKGROUND = gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))+" url("+p.GetString("BackgroundImage","")+")"
+    else:
+        BACKGROUND = gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))
+        # linear gradient not supported by QT "linear-gradient("+gethexcolor(p.GetUnsigned("BackgroundColor1",1331197183))+","+gethexcolor(p.GetUnsigned("BackgroundColor2",2141107711))+")"
+    LINKCOLOR = gethexcolor(p.GetUnsigned("LinkColor",65535))
+    BASECOLOR = gethexcolor(p.GetUnsigned("PageColor",4294967295))
+    BOXCOLOR  = gethexcolor(p.GetUnsigned("BoxColor",3722305023))
+    TEXTCOLOR = gethexcolor(p.GetUnsigned("PageTextColor",255))
+    BGTCOLOR = gethexcolor(p.GetUnsigned("BackgroundTextColor",4294703103))
+    SHADOW = "#888888"
+    if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
+        SHADOW = "#000000"
+    FONTFAMILY = p.GetString("FontFamily","Arial,Helvetica,sans")
+    if not FONTFAMILY:
+        FONTFAMILY = "Arial,Helvetica,sans"
+    FONTSIZE = p.GetInt("FontSize",13)
+    HTML = HTML.replace("BASECOLOR",BASECOLOR)
+    HTML = HTML.replace("BOXCOLOR",BOXCOLOR)
+    HTML = HTML.replace("LINKCOLOR",LINKCOLOR)
+    HTML = HTML.replace("TEXTCOLOR",TEXTCOLOR)
+    HTML = HTML.replace("BGTCOLOR",BGTCOLOR)
+    HTML = HTML.replace("BACKGROUND",BACKGROUND)
+    HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
+    HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
 
-def replace_js_text(html):
-    html = html.replace("vmajor", vmajor)
-    html = html.replace("vminor", vminor)
-    html = html.replace("vbuild", vbuild)
-    html = html.replace("text58", text58)
-    html = html.replace("text59", text59)
-    html = html.replace("text63", text63)
-    html = html.replace("text70", text70)
-    html = html.replace("text71", text71)
-    return html
-
-def handle():
-    "returns the complete html startpage"
-    # add strings into files
-    html = insert_page_resources(startpage_html)
-    html = replace_js_text(html)
-    
-    # add recent files
-    recentfiles = getRecentFiles()
-    html = html.replace("recentfiles",recentfiles)
-        
-    # add custom blocks
-    html = html.replace("customblocks",getCustomBlocks())
-    
     # enable web access if permitted
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
-        html = html.replace("var allowDownloads = 0;","var allowDownloads = 1;")
 
-    html = replace_html_text(html)
-    # fetches system colors
-    html = setColors(html)
-    return html
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
+        HTML = HTML.replace("var allowDownloads = 0;","var allowDownloads = 1;")
+
+    # enable or disable forum
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowForum",False):
+        HTML = HTML.replace("var showForum = 0;","var showForum = 1;")
+        HTML = HTML.replace("display: none; /* forum display */","display: block; /* forum display */")
+
+    # enable or disable notepad
+
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowNotes",False):
+        HTML = HTML.replace("display: none; /* notes display */","display: block; /* notes display */")
+        HTML = HTML.replace("width: 100%; /* thumbs display */","width: 70%; /* thumbs display */")
+
+    # store variables for further use
+
+    Start.iconbank = iconbank
+    Start.tempfolder = tempfolder
+
+    # encode if necessary
+
+    if sys.version_info.major < 3:
+        if isinstance(HTML,unicode):
+            HTML = HTML.encode("utf8")
+
+    return HTML
+
+
 
 def exportTestFile():
+
+    "Allow to check if everything is Ok"
+
     f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
     f.write(handle())
     f.close()
 
+
+
+def postStart():
+
+    "executes needed operations after loading a file"
+
+    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+
+    # switch workbench
+    wb = param.GetString("AutoloadModule","")
+    if wb:
+        FreeCADGui.activateWorkbench(wb)
+
+    # close start tab
+    cl = param.GetBool("closeStart",False)
+    if cl:
+        title = QtGui.QApplication.translate("Workbench","Start page")
+        mw = FreeCADGui.getMainWindow()
+        if mw:
+            mdi = mw.findChild(QtGui.QMdiArea)
+            if mdi:
+                for mdichild in mdi.children():
+                    for subw in mdichild.findChildren(QtGui.QMdiSubWindow):
+                        if subw.windowTitle() == title:
+                            subw.close()
+
+
+
+def checkPostOpenStartPage():
+
+    "on Start WB startup, check if we are loading a file and therefore need to close the StartPage"
+
+    import Start
+    if FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Mod/Start').GetBool('DoNotShowOnOpen',False) and (not hasattr(Start,'CanOpenStartPage')):
+        if len(sys.argv) > 1:
+            postStart()
+    Start.CanOpenStartPage = True

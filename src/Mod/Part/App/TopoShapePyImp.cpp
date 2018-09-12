@@ -64,6 +64,7 @@
 #include <BRepAlgo_NormalProjection.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
+#include <Standard_Version.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -161,7 +162,6 @@ int TopoShapePy::PyInit(PyObject* args, PyObject *keywds)
             }
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -175,20 +175,29 @@ int TopoShapePy::PyInit(PyObject* args, PyObject *keywds)
 
 PyObject* TopoShapePy::copy(PyObject *args)
 {
+    PyObject* copyGeom = Py_True;
+    PyObject* copyMesh = Py_False;
+
 #ifndef FC_NO_ELEMENT_MAP
     const char *op = 0;
     PyObject *pyHasher = 0;
-    if (!PyArg_ParseTuple(args, "|sO!", &op,&App::StringHasherPy::Type,&pyHasher))
-        return NULL;
+    if (!PyArg_ParseTuple(args, "|sO!O!O!", &op,&App::StringHasherPy::Type,&pyHasher,
+                &PyBool_Type,&copyGeom,&PyBool_Type,&copyMesh)) {
+        if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh))
+            return 0;
+    }
     if(op && !op[0]) op = 0;
     App::StringHasherRef hasher;
     if(pyHasher)
         hasher = static_cast<App::StringHasherPy*>(pyHasher)->getStringHasherPtr();
     auto &self = *getTopoShapePtr();
     return Py::new_reference_to(shape2pyshape(
-                TopoShape(self.Tag,hasher).makECopy(self,op)));
+                TopoShape(self.Tag,hasher).makECopy(
+                    self,op,PyObject_IsTrue(copyGeom),PyObject_IsTrue(copyMesh))));
 #else
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject* copyGeom = Py_True;
+    PyObject* copyMesh = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh))
         return NULL;
 
     const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
@@ -203,7 +212,14 @@ PyObject* TopoShapePy::copy(PyObject *args)
     }
 
     if (!shape.IsNull()) {
-        BRepBuilderAPI_Copy c(shape);
+#if OCC_VERSION_HEX >= 0x070000
+        BRepBuilderAPI_Copy c(shape,
+                              PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False,
+                              PyObject_IsTrue(copyMesh) ? Standard_True : Standard_False);
+#else
+        BRepBuilderAPI_Copy c(shape,
+                              PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False);
+#endif
         static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
     }
     return cpy;
@@ -2182,7 +2198,7 @@ PyObject* TopoShapePy::project(PyObject *args)
             algo.Build();
             return new TopoShapePy(new TopoShape(algo.Projection()));
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             PyErr_SetString(PartExceptionOCCError, "Failed to project shape");
             return NULL;
         }

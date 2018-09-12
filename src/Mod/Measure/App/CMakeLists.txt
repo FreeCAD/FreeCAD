@@ -53,20 +53,15 @@ if(BUILD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
 endif(BUILD_USE_PCH)
 
-# Set special compiler flag to convert a SIGSEV into an exception
-# to handle issue #0000478.
-IF(MSVC)
-ENDIF(MSVC)
-
-add_library(Measure SHARED ${Measure_SRCS} )
-target_link_libraries(Measure ${Measure_LIBS})
-
 SET(Measure_Scripts
-    Init.py
+    ../Init.py
 )
 
-fc_target_copy_resource(Measure 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Measure
+add_library(Measure SHARED ${Measure_SRCS} ${Measure_Scripts})
+target_link_libraries(Measure ${Measure_LIBS})
+
+fc_target_copy_resource_flat(Measure
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Measure
     ${Measure_Scripts})
 

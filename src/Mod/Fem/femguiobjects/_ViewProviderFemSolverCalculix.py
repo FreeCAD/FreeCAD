@@ -52,7 +52,7 @@ class _ViewProviderFemSolverCalculix:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-solver.svg"
+        return ":/icons/fem-solver-standard.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj

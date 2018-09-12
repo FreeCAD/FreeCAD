@@ -1064,7 +1064,7 @@ bool FaceUniter::process()
             sew.Perform();
             try {
                 workShell = TopoDS::Shell(sew.SewedShape());
-            } catch (Standard_Failure) {
+            } catch (Standard_Failure&) {
                 return false;
             }
             // update the list of modifications

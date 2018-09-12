@@ -102,6 +102,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     part->setCommand("&Part");
     *part << "Part_Import"
           << "Part_Export"
+          << "Separator"
+          << "Part_BoxSelection"
           << "Separator";
     *part << prim
           << "Part_Primitives"

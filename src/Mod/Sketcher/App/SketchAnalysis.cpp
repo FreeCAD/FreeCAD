@@ -337,7 +337,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 }
             
             }
-            catch(Base::Exception e) {
+            catch(Base::Exception &) {
                 Base::Console().Warning("Point-On-Point Coincidence analysis: unable to obtain derivative. Detection ignored.\n");
                 continue;
             }
@@ -367,7 +367,7 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
             solvesketch(status,dofs,true);
 
             if(status == -2) { //redundant constraints
-                autoRemoveRedundants(false);
+                sketch->autoRemoveRedundants(false);
 
                 solvesketch(status,dofs,false);
             }
@@ -446,7 +446,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
             solvesketch(status,dofs,true);
 
             if(status == -2) { //redundant constraints
-                autoRemoveRedundants(false);
+                sketch->autoRemoveRedundants(false);
 
                 solvesketch(status,dofs,false);
             }
@@ -641,7 +641,7 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
             solvesketch(status,dofs,true);
 
             if(status == -2) { //redundant constraints
-                autoRemoveRedundants(false);
+                sketch->autoRemoveRedundants(false);
 
                 solvesketch(status,dofs,false);
             }
@@ -685,16 +685,6 @@ void SketchAnalysis::solvesketch(int &status, int &dofs, bool updategeo)
     else if (sketch->getLastHasConflicts()) { // conflicting constraints
         status = -3;
     }
-}
-
-void SketchAnalysis::autoRemoveRedundants(bool updategeo)
-{
-    auto redundants = sketch->getLastRedundant();
-
-    for(size_t i=0;i<redundants.size();i++) // getLastRedundant is base 1, while delConstraints is base 0
-        redundants[i]--;
-
-    sketch->delConstraints(redundants,updategeo);
 }
 
 int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool includeconstruction)
@@ -743,7 +733,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         solvesketch(status,dofs,true);
 
         if(status == -2) { // redundants
-            autoRemoveRedundants(false);
+            sketch->autoRemoveRedundants(false);
             solvesketch(status,dofs,false);
         }
 
@@ -765,7 +755,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         solvesketch(status,dofs,true);
 
         if(status == -2) { // redundants
-            autoRemoveRedundants(false);
+            sketch->autoRemoveRedundants(false);
             solvesketch(status,dofs,false);
         }
 
@@ -782,8 +772,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         try {
             makeMissingEquality();
         }
-        catch(Base::RuntimeError e)
-        {
+        catch(Base::RuntimeError &) {
             doc->abortTransaction();
             throw;
         }
@@ -794,7 +783,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         solvesketch(status,dofs,true);
 
         if(status == -2) { // redundants
-            autoRemoveRedundants(false);
+            sketch->autoRemoveRedundants(false);
             solvesketch(status,dofs,false);
         }
 

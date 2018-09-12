@@ -1600,36 +1600,36 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
-    {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, 1,
+    {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
      "getSelection(docName=None,resolve=True,single=False) -- Return a list of selected objets\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
      "\nresolve - whether to resolve the subname references."
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nsingle - only return if there is only one selection"},
-    {"preselect",            (PyCFunction) SelectionSingleton::sPreselect, 1, 
+    {"preselect",            (PyCFunction) SelectionSingleton::sPreselect, METH_VARARGS, 
      "preselect(object,[string,float,float,float]) -- Preselect an object\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"getPickedList",         (PyCFunction) SelectionSingleton::sGetPickedList, 1,
      "getPickedList(docName=None) -- Return a list of objets under the last mouse click\n"
      "\ndocName - document name. None means the active document, and '*' means all document"},
-    {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, 1,
+    {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, METH_VARARGS,
      "enablePickedList(boolean) -- Enable/disable pick list"},
-    {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, 1,
+    {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,
      "getCompleteSelection(resolve=True) -- Return a list of selected objects of all documents."},
-    {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, 1,
+    {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, METH_VARARGS,
      "getSelectionEx(docName=None,resolve=1, single=False) -- Return a list of SelectionObjects\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
      "\nresolve - whether to resolve the subname references."
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nsingle - only return if there is only one selection\n"
      "\nThe SelectionObjects contain a variety of information about the selection, e.g. sub-element names."},
-    {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, 1,
+    {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, METH_VARARGS,
      "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, METH_VARARGS,
      "addObserver(Object, resolve=True) -- Install an observer\n"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, METH_VARARGS,
      "removeObserver(Object) -- Uninstall an observer\n"},
-    {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, 1,
+    {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, METH_VARARGS,
      "addSelectionGate(String|Filter|Gate, resolve=True) -- activate the selection gate.\n"
      "The selection gate will prohibit all selections which do not match\n"
      "the given selection filter string.\n"
@@ -1649,7 +1649,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "Gui.Selection.addSelectionGate(Gate())"},
     {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, METH_VARARGS,
      "removeSelectionGate() -- remove the active selection gate\n"},
-    {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, 1, 
+    {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, METH_VARARGS, 
      "setVisible(visible=None) -- set visibility of all selection items\n"
      "If 'visible' is None, then toggle visibility"},
     {"pushSelStack",      (PyCFunction) SelectionSingleton::sPushSelStack, METH_VARARGS,
@@ -1658,7 +1658,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "overwrite: overwrite the top back selection stack with current selection."},
     {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
      "hasSelection(docName=None, resolve=False) -- check if there is any selection\n"},
-    {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, 1,
+    {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, METH_VARARGS,
      "getSelectionFromStack(docName=None,resolve=1,index=0) -- Return a list of SelectionObjects from selection stack\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
      "\nresolve - whether to resolve the subname references."
@@ -1668,7 +1668,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
-PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1719,7 +1719,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     return 0;
 }
 
-PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *args)
 {
     PyObject *show;
     PyObject *object;
@@ -1739,7 +1739,7 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
 }
 
 
-PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1757,7 +1757,7 @@ PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args, Py
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1778,7 +1778,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
@@ -1787,7 +1787,7 @@ PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *arg
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     char* subname=0;
@@ -1800,7 +1800,7 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, P
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args)
 {
     char* objecttype;
     char* document=0;
@@ -1816,7 +1816,7 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
 #endif
 }
 
-PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     int resolve = 1;
@@ -1839,7 +1839,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args,
     }
 }
 
-PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *args)
 {
     PyObject *enable = Py_True;
     if (!PyArg_ParseTuple(args, "|O", &enable))     // convert args: Python->C 
@@ -1849,7 +1849,7 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1859,7 +1859,7 @@ PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *ar
     return obj.getPyObject();
 }
 
-PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -1868,7 +1868,7 @@ PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *ar
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args)
 {
     int resolve = 1;
     if (!PyArg_ParseTuple(args, "|i",&resolve))     // convert args: Python->C 
@@ -1889,7 +1889,7 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
     }
 }
 
-PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     int resolve=1;
@@ -1913,7 +1913,7 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
     }
 }
 
-PyObject *SelectionSingleton::sGetPickedList(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetPickedList(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C 
@@ -1934,7 +1934,7 @@ PyObject *SelectionSingleton::sGetPickedList(PyObject * /*self*/, PyObject *args
     }
 }
 
-PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject *args)
 {
     char *docName, *objName, *subName;
     PyObject* tuple=0;
@@ -1969,7 +1969,7 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
     }
 }
 
-PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     int resolve = 1;
@@ -1981,7 +1981,7 @@ PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *arg
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O",&o))
@@ -1992,7 +1992,7 @@ PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *arg
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *args)
 {
     char* filter;
     int resolve = 1;
@@ -2026,7 +2026,7 @@ PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *a
     return 0;
 }
 
-PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -2038,7 +2038,7 @@ PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
 {
     PyObject *visible = Py_None;
     if (!PyArg_ParseTuple(args, "|O",&visible))
@@ -2056,7 +2056,7 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args, P
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args)
 {
     PyObject *clear = Py_True;
     PyObject *overwrite = Py_False;
@@ -2067,7 +2067,7 @@ PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args,
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args)
 {
     const char *doc = 0;
     PyObject *resolve = Py_False;
@@ -2084,7 +2084,7 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args,
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
     int resolve=1;

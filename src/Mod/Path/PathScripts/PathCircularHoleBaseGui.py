@@ -42,7 +42,7 @@ else:
 
 class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     '''Controller class to be used for the BaseGeomtery page.
-    Circular holes don't just disply the feature, they also add a column
+    Circular holes don't just display the feature, they also add a column
     displaying the radius the feature describes. This page provides that
     UI and functionality for all circular hole based operations.'''
 
@@ -88,6 +88,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.blockSignals(False)
+        self.form.baseList.setSortingEnabled(True)
         self.itemActivated()
 
     def itemActivated(self):
@@ -117,7 +118,6 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         selected = [self.form.baseList.row(item) for item in self.form.baseList.selectedItems()]
         self.form.baseList.blockSignals(True)
         for row in sorted(list(set(selected)), key=lambda row: -row):
-            print("row = %d" % row)
             self.form.baseList.removeRow(row)
         self.updateBase()
         self.form.baseList.resizeColumnToContents(0)

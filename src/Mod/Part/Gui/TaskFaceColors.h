@@ -57,6 +57,7 @@ protected:
     void changeEvent(QEvent *e);
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
+    void updatePanel();
 
 private:
     class Private;

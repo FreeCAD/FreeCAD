@@ -74,7 +74,7 @@ class VersionControl:
 class UnknownControl(VersionControl):
     def extractInfo(self, srcdir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h"):
+        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
@@ -87,7 +87,7 @@ class UnknownControl(VersionControl):
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h"):
+        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
             return False
         try:
             f = open(srcdir+"/debian/changelog")
@@ -180,10 +180,8 @@ class GitControl(VersionControl):
         blessed master repository.
         the second part, separated by " +" reflects the number of commits that are
         different from the master repository"""
-        #referencecommit="f119e740c87918b103140b66b2316ae96f136b0e"
-        #referencerevision=4138
-        referencecommit="6b3d7b17a749e03bcbf2cf79bbbb903137298c44"
-        referencerevision=5235
+        referencecommit="7d8e53aaab17961d85c5009de34f69f2af084e8b"
+        referencerevision=14555
 
         result = None
         countallfh=os.popen("git rev-list --count %s..HEAD" % \
@@ -385,12 +383,12 @@ def main():
             lines = inp.readlines()
             inp.close()
             lines = i.writeVersion(lines)
-            out  = open("%s/src/Build/Version.h" % (bindir),"w");
+            out  = open("%s/src/Build/Version.h.out" % (bindir),"w");
             out.writelines(lines)
             out.write('\n')
             out.close()
             i.printInfo()
-            sys.stdout.write("%s/src/Build/Version.h written\n" % (bindir))
+            sys.stdout.write("%s/src/Build/Version.h.out written\n" % (bindir))
             break
 
 if __name__ == "__main__":

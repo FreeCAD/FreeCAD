@@ -116,7 +116,7 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
             checkAndAdd(ts.getShape(), aWD);
         }
     }
-    catch (Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
+    catch (Standard_Failure&) { // any OCC exception means an unappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.\n");
     }
 }
@@ -130,6 +130,7 @@ GeomFillSurface::GeomFillSurface(): Spline()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
+    ADD_PROPERTY(ReversedList, (false));
     FillType.setEnums(FillTypeEnums);
     BoundaryList.setScope(App::LinkScope::Global);
 }
@@ -139,10 +140,24 @@ GeomFillSurface::GeomFillSurface(): Spline()
 short GeomFillSurface::mustExecute() const
 {
     if (BoundaryList.isTouched() ||
+        ReversedList.isTouched() ||
         FillType.isTouched()) {
         return 1;
     }
     return Spline::mustExecute();
+}
+
+void GeomFillSurface::onChanged(const App::Property* prop)
+{
+    if (isRestoring()) {
+        if (prop == &BoundaryList) {
+            // auto-adjusting size of this list
+            if (BoundaryList.getSize() != ReversedList.getSize()) {
+                ReversedList.setSize(BoundaryList.getSize());
+            }
+        }
+    }
+    Part::Spline::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
@@ -160,15 +175,14 @@ App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_ConstructionError) {
+    catch (Standard_ConstructionError&) {
         // message is in a Latin language, show a normal one
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
     }
-    catch (StdFail_NotDone) {
+    catch (StdFail_NotDone&) {
         return new App::DocumentObjectExecReturn("A curve was not a B-spline and could not be converted into one.");
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
@@ -255,8 +269,8 @@ void GeomFillSurface::createFace(const Handle(Geom_BoundedSurface) &aSurface)
 
 void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
 {
-    std::vector<Handle(Geom_BezierCurve)> crvs;
-    crvs.reserve(4);
+    std::vector<Handle(Geom_BezierCurve)> curves;
+    curves.reserve(4);
 
     Standard_Real u1, u2; // contains output
     TopExp_Explorer anExp (aWire, TopAbs_EDGE);
@@ -264,13 +278,13 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
         const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
-        Handle(Geom_BezierCurve) b_geom = Handle(Geom_BezierCurve)::DownCast(c_geom); //Try to get Bezier curve
+        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c_geom); //Try to get Bezier curve
 
-        if (!b_geom.IsNull()) {
+        if (!bezier.IsNull()) {
             gp_Trsf transf = heloc.Transformation();
-            b_geom->Transform(transf); // apply original transformation to control points
+            bezier->Transform(transf); // apply original transformation to control points
             //Store Underlying Geometry
-            crvs.push_back(b_geom);
+            curves.push_back(bezier);
         }
         else {
             Standard_Failure::Raise("Curve not a Bezier Curve");
@@ -280,15 +294,23 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
     GeomFill_FillingStyle fstyle = getFillingStyle();
     GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
 
-    std::size_t edgeCount = crvs.size();
+    std::size_t edgeCount = curves.size();
+    const boost::dynamic_bitset<>& booleans = ReversedList.getValues();
+    if (edgeCount == booleans.size()) {
+        for (std::size_t i=0; i<edgeCount; i++) {
+            if (booleans[i])
+                curves[i]->Reverse();
+        }
+    }
+
     if (edgeCount == 2) {
-        aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], fstyle);
     }
     else if (edgeCount == 3) {
-        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], fstyle);
     }
     else if (edgeCount == 4) {
-        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], curves[3], fstyle);
     }
 
     createFace(aSurfBuilder.Surface());
@@ -296,21 +318,21 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
 
 void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
 {
-    std::vector<Handle(Geom_BSplineCurve)> crvs;
-    crvs.reserve(4);
+    std::vector<Handle(Geom_BSplineCurve)> curves;
+    curves.reserve(4);
     Standard_Real u1, u2; // contains output
     TopExp_Explorer anExp (aWire, TopAbs_EDGE);
     for (; anExp.More(); anExp.Next()) {
         const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
         TopLoc_Location heloc; // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
-        Handle(Geom_BSplineCurve) b_geom = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
 
-        if (!b_geom.IsNull()) {
+        if (!bspline.IsNull()) {
             gp_Trsf transf = heloc.Transformation();
-            b_geom->Transform(transf); // apply original transformation to control points
+            bspline->Transform(transf); // apply original transformation to control points
             //Store Underlying Geometry
-            crvs.push_back(b_geom);
+            curves.push_back(bspline);
         }
         else {
             // try to convert it into a b-spline
@@ -319,13 +341,13 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             // avoid copying
             TopLoc_Location heloc2; // this will be output
             Handle(Geom_Curve) c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
-            Handle(Geom_BSplineCurve) b_geom2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
+            Handle(Geom_BSplineCurve) bspline2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
 
-            if (!b_geom2.IsNull()) {
+            if (!bspline2.IsNull()) {
                 gp_Trsf transf = heloc2.Transformation();
-                b_geom2->Transform(transf); // apply original transformation to control points
+                bspline2->Transform(transf); // apply original transformation to control points
                 //Store Underlying Geometry
-                crvs.push_back(b_geom2);
+                curves.push_back(bspline2);
             }
             else {
                 // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
@@ -335,7 +357,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                     Standard_Failure::Raise("A curve was not a B-spline and could not be converted into one.");
                 gp_Trsf transf = heloc2.Transformation();
                 spline->Transform(transf); // apply original transformation to control points
-                crvs.push_back(spline);
+                curves.push_back(spline);
             }
         }
     }
@@ -343,15 +365,22 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
     GeomFill_FillingStyle fstyle = getFillingStyle();
     GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
 
-    std::size_t edgeCount = crvs.size();
+    std::size_t edgeCount = curves.size();
+    const boost::dynamic_bitset<>& booleans = ReversedList.getValues();
+    if (edgeCount == booleans.size()) {
+        for (std::size_t i=0; i<edgeCount; i++) {
+            if (booleans[i])
+                curves[i]->Reverse();
+        }
+    }
     if (edgeCount == 2) {
-        aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], fstyle);
     }
     else if (edgeCount == 3) {
-        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], fstyle);
     }
     else if (edgeCount == 4) {
-        aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], curves[3], fstyle);
     }
 
     createFace(aSurfBuilder.Surface());

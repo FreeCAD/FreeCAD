@@ -233,11 +233,8 @@ PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    Base::Vector3d nullvec(0,0,0);
-    Base::Vector3d pos = getPlacementPtr()->getPosition();
-    Base::Rotation rot = getPlacementPtr()->getRotation();
-    bool null = (pos == nullvec) && (rot.isIdentity());
-    return Py_BuildValue("O", (null ? Py_True : Py_False));
+    bool none = getPlacementPtr()->isIdentity();
+    return Py_BuildValue("O", (none ? Py_True : Py_False));
 }
 
 Py::Object PlacementPy::getBase(void) const

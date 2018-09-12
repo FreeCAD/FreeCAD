@@ -76,7 +76,8 @@ class MDIView;
 enum ViewStatus {
     UpdateData = 0,
     Detach = 1,
-    isRestoring = 2
+    isRestoring = 2,
+    UpdatingView = 3,
 };
 
 

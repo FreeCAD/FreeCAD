@@ -80,28 +80,33 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         shapes = []
         if obj.Base:
-            wires = []
+            basewires = []
 
             for b in obj.Base:
                 edgelist = []
                 for sub in b[1]:
                     edgelist.append(getattr(b[0].Shape, sub))
-                wires.extend(findWires(edgelist))
+                basewires.append((b[0], findWires(edgelist)))
 
-            for wire in wires:
-                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+            for base,wires in basewires:
+                for wire in wires:
+                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
 
-                # shift the compound to the bottom of the base object for
-                # proper sectioning
-                zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
-                newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
-                f.Placement = newPlace
-                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
-                shapes.append((env, False))
+                    # shift the compound to the bottom of the base object for
+                    # proper sectioning
+                    zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
+                    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
+                    f.Placement = newPlace
+                    env = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)
+                    shapes.append((env, False))
         return shapes
 
-def Create(name):
+def SetupProperties():
+    return PathProfileBase.SetupProperties()
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Profile based on edges operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectProfile(obj, name)
     return obj

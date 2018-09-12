@@ -1466,7 +1466,7 @@ bool _QuadFaceGrid::GetNormal( const TopoDS_Vertex& v, gp_Vec& n ) const
         n = d1u.Crossed( d1v );
         return true;
       }
-      catch (Standard_Failure) {
+      catch (Standard_Failure&) {
         return false;
       }
     }

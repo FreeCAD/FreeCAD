@@ -102,18 +102,22 @@ SET(Assembly_SRCS
     ${Solver_SRC}
 )
 
-add_library(Assembly SHARED ${Assembly_SRCS})
+SET(Assembly_Scripts
+    ../Init.py
+    ../AssemblyLib.py
+)
+
+add_library(Assembly SHARED ${Assembly_SRCS} ${Assembly_Scripts})
 if(CMAKE_COMPILER_IS_GNUCXX)
-	set_target_properties(Assembly PROPERTIES COMPILE_FLAGS "-fext-numeric-literals")
+    set_target_properties(Assembly PROPERTIES COMPILE_FLAGS "-fext-numeric-literals")
 endif()
 target_link_libraries(Assembly ${Assembly_LIBS} ${log_LIB})
 
 
-fc_target_copy_resource(Assembly 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
+fc_target_copy_resource_flat(Assembly
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Assembly
-    Init.py
-	AssemblyLib.py)
+    ${Assembly_Scripts})
 
 SET_BIN_DIR(Assembly Assembly /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)

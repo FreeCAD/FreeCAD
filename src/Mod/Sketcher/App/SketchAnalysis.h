@@ -116,8 +116,6 @@ public:
     /// solves the sketch and retrieves the error status, and the degrees of freedom. 
     /// It enables to solve updating the geometry (so moving the geometry to match the constraints) or preserving the geometry.
     void solvesketch(int &status, int &dofs, bool updategeo);
-    /// It gets the redundant constraints from the solver and deletes them
-    void autoRemoveRedundants(bool updategeo);
 
 protected:
     Sketcher::SketchObject* sketch;

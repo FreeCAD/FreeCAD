@@ -31,6 +31,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Ax1.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 #include "Body.h"
@@ -38,6 +39,8 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -53,6 +56,11 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
+
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 
     initExtension(this);
 }
@@ -127,6 +135,9 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
         baseTopShape = result; // Use result of this operation for fuse/cut of next body
     }
+
+    if (this->Refine.getValue())
+        result = result.makERefine();
 
     if(result.countSubShapes(TopAbs_SOLID)>1){
         return new App::DocumentObjectExecReturn("Boolean: Result has multiple solids. This is not supported at this time.");

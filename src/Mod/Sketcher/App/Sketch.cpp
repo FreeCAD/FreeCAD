@@ -3048,7 +3048,7 @@ bool Sketch::updateGeometry()
                 #endif
 
             }
-        } catch (Base::Exception e) {
+        } catch (Base::Exception &e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
                                   i,e.what());
             return false;
@@ -3659,7 +3659,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
     try {
         geoId = checkGeoId(geoId);
     }
-    catch (Base::Exception) {
+    catch (Base::Exception&) {
         return false;
     }
 

@@ -23,9 +23,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QBoxLayout>
+# include <QCoreApplication>
 # include <QHeaderView>
 # include <QTextEdit>
 # include <QTextStream>
+# include <QThread>
 # include <QTreeWidget>
 # include <Python.h>
 #endif
@@ -65,6 +67,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/MainWindow.h>
 #include "TaskCheckGeometry.h"
 
 using namespace PartGui;
@@ -412,6 +415,12 @@ void TaskCheckGeometryResults::goCheck()
     Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
+    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
+    theProgress->NewScope("BOP check...");
+#if OCC_VERSION_HEX >= 0x060900
+    theProgress->Show();
+#endif
+
     for(const auto &sel :  Gui::Selection().getSelection()) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
@@ -458,8 +467,16 @@ void TaskCheckGeometryResults::goCheck()
           //for now, user has edit the config file to turn it on.
           //following line ensures that the config file has the setting.
           group->SetBool("RunBOPCheck", runSignal);
-          if (runSignal)
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName);
+          if (runSignal) {
+            std::string label = "Checking ";
+            label += sel.pObject->Label.getStrValue();
+            label += "...";
+            theProgress->NewScope(label.c_str());
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+            theProgress->EndScope();
+            if (theProgress->UserBreak())
+              break;
+          }
         }
     }
     model->setResults(theRoot);
@@ -566,7 +583,8 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
-int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
+int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
+                                               const Handle(Message_ProgressIndicator)& theProgress)
 {
   //ArgumentAnalyser was moved at version 6.6. no back port for now.
 #if OCC_VERSION_HEX >= 0x060600
@@ -582,6 +600,11 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
+#if OCC_VERSION_HEX >= 0x060900
+  BOPCheck.SetProgressIndicator(theProgress);
+#else
+  Q_UNUSED(theProgress);
+#endif
 //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
@@ -594,6 +617,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #endif
 #if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+  BOPCheck.SetRunParallel(true); //performance boost, use all available cores
   BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = true;
   BOPCheck.CurveOnSurfaceMode() = true;
@@ -604,7 +628,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   Base::TimeInfo start_time;
 #endif
 
-  BOPCheck.Perform();
+BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
@@ -920,6 +944,67 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
     delete contentLabel;
     contentLabel = 0;
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+BOPProgressIndicator::BOPProgressIndicator (const QString& title, QWidget* parent)
+{
+    steps = 0;
+    canceled = false;
+    myProgress = new QProgressDialog(parent);
+    myProgress->setWindowTitle(title);
+    myProgress->setAttribute(Qt::WA_DeleteOnClose);
+}
+
+BOPProgressIndicator::~BOPProgressIndicator ()
+{
+    myProgress->close();
+}
+
+Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
+{
+    if (theForce) {
+        steps = 0;
+        canceled = false;
+
+        time.start();
+        myProgress->show();
+
+        myProgress->setRange(0, 0);
+        myProgress->setValue(0);
+    }
+    else {
+        Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
+        if (!aName.IsNull())
+            myProgress->setLabelText (QString::fromLatin1(aName->ToCString()));
+    }
+
+    return Standard_True;
+}
+
+Standard_Boolean BOPProgressIndicator::UserBreak()
+{
+    // this is needed to check the status outside BOPAlgo_ArgumentAnalyzer
+    if (canceled)
+        return Standard_True;
+
+    QThread *currentThread = QThread::currentThread();
+    if (currentThread == myProgress->thread()) {
+        // it suffices to update only every second
+        // to avoid to unnecessarily process events
+        steps++;
+        myProgress->setValue(steps);
+        if (time.elapsed() > 1000) {
+            time.restart();
+            QCoreApplication::processEvents();
+
+            canceled = myProgress->wasCanceled();
+            return canceled;
+        }
+    }
+
+    return Standard_False;
 }
 
 #include "moc_TaskCheckGeometry.cpp"

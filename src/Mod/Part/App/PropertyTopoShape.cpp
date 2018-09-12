@@ -39,13 +39,16 @@
 # include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Trsf.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
+#if OCC_VERSION_HEX >= 0x060800
 #include <OSD_OpenFile.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -148,7 +151,7 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
         box.MinZ = zMin;
         box.MaxZ = zMax;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
     }
 
     return box;
@@ -270,7 +273,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 
@@ -333,7 +336,11 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
                                    const Standard_CString File)
 {
   ofstream os;
+#if OCC_VERSION_HEX >= 0x060800
   OSD_OpenStream(os, File, ios::out);
+#else
+  os.open(File, ios::out);
+#endif
   if (!os.rdbuf()->is_open()) return Standard_False;
 
   Standard_Boolean isGood = (os.good() && !os.eof());
@@ -380,7 +387,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             // we may run into some problems on the Linux platform
             static Base::FileInfo fi(App::Application::getTempFileName());
 
-            if (!BRepTools_Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
+            if (!BRepTools_Write(myShape,(Standard_CString)fi.filePath().c_str())) {
                 // Note: Do NOT throw an exception here because if the tmp. file could
                 // not be created we should not abort.
                 // We only print an error message but continue writing the next files to the
@@ -462,7 +469,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
             // Read the shape from the temp file, if the file is empty the stored shape was already empty.
             // If it's still empty after reading the (non-empty) file there must occurred an error.
             if (ulSize > 0) {
-                if (!BRepTools::Read(sh, (const Standard_CString)fi.filePath().c_str(), builder)) {
+                if (!BRepTools::Read(sh, (Standard_CString)fi.filePath().c_str(), builder)) {
                     // Note: Do NOT throw an exception here because if the tmp. created file could
                     // not be read it's NOT an indication for an invalid input stream 'reader'.
                     // We only print an error message but continue reading the next files from the
@@ -727,7 +734,7 @@ void PropertyFilletEdges::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }

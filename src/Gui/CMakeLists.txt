@@ -48,6 +48,12 @@ include_directories(
 )
 
 if(MSVC)
+    include_directories(
+        ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
+    )
+endif(MSVC)
+
+if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
          ${COIN3D_LIBRARIES}
@@ -817,6 +823,7 @@ SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 # The 3d view
 SET(View3D_CPP_SRCS
     Flag.cpp
+    GLBuffer.cpp
     GLPainter.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
@@ -842,6 +849,7 @@ SET(View3D_CPP_SRCS
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
     Flag.h
+    GLBuffer.h
     GLPainter.h
     MouseSelection.h
     NavigationStyle.h

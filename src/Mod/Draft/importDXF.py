@@ -2023,6 +2023,16 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
+                elif Draft.getType(ob) == "DraftText":
+                    # texts
+
+                    # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
+                    # well, anyway, at the moment, Draft only writes single-line texts, so...
+                    for text in ob.Text:
+                        point = DraftVecUtils.tup(FreeCAD.Vector(ob.Placement.Base.x,
+                                                         ob.Placement.Base.y-ob.Text.index(text),
+                                                         ob.Placement.Base.z))
+
                 elif Draft.getType(ob) == "Dimension":
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)

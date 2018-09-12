@@ -267,6 +267,31 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
             }
+        } else if (base && base->geomType == TechDrawGeometry::GeomType::BSPLINE) {
+            TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+            if (spline->isCircle()) {
+                bool circ,arc;
+                double rad;
+                Base::Vector3d center;
+                spline->getCircleParms(circ,rad,center,arc);
+                pts.center = Base::Vector3d(center.x,center.y,0.0);
+                pts.radius = rad;
+                pts.arcEnds.first  = Base::Vector3d(spline->startPnt.x,spline->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(spline->endPnt.x,spline->endPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(spline->midPnt.x,spline->midPnt.y,0.0);
+                pts.isArc = arc;
+                pts.arcCW          = spline->cw;
+                if (arc) {
+                    pts.onCurve.first  = Base::Vector3d(spline->midPnt.x,spline->midPnt.y,0.0);
+                } else {
+                    pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rad;   //arbitrary point on edge
+                    pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rad;  //arbitrary point on edge
+                }
+            } else {
+                //fubar - can't have non-circular spline as target of Diameter dimension
+                Base::Console().Error("Dimension %s refers to invalid BSpline\n",getNameInDocument());
+                return App::DocumentObject::StdReturn;
+            }
         } else {
             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
             return App::DocumentObject::StdReturn;
@@ -284,7 +309,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
            (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE)) {
             circle = static_cast<TechDrawGeometry::Circle*> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
-            pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
             pts.radius = circle->radius;
             if (base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE) {
                 TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (circle);
@@ -298,6 +322,31 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.isArc = false;
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
+            }
+        } else if (base && base->geomType == TechDrawGeometry::GeomType::BSPLINE) {
+            TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+            if (spline->isCircle()) {
+                bool circ,arc;
+                double rad;
+                Base::Vector3d center;
+                spline->getCircleParms(circ,rad,center,arc);
+                pts.center = Base::Vector3d(center.x,center.y,0.0);
+                pts.radius = rad;
+                pts.arcEnds.first  = Base::Vector3d(spline->startPnt.x,spline->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(spline->endPnt.x,spline->endPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(spline->midPnt.x,spline->midPnt.y,0.0);
+                pts.isArc = arc;
+                pts.arcCW          = spline->cw;
+                if (arc) {
+                    pts.onCurve.first  = Base::Vector3d(spline->midPnt.x,spline->midPnt.y,0.0);
+                } else {
+                    pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rad;   //arbitrary point on edge
+                    pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rad;  //arbitrary point on edge
+                }
+            } else {
+                //fubar - can't have non-circular spline as target of Diameter dimension
+                Base::Console().Error("Dimension %s refers to invalid BSpline\n",getNameInDocument());
+                return App::DocumentObject::StdReturn;
             }
         } else {
             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
@@ -540,6 +589,11 @@ pointPair DrawViewDimension::getPointsTwoEdges()
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
     TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+    if ((geom0 == nullptr) ||
+        (geom1 == nullptr) ) {
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        return result;
+    }
     result = closestPoints(geom0->occEdge,geom1->occEdge);
     return result;
 }
@@ -759,7 +813,15 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
         if (aoc->intersectsArc(s,pointOnCircle)) {
             result = true;
         }
+    } else if( base && base->geomType == TechDrawGeometry::GeomType::BSPLINE )  {
+        TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+        if (spline->isCircle()) {
+            if (spline->intersectsArc(s,pointOnCircle)) {
+                result = true;
+            }
+        }
     }
+
     return result;
 }
 

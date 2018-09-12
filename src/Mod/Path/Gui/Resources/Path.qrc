@@ -60,13 +60,25 @@
         <file>icons/Path-BPlay.svg</file>
         <file>icons/Path-BStep.svg</file>
         <file>icons/Path-BStop.svg</file>
+        <file>icons/arrow-ccw.svg</file>
+        <file>icons/arrow-cw.svg</file>
+        <file>icons/arrow-down.svg</file>
+        <file>icons/arrow-left.svg</file>
+        <file>icons/arrow-left-down.svg</file>
+        <file>icons/arrow-left-up.svg</file>
+        <file>icons/arrow-right.svg</file>
+        <file>icons/arrow-right-down.svg</file>
+        <file>icons/arrow-right-up.svg</file>
+        <file>icons/arrow-up.svg</file>
         <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-miter-not.svg</file>
         <file>icons/edge-join-round.svg</file>
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/preferences-path.svg</file>
+		<file>icons/Path-Adaptive.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
+        <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
@@ -75,7 +87,6 @@
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
-        <file>panels/JobEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>
@@ -90,6 +101,8 @@
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
+        <file>panels/SetupGlobal.ui</file>
+        <file>panels/SetupOp.ui</file>
         <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>

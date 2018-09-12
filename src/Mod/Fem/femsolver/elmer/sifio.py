@@ -332,7 +332,7 @@ class _Writer(object):
         return it.next()
 
     def _isCollection(self, data):
-        return (not isinstance(data, str) and
+        return (not isinstance(data, six.string_types) and
                 isinstance(data, collections.Iterable))
 
     def _checkScalar(self, dataType):

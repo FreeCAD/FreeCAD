@@ -26,6 +26,11 @@
 #include <string>
 #include <QRectF>
 #include <QPointF>
+#include <Base/Vector3D.h>
+
+namespace Part {
+class Feature;
+}
 
 namespace TechDraw {
 class DrawPage;
@@ -45,6 +50,9 @@ class TechDrawGuiExport DrawGuiUtil {
     static bool needView(Gui::Command* cmd, bool partOnly = true);
     static void dumpRectF(const char* text, const QRectF& r);
     static void dumpPointF(const char* text, const QPointF& p);
+    static std::pair<Base::Vector3d,Base::Vector3d> get3DDirAndRot();
+    static std::pair<Base::Vector3d,Base::Vector3d> getProjDirFromFace(App::DocumentObject* obj, std::string faceName);
+
 };
 
 } //end namespace TechDrawGui

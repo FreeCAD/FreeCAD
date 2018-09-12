@@ -86,7 +86,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
                 obj.OpFinalDepth = Part.makeCompound(sublist).BoundBox.ZMax
             else:
-                obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
+                obj.OpFinalDepth = job.Proxy.modelBoundBox(job).ZMax
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''
@@ -107,8 +107,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         # If no base object, do planing of top surface of entire model
         else:
-            planeshape = self.baseobject.Shape
-            PathLog.debug("Working on a shape {}".format(self.baseobject.Name))
+            planeshape = Part.makeCompound([base.Shape for base in self.model])
+            PathLog.debug("Working on a shape {}".format(obj.Label))
 
         # Find the correct shape depending on Boundary shape.
         PathLog.debug("Boundary Shape: {}".format(obj.BoundaryShape))
@@ -124,26 +124,27 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         return [(env, False)]
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... initialize mill facing properties'''
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
 
-        job = PathUtils.findParentJob(obj)
-
         # need to overwrite the default depth calculations for facing
-        if job and job.Base:
+        if job and len(job.Model.Group) > 0:
             obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
-            obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
+            obj.OpFinalDepth = job.Proxy.modelBoundBox(job).ZMax
 
             # If the operation has a geometry identified the Finaldepth
             # is the top of the bboundbox which includes all features.
             if len(obj.Base) >= 1:
                 obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
 
+def SetupProperties():
+    return PathPocketBase.SetupProperties() + [ "BoundaryShape" ]
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectFace(obj, name)
     return obj

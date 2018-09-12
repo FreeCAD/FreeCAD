@@ -39,6 +39,7 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/BoundBox.h>
@@ -66,7 +67,6 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(0)
 {
-    _UpdatingView = false;
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
@@ -184,10 +184,10 @@ void ViewProviderDocumentObject::show(void)
 
 void ViewProviderDocumentObject::updateView()
 {
-    if(_UpdatingView)
+    if(testStatus(ViewStatus::UpdatingView))
         return;
 
-    Base::FlagToggler<> flag(_UpdatingView);
+    Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
 
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
@@ -321,7 +321,7 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
 
 void ViewProviderDocumentObject::setActiveMode()
 {
-    if (DisplayMode.getEnums()) {
+    if (DisplayMode.isValid()) {
         const char* mode = DisplayMode.getValueAsString();
         if (mode)
             setDisplayMode(mode);

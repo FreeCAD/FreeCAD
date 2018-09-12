@@ -42,6 +42,8 @@
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <QFile>
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include "ViewProviderTrajectory.h"
@@ -150,9 +152,16 @@ void ViewProviderTrajectory::updateData(const App::Property* prop)
 
         }
         pcLines->numVertices.set1Value(0, trak.getSize());
-	}else if (prop == &pcTracObj->Base) {
+    }
+    else if (prop == &pcTracObj->Base) {
         Base::Placement loc = *(&pcTracObj->Base.getValue());
     }
 
+}
+
+void ViewProviderTrajectory::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Modify"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
 }
 

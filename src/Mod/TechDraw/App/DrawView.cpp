@@ -67,7 +67,9 @@ App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Con
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
-DrawView::DrawView(void)
+DrawView::DrawView(void):
+    autoPos(true),
+    mouseMove(false)
 {
     static const char *group = "Base";
 
@@ -110,7 +112,8 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId()))  {
+        if ((this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) ||
+            (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))) {
             //do nothing. DPGI/DPG handles itself
         } else if (prop == &ScaleType) {
             auto page = findParentPage();

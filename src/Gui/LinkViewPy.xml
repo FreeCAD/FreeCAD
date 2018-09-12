@@ -156,11 +156,10 @@ Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
             </Documentation>
             <Parameter Name="Count" Type="Int" />
         </Attribute>
-        <Attribute Name="Children" ReadOnly="true">
+        <Methode Name="getChildren" Const="true">
             <Documentation>
                 <UserDocu>Get children view objects</UserDocu>
             </Documentation>
-            <Parameter Name="Children" Type="Object" />
-        </Attribute>
+        </Methode>
     </PythonExport>
 </GenerateModel>

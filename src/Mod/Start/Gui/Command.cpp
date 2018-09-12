@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCoreApplication>
+# include <QTextStream>
 #endif
 
 #include <Gui/Application.h>
@@ -33,26 +35,74 @@
 
 using namespace std;
 
-DEF_STD_CMD(CmdStartConstraintAxle);
+DEF_STD_CMD(CmdStartPage);
 
-CmdStartConstraintAxle::CmdStartConstraintAxle()
-	:Command("Start_ConstraintAxle")
+CmdStartPage::CmdStartPage()
+	:Command("Start_StartPage")
 {
     sAppModule      = "Start";
     sGroup          = QT_TR_NOOP("Start");
-    sMenuText       = QT_TR_NOOP("Constraint Axle...");
-    sToolTipText    = QT_TR_NOOP("Set an axle constraint between two objects");
-    sWhatsThis      = "Start_ConstraintAxle";
+    sMenuText       = QT_TR_NOOP("Start Page");
+    sToolTipText    = QT_TR_NOOP("Displays the start page in a browser view");
+    sWhatsThis      = "Start_StartPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/document-new";
+    sPixmap         = "StartWorkbench";
 }
 
 
-void CmdStartConstraintAxle::activated(int iMsg)
+void CmdStartPage::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Start, StartGui");
+
+    // Ensure that we don't open the Start page multiple times
+    QString title = QCoreApplication::translate("Workbench", "Start page");
+    QList<QWidget*> ch = Gui::getMainWindow()->windows();
+    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); ++c) {
+        if ((*c)->windowTitle() == title)
+            return;
+    }
+
+    try {
+        QByteArray utf8Title = title.toUtf8();
+        QByteArray cmd;
+        QTextStream str(&cmd);
+        str << "import WebGui" << endl;
+        str << "from StartPage import StartPage" << endl;
+        str << endl;
+        str << "class WebPage(object):" << endl;
+        str << "    def __init__(self):" << endl;
+        str << "        self.browser=WebGui.openBrowserWindow('" << utf8Title << "')" << endl;
+#if defined(FC_OS_WIN32)
+        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+#else
+        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+#endif
+        str << "    def onChange(self, par, reason):" << endl;
+        str << "        if reason == 'RecentFiles':" << endl;
+#if defined(FC_OS_WIN32)
+        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+#else
+        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+#endif
+        str << endl;
+        str << "class WebView(object):" << endl;
+        str << "    def __init__(self):" << endl;
+        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << endl;
+        str << "        self.webPage = WebPage()" << endl;
+        str << "        self.pargrp.Attach(self.webPage)" << endl;
+        str << "    def __del__(self):" << endl;
+        str << "        self.pargrp.Detach(self.webPage)" << endl;
+        str << endl;
+        str << "webView=WebView()" << endl;
+
+        //Base::Interpreter().runString(cmd);
+        // Gui::Command::runCommand(Gui::Command::Gui, cmd);
+        Command::doCommand(Command::Gui, "import Start, StartGui");
+        Command::doCommand(Command::Gui, cmd);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+    }
 }
 
 
@@ -61,5 +111,5 @@ void CreateStartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdStartConstraintAxle());
+    rcCmdMgr.addCommand(new CmdStartPage());
  }

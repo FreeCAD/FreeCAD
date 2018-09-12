@@ -244,7 +244,6 @@ def makeMaterialFluid(doc, name="FluidMaterial"):
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
-    # doc.recompute()
     return obj
 
 
@@ -269,7 +268,6 @@ def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
-    # doc.recompute()
     return obj
 
 
@@ -352,7 +350,7 @@ def makeMeshResult(doc, name="FEMMeshResult"):
     return obj
 
 
-########## result objects ##########
+########## post processing objects ##########
 def makeResultMechanical(doc, name="MechanicalResult"):
     '''makeResultMechanical(document, [name]): creates an mechanical result object to hold FEM results'''
     obj = doc.addObject('Fem::FemResultObjectPython', name)

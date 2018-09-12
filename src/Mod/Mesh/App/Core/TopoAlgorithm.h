@@ -77,9 +77,9 @@ public:
                                  float fMaxAngle);
     /**
      * Swaps the common edge of two adjacent facets even if the operation might
-     * be illegal. To be sure that this operation is legal check either with
+     * be illegal. To be sure that this operation is legal, check either with
      * IsSwapEdgeLegal() or ShouldSwapEdge() before.
-     * An illegel swap edge operation can produce non-manifolds, degenrated
+     * An illegel swap edge operation can produce non-manifolds, degenerated
      * facets or it might create a fold on the surface, i.e. geometric overlaps
      * of several triangles. 
      */
@@ -200,7 +200,7 @@ public:
      */
     bool SnapVertex(unsigned long ulFacetPos, const Base::Vector3f& rP);
     /**
-     * Checks whether a swap edge operation is legel that is fulfilled if the
+     * Checks whether a swap edge operation is legal, that is fulfilled if the
      * two adjacent facets builds a convex polygon. If this operation is legal
      * true is returned, false is returned if this operation is illegal or if
      * \a ulFacetPos and \a ulNeighbour are not adjacent facets.

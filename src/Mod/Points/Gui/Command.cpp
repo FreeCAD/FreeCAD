@@ -208,6 +208,9 @@ void CmdPointsConvert::activated(int iMsg)
 
     bool addedPoints = false;
     for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
+        Base::Placement globalPlacement = static_cast<App::GeoFeature*>(*it)->globalPlacement();
+        Base::Placement localPlacement = static_cast<App::GeoFeature*>(*it)->Placement.getValue();
+        localPlacement = globalPlacement * localPlacement.inverse();
         const App::PropertyComplexGeoData* prop = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
         if (prop) {
             const Data::ComplexGeoData* data = prop->getComplexData();
@@ -240,6 +243,7 @@ void CmdPointsConvert::activated(int iMsg)
                 for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
                     kernel.push_back(*pt);
                 fea->Points.setValue(kernel);
+                fea->Placement.setValue(localPlacement);
 
                 App::Document* doc = (*it)->getDocument();
                 doc->addObject(fea, "Points");

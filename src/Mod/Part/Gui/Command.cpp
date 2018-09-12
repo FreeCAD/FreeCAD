@@ -72,6 +72,7 @@
 #include "TaskSweep.h"
 #include "TaskDimension.h"
 #include "TaskCheckGeometry.h"
+#include "BoxSelection.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2240,6 +2241,35 @@ bool CmdMeasureToggleDelta::isActive(void)
   return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_BoxSelection
+//===========================================================================
+
+DEF_STD_CMD_A(CmdBoxSelection)
+
+CmdBoxSelection::CmdBoxSelection()
+  : Command("Part_BoxSelection")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Box selection");
+    sToolTipText  = QT_TR_NOOP("Box selection");
+    sWhatsThis    = "Part_BoxSelection";
+    sStatusTip    = QT_TR_NOOP("Box selection");
+}
+
+void CmdBoxSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    PartGui::BoxSelection* sel = new PartGui::BoxSelection();
+    sel->start();
+}
+
+bool CmdBoxSelection::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2287,4 +2317,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleAll());
     rcCmdMgr.addCommand(new CmdMeasureToggle3d());
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
-} 
+    rcCmdMgr.addCommand(new CmdBoxSelection());
+}

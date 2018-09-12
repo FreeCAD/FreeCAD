@@ -11,9 +11,11 @@
 #include "Point.h"
 #include "AreaDxf.h"
 #include "kurve/geometry.h"
+#include "Adaptive.hpp"
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/functional.h>
 #include <pybind11/operators.h>
 
 #include <vector>
@@ -358,9 +360,44 @@ void init_pyarea(py::module &m){
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
     m.def("TangentialArc", TangentialArc);
+
+	using namespace AdaptivePath;
+	py::enum_<MotionType>(m, "AdaptiveMotionType")
+	 .value("Cutting", MotionType::mtCutting)
+     .value("LinkClear", MotionType::mtLinkClear)
+	 .value("LinkNotClear", MotionType::mtLinkNotClear)
+	 .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
+
+	py::enum_<OperationType>(m, "AdaptiveOperationType")
+	 .value("ClearingInside", OperationType::otClearingInside)
+     .value("ClearingOutside", OperationType::otClearingOutside)
+     .value("ProfilingInside", OperationType::otProfilingInside)
+	 .value("ProfilingOutside", OperationType::otProfilingOutside);
+
+	py::class_<AdaptiveOutput>(m, "AdaptiveOutput")
+		.def(py::init<>())
+		.def_readwrite("HelixCenterPoint",&AdaptiveOutput::HelixCenterPoint)
+		.def_readwrite("StartPoint",&AdaptiveOutput::StartPoint)
+		.def_readwrite("AdaptivePaths",&AdaptiveOutput::AdaptivePaths)
+		.def_readwrite("ReturnMotionType",&AdaptiveOutput::ReturnMotionType);
+
+	py::class_<Adaptive2d>(m, "Adaptive2d")
+		.def(py::init<>())
+		.def("Execute",&Adaptive2d::Execute)
+	 	.def_readwrite("stepOverFactor", &Adaptive2d::stepOverFactor)
+	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
+        .def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
+		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
+        .def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
+		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
+		.def_readwrite("tolerance", &Adaptive2d::tolerance)
+        .def_readwrite("keepToolDownDistRatio", &Adaptive2d::keepToolDownDistRatio)
+		.def_readwrite("opType", &Adaptive2d::opType);
 }
 
 PYBIND11_MODULE(area, m){
     m.doc()= "not yet";
     init_pyarea(m);
 };
+
+

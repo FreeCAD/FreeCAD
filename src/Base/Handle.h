@@ -184,6 +184,9 @@ public:
     const Handled& operator = (const Handled&);
 
 private:
+    Handled(const Handled&);
+
+private:
     QAtomicInt* _lRefCount;
 };
 

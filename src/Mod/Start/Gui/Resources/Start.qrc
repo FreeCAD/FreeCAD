@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource>
         <file>icons/StartWorkbench.svg</file>
+        <file>icons/preferences-start.svg</file>
         <file>translations/StartPage_af.qm</file>
         <file>translations/StartPage_de.qm</file>
         <file>translations/StartPage_fi.qm</file>

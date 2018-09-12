@@ -39,7 +39,6 @@
 #include <Base/Matrix.h>
 #include <Base/Parameter.h>
 
-#include "Cube.h"
 #include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
@@ -77,23 +76,12 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
-
-    ADD_PROPERTY_TYPE(CubeDirs,(Base::Vector3d()) ,agroup, App::Prop_None, "Current view directions");
-    ADD_PROPERTY_TYPE(CubeRotations,(Base::Vector3d()),agroup, App::Prop_None, "Current rotations");
-    m_cube = new Cube();
-    m_cube->initialize();       //set default dirs & rots
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
-    delete m_cube;
 }
 
-void DrawProjGroup::resetCube(void)
-{
-    m_cube->initialize();
-    updateSecondaryDirs();
-}
 
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
@@ -106,6 +94,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             if (!sourceObjs.empty()) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
+//                    Base::Console().Message("TRACE - DPG::onChanged - adding Front\n");
                     Anchor.setValue(addProjection("Front"));
                     Anchor.purgeTouched();                      //don't need to mark this
                 }
@@ -113,29 +102,34 @@ void DrawProjGroup::onChanged(const App::Property* prop)
                 //Source has been changed to null! Why? What to do?
             }
         }
+        if (prop == &Scale) {
+            updateChildren();
+        }
+        if (prop == &Source) {
+            updateChildrenSource();
+        }
+        
+        if (prop == &ScaleType) {
+            double newScale = getScale();
+            if (ScaleType.isValue("Automatic")) {
+                //Recalculate scale if Group is too big or too small!
+                newScale = calculateAutomaticScale();
+                if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+                    Scale.setValue(newScale);
+                }
+            } else if (ScaleType.isValue("Page")) {
+                newScale = page->Scale.getValue();
+                if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+                    Scale.setValue(newScale);
+                }
+            }
+        }
+
     }
-    if (isRestoring() && (prop == &CubeDirs)) {
-        m_cube->setAllDirs(CubeDirs.getValues());                    //override defaults from saved value if valid
-    }
-    if (isRestoring() && (prop == &CubeRotations)) {
-        m_cube->setAllRots(CubeRotations.getValues());               //override defaults from saved value if valid
-    }
-    
+        
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
-//! call this after changing the Cube
-void DrawProjGroup::setPropsFromCube(void)
-{
-    CubeDirs.setValues(m_cube->getAllDirs());
-    CubeRotations.setValues(m_cube->getAllRots());
-}
-
-void DrawProjGroup::setCubeFromProps(void)
-{
-    m_cube->setAllDirs(CubeDirs.getValues());
-    m_cube->setAllRots(CubeRotations.getValues());
-}
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
     if (!keepUpdated()) {
@@ -158,34 +152,8 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    double newScale = getScale();
-    if (ScaleType.isValue("Automatic")) {
-        //Recalculate scale if Group is too big or too small!
-        if (!checkFit(page)) {
-            newScale = calculateAutomaticScale();
-            if(std::abs(getScale() - newScale) > FLT_EPSILON) {
-                Scale.setValue(newScale);
-                updateChildren();
-            }
-         }
-    } else if (ScaleType.isValue("Page")) {                 //don't really need this any more.
-        newScale = page->Scale.getValue();
-        if(std::abs(getScale() - newScale) > FLT_EPSILON) {
-            Scale.setValue(newScale);
-            updateChildren();
-        }
-    } else if (ScaleType.isValue("Custom")) {
-        //don't have to do anything special
-        updateChildren();
-    }
-
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
-        item->purgeTouched();
-    }
-
-    if (page != nullptr) {
-        page->requestPaint();
     }
 
     return DrawViewCollection::execute();
@@ -200,7 +168,10 @@ short DrawProjGroup::mustExecute() const
                  Scale.isTouched()  ||
                  ScaleType.isTouched() ||
                  ProjectionType.isTouched() ||
-                 Anchor.isTouched();
+                 Anchor.isTouched() ||
+                 AutoDistribute.isTouched() ||
+                 spacingX.isTouched() ||
+                 spacingY.isTouched();
     }
     if (result) return result;
     return TechDraw::DrawViewCollection::mustExecute();
@@ -392,6 +363,8 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
     DrawProjGroupItem *view( nullptr );
+    std::pair<Base::Vector3d,Base::Vector3d> vecs;
+
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
@@ -399,17 +372,16 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
                                                FeatName.c_str() ) );
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
         view->Source.setValues( Source.getValues() );
-        if (ScaleType.isValue("Automatic")) {
-            view->ScaleType.setValue("Custom");
-        } else {
-            view->ScaleType.setValue( ScaleType.getValue() );
-        }
         view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
         view->Source.setValues( Source.getValues() );
-        view->Direction.setValue(m_cube->getViewDir(viewProjType));
-        view->RotationVector.setValue(m_cube->getRotationDir(viewProjType));
+        if (strcmp(viewProjType, "Front") != 0 ) {
+            vecs = getDirsFromFront(view);
+            view->Direction.setValue(vecs.first);
+            view->RotationVector.setValue(vecs.second);
+        }
+
         addView(view);         //from DrawViewCollection
         moveToCentre();
         if (view != getAnchor()) {                //anchor is done elsewhere
@@ -465,6 +437,76 @@ int DrawProjGroup::purgeProjections()
     }
 
     return Views.getValues().size();
+}
+
+std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawProjGroupItem* view)
+{
+    std::pair<Base::Vector3d,Base::Vector3d> result;
+    std::string viewType = view->Type.getValueAsString();
+    result = getDirsFromFront(viewType);
+    return result;
+}
+
+std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::string viewType)
+{
+    std::pair<Base::Vector3d,Base::Vector3d> result;
+
+    Base::Vector3d projDir, rotVec;
+    DrawProjGroupItem* anch = getAnchor();
+     
+    Base::Vector3d dirAnch = anch->Direction.getValue();
+    Base::Vector3d rotAnch = anch->RotationVector.getValue();
+    Base::Vector3d upAnch  = dirAnch.Cross(rotAnch);             //this can get weird after rotations
+    projDir = dirAnch;        //need default
+    rotVec  = rotAnch;  
+    Base::Vector3d realUp = DrawUtil::closestBasis(upAnch);
+
+    Base::Vector3d org(0.0,0.0,0.0);
+    result = std::make_pair(dirAnch,rotAnch);
+    double angle = M_PI / 2.0;                        //90*
+
+    if (viewType == "Right") {
+        projDir = DrawUtil::vecRotate(dirAnch,angle,realUp,org);
+        rotVec = DrawUtil::vecRotate(rotAnch,angle,upAnch,org);
+    } else if (viewType == "Left") {
+        projDir = DrawUtil::vecRotate(dirAnch,-angle,realUp,org);
+        rotVec  = DrawUtil::vecRotate(rotAnch,-angle,upAnch,org);
+    } else if (viewType == "Top") {
+        projDir = upAnch;
+        rotVec  = rotAnch;
+    } else if (viewType == "Bottom") {
+        projDir = upAnch * (-1.0);
+        rotVec  = rotAnch;
+    } else if (viewType == "Rear") {
+        projDir = DrawUtil::vecRotate(dirAnch,2.0 * angle,realUp,org);
+        rotVec  = -rotAnch;
+    } else if (viewType == "FrontTopLeft") {
+        projDir = dirAnch +                                         //front
+                  DrawUtil::vecRotate(dirAnch,-angle,realUp,org) +  //left
+                  upAnch;                                           //top
+        rotVec  = rotAnch + dirAnch;                                //sb current front rot + curr right rot
+    } else if (viewType == "FrontTopRight") {
+        projDir = dirAnch +                                        //front
+                  DrawUtil::vecRotate(dirAnch,angle,realUp,org) +   //right
+                  upAnch;                                           //top
+        rotVec  = rotAnch - dirAnch;
+    } else if (viewType == "FrontBottomLeft") {
+        projDir = dirAnch +                                         //front
+                  DrawUtil::vecRotate(dirAnch,-angle,realUp,org) +  //left
+                  upAnch * (-1.0);                                  //bottom
+        rotVec  = rotAnch + dirAnch;
+    } else if (viewType == "FrontBottomRight") {
+        projDir = dirAnch +                                         //front
+                  DrawUtil::vecRotate(dirAnch,angle,realUp,org) +   //right
+                  upAnch * (-1.0);                                  //bottom
+        rotVec  = rotAnch - dirAnch;
+    } else {
+        Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n",getNameInDocument(),viewType.c_str());
+        return result;
+    }
+
+    result = std::make_pair(projDir,rotVec);
+    return result;
 }
 
 Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
@@ -535,6 +577,11 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             bboxes[4].IsValid()) {
             position[3].x = -bigCol - xSpacing;
             position[3].y = 0.0;
+        }
+        if (viewPtrs[4] &&                       //Front
+            bboxes[4].IsValid()) {
+            position[4].x = 0.0;
+            position[4].y = 0.0;
         }
         if (viewPtrs[5] &&                       // R/L
             bboxes[5].IsValid() &&
@@ -714,15 +761,32 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
 }
 
 /*! 
- * tell children DPGIs that parent DPG has changed ?Scale?
+ * tell children DPGIs that parent DPG has changed Scale
  */
 void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
-                view->recomputeFeature();
-                view->purgeTouched();
+            view->Scale.setValue(Scale.getValue());
+        }
+    }
+}
+
+//void DrawProjGroup::updateChildren(const App::Property* prop)
+//{
+//    view->....setValue(s)(prop->getValue(s));
+//}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed Source
+ */
+void DrawProjGroup::updateChildrenSource(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
+            view->Source.setValues(Source.getValues());
         }
     }
 }
@@ -816,74 +880,109 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
 
 void DrawProjGroup::updateSecondaryDirs()
 {
+    DrawProjGroupItem* anchor = getAnchor();
+    Base::Vector3d anchDir = anchor->Direction.getValue();
+    Base::Vector3d anchRot = anchor->RotationVector.getValue();
+
+    std::map<std::string, std::pair<Base::Vector3d,Base::Vector3d> > saveVals; 
+    std::string key;
+    std::pair<Base::Vector3d, Base::Vector3d> data;
     for (auto& docObj: Views.getValues()) {
         Base::Vector3d newDir;
-        Base::Vector3d newAxis;
+        Base::Vector3d newRot;
+        std::pair<Base::Vector3d,Base::Vector3d> newDirs;
         std::string pic;
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         ProjItemType t = static_cast<ProjItemType>(v->Type.getValue());
         switch (t) {
-            case Front : {
-                newDir = m_cube->getFront();
-                newAxis = m_cube->getFrontRot();
+            case Front : 
+                data.first = anchDir;
+                data.second = anchRot;
+                key = "Front";
+                saveVals[key] = data;
                 break;
-            }
-            case Rear : {
-                newDir = m_cube->getRear();
-                newAxis = m_cube->getRearRot();
+            case Rear :
+                key = "Rear";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case Left : {
-                newDir = m_cube->getLeft();
-                newAxis = m_cube->getLeftRot();
+            case Left :
+                key = "Left";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case Right : {
-                newDir = m_cube->getRight();
-                newAxis = m_cube->getRightRot();
+            case Right :
+            key = "Right";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case Top : {
-                newDir = m_cube->getTop();
-                newAxis = m_cube->getTopRot();
+            case Top :
+                key = "Top";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case Bottom : {
-                newDir = m_cube->getBottom();
-                newAxis = m_cube->getBottomRot();
+            case Bottom :
+                key = "Bottom";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case FrontTopLeft : {
-                newDir = m_cube->getFTL();
-                newAxis = m_cube->getFTLRot();
+            case FrontTopLeft :
+                key = "FrontTopLeft";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case FrontTopRight : {
-                newDir = m_cube->getFTR();
-                newAxis = m_cube->getFTRRot();
+            case FrontTopRight :
+                key = "FrontTopRight";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case FrontBottomLeft : {
-                newDir = m_cube->getFBL();
-                newAxis = m_cube->getFBLRot();
+            case FrontBottomLeft :
+                key = "FrontBottomLeft";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+//                newDir = newDirs.first;
+//                newRot = newDirs.second;
                 break;
-            }
-            case FrontBottomRight : {
-                newDir = m_cube->getFBR();
-                newAxis = m_cube->getFBRRot();
+            case FrontBottomRight :
+                key = "FrontBottomRight";
+                newDirs = getDirsFromFront(key);
+                saveVals[key] = newDirs;
+                newDir = newDirs.first;
+                newRot = newDirs.second;
                 break;
-            }
             default: {
                 //TARFU invalid secondary type
                 Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
                 newDir = v->Direction.getValue();
-                newAxis = v->RotationVector.getValue();
+                newRot = v->RotationVector.getValue();
             }
         }
-        v->Direction.setValue(newDir);
-        v->RotationVector.setValue(newAxis);
+//        v->Direction.setValue(newDir);
+//        v->RotationVector.setValue(newRot);
     }
-    setPropsFromCube();
+
+    //not sure if this is required.
+    for (auto& docObj: Views.getValues()) {
+        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+        std::string type = v->Type.getValueAsString();
+        data = saveVals[type];
+        v->Direction.setValue(data.first);
+        v->RotationVector.setValue(data.second);
+    }
 
     auto page = findParentPage();
     if (page != nullptr) {
@@ -891,46 +990,74 @@ void DrawProjGroup::updateSecondaryDirs()
     }
 }
 
-
 void DrawProjGroup::rotateRight()
 {
 //Front -> Right -> Rear -> Left -> Front
-    m_cube->rotateRight(); 
+    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
+    newDirs  = getDirsFromFront("Left");
+    DrawProjGroupItem* anchor = getAnchor();
+    anchor->Direction.setValue(newDirs.first);
+    anchor->RotationVector.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::rotateLeft()
 {
 //Front -> Left -> Rear -> Right -> Front
-    m_cube->rotateLeft(); 
+    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
+    newDirs  = getDirsFromFront("Right");
+    DrawProjGroupItem* anchor = getAnchor();
+    anchor->Direction.setValue(newDirs.first);
+    anchor->RotationVector.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::rotateUp()
 {
 //Front -> Top -> Rear -> Bottom -> Front
-    m_cube->rotateUp(); 
+    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
+    newDirs  = getDirsFromFront("Bottom");
+    DrawProjGroupItem* anchor = getAnchor();
+    anchor->Direction.setValue(newDirs.first);
+    anchor->RotationVector.setValue(newDirs.second);
     updateSecondaryDirs();
 }
     
 void DrawProjGroup::rotateDown()
 {
 //Front -> Bottom -> Rear -> Top -> Front
-    m_cube->rotateDown(); 
+    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
+    newDirs  = getDirsFromFront("Top");
+    DrawProjGroupItem* anchor = getAnchor();
+    anchor->Direction.setValue(newDirs.first);
+    anchor->RotationVector.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::spinCW()
 {
 //Top -> Right -> Bottom -> Left -> Top
-    m_cube->spinCW(); 
+    DrawProjGroupItem* anchor = getAnchor();
+    double angle = M_PI / 2.0;
+    Base::Vector3d org(0.0,0.0,0.0);
+    Base::Vector3d curRot = anchor->RotationVector.getValue(); 
+    Base::Vector3d curDir = anchor->Direction.getValue();
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
+    anchor->RotationVector.setValue(newRot);
     updateSecondaryDirs();
 }
     
 void DrawProjGroup::spinCCW()
 {
 //Top -> Left -> Bottom -> Right -> Top
-    m_cube->spinCCW(); 
+    DrawProjGroupItem* anchor = getAnchor();
+    double angle = M_PI / 2.0;
+    Base::Vector3d org(0.0,0.0,0.0);
+    Base::Vector3d curRot = anchor->RotationVector.getValue(); 
+    Base::Vector3d curDir = anchor->Direction.getValue();
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
+    anchor->RotationVector.setValue(newRot);
+
     updateSecondaryDirs();
 }
 

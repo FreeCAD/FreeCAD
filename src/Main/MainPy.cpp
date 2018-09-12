@@ -225,7 +225,9 @@ PyMOD_INIT_FUNC(FreeCAD)
     free(argv);
 
 #if PY_MAJOR_VERSION >= 3
-    PyObject* module = _PyImport_FindBuiltin("FreeCAD");
+    //PyObject* module = _PyImport_FindBuiltin("FreeCAD");
+    PyObject* modules = PyImport_GetModuleDict();
+    PyObject* module = PyDict_GetItemString(modules, "FreeCAD");
     if (!module) {
         PyErr_SetString(PyExc_ImportError, "Failed to load FreeCAD module!");
     }

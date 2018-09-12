@@ -351,52 +351,52 @@ private:
     //---------------------------------------------------------------------
 
     // static python wrapper of the exported functions
-    static PyObject* sGetParam          (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sSaveParameter     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetVersion        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetConfig         (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sSetConfig         (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sDumpConfig        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sTemplateAdd       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sTemplateDelete    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sTemplateGet       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sAddImportType     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetImportType     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sAddExportType     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetExportType     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetResourceDir    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetHelpDir        (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetHomePath       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetParam          (PyObject *self,PyObject *args);
+    static PyObject* sSaveParameter     (PyObject *self,PyObject *args);
+    static PyObject* sGetVersion        (PyObject *self,PyObject *args);
+    static PyObject* sGetConfig         (PyObject *self,PyObject *args);
+    static PyObject* sSetConfig         (PyObject *self,PyObject *args);
+    static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
+    static PyObject* sTemplateAdd       (PyObject *self,PyObject *args);
+    static PyObject* sTemplateDelete    (PyObject *self,PyObject *args);
+    static PyObject* sTemplateGet       (PyObject *self,PyObject *args);
+    static PyObject* sAddImportType     (PyObject *self,PyObject *args);
+    static PyObject* sGetImportType     (PyObject *self,PyObject *args);
+    static PyObject* sAddExportType     (PyObject *self,PyObject *args);
+    static PyObject* sGetExportType     (PyObject *self,PyObject *args);
+    static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
+    static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);
+    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args);
+    static PyObject* sGetHelpDir        (PyObject *self,PyObject *args);
+    static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
 
-    static PyObject* sLoadFile          (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sOpenDocument      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sSaveDocument      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sNewDocument       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sCloseDocument     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sActiveDocument    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sSetActiveDocument (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sGetDocument       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sListDocuments     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sAddDocObserver    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject* sTranslateUnit     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sIsRestoring       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sLoadFile          (PyObject *self,PyObject *args);
+    static PyObject* sOpenDocument      (PyObject *self,PyObject *args);
+    static PyObject* sSaveDocument      (PyObject *self,PyObject *args);
+    static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args);
+    static PyObject* sNewDocument       (PyObject *self,PyObject *args);
+    static PyObject* sCloseDocument     (PyObject *self,PyObject *args);
+    static PyObject* sActiveDocument    (PyObject *self,PyObject *args);
+    static PyObject* sSetActiveDocument (PyObject *self,PyObject *args);
+    static PyObject* sGetDocument       (PyObject *self,PyObject *args);
+    static PyObject* sListDocuments     (PyObject *self,PyObject *args);
+    static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
+    static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
+    static PyObject* sTranslateUnit     (PyObject *self,PyObject *args);
+    static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
 
-    static PyObject *sSetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
+    static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
 
-    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
+    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
 
-    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args);
 
-    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sAutoTransaction(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
+    static PyObject *sAutoTransaction(PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[]; 
 

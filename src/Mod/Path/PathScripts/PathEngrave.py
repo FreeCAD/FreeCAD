@@ -56,19 +56,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
             obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseShapes', 2) # hide
+        obj.setEditorMode('BaseShapes', 2) # hide
         if not hasattr(obj, 'BaseObject'):
             obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-            obj.setEditorMode('BaseObject', 2) # hide
+        obj.setEditorMode('BaseObject', 2) # hide
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create engraving specific properties.'''
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
         self.setupAdditionalProperties(obj)
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         # upgrade ...
-        super(self.__class__, self).onDocumentRestored(obj)
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -76,30 +75,29 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         PathLog.track()
 
         job = PathUtils.findParentJob(obj)
-        if job and job.Base:
-            obj.BaseObject = job.Base
 
+        jobshapes = []
         zValues = self.getZValues(obj)
 
         try:
-            if self.baseobject.isDerivedFrom('Sketcher::SketchObject') or \
-                    self.baseobject.isDerivedFrom('Part::Part2DObject') or \
-                    hasattr(self.baseobject, 'ArrayType'):
+            if len(self.model) == 1 and self.model[0].isDerivedFrom('Sketcher::SketchObject') or \
+                    self.model[0].isDerivedFrom('Part::Part2DObject') or \
+                    hasattr(self.model[0], 'ArrayType'):
                 PathLog.track()
 
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
                 # we only consider the outer wire if this is a Face
                 wires = []
-                for w in self.baseobject.Shape.Wires:
+                for w in self.model[0].Shape.Wires:
                     wires.append(Part.Wire(w.Edges))
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
 
-            elif isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+            elif len(self.model) == 1 and isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
                 PathLog.track()
                 wires = []
-                for tag in self.baseobject.Proxy.getTags(self.baseobject, transform=True):
+                for tag in self.model[0].Proxy.getTags(self.model[0], transform=True):
                     self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                     tagWires = []
                     for w in tag.Wires:
@@ -125,18 +123,26 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     for edgelist in Part.sortEdges(edges):
                         basewires.append(Part.Wire(edgelist))
 
-                    wires.extend(self.adjustWirePlacement(obj, base, basewires))
+                    wires.extend(basewires)
                 self.buildpathocc(obj, wires, zValues)
                 self.wires = wires
             elif not obj.BaseShapes:
                 PathLog.track()
-                raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
+                if not obj.Base and not obj.BaseShapes:
+                    for base in self.model:
+                        PathLog.track(base.Label)
+                        if base.isDerivedFrom('Part::Part2DObject'):
+                            jobshapes.append(base)
 
-            if obj.BaseShapes:
+                if not jobshapes:
+                    raise ValueError(translate('PathEngrave', "Unknown baseobject type for engraving (%s)") % (obj.Base))
+
+            if obj.BaseShapes or jobshapes:
                 PathLog.track()
                 wires = []
-                for shape in obj.BaseShapes:
-                    shapeWires = self.adjustWirePlacement(obj, shape, shape.Shape.Wires)
+                for shape in obj.BaseShapes + jobshapes:
+                    PathLog.track(shape.Label)
+                    shapeWires = shape.Shape.Wires
                     self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires
@@ -146,13 +152,18 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             traceback.print_exc()
             PathLog.error(translate('PathEngrave', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
 
-    def updateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
-        self.opSetDefaultValues(obj)
+        job = PathUtils.findParentJob(obj)
+        self.opSetDefaultValues(obj, job)
 
-def Create(name):
+def SetupProperties():
+    return [ "StartVertex" ]
+
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj)
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    proxy = ObjectEngrave(obj, name)
     return obj
 

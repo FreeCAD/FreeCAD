@@ -28,9 +28,14 @@
 
 #include <map>
 #include "Tree.h"
+namespace App {
+    class DocumentObject;
+}
 
 namespace Gui
 {
+    class Document;
+    class ViewProviderDocumentObject;
 
 	/** List of active or special objects
 	* This class holds a list of objects with a special name.

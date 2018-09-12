@@ -28,6 +28,7 @@ import PathScripts.PathEngrave as PathEngrave
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathSelection as PathSelection
+import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
 
@@ -55,22 +56,30 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         added = False
         shapes = self.obj.BaseShapes
         for sel in selection:
-            if sel.Object in shapes:
+            job = PathUtils.findParentJob(self.obj)
+            base = job.Proxy.resourceClone(job, sel.Object)
+            if not base:
+                PathLog.notice((translate("Path", "%s is not a Base Model object of the job %s")+"\n") % (sel.Object.Label, job.Label))
+                continue
+            if base in shapes:
                 PathLog.notice((translate("Path", "Base shape %s already in the list")+"\n") % (sel.Object.Label))
                 continue
-            if sel.Object.isDerivedFrom('Part::Part2DObject'):
+            if base.isDerivedFrom('Part::Part2DObject'):
                 if sel.HasSubObjects:
+                    # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
                         if 'Vertex' in sub:
                             PathLog.info(translate("Path", "Ignoring vertex"))
                         else:
-                            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                            self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
-                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != sel.Object]
-                    shapes.append(sel.Object)
+                    # when adding an entire shape to BaseShapes we can take its sub shapes out of Base
+                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != base]
+                    shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
             else:
+                # user wants us to engrave an edge of face of a base model
                 base = self.super().addBaseGeometry(selection)
                 added = added or base
 
@@ -133,6 +142,7 @@ Command = PathOpGui.SetupOperation('Engrave',
         TaskPanelOpPage,
         'Path-Engrave',
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
-        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"))
+        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
+        PathEngrave.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathEngraveGui... done\n")

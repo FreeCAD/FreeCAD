@@ -392,7 +392,7 @@ void DocumentPy::setEditingTransform(Py::Object arg) {
             *static_cast<Base::MatrixPy*>(arg.ptr())->getMatrixPtr());
 }
 
-Py::Object DocumentPy::getInEdit(void) const {
+Py::Object DocumentPy::getInEditInfo(void) const {
     ViewProviderDocumentObject *vp = 0;
     std::string subname,subelement;
     int mode = 0;
@@ -403,7 +403,7 @@ Py::Object DocumentPy::getInEdit(void) const {
             Py::String(subname),Py::String(subelement),Py::Int(mode));
 }
 
-void DocumentPy::setInEdit(Py::Object arg) {
+void DocumentPy::setInEditInfo(Py::Object arg) {
     PyObject *pyobj = 0;
     const char *subname = 0;
     if (!PyArg_ParseTuple(arg.ptr(), "O!s", 

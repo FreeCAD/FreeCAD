@@ -25,6 +25,9 @@ import FreeCAD
 # import Material
 from Material import getMaterialAttributeStructure
 import os
+import sys
+if sys.version_info.major >= 3:
+    unicode = str
 
 
 __title__ = "FreeCAD material card importer"

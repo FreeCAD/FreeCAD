@@ -56,8 +56,6 @@ public:
     /// Force claim linked profile as children
     App::PropertyBool    ClaimChildren;
 
-    App::PropertyBool Refine;
-
     short mustExecute() const;
 
     /** calculates and updates the Placement property based on the features

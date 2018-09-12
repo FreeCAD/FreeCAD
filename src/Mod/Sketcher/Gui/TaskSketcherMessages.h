@@ -53,6 +53,7 @@ public:
 private Q_SLOTS:
     void on_labelConstrainStatus_linkActivated(const QString &);
     void on_autoUpdate_stateChanged(int state);
+    void on_autoRemoveRedundants_stateChanged(int state);
     void on_manualUpdate_clicked(bool checked);
     
 protected:

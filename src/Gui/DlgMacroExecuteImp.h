@@ -51,6 +51,8 @@ public Q_SLOTS:
     void on_deleteButton_clicked();
     void on_editButton_clicked();
     void on_renameButton_clicked();
+    void on_duplicateButton_clicked();
+    void on_addonsButton_clicked();
 
 protected Q_SLOTS:
     void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);

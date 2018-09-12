@@ -27,10 +27,13 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
+import PathScripts.PathJobCmd as PathJobCmd
+import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
@@ -38,8 +41,10 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import sys
+import traceback
 
 from PySide import QtCore, QtGui
+from contextlib import contextmanager
 from pivy import coin
 
 # Qt tanslation handling
@@ -59,6 +64,17 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             job.ViewObject.Proxy.editObject(obj)
         else:
             job.ViewObject.Proxy.uneditObject(obj)
+
+@contextmanager
+def selectionEx():
+    sel = FreeCADGui.Selection.getSelectionEx()
+    try:
+        yield sel
+    finally:
+        FreeCADGui.Selection.clearSelection()
+        for s in sel:
+            FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+
 
 class ViewProvider:
 
@@ -136,8 +152,8 @@ class ViewProvider:
 
     def editObject(self, obj):
         if obj:
-            if obj == self.obj.Base:
-                return self.openTaskPanel('Base')
+            if obj in self.obj.Model.Group:
+                return self.openTaskPanel('Model')
             if obj == self.obj.Stock:
                 return self.openTaskPanel('Stock')
             PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
@@ -152,8 +168,11 @@ class ViewProvider:
     def claimChildren(self):
         children = self.obj.ToolController
         children.append(self.obj.Operations)
-        if self.obj.Base:
-            children.append(self.obj.Base)
+        if hasattr(self.obj, 'Model'):
+            # unfortunately this function is called before the object has been fully loaded
+            # which means we could be dealing with an old job which doesn't have the new Model
+            # yet.
+            children.append(self.obj.Model)
         if self.obj.Stock:
             children.append(self.obj.Stock)
         if hasattr(self.obj, 'SetupSheet'):
@@ -169,34 +188,31 @@ class ViewProvider:
     def updateData(self, obj, prop):
         PathLog.track(obj.Label, prop)
         # make sure the resource view providers are setup properly
-        if prop == 'Base' and self.obj.Base and self.obj.Base.ViewObject and self.obj.Base.ViewObject.Proxy:
-            if not PathJob.isArchPanelSheet(self.obj.Base):
-                self.obj.Base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
+        if prop == 'Model' and self.obj.Model:
+            for base in self.obj.Model.Group:
+                if base.ViewObject and base.ViewObject.Proxy and not PathJob.isArchPanelSheet(base):
+                    base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
-    def baseObjectViewObject(self, obj):
-        return PathUtil.getPublicObject(self.obj.Proxy.baseObject(obj)).ViewObject
+    def rememberBaseVisibility(self, obj, base):
+        if base.ViewObject:
+            orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
+            self.baseVisibility[base.Name] = (base, base.ViewObject.Visibility, orig, orig.ViewObject.Visibility)
+            orig.ViewObject.Visibility = False
+            base.ViewObject.Visibility = True
 
-    def baseObjectSaveVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        if baseVO:
-            self.baseOrigVisibility = baseVO.Visibility
-            baseVO.Visibility = False
-        if obj.Base and obj.Base.ViewObject:
-            obj.Base.ViewObject.Visibility = True
-
-    def baseObjectRestoreVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        if baseVO:
-            baseVO.Visibility = self.baseOrigVisibility
+    def forgetBaseVisibility(self, obj, base):
+        if self.baseVisibility.get(base.Name):
+            visibility = self.baseVisibility[base.Name]
+            visibility[0].ViewObject.Visibility = visibility[1]
+            visibility[2].ViewObject.Visibility = visibility[3]
+            del self.baseVisibility[base.Name]
 
     def setupEditVisibility(self, obj):
-        self.baseVisibility = False
-        self.baseOrigVisibility = False
-        if obj.Base and obj.Base.ViewObject:
-            self.baseVisibility = obj.Base.ViewObject.Visibility
-            self.baseObjectSaveVisibility(obj)
+        self.baseVisibility = {}
+        for base in obj.Model.Group:
+            self.rememberBaseVisibility(obj, base)
 
         self.stockVisibility = False
         if obj.Stock and obj.Stock.ViewObject:
@@ -204,9 +220,8 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
-        if obj.Base and obj.Base.ViewObject:
-            obj.Base.ViewObject.Visibility = self.baseVisibility
-        self.baseObjectRestoreVisibility(obj)
+        for base in obj.Model.Group:
+            self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
@@ -214,9 +229,10 @@ class StockEdit(object):
     Index = -1
     StockType = PathStock.StockType.Unknown
 
-    def __init__(self, obj, form):
+    def __init__(self, obj, form, force):
         self.obj = obj
         self.form = form
+        self.force = force
         self.setupUi(obj)
 
     @classmethod
@@ -240,6 +256,7 @@ class StockEdit(object):
         self.setFields(obj)
 
     def setStock(self, obj, stock):
+        PathLog.track(obj.Label, stock)
         if obj.Stock:
             obj.Document.removeObject(self.obj.Stock.Name)
         obj.Stock = stock
@@ -262,6 +279,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
     StockType = PathStock.StockType.FromBase
 
     def editorFrame(self):
+        PathLog.track()
         return self.form.stockFromBase
 
     def getFields(self, obj, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
@@ -286,8 +304,11 @@ class StockFromBaseBoundBoxEdit(StockEdit):
             PathLog.error(translate('PathJob', 'Stock not from Base bound box!'))
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        PathLog.track()
+        if self.force or not self.IsStock(obj):
+            PathLog.track()
             self.setStock(obj, PathStock.CreateFromBase(obj))
+            self.force = False
         self.setLengthField(self.form.stockExtXneg, obj.Stock.ExtXneg)
         self.setLengthField(self.form.stockExtXpos, obj.Stock.ExtXpos)
         self.setLengthField(self.form.stockExtYneg, obj.Stock.ExtYneg)
@@ -296,6 +317,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.setLengthField(self.form.stockExtZpos, obj.Stock.ExtZpos)
 
     def setupUi(self, obj):
+        PathLog.track()
         self.setFields(obj)
         self.checkXpos()
         self.checkYpos()
@@ -358,8 +380,9 @@ class StockCreateBoxEdit(StockEdit):
             pass
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        if self.force or not self.IsStock(obj):
             self.setStock(obj, PathStock.CreateBox(obj))
+            self.force = False
         self.setLengthField(self.form.stockBoxLength, obj.Stock.Length)
         self.setLengthField(self.form.stockBoxWidth,  obj.Stock.Width)
         self.setLengthField(self.form.stockBoxHeight, obj.Stock.Height)
@@ -390,8 +413,9 @@ class StockCreateCylinderEdit(StockEdit):
             pass
 
     def setFields(self, obj):
-        if not self.IsStock(obj):
+        if self.force or not self.IsStock(obj):
             self.setStock(obj, PathStock.CreateCylinder(obj))
+            self.force = False
         self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
         self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
 
@@ -419,8 +443,9 @@ class StockFromExistingEdit(StockEdit):
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        if obj.Base in solids and PathJob.isResourceClone(obj, 'Base'):
-            solids.remove(obj.Base)
+        for base in obj.Model.Group:
+            if base in solids and PathJob.isResourceClone(obj, base, 'Model'):
+                solids.remove(base)
         if obj.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
             solids.remove(obj.Stock)
@@ -454,6 +479,7 @@ class TaskPanel:
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
+        self.template = PathJobDlg.JobTemplateExport(self.obj, self.form.jobBox.widget(1))
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText('#')
@@ -470,12 +496,8 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        base = self.obj.Base if PathJob.isResourceClone(self.obj, 'Base') else None
-        stock = self.obj.Stock
-        for o in PathJob.ObjectJob.baseCandidates():
-            if o != base and o != stock:
-                self.form.jobModel.addItem(o.Label, o)
-        self.selectComboBoxText(self.form.jobModel, self.obj.Proxy.baseObject(self.obj).Label)
+        for base in self.obj.Model.Group:
+            self.form.jobModel.addItem(base.Label)
 
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
@@ -488,6 +510,9 @@ class TaskPanel:
         self.stockCreateCylinder = None
         self.stockEdit = None
 
+        self.setupGlobal = PathSetupSheetGui.GlobalEditor(self.obj.SetupSheet, self.form)
+        self.setupOps = PathSetupSheetGui.OpsDefaultEditor(self.obj.SetupSheet, self.form)
+
     def preCleanup(self):
         PathLog.track()
         FreeCADGui.Selection.removeObserver(self)
@@ -498,12 +523,16 @@ class TaskPanel:
         PathLog.track()
         self.preCleanup()
         self.getFields()
+        self.setupGlobal.accept()
+        self.setupOps.accept()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
 
     def reject(self, resetEdit=True):
         PathLog.track()
         self.preCleanup()
+        self.setupGlobal.reject()
+        self.setupOps.reject()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             PathLog.info("Uncreate Job")
@@ -543,18 +572,13 @@ class TaskPanel:
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
-            selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
-            if self.obj.Proxy.baseObject(self.obj) != selObj:
-                self.vproxy.baseObjectRestoreVisibility(self.obj)
-                if PathJob.isResourceClone(self.obj, 'Base'):
-                    self.obj.Document.removeObject(self.obj.Base.Name)
-                self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
-                self.vproxy.baseObjectSaveVisibility(self.obj)
-
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
 
             self.obj.Proxy.execute(self.obj)
+
+        self.setupGlobal.getFields()
+        self.setupOps.getFields()
 
     def selectComboBoxText(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -640,17 +664,14 @@ class TaskPanel:
             item.setData(self.DataObject, child)
             self.form.operationsList.addItem(item)
 
-        baseindex = -1
-        if self.obj.Base:
-            baseindex = self.form.jobModel.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
-        else:
-            for o in FreeCADGui.Selection.getCompleteSelection():
-                baseindex = self.form.jobModel.findText(o.Label, QtCore.Qt.MatchFixedString)
-        if baseindex >= 0:
-            self.form.jobModel.setCurrentIndex(baseindex)
+        self.form.jobModel.clear()
+        for base in self.obj.Model.Group:
+            self.form.jobModel.addItem(base.Label)
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
+        self.setupGlobal.setFields()
+        self.setupOps.setFields()
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -776,7 +797,9 @@ class TaskPanel:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
-    def orientSelected(self, axis):
+        self.template.updateUI()
+
+    def modelSetAxis(self, axis):
         def flipSel(sel):
             PathLog.debug("flip")
             p = sel.Object.Placement
@@ -826,12 +849,47 @@ class TaskPanel:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
 
+    def restoreSelection(self, selection):
+        FreeCADGui.Selection.clearSelection()
+        for sel in selection:
+            FreeCADGui.Selection.addSelection(sel.Object, sel.SubElementNames)
+
+    def modelSet0(self, axis):
+        with selectionEx() as selection:
+            for sel in selection:
+                model = sel.Object
+                for name in sel.SubElementNames:
+                    feature = model.Shape.getElement(name)
+                    bb = feature.BoundBox
+                    offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
+                    PathLog.track(feature.BoundBox.ZMax, offset)
+                    p = model.Placement
+                    p.move(offset)
+                    model.Placement = p
+
+    def modelMove(self, axis):
+        scale = self.form.modelMoveValue.value()
+        with selectionEx() as selection:
+            for sel in selection:
+                offset = axis * scale
+                Draft.move(sel.Object, offset)
+
+    def modelRotate(self, axis):
+        angle = self.form.modelRotateValue.value()
+        with selectionEx() as selection:
+            for sel in selection:
+                Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
+
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
-        if obj == self.obj.Base and self.obj.Stock:
+
+        for base in self.obj.Model.Group:
+            if base != obj:
+                Draft.move(base, by)
+
+        if obj != self.obj.Stock and self.obj.Stock:
             Draft.move(self.obj.Stock, by)
-        if obj == self.obj.Stock and self.obj.Base:
-            Draft.move(self.obj.Base, by)
+
         placement = FreeCADGui.ActiveDocument.ActiveView.viewPosition()
         placement.Base = placement.Base + by
         FreeCADGui.ActiveDocument.ActiveView.viewPosition(placement, 0)
@@ -853,22 +911,26 @@ class TaskPanel:
             FreeCADGui.Selection.addSelection(selObject, selFeature)
         return (selObject, p)
 
-    def updateStockEditor(self, index):
+    def updateStockEditor(self, index, force = False):
         def setupFromBaseEdit():
-            if not self.stockFromBase:
-                self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockFromBase:
+                self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form, force)
             self.stockEdit = self.stockFromBase
         def setupCreateBoxEdit():
-            if not self.stockCreateBox:
-                self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockCreateBox:
+                self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form, force)
             self.stockEdit = self.stockCreateBox
         def setupCreateCylinderEdit():
-            if not self.stockCreateCylinder:
-                self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockCreateCylinder:
+                self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form, force)
             self.stockEdit = self.stockCreateCylinder
         def setupFromExisting():
-            if not self.stockFromExisting:
-                self.stockFromExisting = StockFromExistingEdit(self.obj, self.form)
+            PathLog.track(index, force)
+            if force or not self.stockFromExisting:
+                self.stockFromExisting = StockFromExistingEdit(self.obj, self.form, force)
             if self.stockFromExisting.candidates(self.obj):
                 self.stockEdit = self.stockFromExisting
                 return True
@@ -900,56 +962,120 @@ class TaskPanel:
                 PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
         self.stockEdit.activate(self.obj, index == -1)
 
-    def centerInStock(self):
-        bbb = self.obj.Base.Shape.BoundBox
-        bbs = self.obj.Stock.Shape.BoundBox
-        by = bbs.Center - bbb.Center
-        Draft.move(self.obj.Base, by)
+        if -1 != index:
+            self.template.updateUI()
 
-    def centerInStockXY(self):
-        bbb = self.obj.Base.Shape.BoundBox
+    def refreshStock(self):
+        self.updateStockEditor(self.form.stock.currentIndex(), True)
+
+    def alignCenterInStock(self):
         bbs = self.obj.Stock.Shape.BoundBox
-        by = bbs.Center - bbb.Center
-        by.z = 0
-        Draft.move(self.obj.Base, by)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            bbb = sel.Object.Shape.BoundBox
+            by = bbs.Center - bbb.Center
+            Draft.move(sel.Object, by)
+
+    def alignCenterInStockXY(self):
+        bbs = self.obj.Stock.Shape.BoundBox
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            bbb = sel.Object.Shape.BoundBox
+            by = bbs.Center - bbb.Center
+            by.z = 0
+            Draft.move(sel.Object, by)
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
 
-        PathLog.track(len(sel))
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             if 'Vertex' == sel[0].SubObjects[0].ShapeType:
-                self.form.orientGroup.setEnabled(False)
+                self.form.modelSetXAxis.setEnabled(False)
+                self.form.modelSetYAxis.setEnabled(False)
+                self.form.modelSetZAxis.setEnabled(False)
                 self.form.setOrigin.setEnabled(True)
                 self.form.moveToOrigin.setEnabled(True)
             else:
-                self.form.orientGroup.setEnabled(True)
+                self.form.modelSetXAxis.setEnabled(True)
+                self.form.modelSetYAxis.setEnabled(True)
+                self.form.modelSetZAxis.setEnabled(True)
                 self.form.setOrigin.setEnabled(False)
                 self.form.moveToOrigin.setEnabled(False)
         else:
-            self.form.orientGroup.setEnabled(False)
+            self.form.modelSetXAxis.setEnabled(False)
+            self.form.modelSetYAxis.setEnabled(False)
+            self.form.modelSetZAxis.setEnabled(False)
             self.form.setOrigin.setEnabled(False)
             self.form.moveToOrigin.setEnabled(False)
 
-        if len(sel) == 1 and sel[0].Object == self.obj.Base:
-            self.form.centerInStock.setEnabled(True)
-            self.form.centerInStockXY.setEnabled(True)
-        else:
-            if len(sel) == 1 and self.obj.Base:
-                PathLog.debug("sel = %s / %s" % (sel[0].Object.Label, self.obj.Base.Label))
-            else:
-                PathLog.debug("sel len = %d" % len(sel))
+        if len(sel) == 0 or self.obj.Stock in [s.Object for s in sel]:
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
+        else:
+            self.form.centerInStock.setEnabled(True)
+            self.form.centerInStockXY.setEnabled(True)
 
+        if len(sel) > 0:
+            self.form.modelSetX0.setEnabled(True)
+            self.form.modelSetY0.setEnabled(True)
+            self.form.modelSetZ0.setEnabled(True)
+            self.form.modelMoveGroup.setEnabled(True)
+            self.form.modelRotateGroup.setEnabled(True)
+        else:
+            self.form.modelSetX0.setEnabled(False)
+            self.form.modelSetY0.setEnabled(False)
+            self.form.modelSetZ0.setEnabled(False)
+            self.form.modelMoveGroup.setEnabled(False)
+            self.form.modelRotateGroup.setEnabled(False)
+
+    def jobModelEdit(self):
+        dialog = PathJobDlg.JobCreate()
+        dialog.setupTitle(translate("Path_Job", "Model Selection"))
+        dialog.setupModel(self.obj)
+        if dialog.exec_() == 1:
+            models = dialog.getModels()
+            if models:
+                obj = self.obj
+                proxy = obj.Proxy
+
+                # first remove all retired base models
+                retired = [base for base in self.obj.Model.Group if not proxy.baseObject(obj, base) in models]
+                for base in retired:
+                    self.vproxy.forgetBaseVisibility(obj, base)
+                    self.obj.Proxy.removeBase(obj, base, True)
+                # do not access any of the retired objects after this point, they don't exist anymore
+
+                # then add all rookie base models
+                baseOrigNames = [proxy.baseObject(obj, base).Name for base in obj.Model.Group]
+                rookies = [base for base in models if not base.Name in baseOrigNames]
+                for orig in rookies:
+                    base = PathJob.createModelResourceClone(obj, orig)
+                    obj.Model.addObject(base)
+                    self.vproxy.rememberBaseVisibility(obj, base)
+
+                # refresh the view
+                if retired or rookies:
+                    self.setFields()
+                else:
+                    PathLog.track('no changes to model')
+
+
+    def tabPageChanged(self, index):
+        if index == 0:
+            # update the template with potential changes
+            self.getFields()
+            self.setupGlobal.accept()
+            self.setupOps.accept()
+            self.obj.Document.recompute()
+            self.template.updateUI()
 
     def setupUi(self, activate):
-        self.updateStockEditor(-1)
+        self.setupGlobal.setupUi()
+        self.setupOps.setupUi()
+        self.updateStockEditor(-1, True)
         self.setFields()
 
         # Info
         self.form.jobLabel.editingFinished.connect(self.getFields)
-        self.form.jobModel.currentIndexChanged.connect(self.getFields)
+        self.form.jobModelEdit.clicked.connect(self.jobModelEdit)
 
         # Post Processor
         self.form.postProcessor.currentIndexChanged.connect(self.getFields)
@@ -978,17 +1104,36 @@ class TaskPanel:
         self.toolControllerSelect()
 
         # Stock, Orientation and Alignment
-        self.form.centerInStock.clicked.connect(self.centerInStock)
-        self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
+        self.form.centerInStock.clicked.connect(self.alignCenterInStock)
+        self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
+        self.form.refreshStock.clicked.connect(self.refreshStock)
 
-        self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
-        self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
-        self.form.orientZAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 0, 1)))
+        self.form.modelSetXAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(1, 0, 0)))
+        self.form.modelSetYAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 1, 0)))
+        self.form.modelSetZAxis.clicked.connect(lambda: self.modelSetAxis(FreeCAD.Vector(0, 0, 1)))
+        self.form.modelSetX0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector(-1,  0,  0)))
+        self.form.modelSetY0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector( 0, -1,  0)))
+        self.form.modelSetZ0.clicked.connect(lambda: self.modelSet0(FreeCAD.Vector( 0,  0, -1)))
 
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
+
+        self.form.modelMoveLeftUp.clicked.connect(      lambda: self.modelMove(FreeCAD.Vector(-1,  1, 0)))
+        self.form.modelMoveLeft.clicked.connect(        lambda: self.modelMove(FreeCAD.Vector(-1,  0, 0)))
+        self.form.modelMoveLeftDown.clicked.connect(    lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0)))
+
+        self.form.modelMoveUp.clicked.connect(          lambda: self.modelMove(FreeCAD.Vector( 0,  1, 0)))
+        self.form.modelMoveDown.clicked.connect(        lambda: self.modelMove(FreeCAD.Vector( 0, -1, 0)))
+
+        self.form.modelMoveRightUp.clicked.connect(     lambda: self.modelMove(FreeCAD.Vector( 1,  1, 0)))
+        self.form.modelMoveRight.clicked.connect(       lambda: self.modelMove(FreeCAD.Vector( 1,  0, 0)))
+        self.form.modelMoveRightDown.clicked.connect(   lambda: self.modelMove(FreeCAD.Vector( 1, -1, 0)))
+
+        self.form.modelRotateLeft.clicked.connect(      lambda: self.modelRotate(FreeCAD.Vector(0, 0,  1)))
+        self.form.modelRotateRight.clicked.connect(     lambda: self.modelRotate(FreeCAD.Vector(0, 0, -1)))
+
         self.updateSelection()
 
         # set active page
@@ -1002,6 +1147,13 @@ class TaskPanel:
             self.form.setCurrentIndex(3)
         if activate in ['Workplan', 'Operations']:
             self.form.setCurrentIndex(4)
+
+        self.form.currentChanged.connect(self.tabPageChanged)
+        self.template.exportButton().clicked.connect(self.templateExport)
+
+    def templateExport(self):
+        self.getFields()
+        PathJobCmd.CommandJobTemplateExport.SaveDialog(self.obj, self.template)
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)
@@ -1028,7 +1180,8 @@ def Create(base, template=None):
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except:
-        PathLog.error(sys.exc_info())
+    except Exception as exc:
+        PathLog.error(exc)
+        traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
 

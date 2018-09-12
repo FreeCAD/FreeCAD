@@ -17,6 +17,8 @@ add_definitions(-DBOOST_${Boost_VERSION})
 #if you want to use the old DAG structure uncomment this line
 # add_definitions(-DUSE_OLD_DAG)
 
+# -----------------------------------------------------------------------------
+
 #write relevant cmake variables to a file for later access with python. Exportet are all variables 
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
 #use a python list for export. 
@@ -34,7 +36,14 @@ foreach (_variableName ${_variableNames})
     endif ()
 endforeach()
 set(_vars "${_vars}]\\n\" \n;")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h "${_vars}" )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh "${_vars}" )
+
+fc_copy_file_if_different(
+    "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh"
+    "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h"
+)
+
+# -----------------------------------------------------------------------------
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src

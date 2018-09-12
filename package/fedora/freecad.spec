@@ -33,6 +33,12 @@ BuildRequires:  Coin3-devel
 BuildRequires:  OCE-devel
 BuildRequires:  OCE-draw
 BuildRequires:  boost-devel
+%if 0%{?fedora} > 28
+BuildRequires:  boost-python2-devel
+BuildRequires:  boost-python3-devel
+BuildRequires:  boost-python2
+BuildRequires:  boost-python3
+%endif
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
 BuildRequires:  dos2unix

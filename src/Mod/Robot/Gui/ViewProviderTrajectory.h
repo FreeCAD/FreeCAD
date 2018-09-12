@@ -52,6 +52,7 @@ public:
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
 protected:
  

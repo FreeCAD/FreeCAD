@@ -178,6 +178,20 @@ private:
 
 // ----------------------------------------------------------------------------
 
+class StateLocker
+{
+public:
+    StateLocker(bool& flag, bool st = true) : lock(flag), state(st)
+    { lock = state; }
+    ~StateLocker()
+    { lock = !state; }
+private:
+    bool& lock;
+    bool state;
+};
+
+// ----------------------------------------------------------------------------
+
 class ConnectionBlocker {
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     bool b;

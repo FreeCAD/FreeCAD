@@ -398,9 +398,9 @@ public:
         return TopoShape(Tag,Hasher).makEGTransform(*this,mat,op,copy);
     }
 
-    TopoShape &makECopy(const TopoShape &shape, const char *op=0);
-    TopoShape makECopy(const char *op=0) const {
-        return TopoShape(Tag,Hasher).makECopy(*this,op);
+    TopoShape &makECopy(const TopoShape &shape, const char *op=0, bool copyGeom=true, bool copyMesh=false);
+    TopoShape makECopy(const char *op=0, bool copyGeom=true, bool copyMesh=false) const {
+        return TopoShape(Tag,Hasher).makECopy(*this,op,copyGeom,copyMesh);
     }
 
     TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);

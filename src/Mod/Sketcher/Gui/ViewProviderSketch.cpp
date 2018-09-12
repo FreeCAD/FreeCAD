@@ -378,6 +378,12 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
     Mode = STATUS_SKETCH_UseHandler;
     edit->sketchHandler->sketchgui = this;
     edit->sketchHandler->activated(this);
+
+    // make sure receiver has focus so immediately pressing Escape will be handled by
+    // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
+    // sketcher editor
+    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    mdi->setFocus();
 }
 
 void ViewProviderSketch::deactivateHandler()
@@ -3724,14 +3730,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             }
 
-            double temprepscale = ( 0.5 * maxdisttocenterofmass ) / maxcurv; // just a factor to make a comb reasonably visible
-            
-            if( temprepscale > combrepscale )
+            double temprepscale = 0;
+            if (maxcurv > 0)
+                temprepscale = (0.5 * maxdisttocenterofmass) / maxcurv; // just a factor to make a comb reasonably visible
+
+            if (temprepscale > combrepscale)
                 combrepscale = temprepscale;
-            
-            
-        }
-        else {
         }
     }
     
@@ -3920,7 +3924,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             try {
                 spline->normalAt(paramlist[i],normallist[i]);
             }
-            catch(Base::Exception) {
+            catch(Base::Exception&) {
                 normallist[i] = Base::Vector3d(0,0,0);
             }
 
@@ -5122,7 +5126,7 @@ Restart:
                     break;
             }
 
-        } catch (Base::Exception e) {
+        } catch (Base::Exception &e) {
             Base::Console().Error("Exception during draw: %s\n", e.what());
         } catch (...){
             Base::Console().Error("Exception during draw: unknown\n");

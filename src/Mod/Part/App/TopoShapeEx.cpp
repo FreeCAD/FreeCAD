@@ -655,7 +655,7 @@ TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
 }
 
 
-TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op)
+TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool copyGeom, bool copyMesh)
 {
     _Shape.Nullify();
     resetElementMap();
@@ -664,7 +664,11 @@ TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op)
         return *this;
 
     TopoShape tmp(shape);
+#if OCC_VERSION_HEX >= 0x070000
+    tmp._Shape = BRepBuilderAPI_Copy(shape.getShape(),copyGeom,copyMesh).Shape();
+#else
     tmp._Shape = BRepBuilderAPI_Copy(shape.getShape()).Shape();
+#endif
     if(op || (shape.Tag && shape.Tag!=Tag)) {
         _Shape = tmp._Shape;
         mapSubElement(tmp,op);

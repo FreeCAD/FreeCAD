@@ -39,13 +39,14 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def pocketFeatures(self):
         '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
-        return PathPocketBaseGui.FeaturePocket
+        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
 
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
         TaskPanelOpPage,
         'Path-Pocket',
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket Shape"),
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"),
+        PathPocketShape.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")

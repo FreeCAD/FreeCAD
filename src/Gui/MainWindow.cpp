@@ -1036,7 +1036,10 @@ void MainWindow::closeEvent (QCloseEvent * e)
         }
 
         /*emit*/ mainWindowClosed();
-        qApp->quit(); // stop the event loop
+        if (this->property("QuitOnClosed").isValid()) {
+            QApplication::closeAllWindows();
+            qApp->quit(); // stop the event loop
+        }
     }
 }
 
@@ -1095,6 +1098,9 @@ void MainWindow::delayedStartup()
     if (App::Application::Config()["RunMode"] == "Internal") {
         try {
             Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        }
+        catch (const Base::SystemExitException&) {
+            throw;
         }
         catch (const Base::Exception& e) {
             e.ReportException();

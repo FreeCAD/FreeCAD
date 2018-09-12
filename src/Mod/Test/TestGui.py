@@ -40,28 +40,12 @@ class TestCmd:
     """Opens a Qt dialog with all inserted unit tests"""
     def Activated(self):
         import QtUnitGui
+        tests = FreeCAD.__unit_test__
+
         QtUnitGui.addTest("TestApp.All")
         QtUnitGui.setTest("TestApp.All")
-        QtUnitGui.addTest("BaseTests")
-        QtUnitGui.addTest("UnitTests")
-        QtUnitGui.addTest("Document")
-        QtUnitGui.addTest("UnicodeTests")
-        QtUnitGui.addTest("MeshTestsApp")
-        QtUnitGui.addTest("TestFem")
-        QtUnitGui.addTest("TestSketcherApp")
-        QtUnitGui.addTest("TestPartApp")
-        QtUnitGui.addTest("TestPartDesignApp")
-        QtUnitGui.addTest("TestPartDesignGui")
-        QtUnitGui.addTest("TestPathApp")
-        QtUnitGui.addTest("TestSpreadsheet")
-        QtUnitGui.addTest("TestDraft")
-        QtUnitGui.addTest("TestArch")
-        QtUnitGui.addTest("TestTechDrawApp")
-        QtUnitGui.addTest("Workbench")
-        QtUnitGui.addTest("Menu")
-        QtUnitGui.addTest("Menu.MenuDeleteCases")
-        QtUnitGui.addTest("Menu.MenuCreateCases")
-        QtUnitGui.addTest("TestPythonSyntax")
+        for test in tests:
+            QtUnitGui.addTest(test)
 
     def GetResources(self):
         return {'MenuText': 'Self-test...', 'ToolTip': 'Runs a self-test to check if the application works properly'}

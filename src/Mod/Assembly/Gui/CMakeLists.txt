@@ -92,17 +92,21 @@ SET(AssemblyGui_SRCS
     ${AssemblyGui_UIC_HDRS}
 )
 
-add_library(AssemblyGui SHARED ${AssemblyGui_SRCS})
+SET(AssemblyGui_Scripts
+    ../InitGui.py
+)
+
+add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGui_Scripts})
 if(CMAKE_COMPILER_IS_GNUCXX)
 	set_target_properties(AssemblyGui PROPERTIES COMPILE_FLAGS "-fext-numeric-literals")
 endif()
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
 
 
-fc_target_copy_resource(AssemblyGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
+fc_target_copy_resource_flat(AssemblyGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Assembly
-    InitGui.py)
+    ${AssemblyGui_Scripts})
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)

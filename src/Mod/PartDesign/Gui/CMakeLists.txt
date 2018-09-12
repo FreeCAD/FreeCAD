@@ -265,38 +265,26 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-SET(PartDesignGui_Scripts
-    InitGui.py
-    TestPartDesignGui.py
-)
-
 SET(PartDesignGui_SRCS
     ${PartDesignGui_SRCS}
     ${PartDesignGui_UIC_HDRS}
     ${PartDesignGuiModule_SRCS}
     ${PartDesignGuiTaskDlgs_SRCS}
     ${PartDesignGuiViewProvider_SRCS}
-	${Python_SRCS}
+    ${Python_SRCS}
 )
-
-add_library(PartDesignGui SHARED ${PartDesignGui_SRCS})
-target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-
-
-fc_target_copy_resource(PartDesignGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
-    ${CMAKE_BINARY_DIR}/Mod/PartDesign
-    ${PartDesignGui_Scripts})
-
-SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
-SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
-
-INSTALL(TARGETS PartDesignGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 SET(PartDesignGuiIcon_SVG
     Resources/icons/PartDesignWorkbench.svg
 )
 
+add_library(PartDesignGui SHARED ${PartDesignGui_SRCS} ${PartDesignGuiIcon_SVG})
+target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
+
+SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
+SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
+
 fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})
 
+INSTALL(TARGETS PartDesignGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${PartDesignGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/icons")
