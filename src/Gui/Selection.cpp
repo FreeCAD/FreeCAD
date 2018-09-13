@@ -52,6 +52,7 @@
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
+#include "Macro.h"
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
@@ -861,6 +862,50 @@ App::Document* SelectionSingleton::getDocument(const char* pDocName) const
         return App::GetApplication().getActiveDocument();
 }
 
+int SelectionSingleton::disableCommandLog() {
+    if(!logDisabled)
+        logHasSelection = hasSelection();
+    return ++logDisabled;
+}
+
+int SelectionSingleton::enableCommandLog(bool silent) {
+    --logDisabled;
+    if(!logDisabled && !silent) {
+        auto manager = Application::Instance->macroManager();
+        if(!hasSelection()) {
+            if(logHasSelection) 
+                manager->addLine(MacroManager::Gui, "Gui.Selection.clearSelection()");
+        }else{
+            for(auto &sel : _SelList)
+                sel.log();
+        }
+    }
+    return logDisabled;
+}
+
+void SelectionSingleton::_SelObj::log(bool remove) {
+    if(logged && !remove) 
+        return;
+    logged = true;
+    std::ostringstream ss;
+    ss << "Gui.Selection." << (remove?"removeSelection":"addSelection")
+        << "('" << DocName  << "','" << FeatName << "'";
+    if(SubName.size()) {
+        if(elementName.second.size() && elementName.first.size())
+            ss << ",'" << SubName.substr(0,SubName.size()-elementName.first.size()) 
+                << elementName.second << "'";
+        else
+            ss << ",'" << SubName << "'";
+    }
+    if(!remove && (x || y || z)) {
+        if(SubName.empty())
+            ss << ",''";
+        ss << ',' << x << ',' << y << ',' << z;
+    }
+    ss << ')';
+    Application::Instance->macroManager()->addLine(MacroManager::Gui, ss.str().c_str());
+}
+
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, const std::vector<SelObj> *pickedList)
 {
     if(pickedList) {
@@ -913,6 +958,9 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             return false;
         }
     }
+
+    if(!logDisabled)
+        temp.log();
 
     _SelList.push_back(temp);
     _SelStackForward.clear();
@@ -1159,6 +1207,8 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
                 continue;
         }
 
+        It->log(true);
+
         changes.emplace_back(SelectionChanges::RmvSelection,
                 It->DocName,It->FeatName,It->SubName,It->TypeName);
 
@@ -1339,6 +1389,10 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         if(!touched)
             return;
 
+        std::ostringstream ss;
+        ss << "Gui.clearSelection('" << docName << "')";
+        Application::Instance->macroManager()->addLine(MacroManager::Gui,ss.str().c_str());
+
         SelectionChanges Chng(SelectionChanges::ClrSelection,docName.c_str());
 
         FC_TRACE("notifying clear selection");
@@ -1364,6 +1418,9 @@ void SelectionSingleton::clearCompleteSelection()
 
     if(_SelList.empty())
         return;
+
+    Application::Instance->macroManager()->addLine(MacroManager::Gui,"Gui.clearSelection()");
+
 
     _SelList.clear();
 
@@ -1670,9 +1727,19 @@ PyMethodDef SelectionSingleton::Methods[] = {
 
 PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *object;
+    SelectionLogDisabler disabler(true);
+    char *objname;
+    char *docname;
     char* subname=0;
     float x=0,y=0,z=0;
+    if (PyArg_ParseTuple(args, "ss|sfff", &docname, &objname ,&subname,&x,&y,&z)) {
+        Selection().addSelection(docname,objname,subname,x,y,z);
+        Py_Return;
+    }
+
+    PyObject *object;
+    subname = 0;
+    x=0,y=0,z=0;
     if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
@@ -1759,8 +1826,16 @@ PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args)
 
 PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *object;
+    SelectionLogDisabler disabler(true);
+    char *docname,*objname;
     char* subname=0;
+    if(PyArg_ParseTuple(args, "ss|s", &docname,&objname,&subname)) {
+        Selection().rmvSelection(docname,objname,subname);
+        Py_Return;
+    }
+
+    PyObject *object;
+    subname = 0;
     if (!PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type),&object,&subname))
         return NULL;
 
@@ -1780,6 +1855,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
 
 PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args)
 {
+    SelectionLogDisabler disabler(true);
     char *documentName=0;
     if (!PyArg_ParseTuple(args, "|s", &documentName))
         return NULL;

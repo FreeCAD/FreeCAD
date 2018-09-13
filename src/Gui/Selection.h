@@ -347,6 +347,8 @@ public:
     /// remove the active SelectionGate
     void rmvSelectionGate(void);
 
+    int disableCommandLog();
+    int enableCommandLog(bool silent=false);
 
     /** Returns the number of selected objects with a special object type
      * It's the convenient way to check if the right objects are selected to
@@ -515,9 +517,12 @@ protected:
         App::Document* pDoc;
         App::DocumentObject* pObject;
         float x,y,z;
+        bool logged = false;
 
         std::pair<std::string,std::string> elementName;
         App::DocumentObject* pResolvedObject = 0;
+
+        void log(bool remove=false);
     };
     mutable std::list<_SelObj> _SelList;
 
@@ -545,6 +550,9 @@ protected:
 
     Gui::SelectionGate *ActiveGate;
     int gateResolve;
+
+    int logDisabled = 0;
+    bool logHasSelection = false;
 };
 
 /**
@@ -566,6 +574,18 @@ inline SelectionSingleton& Selection(void)
 {
     return SelectionSingleton::instance();
 }
+
+class SelectionLogDisabler {
+public:
+    SelectionLogDisabler(bool silent=false) :silent(silent) {
+        Selection().disableCommandLog();
+    }
+    ~SelectionLogDisabler() {
+        Selection().enableCommandLog(silent);
+    }
+private:
+    bool silent;
+};
 
 } //namespace Gui
 
