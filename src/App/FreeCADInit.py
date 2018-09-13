@@ -192,13 +192,17 @@ def InitApplications():
 		os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
 	except UnicodeDecodeError:
 		# See #0002238. FIXME: check again once ported to Python 3.x
-		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...')
+		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...\n')
 		path = os.environ["PATH"].split(os.pathsep)
 		cleanpath=[]
 		for i in path:
 			if test_ascii(i):
 				cleanpath.append(i)
 		os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
+		Log('done\n')
+	except UnicodeEncodeError:
+		Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
+		os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
 		Log('done\n')
 	except KeyError:
 		os.environ["PATH"] = PathEnvironment
@@ -232,7 +236,14 @@ App.__unit_test__ = []
 Log ('Init: starting App::FreeCADInit.py\n')
 
 # init every application by importing Init.py
-InitApplications()
+try:
+	import traceback
+	InitApplications()
+except Exception as e:
+	Err('Error in InitApplications ' + str(e) + '\n')
+	Err('-'*80+'\n')
+	Err(traceback.format_exc())
+	Err('-'*80+'\n')
 
 FreeCAD.addImportType("FreeCAD document (*.FCStd)","FreeCAD")
 
