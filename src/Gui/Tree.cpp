@@ -58,6 +58,7 @@
 #include "MainWindow.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "Macro.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
@@ -674,8 +675,15 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     else if (item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
         objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+        auto manager = Application::Instance->macroManager();
+        auto lines = manager->getLines();
+        std::ostringstream ss;
+        ss << Command::getObjectCmd(objitem->object()->getObject())
+            << ".ViewObject.doubleClicked()";
         if (!objitem->object()->doubleClicked())
             QTreeWidget::mouseDoubleClickEvent(event);
+        else if(lines == manager->getLines())
+            manager->addLine(MacroManager::Gui,ss.str().c_str());
     }
 }
 
@@ -1018,15 +1026,36 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
+                auto manager = Application::Instance->macroManager();
                 bool dragged =false;
-                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
+                std::ostringstream ss;
+                if(!dropOnly && vpp && vpp->canDragAndDropObject(obj)) {
                     dragged = true;
+                    auto lines = manager->getLines();
+                    ss << Command::getObjectCmd(vpp->getObject())
+                        << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
                     vpp->dragObject(obj);
+                    if(manager->getLines() == lines)
+                        manager->addLine(MacroManager::Gui,ss.str().c_str());
                     owner = 0;
                     subname.clear();
+                    ss.str("");
                 }
 
+                ss << Command::getObjectCmd(vp->getObject())
+                    << ".ViewObject.dropObject(" << Command::getObjectCmd(obj);
+                if(owner) {
+                    ss << "," << Command::getObjectCmd(owner)
+                        << ",'" << subname << "',[";
+                }else
+                    ss << ",None,'',[";
+                for(auto &sub : info.subs)
+                    ss << "'" << sub << "',";
+                ss << "])";
+                auto lines = manager->getLines();
                 std::string droppedName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
+                if(manager->getLines() == lines)
+                    manager->addLine(MacroManager::Gui,ss.str().c_str());
                 if(propPlacement) {
                     auto pos = selSubname.tellp();
                     if(droppedName.size())
@@ -1154,15 +1183,20 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
+                std::ostringstream ss;
+                ss << Command::getObjectCmd(vpp->getObject())
+                    << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
+                auto manager = Application::Instance->macroManager();
+                auto lines = manager->getLines();
                 vpp->dragObject(obj);
+                if(manager->getLines() == lines)
+                    manager->addLine(MacroManager::Gui,ss.str().c_str());
 
                 //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
                 //all removed objects
                 auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
                 if(grp) {
-                    grp->getExtensionByType<App::GeoFeatureGroupExtension>()->removeObject(obj);
-                    // children view provider maintainace is now handled by
-                    // Gui::Document::handleChildren3D()
+                    FCMD_OBJ_CMD(grp,"removeObject(" << Command::getObjectCmd(obj) << ")");
                 }
 
                 if(propPlacement) 
