@@ -499,9 +499,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(link && link->getElementCountValue()) {
         linked = link->getTrueLinkedObject(false);
         if(linked && linked!=owner) {
-            baseShape = getTopoShape(linked);
-            baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()),false);
-            baseShape.initCache(1);
+            Base::Matrix4D linkMat;
+            baseShape = getTopoShape(linked,0,false,0,0,false,false);
             if(!link->getShowElementValue())
                 baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
         }
@@ -514,7 +513,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         std::string childName;
         App::DocumentObject *parent=0;
         Base::Matrix4D mat;
-        auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat);
+        auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
         if(!parent && !subObj)
             continue;
         visible = parent->isElementVisible(childName.c_str());
