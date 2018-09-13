@@ -67,7 +67,7 @@ def InitApplications():
 	Lib64Dir = FreeCAD.getHomePath()+'lib64'
 	Lib64Dir = os.path.realpath(Lib64Dir)
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
-	HomeMod = FreeCAD.ConfigGet("UserAppData")+"Mod"
+	HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
 	MacroMod = os.path.realpath(MacroDir+"/Mod")
@@ -105,7 +105,8 @@ def InitApplications():
 	#Err( AddModPaths)
 	# add also this path so that all modules search for libraries
 	# they depend on first here
-	PathExtension = BinDir + os.pathsep
+	PathExtension = []
+	PathExtension.append(BinDir)
 
 	# prepend all module paths to Python search path
 	Log('Init:   Searching for modules...\n')
@@ -126,7 +127,7 @@ def InitApplications():
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
-			PathExtension += Dir + os.pathsep
+			PathExtension.append(Dir)
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
@@ -176,9 +177,19 @@ def InitApplications():
 		Err('During initialization the error ' + str(inst) + ' occurred\n')
 
 	Log("Using "+ModDir+" as module path!\n")
+	# In certain cases the PathExtension list can contain invalid strings. We concatenate them to a single string
+	# but check that the output is a valid string
+	PathEnvironment = PathExtension.pop(0) + os.pathsep
+	for path in PathExtension:
+		try:
+			PathEnvironment += path + os.pathsep
+		except UnicodeDecodeError:
+			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
+			pass
+
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
-		os.environ["PATH"] = PathExtension + os.environ["PATH"]
+		os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
 	except UnicodeDecodeError:
 		# See #0002238. FIXME: check again once ported to Python 3.x
 		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...')
@@ -187,10 +198,10 @@ def InitApplications():
 		for i in path:
 			if test_ascii(i):
 				cleanpath.append(i)
-		os.environ["PATH"] = PathExtension + os.pathsep.join(cleanpath)
+		os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
 		Log('done\n')
 	except KeyError:
-		os.environ["PATH"] = PathExtension
+		os.environ["PATH"] = PathEnvironment
 	path = os.environ["PATH"].split(os.pathsep)
 	Log("System path after init:\n")
 	for i in path:
