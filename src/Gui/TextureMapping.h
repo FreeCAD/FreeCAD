@@ -50,11 +50,13 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent *e);
 
 private:
     SoGroup* grp;
     SoTexture2* tex;
     SoTextureCoordinateEnvironment* env;
+    QString fileName;
     Ui_TextureMapping* ui;
 };
 

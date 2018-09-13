@@ -315,6 +315,13 @@ void DlgRevolution::changeEvent(QEvent *e)
     }
 }
 
+void DlgRevolution::keyPressEvent(QKeyEvent* ke)
+{
+    // The revolution dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
+}
+
 void DlgRevolution::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
