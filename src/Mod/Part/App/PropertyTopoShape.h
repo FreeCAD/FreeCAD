@@ -93,8 +93,11 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    virtual std::string getElementMapVersion(bool restored=false) const override;
+
 private:
     TopoShape _Shape;
+    std::string _Ver;
 };
 
 struct PartExport ShapeHistory {

@@ -228,7 +228,7 @@ public:
 
     /** Return the element map version of the geometry data stored in the given property
      */
-    virtual std::string getElementMapVersion(const App::Property *prop) const;
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
        
 public:
     /** mustExecute

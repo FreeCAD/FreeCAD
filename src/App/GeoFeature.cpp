@@ -212,8 +212,9 @@ void GeoFeature::onChanged(const Property *prop) {
 }
 
 void GeoFeature::onDocumentRestored() {
-    _elementMapVersion = getElementMapVersion(getPropertyOfGeometry());
-    if(!getDocument()->testStatus(Document::Status::Importing))
+    if(!getDocument()->testStatus(Document::Status::Importing)) {
+        _elementMapVersion = getElementMapVersion(getPropertyOfGeometry(),true);
         updateElementReference();
+    }
     DocumentObject::onDocumentRestored();
 }

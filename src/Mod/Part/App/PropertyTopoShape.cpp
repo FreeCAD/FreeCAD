@@ -267,6 +267,12 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
 }
 
+std::string PropertyPartShape::getElementMapVersion(bool restored) const {
+    if(restored)
+        return _Ver;
+    return PropertyComplexGeoData::getElementMapVersion(false);
+}
+
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
@@ -278,10 +284,10 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     }
 
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    std::string map_ver;
+    _Ver.clear();
     bool has_ver = reader.hasAttribute("ElementMap");
     if(has_ver)
-        map_ver = reader.getAttribute("ElementMap");
+        _Ver = reader.getAttribute("ElementMap");
 
     int hasher_idx = reader.hasAttribute("HasherIndex")?reader.getAttributeAsInteger("HasherIndex"):-1;
     if(owner && hasher_idx>=0) {
@@ -293,16 +299,16 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     if(has_ver) {
         if(owner && owner->getDocument()->testStatus(App::Document::PartialDoc))
             _Shape.Restore(reader);
-        else if(map_ver.empty()) {
+        else if(_Ver.empty()) {
             // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
         }else{
             auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-            if(ver!=map_ver) {
+            if(ver!=_Ver) {
                 // version mismatch, signal for regenerating.
                 if(owner && owner->getNameInDocument()) {
                     FC_WARN("geo element map version changed: " << owner->getNameInDocument()
-                            << ", " << map_ver << " -> " << ver);
+                            << ", " << _Ver << " -> " << ver);
                     owner->getDocument()->addRecomputeObject(owner);
                 }
             }else

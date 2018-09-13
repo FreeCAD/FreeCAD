@@ -999,17 +999,11 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
     return ret;
 }
 
-std::string DocumentObject::getElementMapVersion(const App::Property *_prop) const {
+std::string DocumentObject::getElementMapVersion(const App::Property *_prop, bool restored) const {
     auto prop = dynamic_cast<const PropertyComplexGeoData*>(_prop);
-    if(!prop || !prop->getComplexData()) 
+    if(!prop) 
         return std::string();
-    std::ostringstream ss;
-    if(getDocument() && getDocument()->Hasher==prop->getComplexData()->Hasher)
-        ss << "1.";
-    else
-        ss << "0.";
-    ss << prop->getComplexData()->getElementMapVersion();
-    return ss.str();
+    return prop->getElementMapVersion(restored);
 }
 
 const std::string &DocumentObject::hiddenMarker() {

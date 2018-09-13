@@ -40,6 +40,8 @@
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 
+#include "Document.h"
+#include "DocumentObject.h"
 #include "Placement.h"
 #include "PropertyGeo.h"
 #include "ObjectIdentifier.h"
@@ -951,4 +953,18 @@ PropertyComplexGeoData::PropertyComplexGeoData()
 PropertyComplexGeoData::~PropertyComplexGeoData()
 {
 
+}
+
+std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
+    auto data = getComplexData();
+    if(!data)
+        return std::string();
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    std::ostringstream ss;
+    if(owner && owner->getDocument() && owner->getDocument()->Hasher==data->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << data->getElementMapVersion();
+    return ss.str();
 }
