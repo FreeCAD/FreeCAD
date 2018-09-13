@@ -224,6 +224,7 @@ Command::Command(const char* name)
     sGroup      = QT_TR_NOOP("Standard");
     eType       = AlterDoc | Alter3DView | AlterSelection;
     bEnabled    = true;
+    canLog     = true;
 }
 
 Command::~Command()
@@ -305,14 +306,17 @@ void Command::invoke(int i)
     // set the application module type for the macro
     getGuiApplication()->macroManager()->setModule(sAppModule);
     try {
+        static bool _busy;
+        std::unique_ptr<Base::FlagToggler<bool> > flag;
+        if(canLog && !_busy)
+            flag.reset(new Base::FlagToggler<bool>(_busy));
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
-            static bool _busy;
-            if(_busy)
+            if(!flag)
                 activated( i );
             else {
-                Base::FlagToggler<> flag(_busy);
+                Gui::SelectionLogDisabler disabler;
                 auto lines = manager->getLines();
                 activated( i );
                 if(manager->getLines() == lines) {
@@ -321,7 +325,7 @@ void Command::invoke(int i)
                     // logging, i.e. we only auto log the first invoking
                     // command.
                     std::ostringstream ss;
-                    ss << "FreeCADGui.runCommand('" << sName << "'," << i << ')';
+                    ss << "Gui.runCommand('" << sName << "'," << i << ')';
                     if(eType & AlterDoc)
                         manager->addLine(MacroManager::App, ss.str().c_str());
                     else

@@ -1384,6 +1384,7 @@ StdViewDock::StdViewDock()
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sAccel       = "V, D";
     eType        = Alter3DView;
+    canLog       = false;
 }
 
 void StdViewDock::activated(int iMsg)
@@ -1412,6 +1413,7 @@ StdViewUndock::StdViewUndock()
     sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sAccel       = "V, U";
     eType        = Alter3DView;
+    canLog       = false;
 }
 
 void StdViewUndock::activated(int iMsg)
@@ -1473,6 +1475,7 @@ StdViewFullscreen::StdViewFullscreen()
     sPixmap      = "view-fullscreen";
     sAccel       = "F11";
     eType        = Alter3DView;
+    canLog       = false;
 }
 
 void StdViewFullscreen::activated(int iMsg)
@@ -3088,6 +3091,7 @@ StdTreeSingleDocument::StdTreeSingleDocument()
     sWhatsThis   = "Std_TreeSingleDocument";
     sStatusTip   = QT_TR_NOOP("Only display the active document in the tree view");
     eType        = 0;
+    canLog       = false;
 }
 
 void StdTreeSingleDocument::activated(int iMsg)
@@ -3109,6 +3113,7 @@ StdTreeMultiDocument::StdTreeMultiDocument()
     sWhatsThis   = "Std_TreeMultiDocument";
     sStatusTip   = QT_TR_NOOP("Display all documents in the tree view");
     eType        = 0;
+    canLog       = false;
 }
 
 void StdTreeMultiDocument::activated(int iMsg)
@@ -3131,6 +3136,7 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
     sWhatsThis   = "Std_TreeCollapseDocument";
     sStatusTip   = QT_TR_NOOP("Expand active document and collapse all others");
     eType        = 0;
+    canLog       = false;
 }
 
 void StdTreeCollapseDocument::activated(int iMsg)

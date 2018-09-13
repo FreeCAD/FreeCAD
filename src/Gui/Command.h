@@ -399,6 +399,7 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int         eType;
+    bool        canLog;
     //@}
 private:
     bool bEnabled;
