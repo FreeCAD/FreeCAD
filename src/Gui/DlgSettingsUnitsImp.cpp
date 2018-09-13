@@ -70,17 +70,22 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 
     UnitsApi::setSchema((UnitSystem)index);
 
+    std::cout << "Hello! " << index << std::endl;
+
+    // box name:
+    // comboBox_FracInch and enabled
 }
 
 void DlgSettingsUnitsImp::saveSettings()
 {
     // must be done as very first because we create a new instance of NavigatorStyle
     // where we set some attributes afterwards
+    int FracInch;  // minimum fractional inch to display
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Units");
     hGrp->SetInt("UserSchema", ui->comboBox_ViewSystem->currentIndex());
     hGrp->SetInt("Decimals", ui->spinBoxDecimals->value());
-    hGrp->SetInt("FracInchIndex", ui->comboBox_FracInch->currentIndex());
 
     // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
@@ -88,17 +93,30 @@ void DlgSettingsUnitsImp::saveSettings()
     // Convert the combobox index to the its integer denominator. Currently
     // with 1/2, 1/4, through 1/128, this little equation directly computes the
     // denominator given the combobox integer.
-    int minFracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
-    hGrp->SetInt("minFracInch", minFracInch);
+    //
+    // The inverse conversion is done when loaded. That way only one thing (the
+    // numerical fractional inch value) needs to be stored.
+    FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+    hGrp->SetInt("FracInch", FracInch);
 }
 
 void DlgSettingsUnitsImp::loadSettings()
 {
+    int FracInch;
+    int cbIndex;
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Units");
     ui->comboBox_ViewSystem->setCurrentIndex(hGrp->GetInt("UserSchema",0));
     ui->spinBoxDecimals->setValue(hGrp->GetInt("Decimals",Base::UnitsApi::getDecimals()));
-    ui->comboBox_FracInch->setCurrentIndex(hGrp->GetInt("FracInchIndex",2)); // 2==1/8"
+
+    // Get the current user setting for the minimum fractional inch
+    FracInch = hGrp->GetInt("FracInch",8); // 8==1/8"
+
+    // Convert fractional inch to the corresponding combobox index using this
+    // handy little equation.
+    cbIndex = std::log2(FracInch) - 1;
+    ui->comboBox_FracInch->setCurrentIndex(cbIndex);
 }
 
 /**
