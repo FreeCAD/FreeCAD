@@ -104,7 +104,12 @@ def symlink(source, link_name):
 
 def get_macro_dir():
     """Return the directory where macros are located"""
-    return FreeCAD.getUserMacroDir()
+    default_macro_dir = os.path.join(FreeCAD.ConfigGet('UserAppData'), 'Macro')
+    path = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString('MacroPath', default_macro_dir)
+    # For Py2 path is a utf-8 encoded unicode which we must decode again
+    if sys.version_info.major < 3:
+        path = path.decode("utf-8")
+    return path
 
 
 def update_macro_details(old_macro, new_macro):
