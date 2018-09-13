@@ -1124,6 +1124,9 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
         return NULL;
 
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
         cmd->invoke(item);
@@ -1161,6 +1164,9 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
 
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
     Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
 
@@ -1182,6 +1188,9 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
     char *sCmd=0;
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
+
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
 
     Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);

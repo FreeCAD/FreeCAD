@@ -297,6 +297,8 @@ App::DocumentObject* Command::getObject(const char* Name) const
         return 0;
 }
 
+int Command::_busy;
+
 void Command::invoke(int i)
 {
     // Do not query _pcAction since it isn't created necessarily
@@ -306,14 +308,13 @@ void Command::invoke(int i)
     // set the application module type for the macro
     getGuiApplication()->macroManager()->setModule(sAppModule);
     try {
-        static bool _busy;
-        std::unique_ptr<Base::FlagToggler<bool> > flag;
+        std::unique_ptr<LogDisabler> disabler;
         if(canLog && !_busy)
-            flag.reset(new Base::FlagToggler<bool>(_busy));
+            disabler.reset(new LogDisabler);
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
-            if(!flag)
+            if(!disabler)
                 activated( i );
             else {
                 Gui::SelectionLogDisabler disabler;
@@ -561,6 +562,9 @@ void Command::printCaller(const char *file, int line) {
 /// Run a App level Action
 void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const char* sCmd)
 {
+    LogDisabler d1;
+    SelectionLogDisabler d2;
+
     printCaller(file,line);
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
@@ -578,6 +582,8 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const QB
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
 {
     if(alreadyLoadedModule.find(sModuleName) == alreadyLoadedModule.end()) {
+        LogDisabler d1;
+        SelectionLogDisabler d2;
         std::string sCmd("import ");
         sCmd += sModuleName;
         if (eType == Gui)

@@ -380,6 +380,18 @@ public:
     void adjustCameraPosition();
     //@}
 
+    /// helper class to disable python console log
+    class LogDisabler {
+    public:
+        LogDisabler() {
+            ++Command::_busy;
+        }
+        ~LogDisabler() {
+            --Command::_busy;
+        }
+    };
+    friend class LogDisabler;
+
 protected:
     enum CmdType {
         AlterDoc       = 1,  /**< Command change the Document */
@@ -402,6 +414,7 @@ protected:
     bool        canLog;
     //@}
 private:
+    static int _busy;
     bool bEnabled;
     static bool _blockCmd;
 };

@@ -575,7 +575,7 @@ inline SelectionSingleton& Selection(void)
     return SelectionSingleton::instance();
 }
 
-class SelectionLogDisabler {
+class GuiExport SelectionLogDisabler {
 public:
     SelectionLogDisabler(bool silent=false) :silent(silent) {
         Selection().disableCommandLog();
