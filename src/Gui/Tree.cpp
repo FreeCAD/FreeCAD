@@ -1293,7 +1293,7 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int displayMode = hGrp->GetInt("TreeViewDocument", 0);
+    int displayMode = hGrp->GetInt("TreeViewDocument", 1);
     for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
