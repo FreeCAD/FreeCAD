@@ -463,10 +463,11 @@ public:
             "* needSubElement: if False, ignore the sub-element (e.g. Face1, Edge1) reference in 'subname'\n"
             "* transform: if False, then skip obj's transformation. Use this if mat already include obj's\n"
             "             transformation matrix\n"
-            "* retType: 0: return TopoShape,"
+            "* retType: 0: return TopoShape,\n"
             "           1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',\n"
-            "              and 'mat' is the accumulated transformation matrix of that sub-object\n" 
-            "           2: same as 1, but make sure 'subObj' is resolved if it is a link"
+            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n" 
+            "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
+            "* refine: refine the returned shape"
         );
         add_varargs_method("getRelatedElements",&Module::getRelatedElements,
             "getRelatedElements(obj,name,[sameType=True]):\n"
