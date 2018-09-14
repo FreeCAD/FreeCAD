@@ -173,7 +173,13 @@ void PropertyView::slotChangePropertyEditor(const App::Property& prop)
 
 void PropertyView::slotActiveDocument(const Gui::Document &doc)
 {
-    bool enableEditor = false;
+    // allow to disable the auto-deactivation
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", false);
+    if (enableEditor) {
+        setEnabled(true);
+        return;
+    }
 
     // check if at least one selected object is part of the active document
     std::vector<SelectionSingleton::SelObj> array = Gui::Selection().getCompleteSelection();
@@ -211,7 +217,9 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::ClrSelection)
         return;
 
-    bool enableEditor = false;
+    // allow to disable the auto-deactivation
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", false);
     Gui::Document *activeDoc = Application::Instance->activeDocument();
 
     // group the properties by <name,id>
