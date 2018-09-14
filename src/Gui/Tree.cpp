@@ -1029,7 +1029,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 auto manager = Application::Instance->macroManager();
                 bool dragged =false;
                 std::ostringstream ss;
-                if(!dropOnly && vpp && vpp->canDragAndDropObject(obj)) {
+                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
                     dragged = true;
                     auto lines = manager->getLines();
                     ss << Command::getObjectCmd(vpp->getObject())
