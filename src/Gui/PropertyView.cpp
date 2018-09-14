@@ -110,6 +110,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(boost::bind
         (&PropertyView::slotChangePropertyEditor, this, _1));
+    this->connectActiveDoc =
+    Application::Instance->signalActiveDocument.connect(boost::bind
+        (&PropertyView::slotActiveDocument, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -119,6 +122,7 @@ PropertyView::~PropertyView()
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
     this->connectPropChange.disconnect();
+    this->connectActiveDoc.disconnect();
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
@@ -167,6 +171,21 @@ void PropertyView::slotChangePropertyEditor(const App::Property& prop)
     }
 }
 
+void PropertyView::slotActiveDocument(const Gui::Document &doc)
+{
+    bool enableEditor = false;
+
+    // check if at least one selected object is part of the active document
+    std::vector<SelectionSingleton::SelObj> array = Gui::Selection().getCompleteSelection();
+    for (std::vector<SelectionSingleton::SelObj>::const_iterator it = array.begin(); it != array.end(); ++it) {
+        if (Gui::Application::Instance->getDocument(it->pDoc) == &doc) {
+            enableEditor = true;
+            break;
+        }
+    }
+    setEnabled(enableEditor || array.empty());
+}
+
 struct PropertyView::PropInfo
 {
     std::string propName;
@@ -192,6 +211,9 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::ClrSelection)
         return;
 
+    bool enableEditor = false;
+    Gui::Document *activeDoc = Application::Instance->activeDocument();
+
     // group the properties by <name,id>
     std::vector<PropInfo> propDataMap;
     std::vector<PropInfo> propViewMap;
@@ -212,6 +234,9 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
             if(!vp) continue;
             // get the properties as map here because it doesn't matter to have them sorted alphabetically
             vp->getPropertyMap(viewList);
+            if (activeDoc == doc) {
+                enableEditor = true;
+            }
         }
 
         // store the properties with <name,id> as key in a map
@@ -275,6 +300,9 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         }
     }
     propertyEditorView->buildUp(viewProps);
+
+    // make sure the editors are enabled/disabled properly
+    setEnabled(enableEditor || array.empty());
 }
 
 void PropertyView::tabChanged(int index)
