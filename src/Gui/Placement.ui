@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>277</width>
-    <height>477</height>
+    <height>474</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,16 +26,7 @@
       <string>Translation:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -94,13 +85,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yPos"/>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zPos"/>
       </item>
      </layout>
     </widget>
@@ -111,21 +102,25 @@
       <string>Center:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="4" column="1">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>66</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="TextLabelZ_5">
         <property name="sizePolicy">
@@ -166,13 +161,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zCnt"/>
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="centerOfMass">
@@ -197,16 +192,7 @@
       <string>Rotation:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -219,16 +205,7 @@
         </property>
         <widget class="QWidget" name="page">
          <layout class="QGridLayout">
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
+          <property name="margin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -236,16 +213,7 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -285,7 +253,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="angle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
           </item>
@@ -293,16 +261,7 @@
         </widget>
         <widget class="QWidget" name="page_3">
          <layout class="QGridLayout">
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
+          <property name="margin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -310,16 +269,7 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -365,13 +315,13 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="yawAngle"/>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle"/>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="rollAngle"/>
             </item>
            </layout>
           </item>
