@@ -79,6 +79,7 @@ private:
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
     void slotChangePropertyEditor(const App::Property&);
+    void slotActiveDocument(const Gui::Document&);
 
 private:
     struct PropInfo;
@@ -89,6 +90,7 @@ private:
     Connection connectPropAppend;
     Connection connectPropRemove;
     Connection connectPropChange;
+    Connection connectActiveDoc;
     QTabWidget* tabs;
 };
 
