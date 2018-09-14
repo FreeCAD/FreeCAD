@@ -161,18 +161,6 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& input,
                                   const gp_Ax2 viewAxis)
 {
-    gp_Pnt org(0.0,0.0,0.0);
-    gp_Dir stdY(0.0,1.0,0.0);
-    gp_Dir stdX(1.0,0.0,0.0);
-
-    gp_Ax2 yPlane(org,stdY,stdX);                     //XZ plane
-    gp_Dir va_Main = viewAxis.Direction();
-    gp_Dir dirRev  = va_Main.Mirrored(yPlane);
-    gp_Dir va_X    = viewAxis.XDirection();
-    gp_Dir xRev  = va_X.Mirrored(yPlane);
-
-    gp_Ax2 projAxis(org,dirRev,xRev);
-
     // Clear previous Geometry
     clear();
 
@@ -184,10 +172,12 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         brep_hlr->Add(input, m_isoCount);
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(),m_focus);
-            HLRAlgo_Projector projector( projAxis, fLength );
+//            HLRAlgo_Projector projector( projAxis, fLength );
+            HLRAlgo_Projector projector( viewAxis, fLength );
             brep_hlr->Projector(projector);
         } else {
-            HLRAlgo_Projector projector( projAxis );
+//            HLRAlgo_Projector projector( projAxis );
+            HLRAlgo_Projector projector( viewAxis );
             brep_hlr->Projector(projector);
         }
         brep_hlr->Update();
@@ -562,19 +552,29 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
                                      const bool flip)
 {
     (void) flip;
+    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
     Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
-    flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
+    if (!flip) {
+        flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
+    }
     Base::Vector3d cross = flipDirection;
-    //special case
+//    //special case
     if (TechDraw::DrawUtil::checkParallel(flipDirection, stdZ)) {
         cross = Base::Vector3d(1.0,0.0,0.0);
     } else {
         cross.Normalize();
         cross = cross.Cross(stdZ);
     }
-    gp_Ax2 viewAxis;
+    
+    if (cross.IsEqual(stdOrg,FLT_EPSILON)) {
+        viewAxis = gp_Ax2(inputCenter,
+                          gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
+        return viewAxis;
+    }
+    
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
                       gp_Dir(cross.x, cross.y, cross.z));
@@ -590,20 +590,14 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
 {
     (void) flip;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
-    Base::Vector3d projDir(direction.x,direction.y,direction.z);
-
-    gp_Ax2 viewAxis;
-    
-    if (TechDraw::DrawUtil::checkParallel(projDir, xAxis)) {
-        Base::Console().Warning("GO::getViewAxis2 - direction and axis parallel - using default VA\n");
-        viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(projDir.x, projDir.y, projDir.z));
-                          
-    } else {
-        viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(projDir.x, projDir.y, projDir.z),
-                          gp_Dir(xAxis.x, xAxis.y, xAxis.z));
+    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
+    if (!flip) {
+        flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
     }
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(inputCenter,
+                      gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
     return viewAxis;
 }
 
@@ -613,6 +607,15 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
 {
     Base::Vector3d origin(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getViewAxis(origin,direction);
+    return findCentroid(shape,viewAxis);
+}
+
+//! Returns the centroid of shape, as viewed according to direction
+gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+                                      const gp_Ax2 viewAxis)
+{
+//    Base::Vector3d origin(0.0,0.0,0.0);
+//    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);
