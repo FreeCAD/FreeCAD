@@ -254,6 +254,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                 if (aShapeTool->IsAssembly(label)) {
                     App::Part *pcPart = NULL;
                     pcPart = static_cast<App::Part*>(doc->addObject("App::Part",asm_name.c_str()));
+                    pcPart->Label.setValue(asm_name);
                     pcPart->addObjects(localValue);
 
                     // STEP reader is now a hierarchical reader. Node and leaf must have
@@ -388,6 +389,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 
         if (!localValue.empty() && !merge) {
             pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
+            pcPart->Label.setValue(name);
 
             // localValue contain the objects that  must added to the local Part
             // We must add the PartOrigin and the Part itself
@@ -776,6 +778,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
 {
     Part::Feature* part;
     part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", default_name.c_str()));
+    part->Label.setValue(default_name);
     part->Shape.setValue(shape);
     std::map<Standard_Integer, Quantity_Color>::const_iterator jt;
     jt = myColorMap.find(shape.HashCode(INT_MAX));
