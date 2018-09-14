@@ -184,7 +184,7 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
     ADD_PROPERTY_TYPE(PartialLoad, (true), "Base", App::Prop_None, "Enable partial loading");
-    static const char *BindModeEnum[] = {"Syncrhonized", "Frozen", "Detached", 0};
+    static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
     Placement.setStatus(App::Property::Immutable, true);
     Placement.setStatus(App::Property::ReadOnly, true);
