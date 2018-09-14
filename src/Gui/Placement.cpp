@@ -272,9 +272,6 @@ void Placement::onPlacementChanged(int)
 
 void Placement::on_centerOfMass_toggled(bool on)
 {
-    if (on){
-        ui->selectedVertex->setChecked(false);
-    }
     ui->xCnt->setDisabled(on);
     ui->yCnt->setDisabled(on);
     ui->zCnt->setDisabled(on);
@@ -298,41 +295,7 @@ void Placement::on_centerOfMass_toggled(bool on)
         ui->zCnt->setValue(cntOfMass.z);
     }
 }
-void Placement::on_selectedVertex_toggled(bool on)
-{
-    if (on){
-        cntOfMass.Set(0,0,0);
-        ui->centerOfMass->setChecked(false);
-    }
-    ui->xCnt->setDisabled(on);
-    ui->yCnt->setDisabled(on);
-    ui->zCnt->setDisabled(on);
-    bool success=false;
-    if (on) {
-        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-        if (selection.size()==1){
-            std::vector<Base::Vector3d> picked = selection[0].getPickedPoints();
-            std::vector<std::string> subnames = selection[0].getSubNames();
-            if (picked.size()==1 && subnames.size()==1 && std::string(subnames[0]).substr(0,6)==std::string("Vertex")){
-                ui->xCnt->setValue(picked[0].x);
-                ui->yCnt->setValue(picked[0].y);
-                ui->zCnt->setValue(picked[0].z);
-                cntOfMass.x=picked[0].x;
-                cntOfMass.y=picked[0].y;
-                cntOfMass.z=picked[0].z;
-                success=true;
-            }
-        }
-        if (!success){
-            Base::Console().Warning("Placement vertex selection error.  Must select 1 vertex.\n");
-            ui->selectedVertex->setChecked(false);
-            ui->xCnt->setValue(0);
-            ui->yCnt->setValue(0);
-            ui->zCnt->setValue(0);
-            return;
-        }
-    }
-}
+
 void Placement::on_applyIncrementalPlacement_toggled(bool on)
 {
     if (on) {
@@ -501,7 +464,7 @@ Base::Placement Placement::getPlacement() const
 
 Base::Vector3d Placement::getCenterData() const
 {
-    if (ui->centerOfMass->isChecked() || ui->selectedVertex->isChecked())
+    if (ui->centerOfMass->isChecked())
         return this->cntOfMass;
     return Base::Vector3d(ui->xCnt->value().getValue(),
                           ui->yCnt->value().getValue(),
