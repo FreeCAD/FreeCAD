@@ -677,18 +677,15 @@ class Macro(object):
                 from HTMLParser import HTMLParser
             except ImportError:
                 from html.parser import HTMLParser
-            try:
+            if sys.version_info.major < 3:
                 code = code.decode('utf8')
+            try:
                 code = HTMLParser().unescape(code)
-                code = code.encode('utf8')
-                code = code.replace('\xc2\xa0', ' ')
+                code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
             except:
-                #HTMLParser().unescape() didn't work, so try manually
-                try:
-                    code = code.replace('&gt;','>').replace('&lt;','<').replace('&#160;','').replace('&amp;','&').replace('\xc2\xa0', ' ')
-                    code = code.replace('\t','    ')#some macros in the wiki have tabs interspersed, this might fix some of them
-                except: 
-                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
+            if sys.version_info.major < 3:
+                code = code.encode('utf8')
         desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
         if desc:
             desc = desc[0]
