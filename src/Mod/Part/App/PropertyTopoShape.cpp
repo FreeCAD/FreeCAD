@@ -102,6 +102,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
             _Shape.Tag = obj->getID();
     }
     hasSetValue();
+    _Ver.clear();
 }
 
 void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
@@ -112,6 +113,7 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
         _Shape.Tag = obj->getID();
     _Shape.setShape(sh,resetElementMap);
     hasSetValue();
+    _Ver.clear();
 }
 
 const TopoDS_Shape& PropertyPartShape::getValue(void)const 
@@ -254,9 +256,9 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         // If exporting, do not export mapped element name, but still make a mark
         if(owner) {
             if(!owner->isExporting())
-                version = owner->getElementMapVersion(this);
+                version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
         }else
-            version = _Shape.getElementMapVersion();
+            version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
         writer.Stream() << "\" ElementMap=\"" << version;
         writer.Stream() << "\"/>" << std::endl;
 
@@ -503,10 +505,12 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
         }
     }
 
+    std::string ver = _Ver;
     // restore the element map
     shape.Hasher = hasher;
     shape.resetElementMap(elementMap);
     setValue(shape);
+    _Ver = ver;
 }
 
 // -------------------------------------------------------------------------
