@@ -102,10 +102,6 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
     if (DrawUtil::checkParallel(Direction.getValue(),
                                 RotationVector.getValue())) {
-        Base::Console().Message("TRACE - DPGI::execute - Projdir: %s X: %s\n",
-                        TechDraw::DrawUtil::formatVector(Direction.getValue()).c_str(),
-                        TechDraw::DrawUtil::formatVector(RotationVector.getValue()).c_str());
-
         return new App::DocumentObjectExecReturn("DPGI: Direction and RotationVector are parallel");
     }
 
@@ -114,7 +110,6 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 
     autoPosition();
     requestPaint();
-
     return App::DocumentObject::StdReturn;
 }
 
@@ -122,10 +117,6 @@ void DrawProjGroupItem::autoPosition()
 {
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
-//    if (isAnchor()) {
-//        X.setValue(0.0);
-//        Y.setValue(0.0);
-//    } else 
     if ((pgroup != nullptr) && 
         (pgroup->AutoDistribute.getValue()) &&
         (!LockPosition.getValue())) {
@@ -176,39 +167,32 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis, 
                                  const bool flip) const
 {
-     (void) flip;
-     gp_Ax2 viewAxis;
-     Base::Vector3d x = RotationVector.getValue();
-     Base::Vector3d nx = x;
-     x.Normalize();
-     Base::Vector3d na = axis;
-     na.Normalize();
+    (void) flip;
+    gp_Ax2 viewAxis;
+    Base::Vector3d projDir = Direction.getValue();
+    Base::Vector3d rotVec  = RotationVector.getValue();
 
-     if (DrawUtil::checkParallel(nx,na)) {
-         Base::Console().Warning("DPGI::getVA - axis and X parallel. using defaults\n");
-         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,false);
-     } else {
-         viewAxis = TechDrawGeometry::getViewAxis(pt,na,nx,false);
-     }
-//     gp_Dir va_Main = viewAxis.Direction();
-//     gp_Dir va_X    = viewAxis.XDirection();
-//     gp_Ax3 R3;
-//     gp_Ax3 viewCS(viewAxis);
-//     gp_Trsf txTo, txFrom;
-//     txTo.SetTransformation(R3,viewCS);
-//     txFrom = txTo.Inverted();
-//     gp_Dir dirFrom = va_Main.Transformed(txFrom);
-//     gp_Dir dirTo   = va_Main.Transformed(txTo);
-//     Base::Console().Message("TRACE - DPGI::getVA - dirFrom: %s dirTo: %s\n",
-//                             DrawUtil::formatVector(dirFrom).c_str(),
-//                             DrawUtil::formatVector(dirTo).c_str());
-//     gp_Dir xFrom = va_X.Transformed(txFrom);
-//     gp_Dir xTo   = va_X.Transformed(txTo);
-//     Base::Console().Message("TRACE - DPGI::getVA - xFrom: %s xTo: %s\n",
-//                             DrawUtil::formatVector(xFrom).c_str(),
-//                             DrawUtil::formatVector(xTo).c_str());
+// mirror projDir through XZ plane
+    Base::Vector3d yNorm(0.0,1.0,0.0);
+    projDir = projDir - (yNorm * 2.0) * (projDir.Dot(yNorm));
+    rotVec = rotVec - (yNorm * 2.0) * (rotVec.Dot(yNorm));
 
-     return viewAxis;
+    if (DrawUtil::checkParallel(projDir,rotVec)) {
+         Base::Console().Warning("DPGI::getVA - %s - Direction and RotationVector parallel. using defaults\n",
+                                 getNameInDocument());
+    }
+    try {
+        viewAxis = gp_Ax2(gp_Pnt(pt.x,pt.y,pt.z),
+                          gp_Dir(projDir.x, projDir.y, projDir.z),
+                          gp_Dir(rotVec.x, rotVec.y, rotVec.z));
+    }
+    catch (Standard_Failure& e4) {
+        Base::Console().Message("PROBLEM - DPGI (%s) failed to create viewAxis: %s **\n",
+                                getNameInDocument(),e4.GetMessageString());
+        return TechDrawGeometry::getViewAxis(pt,axis,false);
+    }
+
+    return viewAxis;
 }
 
 //obs??
