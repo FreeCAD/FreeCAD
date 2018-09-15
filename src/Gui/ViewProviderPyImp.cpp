@@ -687,3 +687,10 @@ Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const
     return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
 }
 
+Py::Boolean ViewProviderPy::getLinkVisibility() const {
+    return Py::Boolean(getViewProviderPtr()->isLinkVisible());
+}
+
+void ViewProviderPy::setLinkVisibility(Py::Boolean arg) {
+    getViewProviderPtr()->setLinkVisible(arg);
+}

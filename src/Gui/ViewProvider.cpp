@@ -58,6 +58,7 @@
 #include "SoFCDB.h"
 #include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
+#include "ViewProviderLink.h"
 
 #include <boost/bind.hpp>
 
@@ -944,4 +945,17 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     bbox.getMax().getValue(maxX,maxY,maxZ);
     bbox.getMin().getValue(minX,minY,minZ);
     return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
+}
+
+bool ViewProvider::isLinkVisible() const {
+    auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
+    if(!ext)
+        return true;
+    return ext->isLinkVisible();
+}
+
+void ViewProvider::setLinkVisible(bool visible) {
+    auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
+    if(ext)
+        ext->setLinkVisible(visible);
 }

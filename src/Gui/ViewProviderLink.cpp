@@ -271,6 +271,33 @@ public:
     friend inline void intrusive_ptr_release(LinkInfo *px) { px->release(); }
 #endif
 
+    bool isVisible() const {
+        if(!isLinked())
+            return true;
+        int indices[] = {LinkView::SnapshotTransform, LinkView::SnapshotVisible};
+        for(int idx : indices) {
+            if(!pcSwitches[idx])
+                continue;
+            if(pcSwitches[idx]->whichChild.getValue()==-1)
+                return false;
+        }
+        return true;
+    }
+
+    void setVisible(bool visible) {
+        if(!isLinked())
+            return;
+        int indices[] = {LinkView::SnapshotTransform, LinkView::SnapshotVisible};
+        for(int idx : indices) {
+            if(!pcSwitches[idx])
+                continue;
+            if(!visible)
+                pcSwitches[idx]->whichChild = -1;
+            else if(pcSwitches[idx]->getNumChildren()>pcLinked->getDefaultMode())
+                pcSwitches[idx]->whichChild = pcLinked->getDefaultMode();
+        }
+    }
+
     SoSeparator *getSnapshot(int type, bool update=false) {
         if(type<0 || type>=LinkView::SnapshotMax)
             return 0;
@@ -570,6 +597,17 @@ ViewProviderLinkObserver::ViewProviderLinkObserver() {
     // TODO: any better way to get deleted automatically?
     m_isPythonExtension = true;
     initExtensionType(ViewProviderLinkObserver::getExtensionClassTypeId());
+}
+
+bool ViewProviderLinkObserver::isLinkVisible() const {
+    if(linkInfo)
+        return linkInfo->isVisible();
+    return true;
+}
+
+void ViewProviderLinkObserver::setLinkVisible(bool visible) {
+    if(linkInfo)
+        linkInfo->setVisible(visible);
 }
 
 void ViewProviderLinkObserver::extensionBeforeDelete() {

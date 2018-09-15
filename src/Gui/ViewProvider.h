@@ -347,6 +347,8 @@ public:
     virtual bool isShow(void) const;
     void setVisible(bool);
     bool isVisible() const;
+    void setLinkVisible(bool);
+    bool isLinkVisible() const;
     /// Overrides the display mode with mode.
     virtual void setOverrideMode(const std::string &mode);
     const std::string getOverrideMode();

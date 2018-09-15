@@ -73,6 +73,9 @@ public:
     void extensionModeSwitchChange(void) override;
     void extensionHide(void) override;
 
+    bool isLinkVisible() const;
+    void setLinkVisible(bool);
+
     LinkInfoPtr linkInfo;
 };
 

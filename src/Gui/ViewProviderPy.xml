@@ -222,5 +222,11 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
       </Documentation>
       <Parameter Name="CanRemoveChildrenFromRoot" Type="Boolean" />
     </Attribute>
+    <Attribute Name="LinkVisibility">
+      <Documentation>
+          <UserDocu>Get/set visiblities of all links to this view object</UserDocu>
+      </Documentation>
+      <Parameter Name="LinkVisibility" Type="Boolean" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>
