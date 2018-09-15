@@ -64,6 +64,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <App/GeoFeature.h>
 #include <CXX/Objects.hxx>
 
 using namespace Gui;
@@ -1154,19 +1155,41 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("z", Py::Float(pt[2]));
 
             Gui::Document* doc = _view->getViewer()->getDocument();
-            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
-                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(Point->getPath())
+                    : _view->getViewer()->getViewProviderByPath(Point->getPath());
+            if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if(!vp->isSelectable())
+                    return ret;
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                dict.setItem("Document",
-                    Py::String(vpd->getObject()->getDocument()->getName()));
-                dict.setItem("Object",
-                    Py::String(vpd->getObject()->getNameInDocument()));
-                if (vp->useNewSelectionModel()) {
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(Point->getDetail())));
-                }
-                else {
+                if(vp->useNewSelectionModel()) {
+                    std::string subname;
+                    if(!vp->getElementPicked(Point,subname))
+                        return ret;
+                    auto obj = vpd->getObject();
+                    if(!obj)
+                        return ret;
+                    if(subname.size()) {
+                        std::pair<std::string,std::string> elementName;
+                        auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                        if(!sobj)
+                            return ret;
+                        if(sobj!=obj) {
+                            dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                            dict.setItem("SubName",Py::String(subname));
+                            obj = sobj;
+                        }
+                        subname = elementName.second.size()?elementName.second:elementName.first;
+                    }
+                    dict.setItem("Document",
+                        Py::String(obj->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(obj->getNameInDocument()));
+                    dict.setItem("Component",Py::String(subname));
+                } else {
+                    dict.setItem("Document",
+                        Py::String(vpd->getObject()->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(vpd->getObject()->getNameInDocument()));
                     // search for a SoFCSelection node
                     SoFCDocumentObjectAction objaction;
                     objaction.apply(Point->getPath());
@@ -1243,19 +1266,41 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
-                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
-                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(point->getPath())
+                        : _view->getViewer()->getViewProviderByPath(point->getPath());
+                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                    if(!vp->isSelectable())
+                        continue;
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                    dict.setItem("Document",
-                        Py::String(vpd->getObject()->getDocument()->getName()));
-                    dict.setItem("Object",
-                        Py::String(vpd->getObject()->getNameInDocument()));
-                    if (vp->useNewSelectionModel()) {
-                        dict.setItem("Component",
-                            Py::String(vpd->getElement(point->getDetail())));
-                    }
-                    else {
+                    if(vp->useNewSelectionModel()) {
+                        std::string subname;
+                        if(!vp->getElementPicked(point,subname))
+                            continue;
+                        auto obj = vpd->getObject();
+                        if(!obj)
+                            continue;
+                        if(subname.size()) {
+                            std::pair<std::string,std::string> elementName;
+                            auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                            if(!sobj)
+                                continue;
+                            if(sobj!=obj) {
+                                dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                                dict.setItem("SubName",Py::String(subname));
+                                obj = sobj;
+                            }
+                            subname = elementName.second.size()?elementName.second:elementName.first;
+                        }
+                        dict.setItem("Document",
+                            Py::String(obj->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(obj->getNameInDocument()));
+                        dict.setItem("Component",Py::String(subname));
+                    } else {
+                        dict.setItem("Document",
+                            Py::String(vpd->getObject()->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(vpd->getObject()->getNameInDocument()));
                         // search for a SoFCSelection node
                         SoFCDocumentObjectAction objaction;
                         objaction.apply(point->getPath());

@@ -3303,16 +3303,16 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
-    // FIXME Use the viewprovider map introduced for the selection
-    for (std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
-        for (int i = 0; i<path->getLength(); i++) {
-            SoNode* node = path->getNode(i);
-            if ((*it)->getRoot() == node) {
-                return (*it);
+    for (int i = 0; i < path->getLength(); i++) {
+        SoNode* node = path->getNode(i);
+
+        if (node->isOfType(SoSeparator::getClassTypeId())) {
+            auto it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
+            if (it != _ViewProviderMap.end()) {
+                return it->second;
             }
         }
     }
-
     return 0;
 }
 
