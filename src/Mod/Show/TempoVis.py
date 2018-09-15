@@ -71,20 +71,12 @@ class TempoVis(FrozenClass):
  
         # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
         try:
-            viewprovider = obj.ViewObject
-            from pivy import coin
-            sa = coin.SoSearchAction()
-            sa.setType(coin.SoSwitch.getClassTypeId())
-            sa.traverse(viewprovider.RootNode)
-            if not sa.isFound(): #shouldn't happen...
-                return False 
-            n = sa.getPath().getTail().getNumChildren()
-            return n > 0
+            return obj.ViewObject.SwitchNode.getNumChildren()>0
         except Exception as err:
             App.Console.PrintWarning(u"Show.TempoVis.isIn3DView error: {err}".format(err= str(err)))
             return True #assume.
     
-    def modifyVPProperty(self, doc_obj_or_list, prop_name, new_value):
+    def modifyVPProperty(self, doc_obj_or_list, prop_names, new_value):
         '''modifyVPProperty(self, doc_obj_or_list, prop_name, new_value): modifies
         prop_name property of ViewProvider of doc_obj_or_list, and remembers
         original value of the property. Original values will be restored upon
@@ -93,32 +85,53 @@ class TempoVis(FrozenClass):
         if App.GuiUp:
             if not hasattr(doc_obj_or_list, '__iter__'):
                 doc_obj_or_list = [doc_obj_or_list]
+            if not isinstance(prop_names,(list,tuple)):
+                prop_names = [prop_names]
             for doc_obj in doc_obj_or_list:
                 if not self.is3DObject(doc_obj):
                     continue
-                if not hasattr(doc_obj.ViewObject, prop_name):
-                    App.Console.PrintWarning("TempoVis: object {obj} has no attribute {attr}. Skipped.\n"
-                                             .format(obj= doc_obj.Name, attr= prop_name))
-                    continue # silently ignore if object doesn't have the property...
+                for prop_name in prop_names:
+                    if not hasattr(doc_obj.ViewObject, prop_name):
+                        App.Console.PrintWarning("TempoVis: object {obj} has no attribute {attr}. Skipped.\n"
+                                                .format(obj= doc_obj.Name, attr= prop_name))
+                        continue # silently ignore if object doesn't have the property...
 
-                # Because the introduction of external objects, we shall now
-                # accept objects from all opening documents.
-                #
-                #  if doc_obj.Document is not self.document:  #ignore objects from other documents
-                #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
-                oldval = getattr(doc_obj.ViewObject, prop_name)
-                setattr(doc_obj.ViewObject, prop_name, new_value)
-                self.restore_on_delete = True
-                if (doc_obj.Name,prop_name) not in self.data:
-                    self.data[(doc_obj.Name,prop_name,doc_obj.Document.Name)] = oldval
+                    # Because the introduction of external objects, we shall now
+                    # accept objects from all opening documents.
+                    #
+                    #  if doc_obj.Document is not self.document:  #ignore objects from other documents
+                    #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                    oldval = getattr(doc_obj.ViewObject, prop_name)
+                    if new_value is not None:
+                        setattr(doc_obj.ViewObject, prop_name, new_value)
+                    self.restore_on_delete = True
+                    key = (doc_obj.Name,prop_name,doc_obj.Document.Name)
+                    self.data.setdefault(key,oldval)
+
+    def saveBodyVisibleFeature(self,doc_obj_or_list):
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        objs = []
+        bodies = set()
+        for obj in doc_obj_or_list:
+            body = getattr(obj,'Body',None)
+            if not body or body in bodies:
+                continue
+            bodies.add(body)
+            feature = getattr(body,'VisibleFeature',None)
+            if feature:
+                objs.append(feature)
+        self.modifyVPProperty(objs, 'Visibility',None)
 
     def show(self, doc_obj_or_list):
         '''show(doc_obj_or_list): shows objects (sets their Visibility to True). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.modifyVPProperty(doc_obj_or_list, 'Visibility', True)
+        self.saveBodyVisibleFeature(doc_obj_or_list)
+        self.modifyVPProperty(doc_obj_or_list, ('Visibility','LinkVisibility'),True)
 
     def hide(self, doc_obj_or_list):
         '''hide(doc_obj_or_list): hides objects (sets their Visibility to False). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.modifyVPProperty(doc_obj_or_list, 'Visibility', False)
+        self.saveBodyVisibleFeature(doc_obj_or_list)
+        self.modifyVPProperty(doc_obj_or_list, ('Visibility',"LinkVisibility"), False)
 
     def get_all_dependent(self, doc_obj):
         '''get_all_dependent(doc_obj): gets all objects that depend on doc_obj. Containers of the object are excluded from the list.'''
@@ -135,7 +148,7 @@ class TempoVis(FrozenClass):
 
     def restore_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): restores original visibilities of all dependent objects.'''
-        self.restoreVPProperty( getAllDependent(doc_obj), 'Visibility' )
+        self.restoreVPProperty( getAllDependent(doc_obj), ('Visibility','LinkVisibility') )
 
     def hide_all_dependencies(self, doc_obj):
         '''hide_all_dependencies(doc_obj): hides all objects that doc_obj depends on (directly and indirectly).'''
@@ -191,23 +204,26 @@ class TempoVis(FrozenClass):
                                      .format(err= err.message))
         self.restore_on_delete = False
     
-    def restoreVPProperty(self, object_or_list, prop_name):
+    def restoreVPProperty(self, object_or_list, prop_names):
         """restoreVPProperty(object_or_list, prop_name): restores original values of certain property for certain objects."""
         if App.GuiUp:
             if not hasattr(object_or_list, '__iter__'):
                 object_or_list = [object_or_list]
+            if not isinstance(prop_names,(tuple,list)):
+                prop_names = [prop_names]
             for doc_obj in object_or_list:
                 if not self.is3DObject(doc_obj):
                     continue
-                key = (doc_obj.Name, prop_name)
-                if key in self.data:
-                    try:
-                        setattr(doc_obj.ViewObject, prop_name, self.data[key])
-                    except Exception as err:
-                        App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
-                                                 .format(err= err.message,
-                                                         obj= doc_obj.Name,
-                                                         prop= prop_name))
+                for prop_name in prop_names:
+                    key = (doc_obj.Name, prop_name, doc_obj.Document.Name)
+                    if key in self.data:
+                        try:
+                            setattr(doc_obj.ViewObject, prop_name, self.data[key])
+                        except Exception as err:
+                            App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
+                                                    .format(err= err.message,
+                                                            obj= doc_obj.Name,
+                                                            prop= prop_name))
     
 
     def forget(self):
@@ -361,8 +377,8 @@ class TempoVis(FrozenClass):
             for doc_obj in doc_obj_or_list:
                 if not self.is3DObject(doc_obj):
                     continue
-                if doc_obj.Document is not self.document:  #ignore objects from other documents
-                    raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                #  if doc_obj.Document is not self.document:  #ignore objects from other documents
+                #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
                 print("Clipping {obj}".format(obj= doc_obj.Name))
                 self._enableClipPlane(doc_obj, enable, placement, offset)
                 self.restore_on_delete = True
@@ -388,11 +404,12 @@ class TempoVis(FrozenClass):
         for i in range(len(chain)):
             cnt = chain[i]
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
-            for obj in Container(cnt).getVisGroupChildren():
+            container = Container(cnt)
+            for obj in container.getVisGroupChildren():
                 if not TempoVis.is3DObject(obj):
                     continue
                 if obj is not cnt_next:
-                    if obj.ViewObject.Visibility:
+                    if container.isChildVisible(obj):
                         result.append(obj)
         return result
         
