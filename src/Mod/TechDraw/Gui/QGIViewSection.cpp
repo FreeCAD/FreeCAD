@@ -80,6 +80,9 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
+    float lineWidth    = sectionVp->LineWidth.getValue();
+
+
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         //Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
@@ -94,6 +97,8 @@ void QGIViewSection::drawSectionFace()
         newFace->setZValue(ZVALUE::SECTIONFACE);
         if (section->showSectionEdges()) {
             newFace->setDrawEdges(true);
+            newFace->setStyle(Qt::SolidLine);
+            newFace->setWidth(lineWidth);
         } else {
             newFace->setDrawEdges(false);
         }
