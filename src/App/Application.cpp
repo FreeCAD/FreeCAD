@@ -1576,6 +1576,11 @@ void Application::initApplication(void)
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
     UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
+    // In case we are using fractional inches, get user setting for min unit
+    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDenominator());
+    Base::QuantityFormat::setDenominator(denom);
+
+
 #if defined (_DEBUG)
     Console().Log("Application is built with debug information\n");
 #endif

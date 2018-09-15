@@ -52,6 +52,19 @@ struct QuantityFormat {
     NumberFormat format;
     int precision;
 
+    // Default denominator of minimum fractional inch. Only used in certain 
+    // schemas.
+    static int defaultDenominator; // i.e 8 for 1/8"
+
+    static inline int getDenominator() {
+        return defaultDenominator;
+    }
+
+    static inline void setDenominator(int denom)
+    {
+        defaultDenominator = denom;
+    }
+
     QuantityFormat();
     inline char toFormat() const {
         switch (format) {
