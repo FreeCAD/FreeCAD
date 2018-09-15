@@ -25,7 +25,26 @@
 #include <QGlobalStatic>
 #if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
   #include <QX11Info>
-  #include <xcb/xcb.h>
+  #include <spnav.h>
+
+  #if QT_VERSION >= 0x050000
+    #include <X11/Xlib.h>
+    #undef Bool
+    #undef CursorShape
+    #undef Expose
+    #undef KeyPress
+    #undef KeyRelease
+    #undef FocusIn
+    #undef FocusOut
+    #undef FontChange
+    #undef None
+    #undef Status
+    #undef Unsorted
+    #undef False
+    #undef True
+    #undef Complex
+  #endif // #if QT_VERSION >= 0x050000
+
 #endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
 #include <QMainWindow>
 #include <QWidget>
@@ -34,10 +53,6 @@
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
 #include "Application.h"
-
-#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-  #include <spnav.h>
-#endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
 
 #ifdef _USE_3DCONNEXION_SDK
 //windows
