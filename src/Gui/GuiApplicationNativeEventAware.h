@@ -32,22 +32,8 @@
 
 class QMainWindow;
 
-#if defined(Q_OS_LINUX)
-  #include <X11/Xlib.h>
-  #undef Bool
-  #undef CursorShape
-  #undef Expose
-  #undef KeyPress
-  #undef KeyRelease
-  #undef FocusIn
-  #undef FocusOut
-  #undef FontChange
-  #undef None
-  #undef Status
-  #undef Unsorted
-  #undef False
-  #undef True
-  #undef Complex
+#if defined(Q_OS_LINUX) && QT_VERSION >= 0x050000
+  #include <xcb/xcb.h>
   #include <xcb/xproto.h>
 
 #elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
