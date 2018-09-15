@@ -28,5 +28,11 @@
                     </UserDocu>
             </Documentation>
     </Methode>
+    <Attribute Name="VisibleFeature" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return the the visible feature of this body</UserDocu>
+        </Documentation>
+		<Parameter Name="VisibleFeature" Type="Object" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>
