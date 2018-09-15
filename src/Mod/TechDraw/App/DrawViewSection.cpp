@@ -162,19 +162,24 @@ void DrawViewSection::onChanged(const App::Property* prop)
     }
     if (prop == &FileHatchPattern    ||
         prop == &NameGeomPattern ) {
-      if ((!FileHatchPattern.isEmpty())  &&
-          (!NameGeomPattern.isEmpty())) {
-              std::vector<PATLineSpec> specs = 
-                               DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
-              m_lineSets.clear();
-              for (auto& hl: specs) {
-                  //hl.dump("hl from section");
-                  LineSet ls;
-                  ls.setPATLineSpec(hl);
-                  m_lineSets.push_back(ls);
-              }
-                  
-      }
+        std::string fileSpec = FileHatchPattern.getValue();
+        Base::FileInfo fi(fileSpec);
+        std::string ext = fi.extension();
+        if ( (ext == "pat") ||
+             (ext == "PAT") ) {
+            if ((!FileHatchPattern.isEmpty())  &&
+                (!NameGeomPattern.isEmpty())) {
+                std::vector<PATLineSpec> specs = 
+                           DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                m_lineSets.clear();
+                for (auto& hl: specs) {
+                    //hl.dump("hl from section");
+                    LineSet ls;
+                    ls.setPATLineSpec(hl);
+                    m_lineSets.push_back(ls);
+                }
+            }
+        }
     }
 
     DrawView::onChanged(prop);
