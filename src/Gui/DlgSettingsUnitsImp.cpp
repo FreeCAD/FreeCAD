@@ -98,6 +98,9 @@ void DlgSettingsUnitsImp::saveSettings()
     // numerical fractional inch value) needs to be stored.
     FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
     hGrp->SetInt("FracInch", FracInch);
+
+    // Set the actual format value
+    Base::QuantityFormat::setDenominator(FracInch);
 }
 
 void DlgSettingsUnitsImp::loadSettings()
@@ -111,7 +114,7 @@ void DlgSettingsUnitsImp::loadSettings()
     ui->spinBoxDecimals->setValue(hGrp->GetInt("Decimals",Base::UnitsApi::getDecimals()));
 
     // Get the current user setting for the minimum fractional inch
-    FracInch = hGrp->GetInt("FracInch",8); // 8==1/8"
+    FracInch = hGrp->GetInt("FracInch", Base::QuantityFormat::getDenominator()); 
 
     // Convert fractional inch to the corresponding combobox index using this
     // handy little equation.
