@@ -61,6 +61,7 @@ public:
     std::unique_ptr<Ui_TaskElementColors> ui;
     ViewProviderDocumentObject *vp;
     ViewProviderDocumentObject *vpParent;
+    Document *vpDoc;
     std::map<std::string,QListWidgetItem*> elements;
     std::vector<QListWidgetItem*> items;
     std::string hiddenSub;
@@ -79,6 +80,7 @@ public:
     Private(ViewProviderDocumentObject* vp, const char *element="") 
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
+        vpDoc = vp->getDocument();
         vpParent = vp;
         auto doc = Application::Instance->editDocument();
         if(doc) {
@@ -351,7 +353,7 @@ void ElementColors::on_onTop_clicked(bool checked) {
 
 void ElementColors::slotDeleteDocument(const Document& Doc)
 {
-    if (d->vp->getDocument()==&Doc || d->editDoc==Doc.getDocument()->getName())
+    if (d->vpDoc==&Doc || d->editDoc==Doc.getDocument()->getName())
         Control().closeDialog();
 }
 
