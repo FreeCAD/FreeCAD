@@ -589,7 +589,7 @@ void  ViewProviderPy::setAnnotation(Py::Object)
 Py::Object ViewProviderPy::getRootNode(void) const
 {
     try {
-        SoNode* node = getViewProviderPtr()->getRoot();
+        SoSeparator* node = getViewProviderPtr()->getRoot();
         PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSeparator *", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
@@ -607,7 +607,7 @@ void  ViewProviderPy::setRootNode(Py::Object)
 Py::Object ViewProviderPy::getSwitchNode(void) const
 {
     try {
-        SoNode* node = getViewProviderPtr()->getModeSwitch();
+        SoSwitch* node = getViewProviderPtr()->getModeSwitch();
         PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSwitch *", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
