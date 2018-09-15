@@ -1538,7 +1538,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         }
     }
 
-    QByteArray docName = doc ? doc->getName() : qApp->translate("StdCmdNew","Unnamed").toUtf8();
+    QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
     SelectModule::Dict dict = SelectModule::importHandler(files);
     // load the files with the associated modules
     for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
