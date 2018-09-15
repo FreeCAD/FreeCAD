@@ -229,10 +229,8 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         int       a,b,d;   // used to compute greatest common denominator
         int       tmp;     // temporary variable for GCD
 
-        // TEMPORARY: This will be replaced by a user setting when time permits.
-        // For now, it will be hardcoded to emulate the previous (1/8")
-        // behavior.
-        minden = 8; // 1/8"
+        // Get the current user specified minimum denominator
+        minden = Base::QuantityFormat::getDenominator();
 
         // Compute and round the total number of fractional units
         ntot = (int)std::round(totalInches * (double)minden);
