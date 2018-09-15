@@ -73,7 +73,7 @@ class TempoVis(FrozenClass):
         try:
             return obj.ViewObject.SwitchNode.getNumChildren()>0
         except Exception as err:
-            App.Console.PrintWarning(u"Show.TempoVis.isIn3DView error: {err}".format(err= str(err)))
+            App.Console.PrintWarning(u"Show.TempoVis.isIn3DObject error: {err}\n".format(err= str(err)))
             return True #assume.
     
     def modifyVPProperty(self, doc_obj_or_list, prop_names, new_value):
