@@ -184,7 +184,7 @@ void ViewProviderDocumentObject::show(void)
 
 void ViewProviderDocumentObject::updateView()
 {
-    if(testStatus(ViewStatus::UpdatingView))
+    if(!pcObject || testStatus(ViewStatus::UpdatingView))
         return;
 
     Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
@@ -248,12 +248,16 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const
 {
+    if(!pcObject)
+        throw Base::RuntimeError("View provider detached");
     App::Document* pAppDoc = pcObject->getDocument();
     return Gui::Application::Instance->getDocument(pAppDoc);
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
+    if(!pcObject)
+        throw Base::RuntimeError("View provider detached");
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getActiveView();
@@ -261,6 +265,8 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
 {
+    if(!pcObject)
+        throw Base::RuntimeError("View provider detached");
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
@@ -268,6 +274,8 @@ Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
 {
+    if(!pcObject)
+        throw Base::RuntimeError("View provider detached");
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
 
@@ -281,6 +289,8 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 {
+    if(!pcObject)
+        throw Base::RuntimeError("View provider detached");
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getViewOfNode(node);
@@ -288,6 +298,8 @@ Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
+    if(!pcObject)
+        return 0;
     // first get the document this object is part of and get its GUI counterpart
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
