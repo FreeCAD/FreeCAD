@@ -52,6 +52,16 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
 
     //fillUpListBox();
     ui->tableWidget->setVisible(false);
+    //
+    // Enable/disable the fractional inch option depending on system
+    if( UnitsApi::getSchema() == ImperialBuilding )
+    {
+        ui->comboBox_FracInch->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBox_FracInch->setEnabled(false);
+    }
 }
 
 /** 
@@ -70,10 +80,15 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 
     UnitsApi::setSchema((UnitSystem)index);
 
-    std::cout << "Hello! " << index << std::endl;
-
-    // box name:
-    // comboBox_FracInch and enabled
+    // Enable/disable the fractional inch option depending on system
+    if( (UnitSystem)index == ImperialBuilding )
+    {
+        ui->comboBox_FracInch->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBox_FracInch->setEnabled(false);
+    }
 }
 
 void DlgSettingsUnitsImp::saveSettings()
