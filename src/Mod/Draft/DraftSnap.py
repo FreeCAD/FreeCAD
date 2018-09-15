@@ -261,10 +261,17 @@ class Snapper:
             return fp
 
         else:
-
             # we have an object to snap to
 
-            obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
+            shape = None
+            parent = self.snapInfo.get('ParentObject',None)
+            if parent:
+                subname = self.snapInfo['SubName']
+                obj = parent.getSubObject(subname,retType=1)
+            else:
+                obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
+                parent = obj
+                subname = self.snapInfo['Component']
             if not obj:
                 self.spoint = cstr(point)
                 self.running = False
@@ -294,11 +301,9 @@ class Snapper:
                 # active snapping
                 comp = self.snapInfo['Component']
 
-                if obj.isDerivedFrom("Part::Feature"):
-                    
-                    # applying global placements
-                    shape = obj.Shape.copy()
-                    shape.Placement = obj.getGlobalPlacement()
+                shape = Part.getShape(parent,subname,
+                            needSubElement=True,noElementMap=True)
+                if not shape.isNull():
                     
                     snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
                     
@@ -309,40 +314,35 @@ class Snapper:
                         # special snapping for Arch building parts: add the location
                         snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Pacement.Base)])
 
-                    if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
-                        if "Edge" in comp:
-                            # we are snapping to an edge
-                            en = int(comp[4:])-1
-                            if len(shape.Edges) > en:
-                                edge = shape.Edges[en]
-                                snaps.extend(self.snapToEndpoints(edge))
-                                snaps.extend(self.snapToMidpoint(edge))
-                                snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                                snaps.extend(self.snapToIntersection(edge))
-                                snaps.extend(self.snapToElines(edge,eline))
-                                
-                                et = DraftGeomUtils.geomType(edge)
-                                if et == "Circle":
-                                    # the edge is an arc, we have extra options
-                                    snaps.extend(self.snapToAngles(edge))
-                                    snaps.extend(self.snapToCenter(edge))
-                                elif et == "Ellipse":
-                                    # extra ellipse options
-                                    snaps.extend(self.snapToCenter(edge))
-                        elif "Face" in comp:
-                            en = int(comp[4:])-1
-                            if len(shape.Faces) > en:
-                                face = shape.Faces[en]
-                                snaps.extend(self.snapToFace(face))
-                        elif "Vertex" in comp:
-                            # directly snapped to a vertex
-                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
-                        elif comp == '':
-                            # workaround for the new view provider
-                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
-                        else:
-                            # all other cases (face, etc...) default to passive snap
-                            snapArray = [self.snapToVertex(self.snapInfo)]
+                    if "Edge" in comp:
+                        # we are snapping to an edge
+                        edge = shape.Edge1
+                        snaps.extend(self.snapToEndpoints(edge))
+                        snaps.extend(self.snapToMidpoint(edge))
+                        snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                        snaps.extend(self.snapToIntersection(edge))
+                        snaps.extend(self.snapToElines(edge,eline))
+                        
+                        et = DraftGeomUtils.geomType(edge)
+                        if et == "Circle":
+                            # the edge is an arc, we have extra options
+                            snaps.extend(self.snapToAngles(edge))
+                            snaps.extend(self.snapToCenter(edge))
+                        elif et == "Ellipse":
+                            # extra ellipse options
+                            snaps.extend(self.snapToCenter(edge))
+                    elif "Face" in comp:
+                        face = shape.Face1
+                        snaps.extend(self.snapToFace(face))
+                    elif "Vertex" in comp:
+                        # directly snapped to a vertex
+                        snaps.append(self.snapToVertex(self.snapInfo,active=True))
+                    elif comp == '':
+                        # workaround for the new view provider
+                        snaps.append(self.snapToVertex(self.snapInfo,active=True))
+                    else:
+                        # all other cases (face, etc...) default to passive snap
+                        snapArray = [self.snapToVertex(self.snapInfo)]
                             
                 elif Draft.getType(obj) == "Dimension":
                     # for dimensions we snap to their 2 points:
