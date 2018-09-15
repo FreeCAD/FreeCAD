@@ -23,11 +23,10 @@
 #include "PreCompiled.h"
 
 #include <QGlobalStatic>
-#if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
   #include <QX11Info>
   #include <xcb/xcb.h>
-  #include <xcb/xproto.h>
-#endif // if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
 #include <QMainWindow>
 #include <QWidget>
 #include <FCConfig.h>
@@ -36,9 +35,9 @@
 #include "SpaceballEvent.h"
 #include "Application.h"
 
-#if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
   #include <spnav.h>
-#endif // if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
 
 #ifdef _USE_3DCONNEXION_SDK
 //windows
@@ -55,7 +54,7 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, c
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 {
-#if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
     if (spnav_close())
         Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
     else
@@ -83,7 +82,7 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
     mainWindow = window;
 
-#if defined(Q_OS_UNIX) && defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
     } else {
@@ -92,9 +91,10 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
     #if QT_VERSION >= 0x050000
         static auto evFilter( [](void *msg, long *result){
+                Q_UNUSED(result);
                 auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
                 if (inst) {
-                    return inst->xcbEventFilter(msg, result);
+                    return inst->xcbEventFilter(static_cast<const xcb_client_message_event_t *>(msg));
                 } else {
                     return false;
                 }
@@ -375,11 +375,11 @@ void Gui::GUIApplicationNativeEventAware::importSettings()
     }
 }
 
-#if defined(Q_OS_UNIX)
+#if defined(Q_OS_LINUX)
 
 #if QT_VERSION >= 0x050000
 
-bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(void *message, long *result)
+bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(const xcb_client_message_event_t *xcb_ev)
 {
 #if defined(SPNAV_FOUND)
     spnav_event navEvent;
@@ -387,7 +387,6 @@ bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(void *message, long *re
     // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
     // SpaceNavigator API only works with XEvent, so we need to construct a
     // temporary XEvent with just enough information for spnav_x11_event()
-    auto xcb_ev(static_cast<const xcb_client_message_event_t *>(message));
     if ((xcb_ev->response_type & 0x7F) == XCB_CLIENT_MESSAGE) {
         XClientMessageEvent xev;
 
@@ -461,7 +460,6 @@ bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(void *message, long *re
 
 #else
     Q_UNUSED(message);
-    Q_UNUSED(result);
     return false;
 #endif // if/else defined(SPNAV_FOUND)
 }
@@ -603,6 +601,6 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
 }
 #endif  // if/else QT_VERSION >= 0x050000
 
-#endif // Q_OS_UNIX
+#endif // Q_OS_LINUX
 
 #include "moc_GuiApplicationNativeEventAware.cpp"

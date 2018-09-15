@@ -32,7 +32,7 @@
 
 class QMainWindow;
 
-#if defined(Q_OS_UNIX)
+#if defined(Q_OS_LINUX)
   #include <X11/Xlib.h>
   #undef Bool
   #undef CursorShape
@@ -48,7 +48,7 @@ class QMainWindow;
   #undef False
   #undef True
   #undef Complex
-  #include <functional>
+  #include <xcb/xproto.h>
 
 #elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
 #include "3Dconnexion/MouseParameters.h"
@@ -114,14 +114,14 @@ namespace Gui
         float convertPrefToSensitivity(int value);
 
 // For X11
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_LINUX
     public:
   #if QT_VERSION >= 0x050000
-        bool xcbEventFilter(void *message, long *result);
+        bool xcbEventFilter(const xcb_client_message_event_t *message);
   #else
         bool x11EventFilter(XEvent *event);
   #endif // if/else QT_VERSION >= 0x050000
-#endif // Q_OS_UNIX
+#endif // Q_OS_LINUX
 
 #ifdef _USE_3DCONNEXION_SDK
 // For Windows
