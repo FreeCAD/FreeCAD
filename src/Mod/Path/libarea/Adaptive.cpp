@@ -55,7 +55,7 @@ namespace AdaptivePath {
 	  double l=sqrt(Dx*Dx + dy*dy);
 	  if(l>0.0) {
 	  	pt2.X = long( pt1.X + new_length * Dx/l);
-	  	pt2.Y = long(pt1.Y + new_length * dy/l);	
+	  	pt2.Y = long(pt1.Y + new_length * dy/l);
 		return true;
 	  }
 	  return false;
@@ -312,7 +312,7 @@ namespace AdaptivePath {
 						const IntPoint & s2p1,
 						const IntPoint & s2p2,
 						IntPoint & intersection) {
-		// todo: bounds check for perfomance
+		// TODO: bounds check for performance
 		double S1DX = double(s1p2.X - s1p1.X);
 		double S1DY = double(s1p2.Y - s1p1.Y);
 		double S2DX = double(s2p2.X - s2p1.X);
@@ -342,7 +342,7 @@ namespace AdaptivePath {
 			size_t size=path->size();
 			if(size<2) continue;
 			for(size_t j=0;j<size;j++) {
-				// todo: box check for perfomance
+				// TODO: box check for performance
 				const IntPoint * pp1 = &path->at(j>0?j-1:size-1);
 				const IntPoint * pp2 = &path->at(j);
 				double LDY = double(p2.Y - p1.Y);
@@ -434,7 +434,7 @@ namespace AdaptivePath {
 	}
 
 
-		// finds interim points not neccesarily on the same keeptooldown linking path
+		// finds interim points not necessarily on the same keeptooldown linking path
 	bool FindClosestClearPoints(const Paths & paths,IntPoint p1,IntPoint p2, double distanceLmit, IntPoint &interim1,IntPoint &interim2) {
 		size_t clpPathIndex;
 		size_t clpSegmentIndex1;
@@ -626,7 +626,7 @@ namespace AdaptivePath {
 
 			double interpolateAngle(double targetArea) {
 				std::size_t size = areas.size();
-				if(size<2 || targetArea>areas[size-1]) return MIN_ANGLE; //max engage angle - convinient value to initially measure cut area
+				if(size<2 || targetArea>areas[size-1]) return MIN_ANGLE; //max engage angle - convenient value to initially measure cut area
 				if(targetArea<areas[0]) return MAX_ANGLE; // min engage angle
 
 				for(size_t i=1;i<size;i++) {
@@ -764,7 +764,7 @@ namespace AdaptivePath {
 						state.passes++;
 						if(state.passes>=maxPases) {
 							Perf_NextEngagePoint.Stop();
-							return false; // nothin more to cut
+							return false; // nothing more to cut
 						}
 					 prevArea=0;
 					}
@@ -887,7 +887,7 @@ namespace AdaptivePath {
 				}
 				curPtIndex++; if(curPtIndex>=size) curPtIndex=0;
 			}
-			if(!found) continue; // try anohter path
+			if(!found) continue; // try another path
 
 			// step 2: iterate throuh path from starting point and find the part of the path inside the c2
 			size_t prevPtIndex = curPtIndex;
@@ -1007,7 +1007,7 @@ namespace AdaptivePath {
 
 						// there should be intersection with C2
 						if(Line2CircleIntersect(c2,toolRadiusScaled,segPoint,scanPoint,inters)) {
-							if(inters.size()>1) {										
+							if(inters.size()>1) {
 								intersC2.X = long(inters[1].X);
 								intersC2.Y = long(inters[1].Y);
 							} else {
@@ -1019,7 +1019,7 @@ namespace AdaptivePath {
 						}
 
 						if(Line2CircleIntersect(c1,toolRadiusScaled,segPoint,scanPoint,inters)) {
-								if(inters.size()>1) {											
+								if(inters.size()>1) {
 									intersC1.X = long(inters[1].X);
 									intersC1.Y = long(inters[1].Y);
 								} else {
@@ -1049,7 +1049,7 @@ namespace AdaptivePath {
 			{
 				// old way of calculating cut area based on polygon slipping
 				// used in case when there are multiple intersections of tool with cleared poly (very rare case, but important)
-				// 1. find differene beween old and new tool shape
+				// 1. find differene between old and new tool shape
 				Path oldTool;
 				Path newTool;
 				TranslatePath(toolGeometry,oldTool,c1);
@@ -1135,7 +1135,7 @@ namespace AdaptivePath {
 		Paths toolGeometryPaths;
 		clipof.Execute(toolGeometryPaths,toolRadiusScaled);
 		toolGeometry=toolGeometryPaths[0];
-		//calculate referece area
+		//calculate reference area
 		Path slotCut;
 		TranslatePath(toolGeometryPaths[0],slotCut,IntPoint(toolRadiusScaled/2,0));
 		clip.Clear();
@@ -1832,7 +1832,7 @@ namespace AdaptivePath {
 			angleHistory.clear();
 
 			// append a new path to progress info paths
-			if(progressPaths.size()==0) {						
+			if(progressPaths.size()==0) {
 				progressPaths.push_back(TPath());
 			} else {
 				// append new path if previous not empty
@@ -2003,7 +2003,7 @@ namespace AdaptivePath {
 
 					// append to toolpaths
 					if(passToolPath.size()==0) {
-						// in outside entry first successfull cut defines the helix center and start point
+						// in outside entry first successful cut defines the helix center and start point
 						if(output.AdaptivePaths.size()==0 && outsideEntry) {
 								entryPoint=toolPos;
 								output.HelixCenterPoint.first = double(entryPoint.X)/scaleFactor;
