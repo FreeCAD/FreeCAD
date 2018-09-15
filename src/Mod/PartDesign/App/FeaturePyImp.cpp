@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "Feature.h"
+#include "Body.h"
 
 // inclusion of the generated files (generated out of FeaturePy.xml)
 #include "FeaturePy.h"
@@ -58,3 +59,11 @@ PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)
     else
         return Py::new_reference_to(Py::None());
 }
+
+Py::Object FeaturePy::getBody() const {
+    auto body = getFeaturePtr()->getFeatureBody();
+    if(body)
+        return Py::Object(body->getPyObject(),true);
+    return Py::Object();
+}
+
