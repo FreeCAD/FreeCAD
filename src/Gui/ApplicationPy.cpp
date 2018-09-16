@@ -134,6 +134,9 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand, METH_VARARGS,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
+  {"isCommandActive",         (PyCFunction) Application::sIsCommandActive, METH_VARARGS,
+   "isCommandActive(string) -> Bool\n\n"
+   "Test if a command is active"},
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
@@ -1138,6 +1141,23 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
         return 0;
     }
 }
+
+PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (!cmd) {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(cmd->isActive()));
+    }PY_CATCH;
+}
+
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
 {
