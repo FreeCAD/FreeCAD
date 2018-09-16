@@ -108,19 +108,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="4" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>66</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="TextLabelZ_5">
         <property name="sizePolicy">
@@ -173,6 +160,13 @@
        <widget class="QCheckBox" name="centerOfMass">
         <property name="text">
          <string>Use center of mass</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="selectedVertex">
+        <property name="text">
+         <string>Selected point(s)</string>
         </property>
        </widget>
       </item>
