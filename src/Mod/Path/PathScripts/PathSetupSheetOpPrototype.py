@@ -171,6 +171,7 @@ class OpPrototype(object):
     def addProperty(self, typeString, name, category, info = None):
         prop = self.PropertyType[typeString](name, typeString, category, info)
         self.properties[name] = prop
+        return self
 
     def setEditorMode(self, name, mode):
         self.properties[name].setEditorMode(mode)
