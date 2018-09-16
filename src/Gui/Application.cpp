@@ -519,15 +519,7 @@ void Application::open(const char* FileName, const char* Module)
         Command::doCommand(Command::App, "import %s", Module);
         try {
             // load the file with the module
-            Command::doCommand(Command::App, "__openingDoc=%s.open(u\"%s\")", Module, unicodepath.c_str());
-
-            // TODO: Because the document may contains xlink which opens other
-            // documents, we must make sure the requested document is the active
-            // document. But this is ugly. Any better idea?
-            Command::doCommand(Command::App, "if __openingDoc:\n"
-                                             "  Gui.setActiveDocument(__openingDoc)\n"
-                                             "  del(__openingDoc)");
-
+            Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -781,6 +773,12 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Base::PyGILStateLocker lock;
                 Py::Object active(d->activeDocument->getPyObject(), true);
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),active);
+
+                auto view = getMainWindow()->activeWindow();
+                if(!view || view->getAppDocument()!=&Doc) {
+                    Gui::MDIView* view = d->activeDocument->getActiveView();
+                    getMainWindow()->setActiveWindow(view);
+                }
             }
             else {
                 Base::PyGILStateLocker lock;

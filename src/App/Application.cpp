@@ -572,6 +572,7 @@ Document* Application::openDocument(const char * FileName)
 
     for(auto doc : newDocs) 
         doc->afterRestore(true);
+    setActiveDocument(newDocs.back());
     return newDocs.back();
 }
 
