@@ -37,6 +37,7 @@
         <file>icons/Path-Plane.svg</file>
         <file>icons/Path-Pocket.svg</file>
         <file>icons/Path-Post.svg</file>
+        <file>icons/Path-Probe.svg</file>
         <file>icons/Path-Profile-Edges.svg</file>
         <file>icons/Path-Profile-Face.svg</file>
         <file>icons/Path-Profile.svg</file>
@@ -102,6 +103,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
+        <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PathEdit.ui</file>
