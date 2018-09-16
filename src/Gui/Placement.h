@@ -65,6 +65,7 @@ private Q_SLOTS:
     void onPlacementChanged(int);
     void on_resetButton_clicked();
     void on_centerOfMass_toggled(bool);
+    void on_selectedVertex_clicked();
 
 private:
     bool onApply();
@@ -93,6 +94,8 @@ private:
     Base::Vector3d cntOfMass;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
+    std::string documentName; //store these so we can reselect original object
+    std::string featureName;  //after user selects points and clicks Selected point(s)
 
     friend class TaskPlacement;
 };

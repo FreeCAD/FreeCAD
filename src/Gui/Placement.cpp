@@ -82,6 +82,12 @@ public:
 Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl)
 {
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size()>=1){
+        documentName = selection[0].getDocName(); //save info so we can reselect
+        featureName = selection[0].getFeatName(); //after select points button clicked
+    }
+
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
     ui->applyPlacementChange->hide();
@@ -293,6 +299,78 @@ void Placement::on_centerOfMass_toggled(bool on)
         ui->xCnt->setValue(cntOfMass.x);
         ui->yCnt->setValue(cntOfMass.y);
         ui->zCnt->setValue(cntOfMass.z);
+    }
+}
+
+void Placement::on_selectedVertex_clicked()
+{
+    cntOfMass.Set(0,0,0);
+    ui->centerOfMass->setChecked(false);
+
+    bool success=false;
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    std::vector<Base::Vector3d> picked;
+    std::vector<Base::string> subnames;
+    //combine all pickedpoints and subnames into single vectors
+    //even if points are from separate objects
+    for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
+        std::vector<Base::Vector3d> points = it->getPickedPoints();
+        picked.insert(picked.begin(),points.begin(),points.end());
+        std::vector<std::string> names = it->getSubNames();
+        subnames.insert(subnames.begin(),names.begin(),names.end());
+    }
+    if (picked.size()==1 && (std::string(subnames[0]).substr(0,6)==std::string("Vertex")
+                             || std::string(subnames[0]).substr(0,5)==std::string("Point"))){
+        ui->xCnt->setValue(picked[0].x);
+        ui->yCnt->setValue(picked[0].y);
+        ui->zCnt->setValue(picked[0].z);
+        cntOfMass.x=picked[0].x;
+        cntOfMass.y=picked[0].y;
+        cntOfMass.z=picked[0].z;
+        success=true;
+    } else if (picked.size()==2 && (std::string(subnames[0]).substr(0,6)==std::string("Vertex")
+                                    || std::string(subnames[0]).substr(0,5)==std::string("Point"))
+               && (std::string(subnames[1]).substr(0,6)==std::string("Vertex")
+                   || std::string(subnames[1]).substr(0,5)==std::string("Point"))){
+        //average the coords to get center of rotation
+        ui->xCnt->setValue((picked[0].x+picked[1].x)/2.0);
+        ui->yCnt->setValue((picked[0].y+picked[1].y)/2.0);
+        ui->zCnt->setValue((picked[0].z+picked[1].z)/2.0);
+        cntOfMass.x=(picked[0].x+picked[1].x)/2.0;
+        cntOfMass.y=(picked[0].y+picked[1].y)/2.0;
+        cntOfMass.z=(picked[0].z+picked[1].z)/2.0;
+        //setup a customized axis since the user selected 2 points
+        //keep any existing angle, but setup our own axis
+        Base::Placement plm = getPlacement();
+        Base::Rotation rot = plm.getRotation();
+        Base::Vector3d tmp;
+        double angle;
+        rot.getRawValue(tmp, angle);
+        Base::Vector3d axis(picked[0].x-picked[1].x,picked[0].y-picked[1].y,picked[0].z-picked[1].z);
+        axis.Normalize();
+        rot.setValue(axis, angle);
+        plm.setRotation(rot);
+        setPlacementData(plm); //creates custom axis, if needed
+
+        //we have to clear selection and reselect one point or else
+        //later on the rotation is applied twice because there will
+        //be 2 (vertex) objects in the selection, and even if both are subobjects
+        //of the same object the rotation still gets applied twice
+        Gui::Selection().clearSelection();
+        //reselect original object that was selected when placment dlg first opened
+        Gui::Selection().addSelection(documentName.c_str(),featureName.c_str());
+        ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
+        ui->stackedWidget->setCurrentIndex(0);
+        success=true;
+    }
+
+    if (!success){
+        Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
+
+        ui->xCnt->setValue(0);
+        ui->yCnt->setValue(0);
+        ui->zCnt->setValue(0);
+        return;
     }
 }
 
