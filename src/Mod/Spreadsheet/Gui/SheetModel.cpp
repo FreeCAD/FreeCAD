@@ -477,8 +477,9 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
             }
         }
         catch (const Base::Exception& e) {
-            QMessageBox::critical(qApp->activeWindow(), QObject::tr("Cell contents"), QString::fromUtf8(e.what()));
+            e.ReportException();
             Gui::Command::abortCommand();
+            return false;
         }
     }
     return true;
