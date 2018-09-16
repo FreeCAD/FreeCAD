@@ -1070,7 +1070,7 @@ class TaskPanel:
     def setupUi(self, activate):
         self.setupGlobal.setupUi()
         self.setupOps.setupUi()
-        self.updateStockEditor(-1, True)
+        self.updateStockEditor(-1, False)
         self.setFields()
 
         # Info
