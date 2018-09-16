@@ -94,13 +94,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yPos"/>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zPos"/>
       </item>
      </layout>
     </widget>
@@ -127,13 +127,13 @@
        <number>6</number>
       </property>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zCnt">
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="TextLabelY_2">
@@ -298,7 +298,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="angle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
           </item>
@@ -378,13 +378,13 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="yawAngle"/>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle"/>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="rollAngle"/>
             </item>
            </layout>
           </item>
