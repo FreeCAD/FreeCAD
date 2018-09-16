@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>432</width>
-    <height>1160</height>
+    <width>478</width>
+    <height>1310</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,8 +31,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>412</width>
-         <height>1036</height>
+         <width>458</width>
+         <height>1186</height>
         </rect>
        </property>
        <attribute name="label">
@@ -112,8 +112,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>96</width>
-         <height>26</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -205,8 +205,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>418</width>
-         <height>1117</height>
+         <width>458</width>
+         <height>1186</height>
         </rect>
        </property>
        <attribute name="label">
@@ -659,8 +659,46 @@
            <string>Rotate - XY</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="1">
+            <widget class="QWidget" name="widget_5" native="true">
+             <layout class="QVBoxLayout" name="verticalLayout_18">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QDoubleSpinBox" name="modelRotateValue">
+                <property name="minimum">
+                 <double>-180.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>360.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>90.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="modelRotateCompound">
+                <property name="text">
+                 <string>Compound</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="modelRotateLeft">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -676,21 +714,14 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QDoubleSpinBox" name="modelRotateValue">
-             <property name="minimum">
-              <double>-180.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>360.000000000000000</double>
-             </property>
-             <property name="value">
-              <double>90.000000000000000</double>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="2">
             <widget class="QPushButton" name="modelRotateRight">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -729,8 +760,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>352</width>
-         <height>350</height>
+         <width>458</width>
+         <height>1186</height>
         </rect>
        </property>
        <attribute name="label">
@@ -893,8 +924,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>312</width>
-         <height>169</height>
+         <width>458</width>
+         <height>1186</height>
         </rect>
        </property>
        <attribute name="label">
