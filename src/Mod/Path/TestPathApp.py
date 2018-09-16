@@ -38,5 +38,5 @@ from PathTests.TestPathTool import TestPathTool
 from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathToolController import TestPathToolController
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
-from PathTests.TestPathChamfer  import TestPathChamfer
+from PathTests.TestPathDeburr  import TestPathDeburr
 

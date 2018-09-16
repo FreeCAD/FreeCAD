@@ -71,9 +71,9 @@ class PathWorkbench (Workbench):
         FreeCADGui.addIconPath(":/icons")
         # load python modules
         from PathScripts import PathArray
-        from PathScripts import PathChamferGui
         from PathScripts import PathComment
         from PathScripts import PathCustom
+        from PathScripts import PathDeburrGui
         from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
@@ -123,7 +123,7 @@ class PathWorkbench (Workbench):
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
 
-            engravecmdlist = sorted(engravecmdlist + ['Path_Chamfer'])
+            engravecmdlist = sorted(engravecmdlist + ['Path_Deburr'])
             engravecmdgroup = ['Path_EngraveTools']
             FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
 
