@@ -279,15 +279,6 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {NULL, NULL, 0, NULL}  /* sentinel */
 };
 
-
-Gui::MDIView* Application::activeView(void) const
-{
-    if (activeDocument())
-        return activeDocument()->getActiveView();
-    else
-        return NULL;
-}
-
 } // namespace Gui
 
 Application::Application(bool GUIenabled)
@@ -563,14 +554,22 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
-                Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                                               , Module, unicodepath.c_str(), DocName);
+                if (DocName) {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
+                                                   , Module, unicodepath.c_str(), DocName);
+                }
+                else {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\")"
+                                                   , Module, unicodepath.c_str());
+                }
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                     ("User parameter:BaseApp/Preferences/View");
                 if (hGrp->GetBool("AutoFitToView", true))
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-                if (getDocument(DocName))
-                    getDocument(DocName)->setModified(true);
+                Gui::Document* doc = activeDocument();
+                if (DocName) doc = getDocument(DocName);
+                if (doc)
+                    doc->setModified(true);
             }
 
             // the original file name is required
@@ -810,6 +809,37 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     return pView ? pView->onHasMsg(pMsg) : false;
+}
+
+Gui::MDIView* Application::activeView(void) const
+{
+    if (activeDocument())
+        return activeDocument()->getActiveView();
+    else
+        return NULL;
+}
+
+/**
+ * @brief Application::activateView
+ * Activates a view of the given type of the active document.
+ * If a view of this type doesn't exist and \a create is true
+ * a new view of this type will be created.
+ * @param type
+ * @param create
+ */
+void Application::activateView(const Base::Type& type, bool create)
+{
+    Document* doc = activeDocument();
+    if (doc) {
+        MDIView* mdiView = doc->getActiveView();
+        if (mdiView && mdiView->isDerivedFrom(type))
+            return;
+        std::list<MDIView*> mdiViews = doc->getMDIViewsOfType(type);
+        if (!mdiViews.empty())
+            doc->setActiveWindow(mdiViews.back());
+        else if (create)
+            doc->createView(type);
+    }
 }
 
 /// Getter for the active view

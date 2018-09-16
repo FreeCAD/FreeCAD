@@ -115,6 +115,7 @@ PartDesign::Body * makeBody(App::Document *doc)
                              "App.activeDocument().addObject('PartDesign::Body','%s')",
                              bodyName.c_str() );
     Gui::Command::doCommand( Gui::Command::Gui,
+                             "Gui.activateView('Gui::View3DInventor', True)\n"
                              "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
                              PDBODYKEY, bodyName.c_str() );
 

@@ -159,6 +159,7 @@ public:
     //@{
     /// Getter for the active view
     Gui::MDIView* getActiveView(void) const;
+    void setActiveWindow(Gui::MDIView* view);
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;

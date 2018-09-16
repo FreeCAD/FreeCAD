@@ -126,6 +126,7 @@ namespace Gui
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);
+        bool ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput);
         void On3dmouseInput();
 
         class TInputData

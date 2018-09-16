@@ -51,6 +51,7 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
     void on_xyPlane_clicked();

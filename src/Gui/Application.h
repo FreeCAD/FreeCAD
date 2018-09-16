@@ -149,6 +149,8 @@ public:
     Gui::Document* getDocument(const App::Document* pDoc) const;
     /// Getter for the active view of the active document or null
     Gui::MDIView* activeView(void) const;
+    /// Activate a view of the given type of the active document
+    void activateView(const Base::Type&, bool create=false);
     /// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
@@ -237,6 +239,7 @@ public:
     static PyObject* sActiveDocument           (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument        (PyObject *self,PyObject *args);
     static PyObject* sActiveView               (PyObject *self,PyObject *args);
+    static PyObject* sActivateView             (PyObject *self,PyObject *args);
     static PyObject* sGetDocument              (PyObject *self,PyObject *args);
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);

@@ -166,8 +166,10 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-    if (!activeWindow())
+    if (!activeWindow()) {
+        qDebug("No active window\n");
         return true;
+    }
 
     QApplication::notify(object, event);
     if (event->type() == Spaceball::MotionEvent::MotionEventType)

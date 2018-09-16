@@ -105,7 +105,11 @@ def symlink(source, link_name):
 def get_macro_dir():
     """Return the directory where macros are located"""
     default_macro_dir = os.path.join(FreeCAD.ConfigGet('UserAppData'), 'Macro')
-    return FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString('MacroPath', default_macro_dir)
+    path = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString('MacroPath', default_macro_dir)
+    # For Py2 path is a utf-8 encoded unicode which we must decode again
+    if sys.version_info.major < 3:
+        path = path.decode("utf-8")
+    return path
 
 
 def update_macro_details(old_macro, new_macro):
@@ -216,7 +220,7 @@ class AddonsInstaller(QtGui.QDialog):
                     if not thread.isFinished():
                         oktoclose = False
         if oktoclose:
-            shutil.rmtree(self.macro_repo_dir)
+            shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
             QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
@@ -384,7 +388,7 @@ class AddonsInstaller(QtGui.QDialog):
         if self.tabWidget.currentIndex() == 0:
             # Tab "Workbenches".
             idx = self.listWorkbenches.currentRow()
-            basedir = FreeCAD.ConfigGet("UserAppData")
+            basedir = FreeCAD.getUserAppDataDir()
             moddir = basedir + os.sep + "Mod"
             clonedir = moddir + os.sep + self.repos[idx][0]
             if os.path.exists(clonedir):
@@ -411,7 +415,7 @@ class AddonsInstaller(QtGui.QDialog):
     def update_status(self):
         self.listWorkbenches.clear()
         self.listMacros.clear()
-        moddir = FreeCAD.ConfigGet("UserAppData") + os.sep + "Mod"
+        moddir = FreeCAD.getUserAppDataDir() + os.sep + "Mod"
         for wb in self.repos:
             if os.path.exists(os.path.join(moddir,wb[0])):
                 self.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme("dialog-ok"),str(wb[0]) + str(" (Installed)")))
@@ -457,7 +461,7 @@ class UpdateWorker(QtCore.QThread):
         u.close()
         p = p.replace("\n"," ")
         p = re.findall("octicon-file-submodule(.*?)message",p)
-        basedir = FreeCAD.ConfigGet("UserAppData")
+        basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
         for l in p:
@@ -532,7 +536,7 @@ class CheckWBWorker(QtCore.QThread):
             self.stop = True
             return
         self.progressbar_show.emit(True)
-        basedir = FreeCAD.ConfigGet("UserAppData")
+        basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
         upds = []
@@ -677,13 +681,15 @@ class Macro(object):
                 from HTMLParser import HTMLParser
             except ImportError:
                 from html.parser import HTMLParser
-            try:
+            if sys.version_info.major < 3:
                 code = code.decode('utf8')
+            try:
                 code = HTMLParser().unescape(code)
-                code = code.encode('utf8')
-                code = code.replace('\xc2\xa0', ' ')
+                code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
             except:
                 FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
+            if sys.version_info.major < 3:
+                code = code.encode('utf8')
         desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
         if desc:
             desc = desc[0]
@@ -813,7 +819,7 @@ class ShowWorker(QtCore.QThread):
                     pass
                 else:
                     repo = self.repos[self.idx]
-                    clonedir = FreeCAD.ConfigGet("UserAppData") + os.sep + "Mod" + os.sep + repo[0]
+                    clonedir = FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + repo[0]
                     if os.path.exists(clonedir):
                         if not os.path.exists(clonedir + os.sep + '.git'):
                             # Repair addon installed with raw download
@@ -922,7 +928,7 @@ class InstallWorker(QtCore.QThread):
                 return
             if NOGIT:
                 git = None
-            basedir = FreeCAD.ConfigGet("UserAppData")
+            basedir = FreeCAD.getUserAppDataDir()
             moddir = basedir + os.sep + "Mod"
             if not os.path.exists(moddir):
                 os.makedirs(moddir)

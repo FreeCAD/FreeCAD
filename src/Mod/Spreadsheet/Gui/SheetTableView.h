@@ -58,6 +58,7 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+    void deleteSelection();
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);

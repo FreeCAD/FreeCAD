@@ -44,7 +44,9 @@ Line::Line()
     BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
     if (!builder.IsDone())
         return;
-    Shape.setValue(builder.Shape());
+    TopoDS_Shape myShape = builder.Shape();
+    myShape.Infinite(Standard_True);
+    Shape.setValue(myShape);
 
     Support.touch();
 }

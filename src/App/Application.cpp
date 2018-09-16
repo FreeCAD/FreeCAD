@@ -1593,7 +1593,7 @@ void Application::initApplication(void)
         ObjectLabelObserver::instance();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 

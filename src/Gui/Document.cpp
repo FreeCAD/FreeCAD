@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <QAbstractButton>
 # include <qapplication.h>
 # include <qdir.h>
@@ -1387,6 +1388,36 @@ MDIView* Document::getActiveView(void) const
         active = mdis.back();
 
     return active;
+}
+
+/**
+ * @brief Document::setActiveWindow
+ * If this document is active and the view is part of it then it will be
+ * activated. If the document is not active of the view is already active
+ * nothing is done.
+ * @param view
+ */
+void Document::setActiveWindow(Gui::MDIView* view)
+{
+    // get the main window's active view
+    MDIView* active = getMainWindow()->activeWindow();
+
+    // view is already active
+    if (active == view)
+        return;
+
+    // get all MDI views of the document
+    std::list<MDIView*> mdis = getMDIViews();
+
+    // this document is not active
+    if (std::find(mdis.begin(), mdis.end(), active) == mdis.end())
+        return;
+
+    // the view is not part of the document
+    if (std::find(mdis.begin(), mdis.end(), view) == mdis.end())
+        return;
+
+    getMainWindow()->setActiveWindow(view);
 }
 
 Gui::MDIView* Document::getViewOfNode(SoNode* node) const

@@ -75,6 +75,8 @@ public:
 
     QModelIndex currentIndex() const;
 
+    void deleteSelection();
+
     PyObject *getPyObject(void);
 
     virtual void deleteSelf();
