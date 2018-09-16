@@ -116,7 +116,6 @@ PyObject* GeometryCurvePy::toShape(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -322,7 +321,6 @@ PyObject* GeometryCurvePy::length(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -348,7 +346,6 @@ PyObject* GeometryCurvePy::parameterAtDistance(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -371,7 +368,6 @@ PyObject* GeometryCurvePy::value(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -401,7 +397,6 @@ PyObject* GeometryCurvePy::tangent(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -426,7 +421,6 @@ PyObject* GeometryCurvePy::normal(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -450,7 +444,6 @@ PyObject* GeometryCurvePy::curvature(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -475,7 +468,6 @@ PyObject* GeometryCurvePy::centerOfCurvature(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -501,7 +493,6 @@ PyObject* GeometryCurvePy::parameter(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -543,7 +534,6 @@ PyObject* GeometryCurvePy::makeRuledSurface(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -578,7 +568,6 @@ PyObject* GeometryCurvePy::intersect2d(PyObject *args)
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -600,7 +589,6 @@ PyObject* GeometryCurvePy::toBSpline(PyObject * args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -625,7 +613,6 @@ PyObject* GeometryCurvePy::toNurbs(PyObject * args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -649,7 +636,6 @@ PyObject* GeometryCurvePy::trim(PyObject * args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -703,7 +689,6 @@ PyObject* GeometryCurvePy::approximateBSpline(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -801,7 +786,6 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
@@ -839,7 +823,6 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
@@ -870,11 +853,91 @@ PyObject* GeometryCurvePy::intersect(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
 
     PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
+}
+
+PyObject* GeometryCurvePy::reverse(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+        Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+        c->Reverse();
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+    Py_Return;
+}
+
+PyObject* GeometryCurvePy::reversedParameter(PyObject *args)
+{
+    double p;
+    if (!PyArg_ParseTuple(args, "d", &p))
+        return 0;
+    try {
+        Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+        Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+        Standard_Real val = c->ReversedParameter(p);
+        return PyFloat_FromDouble(val);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* GeometryCurvePy::isPeriodic(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+        Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+        Standard_Boolean val = c->IsPeriodic();
+        return PyBool_FromLong(val ? 1 : 0);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* GeometryCurvePy::period(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+        Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+        Standard_Real val = c->Period();
+        return PyFloat_FromDouble(val);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* GeometryCurvePy::isClosed(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+        Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+        Standard_Boolean val = c->IsClosed();
+        return PyBool_FromLong(val ? 1 : 0);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
 }

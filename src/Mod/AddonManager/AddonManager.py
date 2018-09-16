@@ -220,7 +220,7 @@ class AddonsInstaller(QtGui.QDialog):
                     if not thread.isFinished():
                         oktoclose = False
         if oktoclose:
-            shutil.rmtree(self.macro_repo_dir)
+            shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
             QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
@@ -681,13 +681,15 @@ class Macro(object):
                 from HTMLParser import HTMLParser
             except ImportError:
                 from html.parser import HTMLParser
-            try:
+            if sys.version_info.major < 3:
                 code = code.decode('utf8')
+            try:
                 code = HTMLParser().unescape(code)
-                code = code.encode('utf8')
-                code = code.replace('\xc2\xa0', ' ')
+                code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
             except:
                 FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
+            if sys.version_info.major < 3:
+                code = code.encode('utf8')
         desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
         if desc:
             desc = desc[0]

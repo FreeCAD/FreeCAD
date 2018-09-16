@@ -35,7 +35,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout()
 
-        #tool contoller
+        #tool controller
         hlayout = QtGui.QHBoxLayout()
         form.ToolController = QtGui.QComboBox()
         form.ToolControllerLabel=QtGui.QLabel("Tool Controller")
@@ -74,7 +74,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.Tolerance.setTickInterval(1)
         form.Tolerance.setValue(10)
         form.Tolerance.setTickPosition(QtGui.QSlider.TicksBelow)
-        form.Tolerance.setToolTip("Influences calculation performace vs stability and accuracy.")
+        form.Tolerance.setToolTip("Influences calculation performance vs stability and accuracy.")
         formLayout.addRow(QtGui.QLabel("Accuracy vs Performance"),form.Tolerance)
 
         #helix angle

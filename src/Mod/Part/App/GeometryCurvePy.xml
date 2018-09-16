@@ -164,7 +164,36 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Continuity" ReadOnly="true">
+        <Methode Name="reverse">
+          <Documentation>
+            <UserDocu>Changes the direction of parametrization of the curve.</UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="reversedParameter" Const="true">
+          <Documentation>
+            <UserDocu>Returns the parameter on the reversed curve for
+the point of parameter U on this curve.</UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="isPeriodic" Const="true">
+          <Documentation>
+            <UserDocu>Returns true if this curve is periodic.</UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="period" Const="true">
+          <Documentation>
+            <UserDocu>Returns the period of this curve
+or raises an exception if it is not periodic.</UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="isClosed" Const="true">
+          <Documentation>
+            <UserDocu>
+              Returns true if the curve is closed.
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
 					Returns the global continuity of the curve.

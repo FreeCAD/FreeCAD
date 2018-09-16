@@ -554,14 +554,22 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
-                Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                                               , Module, unicodepath.c_str(), DocName);
+                if (DocName) {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
+                                                   , Module, unicodepath.c_str(), DocName);
+                }
+                else {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\")"
+                                                   , Module, unicodepath.c_str());
+                }
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                     ("User parameter:BaseApp/Preferences/View");
                 if (hGrp->GetBool("AutoFitToView", true))
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-                if (getDocument(DocName))
-                    getDocument(DocName)->setModified(true);
+                Gui::Document* doc = activeDocument();
+                if (DocName) doc = getDocument(DocName);
+                if (doc)
+                    doc->setModified(true);
             }
 
             // the original file name is required

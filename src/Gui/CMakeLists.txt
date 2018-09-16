@@ -59,6 +59,13 @@ if(MSVC)
          ${COIN3D_LIBRARIES}
          ${OPENGL_gl_LIBRARY}
     )
+
+    if(FREECAD_USE_3DCONNEXION)
+        list(APPEND FreeCADGui_LIBS
+            hid
+        )
+    endif()
+
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
