@@ -82,6 +82,12 @@ public:
 Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl)
 {
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size()>=1){
+        documentName = selection[0].getDocName(); //save info so we can reselect
+        featureName = selection[0].getFeatName(); //after select points button clicked
+    }
+
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
     ui->applyPlacementChange->hide();
@@ -351,10 +357,8 @@ void Placement::on_selectedVertex_clicked()
         //be 2 (vertex) objects in the selection, and even if both are subobjects
         //of the same object the rotation still gets applied twice
         Gui::Selection().clearSelection();
-        std::string docName = selection[0].getDocName();
-        std::string featName = selection[0].getFeatName();
-        subnames.erase(subnames.end()); //we only want one object selected, element 0
-        Gui::Selection().addSelection(docName.c_str(), featName.c_str(), subnames);
+        //reselect original object that was selected when placment dlg first opened
+        Gui::Selection().addSelection(documentName.c_str(),featureName.c_str());
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
         ui->stackedWidget->setCurrentIndex(0);
         success=true;
