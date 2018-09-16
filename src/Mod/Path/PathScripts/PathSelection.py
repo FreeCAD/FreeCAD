@@ -190,7 +190,7 @@ def engraveselect():
 
 def chamferselect():
     FreeCADGui.Selection.addSelectionGate(CHAMFERGate())
-    FreeCAD.Console.PrintWarning("Chamfer Select Mode\n")
+    FreeCAD.Console.PrintWarning("Deburr Select Mode\n")
 
 def profileselect():
     FreeCADGui.Selection.addSelectionGate(PROFILEGate())
@@ -210,8 +210,8 @@ def surfaceselect():
 
 def select(op):
     opsel = {}
-    opsel['Chamfer'] = chamferselect
     opsel['Contour'] = contourselect
+    opsel['Deburr'] = chamferselect
     opsel['Drilling'] = drillselect
     opsel['Engrave'] = engraveselect
     opsel['Helix'] = drillselect
