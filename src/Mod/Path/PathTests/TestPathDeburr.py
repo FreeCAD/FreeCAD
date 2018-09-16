@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 import Path
-import PathScripts.PathChamfer as PathChamfer
+import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 import math
@@ -32,7 +32,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
 
 
-class TestPathChamfer(PathTestUtils.PathTestBase):
+class TestPathDeburr(PathTestUtils.PathTestBase):
 
     def test00(self):
         '''Verify chamfer depth and offset for an end mill.'''
@@ -41,14 +41,14 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 180
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.01, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0.01, tool)
         self.assertRoughly(0.01, depth)
         self.assertRoughly(9, offset)
 
         # legacy tools - no problem, same result
         tool.CuttingEdgeAngle = 0
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.01, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0.01, tool)
         self.assertRoughly(0.01, depth)
         self.assertRoughly(9, offset)
 
@@ -58,11 +58,11 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 90
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0, tool)
         self.assertRoughly(1, depth)
         self.assertRoughly(0, offset)
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0.2, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0.2, tool)
         self.assertRoughly(1.2, depth)
         self.assertRoughly(0.2, offset)
 
@@ -72,11 +72,11 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0.3
         tool.CuttingEdgeAngle = 90
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0, tool)
         self.assertRoughly(1, depth)
         self.assertRoughly(0.3, offset)
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(2, 0.2, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(2, 0.2, tool)
         self.assertRoughly(2.2, depth)
         self.assertRoughly(0.5, offset)
 
@@ -88,10 +88,10 @@ class TestPathChamfer(PathTestUtils.PathTestBase):
 
         td = 1.73205
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(1, 0, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(1, 0, tool)
         self.assertRoughly(td, depth)
         self.assertRoughly(10, offset)
 
-        (depth, offset) = PathChamfer.toolDepthAndOffset(3, 1, tool)
+        (depth, offset) = PathDeburr.toolDepthAndOffset(3, 1, tool)
         self.assertRoughly(td * 3 + 1, depth)
         self.assertRoughly(10 + td, offset)
