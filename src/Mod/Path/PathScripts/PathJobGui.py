@@ -73,7 +73,10 @@ def selectionEx():
     finally:
         FreeCADGui.Selection.clearSelection()
         for s in sel:
-            FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+            if s.SubElementNames:
+                FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+            else:
+                FreeCADGui.Selection.addSelection(s.Object)
 
 
 class ViewProvider:
