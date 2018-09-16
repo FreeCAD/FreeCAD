@@ -877,9 +877,13 @@ class TaskPanel:
     def modelRotate(self, axis):
         angle = self.form.modelRotateValue.value()
         with selectionEx() as selection:
-            bb = PathStock.shapeBoundBox([sel.Object for sel in selection])
-            for sel in selection:
-                Draft.rotate(sel.Object, angle, bb.Center, axis)
+            if self.form.modelRotateCompound.isChecked() and len(selection) > 1:
+                bb = PathStock.shapeBoundBox([sel.Object for sel in selection])
+                for sel in selection:
+                    Draft.rotate(sel.Object, angle, bb.Center, axis)
+            else:
+                for sel in selection:
+                    Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
@@ -1020,6 +1024,7 @@ class TaskPanel:
             self.form.modelSetZ0.setEnabled(True)
             self.form.modelMoveGroup.setEnabled(True)
             self.form.modelRotateGroup.setEnabled(True)
+            self.form.modelRotateCompound.setEnabled(len(sel) > 1)
         else:
             self.form.modelSetX0.setEnabled(False)
             self.form.modelSetY0.setEnabled(False)
