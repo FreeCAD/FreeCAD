@@ -1654,6 +1654,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		scaleFactor = 500;
 
 	toolRadiusScaled = long(toolDiameter * scaleFactor / 2);
+	stepOverScaled = toolRadiusScaled * stepOverFactor;
 	bbox_size = long(toolDiameter * scaleFactor);
 	progressCallback = &progressCallbackFn;
 	lastProgressTime = clock();
@@ -1760,7 +1761,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		Paths paths;
-		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled);
+		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled -0.15*toolRadiusScaled/2);
 		for (const auto &current : paths)
 		{
 			int nesting = getPathNestingLevel(current, paths);
@@ -1776,6 +1777,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 
 				// calc bounding paths - i.e. area that must be cleared inside
 				// it's not the same as input paths due to filtering (nesting logic)
+
+				clipof.Clear();
+				clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+				clipof.Execute(toolBoundPaths, 0.15*toolRadiusScaled/2);
+
+
 				Paths boundPaths;
 				clipof.Clear();
 				clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
@@ -1826,6 +1833,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 					clipof.Clear();
 					clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
 					clipof.Execute(toolBoundPaths, -toolRadiusScaled - finishPassOffsetScaled);
+
 					ProcessPolyNode(boundPaths, toolBoundPaths);
 				}
 			}
@@ -2044,7 +2052,7 @@ bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1, const IntPoint &p2, Cl
 	{
 		Clipper clip;
 		double distance = sqrt(DistanceSqrd(p1, p2));
-		double stepSize = min(0.5 * toolRadiusScaled * stepOverFactor, 8 * RESOLUTION_FACTOR);
+		double stepSize = min(0.5 * stepOverScaled, 8 * RESOLUTION_FACTOR);
 		if (distance < stepSize / 2)
 		{ // not significant cut
 			Perf_IsAllowedToCutTrough.Stop();
@@ -2108,7 +2116,7 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &end
 	if (limit < 20)
 		limit = 20;
 
-	double clearence = toolRadiusScaled * stepOverFactor / 2;
+	double clearence = stepOverScaled / 2;
 	double offClearence = 2 * clearence + 1;
 	if (2 * offClearence > directDistance)
 		return false;
@@ -2237,8 +2245,8 @@ bool Adaptive2d::MakeLeadPath(bool leadIn, const IntPoint &startPoint, const Dou
 	IntPoint currentPoint = startPoint;
 	DoublePoint targetDir = DirectionV(currentPoint, beaconPoint);
 	double distanceToBeacon = sqrt(DistanceSqrd(startPoint, beaconPoint));
-	double stepSize = 0.2 * toolRadiusScaled * stepOverFactor + 1;
-	double maxPathLen = toolRadiusScaled * stepOverFactor;
+	double stepSize = 0.2 * stepOverScaled + 1;
+	double maxPathLen = stepOverScaled;
 	DoublePoint nextDir = startDir;
 	IntPoint nextPoint = IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
 	Path checkPath;
@@ -2324,10 +2332,16 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 			double clpParameter;
 			IntPoint clp;
 
-			double beaconOffset = toolRadiusScaled * stepOverFactor;
+			double beaconOffset = stepOverScaled;
 			if (beaconOffset > linkDistance)
 			{
 				beaconOffset = linkDistance;
+			}
+
+			double pathLen =PathLength(passToolPath);
+			if (beaconOffset > pathLen)
+			{
+				beaconOffset = pathLen;
 			}
 
 			DistancePointToPathsSqrd(toolBoundPaths, startPoint, clp, clpPathIndex, clpSegmentIndex, clpParameter);
@@ -2640,6 +2654,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		size_t clpPathIndex;
 		size_t clpSegmentIndex;
 		double clpParamter;
+		double passLength=0;
 		clearedBeforePass.SetClearedPaths(cleared.GetCleared());
 		/*******************************
 			 * LOOP - POINTS
@@ -2741,11 +2756,14 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			Perf_PointIterations.Stop();
 
 			// approach end boundary tangentially
-			double relDistToBoundary = distanceToBoundary / (toolRadiusScaled * stepOverFactor);
-			if (relDistToBoundary <= 1.0 && distBoundaryPointToEngage > toolRadiusScaled * stepOverFactor)
+
+			double relDistToBoundary = 4*distanceToBoundary / stepOverScaled;
+			if (relDistToBoundary <= 1.0
+				&& passLength > 2*stepOverFactor
+				&& distanceToEngage > 2*stepOverScaled
+				&& distBoundaryPointToEngage > 2*stepOverScaled)
 			{
-				double wb = (1 - relDistToBoundary);
-				//double w=(0.8*(1-exp(-4*distanceToBoundary/toolRadiusScaled)) + 0.2);
+				double wb = 1-relDistToBoundary;
 				newToolDir = DoublePoint(newToolDir.X + wb * boundaryDir.X, newToolDir.Y + wb * boundaryDir.Y);
 				NormalizeV(newToolDir);
 				newToolPos = IntPoint(long(toolPos.X + newToolDir.X * stepScaled), long(toolPos.Y + newToolDir.Y * stepScaled));
@@ -2783,14 +2801,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD)
 			{ // safety condition
 				over_cut_count++;
-				// #ifdef DEV_MODE
-				// cout<<"Break: over cut @"  << point_index  << "(" << double(toolPos.X)/scaleFactor << ","<< double(toolPos.Y)/scaleFactor  << ")"
-				// 			<< " iter:" << iteration << " @bound:" << reachedBoundary << endl;
-				// #endif
-				// ClearScreenFn();
-				// DrawCircle(toolPos,toolRadiusScaled,0);
-				// DrawCircle(newToolPos,toolRadiusScaled,1);
-				// DrawPaths(cleared,22);
 				break;
 			}
 
@@ -2829,6 +2839,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				}
 				passToolPath.push_back(newToolPos);
 				perf_total_len += stepScaled;
+				passLength+=stepScaled;
 				toolPos = newToolPos;
 
 				// append to progress info paths
@@ -2888,7 +2899,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		else
 		{
 			//double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * RESOLUTION_FACTOR * 32 * stepOverFactor;
-			double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * toolRadiusScaled * stepOverFactor * refinement_factor;
+			double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled * refinement_factor;
 
 			if (!engage.nextEngagePoint(this, cleared, moveDistance,
 										ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
