@@ -126,7 +126,7 @@ class Adaptive2d
 	bool stopProcessing = false;
 	long unclearLinkingMoveCount = 0;
 
-	time_t lastProgressTime = 0;
+	clock_t lastProgressTime = 0;
 
 	std::function<bool(TPaths)> *progressCallback = NULL;
 	Path toolGeometry; // tool geometry at coord 0,0, should not be modified
@@ -171,7 +171,7 @@ class Adaptive2d
 
 	const long PASSES_LIMIT = __LONG_MAX__;			   // limit used while debugging
 	const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;   // limit used while debugging
-	const time_t PROGRESS_TICKS = CLOCKS_PER_SEC / 10; // progress report interval
+	const clock_t PROGRESS_TICKS = CLOCKS_PER_SEC / 10; // progress report interval
 };
 } // namespace AdaptivePath
 #endif
