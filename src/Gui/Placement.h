@@ -24,6 +24,7 @@
 #define GUI_PLACEMENT_H
 
 #include <Gui/InputVector.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
@@ -94,8 +95,11 @@ private:
     Base::Vector3d cntOfMass;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
-    std::string documentName; //store these so we can reselect original object
-    std::string featureName;  //after user selects points and clicks Selected point(s)
+    /**
+     * store these so we can reselect original object
+     * after user selects points and clicks Selected point(s)
+     */
+    std::vector<SelectionObject> selectionObjects;
 
     friend class TaskPlacement;
 };
