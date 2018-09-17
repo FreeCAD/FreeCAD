@@ -52,6 +52,7 @@ QuantityFormat::QuantityFormat()
   : option(static_cast<NumberOption>(OmitGroupSeparator | RejectGroupSeparator))
   , format(Fixed)
   , precision(UnitsApi::getDecimals())
+  , denominator(defaultDenominator)
 {
 }
 
