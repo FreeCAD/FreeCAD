@@ -322,7 +322,7 @@ void Command::invoke(int i)
                 activated( i );
                 if(manager->getLines() == lines) {
                     // This command does not record any lines, lets do it for
-                    // him. The above static _busy is to prevent nested command
+                    // him. The above LogDisabler is to prevent nested command
                     // logging, i.e. we only auto log the first invoking
                     // command.
                     std::ostringstream ss;
