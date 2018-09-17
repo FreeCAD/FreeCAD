@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QFile>
 # include <QFileInfo>
 # include <QImage>
@@ -42,6 +43,8 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
@@ -145,8 +148,21 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
 bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
 {
     // If view is closed, delete the object
-    if (view.isNull())
+    if (view.isNull() || !getObject())
         return true;
+    bool canDelete = true;
+    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+        if(focus == view) {
+            canDelete = false;
+            break;
+        }
+    }
+    if(canDelete) {
+        if(view==Gui::getMainWindow()->activeWindow())
+            getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+        Gui::getMainWindow()->removeWindow(view);
+        return true;
+    }
 
     // View is not closed, delete cell contents instead if it is active
     if (Gui::Application::Instance->activeDocument()) {
