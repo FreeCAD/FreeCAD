@@ -23,6 +23,13 @@
 #include "PreCompiled.h"
 
 #include <QGlobalStatic>
+#include <QMainWindow>
+#include <QWidget>
+#include <FCConfig.h>
+#include <Base/Console.h>
+#include "GuiApplicationNativeEventAware.h"
+#include "SpaceballEvent.h"
+#include "Application.h"
 #if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
   #include <QX11Info>
   #include <spnav.h>
@@ -46,13 +53,6 @@
   #endif // #if QT_VERSION >= 0x050000
 
 #endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-#include <QMainWindow>
-#include <QWidget>
-#include <FCConfig.h>
-#include <Base/Console.h>
-#include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
-#include "Application.h"
 
 #ifdef _USE_3DCONNEXION_SDK
 //windows
