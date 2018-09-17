@@ -30,6 +30,7 @@
 # include <QCursor>
 # include <QPointer>
 # include <QPushButton>
+# include <QTimer>
 #endif
 
 #include "TaskView.h"
@@ -40,6 +41,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
+#include <Gui/ActionFunction.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -458,6 +460,17 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                     }
                     return;
                 }
+            }
+
+            // In case a task panel has no Close or Cancel button
+            // then invoke resetEdit() directly
+            // See also ViewProvider::eventCallback
+            Gui::TimerFunction* func = new Gui::TimerFunction();
+            func->setAutoDelete(true);
+            Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
+            if (doc) {
+                func->setFunction(boost::bind(&Document::resetEdit, doc));
+                QTimer::singleShot(0, func, SLOT(timeout()));
             }
         }
     }
