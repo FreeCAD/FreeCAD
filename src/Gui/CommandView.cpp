@@ -3210,6 +3210,45 @@ bool StdTreeViewDocument::isActive(void)
 }
 
 //===========================================================================
+// Std_ToggleViewSync
+//===========================================================================
+DEF_STD_CMD_AC(StdCmdToggleViewSync)
+
+StdCmdToggleViewSync::StdCmdToggleViewSync()
+  : Command("Std_ToggleViewSync")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Sync view");
+    sToolTipText  = QT_TR_NOOP("Enable view synchronization");
+    sWhatsThis    = "Std_ToggleViewSync";
+    sStatusTip    = QT_TR_NOOP("Enable view Synchronization");
+    sPixmap       = "view-sync";
+    sAccel        = "V, C";
+    eType         = Alter3DView;
+}
+
+Action * StdCmdToggleViewSync::createAction(void)
+{
+    Action *pcAction = (Action*)Command::createAction();
+    pcAction->setCheckable(true);
+    return pcAction;
+}
+
+void StdCmdToggleViewSync::activated(int enable) {
+    TreeWidget::toggleSyncView(enable);
+}
+
+bool StdCmdToggleViewSync::isActive() {
+    bool check = _pcAction->isChecked();
+    if(check!=TreeWidget::checkSyncView()) {
+        _pcAction->getQAction()->blockSignals(true);
+        _pcAction->setChecked(!check);
+        _pcAction->getQAction()->blockSignals(false);
+    }
+    return true;
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3284,6 +3323,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdTreeViewDocument());
+    rcCmdMgr.addCommand(new StdCmdToggleViewSync());
 }
 
 } // namespace Gui
