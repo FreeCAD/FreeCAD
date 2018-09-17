@@ -874,7 +874,7 @@ int SelectionSingleton::enableCommandLog(bool silent) {
         auto manager = Application::Instance->macroManager();
         if(!hasSelection()) {
             if(logHasSelection) 
-                manager->addLine(MacroManager::Gui, "Gui.Selection.clearSelection()");
+                manager->addLine(MacroManager::Cmt, "Gui.Selection.clearSelection()");
         }else{
             for(auto &sel : _SelList)
                 sel.log();
@@ -903,7 +903,7 @@ void SelectionSingleton::_SelObj::log(bool remove) {
         ss << ',' << x << ',' << y << ',' << z;
     }
     ss << ')';
-    Application::Instance->macroManager()->addLine(MacroManager::Gui, ss.str().c_str());
+    Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
 }
 
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, const std::vector<SelObj> *pickedList)
@@ -1391,7 +1391,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
         std::ostringstream ss;
         ss << "Gui.clearSelection('" << docName << "')";
-        Application::Instance->macroManager()->addLine(MacroManager::Gui,ss.str().c_str());
+        Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
 
         SelectionChanges Chng(SelectionChanges::ClrSelection,docName.c_str());
 
@@ -1419,7 +1419,7 @@ void SelectionSingleton::clearCompleteSelection()
     if(_SelList.empty())
         return;
 
-    Application::Instance->macroManager()->addLine(MacroManager::Gui,"Gui.clearSelection()");
+    Application::Instance->macroManager()->addLine(MacroManager::Cmt,"Gui.clearSelection()");
 
 
     _SelList.clear();
