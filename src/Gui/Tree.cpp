@@ -83,7 +83,61 @@ std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 
-/* TRANSLATOR Gui::TreeWidget */
+class TreeParams : public ParameterGrp::ObserverType {
+public:
+    TreeParams() {
+        GET_TREEVIEW_PARAM(hGrp);
+        SyncSelection = &params["SyncSelection"];
+        *SyncSelection = true;
+        SyncView = &params["SyncView"];
+        *SyncView = false;
+        SyncPlacement = &params["SyncPlacement"];
+        *SyncPlacement = false;
+        PreSelection = &params["PreSelection"];
+        *PreSelection = true;
+        handle = hGrp;
+        handle->Attach(this);
+        handle->NotifyAll();
+    }
+
+    bool getParam(const char *name) {
+        auto it = params.find(name);
+        if(it==params.end())
+            return false;
+        return it->second;
+    }
+
+    void setParam(const char *name, bool enable) {
+        auto &value = params[name];
+        if(value!=enable) {
+            value = enable;
+            handle->SetBool(name,enable);
+        }
+    }
+        
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        auto it = params.find(sReason);
+        if(it != params.end())
+            it->second = handle->GetBool(sReason);
+    }
+
+    static TreeParams *Instance() {
+        static TreeParams *instance;
+        if(!instance)
+            instance = new TreeParams;
+        return instance;
+    }
+
+    std::map<std::string,bool> params;
+    bool *SyncSelection;
+    bool *SyncPlacement;
+    bool *SyncView;
+    bool *PreSelection;
+    ParameterGrp::handle handle;
+};
+
+#define TREEPARAM(_name) (*TreeParams::Instance()->_name)
+
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , editingItem(0), currentDocItem(0),fromOutside(false)
@@ -94,28 +148,23 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
 
-    GET_TREEVIEW_PARAM(hGrp);
     this->syncSelectionAction = new QAction(this);
     this->syncSelectionAction->setCheckable(true);
-    this->syncSelectionAction->setChecked(hGrp->GetBool("SyncSelection",true));
     connect(this->syncSelectionAction, SIGNAL(triggered()),
             this, SLOT(onSyncSelection()));
 
     this->preSelectionAction = new QAction(this);
     this->preSelectionAction->setCheckable(true);
-    this->preSelectionAction->setChecked(hGrp->GetBool("PreSelection",true));
     connect(this->preSelectionAction, SIGNAL(triggered()),
             this, SLOT(onPreSelection()));
 
     this->syncViewAction = new QAction(this);
     this->syncViewAction->setCheckable(true);
-    this->syncViewAction->setChecked(hGrp->GetBool("SyncView",false));
     connect(this->syncViewAction, SIGNAL(triggered()),
             this, SLOT(onSyncView()));
 
     this->syncPlacementAction = new QAction(this);
     this->syncPlacementAction->setCheckable(true);
-    this->syncPlacementAction->setChecked(hGrp->GetBool("SyncPlacement",false));
     connect(this->syncPlacementAction, SIGNAL(triggered()),
             this, SLOT(onSyncPlacement()));
 
@@ -278,9 +327,13 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     }
     QMenu optionsMenu;
     optionsMenu.setTitle(tr("Tree view options"));
+    preSelectionAction->setChecked(TREEPARAM(PreSelection));
     optionsMenu.addAction(this->preSelectionAction);
+    syncSelectionAction->setChecked(TREEPARAM(SyncSelection));
     optionsMenu.addAction(this->syncSelectionAction);
+    syncViewAction->setChecked(TREEPARAM(SyncView));
     optionsMenu.addAction(this->syncViewAction);
+    syncPlacementAction->setChecked(TREEPARAM(SyncPlacement));
     optionsMenu.addAction(this->syncPlacementAction);
     contextMenu.insertMenu(topact,&optionsMenu);
     contextMenu.insertSeparator(topact);
@@ -913,7 +966,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     selObj->getNameInDocument());
         }
 
-        bool syncPlacement = syncPlacementAction->isChecked() && targetItemObj->isGroup();
+        bool syncPlacement = TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -1090,7 +1143,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     else if (targetitem->type() == TreeWidget::DocumentType) {
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
-        bool syncPlacement = syncPlacementAction->isChecked();
+        bool syncPlacement = TREEPARAM(SyncPlacement);
 
         // check if items can be dragged
         for(auto &v : items) {
@@ -1363,7 +1416,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
 
-        if(preSelectionAction->isChecked()) {
+        if(TREEPARAM(PreSelection)) {
             if(preselectTime.elapsed() < 700)
                 onPreSelectTimer();
             else{
@@ -1371,19 +1424,19 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
                 Selection().rmvPreselect();
             }
         }
-    } else if(preSelectionAction->isChecked())
+    } else if(TREEPARAM(PreSelection))
         Selection().rmvPreselect();
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
-    if(preSelectionAction->isChecked()) {
+    if(TREEPARAM(PreSelection)) {
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
 }
 
 void TreeWidget::onPreSelectTimer() {
-    if(!preSelectionAction->isChecked())
+    if(!TREEPARAM(PreSelection))
         return;
     auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
     if(!item || item->type()!=TreeWidget::ObjectType) 
@@ -1509,29 +1562,33 @@ void TreeWidget::setupText() {
 }
 
 void TreeWidget::onSyncSelection() {
-    GET_TREEVIEW_PARAM(hGrp);
-    hGrp->SetBool("SyncSelection",syncSelectionAction->isChecked());
+    TreeParams::Instance()->setParam("SyncSelection",syncSelectionAction->isChecked());
 }
 
 void TreeWidget::onPreSelection() {
-    GET_TREEVIEW_PARAM(hGrp);
-    hGrp->SetBool("PreSelection",preSelectionAction->isChecked());
+    TreeParams::Instance()->setParam("PreSelection",preSelectionAction->isChecked());
 }
 
-
 void TreeWidget::onSyncView() {
-    GET_TREEVIEW_PARAM(hGrp);
-    hGrp->SetBool("SyncView",syncViewAction->isChecked());
+    TreeParams::Instance()->setParam("SyncView",syncViewAction->isChecked());
+    getMainWindow()->updateActions();
+}
+
+void TreeWidget::toggleSyncView(bool enable) {
+    TreeParams::Instance()->setParam("SyncView",enable);
+}
+
+bool TreeWidget::checkSyncView() {
+    return TREEPARAM(SyncView);
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
-    if(currentDocItem && syncViewAction->isChecked())
+    if(currentDocItem && TREEPARAM(SyncView))
         currentDocItem->document()->setActiveView(vp);
 }
 
 void TreeWidget::onSyncPlacement() {
-    GET_TREEVIEW_PARAM(hGrp);
-    hGrp->SetBool("SyncPlacement",syncPlacementAction->isChecked());
+    TreeParams::Instance()->setParam("SyncPlacement",syncPlacementAction->isChecked());
 }
 
 void TreeWidget::onShowHidden() {
@@ -1601,12 +1658,13 @@ void TreeWidget::syncSelection(const char *pDocName) {
         TREE_TRACE("connection blocked");
         return;
     }
+    bool syncSelect = TREEPARAM(SyncSelection);
     if (!pDocName || *pDocName==0 || strcmp(pDocName,"*")==0) {
         if(Selection().hasSelection()) {
             for(auto &v : DocumentMap) {
                 bool lock = this->blockConnection(true);
                 currentDocItem = v.second;
-                v.second->selectItems(syncSelectionAction->isChecked());
+                v.second->selectItems(syncSelect);
                 currentDocItem = 0;
                 this->blockConnection(lock);
             }
@@ -1623,7 +1681,7 @@ void TreeWidget::syncSelection(const char *pDocName) {
         if(Selection().hasSelection()) {
             bool lock = this->blockConnection(true);
             currentDocItem = it->second;
-            it->second->selectItems(syncSelectionAction->isChecked());
+            it->second->selectItems(syncSelect);
             currentDocItem = 0;
             this->blockConnection(lock);
         }else

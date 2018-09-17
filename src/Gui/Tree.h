@@ -91,6 +91,9 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
+    static void toggleSyncView(bool enable);
+    static bool checkSyncView();
+
     const char *getTreeName() const;
 
     static void updateStatus(bool delay=false);
