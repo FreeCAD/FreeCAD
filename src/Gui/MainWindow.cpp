@@ -547,19 +547,14 @@ void MainWindow::closeActiveWindow ()
 
 void MainWindow::closeAllWindows ()
 {
+    auto docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
+    for(auto doc : docs) {
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(gdoc && !gdoc->canClose())
+            return;
+    }
+    App::GetApplication().closeAllDocuments();
     d->mdiArea->closeAllSubWindows();
-    // partial open document has no visibile window open, so make sure all
-    // documents are closed.
-    std::vector<std::string> names;
-    for(auto doc : App::GetApplication().getDocuments()) {
-        if(!doc->testStatus(App::Document::PartialDoc))
-            return; // means the user cancel the command
-        names.push_back(doc->getName());
-    }
-    for(auto &name : names) {
-        auto doc = Application::Instance->getDocument(name.c_str());
-        Application::Instance->onLastWindowClosed(doc);
-    }
 }
 
 void MainWindow::activateNextWindow ()
