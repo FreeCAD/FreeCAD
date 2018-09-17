@@ -222,6 +222,8 @@ public:
     bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, float x=0, float y=0, float z=0);
     /// Add to selection with several sub-elements
     bool addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
+    /// Add to selection
+    bool addSelection(const SelectionObject&);
     /// Remove from selection (for internal use)
     void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Set the selection for a document
