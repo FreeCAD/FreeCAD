@@ -773,6 +773,27 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 }
 
+bool SelectionSingleton::addSelection(const SelectionObject& obj)
+{
+    const std::vector<std::string>& subNames = obj.getSubNames();
+    const std::vector<Base::Vector3d> points = obj.getPickedPoints();
+    if (!subNames.empty() && subNames.size() == points.size()) {
+        bool ok = true;
+        for (std::size_t i=0; i<subNames.size(); i++) {
+            const std::string& name = subNames[i];
+            const Base::Vector3d& pnt = points[i];
+            ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str(),
+                               static_cast<float>(pnt.x),
+                               static_cast<float>(pnt.y),
+                               static_cast<float>(pnt.z));
+        }
+        return ok;
+    }
+    else {
+        return addSelection(obj.getDocName(), obj.getFeatName(), subNames);
+    }
+}
+
 void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName)
 {
     std::vector<SelectionChanges> rmvList;
