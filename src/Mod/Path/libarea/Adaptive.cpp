@@ -2129,7 +2129,7 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &end
 	double par;
 
 	// put a time limit on the resolving the link path
-	time_t time_out = clock() + CLOCKS_PER_SEC / 2; // 0.5 sec
+	clock_t time_out = clock() + CLOCKS_PER_SEC / 2; // 0.5 sec
 
 	while (!queue.empty())
 	{
@@ -2291,7 +2291,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 	UNUSED(progressPaths); // to silence compiler warning,var is occasionally used in dev. for debugging
 
 	IntPoint endPoint(passToolPath[0]);
-	IntPoint endNextPoint(passToolPath[1]);
+	//IntPoint endNextPoint(passToolPath[1]);
 
 	// if there is a previous path - need to resolve linking move to new path
 	if (output.AdaptivePaths.size() > 0 && output.AdaptivePaths.back().second.size() > 1)
