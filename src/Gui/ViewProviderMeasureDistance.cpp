@@ -27,6 +27,7 @@
 # include <sstream>
 # include <QApplication>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -307,34 +308,49 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
 
 void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCallback * n)
 {
-    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
     PointMarker *pm = reinterpret_cast<PointMarker*>(ud);
-
-    // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
-    n->getAction()->setHandled();
-    
-    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL) {
-            Base::Console().Message("No point picked.\n");
-            return;
-        }
-
-        n->setHandled();
-        pm->addPoint(point->getPoint());
-        if (pm->countPoints() == 2) {
-            QEvent *e = new QEvent(QEvent::User);
-            QApplication::postEvent(pm, e);
-            // leave mode
-            view->setEditing(false);
-            view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
+    const SoEvent* ev = n->getEvent();
+    if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
+        const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
+        const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
+        if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
+            if (!press) {
+                n->setHandled();
+                view->setEditing(false);
+                view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
+                pm->deleteLater();
+            }
         }
     }
-    else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
-        n->setHandled();
-        view->setEditing(false);
-        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
-        pm->deleteLater();
+    else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+        // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
+        n->getAction()->setHandled();
+
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
+            const SoPickedPoint * point = n->getPickedPoint();
+            if (point == NULL) {
+                Base::Console().Message("No point picked.\n");
+                return;
+            }
+
+            n->setHandled();
+            pm->addPoint(point->getPoint());
+            if (pm->countPoints() == 2) {
+                QEvent *e = new QEvent(QEvent::User);
+                QApplication::postEvent(pm, e);
+                // leave mode
+                view->setEditing(false);
+                view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
+            }
+        }
+        else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+            n->setHandled();
+            view->setEditing(false);
+            view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
+            pm->deleteLater();
+        }
     }
 }
