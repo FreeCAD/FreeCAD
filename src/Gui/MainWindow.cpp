@@ -551,8 +551,11 @@ void MainWindow::closeAllWindows ()
     // partial open document has no visibile window open, so make sure all
     // documents are closed.
     std::vector<std::string> names;
-    for(auto doc : App::GetApplication().getDocuments())
+    for(auto doc : App::GetApplication().getDocuments()) {
+        if(!doc->testStatus(App::Document::PartialDoc))
+            return; // means the user cancel the command
         names.push_back(doc->getName());
+    }
     for(auto &name : names) {
         auto doc = Application::Instance->getDocument(name.c_str());
         Application::Instance->onLastWindowClosed(doc);
