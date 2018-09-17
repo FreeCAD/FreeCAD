@@ -35,7 +35,7 @@ namespace PartDesign
 
 class PartDesignExport FeatureAddSub : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::FeatureAddSub);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAddSub);
 
 public:
     enum Type {
