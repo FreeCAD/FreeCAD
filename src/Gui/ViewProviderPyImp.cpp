@@ -279,7 +279,7 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 
     void* ptr = 0;
     try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin","SoNode *", obj, &ptr, 0);
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -479,7 +479,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
     if (!PyArg_ParseTuple(args, "O",&obj))
         return NULL;
     void *ptr = 0;
-    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
     SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
     if(!pp) 
         throw Base::TypeError("type must be of coin.SoPickedPoint");
@@ -497,7 +497,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     if (!PyArg_ParseTuple(args, "sO|O",&sub,&path,&append))
         return NULL;
     void *ptr = 0;
-    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
     if(!pPath) 
         throw Base::TypeError("type must be of coin.SoPath");
@@ -510,7 +510,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     }
     if(!det)
         return Py::new_reference_to(Py::True());
-    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", (void*)det, 0);
 }
 
 PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
@@ -571,8 +571,8 @@ int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 Py::Object ViewProviderPy::getAnnotation(void) const
 {
     try {
-        SoNode* node = getViewProviderPtr()->getAnnotation();
-        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", node, 1);
+        auto node = getViewProviderPtr()->getAnnotation();
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
     }
@@ -590,7 +590,7 @@ Py::Object ViewProviderPy::getRootNode(void) const
 {
     try {
         SoSeparator* node = getViewProviderPtr()->getRoot();
-        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSeparator *", node, 1);
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","_p_SoSeparator", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
     }
@@ -608,7 +608,7 @@ Py::Object ViewProviderPy::getSwitchNode(void) const
 {
     try {
         SoSwitch* node = getViewProviderPtr()->getModeSwitch();
-        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoSwitch *", node, 1);
+        PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","_p_SoSwitch", node, 1);
         node->ref();
         return Py::Object(Ptr, true);
     }
