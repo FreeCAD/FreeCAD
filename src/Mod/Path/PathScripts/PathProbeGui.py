@@ -26,8 +26,9 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathProbe as PathProbe
 import PathScripts.PathOpGui as PathOpGui
+import PathScripts.PathGui as PathGui
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 __title__ = "Path Probing Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -46,25 +47,47 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # if obj.StartVertex != self.form.startVertex.value():
         #     obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)
+        PathGui.updateInputField(obj, 'Xoffset', self.form.Xoffset)
+        PathGui.updateInputField(obj, 'Yoffset', self.form.Yoffset)
+        obj.PointCountX = self.form.PointCountX.value()
+        obj.PointCountY = self.form.PointCountY.value()
+        obj.OutputFileName = str(self.form.OutputFileName.text())
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         #self.form.startVertex.setValue(obj.StartVertex)
         self.setupToolController(obj, self.form.toolController)
+        self.form.Xoffset.setText(FreeCAD.Units.Quantity(obj.Xoffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.Yoffset.setText(FreeCAD.Units.Quantity(obj.Yoffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.OutputFileName.setText(obj.OutputFileName)
+        self.form.PointCountX.setValue(obj.PointCountX)
+        self.form.PointCountY.setValue(obj.PointCountY)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
-        #signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.PointCountX.valueChanged)
+        signals.append(self.form.PointCountY.valueChanged)
+        signals.append(self.form.OutputFileName.editingFinished)
+        signals.append(self.form.Xoffset.valueChanged)
+        signals.append(self.form.Yoffset.valueChanged)
+        signals.append(self.form.SetOutputFileName.clicked)
         return signals
+
+    # def SetOutputFileName(self):
+    #     filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Probe", "Select Output File"), None, translate("Path_Probe", "All Files (*.*)"))
+    #     if filename and filename[0]:
+    #         self.obj.OutputFileName = str(filename[0])
+    #         self.setFields()
 
 Command = PathOpGui.SetupOperation('Probe',
         PathProbe.Create,
         TaskPanelOpPage,
         'Path-Probe',
         QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
-        QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"))#        PathProbe.SetupProperties)
+        QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
+        PathProbe.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProbeGui... done\n")
 

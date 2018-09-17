@@ -60,9 +60,9 @@ class ObjectProbing(PathOp.ObjectOp):
     def initOperation(self, obj):
         obj.addProperty("App::PropertyLength", "Xoffset", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "X offset between tool and probe"))
         obj.addProperty("App::PropertyLength", "Yoffset", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Y offset between tool and probe"))
-        obj.addProperty("App::PropertyInteger", "PointCountX", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction")).PointCountX=3
-        obj.addProperty("App::PropertyInteger", "PointCountY", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction")).PointCountY=3
-
+        obj.addProperty("App::PropertyInteger", "PointCountX", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"))
+        obj.addProperty("App::PropertyInteger", "PointCountY", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"))
+        obj.addProperty("App::PropertyFile", "OutputFileName", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The output location for the probe data to be written"))
     def drange(self, start=1.0, stop=5.0, step=1.0):
         r = start
         while r <= stop:
@@ -80,7 +80,8 @@ class ObjectProbing(PathOp.ObjectOp):
         xdist = (bb.XMax - bb.XMin)/ (obj.PointCountX - 1)
         ydist = (bb.YMax - bb.YMin)/ (obj.PointCountY - 1)
 
-        self.commandlist.append(Path.Command("(PROBEOPEN probe_points.txt)"))
+        openstring = '(PROBEOPEN {})'.format(obj.OutputFileName)
+        self.commandlist.append(Path.Command(openstring))
 
         self.commandlist.append(Path.Command("G0", {"X":bb.XMin, "Y":bb.YMin, "Z":obj.SafeHeight.Value}))
         for x in self.drange(bb.XMin, bb.XMax, xdist):
@@ -96,7 +97,7 @@ class ObjectProbing(PathOp.ObjectOp):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
 
 def SetupProperties():
-    setup = []
+    setup = ['Xoffset', 'Yoffset', 'PointCountX', 'PointCountY']
     return setup
 
 def Create(name, obj = None):
