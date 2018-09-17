@@ -230,6 +230,7 @@ public:
     PyObject* createSWIGPointerObj(const char* Modole, const char* TypeName, void* Pointer, int own);
     bool convertSWIGPointerObj(const char* Module, const char* TypeName, PyObject* obj, void** ptr, int flags);
     void cleanupSWIG(const char* TypeName);
+    void dumpSWIG();
     //@}
 
     /** @name methods for debugging facility

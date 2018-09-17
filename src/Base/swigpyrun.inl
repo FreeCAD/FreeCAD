@@ -103,3 +103,17 @@ void cleanupSWIG_T(const char* TypeName)
     // Run garbage collector
     PyGC_Collect();
 }
+
+void dumpSWIGTypes_T()
+{
+    swig_module_info *module = SWIG_GetModule(NULL);
+    if (!module)
+        return;
+    size_t i = 0;
+    for (; i < module->size; ++i) {
+        auto name = module->types[i]->name;
+        auto str = module->types[i]->str;
+        FC_MSG((name?name:"?") << ", " << (str?str:"?"));
+    }
+}
+

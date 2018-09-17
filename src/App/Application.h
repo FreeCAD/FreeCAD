@@ -396,7 +396,9 @@ private:
     static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
-    static PyObject *sAutoTransaction(PyObject *self,PyObject *args);
+    static PyObject *sAutoTransaction       (PyObject *self,PyObject *args);
+
+    static PyObject *sDumpSWIG(PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[]; 
 

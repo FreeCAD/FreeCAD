@@ -949,3 +949,30 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
     Swig_1_3_40::cleanupSWIG_T(TypeName);
 #endif
 }
+
+#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+namespace Swig_python { extern void dumpSWIGTypes_T(); }
+#endif
+#if PY_MAJOR_VERSION < 3
+namespace Swig_1_3_25 { extern void dumpSWIGTypes_T(); }
+namespace Swig_1_3_33 { extern void dumpSWIGTypes_T(); }
+namespace Swig_1_3_36 { extern void dumpSWIGTypes_T(); }
+namespace Swig_1_3_38 { extern void dumpSWIGTypes_T(); }
+namespace Swig_1_3_40 { extern void dumpSWIGTypes_T(); }
+#endif
+
+void InterpreterSingleton::dumpSWIG()
+{
+    PyGILStateLocker locker;
+#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+    Swig_python::dumpSWIGTypes_T();
+#endif
+#if PY_MAJOR_VERSION < 3
+    Swig_1_3_25::dumpSWIGTypes_T();
+    Swig_1_3_33::dumpSWIGTypes_T();
+    Swig_1_3_36::dumpSWIGTypes_T();
+    Swig_1_3_38::dumpSWIGTypes_T();
+    Swig_1_3_40::dumpSWIGTypes_T();
+#endif
+}
+

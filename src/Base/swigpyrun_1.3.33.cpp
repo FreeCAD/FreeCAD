@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #include "PyExport.h"
 #include "Exception.h"
+#include "Console.h"
+FC_LOG_LEVEL_INIT("swig_1_3_33")
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"

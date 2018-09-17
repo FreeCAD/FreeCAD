@@ -164,6 +164,8 @@ PyMethodDef Application::Methods[] = {
      "autoTransaction() -> Bool -- Test if auto transaction is enabled"},
     {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
      "isRestoring() -> Bool -- Test if the application is opening some document"},
+    {"dumpSWIG", (PyCFunction) Application::sDumpSWIG, METH_VARARGS,
+     "dumpSWIG() -- Dump SWIG internal types"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -901,5 +903,14 @@ PyObject *Application::sAutoTransaction(PyObject * /*self*/, PyObject *args)
         return Py::new_reference_to(Py::Boolean(GetApplication().autoTransaction()));
         Py_Return;
     } PY_CATCH;
+}
+
+PyObject *Application::sDumpSWIG(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Base::Interpreter().dumpSWIG();
+    Py_Return;
 }
 
