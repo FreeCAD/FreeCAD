@@ -69,7 +69,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         #tolerance
         form.Tolerance = QtGui.QSlider(QtCore.Qt.Horizontal)
-        form.Tolerance.setMinimum(2)
+        form.Tolerance.setMinimum(5)
         form.Tolerance.setMaximum(15)
         form.Tolerance.setTickInterval(1)
         form.Tolerance.setValue(10)

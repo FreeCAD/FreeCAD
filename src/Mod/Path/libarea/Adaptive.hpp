@@ -39,7 +39,7 @@
 #define M_PI 3.141592653589793238
 #endif
 
-//#define DEV_MODE
+// #define DEV_MODE
 
 #define NTOL 1.0e-7 // numeric tolerance
 
@@ -69,11 +69,6 @@ typedef std::vector<DPath> DPaths;
 typedef std::pair<int, DPath> TPath; // first parameter is MotionType, must use int due to problem with serialization to JSON in python
 
 class ClearedArea;
-
-// struct TPath { #this does not work correctly with pybind, changed to pair
-// 		DPath Points;
-// 		MotionType MType;
-// };
 
 typedef std::vector<TPath> TPaths;
 
@@ -119,12 +114,9 @@ class Adaptive2d
 	long toolRadiusScaled = 10;
 	long finishPassOffsetScaled = 0;
 	long helixRampRadiusScaled = 0;
-	long bbox_size = 0;
 	double referenceCutArea = 0;
 	double optimalCutAreaPD = 0;
-	//double minCutAreaPD=0;
 	bool stopProcessing = false;
-	long unclearLinkingMoveCount = 0;
 
 	clock_t lastProgressTime = 0;
 
@@ -136,7 +128,7 @@ class Adaptive2d
 						IntPoint &entryPoint /*output*/, IntPoint &toolPos, DoublePoint &toolDir);
 	bool FindEntryPointOutside(TPaths &progressPaths, const Paths &toolBoundPaths, const Paths &bound, ClearedArea &cleared /*output*/,
 							   IntPoint &entryPoint /*output*/, IntPoint &toolPos, DoublePoint &toolDir);
-	double CalcCutArea(Clipper &clip, const IntPoint &toolPos, const IntPoint &newToolPos, ClearedArea &clearedArea, bool preventConvetionalMode = true);
+	double CalcCutArea(Clipper &clip, const IntPoint &toolPos, const IntPoint &newToolPos, ClearedArea &clearedArea, bool preventConventionalMode = true);
 	void AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output, const Path &passToolPath, ClearedArea &clearedAreaBefore,
 						ClearedArea &clearedAreaAfter, const Paths &toolBoundPaths);
 	bool IsClearPath(const Path &path, ClearedArea &clearedArea, double safetyDistanceScaled = 0);
@@ -155,19 +147,19 @@ class Adaptive2d
 
   private: // constants for fine tuning
 	const double RESOLUTION_FACTOR = 8.0;
-	const int MAX_ITERATIONS = 16;
+	const int MAX_ITERATIONS = 10;
 	const double AREA_ERROR_FACTOR = 0.05;	/* how precise to match the cut area to optimal, reasonable value: 0.05 = 5%*/
 	const size_t ANGLE_HISTORY_POINTS = 3;	// used for angle prediction
 	const int DIRECTION_SMOOTHING_BUFLEN = 3; // gyro points - used for angle smoothing
 
-	const double ENGAGE_AREA_THR_FACTOR = 0.1;		// influences minimal engage area (factor relation to optimal)
+
+	const double MIN_CUT_AREA_FACTOR = 0.1;// used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
+	const double ENGAGE_AREA_THR_FACTOR = 0.5;		// influences minimal engage area
 	const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.5; // influences the engage scan/stepping distance
 
 	const double CLEAN_PATH_TOLERANCE = 0.5;
 	const double FINISHING_CLEAN_PATH_TOLERANCE = 0.1;
 
-	// used for filtering out of insignificant cuts:
-	const double MIN_CUT_AREA_FACTOR = 0.2; // influences filtering of cuts that with cumulative area below threshold, reasonable value is between 0.1 and 1
 
 	const long PASSES_LIMIT = __LONG_MAX__;			   // limit used while debugging
 	const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;   // limit used while debugging
