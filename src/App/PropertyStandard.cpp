@@ -1365,8 +1365,9 @@ void PropertyString::setValue(const char* newLabel)
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
-    if(!GetApplication().isRestoring() && 
-       obj && obj->getNameInDocument() && this==&obj->Label &&
+    if(obj && obj->getNameInDocument() && this==&obj->Label &&
+       (!obj->getDocument()->testStatus(App::Document::Restoring)||
+        obj->getDocument()->testStatus(App::Document::Importing)) && 
        !obj->getDocument()->isPerformingTransaction()) 
     {
         const char *dot = strchr(newLabel,'.');
