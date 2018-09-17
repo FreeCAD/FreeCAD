@@ -474,7 +474,7 @@ bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(const xcb_client_messag
     } // end switch (navEvent.type) {
 
 #else
-    Q_UNUSED(message);
+    Q_UNUSED(xcb_ev);
     return false;
 #endif // if/else defined(SPNAV_FOUND)
 }
@@ -610,7 +610,7 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
     Base::Console().Log("Unknown spaceball event\n");
     return true;
 #else
-    Q_UNUSED(event); 
+    Q_UNUSED(event);
     return false;
 #endif // SPNAV_FOUND
 }
