@@ -230,7 +230,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         int       tmp;     // temporary variable for GCD
 
         // Get the current user specified minimum denominator
-        minden = Base::QuantityFormat::getDenominator();
+        minden = quant.getFormat().getDenominator();
 
         // Compute and round the total number of fractional units
         ntot = (int)std::round(totalInches * (double)minden);

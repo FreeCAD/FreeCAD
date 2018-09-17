@@ -607,36 +607,53 @@ Py::String QuantityPy::getUserString(void) const
     return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
-Py::Tuple QuantityPy::getFormat(void) const
+Py::Dict QuantityPy::getFormat(void) const
 {
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Tuple tuple(2);
-    tuple.setItem(0, Py::Int (fmt.precision));
-    tuple.setItem(1, Py::Char(fmt.toFormat()));
-    return tuple;
+    Py::Dict dict;
+    dict.setItem("Precision", Py::Int (fmt.precision));
+    dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
+    dict.setItem("Denominator", Py::Int(fmt.denominator));
+    return dict;
 }
 
-void  QuantityPy::setFormat(Py::Tuple arg)
+void  QuantityPy::setFormat(Py::Dict arg)
 {
-    QuantityFormat fmt;
+    QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Int  prec(arg.getItem(0));
-    Py::Char form(arg.getItem(1));
-    fmt.precision = static_cast<int>(prec);
+    if (arg.hasKey("Precision")) {
+        Py::Int  prec(arg.getItem("Precision"));
+        fmt.precision = static_cast<int>(prec);
+    }
 
+    if (arg.hasKey("NumberFormat")) {
+        Py::Char form(arg.getItem("NumberFormat"));
 #if PY_MAJOR_VERSION >= 3
-    std::string fmtstr = static_cast<std::string>(Py::String(form));
+        std::string fmtstr = static_cast<std::string>(Py::String(form));
 #else
-    std::string fmtstr = static_cast<std::string>(form);
+        std::string fmtstr = static_cast<std::string>(form);
 #endif
-    if (fmtstr.size() != 1)
-        throw Py::ValueError("Invalid format character");
+        if (fmtstr.size() != 1)
+            throw Py::ValueError("Invalid format character");
 
-    bool ok;
-    fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
-    if (!ok)
-        throw Py::ValueError("Invalid format character");
+        bool ok;
+        fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
+        if (!ok)
+            throw Py::ValueError("Invalid format character");
+    }
+
+    if (arg.hasKey("Denominator")) {
+        Py::Int  denom(arg.getItem("Denominator"));
+        int fracInch = static_cast<int>(denom);
+        // check that the value is positive and a power of 2
+        if (fracInch <= 0)
+            throw Py::ValueError("Denominator must be higher than zero");
+        // bitwise check
+        if (fracInch & (fracInch - 1))
+            throw Py::ValueError("Denominator must be a power of two");
+        fmt.denominator = fracInch;
+    }
 
     getQuantityPtr()->setFormat(fmt);
 }

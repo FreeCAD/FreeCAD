@@ -1577,8 +1577,8 @@ void Application::initApplication(void)
     UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
-    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDenominator());
-    Base::QuantityFormat::setDenominator(denom);
+    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
+    Base::QuantityFormat::setDefaultDenominator(denom);
 
 
 #if defined (_DEBUG)
