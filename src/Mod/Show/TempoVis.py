@@ -71,6 +71,7 @@ class TempoVis(FrozenClass):
  
         # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
         try:
+            from pivy import coin
             return obj.ViewObject.SwitchNode.getNumChildren()>0
         except Exception as err:
             App.Console.PrintWarning(u"Show.TempoVis.isIn3DObject error: {err}\n".format(err= str(err)))
