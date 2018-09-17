@@ -40,6 +40,9 @@
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>
 #include <App/Link.h>
+#include <Base/Console.h>
+
+FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace App;
 using namespace Base;
@@ -749,8 +752,10 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
     for (std::vector<DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
         if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
-            if (objectByLabel != 0)
+            if (objectByLabel != 0)  {
+                FC_WARN("duplicate object label " << doc->getName() << '#' << name);
                 return 0;
+            }
             objectByLabel = *j;
         }
     }
@@ -1244,7 +1249,9 @@ std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, Py
     std::stringstream ss;
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
-        return std::string();
+    {
+        throw RuntimeError(result.resolveErrorString());
+    }
 
     ss << "App.getDocument('" << result.resolvedDocument->getName()
       << "').getObject('"  << result.resolvedDocumentObject->getNameInDocument() << "')";
