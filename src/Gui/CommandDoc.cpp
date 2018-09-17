@@ -1203,10 +1203,11 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
-                        docs.insert(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(sel.getSubNames()))
+                        if (vp->onDelete(sel.getSubNames())) {
                             FCMD_OBJ_DOC_CMD(obj,"removeObject('" << obj->getNameInDocument() << "')");
+                            docs.insert(obj->getDocument());
+                        }
                     }
                 }
             }
