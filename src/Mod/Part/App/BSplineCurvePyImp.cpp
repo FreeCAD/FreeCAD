@@ -298,7 +298,15 @@ PyObject* BSplineCurvePy::segment(PyObject * args)
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
             (getGeometryPtr()->handle());
-        curve->Segment(u1,u2);
+        Handle(Geom_BSplineCurve) tempCurve = new Geom_BSplineCurve(*curve);
+        tempCurve->Segment(u1,u2);
+        if (abs(tempCurve->FirstParameter()-u1)>Precision::Approximation() || abs(tempCurve->LastParameter()-u2)>Precision::Approximation()) {
+            Standard_Failure::Raise("Failed to segment BSpline curve");
+            return 0;
+        }
+        else {
+            curve->Segment(u1,u2);
+        }
         Py_Return;
     }
     catch (Standard_Failure& e) {
