@@ -342,15 +342,6 @@ void Placement::on_selectedVertex_clicked()
         rot.setValue(axis, angle);
         plm.setRotation(rot);
         setPlacementData(plm); //creates custom axis, if needed
-
-        //we have to clear selection and reselect one point or else
-        //later on the rotation is applied twice because there will
-        //be 2 (vertex) objects in the selection, and even if both are subobjects
-        //of the same object the rotation still gets applied twice
-        Gui::Selection().clearSelection();
-        //reselect original object that was selected when placment dlg first opened
-        for (auto it : selectionObjects)
-            Gui::Selection().addSelection(it);
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
         ui->stackedWidget->setCurrentIndex(0);
         success=true;
@@ -358,12 +349,29 @@ void Placement::on_selectedVertex_clicked()
 
     if (!success){
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
+        QMessageBox msgBox;
+        msgBox.setText(tr("Please select 1 or 2 points before clicking this button.  A point may be on a vertex, \
+face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
+face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
+selected the midpoint between them will be the center of rotation and a new custom axis will be \
+created, if needed."));
+        msgBox.exec();
         ui->xCnt->setValue(0);
         ui->yCnt->setValue(0);
         ui->zCnt->setValue(0);
         return;
+    } else {
+        //we have to clear selection and reselect original object(s)
+        //else later on the rotation is applied twice because there will
+        //be 2 (vertex) objects in the selection, and even if both are subobjects
+        //of the same object the rotation still gets applied twice
+        Gui::Selection().clearSelection();
+        //reselect original object that was selected when placement dlg first opened
+        for (auto it : selectionObjects)
+            Gui::Selection().addSelection(it);
     }
 }
+
 
 void Placement::on_applyIncrementalPlacement_toggled(bool on)
 {
