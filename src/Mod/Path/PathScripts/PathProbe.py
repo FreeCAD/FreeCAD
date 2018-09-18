@@ -63,11 +63,13 @@ class ObjectProbing(PathOp.ObjectOp):
         obj.addProperty("App::PropertyInteger", "PointCountX", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"))
         obj.addProperty("App::PropertyInteger", "PointCountY", "Probe", QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"))
         obj.addProperty("App::PropertyFile", "OutputFileName", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The output location for the probe data to be written"))
-    def drange(self, start=1.0, stop=5.0, step=1.0):
-        r = start
-        while r <= stop:
-            yield r
-            r += step
+
+    def nextpoint(self, startpoint=0.0, endpoint=0.0, count=3):
+        curstep = 0
+        dist = (endpoint - startpoint) / (count - 1)
+        while curstep <= count-1:
+            yield startpoint + (curstep * dist)
+            curstep += 1
 
     def opExecute(self, obj):
         '''opExecute(obj) ... generate probe locations.'''
@@ -77,15 +79,12 @@ class ObjectProbing(PathOp.ObjectOp):
         stock = PathUtils.findParentJob(obj).Stock
         bb = stock.Shape.BoundBox
 
-        xdist = (bb.XMax - bb.XMin)/ (obj.PointCountX - 1)
-        ydist = (bb.YMax - bb.YMin)/ (obj.PointCountY - 1)
-
         openstring = '(PROBEOPEN {})'.format(obj.OutputFileName)
         self.commandlist.append(Path.Command(openstring))
+        self.commandlist.append(Path.Command("G0", {"Z":obj.ClearanceHeight.Value}))
 
-        self.commandlist.append(Path.Command("G0", {"X":bb.XMin, "Y":bb.YMin, "Z":obj.SafeHeight.Value}))
-        for x in self.drange(bb.XMin, bb.XMax, xdist):
-            for y in self.drange(bb.YMin, bb.YMax, ydist):
+        for x in self.nextpoint(bb.XMin, bb.XMax, obj.PointCountX):
+            for y in self.nextpoint(bb.YMin, bb.YMax, obj.PointCountY):
                 self.commandlist.append(Path.Command("G0", {"X":x + obj.Xoffset.Value, "Y":y + obj.Yoffset.Value,  "Z":obj.SafeHeight.Value}))
                 self.commandlist.append(Path.Command("G38.2",{"Z":obj.FinalDepth.Value, "F":obj.ToolController.VertFeed.Value}))
                 self.commandlist.append(Path.Command("G0", {"Z":obj.SafeHeight.Value}))
@@ -97,7 +96,7 @@ class ObjectProbing(PathOp.ObjectOp):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
 
 def SetupProperties():
-    setup = ['Xoffset', 'Yoffset', 'PointCountX', 'PointCountY']
+    setup = ['Xoffset', 'Yoffset', 'PointCountX', 'PointCountY', 'OutputFileName']
     return setup
 
 def Create(name, obj = None):

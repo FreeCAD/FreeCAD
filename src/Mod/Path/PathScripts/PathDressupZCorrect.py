@@ -20,6 +20,10 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
+# *   Bilinear interpolation code modified heavily from the interpolation   *
+# *   library https://github.com/pmav99/interpolation                      *
+# *   Copyright (c) 2013 by Panagiotis Mavrogiorgos                         *
+# *                                                                         *
 # ***************************************************************************
 import FreeCAD
 import FreeCADGui
@@ -27,7 +31,7 @@ import Path
 import PathScripts.PathUtils as PathUtils
 from bisect import bisect_left
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 """Z Depth Correction Dressup.  This dressup takes a probe file as input and does bilinear interpolation of the Zdepths to correct for a surface which is not parallel to the milling table/bed.  The probe file should conform to the format specified by the linuxcnc G38 probe logging: 9-number coordinate consisting of XYZABCUVW http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g38
 """
@@ -69,28 +73,22 @@ class ObjectDressup:
         i = bisect_left(x_index, x) - 1
         j = bisect_left(y_index, y) - 1
 
-        if True: #self.extrapolate:
-            # fix x index
-            if i == -1:
-                x_slice = slice(None, 2)
-            elif i == self.x_length - 1:
-                x_slice = slice(-2, None)
-            else:
-                x_slice = slice(i, i + 2)
-            # fix y index
-            if j == -1:
-                j = 0
-                y_slice = slice(None, 2)
-            elif j == self.y_length - 1:
-                j = -2
-                y_slice = slice(-2, None)
-            else:
-                y_slice = slice(j, j + 2)
+        # fix x index
+        if i == -1:
+            x_slice = slice(None, 2)
+        elif i == self.x_length - 1:
+            x_slice = slice(-2, None)
         else:
-            if i == -1 or i == self.x_length - 1:
-                raise ValueError("Extrapolation not allowed!")
-            if j == -1 or j == self.y_length - 1:
-                raise ValueError("Extrapolation not allowed!")
+            x_slice = slice(i, i + 2)
+        # fix y index
+        if j == -1:
+            j = 0
+            y_slice = slice(None, 2)
+        elif j == self.y_length - 1:
+            j = -2
+            y_slice = slice(-2, None)
+        else:
+            y_slice = slice(j, j + 2)
 
         x1, x2 = x_index[x_slice]
         y1, y2 = y_index[y_slice]
