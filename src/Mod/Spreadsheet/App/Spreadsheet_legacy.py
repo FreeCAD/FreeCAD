@@ -447,9 +447,9 @@ class Spreadsheet:
             #msg = ex.message
             #raise Exception(msg) #would discard the type
         return result
-        
+
     def recompute(self,obj):
-        "Fills the controlled cells  and properties"
+        "Fills the controlled cells and properties"
         if obj:
             if hasattr(obj,"Controllers"):
                 import Draft
