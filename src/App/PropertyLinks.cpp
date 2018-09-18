@@ -1740,7 +1740,7 @@ public:
     }
 
     static DocInfoPtr get(const char *filename, App::Document *pDoc, 
-            bool relative, PropertyXLink *l, const char *objName=0) 
+            bool relative, PropertyXLink *l, const char *objName) 
     {
         QString path;
         l->filePath = getDocPath(filename,pDoc,relative,&path);
@@ -1754,10 +1754,12 @@ public:
             info = it->second;
             if(!info->pcDoc) {
                 QString fullpath(info->getFullPath());
-                for(App::Document *doc : App::GetApplication().getDocuments()) {
-                    if(getFullPath(doc->FileName.getValue()) == fullpath) {
-                        info->attach(doc);
-                        break;
+                if(App::GetApplication().addPendingDocument(fullpath.toUtf8().constData(),objName)==0) {
+                    for(App::Document *doc : App::GetApplication().getDocuments()) {
+                        if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                            info->attach(doc);
+                            break;
+                        }
                     }
                 }
             }
@@ -1805,7 +1807,7 @@ public:
         pcDoc = 0;
     }
 
-    void init(DocInfoMap::iterator pos, const char *objName=0) {
+    void init(DocInfoMap::iterator pos, const char *objName) {
         myPos = pos;
         App::Application &app = App::GetApplication();
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
@@ -1817,7 +1819,7 @@ public:
 
         QString fullpath(getFullPath());
         if(fullpath.isEmpty())
-            FC_LOG("doc not found " << filePath());
+            FC_ERR("document not found " << filePath());
         else{
             for(App::Document *doc : App::GetApplication().getDocuments()) {
                 if(getFullPath(doc->FileName.getValue()) == fullpath) {
@@ -1826,10 +1828,7 @@ public:
                 }
             }
             FC_LOG("document pending " << filePath());
-            std::vector<std::string> objs;
-            if(objName && objName[0])
-                objs.emplace_back(objName);
-            app.addPendingDocument(fullpath.toUtf8().constData(),objs);
+            app.addPendingDocument(fullpath.toUtf8().constData(),objName);
         }
     }
 
@@ -1931,7 +1930,7 @@ public:
                 QString path = QString::fromUtf8(link->filePath.c_str());
                 bool relative = QFileInfo(path).isRelative();
                 // adjust file path for each PropertyXLink
-                DocInfo::get(filename,owner->getDocument(),relative?1:0,link);
+                DocInfo::get(filename,owner->getDocument(),relative?1:0,link,link->objectName.c_str());
             }
         }
 
@@ -2129,6 +2128,7 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
     if(!subname) subname = "";
 
     if(lValue) {
+        name = lValue->getNameInDocument();
         if(lValue->getDocument() != owner->getDocument()) {
             if(!docInfo || 
                lValue->getDocument()!=docInfo->pcDoc || 
@@ -2138,12 +2138,11 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
                 if(!filename || *filename==0) 
                     throw Base::Exception("Linked document not saved");
                 FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
-                info = DocInfo::get(filename,owner->getDocument(),relative,this);
+                info = DocInfo::get(filename,owner->getDocument(),relative,this,name);
                 assert(info && info->pcDoc == lValue->getDocument());
             }else
                 info = docInfo;
         }
-        name = lValue->getNameInDocument();
     }
 
     aboutToSetValue();

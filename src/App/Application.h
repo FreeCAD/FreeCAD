@@ -96,7 +96,7 @@ public:
     /// close all documents (without saving)
     void closeAllDocuments(void);
     /// Add pending document to open together with the current opening document
-    bool addPendingDocument(const char *FileName, const std::vector<std::string> &objNames);
+    int addPendingDocument(const char *FileName, const char *objName);
     /// Indicate whether the application is opening (restoring) some document
     bool isRestoring() const;
     //@}

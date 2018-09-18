@@ -500,16 +500,19 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
-bool Application::addPendingDocument(
-        const char *FileName, const std::vector<std::string> &objNames)
+int Application::addPendingDocument(const char *FileName, const char *objName)
 {
-    if(!_allowPending || !FileName) return false;
+    if(!_allowPending)
+        return 0;
+    assert(FileName && FileName[0]);
+    assert(objName && objName[0]);
     auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
-    for(auto &name : objNames)
-        ret.first->second.insert(name);
-    if(ret.second)
+    ret.first->second.emplace(objName);
+    if(ret.second) {
         _pendingDocs.push_back(ret.first->first.c_str());
-    return true;
+        return 1;
+    }
+    return -1;
 }
 
 bool Application::isRestoring() const {
