@@ -1118,6 +1118,7 @@ SET(FreeCADGui_CPP_SRCS
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
+    Namespace.h
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp

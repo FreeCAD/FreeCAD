@@ -1315,10 +1315,10 @@ SbBool NavigationStyle::isSelecting() const
     return (mouseSelection ? true : false);
 }
 
-const std::vector<SbVec2s>& NavigationStyle::getPolygon(SbBool* clip_inner) const
+const std::vector<SbVec2s>& NavigationStyle::getPolygon(SelectionRole* role) const
 {
-    if (clip_inner)
-        *clip_inner = this->clipInner;
+    if (role)
+       *role = this->selectedRole;
     return pcPolygon;
 }
 
@@ -1429,7 +1429,7 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
         }
         else if (hd==AbstractMouseSelection::Finish) {
             pcPolygon = mouseSelection->getPositions();
-            clipInner = mouseSelection->isInner();
+            selectedRole = mouseSelection->selectedRole();
             delete mouseSelection; 
             mouseSelection = 0;
             syncWithEvent(ev);

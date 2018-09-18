@@ -27,6 +27,7 @@
 # include <stdlib.h>
 # include <QAction>
 # include <QMenu>
+# include <QTimer>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SbLine.h>
 # include <Inventor/SbPlane.h>
@@ -813,6 +814,58 @@ void ViewProviderMesh::showOpenEdges(bool show)
     (void)show;
 }
 
+namespace MeshGui {
+class MeshSplit {
+public:
+    MeshSplit(ViewProviderMesh* mesh,
+              const std::vector<SbVec2f>& poly,
+              const Gui::ViewVolumeProjection& proj)
+        : mesh(mesh)
+        , poly(poly)
+        , proj(proj)
+    {
+
+    }
+    ~MeshSplit() {
+
+    }
+    void cutMesh() {
+        Gui::Document* gui = mesh->getDocument();
+        gui->openCommand("Cut");
+        ViewProviderMesh* copy = makeCopy();
+        mesh->cutMesh(poly, proj, false);
+        copy->cutMesh(poly, proj, true);
+        gui->commitCommand();
+        delete this;
+    }
+    void trimMesh() {
+        Gui::Document* gui = mesh->getDocument();
+        gui->openCommand("Trim");
+        ViewProviderMesh* copy = makeCopy();
+        mesh->trimMesh(poly, proj, false);
+        copy->trimMesh(poly, proj, true);
+        gui->commitCommand();
+        delete this;
+    }
+    ViewProviderMesh* makeCopy() const {
+        Gui::Document* gui = mesh->getDocument();
+        App::Document* doc = gui->getDocument();
+
+        Mesh::Feature* cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+        Mesh::Feature* org = static_cast<Mesh::Feature*>(mesh->getObject());
+        cpy->Label.setValue(org->Label.getValue());
+        cpy->Mesh.setValue(org->Mesh.getValue());
+
+        return static_cast<ViewProviderMesh*>(gui->getViewProvider(cpy));
+    }
+
+private:
+    ViewProviderMesh* mesh;
+    Gui::ViewVolumeProjection proj;
+    std::vector<SbVec2f> poly;
+};
+}
+
 void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
 {
     // show the wait cursor because this could take quite some time
@@ -824,8 +877,8 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipMeshCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -834,6 +887,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
@@ -843,11 +897,31 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                 Gui::ViewVolumeProjection proj(vv);
                 proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
                                   Placement.getValue().toMatrix());
-                self->cutMesh(clPoly, proj, clip_inner);
+                if (role == Gui::SelectionRole::Inner) {
+                    self->cutMesh(clPoly, proj, true);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Outer) {
+                    self->cutMesh(clPoly, proj, false);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Split) {
+                    // We must delay the split because it adds a new
+                    // node to the scenegraph which cannot be done while
+                    // traversing it
+                    Gui::TimerFunction* func = new Gui::TimerFunction();
+                    func->setAutoDelete(true);
+                    MeshSplit* split = new MeshSplit(self, clPoly, proj);
+                    func->setFunction(boost::bind(&MeshSplit::cutMesh, split));
+                    QTimer::singleShot(0, func, SLOT(timeout()));
+                }
             }
         }
 
-        Gui::Application::Instance->activeDocument()->commitCommand();
+        if (commitCommand)
+            Gui::Application::Instance->activeDocument()->commitCommand();
+        else
+            Gui::Application::Instance->activeDocument()->abortCommand();
 
         view->redraw();
     }
@@ -864,8 +938,8 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -873,7 +947,8 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
 
     std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        Gui::Application::Instance->activeDocument()->openCommand("Trim");
+        bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
@@ -883,11 +958,31 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                 Gui::ViewVolumeProjection proj(vv);
                 proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
                                   Placement.getValue().toMatrix());
-                self->trimMesh(clPoly, proj, clip_inner);
+                if (role == Gui::SelectionRole::Inner) {
+                    self->trimMesh(clPoly, proj, true);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Outer) {
+                    self->trimMesh(clPoly, proj, false);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Split) {
+                    // We must delay the split because it adds a new
+                    // node to the scenegraph which cannot be done while
+                    // traversing it
+                    Gui::TimerFunction* func = new Gui::TimerFunction();
+                    func->setAutoDelete(true);
+                    MeshSplit* split = new MeshSplit(self, clPoly, proj);
+                    func->setFunction(boost::bind(&MeshSplit::trimMesh, split));
+                    QTimer::singleShot(0, func, SLOT(timeout()));
+                }
             }
         }
 
-        Gui::Application::Instance->activeDocument()->commitCommand();
+        if (commitCommand)
+            Gui::Application::Instance->activeDocument()->commitCommand();
+        else
+            Gui::Application::Instance->activeDocument()->abortCommand();
 
         view->redraw();
     }
@@ -904,8 +999,8 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), partMeshCallback,ud);
     cb->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -941,7 +1036,10 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());
-                that->splitMesh(copyToolMesh, cNormal, clip_inner);
+                if (role == Gui::SelectionRole::Inner)
+                    that->splitMesh(copyToolMesh, cNormal, true);
+                else
+                    that->splitMesh(copyToolMesh, cNormal, false);
             }
         }
     }
@@ -965,8 +1063,8 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), segmMeshCallback,ud);
     cb->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -1002,7 +1100,10 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());
-                that->segmentMesh(copyToolMesh, cNormal, clip_inner);
+                if (role == Gui::SelectionRole::Inner)
+                    that->segmentMesh(copyToolMesh, cNormal, true);
+                else
+                    that->segmentMesh(copyToolMesh, cNormal, false);
             }
         }
     }

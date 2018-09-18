@@ -192,9 +192,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* cutting = new Gui::MenuItem;
     cutting->setCommand("Cutting");
     *cutting << "Mesh_PolyCut"
-             << "Mesh_PolySplit"
-             << "Mesh_PolySegm"
              << "Mesh_PolyTrim"
+           //<< "Mesh_PolySegm"
              << "Mesh_TrimByPlane"
              << "Mesh_SectionByPlane";
 

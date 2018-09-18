@@ -102,26 +102,20 @@ void CmdMeshPartTrimByPlane::activated(int)
     msgBox.setText(qApp->translate("MeshPart_TrimByPlane","Select the side you want to keep."));
     QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Inner"), QMessageBox::ActionRole);
     QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Outer"), QMessageBox::ActionRole);
-    QPushButton* both = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Both"), QMessageBox::ActionRole);
+    QPushButton* split = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Split"), QMessageBox::ActionRole);
     msgBox.setDefaultButton(inner);
     msgBox.exec();
     QAbstractButton* click = msgBox.clickedButton();
 
-    enum Side {
-        Inner,
-        Outer,
-        Both
-    };
-
-    Side side;
+    Gui::SelectionRole role;
     if (inner == click) {
-        side = Inner;
+        role = Gui::SelectionRole::Inner;
     }
     else if (outer == click) {
-        side = Outer;
+        role = Gui::SelectionRole::Outer;
     }
-    else if (both == click) {
-        side = Both;
+    else if (split == click) {
+        role = Gui::SelectionRole::Split;
     }
     else {
         // abort
@@ -168,15 +162,15 @@ void CmdMeshPartTrimByPlane::activated(int)
         polygon2d.Add(Base::Vector2d(p3.x, p3.y));
         polygon2d.Add(Base::Vector2d(p4.x, p4.y));
 
-        if (side == Inner) {
+        if (role == Gui::SelectionRole::Inner) {
             mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
-        else if (side == Outer) {
+        else if (role == Gui::SelectionRole::Outer) {
             mesh->trim(polygon2d, proj, Mesh::MeshObject::OUTER);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
-        else if (side == Both) {
+        else if (role == Gui::SelectionRole::Split) {
             Mesh::MeshObject copy(*mesh);
             mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
