@@ -1428,7 +1428,13 @@ void PropertyString::setValue(const char* newLabel)
             label = newLabel;
         obj->onBeforeChangeLabel(label);
         newLabel = label.c_str();
-        linkChange = PropertyXLink::updateLabel(obj,newLabel);
+
+        if(!obj->getDocument()->testStatus(App::Document::Restoring)) {
+            // TODO: Here can only mean that we are importing. We don't support
+            // linked lable auto correction on import yet. Is this ever going to
+            // be possible?
+            linkChange = PropertyXLink::updateLabel(obj,newLabel);
+        }
 
         if(linkChange.size() && 
            !obj->getDocument()->hasPendingTransaction() &&
