@@ -1168,6 +1168,7 @@ PyObject*  MeshPy::fillupHoles(PyObject *args)
         }
 
         MeshPropertyLock lock(this->parentProperty);
+        tria->SetVerifier(new MeshCore::TriangulationVerifierV2);
         getMeshObjectPtr()->fillupHoles(len, level, *tria);
     }
     catch (const Base::Exception& e) {

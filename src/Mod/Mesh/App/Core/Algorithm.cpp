@@ -761,6 +761,10 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         MeshGeomFacet triangle;
         triangle = cTria.GetTriangle(rPoints, facet);
 
+        TriangulationVerifier* verifier = cTria.GetVerifier();
+        if (!verifier)
+            return true;
+
         // Now we have two adjacent triangles which we check for overlaps.
         // Therefore we build a separation plane that must separate the two diametrically opposed points.
         Base::Vector3f planeNormal = rTriangle.GetNormal() % (rTriangle._aclPoints[(ref_side+1)%3]-rTriangle._aclPoints[ref_side]);
@@ -768,9 +772,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         Base::Vector3f ref_point = rTriangle._aclPoints[(ref_side+2)%3];
         Base::Vector3f tri_point = triangle._aclPoints[(tri_side+2)%3];
 
-        float ref_dist = (ref_point - planeBase) * planeNormal;
-        float tri_dist = (tri_point - planeBase) * planeNormal;
-        if (ref_dist * tri_dist > 0.0f) {
+        if (!verifier->Accept(planeNormal, planeBase, ref_point, tri_point)) {
             rFaces.clear();
             rPoints.clear();
             cTria.Discard();
@@ -778,7 +780,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         }
 
         // we know to have filled a polygon, now check for the orientation
-        if ( triangle.GetNormal() * rTriangle.GetNormal() <= 0.0f ) {
+        if (verifier->MustFlip(triangle.GetNormal(), rTriangle.GetNormal())) {
             for (MeshFacetArray::_TIterator it = rFaces.begin(); it != rFaces.end(); ++it)
                 it->FlipNormal();
         }
