@@ -302,9 +302,27 @@ class ObjectSurface(PathOp.ObjectOp):
         output.append(Path.Command('G0', {'X': clp[0].x, "Y": clp[0].y, 'F': self.horizRapid}))
         output.append(Path.Command('G1', {'Z': clp[0].z, 'F': self.vertFeed}))
 
-        for c in clp:
-            output.append(Path.Command('G1', {'X': c.x, "Y": c.y, "Z": c.z, 'F': self.horizFeed}))
-
+        prevx = -9999
+        prevy = -9999
+        prevz = -9999
+        optimize = True
+        for i in range(0, len(clp)):
+            c = clp[i]
+            if i < len(clp) - 1:
+                nextx = clp[i + 1].x
+                nexty = clp[i + 1].y
+                nextz = clp[i + 1].z
+            else:
+                nextx = -9999
+                nexty = -9999
+                nextz = -9999
+            if not optimize or (obj.DropCutterDir == 'X' and (prevx != c.x or nextx != c.x or prevz != c.z or nextz != c.z) or
+                                (obj.DropCutterDir == 'Y' and (prevy != c.y or nexty != c.y or prevz != c.z or nextz != c.z))):
+                output.append(Path.Command('G1', {'X': c.x, "Y": c.y, "Z": c.z, 'F': self.horizFeed}))
+            prevx = c.x
+            prevy = c.y
+            prevz = c.z
+        print("points after optimization: " + str(len(output)))
         return output
 
     def pocketInvertExtraOffset(self):
@@ -322,6 +340,7 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OpStartDepth = d.start_depth
             obj.OpFinalDepth = d.final_depth
 
+
 def SetupProperties():
     setup = []
     setup.append("Algorithm")
@@ -331,7 +350,8 @@ def SetupProperties():
     setup.append("DepthOffset")
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Surface operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
