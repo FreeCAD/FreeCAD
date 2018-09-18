@@ -206,7 +206,7 @@ PyDoc_STRVAR(FreeCAD_doc,
 PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
-    
+
 PyDoc_STRVAR(Base_doc,
     "The Base module contains the classes for the geometric basics\n"
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
@@ -2415,8 +2415,8 @@ std::string Application::FindHomePath(const char* sCall)
             absPath = path;
     }
     else {
-        // Find the path of the executable. Theoretically, there could  occur a
-        // race condition when using readlink, but we only use  this method to
+        // Find the path of the executable. Theoretically, there could occur a
+        // race condition when using readlink, but we only use this method to
         // get the absolute path of the executable to compute the actual home
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.

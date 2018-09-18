@@ -311,7 +311,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return True
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj, job) ... initialize defauts'''
+        '''opSetDefaultValues(obj, job) ... initialize defaults'''
 
         # obj.ZigZagAngle = 45.0
         obj.StepOver = 50
