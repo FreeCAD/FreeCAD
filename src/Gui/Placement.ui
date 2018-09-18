@@ -166,7 +166,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QPushButton" name="selectedVertex">
         <property name="text">
-         <string>Selected point(s)</string>
+         <string>Selected points</string>
         </property>
        </widget>
       </item>
