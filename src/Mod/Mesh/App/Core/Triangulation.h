@@ -31,6 +31,30 @@ namespace MeshCore
 {
 class MeshKernel;
 
+class MeshExport TriangulationVerifier
+{
+public:
+    TriangulationVerifier() {}
+    virtual ~TriangulationVerifier() {}
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
+class MeshExport TriangulationVerifierV2 : public TriangulationVerifier
+{
+public:
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
 class MeshExport AbstractPolygonTriangulator
 {
 public:
@@ -40,6 +64,12 @@ public:
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
     void SetIndices(const std::vector<unsigned long>& d) {_indices = d;}
+    /** Set a verifier object that checks if the generated triangulation
+     * can be accepted and added to the mesh kernel.
+     * The triangulator takes ownership of the passed verifier.
+     */
+    void SetVerifier(TriangulationVerifier* v);
+    TriangulationVerifier* GetVerifier() const;
     /** Usually the created faces use the indices of the polygon points
      * from [0, n]. If the faces should be appended to an existing mesh
      * they may need to be reindexed from the calling instance.
@@ -108,6 +138,7 @@ protected:
     std::vector<MeshGeomFacet>  _triangles;
     std::vector<MeshFacet>      _facets;
     std::vector<unsigned long>  _info;
+    TriangulationVerifier*      _verifier;
 };
 
 /**

@@ -39,13 +39,64 @@
 using namespace MeshCore;
 
 
+bool TriangulationVerifier::Accept(const Base::Vector3f& n,
+                                   const Base::Vector3f& p1,
+                                   const Base::Vector3f& p2,
+                                   const Base::Vector3f& p3) const
+{
+    float ref_dist = (p2 - p1) * n;
+    float tri_dist = (p3 - p1) * n;
+    return (ref_dist * tri_dist <= 0.0f);
+}
+
+bool TriangulationVerifier::MustFlip(const Base::Vector3f& n1,
+                                     const Base::Vector3f& n2) const
+{
+    return n1.Dot(n2) <= 0.0f;
+}
+
+bool TriangulationVerifierV2::Accept(const Base::Vector3f& n,
+                                     const Base::Vector3f& p1,
+                                     const Base::Vector3f& p2,
+                                     const Base::Vector3f& p3) const
+{
+    float ref_dist = (p2 - p1) * n;
+    float tri_dist = (p3 - p1) * n;
+    float prod = ref_dist * tri_dist;
+    (void)prod;
+    return true;
+}
+
+bool TriangulationVerifierV2::MustFlip(const Base::Vector3f& n1,
+                                       const Base::Vector3f& n2) const
+{
+    float dot = n1.Dot(n2);
+    (void)dot;
+    return false;
+}
+
+// ----------------------------------------------------------------------------
+
 AbstractPolygonTriangulator::AbstractPolygonTriangulator()
 {
     _discard = false;
+    _verifier = new TriangulationVerifier();
 }
 
 AbstractPolygonTriangulator::~AbstractPolygonTriangulator()
 {
+    delete _verifier;
+}
+
+TriangulationVerifier* AbstractPolygonTriangulator::GetVerifier() const
+{
+    return _verifier;
+}
+
+void AbstractPolygonTriangulator::SetVerifier(TriangulationVerifier* v)
+{
+    delete _verifier;
+    _verifier = v;
 }
 
 void AbstractPolygonTriangulator::SetPolygon(const std::vector<Base::Vector3f>& raclPoints)
