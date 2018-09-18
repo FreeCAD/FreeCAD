@@ -739,12 +739,21 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
         temp.DocName  = pDocName;
         temp.FeatName = pObjectName ? pObjectName : "";
-        for (std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
-            temp.SubName  = it->c_str();
+        if (!pSubNames.empty()) {
+            for (std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
+                temp.SubName  = it->c_str();
+                temp.x        = 0;
+                temp.y        = 0;
+                temp.z        = 0;
+
+                _SelList.push_back(temp);
+            }
+        }
+        else {
+            temp.SubName  = "";
             temp.x        = 0;
             temp.y        = 0;
             temp.z        = 0;
-
             _SelList.push_back(temp);
         }
 
@@ -789,8 +798,16 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj)
         }
         return ok;
     }
+    else if (!subNames.empty()) {
+        bool ok = true;
+        for (std::size_t i=0; i<subNames.size(); i++) {
+            const std::string& name = subNames[i];
+            ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str());
+        }
+        return ok;
+    }
     else {
-        return addSelection(obj.getDocName(), obj.getFeatName(), subNames);
+        return addSelection(obj.getDocName(), obj.getFeatName());
     }
 }
 
