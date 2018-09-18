@@ -1736,6 +1736,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
         Selection().addSelection(docname,objname,subname,x,y,z);
         Py_Return;
     }
+    PyErr_Clear();
 
     PyObject *object;
     subname = 0;
@@ -1833,6 +1834,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
         Selection().rmvSelection(docname,objname,subname);
         Py_Return;
     }
+    PyErr_Clear();
 
     PyObject *object;
     subname = 0;
