@@ -222,7 +222,7 @@ public:
     void populateItem(DocumentObjectItem *item, bool refresh = false);
     bool populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    bool showItem(DocumentObjectItem *item, bool select);
+    bool showItem(DocumentObjectItem *item, bool select, bool force=false);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
     void setItemVisibility(const Gui::ViewProviderDocumentObject&);
     void updateLinks(const ViewProviderDocumentObject &view);

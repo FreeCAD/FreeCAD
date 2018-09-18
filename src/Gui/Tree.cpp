@@ -2153,10 +2153,6 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
     if (!item->populated && !item->isExpanded()) {
         bool doPopulate = false;
 
-        // The following external object optimization is disabled because it
-        // disables the function of scroll to error object, in case it is an
-        // external one.
-#if 0
         bool external = item->object()->getDocument()!=item->getOwnerDocument()->document();
         if(external)
             return;
@@ -2164,7 +2160,6 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         auto linked = obj->getLinkedObject(true);
         if (linked && linked->getDocument()!=obj->getDocument())
             return;
-#endif
         for(auto child : item->myData->children) {
             auto it = ObjectMap.find(child);
             if(it == ObjectMap.end() || it->second->items.empty()) {
@@ -2479,15 +2474,24 @@ void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::
     if(!tree->isVisible()) return;
     bool scrolled = false;
     for(auto obj : objs) {
-        if(obj->isValid()) continue;
-        auto it = ObjectMap.find(obj);
-        if(it == ObjectMap.end() || it->second->items.empty()) 
+        if(obj->isValid()) 
             continue;
-        auto item = it->second->rootItem;
-        if(!item) {
-            item = *it->second->items.begin();
-            showItem(item,false);
+        auto it = ObjectMap.find(obj);
+        if(it == ObjectMap.end() || it->second->items.empty()) {
+            auto itDoc = getTree()->DocumentMap.find(
+                    Application::Instance->getDocument(obj->getDocument()));
+            if(itDoc!=getTree()->DocumentMap.end()) {
+                it = itDoc->second->ObjectMap.find(obj);
+                if(it == ObjectMap.end() || it->second->items.empty()) {
+                    FC_ERR("Cannot find recompute failure object " << obj->getExportName());
+                    continue;
+                }
+            }
         }
+        auto item = it->second->rootItem;
+        if(!item)
+            item = *it->second->items.begin();
+        showItem(item,false,true);
         if(!scrolled) {
             scrolled = true;
             tree->scrollToItem(item);
@@ -2842,11 +2846,16 @@ void DocumentItem::setShowHidden(bool show) {
     pDocument->getDocument()->ShowHidden.setValue(show);
 }
 
-bool DocumentItem::showItem(DocumentObjectItem *item, bool select) {
+bool DocumentItem::showItem(DocumentObjectItem *item, bool select, bool force) {
     auto parent = item->parent();
-    if(item->isHidden() ||
-       (parent->type()==TreeWidget::ObjectType && 
-        !showItem(static_cast<DocumentObjectItem*>(parent),false)))
+    if(item->isHidden()) {
+        if(!force)
+            return false;
+        item->setHidden(false);
+    }
+    
+    if(parent->type()==TreeWidget::ObjectType && 
+       !showItem(static_cast<DocumentObjectItem*>(parent),false))
         return false;
 
     parent->setExpanded(true);
