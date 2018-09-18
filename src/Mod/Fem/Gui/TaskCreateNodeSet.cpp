@@ -141,8 +141,8 @@ void TaskCreateNodeSet::DefineNodesCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -155,8 +155,7 @@ void TaskCreateNodeSet::DefineNodesCallback(void * ud, SoEventCallback * n)
     for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
         polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
 
-    taskBox->DefineNodes(polygon,proj,clip_inner);
-
+    taskBox->DefineNodes(polygon,proj,role == Gui::SelectionRole::Inner ? true : false);
 }
 
 void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool inner)

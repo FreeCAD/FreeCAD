@@ -743,7 +743,8 @@ void CmdMeshPolySegm::activated(int)
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);
-                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::segmMeshCallback);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+                                         MeshGui::ViewProviderMeshFaceSet::segmMeshCallback);
             }
             else {
                 return;
@@ -898,10 +899,12 @@ void CmdMeshPolyCut::activated(int)
                 viewer->setEditing(true);
 
                 Gui::PolyClipSelection* clip = new Gui::PolyClipSelection();
+                clip->setRole(Gui::SelectionRole::Split, true);
                 clip->setColor(0.0f,0.0f,1.0f);
                 clip->setLineWidth(1.0f);
                 viewer->navigationStyle()->startSelection(clip);
-                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+                                         MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
             }
             else {
                 return;
@@ -954,9 +957,14 @@ void CmdMeshPolyTrim::activated(int)
             if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
-                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+
+                Gui::PolyClipSelection* clip = new Gui::PolyClipSelection();
+                clip->setRole(Gui::SelectionRole::Split, true);
+                clip->setColor(0.0f,0.0f,1.0f);
+                clip->setLineWidth(1.0f);
+                viewer->navigationStyle()->startSelection(clip);
                 viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                    MeshGui::ViewProviderMeshFaceSet::trimMeshCallback);
+                                         MeshGui::ViewProviderMeshFaceSet::trimMeshCallback);
             }
             else {
                 return;
@@ -1066,7 +1074,8 @@ void CmdMeshPolySplit::activated(int)
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);
-                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::partMeshCallback);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+                                         MeshGui::ViewProviderMeshFaceSet::partMeshCallback);
             }
             else {
                 return;

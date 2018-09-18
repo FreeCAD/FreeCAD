@@ -38,6 +38,7 @@
 #include <QImage>
 
 #include <Gui/Selection.h>
+#include <Gui/Namespace.h>
 
 class SoTranslation;
 class SoTransform;
@@ -217,9 +218,9 @@ public:
     void startSelection(SelectionMode = Lasso);
     void stopSelection();
     bool isSelecting() const;
-    std::vector<SbVec2f> getGLPolygon(SbBool* clip_inner=0) const;
+    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
-    const std::vector<SbVec2s>& getPolygon(SbBool* clip_inner=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
     //@}
     
     /// Returns the screen coordinates of the origin of the path's tail object

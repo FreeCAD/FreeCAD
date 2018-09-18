@@ -1175,9 +1175,9 @@ bool View3DInventorViewer::isSelecting() const
     return navigation->isSelecting();
 }
 
-const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SbBool* clip_inner) const
+const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role) const
 {
-    return navigation->getPolygon(clip_inner);
+    return navigation->getPolygon(role);
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
@@ -1263,9 +1263,9 @@ std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2
     return poly;
 }
 
-std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(SbBool* clip_inner) const
+std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(SelectionRole* role) const
 {
-    const std::vector<SbVec2s>& pnts = navigation->getPolygon(clip_inner);
+    const std::vector<SbVec2s>& pnts = navigation->getPolygon(role);
     return getGLPolygon(pnts);
 }
 
