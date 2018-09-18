@@ -50,10 +50,8 @@ FC_LOG_LEVEL_INIT("CommandLink",true,true);
 using namespace Gui;
 
 static void setLinkLabel(App::DocumentObject *obj, const char *doc, const char *name) {
-    auto linked = obj->getLinkedObject(true);
-    if(!linked) linked = obj;
-    const char *label = linked->Label.getValue();
-    Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s_%s'",doc,name,name,label);
+    const char *label = obj->Label.getValue();
+    Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s'",doc,name,label);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
