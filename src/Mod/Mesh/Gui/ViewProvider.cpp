@@ -1671,6 +1671,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
         MeshCore::MeshFacetArray faces;
         MeshCore::MeshPointArray points;
         MeshCore::QuasiDelaunayTriangulator cTria/*(0.05f)*/;
+        cTria.SetVerifier(new MeshCore::TriangulationVerifierV2);
         if (meshAlg.FillupHole(boundary, cTria, faces, points, level, &cPt2Fac)) {
             if (boundary.front() == boundary.back())
                 boundary.pop_back();
