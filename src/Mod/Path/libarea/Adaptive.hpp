@@ -155,7 +155,7 @@ class Adaptive2d
 
 	const double MIN_CUT_AREA_FACTOR = 0.1;// used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
 	const double ENGAGE_AREA_THR_FACTOR = 0.5;		// influences minimal engage area
-	const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.5; // influences the engage scan/stepping distance
+	const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2; // influences the engage scan/stepping distance
 
 	const double CLEAN_PATH_TOLERANCE = 0.5;
 	const double FINISHING_CLEAN_PATH_TOLERANCE = 0.1;
