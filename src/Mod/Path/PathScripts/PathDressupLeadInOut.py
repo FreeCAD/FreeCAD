@@ -185,7 +185,7 @@ class ObjectDressup:
         return results
 
     def getLeadEnd(self, obj, queue, action):
-        '''returns the  Gcode of LeadOut.'''
+        '''returns the Gcode of LeadOut.'''
         global currLocation
         results = []
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value

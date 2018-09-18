@@ -3231,7 +3231,7 @@ public:
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
-        STATUS_SEEK_Third,     /**< enum value ----. */      
+        STATUS_SEEK_Third,      /**< enum value ----. */
         STATUS_SEEK_Fourth,     /**< enum value ----. */
         STATUS_Close
     };
@@ -7034,24 +7034,24 @@ public:
                     "conList.append(Sketcher.Constraint('%s',%i))\n"
                     "conList.append(Sketcher.Constraint('Equal',%i,%i))\n"
                     "App.ActiveDocument.%s.addConstraint(conList)\n",
-                    StartPos.x,StartPos.y,  // center of the  arc1
+                    StartPos.x,StartPos.y,  // center of the arc1
                     fabs(r),                  // radius arc1
                     start,end,                 // start and end angle of arc1
-                    StartPos.x+lx,StartPos.y+ly,    // center of the  arc2
+                    StartPos.x+lx,StartPos.y+ly,    // center of the arc2
                     fabs(r),                          // radius arc2
                     end,start,                         // start and end angle of arc2
                     EditCurve[16].x,EditCurve[16].y,EditCurve[17].x,EditCurve[17].y, // line1
                     EditCurve[0].x,EditCurve[0].y,EditCurve[34].x,EditCurve[34].y, // line2
                     sketchgui->getObject()->getNameInDocument(), // the sketch
-                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not                                        
+                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not
                     firstCurve,firstCurve+3, // tangent1
                     firstCurve,firstCurve+2, // tangent2
                     firstCurve+2,firstCurve+1, // tangent3
                     firstCurve+3,firstCurve+1, // tangent4
                     (fabs(lx)>fabs(ly))?"Horizontal":"Vertical", firstCurve+2, // vertical or horizontal constraint
                     firstCurve,firstCurve+1, // equal constraint
-                    sketchgui->getObject()->getNameInDocument()); // the sketch                
-                
+                    sketchgui->getObject()->getNameInDocument()); // the sketch
+
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the start of the first side
