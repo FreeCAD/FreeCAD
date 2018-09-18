@@ -1024,7 +1024,7 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
     n->setHandled();
 
     std::vector<SbVec2f> clPoly = view->getGLPolygon();
-    if (clPoly.size() != 1)
+    if (clPoly.size() != 2)
         return;
     const SoEvent* ev = n->getEvent();
 

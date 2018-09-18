@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QPushButton>
 #endif
 
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -95,6 +96,38 @@ void CmdMeshPartTrimByPlane::activated(int)
         return;
     }
 
+    QMessageBox msgBox(Gui::getMainWindow());
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane","Trim by plane"));
+    msgBox.setText(qApp->translate("MeshPart_TrimByPlane","Select the side you want to keep."));
+    QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Inner"), QMessageBox::ActionRole);
+    QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Outer"), QMessageBox::ActionRole);
+    QPushButton* both = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Both"), QMessageBox::ActionRole);
+    msgBox.setDefaultButton(inner);
+    msgBox.exec();
+    QAbstractButton* click = msgBox.clickedButton();
+
+    enum Side {
+        Inner,
+        Outer,
+        Both
+    };
+
+    Side side;
+    if (inner == click) {
+        side = Inner;
+    }
+    else if (outer == click) {
+        side = Outer;
+    }
+    else if (both == click) {
+        side = Both;
+    }
+    else {
+        // abort
+        return;
+    }
+
     Base::Placement plm = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
     Base::Vector3d normal(0,0,1);
     plm.getRotation().multVec(normal, normal);
@@ -135,9 +168,27 @@ void CmdMeshPartTrimByPlane::activated(int)
         polygon2d.Add(Base::Vector2d(p3.x, p3.y));
         polygon2d.Add(Base::Vector2d(p4.x, p4.y));
 
-        Mesh::MeshObject::CutType type = Mesh::MeshObject::INNER;
-        mesh->trim(polygon2d, proj, type);
-        static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+        if (side == Inner) {
+            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+        }
+        else if (side == Outer) {
+            mesh->trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+        }
+        else if (side == Both) {
+            Mesh::MeshObject copy(*mesh);
+            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+
+            copy.trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            App::Document* doc = (*it)->getDocument();
+            Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+            fea->Label.setValue((*it)->Label.getValue());
+            Mesh::MeshObject* feamesh = fea->Mesh.startEditing();
+            feamesh->swap(copy);
+            fea->Mesh.finishEditing();
+        }
         (*it)->purgeTouched();
     }
     commitCommand();
