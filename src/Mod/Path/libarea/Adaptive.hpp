@@ -157,8 +157,8 @@ class Adaptive2d
 	const double ENGAGE_AREA_THR_FACTOR = 0.5;		// influences minimal engage area
 	const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2; // influences the engage scan/stepping distance
 
-	const double CLEAN_PATH_TOLERANCE = 0.5;
-	const double FINISHING_CLEAN_PATH_TOLERANCE = 0.1;
+	const double CLEAN_PATH_TOLERANCE = 2;
+	const double FINISHING_CLEAN_PATH_TOLERANCE = 1;
 
 
 	const long PASSES_LIMIT = __LONG_MAX__;			   // limit used while debugging
