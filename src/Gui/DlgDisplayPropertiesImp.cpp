@@ -151,7 +151,13 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
         const_cast<Gui::ViewProvider*>(&obj)));
     if (vp != Provider.end()) {
-        std::string prop_name = obj.getPropertyName(&prop);
+        std::string;
+        if (obj.getPropertyName(&prop)!=0){
+            prop_name = obj.getPropertyName(&prop);
+        } else {
+            Base::Console().Error("DlgDisplayPropertiesImp::slotChangedObject(): Error: obj.getPropertyName() failed.\n");
+            return;
+        }
         if (prop.getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "ShapeColor") {
