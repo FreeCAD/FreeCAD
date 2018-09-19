@@ -56,6 +56,9 @@ namespace @self.export.Namespace@
  */
 class @self.export.Namespace@Export @self.export.Name@ : public @self.export.FatherNamespace@::@self.export.Father@
 {
+protected:
+    ~@self.export.Name@();
+
 public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
@@ -76,8 +79,7 @@ public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     virtual int PyInit(PyObject* args, PyObject*k);
-    ~@self.export.Name@();
-    
+
 + if (self.export.Initialization):
     int initialization();
     int finalization();

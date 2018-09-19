@@ -203,10 +203,12 @@ std::string AreaPy::representation(void) const
 
 PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  // Python wrapper
 {
-    std::unique_ptr<AreaPy> ret(new AreaPy(new Area));
-    if(!ret->setParams(args,kwd))
+    AreaPy* ret = new AreaPy(new Area);
+    if(!ret->setParams(args,kwd)) {
+        Py_DecRef(ret);
         return 0;
-    return ret.release();
+    }
+    return ret;
 }
 
 // constructor method
