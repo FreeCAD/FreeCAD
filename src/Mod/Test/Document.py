@@ -382,7 +382,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     self.failUnless(self.Doc.Label_2.Link == self.Doc.Label_3)
     self.failUnless(self.Doc.Label_1.LinkSub == (self.Doc.Label_2,["Sub1","Sub2"]))
     self.failUnless(self.Doc.Label_2.LinkSub == (self.Doc.Label_3,["Sub3","Sub4"]))
-    # do  NOT save transient properties
+    # do NOT save transient properties
     self.failUnless(self.Doc.Label_1.TypeTransient == 4711)
     self.failUnless(self.Doc == FreeCAD.getDocument(self.Doc.Name))
 

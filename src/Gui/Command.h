@@ -121,8 +121,8 @@ public:
 protected:
     /** @name Attributes set by the inherited constructor.
      *
-     *  They set up the most important properties  of the command.
-     *  In the constructor are set default values. 
+     *  They set up the most important properties of the command.
+     *  In the constructor are set default values.
      *  The real values should be set in the constructor of the inheriting class.
      */
     //@{

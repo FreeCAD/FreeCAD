@@ -1,5 +1,5 @@
-/* Parser for the FreeCAD  Units language           */
-/* (c) 2013 Juergen Riegel  LGPL                    */
+/* Parser for the FreeCAD Units language           */
+/* (c) 2013 Juergen Riegel LGPL                    */
 
 
 /* Represents the many different ways we can access our data */
@@ -36,30 +36,30 @@
             |  unit                         { QuantResult = $1     ;            }
             |  quantity                     { QuantResult = $1     ;            }
             |  quantity quantity            { QuantResult = $1 + $2;            }
- ;   
+ ;
      num:      NUM                			{ $$ = $1;         	}
              | ONE                			{ $$ = $1;         	}
              | num '+' num        			{ $$ = Quantity($1.getValue() + $3.getValue());    	}
-             | num MINUSSIGN num      		{ $$ = Quantity($1.getValue() - $3.getValue());    	}
+             | num MINUSSIGN num            { $$ = Quantity($1.getValue() - $3.getValue());    	}
              | num '*' num        			{ $$ = Quantity($1.getValue() * $3.getValue());    	}
              | num '/' num        			{ $$ = Quantity($1.getValue() / $3.getValue());    	}
-             | MINUSSIGN num  %prec NEG     { $$ = Quantity(-$2.getValue());        	}
+             | MINUSSIGN num  %prec NEG     { $$ = Quantity(-$2.getValue());                    }
              | num '^' num        			{ $$ = Quantity(pow ($1.getValue(), $3.getValue()));}
              | '(' num ')'        			{ $$ = $2;         	}
-             | ACOS  '(' num ')'  			{ $$ = Quantity(acos($3.getValue()));   	}
-             | ASIN  '(' num ')'  			{ $$ = Quantity(asin($3.getValue()));   	}
-             | ATAN  '(' num ')'  			{ $$ = Quantity(atan($3.getValue()));   	}
-             | ABS  '(' num ')'   			{ $$ = Quantity(fabs($3.getValue()));   	}
-             | EXP  '(' num ')'   			{ $$ = Quantity(exp($3.getValue()));    	}
-             | LOG  '(' num ')'				{ $$ = Quantity(log($3.getValue()));     }
-             | LOG10  '(' num ')'			{ $$ = Quantity(log10($3.getValue()));   }
-             | SIN  '(' num ')'   			{ $$ = Quantity(sin($3.getValue()));     }
-             | SINH '(' num ')'   			{ $$ = Quantity(sinh($3.getValue()));    }
-             | TAN  '(' num ')'   			{ $$ = Quantity(tan($3.getValue()));     }
-             | TANH  '(' num ')'   			{ $$ = Quantity(tanh($3.getValue()));    }
-             | SQRT  '(' num ')'   			{ $$ = Quantity(sqrt($3.getValue()));    }
-             | COS  '(' num ')'   			{ $$ = Quantity(cos($3.getValue()));    }
-;            
+             | ACOS  '(' num ')'  			{ $$ = Quantity(acos($3.getValue()));   }
+             | ASIN  '(' num ')'  			{ $$ = Quantity(asin($3.getValue()));   }
+             | ATAN  '(' num ')'  			{ $$ = Quantity(atan($3.getValue()));   }
+             | ABS   '(' num ')'  			{ $$ = Quantity(fabs($3.getValue()));   }
+             | EXP   '(' num ')'  			{ $$ = Quantity(exp($3.getValue()));    }
+             | LOG   '(' num ')'  			{ $$ = Quantity(log($3.getValue()));    }
+             | LOG10 '(' num ')'  			{ $$ = Quantity(log10($3.getValue()));  }
+             | SIN   '(' num ')'  			{ $$ = Quantity(sin($3.getValue()));    }
+             | SINH  '(' num ')'  			{ $$ = Quantity(sinh($3.getValue()));   }
+             | TAN   '(' num ')'  			{ $$ = Quantity(tan($3.getValue()));    }
+             | TANH  '(' num ')'  			{ $$ = Quantity(tanh($3.getValue()));   }
+             | SQRT  '(' num ')'  			{ $$ = Quantity(sqrt($3.getValue()));   }
+             | COS   '(' num ')'  			{ $$ = Quantity(cos($3.getValue()));    }
+;
 
     unit:       UNIT                        { $$ = $1;         	                }
             |   ONE '/' unit                { $$ = Quantity(1.0)/$3;  	        }
@@ -69,7 +69,7 @@
             |   '(' unit ')'                { $$ = $2;                          }
 ;
     quantity:   num unit                    { $$ = $1*$2;    	                }
-;            
+;
 
 
 %%
