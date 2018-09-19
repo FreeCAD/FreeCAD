@@ -177,6 +177,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     elec->setCommand("&Electrostatic Constraints");
     *elec << "FEM_ConstraintElectrostaticPotential";
 
+    Gui::MenuItem* elegeom = new Gui::MenuItem;
+    elegeom->setCommand("&Element Geometry");
+    *elegeom << "FEM_ElementGeometry1D"
+             << "FEM_ElementRotation1D"
+             << "FEM_ElementGeometry2D"
+             << "FEM_ElementFluid1D";
+
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical Constraints");
     *mech << "FEM_ConstraintFixed"
@@ -214,11 +221,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *model << "FEM_Analysis"
            << "Separator"
            << material
-           << "Separator"
-           << "FEM_ElementGeometry1D"
-           << "FEM_ElementRotation1D"
-           << "FEM_ElementGeometry2D"
-           << "FEM_ElementFluid1D"
+           << elegeom
            << "Separator"
            << elec
            << fluid
