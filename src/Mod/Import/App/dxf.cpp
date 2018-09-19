@@ -35,6 +35,7 @@ m_entityHandle(0x300),
 m_layerHandle(0x30),
 m_blockHandle(0x210),
 m_blkRecordHandle(0x110),
+m_polyOverride(false),
 m_layerName("none")
 {
     // start the file
