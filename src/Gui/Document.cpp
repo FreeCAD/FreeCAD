@@ -873,6 +873,8 @@ void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
 
 void Document::setModified(bool b)
 {
+    if(d->_isModified == b)
+        return;
     d->_isModified = b;
     
     std::list<MDIView*> mdis = getMDIViews();
