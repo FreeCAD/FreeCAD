@@ -257,6 +257,8 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 #endif // if USE_OLD_DAG
 
 
+#if 0
+
 void _getInListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {
     for (const auto objIt : obj->getInList()){
@@ -289,6 +291,23 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 
     return result;
 }
+
+#else
+// The original algorithm is highly inefficient in some special case.
+// Considering an object is linked by every other objects. After exculding this
+// object, there is another object linked by every other of the remaining
+// objects, and so on.  The vector 'result' above will be of magnitude n^2.
+// Even if we replace the vector with a set, we still need to visit that amount
+// of objects. And this may not be the worst case. getInListEx() has no such
+// problem.
+
+std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const {
+    std::set<App::DocumentObject*> res;
+    getInListEx(res,true);
+    return std::vector<App::DocumentObject*>(res.begin(),res.end());
+}
+
+#endif
 
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
