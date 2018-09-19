@@ -25,8 +25,6 @@
 #include <cstring>
 #include <ctime>
 #include <algorithm>
-#include <chrono>
-#include <thread>
 
 namespace ClipperLib
 {
@@ -39,7 +37,6 @@ using namespace ClipperLib;
 using namespace std;
 #define SAME_POINT_TOL_SQRD_SCALED 16.0
 #define UNUSED(expr) (void)(expr)
-#define SLEEPMS(expr) std::this_thread::sleep_for(std::chrono::milliseconds(expr))
 
 //*****************************************
 // Utils - inline
@@ -114,7 +111,7 @@ inline double PointSideOfLine(const IntPoint &p1, const IntPoint &p2, const IntP
 
 inline double Angle3Points(const DoublePoint &p1, const DoublePoint &p2, const DoublePoint &p3)
 {
-	double t1 = atan2(p1.Y - p2.Y, p1.X - p2.X);
+	double t1 = atan2(p2.Y - p1.Y, p2.X - p1.X);
 	double t2 = atan2(p3.Y - p2.Y, p3.X - p2.X);
 	double a = fabs(t2 - t1);
 	return min(a, 2 * M_PI - a);
@@ -322,42 +319,36 @@ double DistancePointToLineSegSquared(const IntPoint &p1, const IntPoint &p2, con
 // joins collinear segments (within the tolerance)
 void CleanPath(const Path &inp, Path &outp, double tolerance)
 {
-	bool first = true;
 	outp.clear();
-	double tolSqrd = tolerance * tolerance;
-	for (const auto &pt : inp)
+	if (inp.size() < 3)
 	{
-		if (first)
+		outp = inp;
+		return;
+	}
+
+	double tolSqrd = tolerance * tolerance;
+
+	IntPoint p1 = inp.at(0);
+	IntPoint p2 = p1;
+	outp.push_back(p1);
+	for (size_t i = 1; i < inp.size(); i++)
+	{
+		IntPoint pt = inp.at(i);
+		IntPoint clp; // to hold closest point
+		double ptPar;
+		double distSqrd = DistancePointToLineSegSquared(p1, p2, pt, clp, ptPar, false);
+		if (distSqrd < tolSqrd) // collinear - extend same segment to end with pt
 		{
-			first = false;
+			outp.pop_back();
 			outp.push_back(pt);
+			if (DistanceSqrd(p1, p2) < tolSqrd)
+				p2 = pt;
 		}
-		else
+		else // new segment - start with new p1,p2
 		{
-			if (outp.size() > 2)
-			{
-				IntPoint clp; // to hold closest point
-				double ptPar;
-				double distSqrd = DistancePointToLineSegSquared(outp[outp.size() - 2], outp[outp.size() - 1], pt, clp, ptPar, false);
-				if (distSqrd < tolSqrd)
-				{
-					outp.pop_back();
-					outp.push_back(pt);
-				}
-				else
-				{
-					outp.push_back(pt);
-				}
-			}
-			else if (DistanceSqrd(outp[outp.size() - 1], pt) < tolSqrd)
-			{
-				outp.pop_back();
-				outp.push_back(pt);
-			}
-			else
-			{
-				outp.push_back(pt);
-			}
+			p1 = outp.back();
+			p2 = pt;
+			outp.push_back(pt);
 		}
 	}
 }
@@ -569,102 +560,92 @@ bool IntersectionPoint(const Paths &paths, const IntPoint &p1, const IntPoint &p
 	return false;
 }
 
-// // finds the section (sub-path) of the one path between points that are closest to p1 and p2, if that distance is lower than distanceLimit
-// bool FindPathBetweenClosestPoints(const Paths &paths, IntPoint p1, IntPoint p2, double distanceLimit, Path &res)
-// {
+void SmoothPaths(Paths &paths, double stepSize, int pointCount)
+{
+	Paths output;
+	output.clear();
+	output.resize(paths.size());
 
-// 	size_t clpPathIndex;
-// 	IntPoint clp1;
-// 	size_t clpSegmentIndex1;
-// 	double clpParameter1;
+	vector<pair<size_t /*path index*/, IntPoint>> points;
+	for (size_t i = 0; i < paths.size(); i++)
+	{
+		for (auto &pt : paths[i])
+		{
+			if (points.empty())
+			{
+				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
+				continue;
+			}
+			IntPoint lastPt = points.back().second;
+			size_t lastPathIndex = points.back().first;
 
-// 	IntPoint clp2;
-// 	size_t clpSegmentIndex2;
-// 	double clpParameter2;
+			double dsqr = DistanceSqrd(lastPt, pt);
+			if (dsqr < SAME_POINT_TOL_SQRD_SCALED)
+			{
+				points.erase(points.end());
+				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
+				continue;
+			}
 
-// 	double limitSqrd = distanceLimit * distanceLimit;
+			double l = sqrt(dsqr);
 
-// 	double distSqrd = DistancePointToPathsSqrd(paths, p1, clp1, clpPathIndex, clpSegmentIndex1, clpParameter1);
+			if (l < stepSize)
+			{
+				points.erase(points.end());
+				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
+				continue;
+			}
 
-// 	if (distSqrd > limitSqrd)
-// 		return false; // too far
-// 	Path closestPath = paths.at(clpPathIndex);
-// 	Paths closestPaths;
-// 	closestPaths.push_back(closestPath); // limit to the path where clp is found
+			long steps = long(l / stepSize) + 1;
+			for (long idx = 0; idx <= steps; idx++)
+			{
+				double p = double(idx) / steps;
+				IntPoint ptx(long(lastPt.X + double(pt.X - lastPt.X) * p),
+							 long(lastPt.Y + double(pt.Y - lastPt.Y) * p));
+				if (p < 0.5)
+					points.push_back(pair<size_t /*path index*/, IntPoint>(lastPathIndex, ptx));
+				else
+					points.push_back(pair<size_t /*path index*/, IntPoint>(i, ptx));
+			}
+		}
+	}
+	if (points.empty())
+		return;
+	for (long i = 0; i < (long)points.size(); i++)
+	{
+		IntPoint avgPoint(points[i].second);
+		IntPoint pp = avgPoint;
+		long cnt = 1;
 
-// 	// find second point
-// 	distSqrd = DistancePointToPathsSqrd(closestPaths, p2, clp2, clpPathIndex, clpSegmentIndex2, clpParameter2);
+		long ptsToAverage = pointCount;
+		if (i < ptsToAverage)
+			ptsToAverage = i;
+		while (i + ptsToAverage >= long(points.size()))
+			ptsToAverage--;
 
-// 	if (distSqrd > limitSqrd)
-// 	{
-// 		// second point too far, try other way around
-// 		distSqrd = DistancePointToPathsSqrd(paths, p2, clp1, clpPathIndex, clpSegmentIndex1, clpParameter1);
-// 		if (distSqrd > limitSqrd)
-// 			return false; // still too far
-// 		closestPath = paths.at(clpPathIndex);
-// 		closestPaths.clear();
-// 		closestPaths.push_back(closestPath);
-// 		distSqrd = DistancePointToPathsSqrd(closestPaths, p1, clp2, clpPathIndex, clpSegmentIndex2, clpParameter2);
-// 		if (distSqrd > limitSqrd)
-// 			return false; // still too far
-// 	}
+		long lowLimit = i - ptsToAverage;
+		long highLimit = i + ptsToAverage;
 
-// 	// result in reverse direction
-// 	Path rev_result;
-// 	rev_result << clp1;
-// 	long minIndex = long(clpSegmentIndex2);
-// 	if (minIndex >= long(clpSegmentIndex1 - 1))
-// 		minIndex -= long(closestPath.size());
-// 	for (long i = long(clpSegmentIndex1) - 1; i >= minIndex; i--)
-// 	{
-// 		long index = i;
-// 		if (index < 0)
-// 			index += long(closestPath.size());
-// 		if (sqrt(DistanceSqrd(rev_result.back(), closestPath.at(index))) > NTOL)
-// 			rev_result << closestPath.at(index);
-// 	}
-// 	if (DistanceSqrd(rev_result.back(), clp2) >= SAME_POINT_TOL_SQRD_SCALED)
-// 		rev_result << clp2;
-
-// 	// result in forward direction
-// 	Path fwd_result;
-// 	fwd_result << clp1;
-// 	size_t maxIndex = clpSegmentIndex2;
-// 	if (maxIndex <= clpSegmentIndex1)
-// 		maxIndex = closestPath.size() + clpSegmentIndex2;
-// 	for (size_t i = clpSegmentIndex1; i < maxIndex; i++)
-// 	{
-// 		size_t index = i;
-// 		if (index >= closestPath.size())
-// 			index -= closestPath.size();
-// 		if (DistanceSqrd(fwd_result.back(), closestPath.at(index)) > SAME_POINT_TOL_SQRD_SCALED)
-// 			fwd_result << closestPath.at(index);
-// 	}
-// 	if (DistanceSqrd(fwd_result.back(), clp2) > SAME_POINT_TOL_SQRD_SCALED)
-// 		fwd_result << clp2;
-
-// 	res = (PathLength(rev_result) < PathLength(fwd_result)) ? rev_result : fwd_result; // take shortest
-// 	return res.size() > 1;
-// }
-
-// // finds interim points not necessarily on the same keeptooldown linking path
-// bool FindClosestClearPoints(const Paths &paths, IntPoint p1, IntPoint p2, double distanceLimit, IntPoint &interim1, IntPoint &interim2)
-// {
-// 	size_t clpPathIndex;
-// 	size_t clpSegmentIndex1;
-// 	double clpParameter1;
-// 	size_t clpSegmentIndex2;
-// 	double clpParameter2;
-// 	double limitSqrd = distanceLimit * distanceLimit;
-// 	double distSqrd = DistancePointToPathsSqrd(paths, p1, interim1, clpPathIndex, clpSegmentIndex1, clpParameter1);
-// 	if (distSqrd > limitSqrd)
-// 		return false; // too far
-// 	// find second point
-// 	distSqrd = DistancePointToPathsSqrd(paths, p2, interim2, clpPathIndex, clpSegmentIndex2, clpParameter2);
-// 	if (distSqrd > limitSqrd)
-// 		return false; // too far
-// 	return true;
-// }
+		for (long j = lowLimit; j < highLimit; j++)
+		{
+			if (j != i)
+			{
+				IntPoint &p = points.at(j).second;
+				avgPoint.X += p.X;
+				avgPoint.Y += p.Y;
+				pp = p;
+				cnt++;
+			}
+		}
+		avgPoint.X /= cnt;
+		avgPoint.Y /= cnt;
+		output.at(points[i].first).push_back(avgPoint);
+	}
+	for (size_t i = 0; i < paths.size(); i++)
+	{
+		CleanPath(output[i], paths[i], 4);
+	}
+}
 
 bool PopPathWithClosestPoint(Paths &paths /*closest path is removed from collection and shifted to start with closest point */
 							 ,
@@ -1728,7 +1709,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	//***************************************
 	//	Resolve hierarchy and run processing
 	//***************************************
-	double cornerRoundingOffset=0.15 * toolRadiusScaled / 2;
+	double cornerRoundingOffset = 0.15 * toolRadiusScaled / 2;
 	if (opType == OperationType::otClearingInside || opType == OperationType::otClearingOutside)
 	{
 
@@ -1756,7 +1737,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		Paths paths;
-		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled -cornerRoundingOffset);
+		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled - cornerRoundingOffset);
 		for (const auto &current : paths)
 		{
 			int nesting = getPathNestingLevel(current, paths);
@@ -1826,8 +1807,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 					Paths toolBoundPaths;
 					clipof.Clear();
 					clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-					clipof.Execute(toolBoundPaths, -toolRadiusScaled - finishPassOffsetScaled-cornerRoundingOffset);
-
+					clipof.Execute(toolBoundPaths, -toolRadiusScaled - finishPassOffsetScaled - cornerRoundingOffset);
 
 					/** offset back outwards - corner rounding */
 					clipof.Clear();
@@ -2104,7 +2084,7 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &end
 		scanStep = scaleFactor * 0.01;
 	long limit = 10000;
 
-	double clearance = stepOverScaled / 2;
+	double clearance = stepOverScaled;
 	double offClearance = 2 * stepOverScaled;
 	if (offClearance > directDistance / 2)
 	{
@@ -2416,6 +2396,21 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 				linkPath.push_back(leadOutPath.back());
 				linkPath.push_back(leadInPath.front());
 			}
+
+			/* paths smoothhing*/
+			Paths linkPaths;
+			linkPaths.push_back(leadOutPath);
+			linkPaths.push_back(linkPath);
+			linkPaths.push_back(leadInPath);
+
+			if (linkType == MotionType::mtLinkClear)
+			{
+				SmoothPaths(linkPaths, 0.05 * stepOverScaled, 16);
+			}
+
+			leadOutPath = linkPaths[0];
+			linkPath = linkPaths[1];
+			leadInPath = linkPaths[2];
 
 			// add lead-out move
 			TPath linkPath1;
@@ -2785,8 +2780,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			//**********************************************
 			// CHECK AND RECORD NEW TOOL POS
 			//**********************************************
-			long rotateStep=0;
-			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep<256)
+			long rotateStep = 0;
+			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 256)
 			{
 				rotateStep++;
 				// if new tool pos. outside boundary rotate until back in
@@ -2794,7 +2789,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				newToolDir = rotate(newToolDir, M_PI / 128);
 				newToolPos = IntPoint(long(toolPos.X + newToolDir.X * stepScaled), long(toolPos.Y + newToolDir.Y * stepScaled));
 			}
-			if(rotateStep>=256) {
+			if (rotateStep >= 256)
+			{
 				cerr << "Warning: unexpected number of rotate iterations." << endl;
 				break;
 			}
@@ -2892,6 +2888,13 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		{
 			bad_engage_count++;
 		}
+
+		if (bad_engage_count > 10000)
+		{
+			cerr << "Break (next valid engage point not found)." << endl;
+			break;
+		}
+
 		/*****NEXT ENGAGE POINT******/
 		if (firstEngagePoint)
 		{
@@ -2906,7 +2909,37 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 										ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
 										4 * referenceCutArea * stepOverFactor))
 			{
-				break;
+				// check if there are any uncleared area left
+				Paths remaining;
+				for (const auto &p : cleared.GetCleared())
+				{
+					if (!p.empty() && IsPointWithinCutRegion(toolBoundPaths, p.front()) && DistancePointToPathsSqrd(boundPaths, p.front(), clp, clpPathIndex, clpSegmentIndex, clpParamter) > 4 * toolRadiusScaled * toolRadiusScaled)
+					{
+						remaining.push_back(p);
+					}
+				};
+				if (remaining.empty())
+				{
+					cout << "All cleared." << endl;
+					break;
+				}
+				else
+				{
+					cout << "Clearing " << remaining.size() << " remaining internal path(s)." << endl;
+				}
+
+				// try to find new engage point along the remaining
+				clipof.Clear();
+				clipof.AddPaths(remaining, JoinType::jtRound, EndType::etClosedPolygon);
+				clipof.Execute(remaining, toolRadiusScaled - 0.5 * stepOverScaled);
+
+				ReversePaths(remaining);
+				engage.SetPaths(remaining);
+				engage.moveToClosestPoint(newToolPos, stepScaled + 1);
+				if (!engage.nextEngagePoint(this, cleared, moveDistance,
+											ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
+											4 * referenceCutArea * stepOverFactor))
+					break;
 			}
 		}
 		toolPos = engage.getCurrentPoint();
