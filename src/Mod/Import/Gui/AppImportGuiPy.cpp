@@ -360,6 +360,15 @@ public:
     virtual ~Module() {}
 
 private:
+    class Signaler {
+    public:
+        Signaler() {
+            App::GetApplication().signalStartOpenDocument();
+        }
+        ~Signaler() {
+            App::GetApplication().signalFinishOpenDocument();
+        }
+    };
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
@@ -375,6 +384,8 @@ private:
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
+
+        Signaler signaler;
 
         try {
             //Base::Console().Log("Insert in Part with %s",Name);
