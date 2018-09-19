@@ -861,8 +861,8 @@ public:
 
 private:
     ViewProviderMesh* mesh;
-    Gui::ViewVolumeProjection proj;
     std::vector<SbVec2f> poly;
+    Gui::ViewVolumeProjection proj;
 };
 }
 
