@@ -1728,7 +1728,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	//***************************************
 	//	Resolve hierarchy and run processing
 	//***************************************
-
+	double cornerRoundingOffset=0.15 * toolRadiusScaled / 2;
 	if (opType == OperationType::otClearingInside || opType == OperationType::otClearingOutside)
 	{
 
@@ -1756,7 +1756,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		Paths paths;
-		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled - 0.15 * toolRadiusScaled / 2);
+		clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled -cornerRoundingOffset);
 		for (const auto &current : paths)
 		{
 			int nesting = getPathNestingLevel(current, paths);
@@ -1769,13 +1769,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 					appendDirectChildPaths(toolBoundPaths, current, paths);
 				}
 
-				// calc bounding paths - i.e. area that must be cleared inside
-				// it's not the same as input paths due to filtering (nesting logic)
-
+				// offset back outwards - corner rounding
 				clipof.Clear();
 				clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-				clipof.Execute(toolBoundPaths, 0.15 * toolRadiusScaled / 2);
+				clipof.Execute(toolBoundPaths, cornerRoundingOffset);
 
+				// restore original bound paths
+				// bounding paths - i.e. area that must be cleared inside
+				// it's not the same as input paths due to filtering (nesting logic) and corner rounding
 				Paths boundPaths;
 				clipof.Clear();
 				clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
@@ -1821,10 +1822,24 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 					}
 					clip.Execute(ClipType::ctDifference, boundPaths, PolyFillType::pftEvenOdd);
 
+					/** tool bounds */
 					Paths toolBoundPaths;
 					clipof.Clear();
 					clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-					clipof.Execute(toolBoundPaths, -toolRadiusScaled - finishPassOffsetScaled);
+					clipof.Execute(toolBoundPaths, -toolRadiusScaled - finishPassOffsetScaled-cornerRoundingOffset);
+
+
+					/** offset back outwards - corner rounding */
+					clipof.Clear();
+					clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+					clipof.Execute(toolBoundPaths, cornerRoundingOffset);
+
+					// restore original bound paths
+					// bounding paths - i.e. area that must be cleared inside
+					// it's not the same as above due to corner rounding
+					clipof.Clear();
+					clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+					clipof.Execute(boundPaths, toolRadiusScaled + finishPassOffsetScaled);
 
 					ProcessPolyNode(boundPaths, toolBoundPaths);
 				}
@@ -2770,14 +2785,20 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			//**********************************************
 			// CHECK AND RECORD NEW TOOL POS
 			//**********************************************
-
-			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos))
+			long rotateStep=0;
+			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep<256)
 			{
+				rotateStep++;
 				// if new tool pos. outside boundary rotate until back in
 				recalcArea = true;
 				newToolDir = rotate(newToolDir, M_PI / 128);
 				newToolPos = IntPoint(long(toolPos.X + newToolDir.X * stepScaled), long(toolPos.Y + newToolDir.Y * stepScaled));
 			}
+			if(rotateStep>=256) {
+				cerr << "Warning: unexpected number of rotate iterations." << endl;
+				break;
+			}
+
 			if (recalcArea)
 			{
 				area = CalcCutArea(clip, toolPos, newToolPos, cleared);
