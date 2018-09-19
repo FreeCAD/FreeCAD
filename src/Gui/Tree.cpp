@@ -222,6 +222,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
     Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
     Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, _1));
+    App::GetApplication().signalStartOpenDocument.connect(boost::bind(&TreeWidget::setVisible,this,false));
+    App::GetApplication().signalFinishOpenDocument.connect(boost::bind(&TreeWidget::setVisible,this,true));
 
     App::GetApplication().signalFinishRestoreDocument.connect
         (boost::bind(&TreeWidget::slotFinishRestoreDocument, this, _1));

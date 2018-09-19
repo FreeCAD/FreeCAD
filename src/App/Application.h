@@ -165,6 +165,10 @@ public:
     boost::signal<void (const Document&)> signalTransactionAbort;
     /// signal on show hidden items
     boost::signal<void (const Document&)> signalShowHidden;
+    /// signal on start opening document(s)
+    boost::signal<void ()> signalStartOpenDocument;
+    /// signal on finished opening document(s)
+    boost::signal<void ()> signalFinishOpenDocument;
     //@}
 
 

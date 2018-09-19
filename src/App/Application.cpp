@@ -146,6 +146,7 @@ using namespace boost::program_options;
 # include <new>
 #endif
 
+FC_LOG_LEVEL_INIT("App",true,true);
 
 //using Base::GetConsole;
 using namespace Base;
@@ -519,20 +520,48 @@ bool Application::isRestoring() const {
     return _isRestoring || Document::isAnyRestoring();
 }
 
+struct DocTiming {
+    FC_DURATION_DECLARE(d1);
+    FC_DURATION_DECLARE(d2);
+    DocTiming() {
+        FC_DURATION_INIT(d1);
+        FC_DURATION_INIT(d2);
+    }
+};
+
+class DocOpenGuard {
+public:
+    bool &flag;
+    boost::signal<void ()> &signal;
+    DocOpenGuard(bool &f, boost::signal<void ()> &s)
+        :flag(f),signal(s)
+    {
+        flag = true;
+    }
+    ~DocOpenGuard() {
+        flag = false;
+        signal();
+    }
+};
+
 Document* Application::openDocument(const char * FileName)
 {
-    Base::FlagToggler<> flag(_isRestoring);
+    DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
     _allowPending = true;
+
+    signalStartOpenDocument();
 
     ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     bool allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     _pendingDocs.push_back(FileName?FileName:"");
 
-    std::deque<Document *> newDocs;
+    std::deque<std::pair<Document *, DocTiming> > newDocs;
+
+    FC_TIME_INIT(t);
 
     bool isMainDoc = true;
     while(true) {
@@ -546,9 +575,12 @@ Document* Application::openDocument(const char * FileName)
                 if(it!=_pendingDocMap.end())
                     objNames.swap(it->second);
             }
+            FC_TIME_INIT(t1);
+            DocTiming timing;
             auto doc = openDocumentPrivate(name,isMainDoc,allowPartial,objNames);
+            FC_DURATION_PLUS(timing.d1,t1);
             if(doc)
-                newDocs.push_front(doc);
+                newDocs.emplace_front(doc,timing);
             isMainDoc = false;
             _objCount = -1;
         }catch(const Base::Exception &e) {
@@ -573,10 +605,21 @@ Document* Application::openDocument(const char * FileName)
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
 
-    for(auto doc : newDocs) 
-        doc->afterRestore(true);
-    setActiveDocument(newDocs.back());
-    return newDocs.back();
+    for(auto &v : newDocs) {
+        FC_TIME_INIT(t1);
+        v.first->afterRestore(true);
+        FC_DURATION_PLUS(v.second.d2,t1);
+    }
+    setActiveDocument(newDocs.back().first);
+
+    for(auto &v : newDocs) {
+        FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
+        FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
+    }
+    FC_TIME_LOG(t,"total");
+
+    signalFinishOpenDocument();
+    return newDocs.back().first;
 }
 
 Document* Application::openDocumentPrivate(const char * FileName, 
