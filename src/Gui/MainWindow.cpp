@@ -376,8 +376,16 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 #endif
 
+    auto hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    int treemode = hGrp->GetInt("TreeViewMode",0);
+    if(treemode!=hGrp->GetInt("TreeViewMode",1)) {
+        if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                        ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",true))
+            treemode = 1;
+    }
+
     // Tree view
-    if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
+    if (treemode>0 && hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         TreeDockWidget* tree = new TreeDockWidget(0, this);
         tree->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
@@ -386,7 +394,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     // Property view
-    if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
+    if (treemode>0 && hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
         PropertyDockView* pcPropView = new PropertyDockView(0, this);
         pcPropView->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
@@ -404,7 +412,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     // Combo view
-    if (hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
+    if (treemode!=1 && hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
         CombiView* pcCombiView = new CombiView(0, this);
         pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
         pcCombiView->setMinimumWidth(150);
@@ -447,6 +455,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);
     }
 
+    //TODO: Add external object support for DAGView
+#if 0
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -462,6 +472,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
           pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
+#endif
 
 #if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
     // The MainWindowTabBar is used to show tabbed dock windows with icons

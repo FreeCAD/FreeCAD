@@ -161,6 +161,8 @@ void DlgGeneralImp::saveSettings()
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
 
+    hGrp->SetInt("TreeViewMode",this->treeMode->currentIndex());
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", this->tiledBackground->isChecked());
     QMdiArea* mdi = getMainWindow()->findChild<QMdiArea*>();
@@ -281,6 +283,14 @@ void DlgGeneralImp::loadSettings()
         index = this->toolbarIconSize->findData(QVariant(current));
     } 
     this->toolbarIconSize->setCurrentIndex(index);
+
+    this->treeMode->addItem(tr("CombiView"));
+    this->treeMode->addItem(tr("TreeView + PropertyView"));
+    this->treeMode->addItem(tr("Both"));
+    index = hGrp->GetInt("TreeViewMode");
+    if (index<0 || index>2)
+        index=0;
+    this->treeMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
