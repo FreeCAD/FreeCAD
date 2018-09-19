@@ -394,7 +394,7 @@ class _CommandFemMaterialFluid(CommandManager):
     def __init__(self):
         super(_CommandFemMaterialFluid, self).__init__()
         self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for fluid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Material for fluid"),
                           'Accel': "M, M",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for fluid")}
         self.is_active = 'with_analysis'
@@ -448,7 +448,7 @@ class _CommandFemMaterialSolid(CommandManager):
     def __init__(self):
         super(_CommandFemMaterialSolid, self).__init__()
         self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Material for solid"),
                           'Accel': "M, M",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
         self.is_active = 'with_analysis'
