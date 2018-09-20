@@ -28,6 +28,8 @@
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
+# include <QGenericReturnArgument>
+# include <QMetaObject>
 # include <Precision.hxx>
 #endif
 
@@ -533,9 +535,9 @@ void TaskPipeOrientation::updateUI(int idx) {
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation")) {
-
-            // we need a separate container widget to add all controls to
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation"))
+{
+    // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskPipeScaling();
     ui->setupUi(proxy);
@@ -549,13 +551,21 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
             this, SLOT(onButtonRefRemove(bool)));
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
-    
+
     this->groupLayout()->addWidget(proxy);
-   
+
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    const std::vector<App::DocumentObject*>& sections = pipe->Sections.getValues();
+    for (auto it : sections) {
+        QString label = QString::fromUtf8(it->Label.getValue());
+        ui->listWidgetReferences->addItem(label);
+    }
+
     ui->comboBoxScaling->setCurrentIndex(pipe->Transformation.getValue());
-    
-    updateUI(pipe->Mode.getValue());
+
+    // should be called after panel has become visible
+    QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
+        QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
 }
 
 TaskPipeScaling::~TaskPipeScaling() {
@@ -577,7 +587,7 @@ void TaskPipeScaling::exitSelectionMode() {
 void TaskPipeScaling::onButtonRefAdd(bool checked) {
 
     if (checked) {
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refAdd;
         //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
     }
@@ -586,7 +596,7 @@ void TaskPipeScaling::onButtonRefAdd(bool checked) {
 void TaskPipeScaling::onButtonRefRemove(bool checked) {
 
     if (checked) {
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refRemove;
         //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
     }
@@ -605,20 +615,22 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                QString objn = QString::fromStdString(msg.pObjectName);
-                if(!objn.isEmpty())
-                    ui->listWidgetReferences->addItem(objn);
+            App::Document* document = App::GetApplication().getDocument(msg.pDocName);
+            App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
+            if (object) {
+                QString label = QString::fromUtf8(object->Label.getValue());
+                if (selectionMode == refAdd) {
+                    ui->listWidgetReferences->addItem(label);
+                }
+                else if (selectionMode == refRemove) {
+                    removeFromListWidget(ui->listWidgetReferences, label);
+                }
             }
-            else if (selectionMode == refRemove) {
-                QString objn = QString::fromStdString(msg.pObjectName);
-                if(!objn.isEmpty())
-                    removeFromListWidget(ui->listWidgetReferences, objn);               
-            }
+
             clearButtons();
             //static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
             recomputeFeature();
-        } 
+        }
         clearButtons();
         exitSelectionMode();
     }
@@ -626,7 +638,6 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
 
 bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
 
-    
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {
 
@@ -637,10 +648,10 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
         const char* fname = vp->getObject()->getNameInDocument();        
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
-       
+
         //every selection needs to be a profile in itself, hence currently only full objects are 
         //supported, not individual edges of a part
-        
+
         //change the references 
         std::vector<App::DocumentObject*> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.getValues();
         App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
