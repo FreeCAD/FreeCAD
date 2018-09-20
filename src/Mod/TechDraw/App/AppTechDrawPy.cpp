@@ -463,6 +463,8 @@ private:
 
     void write1ViewDxf( ImpExpDxfWrite& writer, TechDraw::DrawViewPart* dvp, bool alignPage)
     {
+        if(!dvp->hasGeometry())
+            return;
         TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
         TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
         double offX = 0.0;
