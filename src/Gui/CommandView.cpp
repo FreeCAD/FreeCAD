@@ -791,7 +791,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
 void StdCmdToggleVisibility::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    doCommand(Gui,"Gui.Selection.setVisible()");
+    Selection().setVisible(-1);
 }
 
 bool StdCmdToggleVisibility::isActive(void)
@@ -865,7 +865,7 @@ StdCmdShowSelection::StdCmdShowSelection()
 void StdCmdShowSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    doCommand(Gui,"Gui.Selection.setVisible(True)");
+    Selection().setVisible(true);
 }
 
 bool StdCmdShowSelection::isActive(void)
@@ -892,7 +892,7 @@ StdCmdHideSelection::StdCmdHideSelection()
 void StdCmdHideSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    doCommand(Gui,"Gui.Selection.setVisible(False)");
+    Selection().setVisible(false);
 }
 
 bool StdCmdHideSelection::isActive(void)

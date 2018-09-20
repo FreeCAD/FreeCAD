@@ -60,7 +60,7 @@ public:
     enum LineType { 
         App,  /**< The line effects only the document and Application (FreeCAD) */
         Gui,  /**< The line effects the Gui (FreeCADGui) */
-        Cmt   /**< The line is handled as a comment */
+        Cmt,  /**< The line is handled as a comment */
     }; 
 
     /** Opens a new Macro recording session
@@ -80,7 +80,7 @@ public:
     /// indicates if a macro recording in in progress
     bool isOpen(void) const {return openMacro;}
     /// insert a new line in the macro
-    void addLine(LineType Type,const char* sLine);
+    void addLine(LineType Type,const char* sLine,bool pending=false);
     /** Set the active module 
      * This is normally done by the workbench switch. It sets
      * the actually active application module so when the macro
@@ -108,6 +108,8 @@ protected:
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
     long totalLines;
+    std::string pendingLine;
+    LineType pendingType;
 
     friend struct ApplicationP;
 };

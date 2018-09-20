@@ -299,6 +299,19 @@ App::DocumentObject* Command::getObject(const char* Name) const
 
 int Command::_busy;
 
+class PendingLine {
+public:
+    PendingLine(MacroManager::LineType type, const char *line) {
+        Application::Instance->macroManager()->addLine(type,line,true);
+    }
+    ~PendingLine() {
+        cancel();
+    }
+    void cancel() {
+        Application::Instance->macroManager()->addLine(MacroManager::Cmt,0,true);
+    }
+};
+
 void Command::invoke(int i)
 {
     // Do not query _pcAction since it isn't created necessarily
@@ -319,18 +332,30 @@ void Command::invoke(int i)
             else {
                 Gui::SelectionLogDisabler disabler;
                 auto lines = manager->getLines();
+                std::ostringstream ss;
+                ss << "### Begin command " << sName;
+                // Add a pending line to mark the start of a command
+                PendingLine pending(MacroManager::Cmt, ss.str().c_str());
                 activated( i );
+                ss.str("");
                 if(manager->getLines() == lines) {
                     // This command does not record any lines, lets do it for
                     // him. The above LogDisabler is to prevent nested command
                     // logging, i.e. we only auto log the first invoking
                     // command.
-                    std::ostringstream ss;
+
+                    // Cancel the above pending line first
+                    pending.cancel();
                     ss << "Gui.runCommand('" << sName << "'," << i << ')';
                     if(eType & AlterDoc)
                         manager->addLine(MacroManager::App, ss.str().c_str());
                     else
                         manager->addLine(MacroManager::Gui, ss.str().c_str());
+                }else{
+                    // In case the command has any output to the console, lets
+                    // mark the end of the command here
+                    ss << "### End command " << sName;
+                    manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
             getMainWindow()->updateActions();

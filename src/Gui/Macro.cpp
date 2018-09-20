@@ -167,8 +167,24 @@ void MacroManager::cancel(void)
     this->openMacro = false;
 }
 
-void MacroManager::addLine(LineType Type, const char* sLine)
+void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
 {
+    if(pending) {
+        if(!sLine)
+            pendingLine.clear();
+        else {
+            pendingType = Type;
+            pendingLine = sLine;
+        }
+        return;
+    }
+    if(!sLine)
+        return;
+    if(pendingLine.size() && pendingLine.c_str()!=sLine) {
+        addLine(pendingType,pendingLine.c_str());
+        pendingLine.clear();
+    }
+
     ++totalLines;
     if (this->openMacro) {
         bool comment = false;
