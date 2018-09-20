@@ -54,10 +54,12 @@ public:
     ~TaskLoftParameters();
 
 private Q_SLOTS:
+    void onProfileButton(bool);
     void onRefButtonAdd(bool);
     void onRefButtonRemvove(bool);
     void onClosed(bool);
     void onRuled(bool);
+    void onDeleteSection();
 
 protected:
     void changeEvent(QEvent *e);
@@ -74,7 +76,7 @@ private:
     QWidget* proxy;
     Ui_TaskLoftParameters* ui;
 
-    enum selectionModes { none, refAdd, refRemove };
+    enum selectionModes { none, refAdd, refRemove, refProfile };
     selectionModes selectionMode = none;
 };
 

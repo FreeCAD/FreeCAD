@@ -29,6 +29,32 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupprofile">
+     <property name="title">
+      <string>Profile</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QToolButton" name="buttonProfileBase">
+          <property name="text">
+           <string>Object</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="profileBaseEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
