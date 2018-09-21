@@ -24,6 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpGui as PathOpGui
@@ -38,6 +39,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
 
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -47,14 +50,23 @@ else:
 
 
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
+    DataObject = QtCore.Qt.ItemDataRole.UserRole
+    Direction = {
+            PathPocketShape.Extension.DirectionNormal: translate('PathPocket', 'Normal'),
+            PathPocketShape.Extension.DirectionX: translate('PathPocket', 'X'),
+            PathPocketShape.Extension.DirectionY: translate('PathPocket', 'Y')
+            }
 
     def initPage(self, obj):
         self.setTitle("Pocket Extensions")
-        self.enabled = True
-        self.enable(False)
-        tc = PathUtil.toolControllerForOp(self.obj)
-        if tc:
-            self.form.defaultLength.setValue(tc.Tool.Diameter/2)
+        self.enabled = not obj.UseOutline
+        self.enable(not self.enabled)
+        self.extensions = obj.Proxy.getExtensions(obj)
+
+        self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault')
+
+        self.form.extensions.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.form.extensions.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
 
     def enable(self, ena):
         if ena != self.enabled:
@@ -68,6 +80,40 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
+
+    def getFields(self, obj):
+        self.defaultLength.updateProperty()
+        exts = []
+        for row in range(self.form.extensions.rowCount()):
+            item = self.form.extensions.item(row, 0)
+            exts.append(item.data(self.DataObject))
+        obj.Proxy.setExtensions(obj, exts)
+
+    def setFields(self, obj):
+        self.defaultLength.updateSpinBox()
+
+        self.form.extensions.blockSignals(True)
+        self.form.extensions.clearContents()
+        self.form.extensions.setRowCount(0)
+        for row, ext in enumerate(self.extensions):
+            PathLog.info("{}.{}".format(ext.obj.Label, ext.sub))
+
+            self.form.extensions.insertRow(row)
+
+            item = QtGui.QTableWidgetItem("{}.{}".format(ext.obj.Label, ext.sub))
+            item.setData(self.DataObject, ext)
+            self.form.extensions.setItem(row, 0, item)
+
+            item = QtGui.QTableWidgetItem("{}".format(ext.length))
+            item.setData(self.DataObject, ext)
+            self.form.extensions.setItem(row, 1, item)
+
+            item = QtGui.QTableWidgetItem("{}".format(self.Direction[ext.direction]))
+            item.setData(self.DataObject, ext)
+            self.form.extensions.setItem(row, 2, item)
+
+        self.form.extensions.resizeColumnsToContents()
+        self.form.extensions.blockSignals(False)
 
     def updateSelection(self, obj, sel):
         PathLog.track(sel)
@@ -88,10 +134,17 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 self.form.buttonRemove.setEnabled(False)
 
     def extensionsAdd(self):
-        pass
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            for subname in sel.SubElementNames:
+                row = self.form.extensions.rowCount()
+                ext = PathPocketShape.Extension(sel.Object, subname, 0.0, 0)
+                self.extensions.append(ext)
+        self.setFields(self.obj)
+        self.setDirty()
 
     def extensionsClear(self):
         self.form.extensions.clearContents()
+        self.form.extensions.setRowCount(0)
 
     def extensionsRemove(self):
         pass

@@ -50,7 +50,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="defaultLength">
+          <widget class="Gui::QuantitySpinBox" name="defaultLength">
            <property name="minimum">
             <double>-999999999.000000000000000</double>
            </property>
@@ -67,6 +67,9 @@
       </item>
       <item>
        <widget class="QTableWidget" name="extensions">
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
         <column>
          <property name="text">
           <string>Feature</string>
@@ -116,6 +119,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>gui_quantityspinbox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
