@@ -32,6 +32,7 @@
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"
+#include "MainWindow.h"
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -174,17 +175,18 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete its content
-    if ( group->Group.getSize () ) {
+    if (group->Group.getSize() > 0) {
         QMessageBox::StandardButton choice = 
-            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
+            QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),
                 QObject::tr ( "The %1 is not empty, delete its content as well?")
                     .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ), 
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
-        if ( choice == QMessageBox::Yes ) {
+        if (choice == QMessageBox::Yes) {
             Gui::Command::doCommand(Gui::Command::Doc,
                     "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                    ,getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument());
+                    , getExtendedViewProvider()->getObject()->getDocument()->getName()
+                    , getExtendedViewProvider()->getObject()->getNameInDocument());
         }
     }
     return true;
