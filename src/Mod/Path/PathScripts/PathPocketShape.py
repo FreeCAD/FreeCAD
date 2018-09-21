@@ -28,6 +28,7 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
+import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import TechDraw
 import sys
@@ -39,7 +40,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -48,6 +49,17 @@ else:
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+class Extension(object):
+    DirectionNormal    = 0
+    DirectionX         = 1
+    DirectionY         = 2
+
+    def __init__(self, obj, sub, length, direction):
+        self.obj = obj
+        self.sub = sub
+        self.length = length
+        self.direction = direction
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -58,13 +70,25 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... setup receiver'''
-        obj.addProperty("App::PropertyBool", "UseOutline", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."))
-        obj.UseOutline = False
+        if not hasattr(obj, 'UseOutline'):
+            obj.addProperty('App::PropertyBool', 'UseOutline', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Uses the outline of the base geometry.'))
+            obj.UseOutline = False
+        if not hasattr(obj, 'ExtensionLengthDefault'):
+            obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
+        if not hasattr(obj, 'ExtensionFeatures'):
+            obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
+        if not hasattr(obj, 'ExtensionLength'):
+            obj.addProperty('App::PropertyFloatList', 'ExtensionLength', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of extension lenght of corresponding feature.'))
+        if not hasattr(obj, 'ExtensionDirection'):
+            obj.addProperty('App::PropertyIntegerList', 'ExtensionDirection', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of extension direction of corresponding feature.'))
+
+        obj.setEditorMode('ExtensionFeature', 2)
+        obj.setEditorMode('ExtensionLength', 2)
+        obj.setEditorMode('ExtensionDirection', 2)
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
-        if not hasattr(obj, 'UseOutline'):
-            self.initPocketOp(obj)
+        self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
@@ -74,15 +98,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         PathLog.track()
 
         if obj.Base:
-            PathLog.debug("base items exist.  Processing...")
+            PathLog.debug('base items exist.  Processing...')
             self.removalshapes = []
             self.horiz = []
             vertical = []
             for o in obj.Base:
-                PathLog.debug("Base item: {}".format(o))
+                PathLog.debug('Base item: {}'.format(o))
                 base = o[0]
                 for sub in o[1]:
-                    if "Face" in sub:
+                    if 'Face' in sub:
                         face = base.Shape.getElement(sub)
                         if type(face.Surface) == Part.Plane and PathGeom.isVertical(face.Surface.Axis):
                             # it's a flat horizontal face
@@ -100,7 +124,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         elif type(face.Surface) == Part.Plane and PathGeom.isHorizontal(face.Surface.Axis):
                             vertical.append(face)
                         else:
-                            PathLog.error(translate('PathPocket', "Pocket does not support shape %s.%s") % (base.Label, sub))
+                            PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (base.Label, sub))
 
             self.vertical = PathGeom.combineConnectedShapes(vertical)
             self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
@@ -162,6 +186,27 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             bb = job.Stock.Shape.BoundBox
             obj.OpFinalDepth = bb.ZMin
             obj.OpStartDepth = bb.ZMax
+        obj.ExtensionLengthDefault = obj.OpToolDiameter / 2
+
+    def getExtensions(self, obj):
+        extensions = []
+        i = 0
+        for extObj,features in obj.ExtensionFeature:
+            for extSub in features:
+                ext = Extension(extObj, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
+                extensions.append(ext)
+                i = i + 1
+        return extensions
+
+    def setExtensions(self, obj, extensions):
+        features = {}
+        for ext in extensions:
+            subs = features.get(ext.obj, [])
+            subs.append(ext.sub)
+            features[ext.obj] = subs
+        PathLog.track('setExtension', obj.Label)
+        #obj.ExtensionFeature = [(obj, sub) for obj, sub in PathUtil.keyValueIter(features)]
+        obj.ExtensionFeature = [(ext.obj, ext.sub) for ext in extensions]
 
 def SetupProperties():
     return PathPocketBase.SetupProperties() + [ 'UseOutline' ]
@@ -169,6 +214,6 @@ def SetupProperties():
 def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
     if obj is None:
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+        obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
     proxy = ObjectPocket(obj, name)
     return obj
