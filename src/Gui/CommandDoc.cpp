@@ -1264,18 +1264,17 @@ StdCmdRefresh::StdCmdRefresh()
     sPixmap       = "view-refresh";
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
     eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
+    canLog        = false;
 }
 
 void StdCmdRefresh::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     if (getActiveGuiDocument()) {
-        //Note: Don't add the recompute to undo/redo because it complicates
-        //testing the changes of properties.
-        //openCommand("Refresh active document");
-        this->getDocument()->setStatus(App::Document::SkipRecompute, false);
+        for(auto doc : getDocument()->getDependentDocuments())
+            doc->setStatus(App::Document::SkipRecompute, false);
+        App::AutoTransaction trans("Recompute");
         doCommand(Doc,"App.activeDocument().recompute()");
-        //commitCommand();
     }
 }
 
