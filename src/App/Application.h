@@ -473,6 +473,25 @@ inline App::Application &GetApplication(void){
     return *App::Application::_pcSingleton;
 }
 
+class AppExport AutoTransaction {
+public:
+    AutoTransaction(const char *name) :tid(0) {
+        if(!GetApplication().getActiveTransaction())
+            tid = GetApplication().setActiveTransaction(name);
+    }
+    ~AutoTransaction() {
+        close(false);
+    }
+
+    void close(bool abort=false) {
+        int id = 0;
+        if(tid && GetApplication().getActiveTransaction(&id) && tid==id)
+            GetApplication().closeActiveTransaction(abort);
+    }
+
+    int tid;
+};
+
 } // namespace App
 
 
