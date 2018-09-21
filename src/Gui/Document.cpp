@@ -553,6 +553,16 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
     it = d->_ViewProviderMap.find(&obj);
     if (it != d->_ViewProviderMap.end()) {
         ViewProvider* viewProvider = it->second;
+
+        // Issue #0003540:
+        // When deleting a view provider that claims the Inventor nodes
+        // of its children then we must update the 3d viewers to re-add
+        // the root nodes if needed.
+        bool rebuild = false;
+        SoGroup* childGroup =  viewProvider->getChildRoot();
+        if (childGroup && childGroup->getNumChildren() > 0)
+            rebuild = true;
+
         d->_ViewProviderMap.erase(&obj);
         // transaction being a nullptr indicates that undo/redo is off and the object
         // can be safely deleted
@@ -560,6 +570,9 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
             transaction->addObjectNew(viewProvider);
         else
             delete viewProvider;
+
+        if (rebuild)
+            rebuildRootNodes();
     }
 }
 
@@ -1557,25 +1570,30 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
     
     //find all unclaimed viewproviders and add them back to the document (this happens if a 
     //viewprovider has been claimed before, but the object dropped it. 
-    if(rebuild) {
-        auto vpmap = d->_ViewProviderMap;
-        for( auto& pair  : d->_ViewProviderMap ) {
-            auto claimed = pair.second->claimChildren3D();
-            for(auto obj : claimed) {
-                auto it = vpmap.find(obj);
-                if(it != vpmap.end())
-                    vpmap.erase(it);
+    if (rebuild) {
+        rebuildRootNodes();
+    }
+}
+
+void Document::rebuildRootNodes()
+{
+    auto vpmap = d->_ViewProviderMap;
+    for (auto& pair  : d->_ViewProviderMap) {
+        auto claimed = pair.second->claimChildren3D();
+        for (auto obj : claimed) {
+            auto it = vpmap.find(obj);
+            if (it != vpmap.end())
+                vpmap.erase(it);
+        }
+    }
+
+    for (auto& pair : vpmap) {
+        // cycling to all views of the document to add the viewprovider to the viewer itself
+        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+            if (activeView && !activeView->getViewer()->hasViewProvider(pair.second)) {
+                activeView->getViewer()->addViewProvider(pair.second);
             }
         }
-        for(auto& pair : vpmap) {
-            
-            // cycling to all views of the document to add the viewprovider to the viewer itself
-            for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                if (activeView && !activeView->getViewer()->hasViewProvider(pair.second)) {
-                    activeView->getViewer()->addViewProvider(pair.second);
-                }
-            }   
-        }   
     }
 }
