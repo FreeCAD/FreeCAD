@@ -446,38 +446,39 @@ void Body::onSettingDocument() {
 void Body::onChanged (const App::Property* prop) {
     // we neither load a project nor perform undo/redo
     if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
-        if ( prop == &BaseFeature ) {
+        if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
-            if(BaseFeature.getValue()) {
+            if (BaseFeature.getValue()) {
 
                 //setup the FeatureBase if needed
-                if(!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
+                if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
                     bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
                     insertObject(bf, first, false);
-                    if(!Tip.getValue())
+
+                    if (!Tip.getValue())
                         Tip.setValue(bf);
                 }
-                else
+                else {
                     bf = static_cast<FeatureBase*>(first);
+                }
             }
 
-            if(bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
+            if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
                 bf->BaseFeature.setValue(BaseFeature.getValue());
         }
         else if( prop == &Group ) {
 
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
-            if(BaseFeature.getValue() &&
+            if (BaseFeature.getValue() &&
                (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
-
                     BaseFeature.setValue(nullptr);
             }
         }
     }
 
-    Part::BodyBase::onChanged ( prop );
+    Part::BodyBase::onChanged(prop);
 }
 
 void Body::setupObject () {
