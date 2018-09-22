@@ -49,6 +49,8 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
+Wires = []
+
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     Direction = {
@@ -116,13 +118,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensions.blockSignals(False)
 
     def updateSelection(self, obj, sel):
-        PathLog.track(sel)
         if sel and sel[0].SubElementNames:
             self.form.buttonAdd.setEnabled(True)
         else:
             self.form.buttonAdd.setEnabled(False)
 
-    def currentItemChanged(self, now, prev):
+    def itemSelectionChanged(self):
         if 0 == self.form.extensions.rowCount():
             self.form.buttonClear.setEnabled(False)
             self.form.buttonRemove.setEnabled(False)
@@ -137,8 +138,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         for sel in FreeCADGui.Selection.getSelectionEx():
             for subname in sel.SubElementNames:
                 row = self.form.extensions.rowCount()
-                ext = PathPocketShape.Extension(sel.Object, subname, 0.0, 0)
-                self.extensions.append(ext)
+                self.extensions.append(self.obj.Proxy.createExtension(self.obj, sel.Object, subname))
         self.setFields(self.obj)
         self.setDirty()
 
@@ -147,16 +147,27 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensions.setRowCount(0)
 
     def extensionsRemove(self):
-        pass
+        global Wires
+        Wires = []
+        processed = []
+        for item in self.form.extensions.selectedItems():
+            ext = item.data(self.DataObject)
+            if not ext in processed:
+                Wires.append(ext)
+                wire = ext.getWire()
+                if wire:
+                    import Part
+                    Part.show(wire)
+                processed.append(ext)
 
     def pageRegisterSignalHandlers(self):
-        self.form.extensions.currentItemChanged.connect(self.currentItemChanged)
+        self.form.extensions.itemSelectionChanged.connect(self.itemSelectionChanged)
         self.form.buttonAdd.clicked.connect(self.extensionsAdd)
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonRemove.clicked.connect(self.extensionsRemove)
 
         self.updateSelection(self.obj, FreeCADGui.Selection.getSelectionEx())
-        self.currentItemChanged(-1, -1)
+        self.itemSelectionChanged()
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     '''Page controller class for Pocket operation'''
