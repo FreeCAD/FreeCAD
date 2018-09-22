@@ -319,11 +319,18 @@ CmdPartDesignClone::CmdPartDesignClone()
 void CmdPartDesignClone::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    std::string BodyName = getUniqueObjectName("Body");
     std::string FeatName = getUniqueObjectName("Clone");
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
             (Part::Feature::getClassTypeId());
     if (objs.size() == 1) {
+        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547#p207336
+        // put the clone into its own new body.
+        // This also fixes bug #3447 because the clone is a PD feature and thus
+        // requires a body where it is part of.
         openCommand("Create Clone");
+        doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::Body','%s')",
+                  BodyName.c_str());
         doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::FeatureBase','%s')",
                   FeatName.c_str());
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.BaseFeature = App.ActiveDocument.%s",
@@ -331,6 +338,8 @@ void CmdPartDesignClone::activated(int iMsg)
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.Placement = App.ActiveDocument.%s.Placement",
                   objs.front()->getNameInDocument());
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
+        doCommand(Command::Doc,"App.ActiveDocument.%s.Group = [App.ActiveDocument.%s]",
+                  BodyName.c_str(), FeatName.c_str());
         updateActive();
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.DiffuseColor = App.ActiveDocument.%s.ViewObject.DiffuseColor",
                   objs.front()->getNameInDocument());
