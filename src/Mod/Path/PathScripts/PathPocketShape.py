@@ -61,6 +61,40 @@ class Extension(object):
         self.length = length
         self.direction = direction
 
+    def extendEdge(self, e0, direction):
+        e2 = e0.copy()
+        off = self.length.Value * direction
+        e2.translate(off)
+        print("extendEdge(%.2f, %.2f, %.2f)" % (off.x, off.y, off.z))
+        e2 = PathGeom.flipEdge(e2)
+        e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
+        e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
+        wire = Part.Wire([e0, e1, e2, e3])
+        self.wire = wire
+        return wire
+
+    def getWire(self):
+        if PathGeom.isRoughly(0, self.length.Value):
+            return None
+
+        feature = self.obj.Shape.getElement(self.sub)
+        if Part.Edge == type(feature):
+            e0 = feature
+            print("getEdgeCorners(%s)" % self.sub)
+            midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
+            tangent = e0.tangentAt(midparam)
+            normal = tangent.cross(FreeCAD.Vector(0, 0, 1)).normalize()
+            poffPlus  = e0.valueAt(midparam) + 0.01 * normal
+            poffMinus = e0.valueAt(midparam) - 0.01 * normal
+            if not self.obj.Shape.isInside(poffPlus, 0.005, True):
+                print('poffPlus')
+                return self.extendEdge(e0, normal)
+            if not self.obj.Shape.isInside(poffMinus, 0.005, True):
+                print('poffMinus')
+                return self.extendEdge(e0, normal.negative())
+        else:
+            print("getCorners(%s)" % self.sub)
+
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
@@ -188,13 +222,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.OpStartDepth = bb.ZMax
         obj.ExtensionLengthDefault = obj.OpToolDiameter / 2
 
+    def createExtension(self, obj, extObj, extSub):
+        return Extension(extObj, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
+
     def getExtensions(self, obj):
         extensions = []
         i = 0
         for extObj,features in obj.ExtensionFeature:
             for extSub in features:
-                ext = Extension(extObj, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
-                extensions.append(ext)
+                extensions.append(self.createExtension(obj, extObj, extSub))
                 i = i + 1
         return extensions
 
@@ -205,7 +241,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             subs.append(ext.sub)
             features[ext.obj] = subs
         PathLog.track('setExtension', obj.Label)
-        #obj.ExtensionFeature = [(obj, sub) for obj, sub in PathUtil.keyValueIter(features)]
         obj.ExtensionFeature = [(ext.obj, ext.sub) for ext in extensions]
 
 def SetupProperties():
