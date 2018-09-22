@@ -1546,9 +1546,21 @@ unsigned int PropertyString::getMemSize (void) const
     return static_cast<unsigned int>(_cValue.size());
 }
 
-void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any & /*value*/)
+void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
+    if (value.type() == typeid(bool))
+        setValue(boost::any_cast<bool>(value)?"True":"False");
+    else if (value.type() == typeid(int))
+        setValue(std::to_string(boost::any_cast<int>(value)));
+    else if (value.type() == typeid(double))
+        setValue(std::to_string(boost::math::round(boost::any_cast<double>(value))));
+    else if (value.type() == typeid(Quantity))
+        setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
+    else if (value.type() == typeid(std::string))
+        setValue(boost::any_cast<std::string>(value));
+    else if (value.type() == typeid(Py::Object))
+        setValue(boost::any_cast<Py::Object>(value).as_string());
 }
 
 const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const

@@ -27,6 +27,7 @@
 #include <QValidator>
 #include <QSpinBox>
 #include "ExpressionBinding.h"
+#include "QuantitySpinBox_p.h"
 
 namespace Gui {
 

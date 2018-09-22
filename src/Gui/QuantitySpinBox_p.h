@@ -24,6 +24,7 @@
 #define QUANTITYSPINBOX_P_H
 
 #include <QLabel>
+#include <QMouseEvent>
 
 class ExpressionLabel : public QLabel
 {

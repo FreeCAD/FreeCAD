@@ -138,10 +138,12 @@ void DlgExpressionInput::textChanged(const QString &text)
             if (n) {
                 Base::Quantity value = n->getQuantity();
 
-                if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
+                if(!impliedUnit.isEmpty()) {
+                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                        throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
-                value.setUnit(impliedUnit);
+                    value.setUnit(impliedUnit);
+                }
 
                 ui->msg->setText(value.getUserString());
             }
