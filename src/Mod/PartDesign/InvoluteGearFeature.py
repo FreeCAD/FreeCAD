@@ -42,6 +42,13 @@ def makeInvoluteGear(name):
     if FreeCAD.GuiUp:
         _ViewProviderInvoluteGear(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
+    if FreeCAD.GuiUp:
+        body=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        part=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
+        if body:
+            body.Group=body.Group+[obj]
+        elif part:
+            part.Group=part.Group+[obj]
     return obj
 
 class _CommandInvoluteGear:
@@ -243,6 +250,7 @@ class _InvoluteGearTaskPanel:
     def reject(self):
         #print 'reject(self)'
         FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.abortTransaction()
 
 
 if FreeCAD.GuiUp:
