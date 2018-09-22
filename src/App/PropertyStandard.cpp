@@ -1505,16 +1505,21 @@ void PropertyString::Save (Base::Writer &writer) const
 {
     std::string val;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
+    writer.Stream() << writer.ind() << "<String ";
+    bool exportName = false;
     if(obj && obj->getNameInDocument() && 
-       obj->isExporting() && 
-       &obj->Label==this && 
-       !obj->allowDuplicateLabel() &&
-       _cValue==obj->getNameInDocument())
+       obj->isExporting() && &obj->Label==this)
     {
+        if(obj->allowDuplicateLabel())
+            writer.Stream() <<"dup=\"1\" ";
+        else if(_cValue==obj->getNameInDocument()) 
+            exportName = true;
+    }
+    if(exportName)
         val = encodeAttribute(obj->getExportName());
-    }else
+    else
         val = encodeAttribute(_cValue);
-    writer.Stream() << writer.ind() << "<String value=\"" << val <<"\"/>" << std::endl;
+    writer.Stream() <<"value=\"" << val <<"\"/>" << std::endl;
 }
 
 void PropertyString::Restore(Base::XMLReader &reader)
@@ -1523,9 +1528,14 @@ void PropertyString::Restore(Base::XMLReader &reader)
     reader.readElement("String");
     // get the value of my Attribute
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
-    if(obj && &obj->Label==this)
-        setValue(reader.getName(reader.getAttribute("value")));
-    else
+    if(obj && &obj->Label==this) {
+        if(reader.hasAttribute("dup")) {
+            aboutToSetValue();
+            _cValue = reader.getAttribute("value");
+            hasSetValue();
+        }else
+            setValue(reader.getName(reader.getAttribute("value")));
+    }else
         setValue(reader.getAttribute("value"));
 }
 
