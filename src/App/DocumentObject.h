@@ -90,6 +90,7 @@ class AppExport DocumentObject: public App::TransactionalObject
 public:
 
     PropertyString Label;
+    PropertyString Label2;
     PropertyExpressionEngine ExpressionEngine;
 
     /// Allow control visibility status in App name space

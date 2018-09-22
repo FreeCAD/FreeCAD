@@ -147,6 +147,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setAcceptDrops(true);
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
+    this->setColumnCount(2);
 
     this->syncSelectionAction = new QAction(this);
     this->syncSelectionAction->setCheckable(true);
@@ -1518,6 +1519,7 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
 
 void TreeWidget::setupText() {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
+    this->headerItem()->setText(1, tr("Description"));
     this->rootItem->setText(0, tr("Application"));
 
     this->preSelectionAction->setText(tr("Pre-selection"));
@@ -1745,6 +1747,7 @@ public:
     std::set<App::DocumentObject*> childSet;
     bool removeChildrenFromRoot;
     std::string label;
+    std::string label2;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
 
@@ -1766,6 +1769,7 @@ public:
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         label = viewObject->getObject()->Label.getValue();
+        label2 = viewObject->getObject()->Label2.getValue();
         updateChildren();
     }
 
@@ -2012,8 +2016,6 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         data = pdata;
     }
 
-    std::string displayName = obj.getObject()->Label.getValue();
-    std::string objectName = obj.getObject()->getNameInDocument();
     DocumentObjectItem* item = new DocumentObjectItem(this,data);
     if(!parent || parent==this) {
         parent = this;
@@ -2024,7 +2026,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     else
         parent->insertChild(index,item);
     assert(item->parent() == parent);
-    item->setText(0, QString::fromUtf8(displayName.c_str()));
+    item->setText(0, QString::fromUtf8(data->label.c_str()));
+    if(data->label2.size())
+        item->setText(1, QString::fromUtf8(data->label2.c_str()));
     item->setHidden(!obj.showInTree() && !showHidden());
     populateItem(item);
 
@@ -2305,17 +2309,19 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view,
     if(&prop == &obj->Visibility)
         return;
 
-    if(&prop == &obj->Label) {
-        const char *label = obj->Label.getValue();
+    if(&prop == &obj->Label || &prop == &obj->Label2) {
+        int index = &prop==&obj->Label?0:1;
+        const char *label = index==0?obj->Label.getValue():obj->Label2.getValue();
         for(auto &v : getTree()->DocumentMap) {
             auto it = v.second->ObjectMap.find(obj);
             if(it == v.second->ObjectMap.end())
                 continue;
-            if(it->second->label!=label) {
-                it->second->label = label;
+            std::string &labelCache = index==0?it->second->label:it->second->label2;
+            if(labelCache!=label) {
+                labelCache = label;
                 auto displayName = QString::fromUtf8(label);
                 for(auto item : it->second->items)
-                    item->setText(0, displayName);
+                    item->setText(index, displayName);
             }
         }
         return;
@@ -3209,8 +3215,13 @@ void DocumentObjectItem::setData (int column, int role, const QVariant & value)
         QString label = value.toString();
         std::ostringstream ss;
         ss << "Change " << getName() << ".Label";
+        if(column == 1)
+            ss << 2;
         App::GetApplication().setActiveTransaction(ss.str().c_str());
-        object()->getObject()->Label.setValue((const char*)label.toUtf8());
+        if(column == 0)
+            object()->getObject()->Label.setValue((const char*)label.toUtf8());
+        else
+            object()->getObject()->Label2.setValue((const char*)label.toUtf8());
         App::GetApplication().closeActiveTransaction();
         myValue = QString::fromUtf8(object()->getObject()->Label.getValue());
     }
