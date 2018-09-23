@@ -379,13 +379,13 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("Can't make a Hatched area from this selection"));
+        QObject::tr("No Faces to hatch in this selection"));
         return false;
     }
     std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
     if (!(gType == "Face")) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("No Face in this selection"));
+        QObject::tr("No Faces to hatch in this selection"));
         return false;
     }
 
