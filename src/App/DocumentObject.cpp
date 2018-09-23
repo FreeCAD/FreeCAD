@@ -196,30 +196,24 @@ const char* DocumentObject::detachFromDocument()
 
 std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
 {
+    if(_outListCached && !options)
+        return _outList;
     std::vector<DocumentObject*> ret;
-    bool canCache = !(options & (OutListNoHidden|OutListNoXLinked));
-    if(_outListCached && canCache)
-        ret = _outList;
-    else {
-        std::vector<Property*> props;
-        getPropertyList(props);
-        bool noHidden = !!(options & OutListNoHidden);
-        bool noXLinked = !!(options & OutListNoXLinked);
-        for(auto prop : props) {
-            auto link = dynamic_cast<PropertyLinkBase*>(prop);
-            if(link && (!noXLinked || !prop->isDerivedFrom(PropertyXLink::getClassTypeId())))
-                link->getLinks(ret,noHidden);
-        }
-        if(canCache) {
-            _outList = ret;
-            _outListCached = true;
-        }
+    std::vector<Property*> props;
+    getPropertyList(props);
+    bool noHidden = !!(options & OutListNoHidden);
+    bool noXLinked = !!(options & OutListNoXLinked);
+    for(auto prop : props) {
+        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        if(link && (!noXLinked || !prop->isDerivedFrom(PropertyXLink::getClassTypeId())))
+            link->getLinks(ret,noHidden);
     }
-
-    // Get document objects that this document object relies on
-    if(options & OutListNoExpression)
+    if(!(options & OutListNoExpression))
         ExpressionEngine.getDocumentObjectDeps(ret);
-
+    if(!options) {
+        _outList = ret;
+        _outListCached = true;
+    }
     return ret;
 }
 
@@ -563,7 +557,8 @@ void DocumentObject::onChanged(const Property* prop)
     // if (_pDoc)
     //     _pDoc->onChangedProperty(this,prop);
 
-    if(dynamic_cast<const PropertyLinkBase*>(prop)) {
+    if(prop == &ExpressionEngine || 
+       prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
         _outList.clear();
         _outListMap.clear();
         _outListCached = false;
