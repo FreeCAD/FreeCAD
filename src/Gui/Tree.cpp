@@ -793,11 +793,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         leaveEvent(0);
-        QList<QModelIndex> idxs = selectedIndexes();
-        App::Document* doc = static_cast<DocumentItem*>(targetitem)->
-            document()->getDocument();
-        for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
-            QTreeWidgetItem* item = itemFromIndex(*it);
+        App::Document* doc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
+        for(auto item : selectedItems()) {
             if (item->type() != TreeWidget::ObjectType) {
                 event->ignore();
                 return;
@@ -822,9 +819,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             return;
         }
 
-        QList<QModelIndex> idxs = selectedIndexes();
-        for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
-            QTreeWidgetItem* ti = itemFromIndex(*it);
+        for(auto ti : selectedItems()) {
             if (ti->type() != TreeWidget::ObjectType) {
                 TREE_TRACE("cannot drop");
                 event->ignore();
@@ -904,20 +899,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     // filter out the selected items we cannot handle
     std::vector<std::pair<DocumentObjectItem*,std::vector<std::string> > > items;
-    QList<QModelIndex> idxs = selectedIndexes();
-    items.reserve(idxs.size());
-    for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
+    auto sels = selectedItems();
+    items.reserve(sels.size());
+    for(auto ti : sels) {
+        if (ti->type() != TreeWidget::ObjectType)
+            continue;
         // ignore child elements if the parent is selected
-        QModelIndex parent = (*it).parent();
-        if (idxs.contains(parent))
+        if(sels.contains(ti->parent())) 
             continue;
-        auto *item = dynamic_cast<DocumentObjectItem*>(itemFromIndex(*it));
-        if (!item)
+        if (ti == targetitem)
             continue;
-        if (item == targetitem)
+        if (ti->parent() == targetitem)
             continue;
-        if (item->parent() == targetitem)
-            continue;
+        auto item = static_cast<DocumentObjectItem*>(ti);
         items.emplace_back();
         auto &info = items.back();
         info.first = item;
