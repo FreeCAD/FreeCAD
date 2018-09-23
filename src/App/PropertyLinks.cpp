@@ -2258,7 +2258,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             << _pcLink->getExportName() << "\" sub=\"" 
             << exportSubName(_pcLink,sub.c_str());
         if(shadowSub.second.size() && shadowSub.first==subName)
-            writer.Stream() << "\"" ATTR_MAPPED "=\"1";
+            writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         writer.Stream() << "\"/>" << std::endl;
         return;
     }
