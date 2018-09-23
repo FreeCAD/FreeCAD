@@ -670,11 +670,19 @@ void FileChooser::chooseFile()
         prechosenDirectory = FileDialog::getWorkingDirectory();
     }
 
+#if defined(USE_QT_FILEDIALOG)
+    QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
+#else
+    QFileDialog::Options dlgOpt;
+#endif
+
     QString fn;
-    if ( mode() == File )
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter );
-    else
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory );
+    if ( mode() == File ) {
+        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter,0,dlgOpt );
+    } else {
+        QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );
+    }
 
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
@@ -745,6 +753,7 @@ QString FileChooser::buttonText() const
 {
     return button->text();
 }
+
 
 // ----------------------------------------------------------------------
 
