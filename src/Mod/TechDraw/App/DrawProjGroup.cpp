@@ -103,7 +103,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             }
         }
         if (prop == &Scale) {
-//            Base::Console().Message("TRACE - DPG::onChanged(Scale) - %s\n",getNameInDocument());
             updateChildren();
         }
         if (prop == &Source) {
@@ -111,7 +110,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
         
         if (prop == &ScaleType) {
-//            Base::Console().Message("TRACE - DPG::onChanged(ScaleType) - %s\n",getNameInDocument());
             double newScale = getScale();
             if (ScaleType.isValue("Automatic")) {
                 //Recalculate scale if Group is too big or too small!
@@ -134,7 +132,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
-//    Base::Console().Message("TRACE - DPG::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -241,6 +238,7 @@ double DrawProjGroup::calculateAutomaticScale() const
     width *= bbFudge;
     height *= bbFudge;
 
+
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
                         (viewPtrs[2] || viewPtrs[5] || viewPtrs[9]) +
@@ -264,6 +262,7 @@ double DrawProjGroup::calculateAutomaticScale() const
         Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
         result = 1.0;
     }
+    
     return result;
 }
 
@@ -286,7 +285,7 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
 {
     // Get bounding boxes in object scale
     Base::BoundBox3d bboxes[10];
-    makeViewBbs(viewPtrs, bboxes, false);
+    makeViewBbs(viewPtrs, bboxes, true);
 
     //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
