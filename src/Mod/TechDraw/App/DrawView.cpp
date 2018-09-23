@@ -112,10 +112,7 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if ((this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) ||
-            (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))) {
-            //do nothing. DPGI/DPG handles itself
-        } else if (prop == &ScaleType) {
+        if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
@@ -133,18 +130,15 @@ void DrawView::onChanged(const App::Property* prop)
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
-                if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
-                    //do nothing. DPG handles itself
-                } else {
-                    if (!checkFit(page)) {
-                        double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                        if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                            Scale.setValue(newScale);
-                            Scale.purgeTouched();
-                        }
+                if (!checkFit(page)) {
+                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                    if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                        Scale.setValue(newScale);
+                        Scale.purgeTouched();
                     }
                 }
-            }
+                }
+//            }
         }
         if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
             prop == &Y) {
