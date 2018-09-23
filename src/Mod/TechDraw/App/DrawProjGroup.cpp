@@ -103,6 +103,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             }
         }
         if (prop == &Scale) {
+//            Base::Console().Message("TRACE - DPG::onChanged(Scale) - %s\n",getNameInDocument());
             updateChildren();
         }
         if (prop == &Source) {
@@ -110,6 +111,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
         
         if (prop == &ScaleType) {
+//            Base::Console().Message("TRACE - DPG::onChanged(ScaleType) - %s\n",getNameInDocument());
             double newScale = getScale();
             if (ScaleType.isValue("Automatic")) {
                 //Recalculate scale if Group is too big or too small!
@@ -132,6 +134,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+//    Base::Console().Message("TRACE - DPG::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -150,6 +153,10 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
         return DrawViewCollection::execute();
+    }
+    
+    for (auto& v: Views.getValues()) {
+        v->recomputeFeature();
     }
 
     for (auto& item: getViewsAsDPGI()) {
