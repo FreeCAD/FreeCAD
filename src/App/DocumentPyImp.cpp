@@ -322,8 +322,8 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    PyObject *obj, *rec=Py_False, *keep=Py_False;
-    if (!PyArg_ParseTuple(args, "O|OO",&obj,&rec,&keep))
+    PyObject *obj, *rec=Py_False;
+    if (!PyArg_ParseTuple(args, "O|O",&obj,&rec))
         return NULL;    // NULL triggers exception
 
     std::vector<App::DocumentObject*> objs;
@@ -344,7 +344,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
 
     PY_TRY {
-        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec),PyObject_IsTrue(keep));
+        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
 
         Py::Tuple tuple(ret.size());
         for(size_t i=0;i<ret.size();++i) 

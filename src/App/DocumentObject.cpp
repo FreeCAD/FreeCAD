@@ -194,29 +194,30 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : 0;
 }
 
-std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression, bool noHidden) const
+std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
 {
     std::vector<DocumentObject*> ret;
-    if(_outListCached && !noHidden)
+    bool canCache = !(options & (OutListNoHidden|OutListNoXLinked));
+    if(_outListCached && canCache)
         ret = _outList;
     else {
         std::vector<Property*> props;
         getPropertyList(props);
+        bool noHidden = !!(options & OutListNoHidden);
+        bool noXLinked = !!(options & OutListNoXLinked);
         for(auto prop : props) {
             auto link = dynamic_cast<PropertyLinkBase*>(prop);
-            if(link) {
+            if(link && (!noXLinked || !prop->isDerivedFrom(PropertyXLink::getClassTypeId())))
                 link->getLinks(ret,noHidden);
-                continue;
-            }
         }
-        if(!noHidden) {
+        if(canCache) {
             _outList = ret;
             _outListCached = true;
         }
     }
 
     // Get document objects that this document object relies on
-    if(!noExpression)
+    if(options & OutListNoExpression)
         ExpressionEngine.getDocumentObjectDeps(ret);
 
     return ret;
@@ -606,7 +607,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
         name = std::string(subname+1,dot);
-        for(auto obj : getOutList(true)) {
+        for(auto obj : getOutList(OutListNoExpression)) {
             if(name == obj->Label.getValue()) {
                 ret = obj;
                 break;
@@ -615,7 +616,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     }else{
         name = std::string(subname,dot);
         if(!_outListCached)
-            getOutList(true);
+            getOutList(OutListNoExpression);
         if(_outList.size()!=_outListMap.size()) {
             _outListMap.clear();
             for(auto obj : _outList)
@@ -647,8 +648,6 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
         if(ext->extensionGetSubObjects(ret,reason))
             return ret;
     }
-    // for(auto obj : getOutList(true))
-    //     ret.push_back(obj->getNameInDocument());
     return ret;
 }
 
@@ -781,6 +780,8 @@ void DocumentObject::connectRelabelSignals()
                                          &ExpressionEngine, _1));
         }
 
+        // Is below still necessary since we now have PropertyExpressionEngine::breakDependency()?
+#if 0
         // Connect to signalDeletedObject, to properly track deletion of other objects
         // that might be referenced in an expression
         if (!onDeletedObjectConnection.connected()) {
@@ -788,6 +789,7 @@ void DocumentObject::connectRelabelSignals()
                     .connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted,
                                          &ExpressionEngine, _1));
         }
+#endif
 
         try {
             // Crude method to resolve all expression dependencies

@@ -1419,10 +1419,8 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     if(sel.empty())
         return 0;
 
-    bool keepExternal = false;
-    auto internal = App::Document::getDependencyList(sel,true);
-    auto all = App::Document::getDependencyList(sel,false);
-    if (internal.size() > sel.size()) {
+    auto all = App::Document::getDependencyList(sel,App::Document::DepNoXLinked);
+    if (all.size() > sel.size()) {
         //check if selection are only geofeaturegroup objects, for them it is intuitive and wanted to copy the 
         //dependencies
         bool hasGroup = false, hasNormal = false;
@@ -1433,7 +1431,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
                 hasNormal = true;
         }
         if(hasGroup && !hasNormal) {
-            sel.swap(internal);
+            sel.swap(all);
         }
         else {
             //if there are normal objects selected it may be possible that some dependencies are 
@@ -1444,25 +1442,18 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
                 "Do you want to copy them, too?"),
                 QMessageBox::Yes,QMessageBox::No);
             if (ret == QMessageBox::Yes)
-                sel.swap(internal);
-            else 
-                keepExternal = true;
+                sel.swap(all);
         }
     }
-    if(!keepExternal && all.size() > sel.size()) {
-        int ret = QMessageBox::question(getMainWindow(),
-            tr("Object dependencies"),
-            tr("The selected objects contain dependencies in external documents.\n"
-               "Do you want to copy the external objects, too?"),
-            QMessageBox::Yes,QMessageBox::No);
-        if (ret == QMessageBox::Yes) 
-            sel.swap(all);
-        else
-            keepExternal = true;
-    }
 
-    if(keepExternal && all.size()==internal.size())
-        keepExternal = false;
+    std::vector<App::Document*> unsaved;
+    bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
+    if(unsaved.size()) {
+        QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
+            tr("The exported object contains external link. Please save the document"
+                "at least once before exporting."));
+        return 0;
+    }
 
     unsigned int memsize=1000; // ~ for the meta-information
     for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it)
@@ -1481,22 +1472,22 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     WaitCursor wc;
     QString mime;
     if (use_buffer) {
-        mime = keepExternal?_MimeDocObjX:_MimeDocObj;
+        mime = hasXLink?_MimeDocObjX:_MimeDocObj;
         Base::ByteArrayOStreambuf buf(res);
         std::ostream str(&buf);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str, keepExternal);
+        doc->exportObjects(sel, str);
     }
     else {
-        mime = keepExternal?_MimeDocObjXFile:_MimeDocObjFile;
+        mime = hasXLink?_MimeDocObjXFile:_MimeDocObjFile;
         static Base::FileInfo fi(App::Application::getTempFileName());
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str, keepExternal);
+        doc->exportObjects(sel, str);
         str.close();
         res = fi.filePath().c_str();
 
@@ -1524,18 +1515,18 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     if (!mimeData)
         return;
     bool fromDoc = false;
-    bool keepExternal = false;
+    bool hasXLink = false;
     QString format;
     if(mimeData->hasFormat(_MimeDocObj))
         format = _MimeDocObj;
     else if(mimeData->hasFormat(_MimeDocObjX)) {
         format = _MimeDocObjX;
-        keepExternal = true;
+        hasXLink = true;
     }else if(mimeData->hasFormat(_MimeDocObjFile))
         fromDoc = true;
     else if(mimeData->hasFormat(_MimeDocObjXFile)) {
         fromDoc = true;
-        keepExternal = true;
+        hasXLink = true;
     }else {
         if (mimeData->hasUrls())
             loadUrls(App::GetApplication().getActiveDocument(), mimeData->urls());
@@ -1545,9 +1536,8 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     App::Document* doc = App::GetApplication().getActiveDocument();
     if(!doc) doc = App::GetApplication().newDocument();
 
-    if(keepExternal && !doc->isSaved()) {
-        int ret = QMessageBox::question(getMainWindow(),
-            tr("Object dependencies"),
+    if(hasXLink && !doc->isSaved()) {
+        int ret = QMessageBox::question(getMainWindow(), tr("Unsaved document"),
             tr("To link to external objects, the document must be saved at least once.\n"
                "Do you want to save the document now?"),
             QMessageBox::Yes,QMessageBox::No);

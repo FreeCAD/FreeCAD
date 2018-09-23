@@ -2251,10 +2251,9 @@ void PropertyXLink::Save (Base::Writer &writer) const {
     const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
 
     auto exporting = owner->isExporting();
-    if(_pcLink && exporting==Document::Exporting) {
-        // this means, we are exporting with all dependency included. So, store as
-        // local object
-
+    if(_pcLink && exporting && _pcLink->isExporting()) {
+        // this means, we are exporting the owner and the linked object together. 
+        // Lets save the export name
         writer.Stream() << writer.ind() << "<XLink name=\"" 
             << _pcLink->getExportName() << "\" sub=\"" 
             << exportSubName(_pcLink,sub.c_str());
@@ -2265,19 +2264,22 @@ void PropertyXLink::Save (Base::Writer &writer) const {
     }
     const char *path = filePath.c_str();
     std::string _path;
-    if(exporting==Document::ExportKeepExternal && relativePath && filePath.size()) {
-        // if we are exporting while keeping external reference, try to use
-        // aboslute file path for easy transition into document at different
-        // directory
+    if(exporting) {
+        // if we are exporting the owner but not exporting the linked object,
+        // try to use aboslute file path for easy transition into document at
+        // different directory
         if(docInfo) 
             _path = docInfo->filePath();
         else {
             auto pDoc = owner->getDocument();
             const char *docPath = pDoc->FileName.getValue();
-            if(docPath && docPath[0])
-                _path = PropertyXLink::DocInfo::getDocPath(filePath.c_str(),pDoc,false);
-            else 
-                FC_WARN("PropertXLink export without absolute path");
+            if(docPath && docPath[0]) {
+                if(filePath.size())
+                    _path = PropertyXLink::DocInfo::getDocPath(filePath.c_str(),pDoc,false);
+                else
+                    _path = docPath;
+            }else 
+                FC_ERR("PropertXLink export without absolute path");
         }
         if(_path.size())
             path = _path.c_str();
@@ -2417,6 +2419,26 @@ bool PropertyXLink::hasXLink(const App::Document *doc) {
     }
     return false;
 }
+
+bool PropertyXLink::hasXLink(
+        const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved) 
+{
+    std::set<App::Document*> docs;
+    bool ret = false;
+    for(auto o : objs) {
+        if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+            if(!hasXLink(o->getDocument()))
+                continue;
+            if(!unsaved)
+                return true;
+            ret = true;
+            if(!o->getDocument()->isSaved())
+                unsaved->push_back(o->getDocument());
+        }
+    }
+    return ret;
+}
+
 
 std::map<App::Document*,std::set<App::Document*> > 
 PropertyXLink::getDocumentOutList(App::Document *doc) {

@@ -184,10 +184,9 @@ public:
     enum ExportStatus {
         NotExporting,
         Exporting,
-        ExportKeepExternal,
     };
     ExportStatus isExporting(const App::DocumentObject *obj) const;
-    void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&, bool keepExternal=false);
+    void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
     void exportGraphviz(std::ostream&) const;
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /** Import any externally linked objects
@@ -253,12 +252,10 @@ public:
      * @param recursive: if true, then all objects this object depends on are
      * copied as well. By default \a recursive is false.
      *
-     * @param keepExternal: if true, then do not copy externally linked objects.
-     *
      * @return Returns the list of objects copied.
      */
-    std::vector<DocumentObject*> copyObject(const std::vector<DocumentObject*> &objs, 
-            bool recursive=false, bool keepExternal=true);
+    std::vector<DocumentObject*> copyObject(
+            const std::vector<DocumentObject*> &objs, bool recursive=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.
@@ -413,6 +410,14 @@ public:
     bool checkOnCycle(void);
     /// get a list of all objects linking to the given object
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
+
+    /// Option bit flags used by getDepenencyList()
+    enum DependencyOption {
+        /// Return topological sorted list
+        DepSort = 1,
+        /// Do no include object linked by PropertyXLink, as it can handle external link
+        DepNoXLinked = 2,
+    };
     /** Get a complete list of all objects the given objects depend on. 
      *
      * This function is defined as static because it accpets objects from
@@ -420,14 +425,10 @@ public:
      * objects from all relavent documents
      *
      * @param objs: input objects to query for dependency. 
-     * @param noExternal: if true, exclude any external dependencies
-     * @param sort: if true, return a topologically sorted list
-     * @param hasExternal: if non zero, return true if there is any external
-     * dependency found regardless if 'noExternal' is true or not.
+     * @param options: See DependencyOption
      */
-    static std::vector<App::DocumentObject*> getDependencyList
-        (const std::vector<App::DocumentObject*> &objs,
-         bool noExternal=false, bool sort=false, bool *hasExternal=0);
+    static std::vector<App::DocumentObject*> getDependencyList(
+            const std::vector<App::DocumentObject*> &objs, int options=0);
 
     std::vector<App::Document*> getDependentDocuments(bool sort=true);
     static std::vector<App::Document*> getDependentDocuments(std::vector<App::Document*> docs, bool sort);

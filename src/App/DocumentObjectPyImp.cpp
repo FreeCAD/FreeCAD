@@ -185,6 +185,9 @@ Py::List DocumentObjectPy::getState(void) const
     if (object->testStatus(App::PartialObject)){
         list.append(Py::String("Partial"));
     }
+    if (object->testStatus(App::ObjImporting)){
+        list.append(Py::String("Importing"));
+    }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
     }

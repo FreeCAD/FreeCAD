@@ -484,7 +484,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         applyFaceColors(feature,{});
 
         std::vector<std::pair<App::Document*,std::string> > objNames;
-        for(auto obj : App::Document::getDependencyList(objs,false,true))
+        for(auto obj : App::Document::getDependencyList(objs,App::Document::DepSort))
             objNames.emplace_back(obj->getDocument(),obj->getNameInDocument());
         for(auto &v : objNames)
             v.first->removeObject(v.second.c_str());

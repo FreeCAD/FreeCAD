@@ -147,10 +147,11 @@ PyMethodDef Application::Methods[] = {
     {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, METH_VARARGS,
      "getLinksTo(obj,recursive=True,maxCount=0) -- return the objects linked to 'obj'"},
     {"getDependentObjects", (PyCFunction) Application::sGetDependentObjects, METH_VARARGS,
-     "getDependentObjects(obj|[obj,...], noExternal=False, sort=False)\n"
+     "getDependentObjects(obj|[obj,...], options=0)\n"
      "Return a list of dependent objects including the given objects.\n\n"
-     "noExternal: If true, exclude externally linked objects from dependencies.\n"
-     "sort: If True, return the list in topological order."},
+     "options: can have the following bit flags,\n"
+     "         1: to sort the list in topological order.\n"
+     "         2: to exclude dependency of Link type object."},
     {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, METH_VARARGS,
      "setActiveTransaction(name) -- setup active transaction with the given name\n\n"
      "Returns the transaction ID for the active transaction. An application-wide\n"
@@ -819,9 +820,8 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
 PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
 {
     PyObject *obj;
-    PyObject *noExternal = Py_False;
-    PyObject *sort = Py_False;
-    if (!PyArg_ParseTuple(args, "O|OO", &obj,&noExternal,&sort))
+    int options = 0;
+    if (!PyArg_ParseTuple(args, "O|i", &obj,&options))
         return 0;
 
     std::vector<App::DocumentObject*> objs;
@@ -842,7 +842,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
 
     PY_TRY {
-        auto ret = App::Document::getDependencyList(objs,PyObject_IsTrue(noExternal),PyObject_IsTrue(sort));
+        auto ret = App::Document::getDependencyList(objs,options);
 
         Py::Tuple tuple(ret.size());
         for(size_t i=0;i<ret.size();++i) 

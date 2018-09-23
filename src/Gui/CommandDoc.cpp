@@ -990,48 +990,40 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     if(sel.empty())
         return;
 
-    bool keepExternal = false;
+    bool hasXLink = false;
     Base::FileInfo fi(App::Application::getTempFileName());
     {
-        auto internal = App::Document::getDependencyList(sel,true);
-        auto all = App::Document::getDependencyList(sel,false);
-        if (internal.size() > sel.size()) {
+        auto all = App::Document::getDependencyList(sel,App::Document::DepNoXLinked);
+        if (all.size() > sel.size()) {
             int ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
-                qApp->translate("Std_DuplicateSelection","The selected objects have a dependency to unselected objects.\n"
-                                                         "Do you want to duplicate them, too?"),
-                QMessageBox::Yes,QMessageBox::No);
-            if (ret == QMessageBox::Yes) 
-                sel.swap(internal);
-            else
-                keepExternal = true;
-        }
-        if(!keepExternal && all.size() > sel.size()) {
-            int ret = QMessageBox::question(getMainWindow(),
-                qApp->translate("Std_DuplicateSelection","Object dependencies"),
-                qApp->translate("Std_DuplicateSelection","The selected objects contain dependencies in external documents.\n"
-                                "Do you want to duplicate the external objects, too?"),
+                qApp->translate("Std_DuplicateSelection",
+                    "The selected objects have a dependency to unselected objects.\n"
+                    "Do you want to duplicate them, too?"),
                 QMessageBox::Yes,QMessageBox::No);
             if (ret == QMessageBox::Yes) 
                 sel.swap(all);
-            else
-                keepExternal = true;
         }
-
-        if(keepExternal && all.size()==internal.size())
-            keepExternal = false;
+        std::vector<App::Document*> unsaved;
+        hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
+        if(unsaved.size()) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
+                QObject::tr("The exported object contains external link. Please save the document"
+                   "at least once before exporting."));
+            return;
+        }
 
         // save stuff to file
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str, keepExternal);
+        doc->exportObjects(sel, str);
         str.close();
     }
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
         bool proceed = true;
-        if(keepExternal && !doc->isSaved()) {
+        if(hasXLink && !doc->isSaved()) {
             int ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection",

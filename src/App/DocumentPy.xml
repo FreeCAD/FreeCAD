@@ -105,12 +105,11 @@ viewType (String): override the view provider type directly, only effective when
     <Methode Name="copyObject">
       <Documentation>
           <UserDocu>
-              copyObject(object, bool with_dependencies=False, bool keep_external=True)
+              copyObject(object, with_dependencies=False)
               Copy an object or objects from another document to this document. 
               
               object: can either a single object or sequence of objects
               with_dependencies: if True, all internal dependent objects are copied too.
-              keep_external: if False, all external linked dependent objects are copied too.
           </UserDocu>
       </Documentation>
     </Methode>
