@@ -231,13 +231,11 @@ void TaskProjGroup::scaleTypeChanged(int index)
         // Automatic Scale Type
 //        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
 //                                                                                             , "Automatic");
-//        Base::Console().Message("TRACE - TPG::scaleTypeChanged - Auto\n");
         //block recompute
         multiView->ScaleType.setValue("Automatic");
         double autoScale = multiView->calculateAutomaticScale();
         multiView->Scale.setValue(autoScale);
         //unblock recompute
-//        Base::Console().Message("TRACE - TPG::scaleTypeChanged - autoScale: %.3f\n",autoScale);
 
     } else if(index == 2) {
         // Custom Scale Type
