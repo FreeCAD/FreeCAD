@@ -743,6 +743,18 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     }
 }
 
+void TreeWidget::startDragging() {
+    if(state() != NoState)
+        return;
+    if(selectedItems().empty())
+        return;
+
+    setState(DraggingState);
+    startDrag(model()->supportedDragActions());
+    setState(NoState);
+    stopAutoScroll();
+}
+
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
     QTreeWidget::startDrag(supportedActions);

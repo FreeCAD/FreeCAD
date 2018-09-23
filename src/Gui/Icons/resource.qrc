@@ -71,6 +71,7 @@
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
+        <file>tree-item-drag.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
@@ -215,6 +216,7 @@
         <file>edit-redo.svg</file>
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
+        <file>tree-item-drag.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>

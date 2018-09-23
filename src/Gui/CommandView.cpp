@@ -3249,6 +3249,39 @@ bool StdCmdToggleViewSync::isActive() {
 }
 
 //===========================================================================
+// Std_Drag
+//===========================================================================
+DEF_STD_CMD_A(StdCmdDrag);
+
+StdCmdDrag::StdCmdDrag()
+  : Command("Std_Drag")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Drag");
+    sToolTipText  = QT_TR_NOOP("Start dragging item in tree view");
+    sWhatsThis    = "Std_Drag";
+    sStatusTip    = QT_TR_NOOP("Start dragging item in tree view");
+    sPixmap       = "tree-item-drag";
+    sAccel        = "Ctrl+Shift+D";
+}
+
+void StdCmdDrag::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    for(auto tree : getMainWindow()->findChildren<TreeWidget*>()) {
+        if(tree->isVisible()) {
+            tree->startDragging();
+            return;
+        }
+    }
+}
+
+bool StdCmdDrag::isActive(void) {
+    return Gui::Selection().hasSelection();
+}
+
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3324,6 +3357,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdTreeViewDocument());
     rcCmdMgr.addCommand(new StdCmdToggleViewSync());
+    rcCmdMgr.addCommand(new StdCmdDrag());
 }
 
 } // namespace Gui

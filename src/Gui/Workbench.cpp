@@ -634,7 +634,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     ToolBarItem* file = new ToolBarItem( root );
     file->setCommand("File");
     *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator" << "Std_Cut"
-          << "Std_Copy" << "Std_Paste" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
+          << "Std_Copy" << "Std_Paste" << "Std_Drag" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
           << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher

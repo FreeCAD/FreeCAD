@@ -100,6 +100,8 @@ public:
 
     DocumentItem *getDocumentItem(const Gui::Document *) const;
 
+    void startDragging();
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg);
