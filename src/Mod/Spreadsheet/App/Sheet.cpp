@@ -35,8 +35,10 @@
 #include <App/DynamicProperty.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include "Sheet.h"
@@ -140,7 +142,8 @@ void Sheet::clearAll()
 
 bool Sheet::importFromFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar)
 {
-    std::ifstream file;
+    Base::FileInfo fi(filename);
+    Base::ifstream file(fi);
     int row = 0;
 
     PropertySheet::AtomicPropertyChange signaller(cells);
