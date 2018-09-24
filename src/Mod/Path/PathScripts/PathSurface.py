@@ -231,6 +231,24 @@ class ObjectSurface(PathOp.ObjectOp):
         print("(" + str(calctime) + ")")
         return output
 
+    def isPointOnLine(self, lineA, lineB, pointP):
+        tolerance = 1e-6
+        vectorAB = lineB - lineA
+        vectorAC = pointP - lineA
+        crossproduct = vectorAB.cross(vectorAC)
+        dotproduct = vectorAB.dot(vectorAC)
+
+        if crossproduct.Length > tolerance:
+            return False
+
+        if dotproduct < 0:
+            return False
+
+        if dotproduct > vectorAB.Length * vectorAB.Length:
+            return False
+
+        return True
+
     def _dropcutter(self, obj, s, bb):
         import ocl
         import time
@@ -301,27 +319,23 @@ class ObjectSurface(PathOp.ObjectOp):
         output.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         output.append(Path.Command('G0', {'X': clp[0].x, "Y": clp[0].y, 'F': self.horizRapid}))
         output.append(Path.Command('G1', {'Z': clp[0].z, 'F': self.vertFeed}))
-
-        prevx = -9999
-        prevy = -9999
-        prevz = -9999
+        prev = ocl.Point(float("inf"), float("inf"), float("inf"))
+        next = ocl.Point(float("inf"), float("inf"), float("inf"))
         optimize = True
         for i in range(0, len(clp)):
             c = clp[i]
             if i < len(clp) - 1:
-                nextx = clp[i + 1].x
-                nexty = clp[i + 1].y
-                nextz = clp[i + 1].z
+                next.x = clp[i + 1].x
+                next.y = clp[i + 1].y
+                next.z = clp[i + 1].z
             else:
-                nextx = -9999
-                nexty = -9999
-                nextz = -9999
-            if not optimize or (obj.DropCutterDir == 'X' and (prevx != c.x or nextx != c.x or prevz != c.z or nextz != c.z) or
-                                (obj.DropCutterDir == 'Y' and (prevy != c.y or nexty != c.y or prevz != c.z or nextz != c.z))):
+                optimize = False
+
+            if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(next.x, next.y, next.z), FreeCAD.Vector(c.x, c.y, c.z)):
                 output.append(Path.Command('G1', {'X': c.x, "Y": c.y, "Z": c.z, 'F': self.horizFeed}))
-            prevx = c.x
-            prevy = c.y
-            prevz = c.z
+            prev.x = c.x
+            prev.y = c.y
+            prev.z = c.z
         print("points after optimization: " + str(len(output)))
         return output
 
