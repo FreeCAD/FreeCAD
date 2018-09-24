@@ -187,10 +187,10 @@ public:
     virtual ~ObjectIdentifier() {}
 
     // Components
-    void addComponent(const Component &c) { components.push_back(c); }
+    void addComponent(const Component &c) { components.push_back(c); _cache.clear(); }
 
     template<typename C>
-    void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
+    void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); _cache.clear(); }
 
     const std::string getPropertyName() const;
 
@@ -276,6 +276,8 @@ public:
 
     std::string resolveErrorString() const;
 
+    std::size_t hash() const;
+
 protected:
 
     struct ResolveResults {
@@ -318,9 +320,14 @@ protected:
     String  subObjectName;
     std::vector<Component> components;
 
+private:
+    mutable std::string _cache; // Cached string represstation of this identifier
+    mutable std::size_t _hash; // Cached hash of this string
 };
 
-std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
+inline std::size_t hash_value(const App::ObjectIdentifier & path) {
+    return path.hash();
+}
 
 }
 

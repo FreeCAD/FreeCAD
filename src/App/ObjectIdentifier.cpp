@@ -47,16 +47,6 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 using namespace App;
 using namespace Base;
 
-/**
- * @brief Compute a hash value for the object identifier given by \a path.
- * @param path Inputn path
- * @return Hash value
- */
-
-std::size_t App::hash_value(const App::ObjectIdentifier & path)
-{
-    return boost::hash_value(path.toString());
-}
 
 // Path class
 
@@ -318,6 +308,9 @@ int ObjectIdentifier::numSubComponents() const
 
 std::string ObjectIdentifier::toString() const
 {
+    if(_cache.size())
+        return _cache;
+
     std::stringstream s;
     ResolveResults result(*this);
 
@@ -340,9 +333,19 @@ std::string ObjectIdentifier::toString() const
         s << subObjectName.toString() << '.';
 
     s << getPropertyName() << getSubPathStr(result);
+    _cache = s.str();
 
     return s.str();
 }
+
+std::size_t ObjectIdentifier::hash() const
+{
+    if(_hash && _cache.size())
+        return _hash;
+    _hash = boost::hash_value(toString());
+    return _hash;
+}
+
 
 /**
  * @brief Escape toString representation so it is suitable for being embedded in a python command.
@@ -371,6 +374,7 @@ bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
         else
             documentObjectName = ObjectIdentifier::String(newName, true);
 
+        _cache.clear();
         return true;
     }
     else {
@@ -382,6 +386,7 @@ bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
             else
                 components[0].name = ObjectIdentifier::String(newName, true);
 
+            _cache.clear();
             return true;
         }
     }
@@ -400,6 +405,7 @@ bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
             else
                 components[0].name = ObjectIdentifier::String(newName, true);
 
+            _cache.clear();
             return true;
         }
     }
@@ -454,6 +460,7 @@ bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::str
 
     if (documentNameSet && documentName == oldName) {
         documentName = newName;
+        _cache.clear();
         return true;
     }
     else {
@@ -461,6 +468,7 @@ bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::str
 
         if (result.resolvedDocumentName == oldName) {
             documentName = newName;
+            _cache.clear();
             return true;
         }
     }
@@ -970,6 +978,7 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
     if(!result.resolvedProperty || result.resolvedDocumentObject != owner) {
         if (documentNameSet)
             l.push_back(result.resolvedDocumentName.toString());
+
         if (documentObjectNameSet)
             l.push_back(result.resolvedDocumentObjectName.toString());
     }
@@ -1152,6 +1161,7 @@ void ObjectIdentifier::setDocumentName(const ObjectIdentifier::String &name, boo
 {
     documentName = name;
     documentNameSet = force;
+    _cache.clear();
 }
 
 /**
@@ -1185,6 +1195,7 @@ void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &nam
     subObjectName = subname;
     if(subObjectName.str.size() && subObjectName.str.back()!='.')
         subObjectName.str += '.';
+    _cache.clear();
 }
 
 void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force,
@@ -1199,6 +1210,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
     subObjectName = subname;
     if(subObjectName.str.size() && subObjectName.str.back()!='.')
         subObjectName.str += '.';
+    _cache.clear();
 }
 
 
