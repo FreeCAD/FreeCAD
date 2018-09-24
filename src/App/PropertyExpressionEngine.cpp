@@ -509,14 +509,23 @@ struct cycle_detector : public boost::dfs_visitor<> {
  */
 
 void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
-                                          boost::unordered_map<int, ObjectIdentifier> & revNodes, DiGraph & g) const
+                    boost::unordered_map<int, ObjectIdentifier> & revNodes, DiGraph & g, int output) const
 {
     boost::unordered_map<ObjectIdentifier, int> nodes;
     std::vector<Edge> edges;
 
     // Build data structure for graph
-    for (ExpressionMap::const_iterator it = exprs.begin(); it != exprs.end(); ++it)
+    for (ExpressionMap::const_iterator it = exprs.begin(); it != exprs.end(); ++it) {
+        if(output>=0) {
+            auto prop = it->first.getProperty();
+            if(!prop)
+                throw Base::RuntimeError("Path does not resolve to a property.");
+            bool is_output = prop->testStatus(App::Property::Output)||(prop->getType()&App::Prop_Output);
+            if(is_output != (output>0))
+                continue;
+        }
         buildGraphStructures(it->first, it->second.expression, nodes, revNodes, edges);
+    }
 
     // Create graph
     g = DiGraph(revNodes.size());
@@ -544,13 +553,13 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
  * order, in case properties depends on each other.
  */
 
-std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOrder()
+std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOrder(int output)
 {
     std::vector<App::ObjectIdentifier> evaluationOrder;
     boost::unordered_map<int, ObjectIdentifier> revNodes;
     DiGraph g;
 
-    buildGraph(expressions, revNodes, g);
+    buildGraph(expressions, revNodes, g, output);
 
     /* Compute evaluation order for expressions */
     std::vector<int> c;
@@ -569,7 +578,7 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
  * @return StdReturn on success.
  */
 
-DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
+DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(int output)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
@@ -595,7 +604,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
     resetter r(running);
 
     // Compute evaluation order
-    std::vector<App::ObjectIdentifier> evaluationOrder = computeEvaluationOrder();
+    std::vector<App::ObjectIdentifier> evaluationOrder = computeEvaluationOrder(output);
     std::vector<ObjectIdentifier>::const_iterator it = evaluationOrder.begin();
 
 #ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
@@ -619,24 +628,6 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
 
         // Evaluate expression
         std::unique_ptr<Expression> e(expressions[*it].expression->eval());
-
-#ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
-        {
-            Base::Quantity q;
-            boost::any value = e->getValueAsAny();
-
-            if (value.type() == typeid(Base::Quantity))
-                q = boost::any_cast<Base::Quantity>(value);
-            else if (value.type() == typeid(double))
-                q = boost::any_cast<double>(value);
-            else {
-                std::clog << "Unknown return value for expression.";
-                q = 0;
-            }
-
-            std::clog << "Assigning value " << q.getValue() << " to " << (*it).toString().c_str() << " (" << prop->getName() <<  ")" << std::endl;
-        }
-#endif
 
         /* Set value of property */
         prop->setPathValue(*it, e->getValueAsAny());

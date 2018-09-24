@@ -97,7 +97,12 @@ public:
 
     const boost::any getPathValue(const App::ObjectIdentifier & path) const;
 
-    DocumentObjectExecReturn * execute();
+    /** Evaluate the expressions
+     * 
+     * @param output: 0 indicates to compute all non-output property bindings.
+     * 1 indicates to compute only output properties. -1 means compute all.
+     */
+    DocumentObjectExecReturn * execute(int output=-1);
 
     void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
 
@@ -141,14 +146,14 @@ private:
     typedef std::pair<int, int> Edge;
     typedef boost::unordered_map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
 
-    std::vector<App::ObjectIdentifier> computeEvaluationOrder();
+    std::vector<App::ObjectIdentifier> computeEvaluationOrder(int output);
 
     void buildGraphStructures(const App::ObjectIdentifier &path,
                               const boost::shared_ptr<Expression> expression, boost::unordered_map<App::ObjectIdentifier, int> &nodes,
                               boost::unordered_map<int, App::ObjectIdentifier> &revNodes, std::vector<Edge> &edges) const;
 
     void buildGraph(const ExpressionMap &exprs,
-                    boost::unordered_map<int, App::ObjectIdentifier> &revNodes, DiGraph &g) const;
+                boost::unordered_map<int, App::ObjectIdentifier> &revNodes, DiGraph &g, int output=-1) const;
 
     bool running; /**< Boolean used to avoid loops */
 

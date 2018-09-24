@@ -3048,18 +3048,12 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
-        returnCode = Feat->ExpressionEngine.execute();
-        if (returnCode != DocumentObject::StdReturn) {
-            returnCode->Which = Feat;
-            _RecomputeLog.push_back(returnCode);
-    #ifdef FC_DEBUG
-            Base::Console().Error("%s\n",returnCode->Why.c_str());
-    #endif
-            Feat->setError();
-            return true;
+        returnCode = Feat->ExpressionEngine.execute(0);
+        if (returnCode == DocumentObject::StdReturn) {
+            returnCode = Feat->recompute();
+            if(returnCode == DocumentObject::StdReturn)
+                returnCode = Feat->ExpressionEngine.execute(1);
         }
-
-        returnCode = Feat->recompute();
     }
     catch(Base::AbortException &e){
         e.ReportException();
@@ -3094,15 +3088,15 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     }
 #endif
 
-    // error code
-    if (returnCode == DocumentObject::StdReturn) {
+    if(returnCode == DocumentObject::StdReturn) {
         Feat->resetError();
-    }
-    else {
+    }else{
         returnCode->Which = Feat;
         _RecomputeLog.push_back(returnCode);
 #ifdef FC_DEBUG
-        Base::Console().Error("%s\n",returnCode->Why.c_str());
+        FC_ERR("Failed to recompute " << Feat->getExportName(true) << ": " << returnCode->Why);
+#else
+        FC_LOG("Failed to recompute " << Feat->getExportName(true) << ": " << returnCode->Why);
 #endif
         Feat->setError();
         return true;
