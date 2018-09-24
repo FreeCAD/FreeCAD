@@ -47,17 +47,6 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 using namespace App;
 using namespace Base;
 
-PythonVariables::~PythonVariables() {
-    Base::Interpreter().removeVariables(names);
-}
-
-const std::string &PythonVariables::add(Py::Object obj) {
-    static size_t idx;
-    names.push_back(prefix + std::to_string(idx++));
-    Base::Interpreter().addVariable(names.back().c_str(),obj);
-    return names.back();
-}
-
 /**
  * @brief Compute a hash value for the object identifier given by \a path.
  * @param path Inputn path

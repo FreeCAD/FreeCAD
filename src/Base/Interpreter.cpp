@@ -976,3 +976,16 @@ void InterpreterSingleton::dumpSWIG()
 #endif
 }
 
+// ------------------------------------------------------------
+
+PythonVariables::~PythonVariables() {
+    Base::Interpreter().removeVariables(names);
+}
+
+const std::string &PythonVariables::add(Py::Object obj) {
+    static size_t idx;
+    names.push_back(prefix + std::to_string(idx++));
+    Base::Interpreter().addVariable(names.back().c_str(),obj);
+    return names.back();
+}
+
