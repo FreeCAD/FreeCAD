@@ -25,7 +25,9 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QAction>
 # include <QApplication>
+# include <QMenu>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
@@ -87,6 +89,12 @@ bool ViewProvider::doubleClicked(void)
         Gui::Command::abortCommand();
     }
     return true;
+}
+
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Color));
 }
 
 bool ViewProvider::setEdit(int ModNum)
