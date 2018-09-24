@@ -27,14 +27,25 @@
 # ***************************************************************************
 import FreeCAD
 import FreeCADGui
+import Part
 import Path
+import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
-from bisect import bisect_left
+#from bisect import bisect_left
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 """Z Depth Correction Dressup.  This dressup takes a probe file as input and does bilinear interpolation of the Zdepths to correct for a surface which is not parallel to the milling table/bed.  The probe file should conform to the format specified by the linuxcnc G38 probe logging: 9-number coordinate consisting of XYZABCUVW http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g38
 """
+
+LOG_MODULE = PathLog.thisModule()
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+else:
+    PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -45,16 +56,13 @@ rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
 
 class ObjectDressup:
-    x_index = 0
-    y_index = 0
-    values = None
-    x_length = 0
-    y_length = 0 
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
         obj.addProperty("App::PropertyFile", "probefile", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
         obj.Proxy = self
+        obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
+        obj.setEditorMode('interpSurface', 2)  # hide
 
     def __getstate__(self):
         return None
@@ -64,87 +72,60 @@ class ObjectDressup:
 
     def onChanged(self, fp, prop):
         if str(prop) == "probefile":
-            self._loadFile(fp.probefile)
+            self._loadFile(fp, fp.probefile)
 
-    def _bilinearInterpolate(self, x, y):
-        # local lookups
-        x_index, y_index, values = self.x_index, self.y_index, self.values
+    def _bilinearInterpolate(self, surface, x, y):
 
-        i = bisect_left(x_index, x) - 1
-        j = bisect_left(y_index, y) - 1
+        print ('xval:{}, yval:{}'.format(x, y))
+        p1 = FreeCAD.Vector(x, y, 100.0)
+        p2 = FreeCAD.Vector(x, y, -100.0)
 
-        # fix x index
-        if i == -1:
-            x_slice = slice(None, 2)
-        elif i == self.x_length - 1:
-            x_slice = slice(-2, None)
-        else:
-            x_slice = slice(i, i + 2)
-        # fix y index
-        if j == -1:
-            j = 0
-            y_slice = slice(None, 2)
-        elif j == self.y_length - 1:
-            j = -2
-            y_slice = slice(-2, None)
-        else:
-            y_slice = slice(j, j + 2)
-
-        x1, x2 = x_index[x_slice]
-        y1, y2 = y_index[y_slice]
-        z11, z12 = values[j][x_slice]
-        z21, z22 = values[j + 1][x_slice]
-
-        return (z11 * (x2 - x) * (y2 - y) +
-                z21 * (x - x1) * (y2 - y) +
-                z12 * (x2 - x) * (y - y1) +
-                z22 * (x - x1) * (y - y1)) / ((x2 - x1) * (y2 - y1))
+        vertical_line = Part.Line(p1, p2)
+        points, curves = vertical_line.intersectCS(surface)
+        return points[0].Z
 
 
-    def _loadFile(self, filename):
+    def _loadFile(self, obj, filename):
+        if filename == "":
+            return
+
 	f1 = open(filename, 'r')
 
-	pointlist = []
-	for line in f1.readlines():
-            w = line.split()
-            xval = round(float(w[0]), 3)
-       	    yval = round(float(w[1]), 3)
-            zval = round(float(w[2]), 3)
-            pointlist.append((xval, yval,zval))
-        cols = list(zip(*pointlist))
+        try:
+            pointlist = []
+            for line in f1.readlines():
+                w = line.split()
+                xval = round(float(w[0]), 2)
+                yval = round(float(w[1]), 2)
+                zval = round(float(w[2]), 2)
 
-        xcolpos = list(sorted(set(cols[0])))
-        #ycolpos = list(sorted(set(cols[1])))
-        zdict = {x:[] for x in xcolpos}
+                pointlist.append([xval, yval,zval])
 
-        for (x, y, z) in pointlist:
-            zdict[x].append(z)
+            cols = list(zip(*pointlist))
+            yindex = list(sorted(set(cols[1])))
 
-        self.values = tuple(tuple(x) for x in [zdict[x] for x in sorted(xcolpos)])
-        self.x_index = tuple(sorted(set(cols[0])))
-        self.y_index = tuple(sorted(set(cols[1])))
+            array = []
+            for y in yindex:
+                points = sorted([p for p in pointlist if p[1] == y])
+                inner = []
+                for p in points:
+                    inner.append(FreeCAD.Vector(p[0],p[1],p[2]))
+                array.append(inner)
 
-        # sanity check
-        x_length = len(self.x_index)
-        y_length = len(self.y_index)
+            intSurf = Part.BSplineSurface()
+            intSurf.interpolate(array)
 
-        if x_length < 2 or y_length < 2:
-            raise ValueError("Probe grid must be at least 2x2.")
-        if y_length != len(self.values):
-            raise ValueError("Probe grid data must have equal number of rows to y_index.")
-        if any(x2 - x1 <= 0 for x1, x2 in zip(self.x_index, self.x_index[1:])):
-            raise ValueError("x_index must be in strictly ascending order!")
-        if any(y2 - y1 <= 0 for y1, y2 in zip(self.y_index, self.y_index[1:])):
-            raise ValueError("y_index must be in strictly ascending order!")
-
-        self.x_length = x_length
-        self.y_length = y_length
+            obj.interpSurface = intSurf.toShape()
+        except:
+            raise ValueError("File does not contain appropriate point data")
 
 
     def execute(self, obj):
-        if self.values is None: #No valid probe data.  return unchanged path
+        if obj.interpSurface.isNull(): #No valid probe data.  return unchanged path
             obj.Path = obj.Base.Path
             return
+
+        surface = obj.interpSurface.toNurbs().Faces[0].Surface
 
         if obj.Base:
             if obj.Base.isDerivedFrom("Path::Feature"):
@@ -159,19 +140,91 @@ class ObjectDressup:
 
                         for c in pathlist: #obj.Base.Path.Commands:
                             newparams = dict(c.Parameters)
+                            zval = newparams.pop("Z", currLocation['Z'])
                             currLocation.update(newparams)
-                            remapvar = newparams.pop("Z", None)
-                            if remapvar is not None:
-                                offset = self._bilinearInterpolate(currLocation['X'], currLocation['Y'])
+                            if c.Name in movecommands:
+                                remapvar = currLocation['Z']
+                                offset = self._bilinearInterpolate(surface, currLocation['X'], currLocation['Y'])
                                 newparams["Z"] = remapvar + offset
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
+                                currLocation['Z'] = zval
                             else:
                                 newcommandlist.append(c)
 
                         path = Path.Path(newcommandlist)
                         obj.Path = path
+
+class TaskPanel:
+
+    def __init__(self, obj):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ZCorrectEdit.ui")
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupZCorrect", "Edit Z Correction Dress-up"))
+        self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface") 
+        self.interpshape.Shape = obj.interpSurface
+        self.interpshape.ViewObject.Transparency = 60
+        self.interpshape.ViewObject.ShapeColor = (1.00000,1.00000,0.01961)
+        self.interpshape.ViewObject.Selectable = False
+        stock = PathUtils.findParentJob(obj).Stock
+        self.interpshape.Placement.Base.z = stock.Shape.BoundBox.ZMax
+    def reject(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def accept(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.removeObject(self.interpshape.Name)
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        self.obj.Proxy.execute(self.obj)
+
+
+    def updateUI(self):
+
+        if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.Name.startswith('Shape'):
+                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            print('object name %s' % self.obj.Name)
+            if hasattr(self.obj.Proxy, "shapes"):
+                PathLog.info("showing shapes attribute")
+                for shapes in self.obj.Proxy.shapes.itervalues():
+                    for shape in shapes:
+                        Part.show(shape)
+            else:
+                PathLog.info("no shapes attribute found")
+
+    def updateModel(self):
+        self.getFields()
+        self.updateUI()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.form.ProbePointFileName.setText(self.obj.probefile)
+
+        self.updateUI()
+
+    def open(self):
+        pass
+    def setupUi(self):
+        self.setFields()
+        # now that the form is filled, setup the signal handlers
+        self.form.ProbePointFileName.editingFinished.connect(self.updateModel)
+        self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
+
+    def SetProbePointFileName(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
+        if filename and filename[0]:
+            self.obj.probefile = str(filename[0])
+            self.setFields()
 
 
 class ViewProviderDressup:
@@ -189,11 +242,17 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-            # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
 
     def claimChildren(self):
         return [self.obj.Base]
+
+    def setEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        panel = TaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+        return True
 
     def __getstate__(self):
         return None

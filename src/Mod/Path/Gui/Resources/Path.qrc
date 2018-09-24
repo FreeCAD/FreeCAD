@@ -116,6 +116,7 @@
         <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
+        <file>panels/ZCorrectEdit.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>

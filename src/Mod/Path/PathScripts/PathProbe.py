@@ -83,8 +83,8 @@ class ObjectProbing(PathOp.ObjectOp):
         self.commandlist.append(Path.Command(openstring))
         self.commandlist.append(Path.Command("G0", {"Z":obj.ClearanceHeight.Value}))
 
-        for x in self.nextpoint(bb.XMin, bb.XMax, obj.PointCountX):
-            for y in self.nextpoint(bb.YMin, bb.YMax, obj.PointCountY):
+        for y in self.nextpoint(bb.YMin, bb.YMax, obj.PointCountY):
+            for x in self.nextpoint(bb.XMin, bb.XMax, obj.PointCountX):
                 self.commandlist.append(Path.Command("G0", {"X":x + obj.Xoffset.Value, "Y":y + obj.Yoffset.Value,  "Z":obj.SafeHeight.Value}))
                 self.commandlist.append(Path.Command("G38.2",{"Z":obj.FinalDepth.Value, "F":obj.ToolController.VertFeed.Value}))
                 self.commandlist.append(Path.Command("G0", {"Z":obj.SafeHeight.Value}))
