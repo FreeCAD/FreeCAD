@@ -75,6 +75,7 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
     QAction* act;
     act = menu->addAction(QObject::tr("Edit primitive"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPrimitive::setEdit(int ModNum)

@@ -76,6 +76,7 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act;
     act = menu->addAction(QObject::tr("Edit loft"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderLoft::doubleClicked(void)
