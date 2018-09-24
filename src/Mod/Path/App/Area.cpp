@@ -1955,6 +1955,8 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
                 areas.pop_front();
             else
                 areas.pop_back();
+            if(areas.empty())
+                break;
             if(last_stepover && last_stepover>stepover) {
                 offset -= stepover;
                 stepover = last_stepover;
