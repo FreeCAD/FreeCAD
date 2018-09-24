@@ -2671,6 +2671,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		size_t clpSegmentIndex;
 		double clpParamter;
 		double passLength = 0;
+		double noCutDistance=0;
 		clearedBeforePass.SetClearedPaths(cleared.GetCleared());
 		//*******************************
 		// LOOP - POINTS
@@ -2781,17 +2782,19 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			// CHECK AND RECORD NEW TOOL POS
 			//**********************************************
 			long rotateStep = 0;
-			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 256)
+			while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180)
 			{
 				rotateStep++;
 				// if new tool pos. outside boundary rotate until back in
 				recalcArea = true;
-				newToolDir = rotate(newToolDir, M_PI / 128);
+				newToolDir = rotate(newToolDir, M_PI / 90);
 				newToolPos = IntPoint(long(toolPos.X + newToolDir.X * stepScaled), long(toolPos.Y + newToolDir.Y * stepScaled));
 			}
-			if (rotateStep >= 256)
+			if (rotateStep >= 180)
 			{
-				cerr << "Warning: unexpected number of rotate iterations." << endl;
+				#ifdef DEV_MODE
+					cerr << "Warning: unexpected number of rotate iterations." << endl;
+				#endif
 				break;
 			}
 
@@ -2821,6 +2824,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
 			if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR)
 			{ // cut is ok - record it
+				noCutDistance=0;
 				if (toClearPath.size() == 0)
 					toClearPath.push_back(toolPos);
 				toClearPath.push_back(newToolPos);
@@ -2865,7 +2869,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				// }
 #endif
 				//cout<<"Break: no cut @" << point_index << endl;
-				break;
+				if(noCutDistance>stepOverScaled) break;
+				noCutDistance+=stepScaled;
 			}
 		} /* end of points loop*/
 
