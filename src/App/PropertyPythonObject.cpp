@@ -120,6 +120,8 @@ void PropertyPythonObject::fromString(const std::string& repr)
 {
     Base::PyGILStateLocker lock;
     try {
+        if (repr.empty())
+            return;
         Py::Module pickle(PyImport_ImportModule("json"),true);
         if (pickle.isNull())
             throw Py::Exception();
