@@ -3460,6 +3460,8 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
  */
 TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
 {
+    // For comparison see also:
+    // GEOMImpl_BooleanDriver::makeCompoundShellFromFaces
     if (input.IsNull())
         return input;
     if (input.ShapeType() != TopAbs_COMPOUND)

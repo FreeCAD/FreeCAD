@@ -813,7 +813,11 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj)
 
 void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName)
 {
-    std::vector<SelectionChanges> rmvList;
+    bool foundSelection = false;
+    std::string tmpDocName;
+    std::string tmpFeaName;
+    std::string tmpSubName;
+    std::string tmpTypName;
 
     for (std::list<_SelObj>::iterator It = _SelList.begin();It != _SelList.end();) {
         if ((It->DocName == pDocName && !pObjectName) ||
@@ -821,25 +825,16 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             (It->DocName == pDocName && pObjectName && It->FeatName == pObjectName && pSubName && It->SubName == pSubName))
         {
             // save in tmp. string vars
-            std::string tmpDocName = It->DocName;
-            std::string tmpFeaName = It->FeatName;
-            std::string tmpSubName = It->SubName;
-            std::string tmpTypName = It->TypeName;
+            tmpDocName = It->DocName;
+            tmpFeaName = It->FeatName;
+            tmpSubName = It->SubName;
+            tmpTypName = It->TypeName;
 
             // destroy the _SelObj item
             It = _SelList.erase(It);
 
-            SelectionChanges Chng;
-            Chng.pDocName  = tmpDocName.c_str();
-            Chng.pObjectName = tmpFeaName.c_str();
-            Chng.pSubName  = tmpSubName.c_str();
-            Chng.pTypeName = tmpTypName.c_str();
-            Chng.Type      = SelectionChanges::RmvSelection;
+            foundSelection = true;
 
-            Notify(Chng);
-            signalSelectionChanged(Chng);
-
-            rmvList.push_back(Chng);
 #ifdef FC_DEBUG
             Base::Console().Log("Sel : Rmv Selection \"%s.%s.%s\"\n",pDocName,pObjectName,pSubName);
 #endif
@@ -847,6 +842,22 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         else {
             ++It;
         }
+    }
+
+    // NOTE: It can happen that there are nested calls of rmvSelection()
+    // so that it's not safe to invoke the notifications inside the loop
+    // as this can invalidate the iterators and thus leads to undefined
+    // behaviour.
+    // So, the notification is done after the loop, see also #0003469
+    if (foundSelection) {
+        SelectionChanges Chng;
+        Chng.pDocName  = tmpDocName.c_str();
+        Chng.pObjectName = tmpFeaName.c_str();
+        Chng.pSubName  = tmpSubName.c_str();
+        Chng.pTypeName = tmpTypName.c_str();
+        Chng.Type      = SelectionChanges::RmvSelection;
+        Notify(Chng);
+        signalSelectionChanged(Chng);
     }
 }
 
