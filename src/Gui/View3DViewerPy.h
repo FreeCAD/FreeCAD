@@ -65,6 +65,9 @@ public:
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
 
+    Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
+    Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
+
     // NaviCube handling
     Py::Object setEnabledNaviCube(const Py::Tuple& args);
     Py::Object isEnabledNaviCube(const Py::Tuple& args);
