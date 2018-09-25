@@ -72,6 +72,13 @@
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
         <file>tree-item-drag.svg</file>
+        <file>tree-pre-sel.svg</file>
+        <file>tree-sync-sel.svg</file>
+        <file>tree-sync-view.svg</file>
+        <file>tree-sync-pla.svg</file>
+        <file>tree-doc-single.svg</file>
+        <file>tree-doc-multi.svg</file>
+        <file>tree-doc-collapse.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
@@ -85,7 +92,6 @@
         <file>accessories-text-editor.svg</file>
         <file>accessories-calculator.svg</file>
         <file>internet-web-browser.svg</file>
-        <file>view-select.svg</file>
         <file>view-unselectable.svg</file>
         <file>view-refresh.svg</file>
         <file>view-fullscreen.svg</file>
@@ -98,7 +104,6 @@
         <file>view-rear.svg</file>
         <file>view-right.svg</file>
         <file>view-top.svg</file>
-        <file>view-sync.svg</file>
         <file>zoom-all.svg</file>
         <file>zoom-border.svg</file>
         <file>zoom-fit-best.svg</file>
@@ -217,6 +222,13 @@
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>tree-item-drag.svg</file>
+        <file>tree-pre-sel.svg</file>
+        <file>tree-sync-sel.svg</file>
+        <file>tree-sync-view.svg</file>
+        <file>tree-sync-pla.svg</file>
+        <file>tree-doc-single.svg</file>
+        <file>tree-doc-multi.svg</file>
+        <file>tree-doc-collapse.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
@@ -242,7 +254,6 @@
         <file>view-rear.svg</file>
         <file>view-right.svg</file>
         <file>view-top.svg</file>
-        <file>view-sync.svg</file>
         <file>zoom-all.svg</file>
         <file>zoom-border.svg</file>
         <file>zoom-fit-best.svg</file>

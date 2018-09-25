@@ -231,8 +231,6 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             }
         }
     }
-    if (strcmp(recipient, "Tree") == 0)
-        createLinkMenu(item);
 }
 
 void Workbench::activated()

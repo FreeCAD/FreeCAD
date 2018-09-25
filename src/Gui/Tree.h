@@ -27,6 +27,7 @@
 #include <QTreeWidget>
 #include <QTime>
 
+#include <Base/Parameter.h>
 #include <App/Document.h>
 #include <App/Application.h>
 
@@ -91,9 +92,6 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
-    static void toggleSyncView(bool enable);
-    static bool checkSyncView();
-
     const char *getTreeName() const;
 
     static void updateStatus(bool delay=false);
@@ -141,11 +139,7 @@ protected Q_SLOTS:
     void onReloadDoc();
     void onMarkRecompute();
     void onRecomputeObject();
-    void onSyncSelection();
-    void onPreSelection();
     void onPreSelectTimer();
-    void onSyncView();
-    void onSyncPlacement();
     void onShowHidden();
     void onHideInTree();
 
@@ -179,10 +173,6 @@ private:
     QAction* allowPartialRecomputeAction;
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
-    QAction* preSelectionAction;
-    QAction* syncSelectionAction;
-    QAction* syncViewAction;
-    QAction* syncPlacementAction;
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
@@ -381,7 +371,44 @@ private:
     QTreeWidget* treeWidget;
 };
 
-}
+/// Helper class to read/write tree view options
+class GuiExport TreeParams : public ParameterGrp::ObserverType {
+public:
+    TreeParams();
+    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    static TreeParams *Instance();
 
+#define FC_TREEPARAM_DEFS \
+    FC_TREEPARAM_DEF(SyncSelection,bool,Bool,true) \
+    FC_TREEPARAM_DEF(SyncView,bool,Bool,false) \
+    FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
+    FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
+    FC_TREEPARAM_DEF(DocumentMode,int,Int,1)
+
+#define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
+    _type _name() const {return _##_name;} \
+    void set##_name(_type);\
+    void on##_name##Changed();
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF FC_TREEPARAM_FUNCS
+    FC_TREEPARAM_DEFS
+
+private:
+
+#define FC_TREEPARAM_DECLARE(_name,_type,_Type,_default) \
+    _type _##_name;
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF FC_TREEPARAM_DECLARE
+    FC_TREEPARAM_DEFS
+
+    ParameterGrp::handle handle;
+};
+
+#define FC_TREEPARAM(_name) (Gui::TreeParams::Instance()->_name())
+#define FC_TREEPARAM_SET(_name,_v) Gui::TreeParams::Instance()->set##_name(_v)
+
+}
 
 #endif // GUI_TREE_H

@@ -59,6 +59,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Macro.h"
+#include "Workbench.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
@@ -83,60 +84,69 @@ std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 
-class TreeParams : public ParameterGrp::ObserverType {
-public:
-    TreeParams() {
-        GET_TREEVIEW_PARAM(hGrp);
-        SyncSelection = &params["SyncSelection"];
-        *SyncSelection = true;
-        SyncView = &params["SyncView"];
-        *SyncView = false;
-        SyncPlacement = &params["SyncPlacement"];
-        *SyncPlacement = false;
-        PreSelection = &params["PreSelection"];
-        *PreSelection = true;
-        handle = hGrp;
-        handle->Attach(this);
-        handle->NotifyAll();
+TreeParams::TreeParams() {
+    GET_TREEVIEW_PARAM(hGrp);
+    handle = hGrp;
+    handle->Attach(this);
+
+#define FC_TREEPARAM_INIT(_name,_type,_Type,_default) \
+    _##_name = handle->Get##_Type(#_name,_default);
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF FC_TREEPARAM_INIT
+    FC_TREEPARAM_DEFS
+}
+
+#define FC_TREEPARAM_SET_FUNC(_name,_type,_Type,_default) \
+void TreeParams::set##_name(_type value) {\
+    if(_##_name != value) {\
+        handle->Set##_Type(#_name,value);\
+    }\
+}
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF FC_TREEPARAM_SET_FUNC
+FC_TREEPARAM_DEFS
+
+void TreeParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
+#define FC_TREEPARAM_CHANGE(_name,_type,_Type,_default) \
+    if(strcmp(sReason,#_name)==0) {\
+        _##_name = handle->Get##_Type(#_name,_default);\
+        on##_name##Changed();\
+        return;\
     }
 
-    bool getParam(const char *name) {
-        auto it = params.find(name);
-        if(it==params.end())
-            return false;
-        return it->second;
-    }
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF FC_TREEPARAM_CHANGE
+    FC_TREEPARAM_DEFS
+}
 
-    void setParam(const char *name, bool enable) {
-        auto &value = params[name];
-        if(value!=enable) {
-            value = enable;
-            handle->SetBool(name,enable);
-        }
-    }
-        
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
-        auto it = params.find(sReason);
-        if(it != params.end())
-            it->second = handle->GetBool(sReason);
-    }
+void TreeParams::onPreSelectionChanged() {}
 
-    static TreeParams *Instance() {
-        static TreeParams *instance;
-        if(!instance)
-            instance = new TreeParams;
-        return instance;
+void TreeParams::onSyncSelectionChanged() {
+    if(!FC_TREEPARAM(SyncSelection) || !Gui::Selection().hasSelection())
+        return;
+    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
+    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it) {
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        (*it)->scrollItemToTop(doc);
     }
+}
 
-    std::map<std::string,bool> params;
-    bool *SyncSelection;
-    bool *SyncPlacement;
-    bool *SyncView;
-    bool *PreSelection;
-    ParameterGrp::handle handle;
-};
+void TreeParams::onSyncViewChanged() {}
 
-#define TREEPARAM(_name) (*TreeParams::Instance()->_name)
+void TreeParams::onSyncPlacementChanged() {}
+
+void TreeParams::onDocumentModeChanged() {
+    App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
+}
+
+TreeParams *TreeParams::Instance() {
+    static TreeParams *instance;
+    if(!instance)
+        instance = new TreeParams;
+    return instance;
+}
 
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
@@ -148,26 +158,6 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
     this->setColumnCount(2);
-
-    this->syncSelectionAction = new QAction(this);
-    this->syncSelectionAction->setCheckable(true);
-    connect(this->syncSelectionAction, SIGNAL(triggered()),
-            this, SLOT(onSyncSelection()));
-
-    this->preSelectionAction = new QAction(this);
-    this->preSelectionAction->setCheckable(true);
-    connect(this->preSelectionAction, SIGNAL(triggered()),
-            this, SLOT(onPreSelection()));
-
-    this->syncViewAction = new QAction(this);
-    this->syncViewAction->setCheckable(true);
-    connect(this->syncViewAction, SIGNAL(triggered()),
-            this, SLOT(onSyncView()));
-
-    this->syncPlacementAction = new QAction(this);
-    this->syncPlacementAction->setCheckable(true);
-    connect(this->syncPlacementAction, SIGNAL(triggered()),
-            this, SLOT(onSyncPlacement()));
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -310,7 +300,11 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 {
     // ask workbenches and view provider, ...
     MenuItem view;
+    view << "Std_TreeViewActions";
+
     Gui::Application::Instance->setupContextMenu("Tree", &view);
+
+    Workbench::createLinkMenu(&view);
 
     QMenu contextMenu;
 
@@ -321,25 +315,6 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     connect(&subMenuGroup, SIGNAL(triggered(QAction*)),
             this, SLOT(onActivateDocument(QAction*)));
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
-
-    QAction* topact = 0;
-    auto actions = contextMenu.actions();
-    if(actions.size()) {
-        contextMenu.addSeparator();
-        topact = actions.front();
-    }
-    QMenu optionsMenu;
-    optionsMenu.setTitle(tr("Tree view options"));
-    preSelectionAction->setChecked(TREEPARAM(PreSelection));
-    optionsMenu.addAction(this->preSelectionAction);
-    syncSelectionAction->setChecked(TREEPARAM(SyncSelection));
-    optionsMenu.addAction(this->syncSelectionAction);
-    syncViewAction->setChecked(TREEPARAM(SyncView));
-    optionsMenu.addAction(this->syncViewAction);
-    syncPlacementAction->setChecked(TREEPARAM(SyncPlacement));
-    optionsMenu.addAction(this->syncPlacementAction);
-    contextMenu.insertMenu(topact,&optionsMenu);
-    contextMenu.insertSeparator(topact);
 
     // get the current item
     this->contextItem = itemAt(e->pos());
@@ -975,7 +950,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     selObj->getNameInDocument());
         }
 
-        bool syncPlacement = TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
+        bool syncPlacement = FC_TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -1152,7 +1127,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     else if (targetitem->type() == TreeWidget::DocumentType) {
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
-        bool syncPlacement = TREEPARAM(SyncPlacement);
+        bool syncPlacement = FC_TREEPARAM(SyncPlacement);
 
         // check if items can be dragged
         for(auto &v : items) {
@@ -1363,8 +1338,7 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int displayMode = hGrp->GetInt("TreeViewDocument", 1);
+    int displayMode = FC_TREEPARAM(DocumentMode);
     for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
@@ -1400,7 +1374,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
 
-        if(TREEPARAM(PreSelection)) {
+        if(FC_TREEPARAM(PreSelection)) {
             if(preselectTime.elapsed() < 700)
                 onPreSelectTimer();
             else{
@@ -1408,19 +1382,19 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
                 Selection().rmvPreselect();
             }
         }
-    } else if(TREEPARAM(PreSelection))
+    } else if(FC_TREEPARAM(PreSelection))
         Selection().rmvPreselect();
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
-    if(TREEPARAM(PreSelection)) {
+    if(FC_TREEPARAM(PreSelection)) {
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
 }
 
 void TreeWidget::onPreSelectTimer() {
-    if(!TREEPARAM(PreSelection))
+    if(!FC_TREEPARAM(PreSelection))
         return;
     auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
     if(!item || item->type()!=TreeWidget::ObjectType) 
@@ -1502,18 +1476,6 @@ void TreeWidget::setupText() {
     this->headerItem()->setText(1, tr("Description"));
     this->rootItem->setText(0, tr("Application"));
 
-    this->preSelectionAction->setText(tr("Pre-selection"));
-    this->preSelectionAction->setStatusTip(tr("Preselect the object in 3D view when mouse over the tree item"));
-
-    this->syncSelectionAction->setText(tr("Sync selection"));
-    this->syncSelectionAction->setStatusTip(tr("Auto expand item when selected in 3D view"));
-
-    this->syncViewAction->setText(tr("Sync view"));
-    this->syncViewAction->setStatusTip(tr("Auto switch to the 3D view containing the selected item"));
-
-    this->syncPlacementAction->setText(tr("Sync placement"));
-    this->syncPlacementAction->setStatusTip(tr("Try to adjust placement on drag and drop objects across coordinate systems"));
-
     this->showHiddenAction->setText(tr("Show hidden items"));
     this->showHiddenAction->setStatusTip(tr("Show hidden tree view items"));
 
@@ -1546,34 +1508,9 @@ void TreeWidget::setupText() {
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
 }
 
-void TreeWidget::onSyncSelection() {
-    TreeParams::Instance()->setParam("SyncSelection",syncSelectionAction->isChecked());
-}
-
-void TreeWidget::onPreSelection() {
-    TreeParams::Instance()->setParam("PreSelection",preSelectionAction->isChecked());
-}
-
-void TreeWidget::onSyncView() {
-    TreeParams::Instance()->setParam("SyncView",syncViewAction->isChecked());
-    getMainWindow()->updateActions();
-}
-
-void TreeWidget::toggleSyncView(bool enable) {
-    TreeParams::Instance()->setParam("SyncView",enable);
-}
-
-bool TreeWidget::checkSyncView() {
-    return TREEPARAM(SyncView);
-}
-
 void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
-    if(currentDocItem && TREEPARAM(SyncView))
+    if(currentDocItem && FC_TREEPARAM(SyncView))
         currentDocItem->document()->setActiveView(vp);
-}
-
-void TreeWidget::onSyncPlacement() {
-    TreeParams::Instance()->setParam("SyncPlacement",syncPlacementAction->isChecked());
 }
 
 void TreeWidget::onShowHidden() {
@@ -1643,7 +1580,7 @@ void TreeWidget::syncSelection(const char *pDocName) {
         TREE_TRACE("connection blocked");
         return;
     }
-    bool syncSelect = TREEPARAM(SyncSelection);
+    bool syncSelect = FC_TREEPARAM(SyncSelection);
     if (!pDocName || *pDocName==0 || strcmp(pDocName,"*")==0) {
         if(Selection().hasSelection()) {
             for(auto &v : DocumentMap) {
