@@ -29,6 +29,7 @@
 # include <QFileInfo>
 # include <QImage>
 # include <QString>
+# include <QMdiSubWindow>
 # include <QMenu>
 #endif
 
@@ -155,10 +156,19 @@ bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
 
         if (sheetView) {
             sheetView->deleteSelection();
+            return false;
         }
     }
 
-    return false;
+    // If the view is open but not active, try to close it.
+    // This may ask the user for permission in case it's the
+    // last view of the document. (#0003496)
+    QWidget* window = view;
+    QWidget* parent = view->parentWidget();
+    if (qobject_cast<QMdiSubWindow*>(parent)) {
+        window = parent;
+    }
+    return window->close();
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()
