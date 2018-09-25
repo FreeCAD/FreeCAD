@@ -112,6 +112,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
+    def cleanupPage(self, obj):
+        self.obj.ViewObject.RootNode.removeChild(self.switch)
+
     def enable(self, ena):
         if ena != self.enabled:
             self.enabled = ena

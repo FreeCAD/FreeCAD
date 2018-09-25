@@ -223,6 +223,11 @@ class TaskPanelPage(object):
         Do not overwrite, implement setFields(obj) instead.'''
         self.setFields(self.obj)
 
+    def pageCleanup(self):
+        '''pageCleanup() ... internal callback.
+        Do not overwrite, implement cleanupPage(obj) instead.'''
+        self.cleanupPage(self.obj)
+
     def pageRegisterSignalHandlers(self):
         '''pageRegisterSignalHandlers() .. internal callback.
         Registers a callback for all signals returned by getSignalsForUpdate(obj).
@@ -260,6 +265,11 @@ class TaskPanelPage(object):
         '''initPage(obj) ... overwrite to customize UI for specific model.
         Note that this function is invoked after all page controllers have been created.
         Should be overwritten by subclasses.'''
+        pass
+
+    def cleanupPage(self, obj):
+        '''cleanupPage(obj) ... overwrite to perform any cleanup tasks before page is destroyed.
+        Can safely be overwritten by subclasses.'''
         pass
 
     def modifyStandardButtons(self, buttonBox):
@@ -878,6 +888,7 @@ class TaskPanel(object):
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
+        self.panelCleanup()
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
@@ -912,6 +923,12 @@ class TaskPanel(object):
         PathLog.track()
         for page in self.featurePages:
             page.pageSetFields()
+
+    def panelCleanup(self):
+        '''panelCleanup() ... invoked before the receiver is destroyed.'''
+        PathLog.track()
+        for page in self.featurePages:
+            page.pageCleanup()
 
     def open(self):
         '''open() ... callback invoked when the task panel is opened.'''
