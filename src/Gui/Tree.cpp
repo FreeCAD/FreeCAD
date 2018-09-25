@@ -134,8 +134,8 @@ void TreeParams::onSyncSelectionChanged() {
 }
 
 void TreeParams::onSyncViewChanged() {}
-
 void TreeParams::onSyncPlacementChanged() {}
+void TreeParams::onRecordSelectionChanged() {}
 
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
@@ -1552,6 +1552,9 @@ void TreeWidget::onItemSelectionChanged ()
 
     auto selItems = selectedItems();
     if(selItems.size()<=1) {
+        if(FC_TREEPARAM(RecordSelection))
+            Gui::Selection().selStackPush();
+
         // This special handling to deal with possible discrepency of
         // Gui.Selection and Tree view selection because of newly added
         // DocumentObject::redirectSubName()
@@ -1564,6 +1567,8 @@ void TreeWidget::onItemSelectionChanged ()
             v.second->clearSelection(item);
             currentDocItem = 0;
         }
+        if(FC_TREEPARAM(RecordSelection))
+            Gui::Selection().selStackPush();
     }else{
         std::map<const Gui::Document*,DocumentItem*>::iterator pos;
         for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
@@ -1571,7 +1576,10 @@ void TreeWidget::onItemSelectionChanged ()
             pos->second->updateSelection(pos->second);
             currentDocItem = 0;
         }
+        if(FC_TREEPARAM(RecordSelection))
+            Gui::Selection().selStackPush(true,true);
     }
+
     this->blockConnection(lock);
 }
 
