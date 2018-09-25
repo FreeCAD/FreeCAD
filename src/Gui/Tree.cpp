@@ -2332,7 +2332,8 @@ void TreeWidget::slotChangeObject(
 
     if(force || &prop == &obj->Label) {
         const char *label = obj->Label.getValue();
-        if(itEntry->second.begin()->label != label) {
+        auto firstData = *itEntry->second.begin();
+        if(firstData->label != label) {
             for(auto data : itEntry->second) {
                 data->label = label;
                 auto displayName = QString::fromUtf8(label);
@@ -2346,7 +2347,8 @@ void TreeWidget::slotChangeObject(
 
     if(force || &prop == &obj->Label2) {
         const char *label = obj->Label2.getValue();
-        if(itEntry->second.begin()->label2 != label) {
+        auto firstData = *itEntry->second.begin();
+        if(firstData->label2 != label) {
             for(auto data : itEntry->second) {
                 data->label2 = label;
                 auto displayName = QString::fromUtf8(label);
