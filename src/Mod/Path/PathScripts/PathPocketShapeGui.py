@@ -33,6 +33,7 @@ import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
+from pivy import coin
 
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -48,11 +49,48 @@ if True:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+def createExtensionSoSwitch(ext):
+    sep = coin.SoSeparator()
+    pos = coin.SoTranslation()
+    mat = coin.SoMaterial()
+    crd = coin.SoCoordinate3()
+    fce = coin.SoFaceSet()
+
+    wire =  ext.getWire()
+    if wire:
+        polygon = []
+        for p in wire.discretize(Deflection=0.01):
+            polygon.append((p.x, p.y, p.z))
+        crd.point.setValues(polygon)
+
+    mat.diffuseColor = (1.0, 0.0, 0.0)
+    mat.transparency = 0.5
+
+    sep.addChild(pos)
+    sep.addChild(mat)
+    sep.addChild(crd)
+    sep.addChild(fce)
+
+    switch = coin.SoSwitch()
+    switch.addChild(sep)
+    switch.whichChild = coin.SO_SWITCH_NONE
+
+    return switch
 
 Wires = []
+Items = []
+
+class _Extension(object):
+    def __init__(self, ext):
+        self.ext = ext
+        self.switch = createExtensionSoSwitch(ext)
+        self.root = self.switch
+
 
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataObject = QtCore.Qt.ItemDataRole.UserRole
+    DataSwitch = QtCore.Qt.ItemDataRole.UserRole + 2
+
     Direction = {
             PathPocketShape.Extension.DirectionNormal: translate('PathPocket', 'Normal'),
             PathPocketShape.Extension.DirectionX: translate('PathPocket', 'X'),
@@ -69,6 +107,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.form.extensions.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.form.extensions.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+
+        self.switch = coin.SoSwitch()
+        self.obj.ViewObject.RootNode.addChild(self.switch)
+        self.switch.whichChild = coin.SO_SWITCH_ALL
 
     def enable(self, ena):
         if ena != self.enabled:
@@ -88,31 +130,37 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         exts = []
         for row in range(self.form.extensions.rowCount()):
             item = self.form.extensions.item(row, 0)
-            exts.append(item.data(self.DataObject))
+            exts.append(item.data(self.DataObject).ext)
         obj.Proxy.setExtensions(obj, exts)
 
     def setFields(self, obj):
         self.defaultLength.updateSpinBox()
 
         self.form.extensions.blockSignals(True)
+        for row in range(self.form.extensions.rowCount()):
+            self.switch.removeChild(self.form.extensions.item(row, 0).data(self.DataObject).root)
+
         self.form.extensions.clearContents()
         self.form.extensions.setRowCount(0)
         for row, ext in enumerate(self.extensions):
             PathLog.info("{}.{}".format(ext.obj.Label, ext.sub))
-
             self.form.extensions.insertRow(row)
 
-            item = QtGui.QTableWidgetItem("{}.{}".format(ext.obj.Label, ext.sub))
-            item.setData(self.DataObject, ext)
-            self.form.extensions.setItem(row, 0, item)
+            _ext = _Extension(ext)
 
-            item = QtGui.QTableWidgetItem("{}".format(ext.length))
-            item.setData(self.DataObject, ext)
-            self.form.extensions.setItem(row, 1, item)
+            item0 = QtGui.QTableWidgetItem("{}.{}".format(ext.obj.Label, ext.sub))
+            item0.setData(self.DataObject, _ext)
+            self.form.extensions.setItem(row, 0, item0)
 
-            item = QtGui.QTableWidgetItem("{}".format(self.Direction[ext.direction]))
-            item.setData(self.DataObject, ext)
-            self.form.extensions.setItem(row, 2, item)
+            item1 = QtGui.QTableWidgetItem("{}".format(ext.length))
+            item1.setData(self.DataObject, _ext)
+            self.form.extensions.setItem(row, 1, item1)
+
+            item2 = QtGui.QTableWidgetItem("{}".format(self.Direction[ext.direction]))
+            item2.setData(self.DataObject, _ext)
+            self.form.extensions.setItem(row, 2, item2)
+
+            self.switch.addChild(_ext.root)
 
         self.form.extensions.resizeColumnsToContents()
         self.form.extensions.blockSignals(False)
@@ -134,6 +182,23 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             else:
                 self.form.buttonRemove.setEnabled(False)
 
+            FreeCADGui.Selection.clearSelection()
+            print("rowCount = %s" % self.form.extensions.rowCount())
+
+            for row in range(self.form.extensions.rowCount()):
+                item = self.form.extensions.item(row, 0)
+                Items.append(item)
+                ext = item.data(self.DataObject)
+                ext.switch.whichChild = coin.SO_SWITCH_NONE
+
+            processed = []
+            for item in self.form.extensions.selectedItems():
+                ext = item.data(self.DataObject)
+                if not ext in processed:
+                    FreeCADGui.Selection.addSelection(ext.ext.obj, ext.ext.sub)
+                    ext.switch.whichChild = coin.SO_SWITCH_ALL
+                    processed.append(ext)
+
     def extensionsAdd(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
             for subname in sel.SubElementNames:
@@ -151,7 +216,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         Wires = []
         processed = []
         for item in self.form.extensions.selectedItems():
-            ext = item.data(self.DataObject)
+            ext = item.data(self.DataObject).ext
             if not ext in processed:
                 Wires.append(ext)
                 wire = ext.getWire()
@@ -161,12 +226,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 processed.append(ext)
 
     def pageRegisterSignalHandlers(self):
-        self.form.extensions.itemSelectionChanged.connect(self.itemSelectionChanged)
         self.form.buttonAdd.clicked.connect(self.extensionsAdd)
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonRemove.clicked.connect(self.extensionsRemove)
 
         self.updateSelection(self.obj, FreeCADGui.Selection.getSelectionEx())
+        self.form.extensions.itemSelectionChanged.connect(self.itemSelectionChanged)
         self.itemSelectionChanged()
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
