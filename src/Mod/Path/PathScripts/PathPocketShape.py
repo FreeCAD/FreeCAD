@@ -167,6 +167,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 else:
                     self.horiz.append(face)
 
+            # add faces for extensions
+            self.exts = []
+            for ext in self.getExtensions(obj):
+                wire = Part.Face(ext.getWire())
+                if wire:
+                    face = Part.Face(wire)
+                    self.horiz.append(face)
+                    self.exts.append(face)
 
             # move all horizontal faces to FinalDepth
             for f in self.horiz:
