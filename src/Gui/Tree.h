@@ -165,6 +165,8 @@ private:
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
     void slotFinishRestoreDocument(const App::Document&);
+    void slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
+    void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop, bool force);
 
     void changeEvent(QEvent *e);
     void setupText();
@@ -194,6 +196,7 @@ private:
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
+    std::map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
     bool fromOutside;
     int statusUpdateDelay;
 
@@ -229,7 +232,6 @@ public:
     void setItemVisibility(const Gui::ViewProviderDocumentObject&);
     void updateLinks(const ViewProviderDocumentObject &view);
     ViewProviderDocumentObject *getViewProvider(App::DocumentObject *);
-    void onDeleteDocument(DocumentItem *docItem);
     void checkRemoveChildrenFromRoot(const ViewProviderDocumentObject& view);
 
     bool showHidden() const;
@@ -246,10 +248,6 @@ protected:
     /** Removes a view provider from the document item.
      * If this view provider is not added nothing happens.
      */
-    void slotDeleteObject    (const Gui::ViewProviderDocumentObject&, bool boradcast);
-    void slotChangeObject    (const Gui::ViewProviderDocumentObject&, const App::Property &prop);
-    void slotRenameObject    (const Gui::ViewProviderDocumentObject&);
-    void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool,
@@ -267,21 +265,20 @@ protected:
 
     void findSelection(bool sync, DocumentObjectItem *item, const char *subname);
 
-    typedef std::map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ParentMap;
-    void populateParents(const ViewProvider *vp, ParentMap &);
+    typedef std::map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
+    void populateParents(const ViewProvider *vp, ViewParentMap &);
 
 private:
     const char *treeName; // for debugging purpose
     const Gui::Document* pDocument;
     std::map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
+    std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<long> TransactingObjects;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
-    Connection connectRenObject;
-    Connection connectActObject;
     Connection connectEdtObject;
     Connection connectResObject;
     Connection connectHltObject;
@@ -292,6 +289,8 @@ private:
     Connection connectRedo;
 
     friend class TreeWidget;
+    friend class DocumentObjectData;
+    friend class DocumentObjectItem;
 };
 
 /** The link between the tree and a document object.
