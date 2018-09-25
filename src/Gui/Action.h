@@ -113,6 +113,7 @@ public:
 
 public Q_SLOTS:
     void onActivated ();
+    void onToggled(bool);
     void onActivated (int);
     void onActivated (QAction*);
     void onHovered   (QAction*);

@@ -322,6 +322,11 @@ void ActionGroup::onActivated ()
     _pcCmd->invoke(this->property("defaultAction").toInt());
 }
 
+void ActionGroup::onToggled(bool)
+{
+    onActivated();
+} 
+
 /**
  * Activates the command.
  */
