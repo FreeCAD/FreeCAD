@@ -158,10 +158,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             item1 = QtGui.QTableWidgetItem("{}".format(ext.length))
             item1.setData(self.DataObject, _ext)
+            item1.setFlags(item1.flags() & ~QtCore.Qt.ItemIsEnabled)
             self.form.extensions.setItem(row, 1, item1)
 
             item2 = QtGui.QTableWidgetItem("{}".format(self.Direction[ext.direction]))
             item2.setData(self.DataObject, _ext)
+            item2.setFlags(item2.flags() & ~QtCore.Qt.ItemIsEnabled)
             self.form.extensions.setItem(row, 2, item2)
 
             self.switch.addChild(_ext.root)
