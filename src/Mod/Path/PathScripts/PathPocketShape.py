@@ -244,7 +244,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             subs = features.get(ext.obj, [])
             subs.append(ext.sub)
             features[ext.obj] = subs
-        PathLog.track('setExtension', obj.Label)
         obj.ExtensionFeature = [(ext.obj, ext.sub) for ext in extensions]
 
 def SetupProperties():

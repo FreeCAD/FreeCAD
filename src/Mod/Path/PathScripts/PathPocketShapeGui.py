@@ -77,9 +77,6 @@ def createExtensionSoSwitch(ext):
 
     return switch
 
-Wires = []
-Items = []
-
 class _Extension(object):
     def __init__(self, ext):
         self.ext = ext
@@ -129,6 +126,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
 
     def getFields(self, obj):
+        PathLog.track(obj.Label)
         self.defaultLength.updateProperty()
         exts = []
         for row in range(self.form.extensions.rowCount()):
@@ -137,15 +135,18 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         obj.Proxy.setExtensions(obj, exts)
 
     def setFields(self, obj):
+        PathLog.track(obj.Label)
         self.defaultLength.updateSpinBox()
+        self.setExtensions(self.extensions)
 
+    def setExtensions(self, extensions):
         self.form.extensions.blockSignals(True)
         for row in range(self.form.extensions.rowCount()):
             self.switch.removeChild(self.form.extensions.item(row, 0).data(self.DataObject).root)
 
         self.form.extensions.clearContents()
         self.form.extensions.setRowCount(0)
-        for row, ext in enumerate(self.extensions):
+        for row, ext in enumerate(extensions):
             PathLog.info("{}.{}".format(ext.obj.Label, ext.sub))
             self.form.extensions.insertRow(row)
 
@@ -167,6 +168,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.form.extensions.resizeColumnsToContents()
         self.form.extensions.blockSignals(False)
+        self.extensions = extensions
+
+    def updateData(self, obj, prop):
+        if prop in ['ExtensionLengthDefault']:
+            pass
+        if prop in ['ExtensionFeature']:
+            self.setExtensions(obj.Proxy.getExtensions(obj))
 
     def updateSelection(self, obj, sel):
         if sel and sel[0].SubElementNames:
@@ -190,7 +198,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             for row in range(self.form.extensions.rowCount()):
                 item = self.form.extensions.item(row, 0)
-                Items.append(item)
                 ext = item.data(self.DataObject)
                 ext.switch.whichChild = coin.SO_SWITCH_NONE
 
@@ -203,32 +210,32 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     processed.append(ext)
 
     def extensionsAdd(self):
+        extensions = self.extensions
         for sel in FreeCADGui.Selection.getSelectionEx():
             for subname in sel.SubElementNames:
                 row = self.form.extensions.rowCount()
-                self.extensions.append(self.obj.Proxy.createExtension(self.obj, sel.Object, subname))
-        self.setFields(self.obj)
+                extensions.append(self.obj.Proxy.createExtension(self.obj, sel.Object, subname))
+        self.obj.Proxy.setExtensions(self.obj, extensions)
         self.setDirty()
 
     def extensionsClear(self):
-        self.form.extensions.clearContents()
-        self.form.extensions.setRowCount(0)
+        self.obj.Proxy.setExtensions(self.obj, [])
+        self.setDirty()
 
     def extensionsRemove(self):
-        global Wires
-        Wires = []
-        processed = []
+        extensions = self.extensions
         for item in self.form.extensions.selectedItems():
             ext = item.data(self.DataObject).ext
-            if not ext in processed:
-                Wires.append(ext)
-                wire = ext.getWire()
-                if wire:
-                    import Part
-                    Part.show(wire)
-                processed.append(ext)
+            if ext in extensions:
+                extensions.remove(ext)
+        self.obj.Proxy.setExtensions(self.obj, extensions)
+        self.setDirty()
 
-    def pageRegisterSignalHandlers(self):
+    def getSignalsForUpdate(self, obj):
+        PathLog.track(obj.Label)
+        return [self.form.defaultLength.editingFinished]
+
+    def registerSignalHandlers(self, obj):
         self.form.buttonAdd.clicked.connect(self.extensionsAdd)
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonRemove.clicked.connect(self.extensionsRemove)
