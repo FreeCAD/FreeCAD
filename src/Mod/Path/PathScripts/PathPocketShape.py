@@ -65,7 +65,6 @@ class Extension(object):
         e2 = e0.copy()
         off = self.length.Value * direction
         e2.translate(off)
-        print("extendEdge(%.2f, %.2f, %.2f)" % (off.x, off.y, off.z))
         e2 = PathGeom.flipEdge(e2)
         e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
         e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
@@ -80,20 +79,17 @@ class Extension(object):
         feature = self.obj.Shape.getElement(self.sub)
         if Part.Edge == type(feature):
             e0 = feature
-            print("getEdgeCorners(%s)" % self.sub)
             midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
             tangent = e0.tangentAt(midparam)
             normal = tangent.cross(FreeCAD.Vector(0, 0, 1)).normalize()
             poffPlus  = e0.valueAt(midparam) + 0.01 * normal
             poffMinus = e0.valueAt(midparam) - 0.01 * normal
             if not self.obj.Shape.isInside(poffPlus, 0.005, True):
-                print('poffPlus')
                 return self.extendEdge(e0, normal)
             if not self.obj.Shape.isInside(poffMinus, 0.005, True):
-                print('poffMinus')
                 return self.extendEdge(e0, normal.negative())
         else:
-            print("getCorners(%s)" % self.sub)
+            PathLog.warning("getWire does not support %s" % type(feature))
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
