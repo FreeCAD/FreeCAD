@@ -132,6 +132,7 @@ private:
 
     PropertyContainer* pc;
     std::map<std::string,PropData> props;
+    std::map<const Property*,PropData*> propMap;
 };
 
 } // namespace App

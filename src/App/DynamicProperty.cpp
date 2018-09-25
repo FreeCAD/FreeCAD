@@ -130,15 +130,7 @@ void DynamicProperty::addDynamicProperties(const PropertyContainer* cont)
 
 const char* DynamicProperty::getPropertyName(const Property* prop) const
 {
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->first.c_str();
-    }
-    
-    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
-        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyName(prop);
-        
-    return this->pc->PropertyContainer::getPropertyName(prop);
+    return prop?prop->myName:0;
 }
 
 unsigned int DynamicProperty::getMemSize (void) const
@@ -154,21 +146,7 @@ unsigned int DynamicProperty::getMemSize (void) const
 
 short DynamicProperty::getPropertyType(const Property* prop) const
 {
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop) {
-            short attr = it->second.attr;
-            if (it->second.hidden)
-                attr |= Prop_Hidden;
-            if (it->second.readonly)
-                attr |= Prop_ReadOnly;
-            return attr;
-        }
-    }
-    
-    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
-        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyType(prop);
-        
-    return this->pc->PropertyContainer::getPropertyType(prop);
+    return prop?prop->getType():0;
 }
 
 short DynamicProperty::getPropertyType(const char *name) const
@@ -191,10 +169,9 @@ short DynamicProperty::getPropertyType(const char *name) const
 
 const char* DynamicProperty::getPropertyGroup(const Property* prop) const
 {
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->second.group.c_str();
-    }
+    auto it = propMap.find(prop);
+    if(it!=propMap.end())
+        return it->second->group.c_str();
     
     if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
         return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyGroup(prop);
@@ -216,10 +193,9 @@ const char* DynamicProperty::getPropertyGroup(const char *name) const
 
 const char* DynamicProperty::getPropertyDocumentation(const Property* prop) const
 {
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->second.doc.c_str();
-    }
+    auto it = propMap.find(prop);
+    if(it!=propMap.end())
+        return it->second->doc.c_str();
     
     if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
         return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyDocumentation(prop);
@@ -261,14 +237,26 @@ Property* DynamicProperty::addDynamicProperty(const char* type, const char* name
         ObjectName = getUniquePropertyName(type);
 
     pcProperty->setContainer(this->pc);
-    PropData data;
+    auto res = props.emplace(ObjectName,PropData());
+    PropData &data = res.first->second;
+    pcProperty->myName = res.first->first.c_str();
     data.property = pcProperty;
     data.group = (group ? group : "");
     data.doc = (doc ? doc : "");
     data.attr = attr;
     data.readonly = ro;
     data.hidden = hidden;
-    props[ObjectName] = data;
+    if(ro) attr |= Prop_ReadOnly;
+    if(hidden) attr |= Prop_Hidden;
+#define SYNC_PTYPE(_name) do{\
+        if(attr & Prop_##_name) pcProperty->setStatus(App::Property::Prop##_name,true);\
+    }while(0)
+    SYNC_PTYPE(ReadOnly);
+    SYNC_PTYPE(Transient);
+    SYNC_PTYPE(Hidden);
+    SYNC_PTYPE(Output);
+
+    propMap[pcProperty] = &data;
 
     GetApplication().signalAppendDynamicProperty(*pcProperty);
 
@@ -281,8 +269,10 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
     if (it != props.end()) {
         if(it->second.property->testStatus(Property::LockDynamic))
             throw Base::RuntimeError("property is locked");
-        GetApplication().signalRemoveDynamicProperty(*it->second.property);
-        delete it->second.property;
+        Property *prop = it->second.property;
+        GetApplication().signalRemoveDynamicProperty(*prop);
+        propMap.erase(prop);
+        delete prop;
         props.erase(it);
         return true;
     }

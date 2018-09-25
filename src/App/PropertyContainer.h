@@ -26,6 +26,7 @@
 
 #include <map>
 #include <climits>
+#include <cstring>
 #include <Base/Persistence.h>
 
 namespace Base {
@@ -57,7 +58,14 @@ struct AppExport PropertyData
     const char* Name;
     const char * Group;
     const char * Docu;
-    short Offset,Type;
+    short Offset, Type, Index;
+
+    inline PropertySpec(const char *name)
+        :Name(name)
+    {}
+    inline bool operator<(const PropertySpec &other) const {
+        return std::strcmp(Name,other.Name)<0;
+    }
   };
   
   //purpose of this struct is to be constructible from all acceptable container types and to 
@@ -83,8 +91,9 @@ struct AppExport PropertyData
   };
   
   // vector of all properties
-  std::vector<PropertySpec>  propertyData;
-  const PropertyData*        parentPropertyData;
+  std::set<PropertySpec>  propertyData;
+  std::map<int,PropertySpec*> propertyMap;
+  const PropertyData*     parentPropertyData;
 
   void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
   
