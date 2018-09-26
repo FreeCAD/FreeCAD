@@ -219,21 +219,26 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
 
 Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 {
-    //return Py::List();
-    throw Py::AttributeError("Not yet implemented");
+    Py::List list;
+    ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
+    std::set<long> nodeIds = vp->getHighlightNodes();
+    for (auto it : nodeIds) {
+        list.append(Py::Long(it));
+    }
+    return list;
 }
 
-void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
+void ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>
         (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
     std::set<long> res;
-    for(Py::List::iterator it = arg.begin(); it!= arg.end();++it){
+    for (Py::List::iterator it = arg.begin(); it!= arg.end();++it) {
         long id = static_cast<long>(Py::Long(*it));
         const SMDS_MeshNode *node = data->FindNode(id);
-        if(node)
+        if (node)
             res.insert(id);
     }
 
