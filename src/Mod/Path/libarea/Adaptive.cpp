@@ -582,7 +582,7 @@ void SmoothPaths(Paths &paths, double stepSize, int pointCount)
 			double dsqr = DistanceSqrd(lastPt, pt);
 			if (dsqr < SAME_POINT_TOL_SQRD_SCALED)
 			{
-				points.erase(points.end());
+				points.pop_back();
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
@@ -591,7 +591,7 @@ void SmoothPaths(Paths &paths, double stepSize, int pointCount)
 
 			if (l < stepSize)
 			{
-				points.erase(points.end());
+				points.pop_back();
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
