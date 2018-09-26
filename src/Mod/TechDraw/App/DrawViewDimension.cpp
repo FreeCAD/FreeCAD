@@ -102,6 +102,8 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(Type,((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
+    ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"",App::Prop_None,"+ Tolerance value");
+    ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
 
 
     //hide the properties the user can't edit in the property editor
@@ -845,6 +847,18 @@ bool DrawViewDimension::has2DReferences(void) const
 bool DrawViewDimension::has3DReferences(void) const
 {
     return (References3D.getSize() > 0);
+}
+
+bool DrawViewDimension::hasTolerance(void) const
+{
+    bool result = true;
+    double overTol = OverTolerance.getValue();
+    double underTol = UnderTolerance.getValue();
+    if (DrawUtil::fpCompare(overTol,0.0) &&
+        DrawUtil::fpCompare(underTol,0.0) ) {
+        result = false;
+    }
+    return result;
 }
 
 bool DrawViewDimension::showUnits() const
