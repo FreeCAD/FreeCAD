@@ -1,10 +1,10 @@
 # SGEOM cmake build file
 #PROJECT(SMESH Fortran CXX)
 
-SET(SMESH_VERSION_MAJOR 5)
-SET(SMESH_VERSION_MINOR 1)
-SET(SMESH_VERSION_PATCH 2)
-SET(SMESH_VERSION_TWEAK 2)
+SET(SMESH_VERSION_MAJOR 7)  # see main CMakeLists.txt of FreeCAD
+SET(SMESH_VERSION_MINOR 7)
+SET(SMESH_VERSION_PATCH 1)
+SET(SMESH_VERSION_TWEAK 0)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter")
