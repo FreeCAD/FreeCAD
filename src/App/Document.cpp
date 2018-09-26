@@ -548,7 +548,8 @@ void Document::exportGraphviz(std::ostream& out) const
             if(CSSubgraphs) {
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
-                    if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()) && objectIt->getInList().empty())
+                    // do not require an empty inlist (#0003465: Groups breaking dependency graph)
+                    if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                         recursiveCSSubgraphs(objectIt, nullptr);
                 }
             }
