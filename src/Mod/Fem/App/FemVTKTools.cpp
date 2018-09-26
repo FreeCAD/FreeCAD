@@ -552,14 +552,6 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int unitSchema = hGrp->GetInt("UserSchema",0);
-    float scale = 1.0;
-    if(unitSchema == 0)  // standard mm
-    {
-        scale = 1000.0;  // convert from meter in length of CFD result file
-    }
-
     vtkSmartPointer<vtkDataSet> ds;
     if(f.hasExtension("vtu"))
     {
@@ -600,7 +592,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
 
     App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
     FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to release FemMesh ??
-    importVTKMesh(dataset, fmesh, scale);
+    importVTKMesh(dataset, fmesh);
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     // PropertyLink is the property type to store DocumentObject pointer
@@ -643,16 +635,6 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         return;
     }
 
-    float scale = 1.0;
-    /*
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int unitSchema = hGrp->GetInt("UserSchema",0);
-    if(unitSchema == 0)  // standard mm
-    {
-        //scale = 0.001;  // convert from mm in FreeCAD to SI length in result file
-    }
-    */
-
     Base::TimeInfo Start;
     Base::Console().Message("Start: write FemResult or CfdResult to VTK unstructuredGrid dataset =======\n");
     Base::FileInfo f(filename);
@@ -660,7 +642,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     App::DocumentObject* mesh = static_cast<App::PropertyLink*>(res->getPropertyByName("Mesh"))->getValue();
     const FemMesh& fmesh = static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->getValue();
-    FemVTKTools::exportVTKMesh(&fmesh, grid, scale);
+    FemVTKTools::exportVTKMesh(&fmesh, grid);
 
     Base::Console().Message("    %f: vtk mesh builder finisched\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 
@@ -739,14 +721,6 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
         return;
     }
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int unitSchema = hGrp->GetInt("UserSchema",0);
-    float scale = 1.0;
-    if(unitSchema == 0)  // standard mm
-    {
-        scale = 1000;  // convert from SI length in result file to mm in FreeCAD
-    }
-
     const char* essential_var = vectors.at(essential_property).c_str();
     vtkSmartPointer<vtkDataArray> essential_array = pd->GetArray(essential_var);  // a vector must exist
     if(nPoints && essential_array) {
@@ -759,17 +733,9 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
                 App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(res->getPropertyByName(kv.first.c_str()));
                 if(vector_list) {
                     std::vector<Base::Vector3d> vec(nPoints);
-                    if(kv.first == std::string(essential_property)) {  // is there any other var need to scale?
-                        for(vtkIdType i=0; i<nPoints; ++i) {
-                            double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
-                            vec[i] = (Base::Vector3d(p[0]*scale, p[1]*scale, p[2]*scale));
-                        }
-                    }
-                    else{
-                        for(vtkIdType i=0; i<nPoints; ++i) {
-                            double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
-                            vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
-                        }
+                    for(vtkIdType i=0; i<nPoints; ++i) {
+                        double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
+                        vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
                     }
                     if (kv.first == std::string(essential_property))  // for displacement or velocity calc min and max of each components
                         _calcStat(vec, stats);
@@ -836,14 +802,6 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
 
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int unitSchema = hGrp->GetInt("UserSchema",0);
-    float scale = 1.0;
-    if(unitSchema == 0)  // standard mm
-    {
-        scale = 0.001;  // convert from mm in FreeCAD to SI length in result file
-    }
-
     const vtkIdType nPoints = grid->GetNumberOfPoints();
     for (auto const& kv: vectors) {
         const int dim = 3;  //Fixme, detect dim
@@ -865,8 +823,8 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             if(kv.first == essential_property) {
                 for(std::vector<Base::Vector3d>::const_iterator it=vel.begin(); it!=vel.end(); ++it) {
                     Base::Vector3d v = vel.at(i);
-                    double tuple[] = {v.x*scale, v.y*scale, v.z*scale};
-                    //double tuple[] = {it->x*scale, it->y*scale, it->z*scale};
+                    double tuple[] = {v.x, v.y, v.z};
+                    //double tuple[] = {it->x, it->y, it->z};
                     data->SetTuple(i, tuple);
                     ++i;
                 }
