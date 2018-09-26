@@ -99,10 +99,13 @@ public:
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
     App::PropertyString            FormatSpec;
     App::PropertyBool              Arbitrary;
+    App::PropertyFloat             OverTolerance;
+    App::PropertyFloat             UnderTolerance;
 
     short mustExecute() const;
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
+    bool hasTolerance(void) const;
 
     /** @name methods override Feature */
     //@{
