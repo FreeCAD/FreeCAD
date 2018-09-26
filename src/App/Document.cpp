@@ -1604,19 +1604,10 @@ bool Document::saveAs(const char* file)
     return save();
 }
 
-bool Document::saveCopy(const char* file)
+bool Document::saveCopy(const char* file) const
 {
-    std::string originalFileName = this->FileName.getStrValue();
-    std::string originalLabel = this->Label.getStrValue();
-    Base::FileInfo fi(file);
     if (this->FileName.getStrValue() != file) {
-        this->FileName.setValue(file);
-        this->Label.setValue(fi.fileNamePure());
-        this->Uid.touch(); // this forces a rename of the transient directory
-        bool result = save();
-        this->FileName.setValue(originalFileName);
-        this->Label.setValue(originalLabel);
-        this->Uid.touch();
+        bool result = saveToFile(file);
         return result;
     }
     return false;
@@ -1625,13 +1616,9 @@ bool Document::saveCopy(const char* file)
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
-    int compression = hGrp->GetInt("CompressionLevel",3);
-    compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
-
     if (*(FileName.getValue()) != '\0') {
         // Save the name of the tip object in order to handle in Restore()
-        if(Tip.getValue()) {
+        if (Tip.getValue()) {
             TipName.setValue(Tip.getValue()->getNameInDocument());
         }
 
@@ -1645,103 +1632,113 @@ bool Document::save (void)
                 ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
             LastModifiedBy.setValue(Author.c_str());
         }
-        // make a tmp. file where to save the project data first and then rename to
-        // the actual file name. This may be useful if overwriting an existing file
-        // fails so that the data of the work up to now isn't lost.
-        std::string uuid = Base::Uuid::createUuid();
-        std::string fn = FileName.getValue();
-        fn += "."; fn += uuid;
-        Base::FileInfo tmp(fn);
 
-        // open extra scope to close ZipWriter properly
-        {
-            Base::ofstream file(tmp, std::ios::out | std::ios::binary);
-            Base::ZipWriter writer(file);
-
-            writer.setComment("FreeCAD Document");
-            writer.setLevel(compression);
-            writer.putNextEntry("Document.xml");
-
-            if (hGrp->GetBool("SaveBinaryBrep", false))
-                writer.setMode("BinaryBrep");
-
-            Document::Save(writer);
-
-            // Special handling for Gui document.
-            signalSaveDocument(writer);
-
-            // write additional files
-            writer.writeFiles();
-
-            if (writer.hasErrors()) {
-                throw Base::FileException("Failed to write all data to file", tmp);
-            }
-
-            GetApplication().signalSaveDocument(*this);
-        }
-
-        // if saving the project data succeeded rename to the actual file name
-        Base::FileInfo fi(FileName.getValue());
-        if (fi.exists()) {
-            bool backup = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
-            int count_bak = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-            if (backup) {
-                int nSuff = 0;
-                std::string fn = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
-                std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    std::string file = it->fileName();
-                    if (file.substr(0,fn.length()) == fn) {
-                        // starts with the same file name
-                        std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0) {
-                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                            if (nPos==std::string::npos) {
-                                // store all backup files
-                                backup.push_back(*it);
-                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
-                            }
-                        }
-                    }
-                }
-
-                if (!backup.empty() && (int)backup.size() >= count_bak) {
-                    // delete the oldest backup file we found
-                    Base::FileInfo del = backup.front();
-                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        if (it->lastModified() < del.lastModified())
-                            del = *it;
-                    }
-
-                    del.deleteFile();
-                    fn = del.filePath();
-                }
-                else {
-                    // create a new backup file
-                    std::stringstream str;
-                    str << fi.filePath() << (nSuff + 1);
-                    fn = str.str();
-                }
-
-                if (fi.renameFile(fn.c_str()) == false)
-                    Base::Console().Warning("Cannot rename project file to backup file\n");
-            }
-            else {
-                fi.deleteFile();
-            }
-        }
-        if (tmp.renameFile(FileName.getValue()) == false)
-            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
-            fn.c_str(), FileName.getValue());
-
-        return true;
+        return saveToFile(FileName.getValue());
     }
 
     return false;
+}
+
+bool Document::saveToFile(const char* filename) const
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    int compression = hGrp->GetInt("CompressionLevel",3);
+    compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
+
+    // make a tmp. file where to save the project data first and then rename to
+    // the actual file name. This may be useful if overwriting an existing file
+    // fails so that the data of the work up to now isn't lost.
+    std::string uuid = Base::Uuid::createUuid();
+    std::string fn = filename;
+    fn += "."; fn += uuid;
+    Base::FileInfo tmp(fn);
+
+    // open extra scope to close ZipWriter properly
+    {
+        Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+        Base::ZipWriter writer(file);
+
+        writer.setComment("FreeCAD Document");
+        writer.setLevel(compression);
+        writer.putNextEntry("Document.xml");
+
+        if (hGrp->GetBool("SaveBinaryBrep", false))
+            writer.setMode("BinaryBrep");
+
+        Document::Save(writer);
+
+        // Special handling for Gui document.
+        signalSaveDocument(writer);
+
+        // write additional files
+        writer.writeFiles();
+
+        if (writer.hasErrors()) {
+            throw Base::FileException("Failed to write all data to file", tmp);
+        }
+
+        GetApplication().signalSaveDocument(*this);
+    }
+
+    // if saving the project data succeeded rename to the actual file name
+    Base::FileInfo fi(filename);
+    if (fi.exists()) {
+        bool backup = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
+        int count_bak = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
+        if (backup) {
+            int nSuff = 0;
+            std::string fn = fi.fileName();
+            Base::FileInfo di(fi.dirPath());
+            std::vector<Base::FileInfo> backup;
+            std::vector<Base::FileInfo> files = di.getDirectoryContent();
+            for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
+                std::string file = it->fileName();
+                if (file.substr(0,fn.length()) == fn) {
+                    // starts with the same file name
+                    std::string suf(file.substr(fn.length()));
+                    if (suf.size() > 0) {
+                        std::string::size_type nPos = suf.find_first_not_of("0123456789");
+                        if (nPos==std::string::npos) {
+                            // store all backup files
+                            backup.push_back(*it);
+                            nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
+                        }
+                    }
+                }
+            }
+
+            if (!backup.empty() && (int)backup.size() >= count_bak) {
+                // delete the oldest backup file we found
+                Base::FileInfo del = backup.front();
+                for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
+                    if (it->lastModified() < del.lastModified())
+                        del = *it;
+                }
+
+                del.deleteFile();
+                fn = del.filePath();
+            }
+            else {
+                // create a new backup file
+                std::stringstream str;
+                str << fi.filePath() << (nSuff + 1);
+                fn = str.str();
+            }
+
+            if (fi.renameFile(fn.c_str()) == false)
+                Base::Console().Warning("Cannot rename project file to backup file\n");
+        }
+        else {
+            fi.deleteFile();
+        }
+    }
+    if (tmp.renameFile(filename) == false)
+        Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
+        fn.c_str(), filename);
+
+    return true;
 }
 
 // Open the document
