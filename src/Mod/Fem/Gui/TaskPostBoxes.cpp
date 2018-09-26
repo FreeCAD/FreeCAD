@@ -324,15 +324,18 @@ void TaskPostBox::recompute() {
 
 void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBox* box) {
 
-    box->clear();
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
     for(std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it ) {
         list.push_back(QString::fromStdString(*it));
     }
 
+    int index = prop.getValue();  
+    // be aware the QComboxBox might be connected to the Property, thus clear the box wil set back the proberty enumeration index too.
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
+    box->clear();
     box->insertItems(0, list);
-    box->setCurrentIndex(prop.getValue());
+    box->setCurrentIndex(index);
 }
 
 //###########################################################################################################
