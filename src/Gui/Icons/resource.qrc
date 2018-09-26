@@ -72,6 +72,8 @@
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
         <file>tree-item-drag.svg</file>
+        <file>tree-goto-sel.svg</file>
+        <file>tree-rec-sel.svg</file>
         <file>tree-pre-sel.svg</file>
         <file>tree-sync-sel.svg</file>
         <file>tree-sync-view.svg</file>
@@ -222,6 +224,8 @@
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>tree-item-drag.svg</file>
+        <file>tree-goto-sel.svg</file>
+        <file>tree-rec-sel.svg</file>
         <file>tree-pre-sel.svg</file>
         <file>tree-sync-sel.svg</file>
         <file>tree-sync-view.svg</file>

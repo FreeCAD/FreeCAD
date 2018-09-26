@@ -37,6 +37,7 @@
 # include <QToolButton>
 #endif
 
+#include <Base/Tools.h>
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
@@ -116,9 +117,14 @@ void Action::setCheckable(bool b)
     }
 }
 
-void Action::setChecked(bool b)
+void Action::setChecked(bool b, bool no_signal)
 {
+    bool blocked;
+    if(no_signal) 
+        blocked = _action->blockSignals(true);
     _action->setChecked(b);
+    if(no_signal)
+        _action->blockSignals(blocked);
 }
 
 bool Action::isChecked() const
@@ -152,6 +158,11 @@ QKeySequence Action::shortcut() const
 void Action::setIcon (const QIcon & icon)
 {
     _action->setIcon(icon);
+}
+
+QIcon Action::icon () const
+{
+    return _action->icon();
 }
 
 void Action::setStatusTip(const QString & s)
@@ -206,7 +217,7 @@ void Action::setMenuRole(QAction::MenuRole menuRole)
  * to the command object.
  */
 ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
-  : Action(pcCmd, parent), _group(0), _dropDown(false)
+  : Action(pcCmd, parent), _group(0), _dropDown(false),_external(false),_toggle(false)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
@@ -275,6 +286,16 @@ bool ActionGroup::isExclusive() const
     return _group->isExclusive();
 }
 
+bool ActionGroup::isExternalTriggered() const
+{
+    return _external;
+}
+
+bool ActionGroup::isToggled() const
+{
+    return _toggle;
+}
+
 void ActionGroup::setVisible( bool b )
 {
     Action::setVisible(b);
@@ -322,8 +343,9 @@ void ActionGroup::onActivated ()
     _pcCmd->invoke(this->property("defaultAction").toInt());
 }
 
-void ActionGroup::onToggled(bool)
+void ActionGroup::onToggled(bool toggle)
 {
+    _toggle = toggle;
     onActivated();
 } 
 
@@ -340,6 +362,7 @@ void ActionGroup::onActivated (int index)
  */
 void ActionGroup::onActivated (QAction* a) 
 {
+    Base::FlagToggler<> flag(_external);
     int index = _group->actions().indexOf(a);
 
     QList<QWidget*> widgets = a->associatedWidgets();

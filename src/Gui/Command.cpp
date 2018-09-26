@@ -224,7 +224,7 @@ Command::Command(const char* name)
     sGroup      = QT_TR_NOOP("Standard");
     eType       = AlterDoc | Alter3DView | AlterSelection;
     bEnabled    = true;
-    canLog     = true;
+    bCanLog     = true;
 }
 
 Command::~Command()
@@ -255,12 +255,16 @@ void Command::addTo(QWidget *pcWidget)
 
 void Command::addToGroup(ActionGroup* group, bool checkable)
 {
+    addToGroup(group);
+    _pcAction->setCheckable(checkable);
+}
+
+void Command::addToGroup(ActionGroup* group)
+{
     if (!_pcAction) {
         _pcAction = createAction();
         testActive();
     }
-
-    _pcAction->setCheckable(checkable);
     group->addAction(_pcAction->findChild<QAction*>());
 }
 
@@ -322,7 +326,7 @@ void Command::invoke(int i)
     getGuiApplication()->macroManager()->setModule(sAppModule);
     try {
         std::unique_ptr<LogDisabler> disabler;
-        if(canLog && !_busy)
+        if(bCanLog && !_busy)
             disabler.reset(new LogDisabler);
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {

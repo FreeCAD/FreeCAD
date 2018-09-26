@@ -1256,7 +1256,7 @@ StdCmdRefresh::StdCmdRefresh()
     sPixmap       = "view-refresh";
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
     eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
-    canLog        = false;
+    bCanLog        = false;
 }
 
 void StdCmdRefresh::activated(int iMsg)

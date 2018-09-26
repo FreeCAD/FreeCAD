@@ -247,6 +247,7 @@ public:
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
+    void addToGroup(ActionGroup *);
     //@}
 
 
@@ -411,7 +412,7 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int         eType;
-    bool        canLog;
+    bool        bCanLog;
     //@}
 private:
     static int _busy;
