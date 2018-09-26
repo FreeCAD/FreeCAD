@@ -91,9 +91,12 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
   Part::Feature *feature = dynamic_cast<Part::Feature *>(objectPointer);
   if (!feature)
     return false;
-  shapeOut = feature->Shape.getValue();
+  Base::Placement placement = feature->globalPlacement();
+  Part::TopoShape topoShape = feature->Shape.getShape();
+  topoShape.setPlacement(placement);
+  shapeOut = topoShape.getShape();
   if (sub.size() > 0)
-    shapeOut = feature->Shape.getShape().getSubShape(sub.c_str());
+    shapeOut = topoShape.getSubShape(sub.c_str());
   if (shapeOut.IsNull())
     return false;
   return true;
