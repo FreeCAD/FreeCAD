@@ -1073,7 +1073,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
             QGIDatumLabel *dimLabel = dynamic_cast<QGIDatumLabel*>(*it);
             if(dimLabel) {
-                QGraphicsItem*dimParent = dimLabel->parentItem();
+                QGraphicsItem*dimParent = dimLabel->QGraphicsItem::parentItem();
                 if(!dimParent)
                     continue;
 
