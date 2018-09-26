@@ -85,9 +85,13 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
       return
 
     minLiftDistance = op.tool.Diameter
-    p1 =  adaptiveResults[0]["HelixCenterPoint"]
-    p2 =  adaptiveResults[0]["StartPoint"]
-    helixRadius =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+    helixRadius=0
+    for region in adaptiveResults:
+        p1 =  region["HelixCenterPoint"]
+        p2 =  region["StartPoint"]
+        r =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+        if r>helixRadius: helixRadius=r
+
     stepDown = obj.StepDown.Value
     passStartDepth=obj.StartDepth.Value
     if stepDown<0.1 : stepDown=0.1
@@ -116,6 +120,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
             passDepth = (passStartDepth - passEndDepth)
 
+            p1 =  region["HelixCenterPoint"]
+            p2 =  region["StartPoint"]
+            helixRadius =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
 
             #helix ramp
             if helixRadius>0.0001:
@@ -143,6 +150,16 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
                     z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
                     op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
+                    lx=x
+                    ly=y
+                    fi=fi+math.pi/16
+                # one more circle at target depth to make sure center is cleared
+                maxfi=maxfi+2*math.pi
+                while fi<maxfi:
+                    x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                    y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                    z = passEndDepth
+                    op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
                     lx=x
                     ly=y
                     fi=fi+math.pi/16
@@ -216,10 +233,8 @@ def Execute(op,obj):
 
     FreeCADGui.updateGui()
     try:
-        Console.PrintMessage("Tool diam: %f \n"%op.tool.Diameter)
-        helixDiameter = min(op.tool.Diameter,1000.0 if obj.HelixDiameterLimit.Value==0.0 else obj.HelixDiameterLimit.Value )
+        helixDiameter =obj.HelixDiameterLimit.Value
         topZ=op.stock.Shape.BoundBox.ZMax
-
         obj.Stopped = False
         obj.StopProcessing = False
         if obj.Tolerance<0.001: obj.Tolerance=0.001
