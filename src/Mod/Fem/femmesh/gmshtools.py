@@ -576,7 +576,7 @@ class GmshTools():
             # print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
             # print(error)
         except:
-            error = 'Error executing: {}\n'.format(self.gmsh_command)
+            error = 'Error executing: {}\n'.format(" ".join(comandlist))
             FreeCAD.Console.PrintError(error)
             self.error = True
         return error
