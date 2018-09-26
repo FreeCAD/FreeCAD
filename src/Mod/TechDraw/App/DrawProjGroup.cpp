@@ -151,6 +151,10 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     if (docObj == nullptr) {
         return DrawViewCollection::execute();
     }
+    
+    for (auto& v: Views.getValues()) {
+        v->recomputeFeature();
+    }
 
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
@@ -234,6 +238,7 @@ double DrawProjGroup::calculateAutomaticScale() const
     width *= bbFudge;
     height *= bbFudge;
 
+
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
                         (viewPtrs[2] || viewPtrs[5] || viewPtrs[9]) +
@@ -257,6 +262,7 @@ double DrawProjGroup::calculateAutomaticScale() const
         Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
         result = 1.0;
     }
+    
     return result;
 }
 
@@ -279,7 +285,7 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
 {
     // Get bounding boxes in object scale
     Base::BoundBox3d bboxes[10];
-    makeViewBbs(viewPtrs, bboxes, false);
+    makeViewBbs(viewPtrs, bboxes, true);
 
     //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column

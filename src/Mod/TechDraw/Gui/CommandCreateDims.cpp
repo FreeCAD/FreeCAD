@@ -296,7 +296,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         }
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a radius Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Selection for Radius does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -396,7 +396,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         }
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a diameter Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Selection for Diameter does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -506,7 +506,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a length Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for length Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -618,7 +618,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a horizontal Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -731,7 +731,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a vertical Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -824,7 +824,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Can't make an angle Dimension from this selection"));
+                                                   QObject::tr("Need two straight edges to make an Angle Dimension"));
         return;
     }
 
