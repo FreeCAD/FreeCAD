@@ -650,10 +650,11 @@ endif()
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
         # set the internal smesh version:
-        set(SMESH_VERSION_MAJOR 5)  # in src/3rdParty it says smesh is version 5.*, is this true?
-        set(SMESH_VERSION_MINOR 1)
-        set(SMESH_VERSION_PATCH 2)
-        set(SMESH_VERSION_TWEAK 2)
+        # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecadweb.org/viewtopic.php?f=10&t=30838
+        set(SMESH_VERSION_MAJOR 7)
+        set(SMESH_VERSION_MINOR 7)
+        set(SMESH_VERSION_PATCH 1)
+        set(SMESH_VERSION_TWEAK 0)
 
         #if we use smesh we definitely also need vtk, no matter of external or internal smesh
         set (VTK_COMPONENTS
