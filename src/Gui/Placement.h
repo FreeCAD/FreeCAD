@@ -67,6 +67,7 @@ private Q_SLOTS:
     void on_resetButton_clicked();
     void on_centerOfMass_toggled(bool);
     void on_selectedVertex_clicked();
+    void on_applyAxial_clicked();
 
 private:
     bool onApply();
