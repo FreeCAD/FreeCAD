@@ -148,6 +148,109 @@ TreeParams *TreeParams::Instance() {
     return instance;
 }
 
+// ---------------------------------------------------------------------------
+
+typedef std::set<DocumentObjectItem*> DocumentObjectItems;
+
+class Gui::DocumentObjectData {
+public:
+    DocumentItem *docItem;
+    DocumentObjectItems items;
+    ViewProviderDocumentObject *viewObject;
+    DocumentObjectItem *rootItem;
+    std::vector<App::DocumentObject*> children;
+    std::set<App::DocumentObject*> childSet;
+    bool removeChildrenFromRoot;
+    std::string label;
+    std::string label2;
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+
+    Connection connectIcon;
+    Connection connectTool;
+    Connection connectStat;
+
+    DocumentObjectData(DocumentItem *docItem, ViewProviderDocumentObject* vpd)
+        : docItem(docItem), viewObject(vpd),rootItem(0)
+    {
+        // Setup connections
+        connectIcon = viewObject->signalChangeIcon.connect(
+                boost::bind(&DocumentObjectData::slotChangeIcon, this));
+        connectTool = viewObject->signalChangeToolTip.connect(
+                boost::bind(&DocumentObjectData::slotChangeToolTip, this, _1));
+        connectStat = viewObject->signalChangeStatusTip.connect(
+                boost::bind(&DocumentObjectData::slotChangeStatusTip, this, _1));
+
+        removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
+        label = viewObject->getObject()->Label.getValue();
+        label2 = viewObject->getObject()->Label2.getValue();
+    }
+
+    const char *getTreeName() const {
+        return docItem->getTreeName();
+    }
+
+    void updateChildren(DocumentObjectDataPtr other) {
+        children = other->children;
+        childSet = other->childSet;
+    }
+
+    bool updateChildren() {
+        auto newChildren = viewObject->claimChildren();
+        auto obj = viewObject->getObject();
+        std::set<App::DocumentObject *> newSet;
+        bool updated = false;
+        for (auto child : newChildren) {
+            if(child && child->getNameInDocument()) {
+                if(!newSet.insert(child).second) {
+                    TREE_WARN("duplicate child item " << obj->getNameInDocument() 
+                        << '.' << child->getNameInDocument());
+                }else if(!childSet.erase(child)) {
+                    // this means new child detected
+                    updated = true;
+                    if(child->getDocument()==obj->getDocument() && 
+                       child->getDocument()==docItem->document()->getDocument())
+                        docItem->_ParentMap[child].insert(obj);
+                }
+            }
+        }
+        for (auto child : childSet) {
+            if(newSet.find(child) == newSet.end()) {
+                // this means old child removed
+                updated = true;
+                docItem->_ParentMap[child].erase(obj);
+            }
+        }
+        // We still need to check the order of the children
+        updated = updated || children!=newChildren;
+        children.swap(newChildren);
+        childSet.swap(newSet);
+        return updated;
+    }
+
+    void testStatus(bool resetStatus = false) {
+        QIcon icon,icon2;
+        for(auto item : items)
+            item->testStatus(resetStatus,icon,icon2);
+    }
+
+    void slotChangeIcon() {
+        testStatus(true);
+    }
+
+    void slotChangeToolTip(const QString& tip) {
+        for(auto item : items)
+            item->setToolTip(0, tip);
+    }
+
+    void slotChangeStatusTip(const QString& tip) {
+        for(auto item : items)
+            item->setStatusTip(0, tip);
+    }
+};
+
+// ---------------------------------------------------------------------------
+
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , editingItem(0), currentDocItem(0),fromOutside(false)
@@ -780,19 +883,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         leaveEvent(0);
-        App::Document* doc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
-        for(auto item : selectedItems()) {
-            if (item->type() != TreeWidget::ObjectType) {
-                event->ignore();
-                return;
-            }
-            App::DocumentObject* obj = static_cast<DocumentObjectItem*>(item)->
-                object()->getObject();
-            if (doc != obj->getDocument()) {
-                event->ignore();
-                return;
-            }
-        }
     }
     else if (targetitem->type() == TreeWidget::ObjectType) {
         onItemEntered(targetitem);
@@ -908,6 +998,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
     if (items.empty())
         return; // nothing needs to be done
 
+    bool dropOnly = QApplication::keyboardModifiers()== Qt::ControlModifier;
+
     if (targetitem->type() == TreeWidget::ObjectType) {
         // add object to group
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
@@ -916,7 +1008,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return; // no group like object
         }
 
-        bool dropOnly = QApplication::keyboardModifiers()== Qt::ControlModifier;
         if(!dropOnly) {
             // check if items can be dragged
             for(auto &v : items) {
@@ -1077,6 +1168,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     owner = 0;
                     subname.clear();
                     ss.str("");
+
+                    obj = doc->getObject(info.obj.c_str());
+                    if(!obj || !obj->getNameInDocument()) {
+                        FC_WARN("Dropping object deleted: " << info.doc << '@' << info.obj);
+                        continue;
+                    }
                 }
 
                 ss << Command::getObjectCmd(vp->getObject())
@@ -1128,29 +1225,36 @@ void TreeWidget::dropEvent(QDropEvent *event)
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
         bool syncPlacement = FC_TREEPARAM(SyncPlacement);
+        auto targetDocItem = static_cast<DocumentItem*>(targetitem);
+        App::Document* thisDoc = targetDocItem->document()->getDocument();
 
         // check if items can be dragged
         for(auto &v : items) {
             auto item = v.first;
+            auto obj = item->object()->getObject();
             auto parentItem = item->getParentItem();
-            if(!parentItem) 
-                continue;
-            if(!parentItem->object()->canDragObjects() || 
-               !parentItem->object()->canDragObject(item->object()->getObject()))
-            {
-                TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
-                       "' cannot be dragged out of '" << 
-                       parentItem->object()->getObject()->getNameInDocument() << "'");
+            if(!parentItem) {
+                if(obj->getDocument() == thisDoc)
+                    continue;
+            }else if(dropOnly || item->myOwner!=targetitem) {
+                // We will not drag item out of parent if either, 1) the CTRL
+                // key is held, or 2) the dragging item is not inside the
+                // dropping document tree.
+                parentItem = 0;
+            }else if(!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+                TREE_ERR("'" << obj->getExportName(true) << "' cannot be dragged out of '" << 
+                    parentItem->object()->getObject()->getNameInDocument() << "'");
                 return;
             }
             infos.emplace_back();
             auto &info = infos.back();
-            auto obj = item->object()->getObject();
             info.doc = obj->getDocument()->getName();
             info.obj = obj->getNameInDocument();
-            auto parent = parentItem->object()->getObject();
-            info.parentDoc = parent->getDocument()->getName();
-            info.parent = parent->getNameInDocument();
+            if(parentItem) {
+                auto parent = parentItem->object()->getObject();
+                info.parentDoc = parent->getDocument()->getName();
+                info.parent = parent->getNameInDocument();
+            }
             if(syncPlacement) {
                 std::ostringstream ss;
                 App::DocumentObject *topParent=0;
@@ -1162,7 +1266,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     info.topSubname = ss.str();
                 }
             }
-
         }
         // Because the existence of subname, we must de-select the drag the
         // object manually. Just do a complete clear here for simplicity
@@ -1170,10 +1273,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Selection().clearCompleteSelection();
 
         // Open command
-        App::Document* thisDoc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(thisDoc);
         gui->openCommand("Move object");
         try {
+            std::vector<App::DocumentObject*> droppedObjs;
             for (auto &info : infos) {
                 auto doc = App::GetApplication().getDocument(info.doc.c_str());
                 if(!doc) continue;
@@ -1185,22 +1288,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     continue;
                 }
 
-                auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
-                if(!parentDoc) {
-                    FC_WARN("Canont find document " << info.parentDoc);
-                    continue;
-                }
-                auto parent = parentDoc->getObject(info.parent.c_str());
-                auto vpp = dynamic_cast<ViewProviderDocumentObject*>(
-                        Application::Instance->getViewProvider(parent));
-                if(!vpp) {
-                    FC_WARN("Cannot find dragging object's parent " << info.parent);
-                    continue;
-                }
-
                 Base::Matrix4D mat;
                 App::PropertyPlacement *propPlacement = 0;
-                if(syncPlacement && obj->getDocument()==thisDoc) {
+                if(syncPlacement) {
                     if(info.topObj.size()) {
                         auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
                         if(doc) {
@@ -1221,25 +1311,91 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
-                std::ostringstream ss;
-                ss << Command::getObjectCmd(vpp->getObject())
-                    << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
-                auto manager = Application::Instance->macroManager();
-                auto lines = manager->getLines();
-                vpp->dragObject(obj);
-                if(manager->getLines() == lines)
-                    manager->addLine(MacroManager::Gui,ss.str().c_str());
+                if(info.parent.size()) {
+                    auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
+                    if(!parentDoc) {
+                        FC_WARN("Canont find document " << info.parentDoc);
+                        continue;
+                    }
+                    auto parent = parentDoc->getObject(info.parent.c_str());
+                    auto vpp = dynamic_cast<ViewProviderDocumentObject*>(
+                            Application::Instance->getViewProvider(parent));
+                    if(!vpp) {
+                        FC_WARN("Cannot find dragging object's parent " << info.parent);
+                        continue;
+                    }
 
-                //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
-                //all removed objects
-                auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-                if(grp) {
-                    FCMD_OBJ_CMD(grp,"removeObject(" << Command::getObjectCmd(obj) << ")");
+                    std::ostringstream ss;
+                    ss << Command::getObjectCmd(vpp->getObject())
+                        << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
+                    auto manager = Application::Instance->macroManager();
+                    auto lines = manager->getLines();
+                    vpp->dragObject(obj);
+                    if(manager->getLines() == lines)
+                        manager->addLine(MacroManager::Gui,ss.str().c_str());
+
+                    //make sure it is not part of a geofeaturegroup anymore.
+                    //When this has happen we need to handle all removed
+                    //objects
+                    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+                    if(grp) {
+                        FCMD_OBJ_CMD(grp,"removeObject(" << Command::getObjectCmd(obj) << ")");
+                    }
+
+                    // check if the object has been deleted
+                    obj = doc->getObject(info.obj.c_str());
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    droppedObjs.push_back(obj);
+                    if(propPlacement) 
+                        propPlacement->setValue(Base::Placement(mat));
+                }else{
+                    std::string name = thisDoc->getUniqueObjectName("Link");
+                    FCMD_DOC_CMD(thisDoc,"addObject('App::Link','" << name << "').setLink("
+                            << Command::getObjectCmd(obj)  << ")");
+                    auto link = thisDoc->getObject(name.c_str());
+                    if(!link)
+                        continue;
+                    FCMD_OBJ_CMD(link,"Label='" << obj->getLinkedObject(true)->Label.getValue() << "'");
+                    propPlacement = dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
+                    if(propPlacement) 
+                        propPlacement->setValue(Base::Placement(mat));
+                    droppedObjs.push_back(link);
                 }
-
-                if(propPlacement) 
-                    propPlacement->setValue(Base::Placement(mat));
             }
+            DocumentObjectItem *scrollItem = 0;
+            for(auto obj : droppedObjs) {
+                auto it = targetDocItem->ObjectMap.find(obj);
+                if(it==targetDocItem->ObjectMap.end())
+                    continue;
+                DocumentObjectItem *item = it->second->rootItem;
+                if(!item && it->second->items.size())
+                    item = *it->second->items.begin();
+                if(item) {
+                    if(!scrollItem)
+                        scrollItem = item;
+                    targetDocItem->showItem(item,true);
+                    continue;
+                }
+                auto itDoc = DocumentMap.find(
+                        Application::Instance->getDocument(obj->getDocument()));
+                if(itDoc==DocumentMap.end())
+                    continue;
+                it = itDoc->second->ObjectMap.find(obj);
+                if(it == itDoc->second->ObjectMap.end())
+                    continue;
+                item = it->second->rootItem;
+                if(!item && it->second->items.size())
+                    item = *it->second->items.begin();
+                if(item) {
+                    if(!scrollItem)
+                        scrollItem = item;
+                    itDoc->second->showItem(item,true);
+                }
+            }
+            if(scrollItem)
+                scrollToItem(scrollItem);
+
         } catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
                     QString::fromLatin1(e.what()));
@@ -1655,107 +1811,6 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
 TreeDockWidget::~TreeDockWidget()
 {
 }
-
-// ---------------------------------------------------------------------------
-
-typedef std::set<DocumentObjectItem*> DocumentObjectItems;
-
-class Gui::DocumentObjectData {
-public:
-    DocumentItem *docItem;
-    DocumentObjectItems items;
-    ViewProviderDocumentObject *viewObject;
-    DocumentObjectItem *rootItem;
-    std::vector<App::DocumentObject*> children;
-    std::set<App::DocumentObject*> childSet;
-    bool removeChildrenFromRoot;
-    std::string label;
-    std::string label2;
-
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
-
-    Connection connectIcon;
-    Connection connectTool;
-    Connection connectStat;
-
-    DocumentObjectData(DocumentItem *docItem, ViewProviderDocumentObject* vpd)
-        : docItem(docItem), viewObject(vpd),rootItem(0)
-    {
-        // Setup connections
-        connectIcon = viewObject->signalChangeIcon.connect(
-                boost::bind(&DocumentObjectData::slotChangeIcon, this));
-        connectTool = viewObject->signalChangeToolTip.connect(
-                boost::bind(&DocumentObjectData::slotChangeToolTip, this, _1));
-        connectStat = viewObject->signalChangeStatusTip.connect(
-                boost::bind(&DocumentObjectData::slotChangeStatusTip, this, _1));
-
-        removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
-        label = viewObject->getObject()->Label.getValue();
-        label2 = viewObject->getObject()->Label2.getValue();
-    }
-
-    const char *getTreeName() const {
-        return docItem->getTreeName();
-    }
-
-    void updateChildren(DocumentObjectDataPtr other) {
-        children = other->children;
-        childSet = other->childSet;
-    }
-
-    bool updateChildren() {
-        auto newChildren = viewObject->claimChildren();
-        auto obj = viewObject->getObject();
-        std::set<App::DocumentObject *> newSet;
-        bool updated = false;
-        for (auto child : newChildren) {
-            if(child && child->getNameInDocument()) {
-                if(!newSet.insert(child).second) {
-                    TREE_WARN("duplicate child item " << obj->getNameInDocument() 
-                        << '.' << child->getNameInDocument());
-                }else if(!childSet.erase(child)) {
-                    // this means new child detected
-                    updated = true;
-                    if(child->getDocument()==obj->getDocument() && 
-                       child->getDocument()==docItem->document()->getDocument())
-                        docItem->_ParentMap[child].insert(obj);
-                }
-            }
-        }
-        for (auto child : childSet) {
-            if(newSet.find(child) == newSet.end()) {
-                // this means old child removed
-                updated = true;
-                docItem->_ParentMap[child].erase(obj);
-            }
-        }
-        // We still need to check the order of the children
-        updated = updated || children!=newChildren;
-        children.swap(newChildren);
-        childSet.swap(newSet);
-        return updated;
-    }
-
-    void testStatus(bool resetStatus = false) {
-        QIcon icon,icon2;
-        for(auto item : items)
-            item->testStatus(resetStatus,icon,icon2);
-    }
-
-    void slotChangeIcon() {
-        testStatus(true);
-    }
-
-    void slotChangeToolTip(const QString& tip) {
-        for(auto item : items)
-            item->setToolTip(0, tip);
-    }
-
-    void slotChangeStatusTip(const QString& tip) {
-        for(auto item : items)
-            item->setStatusTip(0, tip);
-    }
-};
 
 void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 
     if(!isConnectionAttached()) 
