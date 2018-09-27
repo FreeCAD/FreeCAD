@@ -1020,7 +1020,7 @@ void SelectionSingleton::selStackGoBack(int count) {
     std::deque<SelStackItem> tmpStack;
     _SelStackForward.swap(tmpStack);
     while(_SelStackBack.size()) {
-        bool found = true;
+        bool found = false;
         for(auto &n : _SelStackBack.back()) {
             if(addSelection(n[0].c_str(), n[1].c_str(), n[2].c_str()))
                 found = true;
