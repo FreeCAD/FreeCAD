@@ -114,6 +114,9 @@
        <property name="text">
         <string>Apply axial</string>
        </property>
+       <property name="toolTip">
+       <string>Shift click for opposite direction</string>
+       </property>
        </widget>
       </item>
      </layout>
