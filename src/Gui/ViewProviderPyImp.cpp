@@ -537,6 +537,14 @@ PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
     } PY_CATCH;
 }
 
+PyObject *ViewProviderPy::doubleClicked(PyObject *args) {
+    if(!PyArg_ParseTuple(args, ""))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getViewProviderPtr()->doubleClicked()));
+    }PY_CATCH;
+}
+
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property

@@ -80,6 +80,11 @@
                     Check whether the child object can be removed from other parent and added here by drag and drop</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="doubleClicked">
+            <Documentation>
+                <UserDocu>Trigger double clicking the corresponding tree item of this view object</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="addDisplayMode">
             <Documentation>
                 <UserDocu>Add a new display mode to the view provider</UserDocu>
