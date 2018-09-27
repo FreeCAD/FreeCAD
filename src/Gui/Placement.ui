@@ -45,6 +45,19 @@
         </property>
        </spacer>
       </item>
+      <item row="4" column="0">
+      <widget class="QLabel" name="TextLabelAxial">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Axial:</string>
+       </property>
+      </widget>
+     </item>
       <item row="3" column="0">
        <widget class="QLabel" name="TextLabelZ">
         <property name="sizePolicy">
@@ -92,6 +105,16 @@
       </item>
       <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="zPos"/>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="axialPos"/>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="applyAxial">
+       <property name="text">
+        <string>Apply axial</string>
+       </property>
+       </widget>
       </item>
      </layout>
     </widget>

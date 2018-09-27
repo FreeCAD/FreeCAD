@@ -91,6 +91,7 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
+    ui->axialPos->setUnit(Base::Unit::Length);
     ui->xCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
@@ -337,7 +338,7 @@ void Placement::on_selectedVertex_clicked()
         Base::Vector3d tmp;
         double angle;
         rot.getRawValue(tmp, angle);
-        Base::Vector3d axis(picked[0].x-picked[1].x,picked[0].y-picked[1].y,picked[0].z-picked[1].z);
+        Base::Vector3d axis(picked[1].x-picked[0].x,picked[1].y-picked[0].y,picked[1].z-picked[0].z);
         axis.Normalize();
         rot.setValue(axis, angle);
         plm.setRotation(rot);
@@ -372,6 +373,28 @@ created, if needed."));
     }
 }
 
+void Placement::on_applyAxial_clicked()
+{
+    signalMapper->blockSignals(true);
+    double axPos = ui->axialPos->value().getValue();
+    Base::Placement p = getPlacementData();
+    double angle;
+    Base::Vector3d axis;
+    p.getRotation().getValue(axis, angle);
+    Base::Vector3d curPos (p.getPosition());
+    Base::Vector3d newPos;
+    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+    if (km == Qt::ShiftModifier){ //go opposite direction on Shift+click
+        newPos = Base::Vector3d(curPos.x-(axis.x*axPos),curPos.y-(axis.y*axPos),curPos.z-(axis.z*axPos));
+    } else {
+        newPos = Base::Vector3d(curPos.x+(axis.x*axPos),curPos.y+(axis.y*axPos),curPos.z+(axis.z*axPos));
+    }
+    ui->xPos->setValue(Base::Quantity(newPos.x,Base::Unit::Length));
+    ui->yPos->setValue(Base::Quantity(newPos.y,Base::Unit::Length));
+    ui->zPos->setValue(Base::Quantity(newPos.z,Base::Unit::Length));
+    signalMapper->blockSignals(false);
+    onPlacementChanged(0);
+}
 
 void Placement::on_applyIncrementalPlacement_toggled(bool on)
 {
