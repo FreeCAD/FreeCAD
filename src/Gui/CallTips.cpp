@@ -415,7 +415,11 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     tip.parameter = longdoc.left(pos);
                 }
             }
-            tips[str] = tip;
+
+            // Do not override existing items
+            QMap<QString, CallTip>::iterator pos = tips.find(str);
+            if (pos == tips.end())
+                tips[str] = tip;
         }
     }
     catch (Py::Exception& e) {
