@@ -478,6 +478,18 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
+ImportOCAFCmd::ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
+    : ImportOCAF(h, d, name)
+{
+}
+
+void ImportOCAFCmd::applyColors(Part::Feature* part, const std::vector<App::Color>& colors)
+{
+    partColors[part] = colors;
+}
+
+// ----------------------------------------------------------------------------
+
 ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)

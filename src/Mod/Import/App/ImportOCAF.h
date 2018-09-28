@@ -77,6 +77,21 @@ private:
     static const int HashUpper = INT_MAX;
 };
 
+class ImportExport ImportOCAFCmd : public ImportOCAF
+{
+public:
+    ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
+    std::map<Part::Feature*, std::vector<App::Color> > getPartColorsMap() const {
+        return partColors;
+    }
+
+private:
+    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors);
+
+private:
+    std::map<Part::Feature*, std::vector<App::Color> > partColors;
+};
+
 class ImportExport ExportOCAF
 {
 public:
