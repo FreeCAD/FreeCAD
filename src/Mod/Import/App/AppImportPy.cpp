@@ -34,6 +34,8 @@
 # include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
 # include <STEPControl_Writer.hxx>
