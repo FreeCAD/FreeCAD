@@ -88,6 +88,7 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Import/App/ImportOCAF.h>
+#include <Mod/Import/App/ExportOCAF.h>
 
 #include <TDataStd.hxx>
 #include <TDataStd_Integer.hxx>
