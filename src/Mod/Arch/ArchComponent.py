@@ -1043,7 +1043,7 @@ class ComponentTaskPanel:
         try:
             import BimClassification
         except:
-            self.form.ButtonCode.hide()
+            self.classButton.hide()
         else:
             import os
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
