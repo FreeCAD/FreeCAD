@@ -674,7 +674,7 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 
 	for (size_t i = 0; i < paths.size(); i++)
 	{
-		CleanPath(output[i], paths[i], scale);
+		CleanPath(output[i], paths[i], 1.407*scale);
 	}
 	ScaleDownPaths(paths,scale);
 }
