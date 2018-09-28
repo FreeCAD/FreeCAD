@@ -6606,18 +6606,20 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                                  QObject::tr("Select two or more compatible edges"));
             return;
         }
-        else if (isPointOrSegmentFixed(Obj,GeoId)) {
-            if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
+        else if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                      QObject::tr("Sketch axes cannot be used in equality constraints"));
                 return;
-            }
-            else if (hasAlreadyExternal) {
+        }
+        else if (isPointOrSegmentFixed(Obj,GeoId)) {
+
+            if (hasAlreadyExternal) {
                 showNoConstraintBetweenFixedGeometry();
                 return;
             }
-            else
+            else {
                 hasAlreadyExternal = true;
+            }
         }
         
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
