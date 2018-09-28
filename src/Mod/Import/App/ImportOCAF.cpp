@@ -507,9 +507,52 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     }
 }
 
+ExportOCAF::~ExportOCAF()
+{
+}
+
+int ExportOCAF::exportObject(App::DocumentObject* obj,
+                             std::vector <TDF_Label>& hierarchical_label,
+                             std::vector <TopLoc_Location>& hierarchical_loc,
+                             std::vector <App::DocumentObject*>& hierarchical_part)
+{
+    std::vector <int> local_label;
+    int root_id;
+    int return_label = -1;
+
+    if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+        App::Part* part = static_cast<App::Part*>(obj);
+        // I shall recusrively select the elements and call back
+        std::vector<App::DocumentObject*> entries = part->Group.getValues();
+        std::vector<App::DocumentObject*>::iterator it;
+
+        for ( it = entries.begin(); it != entries.end(); it++ ) {
+            int new_label=0;
+            new_label = exportObject((*it), hierarchical_label, hierarchical_loc, hierarchical_part);
+            local_label.push_back(new_label);
+        }
+
+        createNode(part,root_id, hierarchical_label, hierarchical_loc, hierarchical_part);
+        std::vector<int>::iterator label_it;
+        for (label_it = local_label.begin(); label_it != local_label.end(); ++label_it) {
+            pushNode(root_id,(*label_it), hierarchical_label,hierarchical_loc);
+        }
+
+        return_label = root_id;
+    }
+
+    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        Part::Feature* part = static_cast<Part::Feature*>(obj);
+        std::vector<App::Color> colors;
+        findColors(part, colors);
+
+        return_label = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
+    }
+
+    return return_label;
+}
 
 // This function creates an Assembly node in an XCAF document with its relative placement information
-
 void ExportOCAF::createNode(App::Part* part, int& root_id,
                             std::vector <TDF_Label>& hierarchical_label,
                             std::vector <TopLoc_Location>& hierarchical_loc,
@@ -657,6 +700,21 @@ void ExportOCAF::getFreeLabels(std::vector <TDF_Label>& hierarchical_label,
     }
 }
 
+void ExportOCAF::getPartColors(std::vector <App::DocumentObject*> hierarchical_part,
+                               std::vector <TDF_Label> FreeLabels,
+                               std::vector <int> part_id,
+                               std::vector < std::vector<App::Color> >& Colors) const
+{
+    // I am seeking for the colors of each parts
+    std::size_t n = FreeLabels.size();
+    for (std::size_t i = 0; i < n; i++) {
+        std::vector<App::Color> colors;
+        Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
+        findColors(part, colors);
+        Colors.push_back(colors);
+    }
+}
+
 void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part,
                                      std::vector <TDF_Label> FreeLabels,
                                      std::vector <int> part_id,
@@ -720,11 +778,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
     }
 }
 
-
-
-
 // This function is moving a "standard" node into an Assembly node within an XCAF doc
-
 void ExportOCAF::pushNode(int root_id, int node_id, std::vector <TDF_Label>& hierarchical_label,std::vector <TopLoc_Location>& hierarchical_loc)
 {
     TDF_Label root;
@@ -733,6 +787,20 @@ void ExportOCAF::pushNode(int root_id, int node_id, std::vector <TDF_Label>& hie
     node = hierarchical_label.at(node_id-1);
 
     XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root, node, hierarchical_loc.at(node_id-1));
+}
+
+// ----------------------------------------------------------------------------
+
+ExportOCAFCmd::ExportOCAFCmd(Handle(TDocStd_Document) h, bool explicitPlacement)
+  : ExportOCAF(h, explicitPlacement)
+{
+}
+
+void ExportOCAFCmd::findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+{
+    std::map<Part::Feature*, std::vector<App::Color> >::const_iterator it = partColors.find(part);
+    if (it != partColors.end())
+        colors = it->second;
 }
 
 // ----------------------------------------------------------------------------
