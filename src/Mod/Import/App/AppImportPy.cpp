@@ -198,7 +198,7 @@ private:
             }
 
 #if 1
-            Import::ImportOCAF ocaf(hDoc, pcDoc, file.fileNamePure());
+            Import::ImportOCAFCmd ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.loadShapes();
 #else
             Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
@@ -206,6 +206,23 @@ private:
 #endif
             pcDoc->recompute();
             hApp->Close(hDoc);
+
+            std::map<Part::Feature*, std::vector<App::Color> > colorMap = ocaf.getPartColorsMap();
+            if (!colorMap.empty()) {
+                Py::List list;
+                for (auto it : colorMap) {
+                    Py::Tuple tuple(2);
+                    tuple.setItem(0, Py::asObject(it.first->getPyObject()));
+
+                    App::PropertyColorList colors;
+                    colors.setValues(it.second);
+                    tuple.setItem(1, Py::asObject(colors.getPyObject()));
+
+                    list.append(tuple);
+                }
+
+                return list;
+            }
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
