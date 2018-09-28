@@ -5989,6 +5989,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     std::vector<int> ids;
     bool lineSel = false, arcSel = false, circSel = false, ellipsSel = false, arcEllipsSel=false, hasAlreadyExternal = false;
+    bool hyperbSel = false, parabSel=false;
 
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
 
@@ -6026,16 +6027,20 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             return;
         }
         
-        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
             lineSel = true;
-        else if (geo->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())
+        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
             arcSel = true;
-        else if (geo->getTypeId() != Part::GeomCircle::getClassTypeId()) 
+        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) 
             circSel = true;
-        else if (geo->getTypeId() != Part::GeomEllipse::getClassTypeId()) 
+        else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) 
             ellipsSel = true;
-        else if (geo->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) 
+        else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) 
             arcEllipsSel = true;
+        else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) 
+            hyperbSel = true;
+        else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) 
+            parabSel = true;
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select two or more edges of similar type"));
@@ -6045,7 +6050,12 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         ids.push_back(GeoId);
     }
 
-    if (lineSel && (arcSel || circSel) && (ellipsSel || arcEllipsSel)) {
+    // Check for heterogeneous groups in selection
+    if ( (lineSel && ((arcSel || circSel) || (ellipsSel || arcEllipsSel) || hyperbSel || parabSel) ) ||
+         ((arcSel || circSel) && ((ellipsSel || arcEllipsSel) || hyperbSel || parabSel)) ||
+         ((ellipsSel || arcEllipsSel) && (hyperbSel || parabSel)) ||
+         (hyperbSel && parabSel) ) {
+        
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two or more edges of similar type"));
         return;
