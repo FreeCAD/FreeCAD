@@ -252,7 +252,10 @@ private:
 
             bool keepExplicitPlacement = list.size() > 1;
             keepExplicitPlacement = Standard_True;
-            Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+            Import::ExportOCAFCmd ocaf(hDoc, keepExplicitPlacement);
+
+            std::map<Part::Feature*, std::vector<App::Color> > partColors;
+            std::vector<Part::Feature*> partObjects;
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -260,11 +263,7 @@ private:
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                         Part::Feature* part = static_cast<Part::Feature*>(obj);
-                        std::vector<App::Color> colors;
-                        std::vector <TDF_Label> hierarchical_label;
-                        std::vector <TopLoc_Location> hierarchical_loc;
-                        std::vector <App::DocumentObject*> hierarchical_part;
-                        ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
+                        partObjects.push_back(part);
                     }
                     else {
                         Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
@@ -280,10 +279,9 @@ private:
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             App::PropertyColorList colors;
                             colors.setPyObject(item1.ptr());
-                            std::vector <TDF_Label> hierarchical_label;
-                            std::vector <TopLoc_Location> hierarchical_loc;
-                            std::vector <App::DocumentObject*> hierarchical_part;
-                            ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc, hierarchical_part);
+
+                            partObjects.push_back(part);
+                            partColors[part] = colors.getValues();
                         }
                         else {
                             Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
@@ -292,10 +290,38 @@ private:
                 }
             }
 
+            ocaf.setPartColorsMap(partColors);
+
+            // That stuff is exporting a list of selected objects into FreeCAD Tree
+            std::vector <TDF_Label> hierarchical_label;
+            std::vector <TopLoc_Location> hierarchical_loc;
+            std::vector <App::DocumentObject*> hierarchical_part;
+
+            for (auto it : partObjects) {
+                ocaf.exportObject(it, hierarchical_label, hierarchical_loc, hierarchical_part);
+            }
+
+            // Free Shapes must have absolute placement and not explicit
+            std::vector <TDF_Label> FreeLabels;
+            std::vector <int> part_id;
+            ocaf.getFreeLabels(hierarchical_label, FreeLabels, part_id);
+            // Got issue with the colors as they are coming from the View Provider they can't be determined into
+            // the App Code.
+            std::vector< std::vector<App::Color> > Colors;
+            ocaf.getPartColors(hierarchical_part, FreeLabels, part_id, Colors);
+            ocaf.reallocateFreeShape(hierarchical_part, FreeLabels, part_id, Colors);
+
+#if OCC_VERSION_HEX >= 0x070200
+            // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+            XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+#endif
+
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 //Interface_Static::SetCVal("write.step.schema", "AP214IS");
                 STEPCAFControl_Writer writer;
+                Interface_Static::SetIVal("write.step.assembly",1);
+                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
