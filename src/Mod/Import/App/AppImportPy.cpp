@@ -55,6 +55,7 @@
 #include <CXX/Objects.hxx>
 
 #include "ImportOCAF.h"
+#include "ExportOCAF.h"
 //#include "ImportOCAFAssembly.h"
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
