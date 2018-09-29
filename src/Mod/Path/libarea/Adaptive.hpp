@@ -117,7 +117,7 @@ class Adaptive2d
 	double referenceCutArea = 0;
 	double optimalCutAreaPD = 0;
 	bool stopProcessing = false;
-
+	int current_region=0;
 	clock_t lastProgressTime = 0;
 
 	std::function<bool(TPaths)> *progressCallback = NULL;
