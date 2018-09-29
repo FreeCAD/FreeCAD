@@ -96,7 +96,7 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value specified by user");
+    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -172,9 +172,13 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         }
 
-    DrawView::onChanged(prop);
     }
 
+    if (prop == &Type) {
+        FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a FormatSpec for this type(dim,rad,etc)
+    }
+
+    DrawView::onChanged(prop);
 }
 
 void DrawViewDimension::onDocumentRestored()
@@ -448,8 +452,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
     }
 
-    std::string prefixSym = getPrefix();                                  //get Radius/Diameter/... symbol
-
     //find the %x.y tag in FormatSpec
     QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
     QString match;
@@ -480,7 +482,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         }
     }
 
-    repl = Base::Tools::fromStdString(getPrefix()) + repl;
     specStr.replace(match,repl);
     //this next bit is so inelegant!!!
     QChar dp = QChar::fromLatin1('.');
@@ -916,7 +917,14 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         precision = hGrp->GetInt("AltDecimals", 2);
     }
     QString formatPrecision = QString::number(precision);
-    QString formatSpec = format1 + formatPrecision + format2;
+    
+    std::string prefix = getPrefix();
+    QString qPrefix;
+    if (!prefix.empty()) {
+        qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
+    }
+
+    QString formatSpec = qPrefix + format1 + formatPrecision + format2;
     return Base::Tools::toStdString(formatSpec);
 }
 
