@@ -312,7 +312,7 @@ void Placement::on_selectedVertex_clicked()
     Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
     for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
         std::vector<Base::Vector3d> points = it->getPickedPoints();
-        if (it==selection.begin()){
+        if (it==selection.begin() && points.size()>0){
             firstSelected=points[0];
         }
         picked.insert(picked.begin(),points.begin(),points.end());
@@ -404,11 +404,13 @@ void Placement::on_selectedVertex_clicked()
     if (!success){
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox;
-        msgBox.setText(tr("Please select 1 or 2 points before clicking this button.  A point may be on a vertex, \
+        msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
 selected the midpoint between them will be the center of rotation and a new custom axis will be \
-created, if needed."));
+created, if needed.  If 3 points are selected the first point becomes the center of rotation and \
+lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle \
+information is provided in the report view, which can be useful when aligning objects."));
         msgBox.exec();
         ui->xCnt->setValue(0);
         ui->yCnt->setValue(0);
