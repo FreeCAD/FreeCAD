@@ -391,7 +391,7 @@ void Placement::on_selectedVertex_clicked()
         Base::Vector3d v2(c-b);
         v1.Normalize();
         v2.Normalize();
-        double targetAngle = v2.GetAngle(v1) * (180.0)/3.141592653589793;
+        double targetAngle = Base::toDegrees(v2.GetAngle(v1));
         Base::Console().Message("Target angle: %.8f degrees, complementary: %.8d degrees\n",targetAngle, 90.0-targetAngle);
         rot.setValue(norm, angle);
         plm.setRotation(rot);
