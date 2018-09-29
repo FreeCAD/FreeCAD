@@ -705,9 +705,16 @@ void QGIViewDimension::draw()
 
         aHead1->setDirMode(true);
         aHead2->setDirMode(true);
-        aHead1->setDirection(a1Dir);
-        aHead2->setDirection(a2Dir);
-
+        
+        
+        if (vp->FlipArrowheads.getValue()) {
+            aHead1->setDirection(a1Dir * -1.0);
+            aHead2->setDirection(a2Dir * -1.0);
+        } else {
+            aHead1->setDirection(a1Dir);
+            aHead2->setDirection(a2Dir);
+        }
+        
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
         aHead1->setSize(QGIArrow::getPrefArrowSize());
         aHead1->draw();
