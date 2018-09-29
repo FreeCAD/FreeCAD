@@ -82,14 +82,15 @@ class ArchReference:
         obj.Proxy = self
         ArchReference.setProperties(self,obj)
         self.Type = "Reference"
+        self.reload = True
 
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
         if not "File" in pl:
-            obj.addProperty("App::PropertyFile","File","Component",QT_TRANSLATE_NOOP("App::Property","The base file this component is built upon"))
+            obj.addProperty("App::PropertyFile","File","Reference",QT_TRANSLATE_NOOP("App::Property","The base file this component is built upon"))
         if not "Part" in pl:
-            obj.addProperty("App::PropertyString","Part","Component",QT_TRANSLATE_NOOP("App::Property","The part to use from the base file"))
+            obj.addProperty("App::PropertyString","Part","Reference",QT_TRANSLATE_NOOP("App::Property","The part to use from the base file"))
         self.Type = "Reference"
 
     def onDocumentRestored(self,obj):
@@ -104,9 +105,14 @@ class ArchReference:
 
         return None
 
+    def onChanged(self,obj,prop):
+
+        if prop in ["File","Part"]:
+            self.reload = True
+
     def execute(self,obj):
 
-        if obj.File and obj.Part:
+        if obj.File and obj.Part and self.reload:
             self.parts = self.getPartsList(obj)
             if self.parts:
                 zdoc = zipfile.ZipFile(obj.File)
@@ -122,7 +128,7 @@ class ArchReference:
                             obj.Shape = shape
                         else:
                             print("Part not found in file")
-        return True
+            self.reload = False
 
     def getPartsList(self,obj,filename=None):
 
@@ -171,6 +177,14 @@ class ViewProviderArchReference:
     def __init__(self,vobj):
 
         vobj.Proxy = self
+        self.setProperties(vobj)
+
+    def setProperties(self,vobj):
+
+        pl = vobj.PropertiesList
+        if not "TimeStamp" in pl:
+            vobj.addProperty("App::PropertyFloat","TimeStamp","Reference",QT_TRANSLATE_NOOP("App::Property","The latest time stamp of the linked file"))
+            vobj.setEditorMode("TimeStamp",2)
 
     def getIcon(self):
 
@@ -188,6 +202,15 @@ class ViewProviderArchReference:
         FreeCADGui.Control.closeDialog()
         return
 
+    def attach(self,vobj):
+
+        self.Object = vobj.Object
+        # Check for file change every minute
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.checkChanges)
+        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
+        self.timer.start(1000*s)
+
     def doubleClicked(self,vobj):
 
         self.setEdit(vobj)
@@ -200,6 +223,57 @@ class ViewProviderArchReference:
 
         return None
 
+    def checkChanges(self):
+
+        "checks if the linked file has changed"
+
+        if hasattr(self,"Object") and self.Object:
+            try:
+                f = self.Object.File
+            except ReferenceError:
+                f = None
+                if hasattr(self,"timer"):
+                    self.timer.stop()
+                    del self.timer
+            if f:
+                st_mtime = os.stat(self.Object.File).st_mtime
+                if hasattr(self.Object.ViewObject,"TimeStamp"):
+                    if self.Object.ViewObject.TimeStamp:
+                        if self.Object.ViewObject.TimeStamp != st_mtime:
+                            self.Object.Proxy.reload = True
+                            self.Object.touch()
+                    self.Object.ViewObject.TimeStamp = st_mtime
+
+    def onDelete(self):
+
+        self.timer.stop()
+        del self.timer
+
+    def setupContextMenu(self,vobj,menu):
+
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/view-refresh.svg"),"Reload reference",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.onReload)
+        menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/document-open.svg"),"Open reference",menu)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.onOpen)
+        menu.addAction(action2)
+
+    def onReload(self):
+
+        "reloads the reference object"
+
+        if hasattr(self,"Object") and self.Object:
+            self.Object.Proxy.reload = True
+            self.Object.touch()
+            FreeCAD.ActiveDocument.recompute()
+
+    def onOpen(self):
+
+        "opens the reference file"
+
+        if hasattr(self,"Object") and self.Object:
+            if self.Object.File:
+                FreeCAD.openDocument(self.Object.File)
 
 
 class ArchReferenceTaskPanel:
@@ -217,7 +291,14 @@ class ArchReferenceTaskPanel:
         label1 = QtGui.QLabel("External file:")
         layout.addWidget(label1)
         self.fileButton = QtGui.QPushButton(self.form)
-        layout.addWidget(self.fileButton)
+        self.openButton = QtGui.QPushButton(self.form)
+        self.openButton.setText("Open")
+        if not self.obj.File:
+            self.openButton.setEnabled(False)
+        l2 = QtGui.QHBoxLayout(self.form)
+        layout.addLayout(l2)
+        l2.addWidget(self.fileButton)
+        l2.addWidget(self.openButton)
         label2 = QtGui.QLabel("Part to use:")
         layout.addWidget(label2)
         if self.obj.File:
@@ -230,12 +311,13 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.parts
         else:
             parts = self.obj.Proxy.getPartsList(self.obj)
-            keys = parts.keys()
+        keys = parts.keys()
         self.partCombo.addItems(keys)
         if self.obj.Part:
             if self.obj.Part in keys:
                 self.partCombo.setCurrentIndex(keys.index(self.obj.Part))
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
+        QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
     def chooseFile(self):
 
@@ -255,12 +337,21 @@ class ArchReferenceTaskPanel:
                     if self.obj.Part in keys:
                         self.partCombo.setCurrentIndex(keys.index(self.obj.Part))
 
+    def openFile(self):
+        if self.obj.File:
+            FreeCAD.openDocument(self.obj.File)
+            FreeCADGui.Control.closeDialog()
+
     def accept(self):
 
-        if self.filename and self.partCombo.currentText():
-            self.obj.File = self.filename
-            self.obj.Part = self.partCombo.currentText()
-            FreeCAD.ActiveDocument.recompute()
+        if self.filename:
+            if self.filename != self.obj.File:
+                self.obj.File = self.filename
+                FreeCAD.ActiveDocument.recompute()
+        if self.partCombo.currentText():
+            if self.partCombo.currentText() != self.obj.Part:
+                self.obj.Part = self.partCombo.currentText()
+                FreeCAD.ActiveDocument.recompute()
         return True
 
 
@@ -274,6 +365,7 @@ class ArchReferenceCommand:
 
         return {'Pixmap'  : 'Arch_Reference',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
+                'Accel': "E, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
 
     def IsActive(self):

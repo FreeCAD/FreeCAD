@@ -211,9 +211,9 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
 
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
-    
+
     """overwrites ArchFloor.makeFloor"""
-    
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name
     obj.IfcRole = "Building Storey"
@@ -221,9 +221,9 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
 
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
-    
+
     """overwrites ArchBuilding.makeBuilding"""
-    
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name
     obj.IfcRole = "Building"
@@ -396,17 +396,28 @@ class BuildingPart:
     def execute(self,obj):
 
         # gather all the child shapes into a compound
-        shapes = []
-        for o in obj.Group:
-            if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
-                shapes.append(o.Shape)
+        shapes = self.getShapes(obj)
         if shapes:
             import Part
             obj.Shape = Part.makeCompound(shapes)
 
+    def getShapes(self,obj):
+
+        "recursively get the shapes of objects inside this BuildingPart"
+
+        shapes = []
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                if child.isDerivedFrom("Part::Feature") and child.Shape and (not child.Shape.isNull()):
+                    shapes.append(child.Shape)
+                elif hasattr(child,"Group"):
+                    shapes.extend(self.getShapes(child))
+        return shapes
+
     def getSpaces(self,obj):
 
         "gets the list of Spaces that have this object as their Zone property"
+
         g = []
         for o in obj.OutList:
             if hasattr(o,"Zone"):
