@@ -27,6 +27,8 @@ set(Import_LIBS
 SET(Import_SRCS
     AppImport.cpp
     AppImportPy.cpp
+    ExportOCAF.cpp
+    ExportOCAF.h
     ImportOCAF.cpp
     ImportOCAF.h
     #ImportOCAFAssembly.cpp

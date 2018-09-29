@@ -78,7 +78,10 @@ class FemInputWriter():
         self.ccx_efaces = 'Efaces'
         self.ccx_eedges = 'Eedges'
         self.ccx_elsets = []
-        self.theshape = self.mesh_object.Part
+        if hasattr(self.mesh_object, "Shape"):
+            self.theshape = self.mesh_object.Shape
+        elif hasattr(self.mesh_object, "Part"):
+            self.theshape = self.mesh_object.Part
         self.femmesh = self.mesh_object.FemMesh
         self.femnodes_mesh = {}
         self.femelement_table = {}

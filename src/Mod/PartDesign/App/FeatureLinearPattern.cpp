@@ -102,6 +102,21 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
             if (AxId >= 0 && AxId < refSketch->getAxisCount())
                 axis = refSketch->getAxis(AxId);
         }
+        else if (subStrings[0].substr(0,4) == "Edge") {
+            Part::TopoShape refShape = refSketch->Shape.getShape();
+            TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
+            TopoDS_Edge refEdge = TopoDS::Edge(ref);
+            if (refEdge.IsNull())
+                throw Base::Exception("Failed to extract direction edge");
+            BRepAdaptor_Curve adapt(refEdge);
+            if (adapt.GetType() != GeomAbs_Line)
+                throw Base::Exception("Direction edge must be a straight line");
+
+            gp_Pnt p = adapt.Line().Location();
+            gp_Dir d = adapt.Line().Direction();
+            axis.setBase(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
+        }
         axis *= refSketch->Placement.getValue();
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
