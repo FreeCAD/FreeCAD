@@ -164,7 +164,9 @@ def makeRailing(stairs):
                 stairs0OutlineWireLR = "OutlineWireRight"
                 stairOutlineWireLR = "OutlineWireRight"
             if outlineLR or OutlineLRAll:
-                lrRail = ArchPipe.makePipe()
+
+                lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Rail")
+
                 if OutlineLRAll:
                     lrRailWire = Draft.makeWire(OutlineLRAll)
                     lrRail.Base = lrRailWire
@@ -327,6 +329,10 @@ class _Stairs(ArchComponent.Component):
         if not "Align" in pl:
             obj.addProperty("App::PropertyEnumeration","Align","Stairs",QT_TRANSLATE_NOOP("App::Property","The alignment of these stairs on their baseline, if applicable"))
             obj.Align = ['Left','Right','Center']
+
+        # TODO - To be combined into Width when PropertyLengthList is available
+        if not "WidthOfLanding" in pl:
+            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (2nd edge and after - 1st edge follow Width property"))
 
         # steps properties
         if not "NumberOfSteps" in pl:
@@ -594,9 +600,17 @@ class _Stairs(ArchComponent.Component):
             vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
 
             # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
-            netWidth = obj.Width.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
-
-            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidth))
+            netWidthI = 0
+            print (i)
+            if i > 0:
+                try:
+                    if obj.WidthOfLanding[i-1] > 0:
+                        netWidthI = obj.WidthOfLanding[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+                except:
+                    pass
+            if netWidthI == 0:
+                netWidthI = obj.Width.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
             vBase.append(edges[i].Vertexes[0].Point)
             vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
@@ -1065,6 +1079,7 @@ class _Stairs(ArchComponent.Component):
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
+   
             if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
                 if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
                     p3r = p2
