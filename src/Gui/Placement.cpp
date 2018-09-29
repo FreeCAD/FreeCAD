@@ -91,6 +91,7 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
+    ui->axialPos->setUnit(Base::Unit::Length);
     ui->xCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
@@ -308,8 +309,12 @@ void Placement::on_selectedVertex_clicked()
     std::vector<Base::Vector3d> picked;
     //combine all pickedpoints into single vector
     //even if points are from separate objects
+    Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
     for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
         std::vector<Base::Vector3d> points = it->getPickedPoints();
+        if (it==selection.begin() && points.size()>0){
+            firstSelected=points[0];
+        }
         picked.insert(picked.begin(),points.begin(),points.end());
     }
 
@@ -337,9 +342,58 @@ void Placement::on_selectedVertex_clicked()
         Base::Vector3d tmp;
         double angle;
         rot.getRawValue(tmp, angle);
-        Base::Vector3d axis(picked[0].x-picked[1].x,picked[0].y-picked[1].y,picked[0].z-picked[1].z);
+        Base::Vector3d axis(picked[1].x-picked[0].x,picked[1].y-picked[0].y,picked[1].z-picked[0].z);
+        double length = axis.Length();
+        Base::Console().Message("Distance: %.8f\n",length);
         axis.Normalize();
         rot.setValue(axis, angle);
+        plm.setRotation(rot);
+        setPlacementData(plm); //creates custom axis, if needed
+        ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
+        ui->stackedWidget->setCurrentIndex(0);
+        success=true;
+    } else if (picked.size() == 3){
+        /* User selected 3 points, so we find the plane defined by those
+         * and use the normal vector that contains the first point picked
+         * as the axis of rotation.
+         */
+
+        Base::Vector3d a, b(firstSelected), c; //b is on central axis
+        if (picked[0] == firstSelected){
+            a = picked[1];
+            c = picked[2];
+        } else if (picked[1]==firstSelected){
+            a = picked[0];
+            c = picked[2];
+        } else if (picked[2] == firstSelected){
+            a = picked[0];
+            c = picked[1];
+        }
+
+        Base::Vector3d norm((a-b).Cross(c-b));
+        norm.Normalize();
+        ui->xCnt->setValue(b.x);
+        ui->yCnt->setValue(b.y);
+        ui->zCnt->setValue(b.z);
+        cntOfMass.x=b.x;
+        cntOfMass.y=b.y;
+        cntOfMass.z=b.z;
+        //setup a customized axis normal to the plane
+        //keep any existing angle, but setup our own axis
+        Base::Placement plm = getPlacement();
+        Base::Rotation rot = plm.getRotation();
+        Base::Vector3d tmp;
+        double angle;
+        rot.getRawValue(tmp, angle);
+        double length = (a-c).Length();
+        Base::Console().Message("Distance: %.8f\n",length);
+        Base::Vector3d v1(a-b);
+        Base::Vector3d v2(c-b);
+        v1.Normalize();
+        v2.Normalize();
+        double targetAngle = v2.GetAngle(v1) * (180.0)/3.141592653589793;
+        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8d degrees\n",targetAngle, 90.0-targetAngle);
+        rot.setValue(norm, angle);
         plm.setRotation(rot);
         setPlacementData(plm); //creates custom axis, if needed
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
@@ -350,11 +404,13 @@ void Placement::on_selectedVertex_clicked()
     if (!success){
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox;
-        msgBox.setText(tr("Please select 1 or 2 points before clicking this button.  A point may be on a vertex, \
+        msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
 selected the midpoint between them will be the center of rotation and a new custom axis will be \
-created, if needed."));
+created, if needed.  If 3 points are selected the first point becomes the center of rotation and \
+lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle \
+information is provided in the report view, which can be useful when aligning objects."));
         msgBox.exec();
         ui->xCnt->setValue(0);
         ui->yCnt->setValue(0);
@@ -372,6 +428,28 @@ created, if needed."));
     }
 }
 
+void Placement::on_applyAxial_clicked()
+{
+    signalMapper->blockSignals(true);
+    double axPos = ui->axialPos->value().getValue();
+    Base::Placement p = getPlacementData();
+    double angle;
+    Base::Vector3d axis;
+    p.getRotation().getValue(axis, angle);
+    Base::Vector3d curPos (p.getPosition());
+    Base::Vector3d newPos;
+    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+    if (km == Qt::ShiftModifier){ //go opposite direction on Shift+click
+        newPos = Base::Vector3d(curPos.x-(axis.x*axPos),curPos.y-(axis.y*axPos),curPos.z-(axis.z*axPos));
+    } else {
+        newPos = Base::Vector3d(curPos.x+(axis.x*axPos),curPos.y+(axis.y*axPos),curPos.z+(axis.z*axPos));
+    }
+    ui->xPos->setValue(Base::Quantity(newPos.x,Base::Unit::Length));
+    ui->yPos->setValue(Base::Quantity(newPos.y,Base::Unit::Length));
+    ui->zPos->setValue(Base::Quantity(newPos.z,Base::Unit::Length));
+    signalMapper->blockSignals(false);
+    onPlacementChanged(0);
+}
 
 void Placement::on_applyIncrementalPlacement_toggled(bool on)
 {
