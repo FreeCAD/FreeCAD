@@ -603,16 +603,16 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 
 			const double l = sqrt(DistanceSqrd(lastPt, pt));
 
-			if (l < 0.5*stepScaled)
+			if (l < 0.5*stepScaled )
 			{
-				points.pop_back();
+				if(points.size()>1) points.pop_back();
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
 			size_t lastPathIndex = back.first;
-			const long steps = long(l / stepScaled)+1; // +1 is important!
-			const long left=pointCount*2;
-			const long right =steps-pointCount*2;
+			const long steps = max(long(l / stepScaled),1L);
+			const long left=pointCount*iterations*2;
+			const long right =steps-pointCount*iterations*2;
 			for (long idx = 0; idx <= steps; idx++)
 			{
 				if(idx>left && idx<right) {
@@ -623,7 +623,7 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 				const IntPoint ptx(long(lastPt.X + double(pt.X - lastPt.X) * p),
 							 long(lastPt.Y + double(pt.Y - lastPt.Y) * p));
 
-				if(idx==0 && DistanceSqrd(back.second,ptx)<scale) points.pop_back();
+				if(idx==0 && DistanceSqrd(back.second,ptx)<scale && points.size()>1) points.pop_back();
 
 				if (p < 0.5)
 					points.push_back(pair<size_t /*path index*/, IntPoint>(lastPathIndex, ptx));
@@ -635,20 +635,18 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 	if (points.empty())
 		return;
 	const long size=long(points.size());
-	double rangeSqrd = stepScaled * 2 * pointCount; rangeSqrd*=rangeSqrd;
 	for(long iter=0;iter<iterations; iter++) {
-		for (long i = 0; i < size; i++)
+		for (long i = 1; i < size-1; i++)
 		{
 			IntPoint &cp = points[i].second;
 			IntPoint avgPoint(cp);
 			long cnt = 1;
 
 			long ptsToAverage = pointCount;
-			if (i < ptsToAverage)
+			if (i <= ptsToAverage)
 			 	ptsToAverage = max(i-1,0L);
 			else if(i + ptsToAverage >= size-1)
 			 	ptsToAverage = size-1-i;
-
 			for (long j = i-ptsToAverage; j <= i+ptsToAverage; j++)
 			{
 				if (j == i) continue;
@@ -656,11 +654,9 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 				if(index<0)	index=0;
 				if(index>=size) index=size-1;
 				IntPoint &p = points[index].second;
-				if(DistanceSqrd(cp,p)<rangeSqrd) {
-					avgPoint.X += p.X;
-					avgPoint.Y += p.Y;
-					cnt++;
-				}
+				avgPoint.X += p.X ;
+				avgPoint.Y += p.Y ;
+				cnt++;
 			}
 			cp.X=avgPoint.X/cnt;
 			cp.Y=avgPoint.Y/cnt;
@@ -671,10 +667,9 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 	{
 		output[pr.first].push_back(pr.second);
 	}
-
 	for (size_t i = 0; i < paths.size(); i++)
 	{
-		CleanPath(output[i], paths[i], 1.407*scale);
+		CleanPath(output[i], paths[i], 1.4*scale);
 	}
 	ScaleDownPaths(paths,scale);
 }
@@ -1662,8 +1657,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	if (scaleFactor > 250)
 		scaleFactor = 250;
 
-	cout << "Tool Diam: " << toolDiameter << endl;
-	cout << "Accuracy: " << 1000.0/scaleFactor << " um" << endl;
+	scaleFactor = round(scaleFactor);
+
+	current_region=0;
+	cout << "Tool Diameter: " << toolDiameter << endl;
+	cout << "Accuracy: " << round(10000.0/scaleFactor)/10 << " um" << endl;
+	cout << flush;
 
 	toolRadiusScaled = long(toolDiameter * scaleFactor / 2);
 	stepOverScaled = toolRadiusScaled * stepOverFactor;
@@ -1705,7 +1704,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 #ifdef DEV_MODE
 	cout << "optimalCutAreaPD:" << optimalCutAreaPD << " scaleFactor:" << scaleFactor << " toolRadiusScaled:" << toolRadiusScaled << " helixRampRadiusScaled:" << helixRampRadiusScaled << endl;
 #endif
-
 	//******************************
 	// Convert input paths to clipper
 	//******************************
@@ -2276,7 +2274,7 @@ bool Adaptive2d::MakeLeadPath(bool leadIn, const IntPoint &startPoint, const Dou
 	double alfa = M_PI / 64;
 	double pathLen = 0;
 	checkPath.push_back(nextPoint);
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 10000; i++)
 	{
 		if (IsAllowedToCutTrough(IntPoint(currentPoint.X + RESOLUTION_FACTOR * nextDir.X, currentPoint.Y + RESOLUTION_FACTOR * nextDir.Y), nextPoint, clearedArea, toolBoundPaths))
 		{
@@ -2442,7 +2440,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 
 			if (linkType == MotionType::mtLinkClear)
 			{
-				SmoothPaths(linkPaths, 0.05*stepOverScaled,4,2);
+				SmoothPaths(linkPaths, 0.1*stepOverScaled,1,4);
 			}
 
 			leadOutPath = linkPaths[0];
@@ -2571,6 +2569,9 @@ void Adaptive2d::AddPathToProgress(TPaths &progressPaths, const Path pth, Motion
 void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 {
 	Perf_ProcessPolyNode.Start();
+	current_region++;
+	cout << "** Processing region: " << current_region << endl;
+
 	// node paths are already constrained to tool boundary path for adaptive path before finishing pass
 	Clipper clip;
 	ClipperOffset clipof;
