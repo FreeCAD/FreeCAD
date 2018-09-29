@@ -309,8 +309,12 @@ void Placement::on_selectedVertex_clicked()
     std::vector<Base::Vector3d> picked;
     //combine all pickedpoints into single vector
     //even if points are from separate objects
+    Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
     for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
         std::vector<Base::Vector3d> points = it->getPickedPoints();
+        if (it==selection.begin()){
+            firstSelected=points[0];
+        }
         picked.insert(picked.begin(),points.begin(),points.end());
     }
 
@@ -339,8 +343,57 @@ void Placement::on_selectedVertex_clicked()
         double angle;
         rot.getRawValue(tmp, angle);
         Base::Vector3d axis(picked[1].x-picked[0].x,picked[1].y-picked[0].y,picked[1].z-picked[0].z);
+        double length = axis.Length();
+        Base::Console().Message("Distance: %.8f\n",length);
         axis.Normalize();
         rot.setValue(axis, angle);
+        plm.setRotation(rot);
+        setPlacementData(plm); //creates custom axis, if needed
+        ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
+        ui->stackedWidget->setCurrentIndex(0);
+        success=true;
+    } else if (picked.size() == 3){
+        /* User selected 3 points, so we find the plane defined by those
+         * and use the normal vector that contains the first point picked
+         * as the axis of rotation.
+         */
+
+        Base::Vector3d a, b(firstSelected), c; //b is on central axis
+        if (picked[0] == firstSelected){
+            a = picked[1];
+            c = picked[2];
+        } else if (picked[1]==firstSelected){
+            a = picked[0];
+            c = picked[2];
+        } else if (picked[2] == firstSelected){
+            a = picked[0];
+            c = picked[1];
+        }
+
+        Base::Vector3d norm((a-b).Cross(c-b));
+        norm.Normalize();
+        ui->xCnt->setValue(b.x);
+        ui->yCnt->setValue(b.y);
+        ui->zCnt->setValue(b.z);
+        cntOfMass.x=b.x;
+        cntOfMass.y=b.y;
+        cntOfMass.z=b.z;
+        //setup a customized axis normal to the plane
+        //keep any existing angle, but setup our own axis
+        Base::Placement plm = getPlacement();
+        Base::Rotation rot = plm.getRotation();
+        Base::Vector3d tmp;
+        double angle;
+        rot.getRawValue(tmp, angle);
+        double length = (a-c).Length();
+        Base::Console().Message("Distance: %.8f\n",length);
+        Base::Vector3d v1(a-b);
+        Base::Vector3d v2(c-b);
+        v1.Normalize();
+        v2.Normalize();
+        double targetAngle = v2.GetAngle(v1) * (180.0)/3.141592653589793;
+        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8d degrees\n",targetAngle, 90.0-targetAngle);
+        rot.setValue(norm, angle);
         plm.setRotation(rot);
         setPlacementData(plm); //creates custom axis, if needed
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
