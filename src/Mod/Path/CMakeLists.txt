@@ -53,6 +53,7 @@ SET(PathScripts_SRCS
     PathScripts/PathGeom.py
     PathScripts/PathGetPoint.py
     PathScripts/PathGui.py
+    PathScripts/PathGuiInit.py
     PathScripts/PathHelix.py
     PathScripts/PathHelixGui.py
     PathScripts/PathHop.py

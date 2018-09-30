@@ -69,41 +69,10 @@ class PathWorkbench (Workbench):
         from PySide import QtCore, QtGui
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
-        # load python modules
-        from PathScripts import PathArray
-        from PathScripts import PathComment
-        from PathScripts import PathCustom
-        from PathScripts import PathDeburrGui
-        from PathScripts import PathDressupAxisMap
-        from PathScripts import PathDressupDogbone
-        from PathScripts import PathDressupDragknife
-        from PathScripts import PathDressupRampEntry
-        from PathScripts import PathDressupTagGui
-        from PathScripts import PathDressupLeadInOut
-        from PathScripts import PathDrillingGui
-        from PathScripts import PathEngraveGui
-        from PathScripts import PathFixture
-        from PathScripts import PathHelixGui
-        from PathScripts import PathHop
-        from PathScripts import PathInspect
+        from PathScripts import PathGuiInit
         from PathScripts import PathJobCmd
-        from PathScripts import PathMillFaceGui
-        from PathScripts import PathPocketGui
-        from PathScripts import PathPocketShapeGui
-        from PathScripts import PathPost
-        from PathScripts import PathProfileContourGui
-        from PathScripts import PathProfileEdgesGui
-        from PathScripts import PathProfileFacesGui
-        from PathScripts import PathSanity
-        from PathScripts import PathSetupSheetGui
-        from PathScripts import PathSimpleCopy
-        from PathScripts import PathStop
-        from PathScripts import PathSurfaceGui
-        from PathScripts import PathToolController
-        from PathScripts import PathToolLibraryManager
-        from PathScripts import PathSimulatorGui
-        from PathScripts import PathAdaptiveGui
         import PathCommands
+        PathGuiInit.Startup()
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
