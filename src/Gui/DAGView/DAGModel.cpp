@@ -552,6 +552,8 @@ void Model::updateSlot()
   catch(const boost::not_a_dag &)
   {
     Base::Console().Error("not a dag exception in DAGView::Model::updateSlot()\n");
+    //do not continuously report an error for cyclic graphs
+    graphDirty = false;
     return;
   }
   //index the vertices in sort order.
