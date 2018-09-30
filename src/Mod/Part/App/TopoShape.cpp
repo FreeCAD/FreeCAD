@@ -2317,14 +2317,33 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
                                         bool selfInter, short offsetMode, short join,
                                         bool fill) const
 {
+    // If the input shape is a compound with a single solid then the offset
+    // algorithm creates only a shell instead of a solid which causes errors
+    // when using it e.g. for boolean operations. (#0003571)
+    // But when extracting the solid and passing it to the algorithm the output
+    // shape is a solid.
+    TopoDS_Shape inputShape = this->_Shape;
+    TopExp_Explorer xp;
+    xp.Init(inputShape, TopAbs_VERTEX, TopAbs_SOLID);
+    if (!xp.More()) {
+        xp.Init(inputShape, TopAbs_SOLID);
+        if (xp.More()) {
+            // If exactly one solid then get it
+            TopoDS_Shape inputSolid = xp.Current();
+            xp.Next();
+            if (xp.More() == Standard_False)
+                inputShape = inputSolid;
+        }
+    }
+
 #if OCC_VERSION_HEX < 0x070200
-    BRepOffsetAPI_MakeOffsetShape mkOffset(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
+    BRepOffsetAPI_MakeOffsetShape mkOffset(inputShape, offset, tol, BRepOffset_Mode(offsetMode),
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
 #else
     BRepOffsetAPI_MakeOffsetShape mkOffset;
-    mkOffset.PerformByJoin(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
+    mkOffset.PerformByJoin(inputShape, offset, tol, BRepOffset_Mode(offsetMode),
                            intersection ? Standard_True : Standard_False,
                            selfInter ? Standard_True : Standard_False,
                            GeomAbs_JoinType(join));
