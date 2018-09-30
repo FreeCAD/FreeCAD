@@ -525,8 +525,13 @@ void Document::exportGraphviz(std::ostream& out) const
             setGraphLabel(sub, cs);
 
             for(auto obj : cs->getOutList()) {
-                if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
-                    recursiveCSSubgraphs(obj, cs);
+                if (obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                    // in case of dependencies loops check if obj is already part of the
+                    // map to avoid infinite recursions
+                    auto it = GraphList.find(obj);
+                    if (it == GraphList.end())
+                        recursiveCSSubgraphs(obj, cs);
+                }
             }
 
             //setup the origin if available
