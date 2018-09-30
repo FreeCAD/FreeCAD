@@ -37,6 +37,7 @@ from PySide import QtCore
 if FreeCAD.GuiUp:
     import FreeCADGui
     import PathScripts.PathGui as PathGui
+    from PySide import QtGui
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -167,6 +168,8 @@ class ViewProvider:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+
+    def attach(self, vobj):
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -177,6 +180,7 @@ class ViewProvider:
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
         vobj.setEditorMode('Visibility', mode)
+        self.vobj = vobj
 
     def __getstate__(self):
         return None
@@ -204,20 +208,31 @@ class ViewProvider:
         # this is executed when a property of the APP OBJECT changes
         pass
 
-    def setEdit(self, vobj, mode):
-        # this is executed when the object is double-clicked in the tree
-        FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        taskd.setupUi()
+    def setEdit(self, vobj=None, mode=0):
+        if 0 == mode:
+            if vobj is None:
+                vobj = self.vobj
+            FreeCADGui.Control.closeDialog()
+            taskd = TaskPanel(vobj.Object)
+            FreeCADGui.Control.showDialog(taskd)
+            taskd.setupUi()
 
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.recompute()
 
-        return True
+            return True
+        return False
 
     def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
         return False
+
+    def setupContextMenu(self, vobj, menu):
+        PathLog.track()
+        for action in menu.actions():
+            menu.removeAction(action)
+        action = QtGui.QAction(translate('Path', 'Edit'), menu)
+        action.triggered.connect(self.setEdit)
+        menu.addAction(action)
 
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     PathLog.track(tool, toolNumber)
