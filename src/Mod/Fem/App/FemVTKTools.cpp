@@ -597,21 +597,9 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     // PropertyLink is the property type to store DocumentObject pointer
 
-    vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
-    vtkSmartPointer<vtkDataArray> displ = pd->GetArray("Displacement");  // name in vtk file, not the property name
-    vtkSmartPointer<vtkDataArray> vel = pd->GetArray("U"); // name in vtk file, not the property name
-    if(vel)
-    {
-        importFluidicResult(dataset, result);
-    }
-    else if (displ)
-    {
-        importMechanicalResult(dataset, result);
-    }
-    else
-    {
-        Base::Console().Error("FemResult type, fluidic (array name of `U`) or mechanical (array name of `Displacement`) can not be detected\n");
-    }
+    //vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
+    importFreeCADResult(dataset, result);
+
     pcDoc->recompute();
     Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 
@@ -852,60 +840,26 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
 
 }
 
-void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
-    // velocity and pressure are essential, Temperature is optional, so are turbulence related variables
-    std::map<std::string, std::string> cfd_vectors; // vector field defined in openfoam -> property defined in CfdResult.py
-    cfd_vectors["Velocity"] = "U";
 
-    std::map<std::string, std::string> cfd_scalers;  // variable name defined in openfoam -> property defined in CfdResult.py
-    cfd_scalers["Pressure"] = "p";
-    cfd_scalers["Temperature"] = "T";
-    cfd_scalers["TurbulenceEnergy"] = "k";
-    cfd_scalers["TurbulenceViscosity"] = "nut";
-    cfd_scalers["TurbulenceDissipationRate"] = "epsilon";
-    cfd_scalers["TurbulenceSpecificDissipation"] = "omega";
-    cfd_scalers["TurbulenceThermalDiffusivity"] = "alphat";
-
-    std::map<std::string, int> cfd_varids; // must agree with definition in Stat calc Cfd/_TaskPanelCfdResult.py
-    cfd_varids["Ux"] = 0;
-    cfd_varids["Uy"] = 1;
-    cfd_varids["Uz"] = 2;
-    cfd_varids["Umag"] = 3;
-    cfd_varids["Pressure"] = 4;
-    cfd_varids["Temperature"] = 5;
-    cfd_varids["TurbulenceEnergy"] = 6;
-    cfd_varids["TurbulenceViscosity"] = 7;
-    cfd_varids["TurbulenceDissipationRate"] = 8;
-    //cfd_varids["TurbulenceSpecificDissipation"] = 9;
-    //cfd_varids["TurbulenceThermalDiffusivity"] = 10;
-
-    std::string essential_property = std::string("Velocity");
-
-    _importResult(dataset, res, cfd_vectors, cfd_scalers, cfd_varids, essential_property);
-
-}
-
-
-
-void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
-    // field names are defined in this cpp, exportMechanicalResult()
+void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
+    // field names are defined in this file, exportFreeCADResult()
     // DisplaceVectors are essential, Temperature and other is optional
     std::map<std::string, std::string> vectors;  // property defined in MechanicalResult.py -> variable name in vtk
-    vectors["DisplacementVectors"] = "Displacement";
-    vectors["StrainVectors"] = "Strain vectors";
-    vectors["StressVectors"] = "Stress vectors";
+    vectors["DisplacementVectors"] = "DisplacementVectors";
+    vectors["StrainVectors"] = "StrainVectors";
+    vectors["StressVectors"] = "Stressvectors";
     std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
-    scalers["UserDefined"] = "User Defined Results";
+    scalers["UserDefined"] = "UserDefined";
     scalers["Temperature"] = "Temperature";
-    scalers["PrincipalMax"] = "Maximum Principal stress";
-    scalers["PrincipalMed"] = "Median Principal stress";
-    scalers["PrincipalMin"] = "Minimum Principal stress";
-    scalers["MaxShear"] = "Max shear stress (Tresca)";
-    scalers["StressValues"] = "Von Mises stress";
-    scalers["MassFlowRate"] = "Mass Flow Rate";
-    scalers["NetworkPressure"] = "Network Pressure";
+    scalers["PrincipalMax"] = "PrincipalMax";
+    scalers["PrincipalMed"] = "PrincipalMed";
+    scalers["PrincipalMin"] = "PrincipalMin";
+    scalers["MaxShear"] = "MaxShear";
+    scalers["StressValues"] = "StressValues";
+    scalers["MassFlowRate"] = "MassFlowRate";
+    scalers["NetworkPressure"] = "NetworkPressure";
     scalers["Peeq"] = "Peeq";
-    //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
+    scalers["DisplacementLengths"] = "DisplacementLengths";
 
     std::map<std::string, int> varids;
     // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
