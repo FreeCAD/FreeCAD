@@ -1164,7 +1164,8 @@ void QGIViewDimension::draw()
 //            centerMark->show();
 //            dim->getViewPart()->addVertex(curveCenter,true);
 //        }
-    } else if(strcmp(dimType, "Angle") == 0) {
+    } else if( (strcmp(dimType, "Angle") == 0) ||
+               (strcmp(dimType, "Angel3Pt")) ) {
         // Only use two straight line edeges for angle
         anglePoints pts = dim->getAnglePoints();
         Base::Vector3d X(1.0,0.0,0.0);

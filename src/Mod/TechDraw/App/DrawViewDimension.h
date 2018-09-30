@@ -126,6 +126,9 @@ public:
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
+    static int getRefType3(const std::string g1,
+                           const std::string g2,
+                           const std::string g3);
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);

@@ -74,6 +74,7 @@ const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                                 "Radius",
                                                 "Diameter",
                                                 "Angle",
+                                                "Angle3Pt",
                                                 NULL};
 
 const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
@@ -85,7 +86,8 @@ enum RefType{
         oneEdge,
         twoEdge,
         twoVertex,
-        vertexEdge
+        vertexEdge,
+        threeVertex
     };
 
 DrawViewDimension::DrawViewDimension(void)
@@ -406,6 +408,32 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         pts.vertex = apex;
         m_anglePoints = pts;
         m_hasGeometry = true;
+    } else if(Type.isValue("Angle3Pt")){
+        if (getRefType() != threeVertex) {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+        int idx2 = DrawUtil::getIndexFromName(subElements[2]);
+                               
+        TechDrawGeometry::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
+        TechDrawGeometry::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
+        TechDrawGeometry::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
+        if (!vert0 || !vert1 || !vert2) {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+
+        anglePoints pts;
+        Base::Vector3d apex =  vert1->getAs3D();
+        Base::Vector3d extPoint0 = vert0->getAs3D();
+        Base::Vector3d extPoint2 = vert2->getAs3D();
+        pts.ends.first  = extPoint0;
+        pts.ends.second = extPoint2;
+        pts.vertex = apex;
+        m_anglePoints = pts;
+        m_hasGeometry = true;
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
@@ -559,6 +587,14 @@ double DrawViewDimension::getDimValue()
             Base::Vector3d leg1 = pts.ends.second - vertex;
             double legAngle =  leg0.GetAngle(leg1) * 180.0 / M_PI;
             result = legAngle;
+
+        } else if(Type.isValue("Angle3Pt")){    //same as case "Angle"?
+            anglePoints pts = m_anglePoints;
+            Base::Vector3d vertex = pts.vertex;
+            Base::Vector3d leg0 = pts.ends.first - vertex;
+            Base::Vector3d leg1 = pts.ends.second - vertex;
+            double legAngle =  leg0.GetAngle(leg1) * 180.0 / M_PI;
+            result = legAngle;
         }
     }
     return result;
@@ -662,6 +698,8 @@ int DrawViewDimension::getRefType() const
         refType = getRefType1(subElements[0]);
     } else if (subElements.size() == 2) {
         refType = getRefType2(subElements[0],subElements[1]);
+    } else if (subElements.size() == 3) {
+        refType = getRefType3(subElements[0],subElements[1],subElements[2]);
     }
     return refType;
 }
@@ -696,6 +734,21 @@ int DrawViewDimension::getRefType2(const std::string g1, const std::string g2)
 
     return refType;
 }
+
+int DrawViewDimension::getRefType3(const std::string g1,
+                                   const std::string g2,
+                                   const std::string g3)
+{
+    int refType = invalidRef;
+    if ((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
+        (DrawUtil::getGeomTypeFromName(g2) == "Vertex") && 
+        (DrawUtil::getGeomTypeFromName(g3) == "Vertex") ) {
+        refType = threeVertex;
+    }
+
+    return refType;
+}
+
 
 //! validate 2D references - only checks if they exist, not if they are the right type
 bool DrawViewDimension::checkReferences2D() const
