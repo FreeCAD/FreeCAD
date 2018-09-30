@@ -134,8 +134,10 @@ class ViewProvider:
     def deleteObjectsOnReject(self):
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
-    def setEdit(self, vobj, mode=0):
-        self.openTaskPanel()
+    def setEdit(self, vobj=None, mode=0):
+        PathLog.track(mode)
+        if 0 == mode:
+            self.openTaskPanel()
         return True
 
     def openTaskPanel(self, activate=None):
@@ -228,6 +230,14 @@ class ViewProvider:
             self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
+
+    def setupContextMenu(self, vobj, menu):
+        PathLog.track()
+        for action in menu.actions():
+            menu.removeAction(action)
+        action = QtGui.QAction(translate('Path', 'Edit'), menu)
+        action.triggered.connect(self.setEdit)
+        menu.addAction(action)
 
 class StockEdit(object):
     Index = -1
