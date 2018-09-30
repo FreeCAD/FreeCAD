@@ -684,101 +684,8 @@ void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stat
         stats[index*3 + 1] = vmean/nPoints;
 }
 
-void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res,
-                             const std::map<std::string, std::string>& vectors, const std::map<std::string, std::string> scalers,
-                            const std::map<std::string, int> varids, const std::string& essential_property){
-    const int max_var_index = 11;
-    // all code below can be shared!
-    std::vector<double> stats(3*max_var_index, 0.0);
 
-    double ts = 0.0;  // t=0.0 for static simulation
-    static_cast<App::PropertyFloat*>(res->getPropertyByName("Time"))->setValue(ts);
-
-    vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
-    const vtkIdType nPoints = dataset->GetNumberOfPoints();
-    if(pd->GetNumberOfArrays() == 0) {
-        Base::Console().Error("No point data array is found in vtk data set, do nothing\n");
-        // if pointData is empty, data may be in cellDate, cellData -> pointData interpolation is possible in VTK
-        return;
-    }
-
-    const char* essential_var = vectors.at(essential_property).c_str();
-    vtkSmartPointer<vtkDataArray> essential_array = pd->GetArray(essential_var);  // a vector must exist
-    if(nPoints && essential_array) {
-        int dim = 3;  // Fixme: currently 3D only
-        for(auto const& kv: vectors){
-            vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));
-            if(!vector_field)
-                vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
-            if(vector_field && vector_field->GetNumberOfComponents() == dim) {
-                App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(res->getPropertyByName(kv.first.c_str()));
-                if(vector_list) {
-                    std::vector<Base::Vector3d> vec(nPoints);
-                    for(vtkIdType i=0; i<nPoints; ++i) {
-                        double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
-                        vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
-                    }
-                    if (kv.first == std::string(essential_property))  // for displacement or velocity calc min and max of each components
-                        _calcStat(vec, stats);
-                    //PropertyVectorList will not show up in PropertyEditor
-                    vector_list->setValues(vec);
-                    Base::Console().Message("PropertyVectorList %s has been loaded \n", kv.first.c_str());
-                }
-                else {
-                    Base::Console().Error("static_cast<App::PropertyVectorList*>((res->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
-                    continue;
-                }
-            }
-
-            std::vector<long> nodeIds(nPoints);
-            for(vtkIdType i=0; i<nPoints; ++i) {
-                nodeIds[i] = i+1;
-            }
-            static_cast<App::PropertyIntegerList*>(res->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
-        }
-    }
-    else{
-        Base::Console().Error("essential_property %s corresponding essential array %s in VTK file is not found", essential_property.c_str(), essential_var);
-    }
-
-    for(auto const& kv: scalers){
-        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));  // name from OpenFOAM/Fem solver export
-        if(!vec)
-            vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
-        if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
-            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(kv.first.c_str()));
-            if (!field) {
-                Base::Console().Error("static_cast<App::PropertyFloatList*>((res->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
-                continue;
-            }
-
-            double vmin=1.0e100, vmean=0.0, vmax=-1.0e100;
-            std::vector<double> values(nPoints, 0.0);
-            for(vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++) {
-                double v = *(vec->GetTuple(i));
-                values[i] = v;
-                vmean += v;
-                if(v > vmax) vmax = v;
-                if(v < vmin) vmin = v;
-            }
-            field->setValues(values);
-
-            if(varids.find(kv.first) != varids.end()) {
-                const int index = varids.at(kv.first);
-                stats[index*3] = vmin;
-                stats[index*3 + 1] = vmean/nPoints;
-                stats[index*3 + 2] = vmax;
-            }
-
-            Base::Console().Message("field  \"%s\" has been loaded \n", kv.first.c_str());
-        }
-    }
-    static_cast<App::PropertyFloatList*>(res->getPropertyByName("Stats"))->setValues(stats);
-
-}
-
-
-void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
+void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
     // field names are defined in this file, exportFreeCADResult()
     // DisplaceVectors are essential, Temperature and other is optional
     std::map<std::string, std::string> vectors;  // property defined in MechanicalResult.py -> variable name in vtk
@@ -812,7 +719,93 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
 
     std::string essential_property = std::string("DisplacementVectors");
 
-    _importResult(dataset, res, vectors, scalers, varids, essential_property);
+    const int max_var_index = 11;
+    // all code below can be shared!
+    std::vector<double> stats(3*max_var_index, 0.0);
+
+    double ts = 0.0;  // t=0.0 for static simulation
+    static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
+
+    vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
+    const vtkIdType nPoints = dataset->GetNumberOfPoints();
+    if(pd->GetNumberOfArrays() == 0) {
+        Base::Console().Error("No point data array is found in vtk data set, do nothing\n");
+        // if pointData is empty, data may be in cellDate, cellData -> pointData interpolation is possible in VTK
+        return;
+    }
+
+    const char* essential_var = vectors.at(essential_property).c_str();
+    vtkSmartPointer<vtkDataArray> essential_array = pd->GetArray(essential_var);  // a vector must exist
+    if(nPoints && essential_array) {
+        int dim = 3;  // Fixme: currently 3D only
+        for(auto const& kv: vectors){
+            vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));
+            if(!vector_field)
+                vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
+            if(vector_field && vector_field->GetNumberOfComponents() == dim) {
+                App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(kv.first.c_str()));
+                if(vector_list) {
+                    std::vector<Base::Vector3d> vec(nPoints);
+                    for(vtkIdType i=0; i<nPoints; ++i) {
+                        double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
+                        vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
+                    }
+                    if (kv.first == std::string(essential_property))  // for displacement or velocity calc min and max of each components
+                        _calcStat(vec, stats);
+                    //PropertyVectorList will not show up in PropertyEditor
+                    vector_list->setValues(vec);
+                    Base::Console().Message("PropertyVectorList %s has been loaded \n", kv.first.c_str());
+                }
+                else {
+                    Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
+                    continue;
+                }
+            }
+
+            std::vector<long> nodeIds(nPoints);
+            for(vtkIdType i=0; i<nPoints; ++i) {
+                nodeIds[i] = i+1;
+            }
+            static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
+        }
+    }
+    else{
+        Base::Console().Error("essential_property %s corresponding essential array %s in VTK file is not found", essential_property.c_str(), essential_var);
+    }
+
+    for(auto const& kv: scalers){
+        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));  // name from OpenFOAM/Fem solver export
+        if(!vec)
+            vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
+        if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
+            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(kv.first.c_str()));
+            if (!field) {
+                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
+                continue;
+            }
+
+            double vmin=1.0e100, vmean=0.0, vmax=-1.0e100;
+            std::vector<double> values(nPoints, 0.0);
+            for(vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++) {
+                double v = *(vec->GetTuple(i));
+                values[i] = v;
+                vmean += v;
+                if(v > vmax) vmax = v;
+                if(v < vmin) vmin = v;
+            }
+            field->setValues(values);
+
+            if(varids.find(kv.first) != varids.end()) {
+                const int index = varids.at(kv.first);
+                stats[index*3] = vmin;
+                stats[index*3 + 1] = vmean/nPoints;
+                stats[index*3 + 2] = vmax;
+            }
+
+            Base::Console().Message("field  \"%s\" has been loaded \n", kv.first.c_str());
+        }
+    }
+    static_cast<App::PropertyFloatList*>(result->getPropertyByName("Stats"))->setValues(stats);
 
 }
 
