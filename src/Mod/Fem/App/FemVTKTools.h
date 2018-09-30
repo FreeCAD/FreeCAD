@@ -69,9 +69,7 @@ namespace Fem
         /*!
          * FemResult export to vtkUnstructuredGrid object
          */
-        static void exportFluidicResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid);
-        static void exportMechanicalResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid);
-
+        static void exportFreeCADResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid);
         /*!
          * FemResult (activeObject or created if res= NULL) read from vtkUnstructuredGrid dataset file
          */
