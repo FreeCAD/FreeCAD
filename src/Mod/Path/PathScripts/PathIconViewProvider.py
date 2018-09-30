@@ -75,7 +75,9 @@ class ViewProvider(object):
             callback(self.obj, self.vobj, edit)
 
     def setEdit(self, vobj, mode=0):
-        self._onEditCallback(True)
+        if 0 == mode:
+            self._onEditCallback(True)
+        return True
 
     def unsetEdit(self, arg1, arg2):
         self._onEditCallback(False)
