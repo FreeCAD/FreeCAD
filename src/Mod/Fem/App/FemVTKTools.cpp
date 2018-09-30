@@ -652,38 +652,6 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     Base::Console().Message("    %f: writing result object to vtk finished\n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
-// it is an internal utility func to avoid code duplication
-void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stats) {
-        vtkIdType nPoints = vel.size();
-        double vmin=1.0e100, vmean=0.0, vmax=-1.0e100;
-        //stat of Vx, Vy, Vz is not necessary
-        double vmins[3] = {1.0e100, 1.0e100, 1.0e100};  // set up a very big positive float then reduce it
-        double vmeans[3] = {0.0, 0.0, 0.0};
-        double vmaxs[3] = {-1.0e100, -1.0e100, -1.0e100};
-        for(std::vector<Base::Vector3d>::const_iterator it=vel.begin(); it!=vel.end(); ++it) {
-            double p[] = {it->x, it->y, it->z};
-            double vmag = std::sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
-            for(int ii=0; ii<3; ii++) {
-                vmeans[ii] += p[ii];
-                if(p[ii] > vmaxs[ii]) vmaxs[ii] = p[ii];
-                if(p[ii] < vmins[ii]) vmins[ii] = p[ii];
-            }
-            vmean += vmag;
-            if(vmag > vmax) vmax = vmag;
-            if(vmag < vmin) vmin = vmag;
-        }
-
-        for(int ii=0; ii<3; ii++) {
-            stats[ii*3] = vmins[ii];
-            stats[ii*3 + 2] = vmaxs[ii];
-            stats[ii*3 + 1] = vmeans[ii]/nPoints;
-        }
-        int index = 3; // velocity mag or displacement mag
-        stats[index*3] = vmin;
-        stats[index*3 + 2] = vmax;
-        stats[index*3 + 1] = vmean/nPoints;
-}
-
 
 void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
 
@@ -708,23 +676,6 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     "UserDefined",
     "Temperature"
     };
-
-    std::map<std::string, int> varids;
-    // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
-    varids["U1"] = 0;   // U1, displacement x axis
-    varids["U2"] = 1;
-    varids["U3"] = 2;
-    varids["Uabs"] = 3;
-    varids["StressValues"] = 4;  // Sabs
-    varids["PrincipalMax"] = 5;  // MaxPrin
-    varids["PrincipalMed"] = 6;  // MidPrin
-    varids["PrincipalMin"] = 7;  // MinPrin
-    varids["MaxShear"] = 8; //
-
-
-    const int max_var_index = 11;
-    // all code below can be shared!
-    std::vector<double> stats(3*max_var_index, 0.0);
 
     double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
@@ -788,18 +739,12 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 if(v < vmin) vmin = v;
             }
             field->setValues(values);
-
-            if(varids.find(*it) != varids.end()) {
-                const int index = varids.at(*it);
-                stats[index*3] = vmin;
-                stats[index*3 + 1] = vmean/nPoints;
-                stats[index*3 + 2] = vmax;
-            }
-
             Base::Console().Message("field  \"%s\" has been loaded \n", it->c_str());
         }
     }
-    static_cast<App::PropertyFloatList*>(result->getPropertyByName("Stats"))->setValues(stats);
+
+    // stats
+    // stats are added by importVTKResults
 
 }
 
