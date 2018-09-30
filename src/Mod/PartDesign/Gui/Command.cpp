@@ -2122,10 +2122,19 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         openCommand("Convert to MultiTransform feature");
         doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
 
+        // We cannot remove the Transform feature from the body as otherwise
+        // we will have a PartDesign feature without a body which is not allowed
+        // and causes to pop up the migration dialog later when adding new features
+        // to the body.
+        // Additionally it creates the error message: "Links go out of the allowed scope"
+        // #0003509
+#if 0
         // Remove the Transformed feature from the Body
-        if(pcActiveBody)
+        if (pcActiveBody) {
             doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                       pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
+        }
+#endif
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform");
