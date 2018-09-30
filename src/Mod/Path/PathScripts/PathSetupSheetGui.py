@@ -50,6 +50,8 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class ViewProvider:
+    '''ViewProvider for a SetupSheet.
+    It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
 
     def __init__(self, vobj, name):
         PathLog.track(name)
@@ -125,6 +127,15 @@ class Delegate(QtGui.QStyledItemDelegate):
         widget.setGeometry(option.rect)
 
 class OpTaskPanel:
+    '''Editor for an operation's property default values.
+    The implementation is a simplified generic property editor with basically 3 fields
+     - checkbox - if set a default value for the given property is set
+     - name     - a non-editable string with the property name
+     - value    - the actual editor for the property's default value
+    The specific editor classes for a given property type are implemented in
+    PathSetupSheetOpPrototypeGui which also provides a factory function. The properties
+    are displayed in a table, each field occypying a column and each row representing
+    a single property.'''
 
     def __init__(self, obj, name, op):
         self.name = name
@@ -201,6 +212,10 @@ class OpTaskPanel:
 
 
 class OpsDefaultEditor:
+    '''Class to collect and display default property editors for all registered operations.
+    If a form is given at creation time it will integrate with that form and provide an interface to switch
+    between the editors of different operations. If no form is provided the class assumes that the UI is
+    taken care of somehow else and just serves as an interface to all operation editors.'''
 
     def __init__(self, obj, form):
         self.form = form
@@ -233,11 +248,12 @@ class OpsDefaultEditor:
         if self.currentOp:
             self.currentOp.form.hide()
             self.currentOp = None
-        current = self.form.opDefaultOp.currentIndex()
-        if current < 0:
-            current = 0
-        self.currentOp = self.form.opDefaultOp.itemData(current)
-        self.currentOp.form.show()
+        if self.form:
+            current = self.form.opDefaultOp.currentIndex()
+            if current < 0:
+                current = 0
+            self.currentOp = self.form.opDefaultOp.itemData(current)
+            self.currentOp.form.show()
 
     def updateModel(self, recomp = True):
         PathLog.track()
@@ -253,9 +269,11 @@ class OpsDefaultEditor:
         for op in self.ops:
             op.setupUi()
         self.updateUI()
-        self.form.opDefaultOp.currentIndexChanged.connect(self.updateUI)
+        if self.form:
+            self.form.opDefaultOp.currentIndexChanged.connect(self.updateUI)
 
 class GlobalEditor(object):
+    '''Editor for the global properties which affect almost every operation.'''
 
     def __init__(self, obj, form):
         self.form = form
@@ -314,6 +332,7 @@ class GlobalEditor(object):
         self.setFields()
 
 class TaskPanel:
+    '''TaskPanel for the SetupSheet - if it is being edited directly.'''
 
     def __init__(self, vobj):
         self.vobj = vobj
