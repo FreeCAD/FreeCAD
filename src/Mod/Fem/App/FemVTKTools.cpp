@@ -790,19 +790,19 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
 }
 
 void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid,
-                             const std::map<std::string, std::string>& vectors, const std::map<std::string, std::string> scalers){
+                             std::vector<std::string> vectors, std::vector<std::string> scalars){
 
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
 
     // vectors
-    for (auto const& kv: vectors) {
+    for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
         const int dim=3;  //Fixme, detect dim
         App::PropertyVectorList* field = nullptr;
-        if (res->getPropertyByName(kv.first.c_str()))
-            field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(kv.first.c_str()));
+        if (res->getPropertyByName(it->c_str()))
+            field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->c_str()));
         else
-            Base::Console().Error("PropertyVectorList %s not found \n", kv.first.c_str());
+            Base::Console().Error("PropertyVectorList %s not found \n", it->c_str());
         if (field && field->getSize() > 0) {
             if (nPoints != field->getSize())
                 Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
@@ -810,7 +810,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfComponents(dim);
             data->SetNumberOfTuples(vel.size());
-            data->SetName(kv.second.c_str());  // kv.first may be a better name, without space
+            data->SetName(it->c_str());
 
             vtkIdType i=0;
             for (std::vector<Base::Vector3d>::const_iterator it=vel.begin(); it!=vel.end(); ++it) {
@@ -819,35 +819,35 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
                 ++i;
             }
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("    Info: PropertyVectorList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Message("    Info: PropertyVectorList %s exported as vtk array name '%s'\n", it->c_str(), it->c_str());
         }
         else
-            Base::Console().Message("    Info: PropertyVectorList %s NOT exported to vtk, because size is: %i\n", kv.first.c_str(), field->getSize());
+            Base::Console().Message("    Info: PropertyVectorList %s NOT exported to vtk, because size is: %i\n", it->c_str(), field->getSize());
     }
 
     // scalars
-    for (auto const& kv: scalers) {
+    for (std::vector<std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it ) {
         App::PropertyFloatList* field = nullptr;
-        if (res->getPropertyByName(kv.first.c_str()))
-            field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(kv.first.c_str()));
+        if (res->getPropertyByName(it->c_str()))
+            field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(it->c_str()));
         else
-            Base::Console().Error("PropertyFloatList %s not found \n", kv.first.c_str());
+            Base::Console().Error("PropertyFloatList %s not found \n", it->c_str());
         if (field && field->getSize() > 0) {
             if (nPoints != field->getSize())
                 Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<double>& vec = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfValues(vec.size());
-            data->SetName(kv.second.c_str());
+            data->SetName(it->c_str());
 
             for (size_t i=0; i<vec.size(); ++i)
                 data->SetValue(i, vec[i]);
 
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("    Info: PropertyFloatList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Message("    Info: PropertyFloatList %s exported as vtk array name '%s'\n", it->c_str(), it->c_str());
         }
         else
-            Base::Console().Message("    Info: PropertyFloatList %s NOT exported to vtk, because size is: %i\n", kv.first.c_str(), field->getSize());
+            Base::Console().Message("    Info: PropertyFloatList %s NOT exported to vtk, because size is: %i\n", it->c_str(), field->getSize());
     }
 
 }
@@ -933,26 +933,28 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* res, vtkSmartPo
     // see src/Mod/Fem/femobjects/_FemResultMechanical
 
     // App::PropertyVectorList will be a list of vectors in vtk
-    std::map<std::string, std::string> vectors;
-    vectors["DisplacementVectors"] = "DisplacementVectors";
-    vectors["StrainVectors"]       = "StrainVectors";
-    vectors["StressVectors"]       = "StrainVectors";
+    std::vector<std::string> vectors = {
+    "DisplacementVectors",
+    "StressVectors",
+    "StrainVectors"
+    };
 
      // App::PropertyFloatList will be a list of scalars in vtk
-    std::map<std::string, std::string> scalers;
-    scalers["Peeq"]                = "Peeq";
-    scalers["DisplacementLengths"] = "DisplacementLengths";
-    scalers["StressValues"]        = "StressValues";
-    scalers["PrincipalMax"]        = "PrincipalMax";
-    scalers["PrincipalMed"]        = "PrincipalMed";
-    scalers["PrincipalMin"]        = "PrincipalMin";
-    scalers["MaxShear"]            = "MaxShear";
-    scalers["MassFlowRate"]        = "MassFlowRate";
-    scalers["NetworkPressure"]     = "Network Pressure";
-    scalers["UserDefined"]         = "UserDefined";
-    scalers["Temperature"]         = "Temperature";
+    std::vector<std::string> scalars = {
+    "Peeq",
+    "DisplacementLengths",
+    "StressValues",
+    "PrincipalMax",
+    "PrincipalMed",
+    "PrincipalMin",
+    "MaxShear",
+    "MassFlowRate",
+    "NetworkPressure",
+    "UserDefined",
+    "Temperature"
+    };
 
-    _exportResult(res, grid, vectors, scalers);
+    _exportResult(res, grid, vectors, scalars);
 
     Base::Console().Message("End: Create VTK result data from FreeCAD result data.\n");
 
