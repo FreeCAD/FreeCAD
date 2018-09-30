@@ -31,6 +31,7 @@ import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
+import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
@@ -1193,4 +1194,7 @@ def Create(base, template=None):
         PathLog.error(exc)
         traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
+
+# make sure the UI has been initialized
+PathGuiInit.Startup()
 
