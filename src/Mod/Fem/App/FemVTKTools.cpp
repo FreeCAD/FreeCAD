@@ -730,19 +730,25 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
 
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
-    const vtkIdType nPoints = dataset->GetNumberOfPoints();
     if(pd->GetNumberOfArrays() == 0) {
         Base::Console().Error("No point data array is found in vtk data set, do nothing\n");
         // if pointData is empty, data may be in cellDate, cellData -> pointData interpolation is possible in VTK
         return;
     }
 
+    // NodeNumbers
+    const vtkIdType nPoints = dataset->GetNumberOfPoints();
+    std::vector<long> nodeIds(nPoints);
+    for(vtkIdType i=0; i<nPoints; ++i) {
+        nodeIds[i] = i+1;
+    }
+    static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
+    Base::Console().Message("    NodeNumbers have been filled with values.\n");
+
     // vectors
     int dim = 3;  // Fixme: currently 3D only
     for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
         vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
-        if(!vector_field)
-            vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from FreeCAD export
         if(vector_field && vector_field->GetNumberOfComponents() == dim) {
             App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(it->c_str()));
             if(vector_list) {
@@ -760,19 +766,11 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 continue;
             }
         }
- 
-        std::vector<long> nodeIds(nPoints);
-        for(vtkIdType i=0; i<nPoints; ++i) {
-            nodeIds[i] = i+1;
-        }
-        static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
     }
 
     // scalars
     for (std::vector<std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it ) {
-        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from OpenFOAM/Fem solver export
-        if(!vec)
-            vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from FreeCAD export
+        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
         if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
             App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(it->c_str()));
             if (!field) {
