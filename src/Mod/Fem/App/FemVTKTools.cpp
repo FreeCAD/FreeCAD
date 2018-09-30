@@ -717,7 +717,6 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     varids["PrincipalMin"] = 7;  // MinPrin
     varids["MaxShear"] = 8; //
 
-    std::string essential_property = std::string("DisplacementVectors");
 
     const int max_var_index = 11;
     // all code below can be shared!
@@ -734,45 +733,38 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
         return;
     }
 
-    const char* essential_var = vectors.at(essential_property).c_str();
-    vtkSmartPointer<vtkDataArray> essential_array = pd->GetArray(essential_var);  // a vector must exist
-    if(nPoints && essential_array) {
-        int dim = 3;  // Fixme: currently 3D only
-        for(auto const& kv: vectors){
-            vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));
-            if(!vector_field)
-                vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
-            if(vector_field && vector_field->GetNumberOfComponents() == dim) {
-                App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(kv.first.c_str()));
-                if(vector_list) {
-                    std::vector<Base::Vector3d> vec(nPoints);
-                    for(vtkIdType i=0; i<nPoints; ++i) {
-                        double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
-                        vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
-                    }
-                    if (kv.first == std::string(essential_property))  // for displacement or velocity calc min and max of each components
-                        _calcStat(vec, stats);
-                    //PropertyVectorList will not show up in PropertyEditor
-                    vector_list->setValues(vec);
-                    Base::Console().Message("PropertyVectorList %s has been loaded \n", kv.first.c_str());
+    // vectors
+    int dim = 3;  // Fixme: currently 3D only
+    for(auto const& kv: vectors){
+        vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));
+        if(!vector_field)
+            vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
+        if(vector_field && vector_field->GetNumberOfComponents() == dim) {
+            App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(kv.first.c_str()));
+            if(vector_list) {
+                std::vector<Base::Vector3d> vec(nPoints);
+                for(vtkIdType i=0; i<nPoints; ++i) {
+                    double *p = vector_field->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
+                    vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
                 }
-                else {
-                    Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
-                    continue;
-                }
+                //PropertyVectorList will not show up in PropertyEditor
+                vector_list->setValues(vec);
+                Base::Console().Message("PropertyVectorList %s has been loaded \n", kv.first.c_str());
             }
-
-            std::vector<long> nodeIds(nPoints);
-            for(vtkIdType i=0; i<nPoints; ++i) {
-                nodeIds[i] = i+1;
+            else {
+                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
+                continue;
             }
-            static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
         }
-    }
-    else{
-        Base::Console().Error("essential_property %s corresponding essential array %s in VTK file is not found", essential_property.c_str(), essential_var);
+ 
+        std::vector<long> nodeIds(nPoints);
+        for(vtkIdType i=0; i<nPoints; ++i) {
+            nodeIds[i] = i+1;
+        }
+        static_cast<App::PropertyIntegerList*>(result->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
     }
 
+    // scalars
     for(auto const& kv: scalers){
         vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));  // name from OpenFOAM/Fem solver export
         if(!vec)
