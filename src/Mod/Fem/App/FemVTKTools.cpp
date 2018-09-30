@@ -686,24 +686,28 @@ void _calcStat(const std::vector<Base::Vector3d>& vel, std::vector<double>& stat
 
 
 void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
-    // field names are defined in this file, exportFreeCADResult()
-    // DisplaceVectors are essential, Temperature and other is optional
-    std::map<std::string, std::string> vectors;  // property defined in MechanicalResult.py -> variable name in vtk
-    vectors["DisplacementVectors"] = "DisplacementVectors";
-    vectors["StrainVectors"] = "StrainVectors";
-    vectors["StressVectors"] = "Stressvectors";
-    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
-    scalers["UserDefined"] = "UserDefined";
-    scalers["Temperature"] = "Temperature";
-    scalers["PrincipalMax"] = "PrincipalMax";
-    scalers["PrincipalMed"] = "PrincipalMed";
-    scalers["PrincipalMin"] = "PrincipalMin";
-    scalers["MaxShear"] = "MaxShear";
-    scalers["StressValues"] = "StressValues";
-    scalers["MassFlowRate"] = "MassFlowRate";
-    scalers["NetworkPressure"] = "NetworkPressure";
-    scalers["Peeq"] = "Peeq";
-    scalers["DisplacementLengths"] = "DisplacementLengths";
+
+    // see src/Mod/Fem/femobjects/_FemResultMechanical
+    // App::PropertyVectorList will be a list of vectors in vtk
+    std::vector<std::string> vectors = {
+    "DisplacementVectors",
+    "StressVectors",
+    "StrainVectors"
+    };
+    // App::PropertyFloatList will be a list of scalars in vtk
+    std::vector<std::string> scalars = {
+    "Peeq",
+    "DisplacementLengths",
+    "StressValues",
+    "PrincipalMax",
+    "PrincipalMed",
+    "PrincipalMin",
+    "MaxShear",
+    "MassFlowRate",
+    "NetworkPressure",
+    "UserDefined",
+    "Temperature"
+    };
 
     std::map<std::string, int> varids;
     // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
@@ -735,12 +739,12 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
 
     // vectors
     int dim = 3;  // Fixme: currently 3D only
-    for(auto const& kv: vectors){
-        vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));
+    for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
+        vtkDataArray* vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));
         if(!vector_field)
-            vector_field = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
+            vector_field = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from FreeCAD export
         if(vector_field && vector_field->GetNumberOfComponents() == dim) {
-            App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(kv.first.c_str()));
+            App::PropertyVectorList* vector_list = static_cast<App::PropertyVectorList*>(result->getPropertyByName(it->c_str()));
             if(vector_list) {
                 std::vector<Base::Vector3d> vec(nPoints);
                 for(vtkIdType i=0; i<nPoints; ++i) {
@@ -749,10 +753,10 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 }
                 //PropertyVectorList will not show up in PropertyEditor
                 vector_list->setValues(vec);
-                Base::Console().Message("PropertyVectorList %s has been loaded \n", kv.first.c_str());
+                Base::Console().Message("PropertyVectorList %s has been loaded \n", it->c_str());
             }
             else {
-                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
+                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->getPropertyByName(\"%s\")) failed \n", it->c_str());
                 continue;
             }
         }
@@ -765,14 +769,14 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     }
 
     // scalars
-    for(auto const& kv: scalers){
-        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second.c_str()));  // name from OpenFOAM/Fem solver export
+    for (std::vector<std::string>::iterator it = scalars.begin(); it != scalars.end(); ++it ) {
+        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from OpenFOAM/Fem solver export
         if(!vec)
-            vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.first.c_str()));  // name from FreeCAD export
+            vec = vtkDataArray::SafeDownCast(pd->GetArray(it->c_str()));  // name from FreeCAD export
         if(nPoints && vec && vec->GetNumberOfComponents() == 1) {
-            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(kv.first.c_str()));
+            App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(result->getPropertyByName(it->c_str()));
             if (!field) {
-                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->getPropertyByName(\"%s\")) failed \n", kv.first.c_str());
+                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->getPropertyByName(\"%s\")) failed \n", it->c_str());
                 continue;
             }
 
@@ -787,14 +791,14 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
             }
             field->setValues(values);
 
-            if(varids.find(kv.first) != varids.end()) {
-                const int index = varids.at(kv.first);
+            if(varids.find(*it) != varids.end()) {
+                const int index = varids.at(*it);
                 stats[index*3] = vmin;
                 stats[index*3 + 1] = vmean/nPoints;
                 stats[index*3 + 2] = vmax;
             }
 
-            Base::Console().Message("field  \"%s\" has been loaded \n", kv.first.c_str());
+            Base::Console().Message("field  \"%s\" has been loaded \n", it->c_str());
         }
     }
     static_cast<App::PropertyFloatList*>(result->getPropertyByName("Stats"))->setValues(stats);
