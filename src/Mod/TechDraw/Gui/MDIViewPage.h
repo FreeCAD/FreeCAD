@@ -124,8 +124,10 @@ protected:
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectDeletedObject;
 
-    bool compareSelections(std::vector<Gui::SelectionObject>& treeSel,QList<QGraphicsItem*>& sceneSel);
+    bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);
     void setTreeToSceneSelect(void);
+    void sceneSelectionManager(void);
+
 
 private:
     QAction *m_nativeAction;
@@ -146,6 +148,7 @@ private:
 
     bool m_frameState;
 
+    QList<QGraphicsItem*> m_sceneSelected;
     QList<QGIView *> deleteItems;
 };
 
