@@ -777,8 +777,70 @@ void _importResult(const vtkSmartPointer<vtkDataSet> dataset, App::DocumentObjec
 
 }
 
-void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid,
-                             std::vector<std::string> vectors, std::vector<std::string> scalars){
+
+void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
+    // field names are defined in this file, exportFreeCADResult()
+    // DisplaceVectors are essential, Temperature and other is optional
+    std::map<std::string, std::string> vectors;  // property defined in MechanicalResult.py -> variable name in vtk
+    vectors["DisplacementVectors"] = "DisplacementVectors";
+    vectors["StrainVectors"] = "StrainVectors";
+    vectors["StressVectors"] = "Stressvectors";
+    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
+    scalers["UserDefined"] = "UserDefined";
+    scalers["Temperature"] = "Temperature";
+    scalers["PrincipalMax"] = "PrincipalMax";
+    scalers["PrincipalMed"] = "PrincipalMed";
+    scalers["PrincipalMin"] = "PrincipalMin";
+    scalers["MaxShear"] = "MaxShear";
+    scalers["StressValues"] = "StressValues";
+    scalers["MassFlowRate"] = "MassFlowRate";
+    scalers["NetworkPressure"] = "NetworkPressure";
+    scalers["Peeq"] = "Peeq";
+    scalers["DisplacementLengths"] = "DisplacementLengths";
+
+    std::map<std::string, int> varids;
+    // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
+    varids["U1"] = 0;   // U1, displacement x axis
+    varids["U2"] = 1;
+    varids["U3"] = 2;
+    varids["Uabs"] = 3;
+    varids["StressValues"] = 4;  // Sabs
+    varids["PrincipalMax"] = 5;  // MaxPrin
+    varids["PrincipalMed"] = 6;  // MidPrin
+    varids["PrincipalMin"] = 7;  // MinPrin
+    varids["MaxShear"] = 8; //
+
+    std::string essential_property = std::string("DisplacementVectors");
+
+    _importResult(dataset, res, vectors, scalers, varids, essential_property);
+
+}
+
+
+void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid) {
+    Base::Console().Message("Start: Create VTK result data from FreeCAD result data.\n");
+
+    // see src/Mod/Fem/femobjects/_FemResultMechanical
+    // App::PropertyVectorList will be a list of vectors in vtk
+    std::vector<std::string> vectors = {
+    "DisplacementVectors",
+    "StressVectors",
+    "StrainVectors"
+    };
+    // App::PropertyFloatList will be a list of scalars in vtk
+    std::vector<std::string> scalars = {
+    "Peeq",
+    "DisplacementLengths",
+    "StressValues",
+    "PrincipalMax",
+    "PrincipalMed",
+    "PrincipalMin",
+    "MaxShear",
+    "MassFlowRate",
+    "NetworkPressure",
+    "UserDefined",
+    "Temperature"
+    };
 
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
@@ -838,80 +900,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             Base::Console().Message("    Info: PropertyFloatList %s NOT exported to vtk, because size is: %i\n", it->c_str(), field->getSize());
     }
 
-}
-
-
-void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
-    // field names are defined in this file, exportFreeCADResult()
-    // DisplaceVectors are essential, Temperature and other is optional
-    std::map<std::string, std::string> vectors;  // property defined in MechanicalResult.py -> variable name in vtk
-    vectors["DisplacementVectors"] = "DisplacementVectors";
-    vectors["StrainVectors"] = "StrainVectors";
-    vectors["StressVectors"] = "Stressvectors";
-    std::map<std::string, std::string> scalers;  // App::FloatListProperty name -> vtk name
-    scalers["UserDefined"] = "UserDefined";
-    scalers["Temperature"] = "Temperature";
-    scalers["PrincipalMax"] = "PrincipalMax";
-    scalers["PrincipalMed"] = "PrincipalMed";
-    scalers["PrincipalMin"] = "PrincipalMin";
-    scalers["MaxShear"] = "MaxShear";
-    scalers["StressValues"] = "StressValues";
-    scalers["MassFlowRate"] = "MassFlowRate";
-    scalers["NetworkPressure"] = "NetworkPressure";
-    scalers["Peeq"] = "Peeq";
-    scalers["DisplacementLengths"] = "DisplacementLengths";
-
-    std::map<std::string, int> varids;
-    // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
-    varids["U1"] = 0;   // U1, displacement x axis
-    varids["U2"] = 1;
-    varids["U3"] = 2;
-    varids["Uabs"] = 3;
-    varids["StressValues"] = 4;  // Sabs
-    varids["PrincipalMax"] = 5;  // MaxPrin
-    varids["PrincipalMed"] = 6;  // MidPrin
-    varids["PrincipalMin"] = 7;  // MinPrin
-    varids["MaxShear"] = 8; //
-
-    std::string essential_property = std::string("DisplacementVectors");
-
-    _importResult(dataset, res, vectors, scalers, varids, essential_property);
-
-}
-
-
-void FemVTKTools::exportFreeCADResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid) {
-    Base::Console().Message("Start: Create VTK result data from FreeCAD result data.\n");
-
-
-    // see src/Mod/Fem/femobjects/_FemResultMechanical
-
-    // App::PropertyVectorList will be a list of vectors in vtk
-    std::vector<std::string> vectors = {
-    "DisplacementVectors",
-    "StressVectors",
-    "StrainVectors"
-    };
-
-     // App::PropertyFloatList will be a list of scalars in vtk
-    std::vector<std::string> scalars = {
-    "Peeq",
-    "DisplacementLengths",
-    "StressValues",
-    "PrincipalMax",
-    "PrincipalMed",
-    "PrincipalMin",
-    "MaxShear",
-    "MassFlowRate",
-    "NetworkPressure",
-    "UserDefined",
-    "Temperature"
-    };
-
-    _exportResult(res, grid, vectors, scalars);
-
     Base::Console().Message("End: Create VTK result data from FreeCAD result data.\n");
-
 }
 
 } // namespace
