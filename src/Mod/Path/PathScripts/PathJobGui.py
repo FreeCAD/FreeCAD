@@ -165,7 +165,7 @@ class ViewProvider:
             PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
         return self.openTaskPanel()
 
-    def uneditObject(self):
+    def uneditObject(self, obj = None):
         self.unsetEdit(None, None)
 
     def getIcon(self):
@@ -1157,7 +1157,7 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ['General', 'Base']:
+        if activate in ['General', 'Model']:
             self.form.setCurrentIndex(0)
         if activate in ['Output', 'Post Processor']:
             self.form.setCurrentIndex(1)
