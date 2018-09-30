@@ -63,7 +63,7 @@ namespace Fem
         /*!
          * FemResult import from vtkUnstructuredGrid object
          */
-        static void importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res);
+        static void importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result);
 
         /*!
          * FemResult export to vtkUnstructuredGrid object
