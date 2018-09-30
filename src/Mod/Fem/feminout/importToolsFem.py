@@ -409,10 +409,9 @@ def fill_femresult_stats(results):
     # do not forget to adapt the def get_stats in the following code:
     # - module femresult/resulttools.py
     # - module femtest/testccxtools.py
-    # - C++ App/FemVTKTools.cpp
-    # - module feminout/importVTKResults.py  (workaround fix in importVtkFCResult for broken function in App/FemVTKTools.cpp)
     # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
+    print('Recalculated Stats.\n')
     return results
 
 
