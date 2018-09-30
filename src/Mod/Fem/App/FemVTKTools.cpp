@@ -653,17 +653,17 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
 }
 
 
-void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
-
+std::map<std::string, std::vector<std::string>> _getFreeCADMechResultProperties(){
     // see src/Mod/Fem/femobjects/_FemResultMechanical
     // App::PropertyVectorList will be a list of vectors in vtk
-    std::vector<std::string> vectors = {
+    std::map<std::string, std::vector<std::string>> resFCProperties;
+    resFCProperties["vectors"] = {
     "DisplacementVectors",
     "StressVectors",
     "StrainVectors"
     };
     // App::PropertyFloatList will be a list of scalars in vtk
-    std::vector<std::string> scalars = {
+    resFCProperties["scalars"] = {
     "Peeq",
     "DisplacementLengths",
     "StressValues",
@@ -676,6 +676,16 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
     "UserDefined",
     "Temperature"
     };
+
+    return resFCProperties;
+}
+
+
+void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* result) {
+
+    std::map<std::string, std::vector<std::string>> resFCProperties = _getFreeCADMechResultProperties();
+    std::vector<std::string> vectors = resFCProperties["vectors"];
+    std::vector<std::string> scalars = resFCProperties["scalars"];
 
     double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(result->getPropertyByName("Time"))->setValue(ts);
@@ -752,27 +762,9 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
 void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid) {
     Base::Console().Message("Start: Create VTK result data from FreeCAD result data.\n");
 
-    // see src/Mod/Fem/femobjects/_FemResultMechanical
-    // App::PropertyVectorList will be a list of vectors in vtk
-    std::vector<std::string> vectors = {
-    "DisplacementVectors",
-    "StressVectors",
-    "StrainVectors"
-    };
-    // App::PropertyFloatList will be a list of scalars in vtk
-    std::vector<std::string> scalars = {
-    "Peeq",
-    "DisplacementLengths",
-    "StressValues",
-    "PrincipalMax",
-    "PrincipalMed",
-    "PrincipalMin",
-    "MaxShear",
-    "MassFlowRate",
-    "NetworkPressure",
-    "UserDefined",
-    "Temperature"
-    };
+    std::map<std::string, std::vector<std::string>> resFCProperties = _getFreeCADMechResultProperties();
+    std::vector<std::string> vectors = resFCProperties["vectors"];
+    std::vector<std::string> scalars = resFCProperties["scalars"];
 
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
