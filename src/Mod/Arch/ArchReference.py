@@ -96,6 +96,7 @@ class ArchReference:
     def onDocumentRestored(self,obj):
 
         ArchReference.setProperties(self,obj)
+        self.reload = False
 
     def __getstate__(self):
 
@@ -244,10 +245,11 @@ class ViewProviderArchReference:
                             self.Object.touch()
                     self.Object.ViewObject.TimeStamp = st_mtime
 
-    def onDelete(self):
+    def onDelete(self,obj,doc):
 
-        self.timer.stop()
-        del self.timer
+        if hasattr(self,"timer"):
+            self.timer.stop()
+            del self.timer
 
     def setupContextMenu(self,vobj,menu):
 
