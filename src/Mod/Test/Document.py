@@ -1359,6 +1359,16 @@ class DocumentObserverCases(unittest.TestCase):
     def slotAbortTransaction(self, doc):
       self.signal.append('DocAbortTransaction');
       self.parameter = doc;
+     
+    def slotBeforeChangeDocument(self, doc, prop):
+        self.signal.append('DocBeforeChange')
+        self.parameter = doc
+        self.parameter2 = prop
+        
+    def slotChangedDocument(self, doc, prop):
+        self.signal.append('DocChanged')
+        self.parameter = doc
+        self.parameter2 = prop
       
     def slotCreatedObject(self, obj):
       self.signal.append('ObjCreated');
@@ -1393,6 +1403,8 @@ class DocumentObserverCases(unittest.TestCase):
     self.Doc1 = FreeCAD.newDocument("Observer1");    
     self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
     self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
     self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
     self.failUnless(self.Obs.parameter is self.Doc1)
     self.failUnless(not self.Obs.signal)
@@ -1400,6 +1412,8 @@ class DocumentObserverCases(unittest.TestCase):
     self.Doc2 = FreeCAD.newDocument("Observer2");
     self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
     self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
     self.failUnless(self.Obs.signal.pop(0) == 'DocRelabled')
     self.failUnless(self.Obs.parameter is self.Doc2)
     self.failUnless(not self.Obs.signal)
@@ -1439,6 +1453,12 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.signal.pop() == 'DocRedo')
     self.failUnless(self.Obs.parameter is self.Doc2)
     self.failUnless(not self.Obs.signal)
+    
+    self.Doc1.Comment = 'test comment'
+    self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
+    self.failUnless(self.Obs.signal.pop(0) == 'DocChanged')
+    self.failUnless(self.Obs.parameter is self.Doc1)
+    self.failUnless(self.Obs.parameter2 == 'Comment')
     
     FreeCAD.closeDocument('Observer2')
     self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
