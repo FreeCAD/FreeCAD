@@ -4067,6 +4067,16 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
        
     float dMagF = -exp(ceil(log(std::abs(dMg))));
     
+    MinX = -dMagF;
+    MaxX = dMagF;
+    MinY = -dMagF;
+    MaxY = dMagF;
+    
+    if (ShowGrid.getValue())
+        createGrid();
+    else
+        GridRoot->removeAllChildren();
+    
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -dMagF, zCross));
