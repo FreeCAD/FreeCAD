@@ -59,6 +59,10 @@ private:
     void slotRelabelDocument(const App::Document& Doc);
     /** Checks if the given document is activated */
     void slotActivateDocument(const App::Document& Doc);
+    /** The property of an observed document has changed */
+    void slotBeforeChangeDocument(const App::Document& Obj, const App::Property& Prop);
+    /** The property of an observed document has changed */
+    void slotChangedDocument(const App::Document& Obj, const App::Property& Prop);
     /** Checks if a new object was added. */
     void slotCreatedObject(const App::DocumentObject& Obj);
     /** Checks if the given object is about to be removed. */
@@ -93,6 +97,8 @@ private:
     Connection connectApplicationActivateDocument;
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
+    Connection connectDocumentBeforeChange;
+    Connection connectDocumentChanged;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentBeforeChangeObject;

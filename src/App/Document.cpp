@@ -1098,8 +1098,15 @@ unsigned int Document::getMaxUndoStackSize(void)const
     return d->UndoMaxStackSize;
 }
 
+void Document::onBeforeChange(const Property* prop) {
+ 
+    signalBeforeChange(*this, *prop);
+}
+
 void Document::onChanged(const Property* prop)
 {
+    signalChanged(*this, *prop);
+    
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);

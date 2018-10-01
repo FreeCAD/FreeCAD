@@ -112,6 +112,10 @@ public:
 
     /** @name Signals of the document */
     //@{
+    /// signal before changing an doc property
+    boost::signal<void (const App::Document&, const App::Property&)> signalBeforeChange;
+    /// signal on changed doc property
+    boost::signal<void (const App::Document&, const App::Property&)> signalChanged;
     /// signal on new Object
     boost::signal<void (const App::DocumentObject&)> signalNewObject;
     //boost::signal<void (const App::DocumentObject&)>     m_sig;
@@ -375,6 +379,7 @@ protected:
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
     bool saveToFile(const char* filename) const;
 
+    void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
     void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
