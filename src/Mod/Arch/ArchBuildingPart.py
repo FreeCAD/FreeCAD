@@ -406,12 +406,18 @@ class BuildingPart:
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
+        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
+            shapes.append(obj.Shape)
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if child.isDerivedFrom("Part::Feature") and child.Shape and (not child.Shape.isNull()):
-                    shapes.append(child.Shape)
-                elif hasattr(child,"Group"):
-                    shapes.extend(self.getShapes(child))
+                shapes.extend(self.getShapes(child))
+        for i in obj.InList:
+            if hasattr(i,"Hosts"):
+                if obj in i.Hosts:
+                    shapes.extend(self.getShapes(i))
+            elif hasattr(i,"Host"):
+                if obj == i.Host:
+                    shapes.extend(self.getShapes(i))
         return shapes
 
     def getSpaces(self,obj):
