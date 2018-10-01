@@ -45,7 +45,7 @@ import sys
 import tempfile
 
 from PySide import QtCore, QtGui
-import FreeCAD
+import FreeCAD,FreeCADGui
 if sys.version_info.major < 3:
     import urllib2
 else:
@@ -83,7 +83,7 @@ else:
 
 def symlink(source, link_name):
     if os.path.exists(link_name):
-        print("symlink already exists")
+        print("macro already exists")
     else:
         os_symlink = getattr(os, "symlink", None)
         if callable(os_symlink):
@@ -208,6 +208,11 @@ class AddonsInstaller(QtGui.QDialog):
                 self.buttonCheck.hide()
             else:
                 self.buttonCheck.show()
+
+        # center the dialog over the FreeCAD window
+        mw = FreeCADGui.getMainWindow()
+        self.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.rect().center())
+
 
     def reject(self):
         # ensure all threads are finished before closing
@@ -974,17 +979,18 @@ class InstallWorker(QtCore.QThread):
                         self.info_label.emit("Downloading module...")
                         self.download(self.repos[idx][1],clonedir)
                     answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
-                    # symlink any macro contained in the module to the macros folder
-                    macro_dir = get_macro_dir()
-                    if not os.path.exists(macro_dir):
-                        os.makedirs(macro_dir)
-                    for f in os.listdir(clonedir):
-                        if f.lower().endswith(".fcmacro"):
-                            symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
-                            FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
-                            answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
-                            answer += f + "</b>"
-                    self.progressbar_show.emit(False)
+            # symlink any macro contained in the module to the macros folder
+            macro_dir = get_macro_dir()
+            if not os.path.exists(macro_dir):
+                os.makedirs(macro_dir)
+            for f in os.listdir(clonedir):
+                if f.lower().endswith(".fcmacro"):
+                    print("copying macro:",f)
+                    symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
+                    FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
+                    answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
+                    answer += f + "</b>"
+            self.progressbar_show.emit(False)
             self.info_label.emit(answer)
         self.stop = True
 
