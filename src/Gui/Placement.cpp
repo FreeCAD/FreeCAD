@@ -342,7 +342,12 @@ void Placement::on_selectedVertex_clicked()
         Base::Vector3d tmp;
         double angle;
         rot.getRawValue(tmp, angle);
-        Base::Vector3d axis(picked[1].x-picked[0].x,picked[1].y-picked[0].y,picked[1].z-picked[0].z);
+        Base::Vector3d axis;
+        if (firstSelected==picked[0]){
+            axis = Base::Vector3d(picked[1]-picked[0]);
+        } else {
+            axis = Base::Vector3d(picked[0]-picked[1]);
+        }
         double length = axis.Length();
         Base::Console().Message("Distance: %.8f\n",length);
         axis.Normalize();
