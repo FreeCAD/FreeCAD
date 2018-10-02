@@ -51,6 +51,7 @@ enum ObjectStatus {
     Remove = 5,
     PythonCall = 6,
     Destroy = 7,
+    Enforce = 8,
     Expand = 16
 };
 
@@ -105,13 +106,18 @@ public:
     /** Set the property touched -> changed, cause recomputation in Update()
      */
     //@{
-    /// set this feature touched (cause recomputation on depndend features)
+    /// set this document object touched (cause recomputation on dependent features)
     void touch(void);
-    /// test if this feature is touched
+    /// test if this document object is touched
     bool isTouched(void) const;
-    /// reset this feature touched
+    /// Enforce this document object to be recomputed
+    void enforceRecompute();
+    /// Test if this document object must be recomputed
+    bool mustRecompute(void) const;
+    /// reset this document object touched
     void purgeTouched(void) {
         StatusBits.reset(ObjectStatus::Touch);
+        StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0,false);
     }
     /// set this feature to error
@@ -187,7 +193,10 @@ public:
      *  If we must recompute the object - to call the method execute().
      *  0: no recompution is needed
      *  1: recompution needed
-     * -1: the document examine all links of this object and if one is touched -> recompute
+     *
+     * @remark If an object is marked as 'touched' then this does not
+     * necessarily mean that it will be recomputed. It only means that all
+     * objects that link it (i.e. its InList) will be recomputed.
      */
     virtual short mustExecute(void) const;
 

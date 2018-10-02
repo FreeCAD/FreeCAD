@@ -121,6 +121,14 @@ FeatureTest::~FeatureTest()
 
 }
 
+short FeatureTest::mustExecute(void) const
+{
+    if (isTouched())
+        return 1;
+
+    return DocumentObject::mustExecute();
+}
+
 DocumentObjectExecReturn *FeatureTest::execute(void)
 {
 

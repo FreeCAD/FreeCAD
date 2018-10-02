@@ -142,6 +142,17 @@ SketchObject::~SketchObject()
     delete analyser;
 }
 
+short SketchObject::mustExecute() const
+{
+    if (Geometry.isTouched())
+        return 1;
+    if (Constraints.isTouched())
+        return 1;
+    if (ExternalGeometry.isTouched())
+        return 1;
+    return Part2DObject::mustExecute();
+}
+
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {

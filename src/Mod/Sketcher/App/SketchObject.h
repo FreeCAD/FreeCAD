@@ -66,6 +66,7 @@ public:
     App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods override Feature */
     //@{
+    short mustExecute() const;
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
     App::DocumentObjectExecReturn *execute(void);
 
