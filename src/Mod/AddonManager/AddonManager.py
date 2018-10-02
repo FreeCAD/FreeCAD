@@ -167,6 +167,13 @@ class AddonsInstaller(QtGui.QDialog):
         self.horizontalLayout = QtGui.QHBoxLayout()
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
+
+        self.buttonExecute = QtGui.QPushButton()
+        icon = QtGui.QIcon.fromTheme("execute")
+        self.buttonExecute.setIcon(icon)
+        self.buttonExecute.setEnabled(False)
+        self.horizontalLayout.addWidget(self.buttonExecute)
+
         self.buttonCheck = QtGui.QPushButton()
         icon = QtGui.QIcon.fromTheme("reload")
         self.buttonCheck.setIcon(icon)
@@ -189,6 +196,7 @@ class AddonsInstaller(QtGui.QDialog):
 
         self.retranslateUi()
 
+        QtCore.QObject.connect(self.buttonExecute, QtCore.SIGNAL("clicked()"), self.executemacro)
         QtCore.QObject.connect(self.buttonCancel, QtCore.SIGNAL("clicked()"), self.reject)
         QtCore.QObject.connect(self.buttonInstall, QtCore.SIGNAL("clicked()"), self.install)
         QtCore.QObject.connect(self.buttonRemove, QtCore.SIGNAL("clicked()"), self.remove)
@@ -231,6 +239,8 @@ class AddonsInstaller(QtGui.QDialog):
     def retranslateUi(self):
         self.setWindowTitle(translate("AddonsInstaller","Addon manager"))
         self.labelDescription.setText(translate("AddonsInstaller", "Downloading addon list..."))
+        self.buttonExecute.setText(translate("AddonsInstaller", "Execute"))
+        self.buttonExecute.setToolTip(translate("AddonsInstaller", "This button runs the selected macro (which must be installed first)"))
         self.buttonCheck.setToolTip(translate("AddonsInstaller", "Check for available updates"))
         self.buttonCancel.setText(translate("AddonsInstaller", "Close"))
         self.buttonInstall.setText(translate("AddonsInstaller", "Install / update"))
@@ -240,6 +250,7 @@ class AddonsInstaller(QtGui.QDialog):
 
     def update(self):
         self.listWorkbenches.clear()
+        self.buttonExecute.setEnabled(False)
         self.repos = []
         self.info_worker = InfoWorker()
         self.info_worker.addon_repos.connect(self.update_repos)
@@ -367,6 +378,7 @@ class AddonsInstaller(QtGui.QDialog):
         if state == True:
             self.listWorkbenches.setEnabled(False)
             self.listMacros.setEnabled(False)
+            self.buttonExecute.setEnabled(False)
             self.buttonInstall.setEnabled(False)
             self.buttonRemove.setEnabled(False)
             self.buttonCheck.setEnabled(False)
@@ -375,6 +387,7 @@ class AddonsInstaller(QtGui.QDialog):
             self.progressBar.hide()
             self.listWorkbenches.setEnabled(True)
             self.listMacros.setEnabled(True)
+            self.buttonExecute.setEnabled(False)
             self.buttonInstall.setEnabled(True)
             self.buttonRemove.setEnabled(True)
             if self.tabWidget.currentIndex() == 0:
@@ -383,6 +396,25 @@ class AddonsInstaller(QtGui.QDialog):
                 self.listWorkbenches.setFocus()
             else:
                 self.listMacros.setFocus()
+                self.buttonExecute.setEnabled(True)
+
+    def executemacro(self):
+        if self.tabWidget.currentIndex() == 1:
+            # Tab "Macros".
+            macro = self.macros[self.listMacros.currentRow()]
+            if not macro.is_installed():
+                # Macro not installed, nothing to do.
+                return
+            macro_path = os.path.join(get_macro_dir(), macro.filename)
+            if os.path.exists(macro_path):
+                macro_path = macro_path.replace("\\","/")
+#                FreeCAD.Console.PrintMessage(str(macro_path) + "\n")
+
+                FreeCADGui.open(str(macro_path))
+                self.hide()
+                Gui.SendMsgToActiveView("Run")
+        else:
+            self.buttonExecute.setEnabled(False)
 
     def remove_readonly(self, func, path, _):
         "Remove read only file."
