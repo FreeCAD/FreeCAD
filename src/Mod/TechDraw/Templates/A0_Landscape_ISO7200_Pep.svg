@@ -153,11 +153,11 @@
   </g>
   <g id="titleblock-structure" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
     <rect width="140" height="34" x="1035" y="793" />
-		<path d="m 1035,801 h 140" /> <!-- upper horizontal Separator Titelblock -->
+		<path d="m 1035,801 h 140" /> <!-- upper horizontal Separator Titleblock -->
 		<path d="m 1035,819 h 87" /> <!-- lower horizontal Separator Document-Type -->
 		<path d="m 1035,823 h 140" /> <!-- lower horizontal Separator Copyright -->
 		<path d="m 1080,793 v 8" /> <!-- Separator Author / Owner -->
-		<path d="m 1122,793 v 30" /> <!-- Separator Titel / Liste RH -->
+		<path d="m 1122,793 v 30" /> <!-- Separator Title / Liste RH -->
 		<path d="m 1152,793 v 8" /> <!-- Separator Scale / Sheet -->
 		<path d="m 1122,809 h 53" /> <!-- Separator Part / Drawing-Nr -->
 		<path d="m 1122,815 h 53" /> <!-- Separator DRW-Info / Revision -->

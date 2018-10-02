@@ -460,7 +460,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
     //                }
     //            };
 
-    //            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)  ||
+    //            if(isCombination(g1,g2,easier dcm::geometry::line, dcm::geometry::plane)  ||
     //                    isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
     //                ui->perpendicular->setEnabled(true);
 
@@ -486,7 +486,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
 void TaskAssemblyConstraints::setPossibleConstraints()
 {
-    ////diasble all constraints for easyer enabling
+    ////diasble all constraints for easier enabling
     //ui->fix->setEnabled(false);
     //ui->distance->setEnabled(false);
     //ui->orientation->setEnabled(false);
@@ -632,4 +632,3 @@ bool TaskAssemblyConstraints::isCombination(boost::shared_ptr<Geometry3D> g1, bo
 
 
 #include "moc_TaskAssemblyConstraints.cpp"
-
