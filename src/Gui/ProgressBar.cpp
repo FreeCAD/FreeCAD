@@ -287,7 +287,7 @@ void Sequencer::resetData()
     }
     else {
         d->bar->reset();
-        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice 
+        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
         d->bar->hide();
@@ -398,7 +398,7 @@ void ProgressBar::delayedShow()
 bool ProgressBar::canAbort() const
 {
     int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes, 
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
     QMessageBox::No|QMessageBox::Default);
 
     return (ret == QMessageBox::Yes) ? true : false;
@@ -464,7 +464,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
                 return true;
             }   break;
 
-        // ignore alle these events
+        // ignore all these events
         case QEvent::KeyRelease:
         case QEvent::Enter:
         case QEvent::Leave:
@@ -473,15 +473,15 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
             {
                 return true;
             }   break;
-      
-        // special case if the main window's close button was pressed 
+
+        // special case if the main window's close button was pressed
         case QEvent::Close:
             {
                 // avoid to exit while app is working
                 // note: all other widget types are allowed to be closed anyway
                 if (o == getMainWindow()) {
                     e->ignore();
-                    return true; 
+                    return true;
                 }
             }   break;
 
