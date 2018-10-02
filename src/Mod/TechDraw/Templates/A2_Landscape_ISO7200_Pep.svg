@@ -85,11 +85,11 @@
   </g>
     <g id="titleblock-structure" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
     <rect width="140" height="34" x="440" y="372" />
-		<path d="m 440,380 h 140" /> <!-- upper horizontal Separator Titelblock -->
+		<path d="m 440,380 h 140" /> <!-- upper horizontal Separator Titleblock -->
 		<path d="m 440,398 h 87" /> <!-- lower horizontal Separator Document-Type -->
 		<path d="m 440,402 h 140" /> <!-- lower horizontal Separator Copyright -->
 		<path d="m 485,372 v 8" /> <!-- Separator Author / Owner -->
-		<path d="m 527,372 v 30" /> <!-- Separator Titel / Liste RH -->
+		<path d="m 527,372 v 30" /> <!-- Separator Title / Liste RH -->
 		<path d="m 557,372 v 8" /> <!-- Separator Scale / Sheet -->
 		<path d="m 527,388 h 53" /> <!-- Separator Part / Drawing-Nr -->
 		<path d="m 527,394 h 53" /> <!-- Separator DRW-Info / Revision -->
