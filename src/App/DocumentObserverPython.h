@@ -85,6 +85,12 @@ private:
     void slotCommitTransaction(const App::Document& Doc);
     /** Called when a observed document aborts a transaction */
     void slotAbortTransaction(const App::Document& Doc);
+    /** Called when a object get a new dynamic property added*/
+    void slotAppendDynamicProperty(const App::Property& Prop);
+    /** Called when a object get a dynamic property removed*/
+    void slotRemoveDynamicProperty(const App::Property& Prop);
+    /** Called when a object property get a new editor relevant status like hidden or read only*/
+    void slotChangePropertyEditor(const App::Property& Prop);
 
 private:
     Py::Object inst;
@@ -108,6 +114,9 @@ private:
     Connection connectDocumentOpenTransaction;
     Connection connectDocumentCommitTransaction;
     Connection connectDocumentAbortTransaction;
+    Connection connectObjectAppendDynamicProperty;
+    Connection connectObjectRemoveDynamicProperty;
+    Connection connectObjectChangePropertyEditor;
 };
 
 } //namespace App
