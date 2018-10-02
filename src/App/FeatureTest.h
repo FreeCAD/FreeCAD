@@ -104,6 +104,7 @@ public:
 
   /** @name methods override Feature */
   //@{
+  virtual short mustExecute(void) const;
   /// recalculate the Feature
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider
