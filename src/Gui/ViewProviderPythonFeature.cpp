@@ -433,6 +433,15 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
                     bool value = (bool)ok;
+                    if (value &&
+                        (ViewProvider::EditMode::Transform == ModNum ||
+                         ViewProvider::EditMode::Cutting == ModNum ||
+                         ViewProvider::EditMode::Color == ModNum)) {
+                      // returning NotImplemented for the system edit modes if the receiver returns True
+                      // so python features can implement their own edit dialog and yet still allow for
+                      // the transformation tool / color assignment to work
+                        return NotImplemented;
+                    }
                     return value ? Accepted : Rejected;
                 }
                 else {
@@ -442,6 +451,15 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     args.setItem(1, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
                     bool value = (bool)ok;
+                    if (value &&
+                        (ViewProvider::EditMode::Transform == ModNum ||
+                         ViewProvider::EditMode::Cutting == ModNum ||
+                         ViewProvider::EditMode::Color == ModNum)) {
+                      // returning NotImplemented for the system edit modes if the receiver returns True
+                      // so python features can implement their own edit dialog and yet still allow for
+                      // the transformation tool / color assignment to work
+                        return NotImplemented;
+                    }
                     return value ? Accepted : Rejected;
                 }
             }
