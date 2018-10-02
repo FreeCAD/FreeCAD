@@ -1392,6 +1392,21 @@ class DocumentObserverCases(unittest.TestCase):
       self.signal.append('ObjRecomputed');
       self.parameter.append(obj)
       
+    def slotAppendDynamicProperty(self, obj, prop):
+      self.signal.append('ObjAddDynProp');
+      self.parameter.append(obj)
+      self.parameter2.append(prop)
+    
+    def slotRemoveDynamicProperty(self, obj, prop):
+      self.signal.append('ObjRemoveDynProp');
+      self.parameter.append(obj)
+      self.parameter2.append(prop)
+    
+    def slotChangePropertyEditor(self, obj, prop):
+      self.signal.append('ObjChangePropEdit');
+      self.parameter.append(obj)
+      self.parameter2.append(prop)
+      
     
   def setUp(self):
     self.Obs = self.Observer();
@@ -1529,8 +1544,32 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter.pop() is obj)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
+    pyobj = self.Doc1.addObject("App::FeaturePython","pyobj")
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
+    pyobj.addProperty("App::PropertyLength","Prop","Group","test property")
+    self.failUnless(self.Obs.signal.pop() == 'ObjAddDynProp')
+    self.failUnless(self.Obs.parameter.pop() is pyobj)
+    self.failUnless(self.Obs.parameter2.pop() == 'Prop')
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    
+    pyobj.setEditorMode('Prop', ['ReadOnly'])
+    self.failUnless(self.Obs.signal.pop() == 'ObjChangePropEdit')
+    self.failUnless(self.Obs.parameter.pop() is pyobj)
+    self.failUnless(self.Obs.parameter2.pop() == 'Prop')
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    
+    pyobj.removeProperty('Prop')
+    self.failUnless(self.Obs.signal.pop() == 'ObjRemoveDynProp')
+    self.failUnless(self.Obs.parameter.pop() is pyobj)
+    self.failUnless(self.Obs.parameter2.pop() == 'Prop')
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    
     FreeCAD.closeDocument('Observer1')
     self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
   def testUndoDisabledDocument(self):
 
