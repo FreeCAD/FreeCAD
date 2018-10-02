@@ -96,6 +96,13 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotCommitTransaction, this, _1));
     this->connectDocumentAbortTransaction = App::GetApplication().signalAbortTransaction.connect(boost::bind
         (&DocumentObserverPython::slotAbortTransaction, this, _1));
+    
+    this->connectObjectAppendDynamicProperty = App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
+        (&DocumentObserverPython::slotAppendDynamicProperty, this, _1));
+    this->connectObjectRemoveDynamicProperty = App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
+        (&DocumentObserverPython::slotRemoveDynamicProperty, this, _1));
+    this->connectObjectChangePropertyEditor = App::GetApplication().signalChangePropertyEditor.connect(boost::bind
+        (&DocumentObserverPython::slotChangePropertyEditor, this, _1));
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -118,6 +125,10 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentOpenTransaction.disconnect();
     this->connectDocumentCommitTransaction.disconnect();
     this->connectDocumentAbortTransaction.disconnect();
+    
+    this->connectObjectAppendDynamicProperty.disconnect();
+    this->connectObjectRemoveDynamicProperty.disconnect();
+    this->connectObjectChangePropertyEditor.disconnect();
 }
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
@@ -428,6 +439,78 @@ void DocumentObserverPython::slotAbortTransaction(const App::Document& doc)
             Py::Tuple args(1);
             args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
             method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotAppendDynamicProperty(const App::Property& Prop)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotAppendDynamicProperty"))) {
+            auto container = Prop.getContainer();
+            Py::Callable method(this->inst.getAttr(std::string("slotAppendDynamicProperty")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            // If a property is touched but not part of a document object then its name is null.
+            // In this case the slot function must not be called.
+            const char* prop_name = container->getPropertyName(&Prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                method.apply(args);
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotRemoveDynamicProperty"))) {
+            auto container = Prop.getContainer();
+            Py::Callable method(this->inst.getAttr(std::string("slotRemoveDynamicProperty")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            // If a property is touched but not part of a document object then its name is null.
+            // In this case the slot function must not be called.
+            const char* prop_name = container->getPropertyName(&Prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                method.apply(args);
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }    
+}
+
+void DocumentObserverPython::slotChangePropertyEditor(const App::Property& Prop)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotChangePropertyEditor"))) {
+            auto container = Prop.getContainer();
+            Py::Callable method(this->inst.getAttr(std::string("slotChangePropertyEditor")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            // If a property is touched but not part of a document object then its name is null.
+            // In this case the slot function must not be called.
+            const char* prop_name = container->getPropertyName(&Prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                method.apply(args);
+            }
         }
     }
     catch (Py::Exception&) {
