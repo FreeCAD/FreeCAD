@@ -431,17 +431,11 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
-                    if (value &&
-                        (ViewProvider::EditMode::Transform == ModNum ||
-                         ViewProvider::EditMode::Cutting == ModNum ||
-                         ViewProvider::EditMode::Color == ModNum)) {
-                      // returning NotImplemented for the system edit modes if the receiver returns True
-                      // so python features can implement their own edit dialog and yet still allow for
-                      // the transformation tool / color assignment to work
+                    Py::Object ret(method.apply(args));
+                    if (ret.isNone())
                         return NotImplemented;
-                    }
+                    Py::Boolean ok(ret);
+                    bool value = static_cast<bool>(ok);
                     return value ? Accepted : Rejected;
                 }
                 else {
@@ -449,17 +443,11 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     args.setItem(1, Py::Int(ModNum));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
-                    if (value &&
-                        (ViewProvider::EditMode::Transform == ModNum ||
-                         ViewProvider::EditMode::Cutting == ModNum ||
-                         ViewProvider::EditMode::Color == ModNum)) {
-                      // returning NotImplemented for the system edit modes if the receiver returns True
-                      // so python features can implement their own edit dialog and yet still allow for
-                      // the transformation tool / color assignment to work
+                    Py::Object ret(method.apply(args));
+                    if (ret.isNone())
                         return NotImplemented;
-                    }
+                    Py::Boolean ok(ret);
+                    bool value = static_cast<bool>(ok);
                     return value ? Accepted : Rejected;
                 }
             }
@@ -487,8 +475,11 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
+                    Py::Object ret(method.apply(args));
+                    if (ret.isNone())
+                        return NotImplemented;
+                    Py::Boolean ok(ret);
+                    bool value = static_cast<bool>(ok);
                     return value ? Accepted : Rejected;
                 }
                 else {
@@ -496,8 +487,11 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     args.setItem(1, Py::Int(ModNum));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
+                    Py::Object ret(method.apply(args));
+                    if (ret.isNone())
+                        return NotImplemented;
+                    Py::Boolean ok(ret);
+                    bool value = static_cast<bool>(ok);
                     return value ? Accepted : Rejected;
                 }
             }
