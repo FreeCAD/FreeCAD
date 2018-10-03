@@ -65,6 +65,13 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             job.ViewObject.Proxy.editObject(obj)
         else:
             job.ViewObject.Proxy.uneditObject(obj)
+    else:
+        missing = 'Job'
+        if job:
+            missing = 'ViewObject'
+            if job.ViewObject:
+                missing = 'Proxy'
+        PathLog.warning("Cannot edit %s - no %s" % (obj.Label, missing))
 
 @contextmanager
 def selectionEx():
