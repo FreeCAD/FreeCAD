@@ -376,16 +376,24 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
+    auto addTemplates = [pcAction](const std::string& path) {
+        QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.pov"));
+        for (unsigned int i=0; i<dir.count(); i++ ) {
+            QFileInfo fi(dir[i]);
+            QAction* a = pcAction->addAction(fi.baseName());
+            a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_New"));
+
+            a->setProperty("Template", dir.absoluteFilePath(dir[i]));
+        }
+    };
+
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.pov"));
-    for (unsigned int i=0; i<dir.count(); i++ ) {
-        QFileInfo fi(dir[i]);
-        QAction* a = pcAction->addAction(fi.baseName());
-        a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_New"));
+    addTemplates(path);
 
-        a->setProperty("Template", dir.absoluteFilePath(dir[i]));
-    }
+    path = App::Application::getUserAppDataDir();
+    path += "data/Mod/Raytracing/Templates/";
+    addTemplates(path);
 
     _pcAction = pcAction;
     languageChange();
@@ -794,16 +802,24 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
+    auto addTemplates = [pcAction](const std::string& path) {
+        QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.lxs"));
+        for (unsigned int i=0; i<dir.count(); i++ ) {
+            QFileInfo fi(dir[i]);
+            QAction* a = pcAction->addAction(fi.baseName());
+            a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_Lux"));
+
+            a->setProperty("Template", dir.absoluteFilePath(dir[i]));
+        }
+    };
+
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.lxs"));
-    for (unsigned int i=0; i<dir.count(); i++ ) {
-        QFileInfo fi(dir[i]);
-        QAction* a = pcAction->addAction(fi.baseName());
-        a->setIcon(Gui::BitmapFactory().pixmap("Raytrace_Lux"));
+    addTemplates(path);
 
-        a->setProperty("Template", dir.absoluteFilePath(dir[i]));
-    }
+    path = App::Application::getUserAppDataDir();
+    path += "data/Mod/Raytracing/Templates/";
+    addTemplates(path);
 
     _pcAction = pcAction;
     languageChange();
