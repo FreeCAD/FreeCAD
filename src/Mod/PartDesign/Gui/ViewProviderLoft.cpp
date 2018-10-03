@@ -87,9 +87,9 @@ bool ViewProviderLoft::doubleClicked(void)
 
 bool ViewProviderLoft::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default)        
+    if (ModNum == ViewProvider::Default)
         setPreviewDisplayMode(true);
-        
+
     return ViewProviderAddSub::setEdit(ModNum);
 }
 
@@ -99,7 +99,6 @@ TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
 
 
 void ViewProviderLoft::unsetEdit(int ModNum) {
-    
     setPreviewDisplayMode(false);
     ViewProviderAddSub::unsetEdit(ModNum);
 }
