@@ -1106,7 +1106,7 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
     def __init__(self,vobj):
 
         Draft._ViewProviderDraft.__init__(self,vobj)
-        self.setProperties(self,vobj)
+        self.setProperties(vobj)
 
     def setProperties(self,vobj):
 
