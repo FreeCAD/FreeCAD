@@ -75,13 +75,21 @@ class ViewProvider(object):
             callback = getattr(mod, self.editCallback)
             callback(self.obj, self.vobj, edit)
 
-    def setEdit(self, vobj, mode=0):
+    def setEdit(self, vobj=None, mode=0):
         if 0 == mode:
             self._onEditCallback(True)
         return True
 
     def unsetEdit(self, arg1, arg2):
         self._onEditCallback(False)
+
+    def setupContextMenu(self, vobj, menu):
+        PathLog.track()
+        from PySide import QtCore, QtGui
+        edit = QtCore.QCoreApplication.translate('Path', 'Edit', None)
+        action = QtGui.QAction(edit, menu)
+        action.triggered.connect(self.setEdit)
+        menu.addAction(action)
 
 _factory = {}
 
